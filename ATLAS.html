@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ATLAS - Analytical Tracking for Location and Store performance</title>
+
+        <!-- Bibliotecas CSS Externas -->
+        <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.polyline.measure/Leaflet.Polyline.Measure.css" />
+        <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@5.4.3/dist/css/tabulator.min.css">
+
+        <!-- Link para o seu arquivo CSS local -->
+        <link rel="stylesheet" href="atlas_general.css">
+        <link rel="stylesheet" href="atlas_stats_panel.css">
+    </head>
+    <body>
+        <div id="app-container">
+            <!-- CABEÇALHO FIXO -->
+            <div class="header">
+                <!-- Esquerda -->
+                <div class="left">
+                    <img class="logo" src="AmazonHub.ico" alt="Amazon Hub Logo">
+                </div>
+
+                <!-- Centro -->
+                <div class="center">
+                    <p>ATLAS - Analytical Tracking for Location and Store performance</p>
+                    <p class="author">Created by: joaovida@</p>
+                    <p class="period-info" id="periodInfo">Carregue um arquivo JSON para começar</p>
+                </div>
+
+                <!-- Direita -->
+                <div class="right">
+                    <div class="menu" onclick="UIManager.toggleMenu()">&#9776;</div>
+                    <div id="menuOptions" class="menu-options">
+                        <a href="#">HUB BR 2.0</a>
+                        <a href="scorecard.html">Scorecard Expansion Team</a>
+                    </div>
+                </div>
+            </div>
+            <!-- WRAPPER DO MAPA E PAINÉIS -->
+            <div id="map-wrapper">
+                <div id="map"></div>
+                
+                <!-- Container para todos os painéis flutuantes -->
+                <div class="leaflet-control-container">
+                    <div class="leaflet-top leaflet-left">
+                        <div class="leaflet-control">
+                            <!-- Barra de Pesquisa -->
+                            <div class="floating-panel" id="search-panel">
+                                <div id="search-container">
+                                    <form class= "form-search" onsubmit="event.preventDefault(); UIManager.searchPartner();">
+                                        <input type="text" class="form-control form-control-sm" id="search-input" placeholder="Pesquisar...">
+                                    </form>
+                                    <div class="btn-search">
+                                        <button class="btn btn-primary btn-sm" id="search-btn" onclick="UIManager.searchPartner()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Painel de Estilização -->
+                            <div class="floating-panel" id="styleField-panel">
+                                <div class="panel-header" onclick="togglePanelContent(this)">
+                                    <h5><i class="fas fa-palette"></i> Estilizar por</h5>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="delivery_station" checked onchange="MapManager.restyleMarkers()"><label class="form-check-label">Delivery Station</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="status" onchange="MapManager.restyleMarkers()"><label class="form-check-label">Status</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="hub_delivey_initiatives" onchange="MapManager.restyleMarkers()"><label class="form-check-label">Hub Delivery Initiatives</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="supply_run" onchange="MapManager.restyleMarkers()"><label class="form-check-label">Supply Run</label></div>
+                                    <hr>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="showRadii" checked onchange="MapManager.toggleRadii()"><label class="form-check-label">Exibir Raios</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="showPolygons" onchange="PolygonManager.togglePolygons()"><label class="form-check-label">Exibir Ares de Prospecção</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="showJurisdictions" onchange="PolygonManager.toggleJurisdictons()"><label class="form-check-label">Exibir Jurisdições</label></div>
+                                </div>
+                            </div>
+
+                            <!-- Painel de Abas: Filtros, Destaques, Rotas -->
+                            <div class="floating-panel" id="controls-panel">
+                                <ul class="nav nav-tabs" id="controlTabs" role="tablist">
+                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#filter-content"><i class="fas fa-filter"></i> Filtros</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#highlight-content"><i class="fas fa-highlighter"></i> Destaques</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#route-content"><i class="fas fa-route"></i> Rotas</a></li>
+                                </ul>
+                                <div class="tab-content mt-3">
+                                    <!-- Aba de Filtros -->
+                                    <div class="tab-pane fade show active" id="filter-content" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-6 pl-1"><div class="form-group"><label for="statusFilter">Status:</label><select class="form-control form-control-sm" id="statusFilter"><option value="all">Todos</option><option value="Active">Active</option><option value="Onboarding">Onboarding</option><option value="BG Checks">Vetting</option></select></div></div>
+                                            <div class="col-6 pr-1"><div class="form-group"><label for="initiativesFilter">Delivery Initiatives:</label><select class="form-control form-control-sm" id="initiativesFilter"><option value="all">Todos</option></select></div></div>
+                                            <div class="col-6 pl-1"><div class="form-group"><label for="stationFilter">Delivery Station:</label><select class="form-control form-control-sm" id="stationFilter" multiple><option value="all" selected>Todos</option></select></div></div>
+                                            <div class="col-6 pr-1"><div class="form-group"><label for="jurisdictionFilter">Jurisdiction Type:</label><select class="form-control form-control-sm" id="jurisdictionFilter"><option value="all">Todos</option><option value="Exclusive">Exclusive</option><option value="Shared">Shared</option></select></div></div>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm btn-block" onclick="DataManager.applyFilters()">Aplicar Filtros</button>
+                                        <button class="btn btn-secondary btn-sm btn-block" onclick="DataManager.resetFilters()">Limpar Filtros</button>
+                                    </div>
+                                    <!-- Aba de Destaques -->
+                                    <div class="tab-pane fade" id="highlight-content" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="eligiblePackagesOp">Eligible Packages:</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <select class="form-control form-control-sm" id="eligiblePackagesOp">
+                                                            <option value="gt">Greater than</option>
+                                                            <option value="lt">Less than</option>
+                                                        </select>
+                                                        <input type="number" class="form-control form-control-sm" id="eligiblePackagesVal"
+                                                            value="0">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="overlappingOp">Overlapping Count:</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <select class="form-control form-control-sm" id="overlappingOp">
+                                                            <option value="gt">Greater than</option>
+                                                            <option value="eq">Equal to</option>
+                                                            <option value="lt">Less than</option>
+                                                        </select>
+                                                        <input type="number" class="form-control form-control-sm" id="overlappingVal"
+                                                            value="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="allocatedCurrentOp">ADV:</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <select class="form-control form-control-sm" id="allocatedCurrentOp">
+                                                            <option value="gt">Greater than</option>
+                                                            <option value="lt">Less than</option>
+                                                        </select>
+                                                        <input type="number" class="form-control form-control-sm" id="allocatedCurrentVal"
+                                                            value="0">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="statusHighlightFilter">Status:</label>
+                                                    <select class="form-control form-control-sm" id="statusHighlightFilter">
+                                                        <option value="all">All</option>
+                                                        <option value="Active">Active</option>
+                                                        <option value="Onboarding">Onboarding</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-warning btn-sm btn-block" id="highlight-btn" onclick="HighlightManager.highlightStores()">Highlight Stores</button>
+                                        <button class="btn btn-secondary btn-sm btn-block" id="highlight-btn-clear" onclick="HighlightManager.resetHighlight()">Reset Highlight</button>
+                                    </div>
+                                    <!-- Aba de Rotas -->
+                                    <div class="tab-pane fade" id="route-content" role="tabpanel">
+                                        <div class="form-group"><label for="routeFromInput">De:</label><input type="text" id="routeFromInput" class="form-control form-control-sm" placeholder="Pesquisar parceiro de origem..."><input type="hidden" id="routeFromId"></div>
+                                        <div class="form-group"><label for="routeToInput">Para:</label><input type="text" id="routeToInput" class="form-control form-control-sm" placeholder="Pesquisar parceiro de destino..."><input type="hidden" id="routeToId"></div>
+                                        <button class="btn btn-success btn-sm btn-block" onclick="RouteManager.generateRoute()"><i class="fas fa-map-signs"></i> Traçar Rota</button>
+                                        <button class="btn btn-secondary btn-sm btn-block" onclick="RouteManager.clearRoute()"><i class="fas fa-times-circle"></i> Limpar Rota</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!-- Botão para abrir o painel de Estatísticas -->
+        <div id="stats-toggle-button" class="floating-button">
+            <i class="fas fa-chart-bar"></i>
+            <span>Estatísticas</span>
+        </div>
+
+        <!-- O Painel de Estatísticas (inicialmente oculto) -->
+        <div id="stats-panel" class="floating-panel-statistics">
+            <!-- Cabeçalho do Painel com botão de fechar -->
+            <div class="panel-header-statistics">
+                <h3>Painel de Estatísticas</h3>
+                <button id="close-stats-panel" class="close-button">&times;</button>
+            </div>
+            <!-- Abas de Navegação Interna -->
+            <div class="floating-panel" id="stats-inner-panel">
+                <ul class="nav nav-tabs" id="controlTabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#Performance"><i class="fas fa-chart-bar"></i> Performance</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Expansion"><i class="fas fa-map"></i> Expansion</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Routes"><i class="fas fa-route"></i> Routes</a></li>
+                </ul>
+                <div class="tab-content mt-3">
+                    <!-- Aba 1: Performance -->
+                    <div id="Performance" class="tab-pane fade show active" role="tabpanel">
+                        <div class="cards-container" id="performance-cards">
+                            <!-- Cards de Performance serão inseridos aqui via JS -->
+                        </div>
+                        <div class="table-container">
+                            <div id="performance-table"></div>
+                        </div>
+                    </div>
+
+                    <!-- Aba 2: Expansion -->
+                    <div id="Expansion" class="tab-pane fade" role="tabpanel">
+                        <div class="cards-container" id="expansion-cards">
+                            <!-- Cards de Expansão serão inseridos aqui via JS -->
+                        </div>
+                        <div class="table-container">
+                            <div id="expansion-table"></div>
+                        </div>
+                    </div>
+
+                    <!-- Aba 3: Routes -->
+                    <div id="Routes" class="tab-pane fade" role="tabpanel">
+                        <div class="cards-container" id="routes-cards">
+                            <!-- Cards de Rotas serão inseridos aqui via JS -->
+                        </div>
+                        <div class="table-container">
+                            <div id="routes-table"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Container para o autocomplete (fora do fluxo normal) -->
+        <div id="autocomplete-results" class="list-group"></div>
+
+        <!-- Bibliotecas JS Externas -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
+        <script src="https://unpkg.com/leaflet-control-geocoder@2.3.0/dist/Control.Geocoder.js"></script>
+        <script src="https://unpkg.com/leaflet.polyline.measure/Leaflet.Polyline.Measure.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
+
+        <!-- Link para o seu arquivo JavaScript local -->
+        <script src="script.js" defer></script>
+
+    </body>
+</html>

@@ -1,0 +1,584 @@
+/* FrontEnd/style.css */
+
+/* --- Layout Base e Tipografia --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow: hidden; /* Impede a rolagem da página inteira */
+}
+
+#app-container {
+    display: flex;
+    flex-direction: column; /* Organiza os filhos (header, map-wrapper) em uma coluna */
+    height: 100%;
+}
+
+#map-wrapper {
+    position: relative; /* Necessário para posicionar os painéis flutuantes corretamente */
+    flex-grow: 1; /* Faz esta div ocupar todo o espaço vertical restante */
+    height: 100%;
+    overflow-y: auto; /* Permite rolagem vertical se necessário */
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    
+}
+
+/* --- Cabeçalho Fixo --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #232f3e;
+    padding: 8px 16px; /* faixa mais fina */
+    border-bottom: 1px solid #232f3e;
+    font-family: Arial, sans-serif;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f9f9f9;
+}
+
+.left .logo {
+    width: 120px;
+    height: 30px;
+}
+
+.center {
+    text-align: center;
+    flex: 1;
+}
+
+.center p {
+    margin: 0;
+    color: #f9f9f9;
+    font-size: 13px;
+}
+
+.center .author {
+    font-size: 13px;
+    color: #f9f9f9;
+}
+
+.right {
+    color: #f9f9f9;
+    position: relative;
+}
+
+.menu {
+  font-size: 22px;
+  cursor: hand;
+  user-select: none;
+}
+
+.menu-options {
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 150px;
+  top: calc(100% + 8px);
+  color: #fff;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1001;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.menu-options a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 13px;
+}
+
+.menu-options a:hover {
+  background:#f0f0f0;
+}
+
+/* --- Painéis Flutuantes --- */
+
+/* --- Painel de Estatísticas --- */
+/* Estilo para o botão que abre o painel */
+#stats-toggle-button {
+    position: absolute;
+    top: 85px; /* Ajuste a posição conforme necessário */
+    right: 20px;
+    z-index: 999; /* Deve ficar acima do mapa */
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilo base para o painel flutuante */
+.floating-panel-statistics {
+    position: absolute;
+    border-radius: 8px;
+    top: 85px;
+    right: 0.50%;
+    width: 60%; /* Largura do painel */
+    height: calc(90vh); /* Altura quase total */
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+
+    /* Lógica da Animação */
+    transform: translateX(100%); /* Começa fora da tela, à direita */
+    transition: transform 0.4s ease-in-out; /* Animação suave */
+    visibility: hidden; /* Oculto por padrão */
+}
+
+/* Classe 'open' que será adicionada via JS para mostrar o painel */
+.floating-panel-statistics.open {
+    transform: translateX(0); /* Move para a posição visível */
+    visibility: visible;
+}
+
+.floating-panel-statistics #stats-inner-panel {
+    flex: 1;
+    padding: 10px 15px;
+    width: 100%;
+    box-sizing: border-box; /* Inclui padding na largura total */
+    justify-content: center;
+    margin-bottom: 0;  
+}
+
+/* Estilos internos do painel */
+.panel-header-statistics {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-top: 8px;
+    margin: 0%;
+    padding-bottom: 8px;
+    z-index: 999;
+}
+
+.panel-header-statistics h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.panel-header-statistics .close-button {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#controlTabs {
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-content-statistics{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+/* --- Painel de Controles --- */
+/* Posição do botão de medição */
+#measure-toggle-button {
+    position: absolute;
+    top: 170px; /* Posição abaixo do botão de estatísticas, ajuste conforme necessário */
+    right: 20px;
+    z-index: 999;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilo para quando o botão estiver ativo */
+#measure-toggle-button.active {
+    background-color: #cce5ff; /* Um azul claro para indicar que está ativo */
+    color: #004085;
+}
+/* Ajusta o posicionamento padrão dos controles do Leaflet */
+.leaflet-control-container .leaflet-top .leaflet-left {
+    padding-top: 10px;
+    padding-left: 8px;
+    width: 350px;
+}
+
+.floating-panel {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    width: auto;
+    /* Altura máxima calculada a partir da viewport, menos um espaço para o header e margens */
+    max-height: calc(100vh - 120px); 
+    overflow-y: hidden;
+    z-index: 1000;
+    font-size: 0.85rem;
+    margin-bottom: 10px; /* Espaçamento entre painéis */
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+.panel-header h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.panel-content.collapsed {
+    display: none;
+}
+
+/* --- Componentes dos Painéis --- */
+.floating-panel label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+.floating-panel .form-group {
+    margin-bottom: 0.8rem;
+}
+
+#controls-panel {
+    width: 350px;
+}
+
+.row .col-6 pl-1{
+    padding: auto;
+}
+
+.floating-panel .nav-tabs .nav-link {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+}
+.floating-panel .tab-content {
+    font-size: 0.8rem;
+}
+
+/* --- Barra de Pesquisa --- */
+#search-container {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}   
+
+.form-search {
+    flex: 1;
+    width: 70%;
+    position: relative;
+    border: transparent;
+}
+
+#search-input {
+    border: transparent;
+}
+
+.btn-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    width: 15%;
+    background: transparent;
+}
+
+
+/* --- Autocomplete de Rotas --- */
+#autocomplete-results {
+    position: absolute;
+    z-index: 2000; /* Z-index alto para ficar sobre tudo */
+    display: none;
+    background-color: white; /* Fundo sólido */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+#autocomplete-results .list-group-item {
+    cursor: pointer;
+    color: #007bff; /* Cor da fonte */
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #eee;
+}
+#autocomplete-results .list-group-item:last-child {
+    border-bottom: none;
+}
+#autocomplete-results .list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* --- Legenda de Cores --- */
+.legend {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 10px;
+    border-radius: 5px;
+    line-height: 1.5;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+.legend h5 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+    border: 1px solid #333;
+    border-radius: 50%;
+}
+
+/* --- Popup de Comparação --- */
+.comparison-popup .leaflet-popup-content-wrapper {
+    width: auto !important;
+    min-width: 750px !important;
+    max-width: 85vw !important;
+    padding: 1px !important;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    background: #f9f9f9;
+}
+.comparison-popup .leaflet-popup-content {
+    margin: 0 !important;
+    width: auto !important;
+    max-height: 50vh !important;
+    overflow-y: auto;
+    padding: 15px;
+}
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.comparison-table th, .comparison-table td {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+    white-space: nowrap;
+}
+.comparison-table th {
+    background-color: #e9ecef;
+    position: sticky; /* Faz o cabeçalho da tabela ficar fixo ao rolar */
+    top: -1px;
+    z-index: 10;
+}
+.main-store {
+    background-color: #e6f7ff;
+    font-weight: bold;
+}
+.better-value {
+    color: green;
+    font-weight: bold;
+}
+.worse-value {
+    color: red;
+}
+
+/* Estilos específicos para o scorecard */
+.container-fluid{
+    overflow-y: auto;
+}
+
+.score-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+.score-card:hover {
+    transform: translateY(-5px);
+}
+.progress-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.podium-container {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 20px;
+    margin: 20px 0;
+}
+.podium-item {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.podium-1st {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    width: auto;
+    height: 150px;
+    order: 2;
+    white-space: nowrap
+}
+.podium-2nd {
+    background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
+    width: auto;
+    height: 135px;
+    order: 1;
+    white-space: nowrap
+}
+.podium-3rd {
+    background: linear-gradient(135deg, #CD7F32, #B8860B);
+    width: auto;
+    height: 120px;
+    order: 3;
+    white-space: nowrap
+}
+.kpi-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+.meta-progress {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+/* Estilos para os cards individuais */
+:root{
+      --card-bg: #ffffff;
+      --page-bg: #f6f6f7;
+      --muted: #6b6f76;
+      --accent: #f6c94d; /* cor de exemplo (amarelo) */
+      --accent-2: #6fbf73; /* cor alternativa (verde) */
+      --accent-3: #6ea6f8; /* azul */
+      --progress-gray: #e9e9eb;
+      --card-radius: 10px;
+      --shadow: 0 6px 18px rgba(15,23,42,0.06);
+    }
+
+/* Container só pra visualização */
+.wrap{
+    width:360px; /* tamanho similar ao card da imagem */
+}
+
+/* Card */
+.card{
+    background:var(--card-bg);
+    border-radius:var(--card-radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+/* Nome */
+.card .name{
+    font-size:18px;
+    font-weight:600;
+    color:#111827;
+}
+
+/* Barra de progresso */
+.progress-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+.progress{
+    flex:1;
+    height:14px;
+    background:#e9e9eb;
+    border-radius:999px;
+    overflow:hidden;
+}
+/* segmento colorido */
+.fill{
+    height:100%;
+    border-radius:999px;
+    transition: width 0.6s ease, background 0.6s ease;
+}
+
+/* Final score linha com número grande à direita */
+.score-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+.score-row .label{
+    font-size:14px;
+    color:var(--muted);
+    font-weight:600;
+}
+.score-row .value{
+    font-size:36px;
+    font-weight:800;
+    color:#111827;
+    line-height:1;
+}
+
+/* Lista de métricas */
+.metrics{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:4px;
+}
+.metric{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+    color:#1f2937;
+}
+.metric .k{
+    color:var(--muted);
+    font-weight:500;
+}
+.metric .v{
+    font-weight:700;
+    min-width:38px;
+    text-align:right;
+}
+
+/* pequeno estilo responsivo */
+@media (max-width:420px){
+    .wrap{width:92%}
+    .score-row .value{font-size:30px}
+}

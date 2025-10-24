@@ -1,0 +1,298 @@
+/* Estilo do Container Principal */
+.cards-container, .table-container {
+    background-color: transparent;
+    padding: 5px 5px;
+    width: 100%;
+    box-sizing: border-box; /* Inclui padding na largura total */
+}
+
+/* Títulos das Seções */
+h2 {
+    color: #333;
+    font-size: 1.5em;
+    max-height: 3%;
+}
+
+/* --- ESTILO DOS CARDS (GRID LAYOUT) --- */
+.cards-container {
+    display: grid;
+    max-height: 35%;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px; /* Espaçamento entre os cards */
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(4, 122, 233, 0.897);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card h3 {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: normal; /* Título mais suave */
+}
+
+.metric-value {
+    font-size: 2.2em; /* Valor em destaque */
+    font-weight: bold;
+    text-align: center;
+    color: #007bff; /* Azul primário para as métricas, como na imagem */
+    margin: 0;
+}
+
+.trend {
+    font-size: 0.8em;
+    font-weight: bold;
+    align-self: flex-end; /* Alinha a tendência à direita, na parte inferior */
+    color: #28a745; /* Cor verde para tendência positiva */
+}
+/* Exemplo: use uma classe .trend.negative para tendências de queda */
+.trend.negative {
+    color: #dc3545; /* Cor vermelha para queda */
+}
+
+/* --- ESTILO DA TABELA DE DETALHES --- */
+.table-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.table-container h2 {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+/* Estilo da Tabela */
+.table-container {
+  position: relative; /* Necessário para posicionar os cabeçalhos fixos */
+  max-height: 60vh;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove o espaço entre as bordas das células */
+    font-size: 0.9em;
+    overflow-y: auto;
+}
+
+.data-table thead{
+    background-color: #f7f7f7; /* Cor de fundo para o cabeçalho */
+    color: #202020;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    position: sticky; /* Cabeçalho fixo */
+    top: 0;
+}
+
+.data-table tbody {
+  display: block;
+  max-height: 100%; /* Defina a altura máxima desejada para o tbody */
+}
+
+.data-table thead, .data-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.data-table th, .data-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.data-table tr:hover {
+    background-color: #f9f9f9; /* Efeito hover para destacar a linha */
+}
+
+/* --- Painel de Estatísticas --- */
+/* Estilo para o botão que abre o painel */
+#stats-toggle-button {
+    position: absolute;
+    top: 85px; /* Ajuste a posição conforme necessário */
+    right: 20px;
+    z-index: 999; /* Deve ficar acima do mapa */
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilo base para o painel flutuante */
+.floating-panel-statistics {
+    position: absolute;
+    border-radius: 8px;
+    top: 85px;
+    right: 0.50%;
+    width: 60%; /* Largura do painel */
+    height: calc(90vh); /* Altura quase total */
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+
+    /* Lógica da Animação */
+    transform: translateX(100%); /* Começa fora da tela, à direita */
+    transition: transform 0.4s ease-in-out; /* Animação suave */
+    visibility: hidden; /* Oculto por padrão */
+}
+
+/* Classe 'open' que será adicionada via JS para mostrar o painel */
+.floating-panel-statistics.open {
+    transform: translateX(0); /* Move para a posição visível */
+    visibility: visible;
+}
+
+.floating-panel-statistics #stats-inner-panel {
+    flex: 1;
+    padding: 10px 15px;
+    width: 100%;
+    box-sizing: border-box; /* Inclui padding na largura total */
+    justify-content: center;
+    margin-bottom: 0;  
+}
+
+/* Estilos internos do painel */
+.panel-header-statistics {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-top: 8px;
+    margin: 0%;
+    padding-bottom: 8px;
+    z-index: 999;
+}
+
+.panel-header-statistics h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.panel-header-statistics .close-button {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#controlTabs {
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-content-statistics{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+
+/* Estilos para os cards de métricas */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsivo */
+    gap: 15px;
+    padding: 10px;
+    margin-bottom: 15px;
+    max-height: 40%; /* Ajuste para que ocupe metade do espaço vertical */
+    overflow-y: auto; /* Adiciona scroll se houver muitos cards */
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.card h3 {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.card .metric-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Cores dinâmicas para cards */
+.card.positive {
+    color: #28a745; /* Verde */
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.card.negative {
+    color: #dc3545; /* Vermelho */
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Estilos para o container da tabela */
+.table-container {
+    height: 60%; /* Ocupa o restante do espaço vertical */
+    overflow: hidden; /* Esconde o scroll principal, o scroll será no tbody */
+    padding: 10px;
+}
+
+.tabulator {
+    width: 100%;
+    height: 100%; /* Ocupa 100% da altura do table-container */
+    font-size: 0.9em;
+}
+
+/* Responsividade geral do painel de estatísticas */
+@media (max-width: 768px) {
+    .floating-panel-statistics {
+        width: 95%;
+        right: 2.5%;
+        top: 10px;
+        height: 90vh;
+    }
+
+    .cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-panel-statistics {
+        width: 100%;
+        right: 0;
+        border-radius: 0;
+    }
+
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+

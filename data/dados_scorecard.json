@@ -13,8 +13,13 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
+<<<<<<< HEAD
             "atingido": 10578,
             "percentual": 82.96470588235294
+=======
+            "atingido": 10572,
+            "percentual": 82.91764705882353
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
         },
         "cadastros": {
             "meta": 290.0,
@@ -29,7 +34,11 @@
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
+<<<<<<< HEAD
                 "contatos": 7737,
+=======
+                "contatos": 7734,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
                 "cadastros": 63,
                 "conversoes": 42,
                 "taxa_conversao": 66.67,
@@ -43,7 +52,11 @@
             },
             {
                 "origem": "In-Person Visit",
+<<<<<<< HEAD
                 "contatos": 2526,
+=======
+                "contatos": 2523,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
                 "cadastros": 21,
                 "conversoes": 15,
                 "taxa_conversao": 71.43,
@@ -51,7 +64,11 @@
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.51,
+<<<<<<< HEAD
                 "consistencia": 0.41,
+=======
+                "consistencia": 0.4,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
                 "distribuicao_canais": 0.35,
                 "score_final": 0.71
             },
@@ -221,15 +238,24 @@
         },
         {
             "responsavel": "Clerton Oliveira",
+<<<<<<< HEAD
             "contatos": 171,
             "cadastros": 4,
             "conversoes": 0,
             "taxa_conversao": 0.0,
             "taxa_cadastro": 2.34,
+=======
+            "contatos": 170,
+            "cadastros": 4,
+            "conversoes": 0,
+            "taxa_conversao": 0.0,
+            "taxa_cadastro": 2.35,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "contatos_origem_Website Pardot Form": 5,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 88,
             "cadastros_origem_In-Person Visit": 2,
+<<<<<<< HEAD
             "contatos_origem_Cold Call": 78,
             "cadastros_origem_Cold Call": 2,
             "contatos_origem_Referral": 0,
@@ -238,6 +264,16 @@
             "volume_score_cadastros": 0.4,
             "velocidade_score": 0.0,
             "consistencia": 0.24,
+=======
+            "contatos_origem_Cold Call": 77,
+            "cadastros_origem_Cold Call": 2,
+            "contatos_origem_Referral": 0,
+            "cadastros_origem_Referral": 0,
+            "volume_score_contatos": 0.3,
+            "volume_score_cadastros": 0.4,
+            "velocidade_score": 0.0,
+            "consistencia": 0.21,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "distribuicao_canais": 0.84,
             "score_final": 0.35
         },
@@ -309,6 +345,7 @@
         },
         {
             "responsavel": "Eric Souza",
+<<<<<<< HEAD
             "contatos": 248,
             "cadastros": 4,
             "conversoes": 1,
@@ -317,16 +354,34 @@
             "contatos_origem_Website Pardot Form": 3,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 120,
+=======
+            "contatos": 245,
+            "cadastros": 4,
+            "conversoes": 1,
+            "taxa_conversao": 25.0,
+            "taxa_cadastro": 1.63,
+            "contatos_origem_Website Pardot Form": 3,
+            "cadastros_origem_Website Pardot Form": 1,
+            "contatos_origem_In-Person Visit": 117,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 123,
             "cadastros_origem_Cold Call": 1,
             "contatos_origem_Referral": 2,
             "cadastros_origem_Referral": 2,
+<<<<<<< HEAD
             "volume_score_contatos": 0.43,
             "volume_score_cadastros": 0.4,
             "velocidade_score": 0.06,
             "consistencia": 0.26,
             "distribuicao_canais": 0.87,
+=======
+            "volume_score_contatos": 0.42,
+            "volume_score_cadastros": 0.4,
+            "velocidade_score": 0.06,
+            "consistencia": 0.23,
+            "distribuicao_canais": 0.88,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "score_final": 0.38
         },
         {
@@ -573,23 +628,39 @@
         },
         {
             "responsavel": "Lilian Mata",
+<<<<<<< HEAD
             "contatos": 210,
             "cadastros": 9,
             "conversoes": 5,
             "taxa_conversao": 55.56,
             "taxa_cadastro": 4.29,
+=======
+            "contatos": 208,
+            "cadastros": 9,
+            "conversoes": 5,
+            "taxa_conversao": 55.56,
+            "taxa_cadastro": 4.33,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "contatos_origem_Website Pardot Form": 2,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 1,
             "cadastros_origem_In-Person Visit": 1,
+<<<<<<< HEAD
             "contatos_origem_Cold Call": 191,
+=======
+            "contatos_origem_Cold Call": 189,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "cadastros_origem_Cold Call": 8,
             "contatos_origem_Referral": 16,
             "cadastros_origem_Referral": 0,
             "volume_score_contatos": 0.39,
             "volume_score_cadastros": 0.9,
             "velocidade_score": 0.22,
+<<<<<<< HEAD
             "consistencia": 0.41,
+=======
+            "consistencia": 0.37,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "distribuicao_canais": 0.63,
             "score_final": 0.69
         },
@@ -68229,7 +68300,11 @@
         },
         {
             "id": 6750,
+<<<<<<< HEAD
             "lead": "CRISTIANE VICENTE AZEVEDO NEVES",
+=======
+            "lead": "Cristiane Neves",
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "responsavel": "Gustavo Costa",
             "origem": "In-Person Visit",
             "data_contato": "2025-10-24",
@@ -103675,7 +103750,11 @@
             "data_contato": "2025-11-03",
             "data_cadastro": null,
             "data_conversao": null,
+<<<<<<< HEAD
             "status": "Working"
+=======
+            "status": "Prospect"
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
         },
         {
             "id": 10295,
@@ -103725,7 +103804,11 @@
             "data_contato": "2025-11-03",
             "data_cadastro": null,
             "data_conversao": null,
+<<<<<<< HEAD
             "status": "Exited"
+=======
+            "status": "Prospect"
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
         },
         {
             "id": 10300,
@@ -104655,7 +104738,11 @@
             "data_contato": "2025-11-03",
             "data_cadastro": null,
             "data_conversao": null,
+<<<<<<< HEAD
             "status": "Working"
+=======
+            "status": "Prospect"
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
         },
         {
             "id": 10393,
@@ -106445,6 +106532,7 @@
             "data_contato": "2025-11-03",
             "data_cadastro": null,
             "data_conversao": null,
+<<<<<<< HEAD
             "status": "New"
         },
         {
@@ -106505,6 +106593,8 @@
             "data_contato": "2025-11-03",
             "data_cadastro": null,
             "data_conversao": null,
+=======
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "status": "New"
         }
     ],
@@ -106637,7 +106727,11 @@
         },
         {
             "data_contato": "2025-11-03",
+<<<<<<< HEAD
             "contatos": 532,
+=======
+            "contatos": 526,
+>>>>>>> 8da5b1de3e4ae0cc7cccf41b8a6b98cd30588a21
             "cadastros": 2,
             "conversoes": 0
         }

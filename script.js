@@ -36,7 +36,7 @@ const DataManager = {
     loadAllDataAndInitialize: function() {
         Promise.all([
             fetch('https://joaovidaamazonlog.github.io/atlas/data/dados_mapa.json').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output.geojson').then(res => res.json()),
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output_filled.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json())
         ]).then(([partnerData, polygonData, jurisdictionData]) => {
             AppState.allMarkersData = partnerData.allMarkerData;

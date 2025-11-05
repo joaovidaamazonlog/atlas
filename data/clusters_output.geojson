@@ -9094,8 +9094,8 @@
         ]
       },
       "properties": {
-        "cluster": "DSP3_7",
-        "delivery_station": "DSP3",
+        "cluster": "DBR9_3",
+        "delivery_station": "DBR9",
         "num_points": 13,
         "centroid_lon": -46.75317534346382,
         "centroid_lat": -23.540835583716916,
@@ -9403,8 +9403,8 @@
         ]
       },
       "properties": {
-        "cluster": "DSP3_6",
-        "delivery_station": "DSP3",
+        "cluster": "DBR9_2",
+        "delivery_station": "DBR9",
         "num_points": 8,
         "centroid_lon": -46.697088455235075,
         "centroid_lat": -23.526699321993032,
@@ -9711,8 +9711,8 @@
         ]
       },
       "properties": {
-        "cluster": "DSP3_9",
-        "delivery_station": "DSP3",
+        "cluster": "DBR9_5",
+        "delivery_station": "DBR9",
         "num_points": 15,
         "centroid_lon": -46.83960886394238,
         "centroid_lat": -23.475078572177356,
@@ -10960,8 +10960,8 @@
         ]
       },
       "properties": {
-        "cluster": "DSP3_5",
-        "delivery_station": "DSP3",
+        "cluster": "DBR9_1",
+        "delivery_station": "DBR9",
         "num_points": 7,
         "centroid_lon": -46.650430999488655,
         "centroid_lat": -23.53299765344073,
@@ -11275,8 +11275,8 @@
         ]
       },
       "properties": {
-        "cluster": "DSP3_8",
-        "delivery_station": "DSP3",
+        "cluster": "DBR9_4",
+        "delivery_station": "DBR9",
         "num_points": 12,
         "centroid_lon": -46.738803960667724,
         "centroid_lat": -23.499734103918094,
@@ -11595,8 +11595,8 @@
         ]
       },
       "properties": {
-        "cluster": "DSP3_10",
-        "delivery_station": "DSP3",
+        "cluster": "DBR9_6",
+        "delivery_station": "DBR9",
         "num_points": 11,
         "centroid_lon": -46.9103780343771,
         "centroid_lat": -23.4965742186678,

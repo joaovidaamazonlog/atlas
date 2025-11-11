@@ -11,13 +11,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{1: 'DBH5_10'}",
-                "delivery_station": "{1: 'DBH5'}",
-                "num_points": "{1: 9}",
-                "centroid_lon": "{1: -44.02393479810556}",
-                "centroid_lat": "{1: -19.991677898866158}",
-                "area_m2": "{1: 21447397.547167238}",
-                "centroid": "{1: <POINT (-4900721.987 -2272045.204)>}"
+                "cluster": "DBH5_10",
+                "delivery_station": "DBH5",
+                "num_points": 9.0,
+                "centroid_lon": -44.023934798105557,
+                "centroid_lat": -19.991677898866158,
+                "area_m2": 21447397.547167238
             },
             "geometry": {
                 "type": "Polygon",
@@ -878,13 +877,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{4: 'DBH5_4'}",
-                "delivery_station": "{4: 'DBH5'}",
-                "num_points": "{4: 10}",
-                "centroid_lon": "{4: -43.985989443539694}",
-                "centroid_lat": "{4: -19.81609102992439}",
-                "area_m2": "{4: 18174426.616524607}",
-                "centroid": "{4: <POINT (-4896497.958 -2251257.292)>}"
+                "cluster": "DBH5_4",
+                "delivery_station": "DBH5",
+                "num_points": 10.0,
+                "centroid_lon": -43.985989443539694,
+                "centroid_lat": -19.81609102992439,
+                "area_m2": 18174426.616524607
             },
             "geometry": {
                 "type": "Polygon",
@@ -1445,13 +1443,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{5: 'DBH5_5'}",
-                "delivery_station": "{5: 'DBH5'}",
-                "num_points": "{5: 9}",
-                "centroid_lon": "{5: -43.95385107280009}",
-                "centroid_lat": "{5: -19.817796338744042}",
-                "area_m2": "{5: 13232833.170569394}",
-                "centroid": "{5: <POINT (-4892920.337 -2251459.002)>}"
+                "cluster": "DBH5_5",
+                "delivery_station": "DBH5",
+                "num_points": 9.0,
+                "centroid_lon": -43.953851072800092,
+                "centroid_lat": -19.817796338744042,
+                "area_m2": 13232833.170569394
             },
             "geometry": {
                 "type": "Polygon",
@@ -1624,13 +1621,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{8: 'DBH5_8'}",
-                "delivery_station": "{8: 'DBH5'}",
-                "num_points": "{8: 15}",
-                "centroid_lon": "{8: -43.91466403761579}",
-                "centroid_lat": "{8: -19.9033631119449}",
-                "area_m2": "{8: 25057319.980830327}",
-                "centroid": "{8: <POINT (-4888558.071 -2261586.634)>}"
+                "cluster": "DBH5_8",
+                "delivery_station": "DBH5",
+                "num_points": 15.0,
+                "centroid_lon": -43.914664037615793,
+                "centroid_lat": -19.903363111944898,
+                "area_m2": 25057319.980830327
             },
             "geometry": {
                 "type": "Polygon",
@@ -1859,13 +1855,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{3: 'DBH5_3'}",
-                "delivery_station": "{3: 'DBH5'}",
-                "num_points": "{3: 15}",
-                "centroid_lon": "{3: -43.98359255529628}",
-                "centroid_lat": "{3: -19.951612691744568}",
-                "area_m2": "{3: 28377703.029670537}",
-                "centroid": "{3: <POINT (-4896231.094 -2267299.916)>}"
+                "cluster": "DBH5_3",
+                "delivery_station": "DBH5",
+                "num_points": 15.0,
+                "centroid_lon": -43.983592555296283,
+                "centroid_lat": -19.951612691744568,
+                "area_m2": 28377703.029670537
             },
             "geometry": {
                 "type": "Polygon",
@@ -1898,13 +1893,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{7: 'DBH5_7'}",
-                "delivery_station": "{7: 'DBH5'}",
-                "num_points": "{7: 10}",
-                "centroid_lon": "{7: -43.99095176294269}",
-                "centroid_lat": "{7: -19.910545246291584}",
-                "area_m2": "{7: 13518954.705086723}",
-                "centroid": "{7: <POINT (-4897050.342 -2262436.834)>}"
+                "cluster": "DBH5_7",
+                "delivery_station": "DBH5",
+                "num_points": 10.0,
+                "centroid_lon": -43.990951762942693,
+                "centroid_lat": -19.910545246291584,
+                "area_m2": 13518954.705086723
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -2823,13 +2817,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{9: 'DBH5_9'}",
-                "delivery_station": "{9: 'DBH5'}",
-                "num_points": "{9: 12}",
-                "centroid_lon": "{9: -43.91434182379448}",
-                "centroid_lat": "{9: -19.957928604748904}",
-                "area_m2": "{9: 37163992.90365556}",
-                "centroid": "{9: <POINT (-4888522.064 -2268048.002)>}"
+                "cluster": "DBH5_9",
+                "delivery_station": "DBH5",
+                "num_points": 12.0,
+                "centroid_lon": -43.91434182379448,
+                "centroid_lat": -19.957928604748904,
+                "area_m2": 37163992.903655559
             },
             "geometry": {
                 "type": "Polygon",
@@ -3206,13 +3199,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{6: 'DBH5_6'}",
-                "delivery_station": "{6: 'DBH5'}",
-                "num_points": "{6: 7}",
-                "centroid_lon": "{6: -43.98231668047207}",
-                "centroid_lat": "{6: -19.871362910928212}",
-                "area_m2": "{6: 14023894.382941267}",
-                "centroid": "{6: <POINT (-4896089.091 -2257798.4)>}"
+                "cluster": "DBH5_6",
+                "delivery_station": "DBH5",
+                "num_points": 7.0,
+                "centroid_lon": -43.982316680472067,
+                "centroid_lat": -19.871362910928212,
+                "area_m2": 14023894.382941267
             },
             "geometry": {
                 "type": "Polygon",
@@ -3321,13 +3313,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{0: 'DBH5_1'}",
-                "delivery_station": "{0: 'DBH5'}",
-                "num_points": "{0: 11}",
-                "centroid_lon": "{0: -43.935876275632744}",
-                "centroid_lat": "{0: -19.86050611457789}",
-                "area_m2": "{0: 18553882.078205686}",
-                "centroid": "{0: <POINT (-4890919.364 -2256513.448)>}"
+                "cluster": "DBH5_1",
+                "delivery_station": "DBH5",
+                "num_points": 11.0,
+                "centroid_lon": -43.935876275632744,
+                "centroid_lat": -19.860506114577891,
+                "area_m2": 18553882.078205686
             },
             "geometry": {
                 "type": "Polygon",
@@ -3360,13 +3351,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{2: 'DBH5_2'}",
-                "delivery_station": "{2: 'DBH5'}",
-                "num_points": "{2: 7}",
-                "centroid_lon": "{2: -43.90104109884634}",
-                "centroid_lat": "{2: -19.846724766331462}",
-                "area_m2": "{2: 8823935.779240314}",
-                "centroid": "{2: <POINT (-4887041.502 -2254882.242)>}"
+                "cluster": "DBH5_2",
+                "delivery_station": "DBH5",
+                "num_points": 7.0,
+                "centroid_lon": -43.901041098846342,
+                "centroid_lat": -19.846724766331462,
+                "area_m2": 8823935.7792403139
             },
             "geometry": {
                 "type": "Polygon",
@@ -3604,8 +3594,7 @@
                 "num_points": null,
                 "centroid_lon": null,
                 "centroid_lat": null,
-                "area_m2": null,
-                "centroid": null
+                "area_m2": null
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -5248,13 +5237,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{104: 'DRJ3_9'}",
-                "delivery_station": "{104: 'DRJ3'}",
-                "num_points": "{104: 7}",
-                "centroid_lon": "{104: -43.218672277114784}",
-                "centroid_lat": "{104: -22.821355539305884}",
-                "area_m2": "{104: 24476136.500021107}",
-                "centroid": "{104: <POINT (-4811080.798 -2610429.272)>}"
+                "cluster": "DRJ3_9",
+                "delivery_station": "DRJ3",
+                "num_points": 7.0,
+                "centroid_lon": -43.218672277114784,
+                "centroid_lat": -22.821355539305884,
+                "area_m2": 24476136.500021107
             },
             "geometry": {
                 "type": "Polygon",
@@ -5563,13 +5551,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{106: 'DRJ3_1'}",
-                "delivery_station": "{106: 'DRJ3'}",
-                "num_points": "{106: 7}",
-                "centroid_lon": "{106: -43.223583078842694}",
-                "centroid_lat": "{106: -22.98102295629503}",
-                "area_m2": "{106: 13756053.546993159}",
-                "centroid": "{106: <POINT (-4811627.316 -2629723.968)>}"
+                "cluster": "DRJ3_1",
+                "delivery_station": "DRJ3",
+                "num_points": 7.0,
+                "centroid_lon": -43.223583078842694,
+                "centroid_lat": -22.981022956295028,
+                "area_m2": 13756053.546993159
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -6376,13 +6363,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{113: 'DRJ3_7'}",
-                "delivery_station": "{113: 'DRJ3'}",
-                "num_points": "{113: 11}",
-                "centroid_lon": "{113: -43.238516746711404}",
-                "centroid_lat": "{113: -22.9132501837819}",
-                "area_m2": "{113: 17823588.000289552}",
-                "centroid": "{113: <POINT (-4813289.699 -2621531.234)>}"
+                "cluster": "DRJ3_7",
+                "delivery_station": "DRJ3",
+                "num_points": 11.0,
+                "centroid_lon": -43.238516746711404,
+                "centroid_lat": -22.913250183781901,
+                "area_m2": 17823588.000289552
             },
             "geometry": {
                 "type": "Polygon",
@@ -7229,13 +7215,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{107: 'DRJ3_13'}",
-                "delivery_station": "{107: 'DRJ3'}",
-                "num_points": "{107: 9}",
-                "centroid_lon": "{107: -43.18479718761721}",
-                "centroid_lat": "{107: -22.93318178085413}",
-                "area_m2": "{107: 23184449.10690243}",
-                "centroid": "{107: <POINT (-4807309.629 -2623940.399)>}"
+                "cluster": "DRJ3_13",
+                "delivery_station": "DRJ3",
+                "num_points": 9.0,
+                "centroid_lon": -43.184797187617207,
+                "centroid_lat": -22.933181780854131,
+                "area_m2": 23184449.106902432
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -10154,13 +10139,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{112: 'DRJ3_6'}",
-                "delivery_station": "{112: 'DRJ3'}",
-                "num_points": "{112: 11}",
-                "centroid_lon": "{112: -43.36506983461925}",
-                "centroid_lat": "{112: -22.968924397620327}",
-                "area_m2": "{112: 32957958.112961013}",
-                "centroid": "{112: <POINT (-4827377.562 -2628261.51)>}"
+                "cluster": "DRJ3_6",
+                "delivery_station": "DRJ3",
+                "num_points": 11.0,
+                "centroid_lon": -43.365069834619248,
+                "centroid_lat": -22.968924397620327,
+                "area_m2": 32957958.112961013
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -11207,13 +11191,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{108: 'DRJ3_2'}",
-                "delivery_station": "{108: 'DRJ3'}",
-                "num_points": "{108: 9}",
-                "centroid_lon": "{108: -43.39881180215772}",
-                "centroid_lat": "{108: -22.894025554704186}",
-                "area_m2": "{108: 33180782.57128971}",
-                "centroid": "{108: <POINT (-4831133.603 -2619208.224)>}"
+                "cluster": "DRJ3_2",
+                "delivery_station": "DRJ3",
+                "num_points": 9.0,
+                "centroid_lon": -43.398811802157716,
+                "centroid_lat": -22.894025554704186,
+                "area_m2": 33180782.571289711
             },
             "geometry": {
                 "type": "Polygon",
@@ -12128,13 +12111,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{109: 'DRJ3_3'}",
-                "delivery_station": "{109: 'DRJ3'}",
-                "num_points": "{109: 13}",
-                "centroid_lon": "{109: -43.347462533200456}",
-                "centroid_lat": "{109: -22.878406967603848}",
-                "area_m2": "{109: 44840104.15947338}",
-                "centroid": "{109: <POINT (-4825417.374 -2617321.373)>}"
+                "cluster": "DRJ3_3",
+                "delivery_station": "DRJ3",
+                "num_points": 13.0,
+                "centroid_lon": -43.347462533200456,
+                "centroid_lat": -22.878406967603848,
+                "area_m2": 44840104.159473382
             },
             "geometry": {
                 "type": "Polygon",
@@ -14125,13 +14107,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{114: 'DRJ3_8'}",
-                "delivery_station": "{114: 'DRJ3'}",
-                "num_points": "{114: 6}",
-                "centroid_lon": "{114: -43.29298522753001}",
-                "centroid_lat": "{114: -22.89701485641106}",
-                "area_m2": "{114: 5038037.277080919}",
-                "centroid": "{114: <POINT (-4819353.079 -2619569.119)>}"
+                "cluster": "DRJ3_8",
+                "delivery_station": "DRJ3",
+                "num_points": 6.0,
+                "centroid_lon": -43.292985227530011,
+                "centroid_lat": -22.897014856411062,
+                "area_m2": 5038037.2770809187
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -15354,13 +15335,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{111: 'DRJ3_5'}",
-                "delivery_station": "{111: 'DRJ3'}",
-                "num_points": "{111: 8}",
-                "centroid_lon": "{111: -43.30656899399651}",
-                "centroid_lat": "{111: -23.00139397298189}",
-                "area_m2": "{111: 14808843.57647547}",
-                "centroid": "{111: <POINT (-4820865.229 -2632187.266)>}"
+                "cluster": "DRJ3_5",
+                "delivery_station": "DRJ3",
+                "num_points": 8.0,
+                "centroid_lon": -43.306568993996507,
+                "centroid_lat": -23.001393972981891,
+                "area_m2": 14808843.576475469
             },
             "geometry": {
                 "type": "Polygon",
@@ -16193,13 +16173,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{110: 'DRJ3_4'}",
-                "delivery_station": "{110: 'DRJ3'}",
-                "num_points": "{110: 14}",
-                "centroid_lon": "{110: -43.45277316226676}",
-                "centroid_lat": "{110: -22.999734377745284}",
-                "area_m2": "{110: 47894721.77360205}",
-                "centroid": "{110: <POINT (-4837140.728 -2631986.788)>}"
+                "cluster": "DRJ3_4",
+                "delivery_station": "DRJ3",
+                "num_points": 14.0,
+                "centroid_lon": -43.452773162266759,
+                "centroid_lat": -22.999734377745284,
+                "area_m2": 47894721.773602054
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -17106,13 +17085,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{152: 'DSP5_3'}",
-                "delivery_station": "{152: 'DSP5'}",
-                "num_points": "{152: 10}",
-                "centroid_lon": "{152: -47.286478852444816}",
-                "centroid_lat": "{152: -23.239209689824897}",
-                "area_m2": "{152: 60540326.79605031}",
-                "centroid": "{152: <POINT (-5263906.664 -2660974.09)>}"
+                "cluster": "DSP5_3",
+                "delivery_station": "DSP5",
+                "num_points": 10.0,
+                "centroid_lon": -47.286478852444816,
+                "centroid_lat": -23.239209689824897,
+                "area_m2": 60540326.79605031
             },
             "geometry": {
                 "type": "Polygon",
@@ -20809,13 +20787,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{155: 'DSP5_6'}",
-                "delivery_station": "{155: 'DSP5'}",
-                "num_points": "{155: 9}",
-                "centroid_lon": "{155: -47.00958857772245}",
-                "centroid_lat": "{155: -23.002865909877475}",
-                "area_m2": "{155: 27242385.435524814}",
-                "centroid": "{155: <POINT (-5233083.425 -2632365.409)>}"
+                "cluster": "DSP5_6",
+                "delivery_station": "DSP5",
+                "num_points": 9.0,
+                "centroid_lon": -47.009588577722447,
+                "centroid_lat": -23.002865909877475,
+                "area_m2": 27242385.435524814
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -21498,13 +21475,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{154: 'DSP5_5'}",
-                "delivery_station": "{154: 'DSP5'}",
-                "num_points": "{154: 11}",
-                "centroid_lon": "{154: -47.22094019377483}",
-                "centroid_lat": "{154: -23.095188933607997}",
-                "area_m2": "{154: 41257938.32322201}",
-                "centroid": "{154: <POINT (-5256611.032 -2643534.658)>}"
+                "cluster": "DSP5_5",
+                "delivery_station": "DSP5",
+                "num_points": 11.0,
+                "centroid_lon": -47.22094019377483,
+                "centroid_lat": -23.095188933607997,
+                "area_m2": 41257938.323222011
             },
             "geometry": {
                 "type": "Polygon",
@@ -22645,13 +22621,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{151: 'DSP5_2'}",
-                "delivery_station": "{151: 'DSP5'}",
-                "num_points": "{151: 13}",
-                "centroid_lon": "{151: -47.08354955217467}",
-                "centroid_lat": "{151: -22.922937867753056}",
-                "area_m2": "{151: 33734221.195348926}",
-                "centroid": "{151: <POINT (-5241316.7 -2622702.236)>}"
+                "cluster": "DSP5_2",
+                "delivery_station": "DSP5",
+                "num_points": 13.0,
+                "centroid_lon": -47.083549552174667,
+                "centroid_lat": -22.922937867753056,
+                "area_m2": 33734221.195348926
             },
             "geometry": {
                 "type": "Polygon",
@@ -23116,13 +23091,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{157: 'DSP5_8'}",
-                "delivery_station": "{157: 'DSP5'}",
-                "num_points": "{157: 17}",
-                "centroid_lon": "{157: -47.02984336089531}",
-                "centroid_lat": "{157: -22.88052152413932}",
-                "area_m2": "{157: 59470388.20004843}",
-                "centroid": "{157: <POINT (-5235338.231 -2617576.445)>}"
+                "cluster": "DSP5_8",
+                "delivery_station": "DSP5",
+                "num_points": 17.0,
+                "centroid_lon": -47.029843360895313,
+                "centroid_lat": -22.880521524139319,
+                "area_m2": 59470388.200048432
             },
             "geometry": {
                 "type": "Polygon",
@@ -25187,13 +25161,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{156: 'DSP5_7'}",
-                "delivery_station": "{156: 'DSP5'}",
-                "num_points": "{156: 9}",
-                "centroid_lon": "{156: -47.0087549850757}",
-                "centroid_lat": "{156: -22.95072398123827}",
-                "area_m2": "{156: 35258254.871188805}",
-                "centroid": "{156: <POINT (-5232990.658 -2626060.86)>}"
+                "cluster": "DSP5_7",
+                "delivery_station": "DSP5",
+                "num_points": 9.0,
+                "centroid_lon": -47.008754985075697,
+                "centroid_lat": -22.950723981238269,
+                "area_m2": 35258254.871188805
             },
             "geometry": {
                 "type": "Polygon",
@@ -26198,13 +26171,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{150: 'DSP5_1'}",
-                "delivery_station": "{150: 'DSP5'}",
-                "num_points": "{150: 5}",
-                "centroid_lon": "{150: -47.123172156219105}",
-                "centroid_lat": "{150: -22.971455074539612}",
-                "area_m2": "{150: 20455941.508005608}",
-                "centroid": "{150: <POINT (-5245727.537 -2628567.274)>}"
+                "cluster": "DSP5_1",
+                "delivery_station": "DSP5",
+                "num_points": 5.0,
+                "centroid_lon": -47.123172156219105,
+                "centroid_lat": -22.971455074539612,
+                "area_m2": 20455941.508005608
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -29751,13 +29723,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{158: 'DSP5_9'}",
-                "delivery_station": "{158: 'DSP5'}",
-                "num_points": "{158: 5}",
-                "centroid_lon": "{158: -47.08130759946737}",
-                "centroid_lat": "{158: -22.813783155915807}",
-                "area_m2": "{158: 14254288.230092032}",
-                "centroid": "{158: <POINT (-5241067.121 -2609514.823)>}"
+                "cluster": "DSP5_9",
+                "delivery_station": "DSP5",
+                "num_points": 5.0,
+                "centroid_lon": -47.081307599467372,
+                "centroid_lat": -22.813783155915807,
+                "area_m2": 14254288.230092032
             },
             "geometry": {
                 "type": "Polygon",
@@ -33130,13 +33101,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{149: 'DSP4_4'}",
-                "delivery_station": "{149: 'DSP4'}",
-                "num_points": "{149: 12}",
-                "centroid_lon": "{149: -46.59585450499184}",
-                "centroid_lat": "{149: -23.667197199705964}",
-                "area_m2": "{149: 24971970.870524786}",
-                "centroid": "{149: <POINT (-5187026.885 -2712907.007)>}"
+                "cluster": "DSP4_4",
+                "delivery_station": "DSP4",
+                "num_points": 12.0,
+                "centroid_lon": -46.595854504991841,
+                "centroid_lat": -23.667197199705964,
+                "area_m2": 24971970.870524786
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -33355,13 +33325,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{147: 'DSP4_2'}",
-                "delivery_station": "{147: 'DSP4'}",
-                "num_points": "{147: 12}",
-                "centroid_lon": "{147: -46.562404866521184}",
-                "centroid_lat": "{147: -23.713041225073976}",
-                "area_m2": "{147: 28940295.98254438}",
-                "centroid": "{147: <POINT (-5183303.213 -2718480.117)>}"
+                "cluster": "DSP4_2",
+                "delivery_station": "DSP4",
+                "num_points": 12.0,
+                "centroid_lon": -46.562404866521184,
+                "centroid_lat": -23.713041225073976,
+                "area_m2": 28940295.982544381
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -34144,13 +34113,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{146: 'DSP4_1'}",
-                "delivery_station": "{146: 'DSP4'}",
-                "num_points": "{146: 15}",
-                "centroid_lon": "{146: -46.537893182234356}",
-                "centroid_lat": "{146: -23.638083263793483}",
-                "area_m2": "{146: 31638747.615854785}",
-                "centroid": "{146: <POINT (-5180574.57 -2709368.85)>}"
+                "cluster": "DSP4_1",
+                "delivery_station": "DSP4",
+                "num_points": 15.0,
+                "centroid_lon": -46.537893182234356,
+                "centroid_lat": -23.638083263793483,
+                "area_m2": 31638747.615854785
             },
             "geometry": {
                 "type": "Polygon",
@@ -34343,13 +34311,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{37: 'DSP4_8'}",
-                "delivery_station": "{37: 'DSP4'}",
-                "num_points": "{37: 9}",
-                "centroid_lon": "{37: -46.69791907779723}",
-                "centroid_lat": "{37: -23.558645644587465}",
-                "area_m2": "{37: 12269942.519433891}",
-                "centroid": "{37: <POINT (-5198388.561 -2699718.737)>}"
+                "cluster": "DSP4_8",
+                "delivery_station": "DSP4",
+                "num_points": 9.0,
+                "centroid_lon": -46.697919077797231,
+                "centroid_lat": -23.558645644587465,
+                "area_m2": 12269942.519433891
             },
             "geometry": {
                 "type": "Polygon",
@@ -34914,13 +34881,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{145: 'DSP4_10'}",
-                "delivery_station": "{145: 'DSP4'}",
-                "num_points": "{145: 9}",
-                "centroid_lon": "{145: -46.70292769285314}",
-                "centroid_lat": "{145: -23.667081341507334}",
-                "area_m2": "{145: 16423910.840586517}",
-                "centroid": "{145: <POINT (-5198946.118 -2712892.911)>}"
+                "cluster": "DSP4_10",
+                "delivery_station": "DSP4",
+                "num_points": 9.0,
+                "centroid_lon": -46.702927692853137,
+                "centroid_lat": -23.667081341507334,
+                "area_m2": 16423910.840586517
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -35291,13 +35257,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{31: 'DSP4_5'}",
-                "delivery_station": "{31: 'DSP4'}",
-                "num_points": "{31: 11}",
-                "centroid_lon": "{31: -46.64208881516215}",
-                "centroid_lat": "{31: -23.595440482502234}",
-                "area_m2": "{31: 14120261.981983429}",
-                "centroid": "{31: <POINT (-5192173.561 -2704187.912)>}"
+                "cluster": "DSP4_5",
+                "delivery_station": "DSP4",
+                "num_points": 11.0,
+                "centroid_lon": -46.642088815162147,
+                "centroid_lat": -23.595440482502234,
+                "area_m2": 14120261.981983429
             },
             "geometry": {
                 "type": "Polygon",
@@ -35330,13 +35295,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{148: 'DSP4_3'}",
-                "delivery_station": "{148: 'DSP4'}",
-                "num_points": "{148: 9}",
-                "centroid_lon": "{148: -46.61576762621908}",
-                "centroid_lat": "{148: -23.60892486415085}",
-                "area_m2": "{148: 19529889.80710537}",
-                "centroid": "{148: <POINT (-5189243.597 -2705826.175)>}"
+                "cluster": "DSP4_3",
+                "delivery_station": "DSP4",
+                "num_points": 9.0,
+                "centroid_lon": -46.615767626219082,
+                "centroid_lat": -23.60892486415085,
+                "area_m2": 19529889.80710537
             },
             "geometry": {
                 "type": "Polygon",
@@ -35381,13 +35345,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{33: 'DSP4_7'}",
-                "delivery_station": "{33: 'DSP4'}",
-                "num_points": "{33: 10}",
-                "centroid_lon": "{33: -46.64520120554868}",
-                "centroid_lat": "{33: -23.558048567449443}",
-                "area_m2": "{33: 9322946.654943828}",
-                "centroid": "{33: <POINT (-5192520.045 -2699646.181)>}"
+                "cluster": "DSP4_7",
+                "delivery_station": "DSP4",
+                "num_points": 10.0,
+                "centroid_lon": -46.64520120554868,
+                "centroid_lat": -23.558048567449443,
+                "area_m2": 9322946.6549438275
             },
             "geometry": {
                 "type": "Polygon",
@@ -35728,13 +35691,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{32: 'DSP4_6'}",
-                "delivery_station": "{32: 'DSP4'}",
-                "num_points": "{32: 9}",
-                "centroid_lon": "{32: -46.67586125032643}",
-                "centroid_lat": "{32: -23.589586984637}",
-                "area_m2": "{32: 9497306.404000282}",
-                "centroid": "{32: <POINT (-5195933.117 -2703476.747)>}"
+                "cluster": "DSP4_6",
+                "delivery_station": "DSP4",
+                "num_points": 9.0,
+                "centroid_lon": -46.675861250326427,
+                "centroid_lat": -23.589586984636998,
+                "area_m2": 9497306.4040002823
             },
             "geometry": {
                 "type": "Polygon",
@@ -35823,13 +35785,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{144: 'DSP4_9'}",
-                "delivery_station": "{144: 'DSP4'}",
-                "num_points": "{144: 8}",
-                "centroid_lon": "{144: -46.668943328158676}",
-                "centroid_lat": "{144: -23.633034618785807}",
-                "area_m2": "{144: 13598931.073515212}",
-                "centroid": "{144: <POINT (-5195162.986 -2708755.325)>}"
+                "cluster": "DSP4_9",
+                "delivery_station": "DSP4",
+                "num_points": 8.0,
+                "centroid_lon": -46.668943328158676,
+                "centroid_lat": -23.633034618785807,
+                "area_m2": 13598931.073515212
             },
             "geometry": {
                 "type": "Polygon",
@@ -35878,13 +35839,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{140: 'DSP3_1'}",
-                "delivery_station": "{140: 'DSP3'}",
-                "num_points": "{140: 9}",
-                "centroid_lon": "{140: -46.757903828382204}",
-                "centroid_lat": "{140: -23.6141674129162}",
-                "area_m2": "{140: 14360369.071883943}",
-                "centroid": "{140: <POINT (-5205066.068 -2706462.823)>}"
+                "cluster": "DSP3_1",
+                "delivery_station": "DSP3",
+                "num_points": 9.0,
+                "centroid_lon": -46.757903828382204,
+                "centroid_lat": -23.614167412916199,
+                "area_m2": 14360369.071883943
             },
             "geometry": {
                 "type": "Polygon",
@@ -36237,13 +36197,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{141: 'DSP3_2'}",
-                "delivery_station": "{141: 'DSP3'}",
-                "num_points": "{141: 10}",
-                "centroid_lon": "{141: -46.71557021762223}",
-                "centroid_lat": "{141: -23.58911035840877}",
-                "area_m2": "{141: 13447271.99666703}",
-                "centroid": "{141: <POINT (-5200353.477 -2703418.913)>}"
+                "cluster": "DSP3_2",
+                "delivery_station": "DSP3",
+                "num_points": 10.0,
+                "centroid_lon": -46.715570217622229,
+                "centroid_lat": -23.589110358408771,
+                "area_m2": 13447271.996667029
             },
             "geometry": {
                 "type": "Polygon",
@@ -37890,13 +37849,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{142: 'DSP3_3'}",
-                "delivery_station": "{142: 'DSP3'}",
-                "num_points": "{142: 11}",
-                "centroid_lon": "{142: -46.956567115021755}",
-                "centroid_lat": "{142: -23.607351970616854}",
-                "area_m2": "{142: 80769428.72020335}",
-                "centroid": "{142: <POINT (-5227181.298 -2705635.191)>}"
+                "cluster": "DSP3_3",
+                "delivery_station": "DSP3",
+                "num_points": 11.0,
+                "centroid_lon": -46.956567115021755,
+                "centroid_lat": -23.607351970616854,
+                "area_m2": 80769428.720203355
             },
             "geometry": {
                 "type": "Polygon",
@@ -40647,13 +40605,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{143: 'DSP3_4'}",
-                "delivery_station": "{143: 'DSP3'}",
-                "num_points": "{143: 12}",
-                "centroid_lon": "{143: -46.84495848108909}",
-                "centroid_lat": "{143: -23.645842925821672}",
-                "area_m2": "{143: 69622595.39573789}",
-                "centroid": "{143: <POINT (-5214756.943 -2710313.704)>}"
+                "cluster": "DSP3_4",
+                "delivery_station": "DSP3",
+                "num_points": 12.0,
+                "centroid_lon": -46.844958481089087,
+                "centroid_lat": -23.645842925821672,
+                "area_m2": 69622595.395737886
             },
             "geometry": {
                 "type": "Polygon",
@@ -40990,13 +40947,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{35: 'DBR9_4'}",
-                "delivery_station": "{35: 'DBR9'}",
-                "num_points": "{35: 12}",
-                "centroid_lon": "{35: -46.738803960667724}",
-                "centroid_lat": "{35: -23.499734103918094}",
-                "area_m2": "{35: 19056153.383420236}",
-                "centroid": "{35: <POINT (-5202939.811 -2692566.209)>}"
+                "cluster": "DBR9_4",
+                "delivery_station": "DBR9",
+                "num_points": 12.0,
+                "centroid_lon": -46.738803960667724,
+                "centroid_lat": -23.499734103918094,
+                "area_m2": 19056153.383420236
             },
             "geometry": {
                 "type": "Polygon",
@@ -41209,13 +41165,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{29: 'DBR9_2'}",
-                "delivery_station": "{29: 'DBR9'}",
-                "num_points": "{29: 8}",
-                "centroid_lon": "{29: -46.697088455235075}",
-                "centroid_lat": "{29: -23.526699321993032}",
-                "area_m2": "{29: 11278162.84776538}",
-                "centroid": "{29: <POINT (-5198296.096 -2695839.595)>}"
+                "cluster": "DBR9_2",
+                "delivery_station": "DBR9",
+                "num_points": 8.0,
+                "centroid_lon": -46.697088455235075,
+                "centroid_lat": -23.526699321993032,
+                "area_m2": 11278162.847765381
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -41662,13 +41617,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{28: 'DBR9_3'}",
-                "delivery_station": "{28: 'DBR9'}",
-                "num_points": "{28: 13}",
-                "centroid_lon": "{28: -46.75317534346382}",
-                "centroid_lat": "{28: -23.540835583716916}",
-                "area_m2": "{28: 18368811.784592707}",
-                "centroid": "{28: <POINT (-5204539.683 -2697556.046)>}"
+                "cluster": "DBR9_3",
+                "delivery_station": "DBR9",
+                "num_points": 13.0,
+                "centroid_lon": -46.753175343463823,
+                "centroid_lat": -23.540835583716916,
+                "area_m2": 18368811.784592707
             },
             "geometry": {
                 "type": "Polygon",
@@ -41729,13 +41683,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{132: 'DSP2_1'}",
-                "delivery_station": "{132: 'DSP2'}",
-                "num_points": "{132: 14}",
-                "centroid_lon": "{132: -46.50147905504517}",
-                "centroid_lat": "{132: -23.520578289669725}",
-                "area_m2": "{132: 30247675.933323998}",
-                "centroid": "{132: <POINT (-5176520.962 -2695096.623)>}"
+                "cluster": "DSP2_1",
+                "delivery_station": "DSP2",
+                "num_points": 14.0,
+                "centroid_lon": -46.501479055045174,
+                "centroid_lat": -23.520578289669725,
+                "area_m2": 30247675.933323998
             },
             "geometry": {
                 "type": "Polygon",
@@ -41944,13 +41897,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{137: 'DSP2_6'}",
-                "delivery_station": "{137: 'DSP2'}",
-                "num_points": "{137: 7}",
-                "centroid_lon": "{137: -46.41439132193241}",
-                "centroid_lat": "{137: -23.438422908003915}",
-                "area_m2": "{137: 35786306.79903808}",
-                "centroid": "{137: <POINT (-5166826.482 -2685125.666)>}"
+                "cluster": "DSP2_6",
+                "delivery_station": "DSP2",
+                "num_points": 7.0,
+                "centroid_lon": -46.414391321932413,
+                "centroid_lat": -23.438422908003915,
+                "area_m2": 35786306.799038082
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -46275,13 +46227,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{135: 'DSP2_4'}",
-                "delivery_station": "{135: 'DSP2'}",
-                "num_points": "{135: 12}",
-                "centroid_lon": "{135: -46.5781828111834}",
-                "centroid_lat": "{135: -23.5685757251505}",
-                "area_m2": "{135: 27153046.58183602}",
-                "centroid": "{135: <POINT (-5185059.596 -2700924.954)>}"
+                "cluster": "DSP2_4",
+                "delivery_station": "DSP2",
+                "num_points": 12.0,
+                "centroid_lon": -46.578182811183403,
+                "centroid_lat": -23.568575725150499,
+                "area_m2": 27153046.581836019
             },
             "geometry": {
                 "type": "Polygon",
@@ -46498,13 +46449,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{134: 'DSP2_3'}",
-                "delivery_station": "{134: 'DSP2'}",
-                "num_points": "{134: 8}",
-                "centroid_lon": "{134: -46.59658251115605}",
-                "centroid_lat": "{134: -23.46897995144864}",
-                "area_m2": "{134: 19479691.575066704}",
-                "centroid": "{134: <POINT (-5187107.81 -2688833.36)>}"
+                "cluster": "DSP2_3",
+                "delivery_station": "DSP2",
+                "num_points": 8.0,
+                "centroid_lon": -46.596582511156051,
+                "centroid_lat": -23.468979951448642,
+                "area_m2": 19479691.575066704
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -48087,13 +48037,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{133: 'DSP2_2'}",
-                "delivery_station": "{133: 'DSP2'}",
-                "num_points": "{133: 8}",
-                "centroid_lon": "{133: -46.58897010279993}",
-                "centroid_lat": "{133: -23.517831604266814}",
-                "area_m2": "{133: 28611079.699707076}",
-                "centroid": "{133: <POINT (-5186260.525 -2694763.169)>}"
+                "cluster": "DSP2_2",
+                "delivery_station": "DSP2",
+                "num_points": 8.0,
+                "centroid_lon": -46.588970102799927,
+                "centroid_lat": -23.517831604266814,
+                "area_m2": 28611079.699707076
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -48814,13 +48763,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{138: 'DSP2_7'}",
-                "delivery_station": "{138: 'DSP2'}",
-                "num_points": "{138: 15}",
-                "centroid_lon": "{138: -46.66070326619339}",
-                "centroid_lat": "{138: -23.49189882409213}",
-                "area_m2": "{138: 22107272.66597087}",
-                "centroid": "{138: <POINT (-5194245.738 -2691615.021)>}"
+                "cluster": "DSP2_7",
+                "delivery_station": "DSP2",
+                "num_points": 15.0,
+                "centroid_lon": -46.660703266193387,
+                "centroid_lat": -23.491898824092129,
+                "area_m2": 22107272.665970869
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -50563,13 +50511,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{139: 'DSP2_8'}",
-                "delivery_station": "{139: 'DSP2'}",
-                "num_points": "{139: 14}",
-                "centroid_lon": "{139: -46.530782690313416}",
-                "centroid_lat": "{139: -23.448800556928475}",
-                "area_m2": "{139: 33878810.22825263}",
-                "centroid": "{139: <POINT (-5179783.057 -2686384.773)>}"
+                "cluster": "DSP2_8",
+                "delivery_station": "DSP2",
+                "num_points": 14.0,
+                "centroid_lon": -46.530782690313416,
+                "centroid_lat": -23.448800556928475,
+                "area_m2": 33878810.228252627
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -52380,13 +52327,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{91: 'DPR2_13'}",
-                "delivery_station": "{91: 'DPR2'}",
-                "num_points": "{91: 1}",
-                "centroid_lon": "{91: -49.533308831158095}",
-                "centroid_lat": "{91: -25.465299021004075}",
-                "area_m2": "{91: 384227.19009191013}",
-                "centroid": "{91: <POINT (-5514022.716 -2933005.247)>}"
+                "cluster": "DPR2_13",
+                "delivery_station": "DPR2",
+                "num_points": 1.0,
+                "centroid_lon": -49.533308831158095,
+                "centroid_lat": -25.465299021004075,
+                "area_m2": 384227.19009191013
             },
             "geometry": {
                 "type": "Polygon",
@@ -58379,13 +58325,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{98: 'DPR2_6'}",
-                "delivery_station": "{98: 'DPR2'}",
-                "num_points": "{98: 2}",
-                "centroid_lon": "{98: -49.40666443688904}",
-                "centroid_lat": "{98: -25.58959406262475}",
-                "area_m2": "{98: 1241313.5731937191}",
-                "centroid": "{98: <POINT (-5499924.726 -2948338.567)>}"
+                "cluster": "DPR2_6",
+                "delivery_station": "DPR2",
+                "num_points": 2.0,
+                "centroid_lon": -49.406664436889038,
+                "centroid_lat": -25.589594062624752,
+                "area_m2": 1241313.5731937191
             },
             "geometry": {
                 "type": "Polygon",
@@ -60906,13 +60851,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{94: 'DPR2_2'}",
-                "delivery_station": "{94: 'DPR2'}",
-                "num_points": "{94: 9}",
-                "centroid_lon": "{94: -49.28976257723664}",
-                "centroid_lat": "{94: -25.535445314901295}",
-                "area_m2": "{94: 22123346.895531647}",
-                "centroid": "{94: <POINT (-5486911.248 -2941657.015)>}"
+                "cluster": "DPR2_2",
+                "delivery_station": "DPR2",
+                "num_points": 9.0,
+                "centroid_lon": -49.289762577236637,
+                "centroid_lat": -25.535445314901295,
+                "area_m2": 22123346.895531647
             },
             "geometry": {
                 "type": "Polygon",
@@ -61021,13 +60965,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{89: 'DPR2_11'}",
-                "delivery_station": "{89: 'DPR2'}",
-                "num_points": "{89: 5}",
-                "centroid_lon": "{89: -49.22091516984484}",
-                "centroid_lat": "{89: -25.499181322502537}",
-                "area_m2": "{89: 7690348.313419559}",
-                "centroid": "{89: <POINT (-5479247.233 -2937183.61)>}"
+                "cluster": "DPR2_11",
+                "delivery_station": "DPR2",
+                "num_points": 5.0,
+                "centroid_lon": -49.220915169844837,
+                "centroid_lat": -25.499181322502537,
+                "area_m2": 7690348.313419559
             },
             "geometry": {
                 "type": "Polygon",
@@ -61060,13 +61003,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{88: 'DPR2_10'}",
-                "delivery_station": "{88: 'DPR2'}",
-                "num_points": "{88: 13}",
-                "centroid_lon": "{88: -49.18405511828196}",
-                "centroid_lat": "{88: -25.53220072000316}",
-                "area_m2": "{88: 30249447.48438713}",
-                "centroid": "{88: <POINT (-5475144.037 -2941256.757)>}"
+                "cluster": "DPR2_10",
+                "delivery_station": "DPR2",
+                "num_points": 13.0,
+                "centroid_lon": -49.184055118281961,
+                "centroid_lat": -25.532200720003161,
+                "area_m2": 30249447.48438713
             },
             "geometry": {
                 "type": "Polygon",
@@ -62167,13 +62109,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{95: 'DPR2_3'}",
-                "delivery_station": "{95: 'DPR2'}",
-                "num_points": "{95: 12}",
-                "centroid_lon": "{95: -49.28046232750489}",
-                "centroid_lat": "{95: -25.4463226308497}",
-                "area_m2": "{95: 16616152.556140162}",
-                "centroid": "{95: <POINT (-5485875.98 -2930665.922)>}"
+                "cluster": "DPR2_3",
+                "delivery_station": "DPR2",
+                "num_points": 12.0,
+                "centroid_lon": -49.280462327504893,
+                "centroid_lat": -25.4463226308497,
+                "area_m2": 16616152.556140162
             },
             "geometry": {
                 "type": "Polygon",
@@ -62210,13 +62151,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{101: 'DPR2_9'}",
-                "delivery_station": "{101: 'DPR2'}",
-                "num_points": "{101: 14}",
-                "centroid_lon": "{101: -49.33162959386103}",
-                "centroid_lat": "{101: -25.41533961172464}",
-                "area_m2": "{101: 39285230.60232731}",
-                "centroid": "{101: <POINT (-5491571.926 -2926847.186)>}"
+                "cluster": "DPR2_9",
+                "delivery_station": "DPR2",
+                "num_points": 14.0,
+                "centroid_lon": -49.331629593861031,
+                "centroid_lat": -25.41533961172464,
+                "area_m2": 39285230.60232731
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -63267,13 +63207,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{90: 'DPR2_12'}",
-                "delivery_station": "{90: 'DPR2'}",
-                "num_points": "{90: 14}",
-                "centroid_lon": "{90: -49.322124950699155}",
-                "centroid_lat": "{90: -25.477957420893695}",
-                "area_m2": "{90: 33145258.351505272}",
-                "centroid": "{90: <POINT (-5490513.833 -2934566.616)>}"
+                "cluster": "DPR2_12",
+                "delivery_station": "DPR2",
+                "num_points": 14.0,
+                "centroid_lon": -49.322124950699155,
+                "centroid_lat": -25.477957420893695,
+                "area_m2": 33145258.351505272
             },
             "geometry": {
                 "type": "Polygon",
@@ -63386,13 +63325,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{87: 'DPR2_1'}",
-                "delivery_station": "{87: 'DPR2'}",
-                "num_points": "{87: 10}",
-                "centroid_lon": "{87: -49.25874771528784}",
-                "centroid_lat": "{87: -25.510484486638035}",
-                "area_m2": "{87: 20836820.232609965}",
-                "centroid": "{87: <POINT (-5483458.655 -2938577.919)>}"
+                "cluster": "DPR2_1",
+                "delivery_station": "DPR2",
+                "num_points": 10.0,
+                "centroid_lon": -49.258747715287839,
+                "centroid_lat": -25.510484486638035,
+                "area_m2": 20836820.232609965
             },
             "geometry": {
                 "type": "Polygon",
@@ -63433,13 +63371,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{99: 'DPR2_7'}",
-                "delivery_station": "{99: 'DPR2'}",
-                "num_points": "{99: 14}",
-                "centroid_lon": "{99: -49.228704583221806}",
-                "centroid_lat": "{99: -25.383476613189146}",
-                "area_m2": "{99: 21082954.453626312}",
-                "centroid": "{99: <POINT (-5480114.271 -2922920.564)>}"
+                "cluster": "DPR2_7",
+                "delivery_station": "DPR2",
+                "num_points": 14.0,
+                "centroid_lon": -49.228704583221806,
+                "centroid_lat": -25.383476613189146,
+                "area_m2": 21082954.453626312
             },
             "geometry": {
                 "type": "Polygon",
@@ -63476,13 +63413,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{100: 'DPR2_8'}",
-                "delivery_station": "{100: 'DPR2'}",
-                "num_points": "{100: 4}",
-                "centroid_lon": "{100: -49.18484810645861}",
-                "centroid_lat": "{100: -25.355864002695057}",
-                "area_m2": "{100: 9403917.487703959}",
-                "centroid": "{100: <POINT (-5475232.233 -2919518.249)>}"
+                "cluster": "DPR2_8",
+                "delivery_station": "DPR2",
+                "num_points": 4.0,
+                "centroid_lon": -49.18484810645861,
+                "centroid_lat": -25.355864002695057,
+                "area_m2": 9403917.4877039585
             },
             "geometry": {
                 "type": "Polygon",
@@ -65271,13 +65207,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{93: 'DPR2_15'}",
-                "delivery_station": "{93: 'DPR2'}",
-                "num_points": "{93: 3}",
-                "centroid_lon": "{93: -49.280341228917294}",
-                "centroid_lat": "{93: -25.3417663569672}",
-                "area_m2": "{93: 9824911.432177378}",
-                "centroid": "{93: <POINT (-5485862.454 -2917781.989)>}"
+                "cluster": "DPR2_15",
+                "delivery_station": "DPR2",
+                "num_points": 3.0,
+                "centroid_lon": -49.280341228917294,
+                "centroid_lat": -25.341766356967199,
+                "area_m2": 9824911.4321773779
             },
             "geometry": {
                 "type": "Polygon",
@@ -67986,13 +67921,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{92: 'DPR2_14'}",
-                "delivery_station": "{92: 'DPR2'}",
-                "num_points": "{92: 15}",
-                "centroid_lon": "{92: -49.26880285328418}",
-                "centroid_lat": "{92: -25.398064628085187}",
-                "area_m2": "{92: 25396330.95254902}",
-                "centroid": "{92: <POINT (-5484578.042 -2924717.869)>}"
+                "cluster": "DPR2_14",
+                "delivery_station": "DPR2",
+                "num_points": 15.0,
+                "centroid_lon": -49.268802853284178,
+                "centroid_lat": -25.398064628085187,
+                "area_m2": 25396330.952549022
             },
             "geometry": {
                 "type": "Polygon",
@@ -68029,13 +67963,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{97: 'DPR2_5'}",
-                "delivery_station": "{97: 'DPR2'}",
-                "num_points": "{97: 13}",
-                "centroid_lon": "{97: -49.158766377381426}",
-                "centroid_lat": "{97: -25.439287312958626}",
-                "area_m2": "{97: 74888052.68409488}",
-                "centroid": "{97: <POINT (-5472328.866 -2929798.926)>}"
+                "cluster": "DPR2_5",
+                "delivery_station": "DPR2",
+                "num_points": 13.0,
+                "centroid_lon": -49.158766377381426,
+                "centroid_lat": -25.439287312958626,
+                "area_m2": 74888052.684094876
             },
             "geometry": {
                 "type": "Polygon",
@@ -70768,13 +70701,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{96: 'DPR2_4'}",
-                "delivery_station": "{96: 'DPR2'}",
-                "num_points": "{96: 8}",
-                "centroid_lon": "{96: -49.244429223628266}",
-                "centroid_lat": "{96: -25.454972395005193}",
-                "area_m2": "{96: 16318120.317421077}",
-                "centroid": "{96: <POINT (-5481864.775 -2931732.264)>}"
+                "cluster": "DPR2_4",
+                "delivery_station": "DPR2",
+                "num_points": 8.0,
+                "centroid_lon": -49.244429223628266,
+                "centroid_lat": -25.454972395005193,
+                "area_m2": 16318120.317421077
             },
             "geometry": {
                 "type": "Polygon",
@@ -70820,8 +70752,7 @@
                 "num_points": null,
                 "centroid_lon": null,
                 "centroid_lat": null,
-                "area_m2": null,
-                "centroid": null
+                "area_m2": null
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -89144,13 +89075,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{116: 'DRS5_2'}",
-                "delivery_station": "{116: 'DRS5'}",
-                "num_points": "{116: 10}",
-                "centroid_lon": "{116: -51.15413253168517}",
-                "centroid_lat": "{116: -29.742511870528244}",
-                "area_m2": "{116: 72474255.50878558}",
-                "centroid": "{116: <POINT (-5694451.844 -3470495.967)>}"
+                "cluster": "DRS5_2",
+                "delivery_station": "DRS5",
+                "num_points": 10.0,
+                "centroid_lon": -51.154132531685171,
+                "centroid_lat": -29.742511870528244,
+                "area_m2": 72474255.508785576
             },
             "geometry": {
                 "type": "Polygon",
@@ -89263,13 +89193,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{121: 'DRS5_7'}",
-                "delivery_station": "{121: 'DRS5'}",
-                "num_points": "{121: 1}",
-                "centroid_lon": "{121: -51.34633159051351}",
-                "centroid_lat": "{121: -29.587184611967555}",
-                "area_m2": "{121: 384227.19009190815}",
-                "centroid": "{121: <POINT (-5715847.487 -3450595.884)>}"
+                "cluster": "DRS5_7",
+                "delivery_station": "DRS5",
+                "num_points": 1.0,
+                "centroid_lon": -51.346331590513508,
+                "centroid_lat": -29.587184611967555,
+                "area_m2": 384227.19009190815
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -93688,13 +93617,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{117: 'DRS5_3'}",
-                "delivery_station": "{117: 'DRS5'}",
-                "num_points": "{117: 14}",
-                "centroid_lon": "{117: -51.0776774978754}",
-                "centroid_lat": "{117: -29.67299626603778}",
-                "area_m2": "{117: 50679279.51518544}",
-                "centroid": "{117: <POINT (-5685941.278 -3461585.87)>}"
+                "cluster": "DRS5_3",
+                "delivery_station": "DRS5",
+                "num_points": 14.0,
+                "centroid_lon": -51.077677497875399,
+                "centroid_lat": -29.672996266037782,
+                "area_m2": 50679279.515185438
             },
             "geometry": {
                 "type": "Polygon",
@@ -96055,13 +95983,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{120: 'DRS5_6'}",
-                "delivery_station": "{120: 'DRS5'}",
-                "num_points": "{120: 12}",
-                "centroid_lon": "{120: -51.1530414760773}",
-                "centroid_lat": "{120: -29.887043852350914}",
-                "area_m2": "{120: 92456598.09915893}",
-                "centroid": "{120: <POINT (-5694330.53 -3489040.266)>}"
+                "cluster": "DRS5_6",
+                "delivery_station": "DRS5",
+                "num_points": 12.0,
+                "centroid_lon": -51.153041476077298,
+                "centroid_lat": -29.887043852350914,
+                "area_m2": 92456598.099158928
             },
             "geometry": {
                 "type": "Polygon",
@@ -96486,13 +96413,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{123: 'DRS5_9'}",
-                "delivery_station": "{123: 'DRS5'}",
-                "num_points": "{123: 11}",
-                "centroid_lon": "{123: -51.19419729693208}",
-                "centroid_lat": "{123: -30.047010798946268}",
-                "area_m2": "{123: 28382614.009341672}",
-                "centroid": "{123: <POINT (-5698911.845 -3509594.486)>}"
+                "cluster": "DRS5_9",
+                "delivery_station": "DRS5",
+                "num_points": 11.0,
+                "centroid_lon": -51.194197296932082,
+                "centroid_lat": -30.047010798946268,
+                "area_m2": 28382614.009341672
             },
             "geometry": {
                 "type": "Polygon",
@@ -96901,13 +96827,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{122: 'DRS5_8'}",
-                "delivery_station": "{122: 'DRS5'}",
-                "num_points": "{122: 10}",
-                "centroid_lon": "{122: -51.17456852893054}",
-                "centroid_lat": "{122: -30.000312819041895}",
-                "area_m2": "{122: 24504765.236926243}",
-                "centroid": "{122: <POINT (-5696726.796 -3503590.626)>}"
+                "cluster": "DRS5_8",
+                "delivery_station": "DRS5",
+                "num_points": 10.0,
+                "centroid_lon": -51.174568528930543,
+                "centroid_lat": -30.000312819041895,
+                "area_m2": 24504765.236926243
             },
             "geometry": {
                 "type": "Polygon",
@@ -97036,13 +96961,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{119: 'DRS5_5'}",
-                "delivery_station": "{119: 'DRS5'}",
-                "num_points": "{119: 12}",
-                "centroid_lon": "{119: -51.230251620912306}",
-                "centroid_lat": "{119: -30.087421562340136}",
-                "area_m2": "{119: 21251245.7654652}",
-                "centroid": "{119: <POINT (-5702925.656 -3514792.439)>}"
+                "cluster": "DRS5_5",
+                "delivery_station": "DRS5",
+                "num_points": 12.0,
+                "centroid_lon": -51.230251620912306,
+                "centroid_lat": -30.087421562340136,
+                "area_m2": 21251245.7654652
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -101737,13 +101661,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{115: 'DRS5_1'}",
-                "delivery_station": "{115: 'DRS5'}",
-                "num_points": "{115: 12}",
-                "centroid_lon": "{115: -51.097934525839136}",
-                "centroid_lat": "{115: -30.058257464926744}",
-                "area_m2": "{115: 91251552.3102572}",
-                "centroid": "{115: <POINT (-5688196.014 -3511042.264)>}"
+                "cluster": "DRS5_1",
+                "delivery_station": "DRS5",
+                "num_points": 12.0,
+                "centroid_lon": -51.097934525839136,
+                "centroid_lat": -30.058257464926744,
+                "area_m2": 91251552.310257196
             },
             "geometry": {
                 "type": "Polygon",
@@ -102980,13 +102903,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{118: 'DRS5_4'}",
-                "delivery_station": "{118: 'DRS5'}",
-                "num_points": "{118: 7}",
-                "centroid_lon": "{118: -51.2103756594592}",
-                "centroid_lat": "{118: -30.13060187615596}",
-                "area_m2": "{118: 19400699.1851045}",
-                "centroid": "{118: <POINT (-5700712.981 -3520348.862)>}"
+                "cluster": "DRS5_4",
+                "delivery_station": "DRS5",
+                "num_points": 7.0,
+                "centroid_lon": -51.210375659459203,
+                "centroid_lat": -30.130601876155961,
+                "area_m2": 19400699.185104501
             },
             "geometry": {
                 "type": "Polygon",
@@ -105319,13 +105241,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{58: 'DES2_7'}",
-                "delivery_station": "{58: 'DES2'}",
-                "num_points": "{58: 14}",
-                "centroid_lon": "{58: -40.33913711077443}",
-                "centroid_lat": "{58: -20.349653529264284}",
-                "area_m2": "{58: 32626457.751734134}",
-                "centroid": "{58: <POINT (-4490532.135 -2314499.1)>}"
+                "cluster": "DES2_7",
+                "delivery_station": "DES2",
+                "num_points": 14.0,
+                "centroid_lon": -40.339137110774431,
+                "centroid_lat": -20.349653529264284,
+                "area_m2": 32626457.751734134
             },
             "geometry": {
                 "type": "Polygon",
@@ -105890,13 +105811,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{59: 'DES2_8'}",
-                "delivery_station": "{59: 'DES2'}",
-                "num_points": "{59: 9}",
-                "centroid_lon": "{59: -40.299576964847866}",
-                "centroid_lat": "{59: -20.33182418098253}",
-                "area_m2": "{59: 18152338.897572603}",
-                "centroid": "{59: <POINT (-4486128.371 -2312382.001)>}"
+                "cluster": "DES2_8",
+                "delivery_station": "DES2",
+                "num_points": 9.0,
+                "centroid_lon": -40.299576964847866,
+                "centroid_lat": -20.33182418098253,
+                "area_m2": 18152338.897572603
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -106731,13 +106651,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{54: 'DES2_3'}",
-                "delivery_station": "{54: 'DES2'}",
-                "num_points": "{54: 15}",
-                "centroid_lon": "{54: -40.42429063848396}",
-                "centroid_lat": "{54: -20.330353807152523}",
-                "area_m2": "{54: 111149914.84608698}",
-                "centroid": "{54: <POINT (-4500011.469 -2312208.364)>}"
+                "cluster": "DES2_3",
+                "delivery_station": "DES2",
+                "num_points": 15.0,
+                "centroid_lon": -40.42429063848396,
+                "centroid_lat": -20.330353807152523,
+                "area_m2": 111149914.84608698
             },
             "geometry": {
                 "type": "Polygon",
@@ -107194,13 +107113,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{57: 'DES2_6'}",
-                "delivery_station": "{57: 'DES2'}",
-                "num_points": "{57: 2}",
-                "centroid_lon": "{57: -40.34629346737926}",
-                "centroid_lat": "{57: -20.460623507792608}",
-                "area_m2": "{57: 3194036.1319268094}",
-                "centroid": "{57: <POINT (-4491328.852 -2327678.845)>}"
+                "cluster": "DES2_6",
+                "delivery_station": "DES2",
+                "num_points": 2.0,
+                "centroid_lon": -40.346293467379262,
+                "centroid_lat": -20.460623507792608,
+                "area_m2": 3194036.1319268094
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -130563,13 +130481,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{61: 'DGO2_2'}",
-                "delivery_station": "{61: 'DGO2'}",
-                "num_points": "{61: 15}",
-                "centroid_lon": "{61: -49.31358547577933}",
-                "centroid_lat": "{61: -16.78747384931658}",
-                "area_m2": "{61: 53426672.54907596}",
-                "centroid": "{61: <POINT (-5489563.247 -1896100.061)>}"
+                "cluster": "DGO2_2",
+                "delivery_station": "DGO2",
+                "num_points": 15.0,
+                "centroid_lon": -49.313585475779327,
+                "centroid_lat": -16.78747384931658,
+                "area_m2": 53426672.549075961
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -131344,13 +131261,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{67: 'DGO2_8'}",
-                "delivery_station": "{67: 'DGO2'}",
-                "num_points": "{67: 8}",
-                "centroid_lon": "{67: -49.32972645229765}",
-                "centroid_lat": "{67: -16.70966979597011}",
-                "area_m2": "{67: 33208896.921526324}",
-                "centroid": "{67: <POINT (-5491360.013 -1887055.138)>}"
+                "cluster": "DGO2_8",
+                "delivery_station": "DGO2",
+                "num_points": 8.0,
+                "centroid_lon": -49.329726452297649,
+                "centroid_lat": -16.709669795970111,
+                "area_m2": 33208896.921526324
             },
             "geometry": {
                 "type": "Polygon",
@@ -132147,13 +132063,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{60: 'DGO2_1'}",
-                "delivery_station": "{60: 'DGO2'}",
-                "num_points": "{60: 15}",
-                "centroid_lon": "{60: -49.25702695894539}",
-                "centroid_lat": "{60: -16.738120282589755}",
-                "area_m2": "{60: 38490675.64631402}",
-                "centroid": "{60: <POINT (-5483267.158 -1890362.143)>}"
+                "cluster": "DGO2_1",
+                "delivery_station": "DGO2",
+                "num_points": 15.0,
+                "centroid_lon": -49.257026958945389,
+                "centroid_lat": -16.738120282589755,
+                "area_m2": 38490675.646314017
             },
             "geometry": {
                 "type": "Polygon",
@@ -134218,13 +134133,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{65: 'DGO2_6'}",
-                "delivery_station": "{65: 'DGO2'}",
-                "num_points": "{65: 8}",
-                "centroid_lon": "{65: -49.243617013859975}",
-                "centroid_lat": "{65: -16.634970106158555}",
-                "area_m2": "{65: 23898140.05572118}",
-                "centroid": "{65: <POINT (-5481774.406 -1878374.638)>}"
+                "cluster": "DGO2_6",
+                "delivery_station": "DGO2",
+                "num_points": 8.0,
+                "centroid_lon": -49.243617013859975,
+                "centroid_lat": -16.634970106158555,
+                "area_m2": 23898140.055721179
             },
             "geometry": {
                 "type": "Polygon",
@@ -134465,13 +134379,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{63: 'DGO2_4'}",
-                "delivery_station": "{63: 'DGO2'}",
-                "num_points": "{63: 10}",
-                "centroid_lon": "{63: -49.306883724475654}",
-                "centroid_lat": "{63: -16.643625671075466}",
-                "area_m2": "{63: 22409791.332110606}",
-                "centroid": "{63: <POINT (-5488817.174 -1879380.206)>}"
+                "cluster": "DGO2_4",
+                "delivery_station": "DGO2",
+                "num_points": 10.0,
+                "centroid_lon": -49.306883724475654,
+                "centroid_lat": -16.643625671075466,
+                "area_m2": 22409791.332110606
             },
             "geometry": {
                 "type": "Polygon",
@@ -134512,13 +134425,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{62: 'DGO2_3'}",
-                "delivery_station": "{62: 'DGO2'}",
-                "num_points": "{62: 6}",
-                "centroid_lon": "{62: -49.29532712372102}",
-                "centroid_lat": "{62: -16.605306444176865}",
-                "area_m2": "{62: 13803608.301296975}",
-                "centroid": "{62: <POINT (-5487530.731 -1874928.379)>}"
+                "cluster": "DGO2_3",
+                "delivery_station": "DGO2",
+                "num_points": 6.0,
+                "centroid_lon": -49.295327123721023,
+                "centroid_lat": -16.605306444176865,
+                "area_m2": 13803608.301296975
             },
             "geometry": {
                 "type": "Polygon",
@@ -134635,13 +134547,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{64: 'DGO2_5'}",
-                "delivery_station": "{64: 'DGO2'}",
-                "num_points": "{64: 10}",
-                "centroid_lon": "{64: -49.23118196284304}",
-                "centroid_lat": "{64: -16.67652228320913}",
-                "area_m2": "{64: 20385484.8757974}",
-                "centroid": "{64: <POINT (-5480390.114 -1883202.677)>}"
+                "cluster": "DGO2_5",
+                "delivery_station": "DGO2",
+                "num_points": 10.0,
+                "centroid_lon": -49.231181962843038,
+                "centroid_lat": -16.676522283209131,
+                "area_m2": 20385484.875797398
             },
             "geometry": {
                 "type": "Polygon",
@@ -136510,13 +136421,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{68: 'DGO2_9'}",
-                "delivery_station": "{68: 'DGO2'}",
-                "num_points": "{68: 9}",
-                "centroid_lon": "{68: -49.2903916948144}",
-                "centroid_lat": "{68: -16.693194843515837}",
-                "area_m2": "{68: 16178027.828231147}",
-                "centroid": "{68: <POINT (-5486981.3 -1885140.3)>}"
+                "cluster": "DGO2_9",
+                "delivery_station": "DGO2",
+                "num_points": 9.0,
+                "centroid_lon": -49.290391694814403,
+                "centroid_lat": -16.693194843515837,
+                "area_m2": 16178027.828231147
             },
             "geometry": {
                 "type": "Polygon",
@@ -136553,13 +136463,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{24: 'DBS5_6'}",
-                "delivery_station": "{24: 'DBS5'}",
-                "num_points": "{24: 15}",
-                "centroid_lon": "{24: -48.03097789468458}",
-                "centroid_lat": "{24: -16.016881803804452}",
-                "area_m2": "{24: 42129683.70893138}",
-                "centroid": "{24: <POINT (-5346784.026 -1806677.987)>}"
+                "cluster": "DBS5_6",
+                "delivery_station": "DBS5",
+                "num_points": 15.0,
+                "centroid_lon": -48.030977894684582,
+                "centroid_lat": -16.016881803804452,
+                "area_m2": 42129683.708931379
             },
             "geometry": {
                 "type": "Polygon",
@@ -136884,13 +136793,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{22: 'DBS5_4'}",
-                "delivery_station": "{22: 'DBS5'}",
-                "num_points": "{22: 4}",
-                "centroid_lon": "{22: -47.766866911089274}",
-                "centroid_lat": "{22: -15.78126443231312}",
-                "area_m2": "{22: 22241779.624388702}",
-                "centroid": "{22: <POINT (-5317383.337 -1779406.023)>}"
+                "cluster": "DBS5_4",
+                "delivery_station": "DBS5",
+                "num_points": 4.0,
+                "centroid_lon": -47.766866911089274,
+                "centroid_lat": -15.781264432313121,
+                "area_m2": 22241779.624388702
             },
             "geometry": {
                 "type": "Polygon",
@@ -136947,13 +136855,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{27: 'DBS5_9'}",
-                "delivery_station": "{27: 'DBS5'}",
-                "num_points": "{27: 7}",
-                "centroid_lon": "{27: -47.79753067812926}",
-                "centroid_lat": "{27: -15.900061470640468}",
-                "area_m2": "{27: 48324399.591226295}",
-                "centroid": "{27: <POINT (-5320796.814 -1793152.569)>}"
+                "cluster": "DBS5_9",
+                "delivery_station": "DBS5",
+                "num_points": 7.0,
+                "centroid_lon": -47.797530678129263,
+                "centroid_lat": -15.900061470640468,
+                "area_m2": 48324399.591226295
             },
             "geometry": {
                 "type": "Polygon",
@@ -137054,13 +136961,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{23: 'DBS5_5'}",
-                "delivery_station": "{23: 'DBS5'}",
-                "num_points": "{23: 5}",
-                "centroid_lon": "{23: -47.66640889342293}",
-                "centroid_lat": "{23: -15.618221295019957}",
-                "area_m2": "{23: 10051721.506919058}",
-                "centroid": "{23: <POINT (-5306200.357 -1760552.554)>}"
+                "cluster": "DBS5_5",
+                "delivery_station": "DBS5",
+                "num_points": 5.0,
+                "centroid_lon": -47.666408893422933,
+                "centroid_lat": -15.618221295019957,
+                "area_m2": 10051721.506919058
             },
             "geometry": {
                 "type": "Polygon",
@@ -137153,13 +137059,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{14: 'DBS5_13'}",
-                "delivery_station": "{14: 'DBS5'}",
-                "num_points": "{14: 12}",
-                "centroid_lon": "{14: -47.857645881768676}",
-                "centroid_lat": "{14: -15.727459494928201}",
-                "area_m2": "{14: 19913655.02065695}",
-                "centroid": "{14: <POINT (-5327488.735 -1773182.538)>}"
+                "cluster": "DBS5_13",
+                "delivery_station": "DBS5",
+                "num_points": 12.0,
+                "centroid_lon": -47.857645881768676,
+                "centroid_lat": -15.727459494928201,
+                "area_m2": 19913655.020656951
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -137230,13 +137135,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{18: 'DBS5_17'}",
-                "delivery_station": "{18: 'DBS5'}",
-                "num_points": "{18: 15}",
-                "centroid_lon": "{18: -47.860488071073455}",
-                "centroid_lat": "{18: -15.821424898376033}",
-                "area_m2": "{18: 51267954.37218013}",
-                "centroid": "{18: <POINT (-5327805.15 -1784052.31)>}"
+                "cluster": "DBS5_17",
+                "delivery_station": "DBS5",
+                "num_points": 15.0,
+                "centroid_lon": -47.860488071073455,
+                "centroid_lat": -15.821424898376033,
+                "area_m2": 51267954.372180127
             },
             "geometry": {
                 "type": "Polygon",
@@ -137273,13 +137177,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{11: 'DBS5_10'}",
-                "delivery_station": "{11: 'DBS5'}",
-                "num_points": "{11: 9}",
-                "centroid_lon": "{11: -47.911532737336366}",
-                "centroid_lat": "{11: -15.828929733764388}",
-                "area_m2": "{11: 12257187.758702815}",
-                "centroid": "{11: <POINT (-5333487.434 -1784920.445)>}"
+                "cluster": "DBS5_10",
+                "delivery_station": "DBS5",
+                "num_points": 9.0,
+                "centroid_lon": -47.911532737336366,
+                "centroid_lat": -15.828929733764388,
+                "area_m2": 12257187.758702815
             },
             "geometry": {
                 "type": "Polygon",
@@ -137316,13 +137219,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{10: 'DBS5_1'}",
-                "delivery_station": "{10: 'DBS5'}",
-                "num_points": "{10: 12}",
-                "centroid_lon": "{10: -48.108059924725126}",
-                "centroid_lat": "{10: -15.81328213439003}",
-                "area_m2": "{10: 17282201.270129226}",
-                "centroid": "{10: <POINT (-5355364.714 -1783110.014)>}"
+                "cluster": "DBS5_1",
+                "delivery_station": "DBS5",
+                "num_points": 12.0,
+                "centroid_lon": -48.108059924725126,
+                "centroid_lat": -15.813282134390031,
+                "area_m2": 17282201.270129226
             },
             "geometry": {
                 "type": "Polygon",
@@ -137419,13 +137321,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{12: 'DBS5_11'}",
-                "delivery_station": "{12: 'DBS5'}",
-                "num_points": "{12: 12}",
-                "centroid_lon": "{12: -47.94383041163226}",
-                "centroid_lat": "{12: -15.79720262678964}",
-                "area_m2": "{12: 21757866.128477775}",
-                "centroid": "{12: <POINT (-5337082.831 -1781249.732)>}"
+                "cluster": "DBS5_11",
+                "delivery_station": "DBS5",
+                "num_points": 12.0,
+                "centroid_lon": -47.943830411632263,
+                "centroid_lat": -15.797202626789639,
+                "area_m2": 21757866.128477775
             },
             "geometry": {
                 "type": "Polygon",
@@ -137478,13 +137379,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{13: 'DBS5_12'}",
-                "delivery_station": "{13: 'DBS5'}",
-                "num_points": "{13: 8}",
-                "centroid_lon": "{13: -47.89172763611305}",
-                "centroid_lat": "{13: -15.755991099331617}",
-                "area_m2": "{13: 11187110.037390959}",
-                "centroid": "{13: <POINT (-5331282.714 -1776482.444)>}"
+                "cluster": "DBS5_12",
+                "delivery_station": "DBS5",
+                "num_points": 8.0,
+                "centroid_lon": -47.891727636113053,
+                "centroid_lat": -15.755991099331617,
+                "area_m2": 11187110.037390959
             },
             "geometry": {
                 "type": "Polygon",
@@ -137561,13 +137461,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{17: 'DBS5_16'}",
-                "delivery_station": "{17: 'DBS5'}",
-                "num_points": "{17: 14}",
-                "centroid_lon": "{17: -47.8298170243215}",
-                "centroid_lat": "{17: -15.659094339381713}",
-                "area_m2": "{17: 42281428.97660381}",
-                "centroid": "{17: <POINT (-5324390.902 -1765277.587)>}"
+                "cluster": "DBS5_16",
+                "delivery_station": "DBS5",
+                "num_points": 14.0,
+                "centroid_lon": -47.8298170243215,
+                "centroid_lat": -15.659094339381713,
+                "area_m2": 42281428.976603813
             },
             "geometry": {
                 "type": "Polygon",
@@ -137688,13 +137587,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{15: 'DBS5_14'}",
-                "delivery_station": "{15: 'DBS5'}",
-                "num_points": "{15: 13}",
-                "centroid_lon": "{15: -48.038570663527295}",
-                "centroid_lat": "{15: -15.869520076526682}",
-                "area_m2": "{15: 22143635.40639259}",
-                "centroid": "{15: <POINT (-5347629.167 -1789617.54)>}"
+                "cluster": "DBS5_14",
+                "delivery_station": "DBS5",
+                "num_points": 13.0,
+                "centroid_lon": -48.038570663527295,
+                "centroid_lat": -15.869520076526682,
+                "area_m2": 22143635.406392589
             },
             "geometry": {
                 "type": "Polygon",
@@ -137731,13 +137629,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{16: 'DBS5_15'}",
-                "delivery_station": "{16: 'DBS5'}",
-                "num_points": "{16: 8}",
-                "centroid_lon": "{16: -48.074478693269796}",
-                "centroid_lat": "{16: -15.904335784952792}",
-                "area_m2": "{16: 25042338.368449457}",
-                "centroid": "{16: <POINT (-5351626.491 -1793647.078)>}"
+                "cluster": "DBS5_15",
+                "delivery_station": "DBS5",
+                "num_points": 8.0,
+                "centroid_lon": -48.074478693269796,
+                "centroid_lat": -15.904335784952792,
+                "area_m2": 25042338.368449457
             },
             "geometry": {
                 "type": "Polygon",
@@ -137818,13 +137715,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{21: 'DBS5_3'}",
-                "delivery_station": "{21: 'DBS5'}",
-                "num_points": "{21: 12}",
-                "centroid_lon": "{21: -47.956876643633024}",
-                "centroid_lat": "{21: -15.874885890077882}",
-                "area_m2": "{21: 40695773.42343481}",
-                "centroid": "{21: <POINT (-5338535.082 -1790238.521)>}"
+                "cluster": "DBS5_3",
+                "delivery_station": "DBS5",
+                "num_points": 12.0,
+                "centroid_lon": -47.956876643633024,
+                "centroid_lat": -15.874885890077882,
+                "area_m2": 40695773.423434809
             },
             "geometry": {
                 "type": "Polygon",
@@ -137873,13 +137769,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{26: 'DBS5_8'}",
-                "delivery_station": "{26: 'DBS5'}",
-                "num_points": "{26: 15}",
-                "centroid_lon": "{26: -47.99319584402837}",
-                "centroid_lat": "{26: -15.824572623508805}",
-                "area_m2": "{26: 14922647.409766309}",
-                "centroid": "{26: <POINT (-5342578.12 -1784416.258)>}"
+                "cluster": "DBS5_8",
+                "delivery_station": "DBS5",
+                "num_points": 15.0,
+                "centroid_lon": -47.993195844028371,
+                "centroid_lat": -15.824572623508805,
+                "area_m2": 14922647.409766309
             },
             "geometry": {
                 "type": "Polygon",
@@ -137932,13 +137827,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{25: 'DBS5_7'}",
-                "delivery_station": "{25: 'DBS5'}",
-                "num_points": "{25: 10}",
-                "centroid_lon": "{25: -48.0276277214383}",
-                "centroid_lat": "{25: -15.835262912932373}",
-                "area_m2": "{25: 13776606.57498629}",
-                "centroid": "{25: <POINT (-5346411.054 -1785653.212)>}"
+                "cluster": "DBS5_7",
+                "delivery_station": "DBS5",
+                "num_points": 10.0,
+                "centroid_lon": -48.0276277214383,
+                "centroid_lat": -15.835262912932373,
+                "area_m2": 13776606.57498629
             },
             "geometry": {
                 "type": "Polygon",
@@ -137971,13 +137865,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{20: 'DBS5_2'}",
-                "delivery_station": "{20: 'DBS5'}",
-                "num_points": "{20: 10}",
-                "centroid_lon": "{20: -48.072316092195905}",
-                "centroid_lat": "{20: -15.818458271025515}",
-                "area_m2": "{20: 10468962.633092161}",
-                "centroid": "{20: <POINT (-5351385.741 -1783708.788)>}"
+                "cluster": "DBS5_2",
+                "delivery_station": "DBS5",
+                "num_points": 10.0,
+                "centroid_lon": -48.072316092195905,
+                "centroid_lat": -15.818458271025515,
+                "area_m2": 10468962.633092161
             },
             "geometry": {
                 "type": "Polygon",
@@ -138034,13 +137927,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{126: 'DSA8_3'}",
-                "delivery_station": "{126: 'DSA8'}",
-                "num_points": "{126: 9}",
-                "centroid_lon": "{126: -38.34517896421062}",
-                "centroid_lat": "{126: -12.732019580239198}",
-                "area_m2": "{126: 51329418.472554944}",
-                "centroid": "{126: <POINT (-4268565.916 -1429133.152)>}"
+                "cluster": "DSA8_3",
+                "delivery_station": "DSA8",
+                "num_points": 9.0,
+                "centroid_lon": -38.345178964210618,
+                "centroid_lat": -12.732019580239198,
+                "area_m2": 51329418.472554944
             },
             "geometry": {
                 "type": "Polygon",
@@ -142889,13 +142781,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{127: 'DSA8_4'}",
-                "delivery_station": "{127: 'DSA8'}",
-                "num_points": "{127: 10}",
-                "centroid_lon": "{127: -38.35285510138287}",
-                "centroid_lat": "{127: -12.909211195047332}",
-                "area_m2": "{127: 87238390.78837398}",
-                "centroid": "{127: <POINT (-4269420.35 -1449362.083)>}"
+                "cluster": "DSA8_4",
+                "delivery_station": "DSA8",
+                "num_points": 10.0,
+                "centroid_lon": -38.352855101382872,
+                "centroid_lat": -12.909211195047332,
+                "area_m2": 87238390.788373977
             },
             "geometry": {
                 "type": "Polygon",
@@ -143836,13 +143727,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{130: 'DSA8_7'}",
-                "delivery_station": "{130: 'DSA8'}",
-                "num_points": "{130: 12}",
-                "centroid_lon": "{130: -38.49300226335798}",
-                "centroid_lat": "{130: -12.96820774486597}",
-                "area_m2": "{130: 12639177.118282245}",
-                "centroid": "{130: <POINT (-4285021.409 -1456100.386)>}"
+                "cluster": "DSA8_7",
+                "delivery_station": "DSA8",
+                "num_points": 12.0,
+                "centroid_lon": -38.49300226335798,
+                "centroid_lat": -12.968207744865969,
+                "area_m2": 12639177.118282245
             },
             "geometry": {
                 "type": "Polygon",
@@ -143945,13 +143835,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{125: 'DSA8_2'}",
-                "delivery_station": "{125: 'DSA8'}",
-                "num_points": "{125: 3}",
-                "centroid_lon": "{125: -38.47206356446025}",
-                "centroid_lat": "{125: -12.853106187370917}",
-                "area_m2": "{125: 3467070.086300394}",
-                "centroid": "{125: <POINT (-4282690.527 -1442955.03)>}"
+                "cluster": "DSA8_2",
+                "delivery_station": "DSA8",
+                "num_points": 3.0,
+                "centroid_lon": -38.47206356446025,
+                "centroid_lat": -12.853106187370917,
+                "area_m2": 3467070.086300394
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -144230,13 +144119,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{128: 'DSA8_5'}",
-                "delivery_station": "{128: 'DSA8'}",
-                "num_points": "{128: 11}",
-                "centroid_lon": "{128: -38.498889852988164}",
-                "centroid_lat": "{128: -12.998475788069056}",
-                "area_m2": "{128: 17618714.95537404}",
-                "centroid": "{128: <POINT (-4285676.8 -1459558.189)>}"
+                "cluster": "DSA8_5",
+                "delivery_station": "DSA8",
+                "num_points": 11.0,
+                "centroid_lon": -38.498889852988164,
+                "centroid_lat": -12.998475788069056,
+                "area_m2": 17618714.95537404
             },
             "geometry": {
                 "type": "Polygon",
@@ -145341,13 +145229,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{124: 'DSA8_1'}",
-                "delivery_station": "{124: 'DSA8'}",
-                "num_points": "{124: 13}",
-                "centroid_lon": "{124: -38.46477263978426}",
-                "centroid_lat": "{124: -12.911573946459896}",
-                "area_m2": "{124: 42433129.78250669}",
-                "centroid": "{124: <POINT (-4281878.927 -1449631.73)>}"
+                "cluster": "DSA8_1",
+                "delivery_station": "DSA8",
+                "num_points": 13.0,
+                "centroid_lon": -38.464772639784258,
+                "centroid_lat": -12.911573946459896,
+                "area_m2": 42433129.782506689
             },
             "geometry": {
                 "type": "Polygon",
@@ -145464,13 +145351,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{129: 'DSA8_6'}",
-                "delivery_station": "{129: 'DSA8'}",
-                "num_points": "{129: 10}",
-                "centroid_lon": "{129: -38.44879336044828}",
-                "centroid_lat": "{129: -12.97222028799538}",
-                "area_m2": "{129: 19617717.69134601}",
-                "centroid": "{129: <POINT (-4280100.113 -1456558.752)>}"
+                "cluster": "DSA8_6",
+                "delivery_station": "DSA8",
+                "num_points": 10.0,
+                "centroid_lon": -38.448793360448278,
+                "centroid_lat": -12.972220287995381,
+                "area_m2": 19617717.691346008
             },
             "geometry": {
                 "type": "Polygon",
@@ -145735,13 +145621,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{86: 'DPE4_9'}",
-                "delivery_station": "{86: 'DPE4'}",
-                "num_points": "{86: 3}",
-                "centroid_lon": "{86: -35.012738730282514}",
-                "centroid_lat": "{86: -8.266987909120083}",
-                "area_m2": "{86: 7866953.689155724}",
-                "centroid": "{86: <POINT (-3897600.284 -923486.857)>}"
+                "cluster": "DPE4_9",
+                "delivery_station": "DPE4",
+                "num_points": 3.0,
+                "centroid_lon": -35.012738730282514,
+                "centroid_lat": -8.2669879091200826,
+                "area_m2": 7866953.6891557239
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -148598,13 +148483,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{85: 'DPE4_8'}",
-                "delivery_station": "{85: 'DPE4'}",
-                "num_points": "{85: 6}",
-                "centroid_lon": "{85: -35.046593194433974}",
-                "centroid_lat": "{85: -8.11421229797716}",
-                "area_m2": "{85: 15026979.412620522}",
-                "centroid": "{85: <POINT (-3901368.927 -906304.571)>}"
+                "cluster": "DPE4_8",
+                "delivery_station": "DPE4",
+                "num_points": 6.0,
+                "centroid_lon": -35.046593194433974,
+                "centroid_lat": -8.1142122979771596,
+                "area_m2": 15026979.412620522
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -151283,13 +151167,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{84: 'DPE4_7'}",
-                "delivery_station": "{84: 'DPE4'}",
-                "num_points": "{84: 15}",
-                "centroid_lon": "{84: -35.009892822453835}",
-                "centroid_lat": "{84: -7.988522128905708}",
-                "area_m2": "{84: 66422189.9675208}",
-                "centroid": "{84: <POINT (-3897283.385 -892173.779)>}"
+                "cluster": "DPE4_7",
+                "delivery_station": "DPE4",
+                "num_points": 15.0,
+                "centroid_lon": -35.009892822453835,
+                "centroid_lat": -7.988522128905708,
+                "area_m2": 66422189.967520803
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -155052,13 +154935,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{81: 'DPE4_4'}",
-                "delivery_station": "{81: 'DPE4'}",
-                "num_points": "{81: 9}",
-                "centroid_lon": "{81: -34.91339662553951}",
-                "centroid_lat": "{81: -8.098532832466116}",
-                "area_m2": "{81: 26456326.83556371}",
-                "centroid": "{81: <POINT (-3886541.513 -904541.624)>}"
+                "cluster": "DPE4_4",
+                "delivery_station": "DPE4",
+                "num_points": 9.0,
+                "centroid_lon": -34.913396625539512,
+                "centroid_lat": -8.0985328324661161,
+                "area_m2": 26456326.835563712
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -157625,13 +157507,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{76: 'DPE4_10'}",
-                "delivery_station": "{76: 'DPE4'}",
-                "num_points": "{76: 11}",
-                "centroid_lon": "{76: -34.9254764675176}",
-                "centroid_lat": "{76: -8.179508634331052}",
-                "area_m2": "{76: 25386476.08597488}",
-                "centroid": "{76: <POINT (-3887886.267 -913647.637)>}"
+                "cluster": "DPE4_10",
+                "delivery_station": "DPE4",
+                "num_points": 11.0,
+                "centroid_lon": -34.925476467517598,
+                "centroid_lat": -8.1795086343310519,
+                "area_m2": 25386476.08597488
             },
             "geometry": {
                 "type": "Polygon",
@@ -158080,13 +157961,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{75: 'DPE4_1'}",
-                "delivery_station": "{75: 'DPE4'}",
-                "num_points": "{75: 11}",
-                "centroid_lon": "{75: -34.89880359033728}",
-                "centroid_lat": "{75: -8.049972412392759}",
-                "area_m2": "{75: 25333591.94409326}",
-                "centroid": "{75: <POINT (-3884917.051 -899081.754)>}"
+                "cluster": "DPE4_1",
+                "delivery_station": "DPE4",
+                "num_points": 11.0,
+                "centroid_lon": -34.89880359033728,
+                "centroid_lat": -8.0499724123927585,
+                "area_m2": 25333591.944093261
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -160063,13 +159943,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{80: 'DPE4_3'}",
-                "delivery_station": "{80: 'DPE4'}",
-                "num_points": "{80: 13}",
-                "centroid_lon": "{80: -34.95388847866306}",
-                "centroid_lat": "{80: -8.109553073973471}",
-                "area_m2": "{80: 24750982.399999503}",
-                "centroid": "{80: <POINT (-3891049.06 -905780.761)>}"
+                "cluster": "DPE4_3",
+                "delivery_station": "DPE4",
+                "num_points": 13.0,
+                "centroid_lon": -34.95388847866306,
+                "centroid_lat": -8.1095530739734709,
+                "area_m2": 24750982.399999503
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -160550,13 +160429,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{70: 'DPB3_2'}",
-                "delivery_station": "{70: 'DPB3'}",
-                "num_points": "{70: 23}",
-                "centroid_lon": "{70: -34.84515064644931}",
-                "centroid_lat": "{70: -7.132350933677047}",
-                "area_m2": "{70: 44997298.21573061}",
-                "centroid": "{70: <POINT (-3878944.419 -796028.305)>}"
+                "cluster": "DPB3_2",
+                "delivery_station": "DPB3",
+                "num_points": 23.0,
+                "centroid_lon": -34.845150646449312,
+                "centroid_lat": -7.1323509336770474,
+                "area_m2": 44997298.215730608
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -162635,13 +162513,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{74: 'DPB3_6'}",
-                "delivery_station": "{74: 'DPB3'}",
-                "num_points": "{74: 6}",
-                "centroid_lon": "{74: -34.83903384276011}",
-                "centroid_lat": "{74: -7.035123852571969}",
-                "area_m2": "{74: 19886976.16871803}",
-                "centroid": "{74: <POINT (-3878263.518 -785122.049)>}"
+                "cluster": "DPB3_6",
+                "delivery_station": "DPB3",
+                "num_points": 6.0,
+                "centroid_lon": -34.839033842760109,
+                "centroid_lat": -7.035123852571969,
+                "area_m2": 19886976.168718029
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -164464,13 +164341,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{71: 'DPB3_3'}",
-                "delivery_station": "{71: 'DPB3'}",
-                "num_points": "{71: 8}",
-                "centroid_lon": "{71: -34.932603240607634}",
-                "centroid_lat": "{71: -7.143966010554775}",
-                "area_m2": "{71: 45403951.30941348}",
-                "centroid": "{71: <POINT (-3888679.589 -797331.383)>}"
+                "cluster": "DPB3_3",
+                "delivery_station": "DPB3",
+                "num_points": 8.0,
+                "centroid_lon": -34.932603240607634,
+                "centroid_lat": -7.1439660105547746,
+                "area_m2": 45403951.309413478
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -165029,13 +164905,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{69: 'DPB3_1'}",
-                "delivery_station": "{69: 'DPB3'}",
-                "num_points": "{69: 8}",
-                "centroid_lon": "{69: -34.863169351763176}",
-                "centroid_lat": "{69: -7.187308654254222}",
-                "area_m2": "{69: 22045388.67277471}",
-                "centroid": "{69: <POINT (-3880950.238 -802194.219)>}"
+                "cluster": "DPB3_1",
+                "delivery_station": "DPB3",
+                "num_points": 8.0,
+                "centroid_lon": -34.863169351763176,
+                "centroid_lat": -7.1873086542542222,
+                "area_m2": 22045388.67277471
             },
             "geometry": {
                 "type": "Polygon",
@@ -167496,13 +167371,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{43: 'DCE3_14'}",
-                "delivery_station": "{43: 'DCE3'}",
-                "num_points": "{43: 12}",
-                "centroid_lon": "{43: -38.610489046689274}",
-                "centroid_lat": "{43: -3.7969509165739743}",
-                "area_m2": "{43: 18889928.87414454}",
-                "centroid": "{43: <POINT (-4298099.989 -422984.38)>}"
+                "cluster": "DCE3_14",
+                "delivery_station": "DCE3",
+                "num_points": 12.0,
+                "centroid_lon": -38.610489046689274,
+                "centroid_lat": -3.7969509165739743,
+                "area_m2": 18889928.874144539
             },
             "geometry": {
                 "type": "Polygon",
@@ -167571,13 +167445,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{42: 'DCE3_13'}",
-                "delivery_station": "{42: 'DCE3'}",
-                "num_points": "{42: 7}",
-                "centroid_lon": "{42: -38.6171593336105}",
-                "centroid_lat": "{42: -3.756128276438024}",
-                "area_m2": "{42: 12277838.205698472}",
-                "centroid": "{42: <POINT (-4298842.516 -418430.123)>}"
+                "cluster": "DCE3_13",
+                "delivery_station": "DCE3",
+                "num_points": 7.0,
+                "centroid_lon": -38.617159333610502,
+                "centroid_lat": -3.7561282764380239,
+                "area_m2": 12277838.205698472
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -167692,13 +167565,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{51: 'DCE3_9'}",
-                "delivery_station": "{51: 'DCE3'}",
-                "num_points": "{51: 9}",
-                "centroid_lon": "{51: -38.466831946932246}",
-                "centroid_lat": "{51: -3.850870810652148}",
-                "area_m2": "{51: 34753423.23899683}",
-                "centroid": "{51: <POINT (-4282108.17 -429000.164)>}"
+                "cluster": "DCE3_9",
+                "delivery_station": "DCE3",
+                "num_points": 9.0,
+                "centroid_lon": -38.466831946932246,
+                "centroid_lat": -3.8508708106521481,
+                "area_m2": 34753423.238996834
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -168889,13 +168761,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{47: 'DCE3_5'}",
-                "delivery_station": "{47: 'DCE3'}",
-                "num_points": "{47: 8}",
-                "centroid_lon": "{47: -38.46326040608309}",
-                "centroid_lat": "{47: -3.76480177302022}",
-                "area_m2": "{47: 18805481.39644247}",
-                "centroid": "{47: <POINT (-4281710.562 -419397.757)>}"
+                "cluster": "DCE3_5",
+                "delivery_station": "DCE3",
+                "num_points": 8.0,
+                "centroid_lon": -38.463260406083087,
+                "centroid_lat": -3.7648017730202201,
+                "area_m2": 18805481.396442469
             },
             "geometry": {
                 "type": "Polygon",
@@ -169320,13 +169191,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{40: 'DCE3_11'}",
-                "delivery_station": "{40: 'DCE3'}",
-                "num_points": "{40: 11}",
-                "centroid_lon": "{40: -38.64601969762247}",
-                "centroid_lat": "{40: -3.87465307774988}",
-                "area_m2": "{40: 36297357.20598638}",
-                "centroid": "{40: <POINT (-4302055.255 -431653.594)>}"
+                "cluster": "DCE3_11",
+                "delivery_station": "DCE3",
+                "num_points": 11.0,
+                "centroid_lon": -38.646019697622471,
+                "centroid_lat": -3.8746530777498802,
+                "area_m2": 36297357.205986381
             },
             "geometry": {
                 "type": "Polygon",
@@ -169859,13 +169729,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{38: 'DCE3_1'}",
-                "delivery_station": "{38: 'DCE3'}",
-                "num_points": "{38: 12}",
-                "centroid_lon": "{38: -38.577694581491365}",
-                "centroid_lat": "{38: -3.845957014279784}",
-                "area_m2": "{38: 39782729.69989342}",
-                "centroid": "{38: <POINT (-4294449.308 -428451.894)>}"
+                "cluster": "DCE3_1",
+                "delivery_station": "DCE3",
+                "num_points": 12.0,
+                "centroid_lon": -38.577694581491365,
+                "centroid_lat": -3.8459570142797839,
+                "area_m2": 39782729.699893422
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -170072,13 +169941,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{45: 'DCE3_3'}",
-                "delivery_station": "{45: 'DCE3'}",
-                "num_points": "{45: 6}",
-                "centroid_lon": "{45: -38.53272537390159}",
-                "centroid_lat": "{45: -3.767964656151959}",
-                "area_m2": "{45: 8447636.513797892}",
-                "centroid": "{45: <POINT (-4289443.366 -419750.596)>}"
+                "cluster": "DCE3_3",
+                "delivery_station": "DCE3",
+                "num_points": 6.0,
+                "centroid_lon": -38.532725373901592,
+                "centroid_lat": -3.7679646561519591,
+                "area_m2": 8447636.5137978923
             },
             "geometry": {
                 "type": "Polygon",
@@ -170111,13 +169979,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{46: 'DCE3_4'}",
-                "delivery_station": "{46: 'DCE3'}",
-                "num_points": "{46: 9}",
-                "centroid_lon": "{46: -38.505257110089865}",
-                "centroid_lat": "{46: -3.7462829393618957}",
-                "area_m2": "{46: 22653214.566077624}",
-                "centroid": "{46: <POINT (-4286385.615 -417331.817)>}"
+                "cluster": "DCE3_4",
+                "delivery_station": "DCE3",
+                "num_points": 9.0,
+                "centroid_lon": -38.505257110089865,
+                "centroid_lat": -3.7462829393618957,
+                "area_m2": 22653214.566077624
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -170428,13 +170295,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{50: 'DCE3_8'}",
-                "delivery_station": "{50: 'DCE3'}",
-                "num_points": "{50: 8}",
-                "centroid_lon": "{50: -38.49638320370433}",
-                "centroid_lat": "{50: -3.818026001619621}",
-                "area_m2": "{50: 11215807.974359076}",
-                "centroid": "{50: <POINT (-4285397.778 -425335.629)>}"
+                "cluster": "DCE3_8",
+                "delivery_station": "DCE3",
+                "num_points": 8.0,
+                "centroid_lon": -38.496383203704333,
+                "centroid_lat": -3.818026001619621,
+                "area_m2": 11215807.974359076
             },
             "geometry": {
                 "type": "Polygon",
@@ -171147,13 +171013,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{44: 'DCE3_2'}",
-                "delivery_station": "{44: 'DCE3'}",
-                "num_points": "{44: 15}",
-                "centroid_lon": "{44: -38.55764227959423}",
-                "centroid_lat": "{44: -3.791785827359861}",
-                "area_m2": "{44: 20832196.59738942}",
-                "centroid": "{44: <POINT (-4292217.099 -422408.144)>}"
+                "cluster": "DCE3_2",
+                "delivery_station": "DCE3",
+                "num_points": 15.0,
+                "centroid_lon": -38.557642279594234,
+                "centroid_lat": -3.791785827359861,
+                "area_m2": 20832196.597389419
             },
             "geometry": {
                 "type": "Polygon",
@@ -171194,13 +171059,12 @@
         {
             "type": "Feature",
             "properties": {
-                "cluster": "{49: 'DCE3_7'}",
-                "delivery_station": "{49: 'DCE3'}",
-                "num_points": "{49: 10}",
-                "centroid_lon": "{49: -38.54789878099323}",
-                "centroid_lat": "{49: -3.7339595508843315}",
-                "area_m2": "{49: 11418689.024054501}",
-                "centroid": "{49: <POINT (-4291132.464 -415957.037)>}"
+                "cluster": "DCE3_7",
+                "delivery_station": "DCE3",
+                "num_points": 10.0,
+                "centroid_lon": -38.547898780993229,
+                "centroid_lat": -3.7339595508843315,
+                "area_m2": 11418689.024054501
             },
             "geometry": {
                 "type": "Polygon",

@@ -5,6 +5,7 @@ import json
 import numpy as np
 from typing import List, Dict, Any
 from utils.formatters import format_date_to_str
+from config import DELIVERY_STATIONS
 
 class JsonGenerator:
     """
@@ -66,8 +67,10 @@ class JsonGenerator:
         
         output_dict = {
             "period": period,
+            "deliveryStations": [],
             "allMarkerData": []
-        }       
+        }   
+        output_dict["deliveryStations"] = DELIVERY_STATIONS  
         output_dict["period"] = period
 
         for _, row in final_df.iterrows():

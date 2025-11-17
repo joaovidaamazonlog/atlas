@@ -18,8 +18,8 @@
         },
         "cadastros": {
             "meta": 232.0,
-            "atingido": 152,
-            "percentual": 65.51724137931035
+            "atingido": 154,
+            "percentual": 66.37931034482759
         },
         "conversoes": {
             "meta": 232.0,
@@ -30,13 +30,13 @@
             {
                 "origem": "Cold Call",
                 "contatos": 7431,
-                "cadastros": 66,
+                "cadastros": 68,
                 "conversoes": 48,
-                "taxa_conversao": 72.73,
-                "taxa_cadastro": 0.89,
+                "taxa_conversao": 70.59,
+                "taxa_cadastro": 0.92,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.47,
+                "velocidade_score": 0.46,
                 "consistencia": 0.45,
                 "distribuicao_canais": 0.59,
                 "score_final": 0.72
@@ -112,24 +112,24 @@
         {
             "responsavel": "Allan Carvalho",
             "contatos": 428,
-            "cadastros": 5,
+            "cadastros": 6,
             "conversoes": 2,
-            "taxa_conversao": 40.0,
-            "taxa_cadastro": 1.17,
+            "taxa_conversao": 33.33,
+            "taxa_cadastro": 1.4,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 35,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 388,
-            "cadastros_origem_Cold Call": 4,
+            "cadastros_origem_Cold Call": 5,
             "contatos_origem_Referral": 1,
             "cadastros_origem_Referral": 0,
             "volume_score_contatos": 0.53,
-            "volume_score_cadastros": 0.62,
-            "velocidade_score": 0.68,
+            "volume_score_cadastros": 0.75,
+            "velocidade_score": 0.57,
             "consistencia": 0.32,
             "distribuicao_canais": 0.68,
-            "score_final": 0.59
+            "score_final": 0.65
         },
         {
             "responsavel": "Brenda Souza",
@@ -552,24 +552,24 @@
         {
             "responsavel": "Kelvin Fernandes",
             "contatos": 325,
-            "cadastros": 7,
+            "cadastros": 8,
             "conversoes": 5,
-            "taxa_conversao": 71.43,
-            "taxa_cadastro": 2.15,
+            "taxa_conversao": 62.5,
+            "taxa_cadastro": 2.46,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 41,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 283,
-            "cadastros_origem_Cold Call": 6,
+            "cadastros_origem_Cold Call": 7,
             "contatos_origem_Referral": 0,
             "cadastros_origem_Referral": 0,
             "volume_score_contatos": 0.43,
-            "volume_score_cadastros": 0.88,
-            "velocidade_score": 0.43,
+            "volume_score_cadastros": 1.0,
+            "velocidade_score": 0.4,
             "consistencia": 0.54,
             "distribuicao_canais": 0.72,
-            "score_final": 0.73
+            "score_final": 0.79
         },
         {
             "responsavel": "Lilian Mata",
@@ -19845,7 +19845,7 @@
             "data_contato": "2025-10-23",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 1912,
@@ -28355,7 +28355,7 @@
             "data_contato": "2025-10-27",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 2763,
@@ -39585,7 +39585,7 @@
             "data_contato": "2025-10-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 3886,
@@ -39879,13 +39879,13 @@
         },
         {
             "id": 3915,
-            "lead": "vera lucia",
+            "lead": "VERA LUCIA BUIAR FERNANDES",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
             "data_contato": "2025-10-28",
-            "data_cadastro": null,
+            "data_cadastro": "2025-11-17",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 3916,
@@ -40875,7 +40875,7 @@
             "data_contato": "2025-10-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 4015,
@@ -54195,7 +54195,7 @@
             "data_contato": "2025-11-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 5347,
@@ -57295,7 +57295,7 @@
             "data_contato": "2025-11-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 5657,
@@ -68805,7 +68805,7 @@
             "data_contato": "2025-11-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 6808,
@@ -70035,7 +70035,7 @@
             "data_contato": "2025-11-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Exited"
         },
         {
             "id": 6931,
@@ -77425,7 +77425,7 @@
             "data_contato": "2025-11-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 7670,
@@ -79335,7 +79335,7 @@
             "data_contato": "2025-11-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 7861,
@@ -80165,7 +80165,7 @@
             "data_contato": "2025-11-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 7944,
@@ -80485,7 +80485,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 7976,
@@ -84995,7 +84995,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 8427,
@@ -86515,7 +86515,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 8579,
@@ -90915,7 +90915,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9019,
@@ -90925,7 +90925,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9020,
@@ -90949,13 +90949,13 @@
         },
         {
             "id": 9022,
-            "lead": "DRAUSIO REZENDE",
+            "lead": "DRAUSIO REZENDE BORGES BORGES",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
             "data_contato": "2025-11-12",
-            "data_cadastro": null,
+            "data_cadastro": "2025-11-17",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 9023,
@@ -91025,7 +91025,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9030,
@@ -91105,7 +91105,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9038,
@@ -91115,7 +91115,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9039,
@@ -91155,7 +91155,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9043,
@@ -91185,7 +91185,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9046,
@@ -91215,7 +91215,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9049,
@@ -91265,7 +91265,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9054,
@@ -91285,7 +91285,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9056,
@@ -91295,7 +91295,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9057,
@@ -91335,7 +91335,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9061,
@@ -91365,7 +91365,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9064,
@@ -91415,7 +91415,7 @@
             "data_contato": "2025-11-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9069,
@@ -91455,7 +91455,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9073,
@@ -91475,7 +91475,7 @@
             "data_contato": "2025-11-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9075,
@@ -91485,7 +91485,7 @@
             "data_contato": "2025-11-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9076,
@@ -93335,7 +93335,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Inactive"
         },
         {
             "id": 9261,
@@ -93625,7 +93625,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 9290,
@@ -93765,7 +93765,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9304,
@@ -94145,7 +94145,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9342,
@@ -94555,7 +94555,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Not Interested"
         },
         {
             "id": 9383,
@@ -95005,7 +95005,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9428,
@@ -95025,7 +95025,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 9430,
@@ -95055,7 +95055,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9433,
@@ -95125,7 +95125,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9440,
@@ -95165,7 +95165,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9444,
@@ -95245,7 +95245,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9452,
@@ -95395,7 +95395,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9467,
@@ -95445,7 +95445,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9472,
@@ -95565,7 +95565,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 9484,
@@ -95635,7 +95635,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9491,
@@ -95725,7 +95725,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9500,
@@ -95735,7 +95735,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 9501,
@@ -95765,7 +95765,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9504,
@@ -95855,7 +95855,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 9513,
@@ -95905,7 +95905,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 9518,
@@ -95995,7 +95995,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9527,
@@ -96025,7 +96025,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9530,
@@ -96085,7 +96085,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9536,
@@ -96185,7 +96185,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9546,
@@ -96355,7 +96355,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9563,
@@ -96465,7 +96465,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9574,
@@ -96655,7 +96655,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9593,
@@ -96725,7 +96725,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 9600,
@@ -96795,7 +96795,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9607,
@@ -96825,7 +96825,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 9610,
@@ -96845,7 +96845,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9612,
@@ -96855,7 +96855,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9613,
@@ -96945,7 +96945,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9622,
@@ -96985,7 +96985,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 9626,
@@ -97025,7 +97025,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9630,
@@ -97115,7 +97115,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9639,
@@ -97145,7 +97145,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9642,
@@ -97845,7 +97845,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Exited"
         },
         {
             "id": 9712,
@@ -101125,7 +101125,7 @@
             "data_contato": "2025-11-14",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Working"
         },
         {
             "id": 10040,
@@ -101135,7 +101135,7 @@
             "data_contato": "2025-11-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Working"
         },
         {
             "id": 10041,
@@ -101334,7 +101334,7 @@
         {
             "data_contato": "2025-10-28",
             "contatos": 523,
-            "cadastros": 10,
+            "cadastros": 11,
             "conversoes": 9
         },
         {
@@ -101400,7 +101400,7 @@
         {
             "data_contato": "2025-11-12",
             "contatos": 673,
-            "cadastros": 4,
+            "cadastros": 5,
             "conversoes": 0
         },
         {

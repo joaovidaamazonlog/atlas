@@ -14,6 +14,7 @@ const AppState = {
     routingControl: null,
     polygonsData: null,
     polygonLayer: null,
+    deliveryStations: [],
     jurisdictionData: null,
     jurisdictionLayer: null,
     highlightIcon: L.icon({
@@ -23,6 +24,12 @@ const AppState = {
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
+    }),
+    houseIcon : L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/25/25694.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
     }),
     COST_PER_SUPPLY_RUN: {
         DSP2: 590, DSP3: 560, DSP4: 600, DSP5: 780, DBH5: 850, DRJ3: 680,
@@ -56,6 +63,14 @@ const DataManager = {
             alert('Não foi possível carregar os arquivos de dados iniciais: ' + error.message);
             console.error(error);
         });
+
+        if (partnerData.deliveryStations) {
+            partnerData.deliveryStations.forEach(ds => {
+                const marker = L.marker([ds.lat, ds.lon], { icon: AppState.houseIcon });
+                marker.bindPopup(`<b>${ds.name}</b>`);
+                marker.addTo(AppState.map);
+            });
+        }
     },
 
     associatePartnersToPolygons: function() {

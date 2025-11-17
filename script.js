@@ -824,7 +824,6 @@ const RouteManager = {
 
         createAutocomplete(NewStop, partner => {
             NewStop.value = partner.name;
-            document.getElementById('inputNewStop').value = partner.store_id;
             self.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
             self.renderStopsList();
             NewStop.remove();
@@ -835,14 +834,33 @@ const RouteManager = {
     renderStopsList: function() {
         const list = document.getElementById('stops-list');
         list.innerHTML = '';
-        RouteManager.stops.forEach((stop, idx) => {
+        const fromId = document.getElementById('routeFromId').value;
+        const toId = document.getElementById('routeToId').value;
+        const fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
+        const toData = AppState.allMarkersData.find(m => m.store_id === toId);
+
+        const routePoints = [];
+        if (fromData) routePoints.push({ ...fromData, type: 'origem' });
+        this.stops.forEach((stop, idx) => routePoints.push({ ...stop, type: 'parada', idx }));
+        if (toData) routePoints.push({ ...toData, type: 'destino' });
+
+        routePoints.forEach((point, idx) => {
             const div = document.createElement('div');
             div.className = 'stop-item d-flex align-items-center mb-1';
+
+            let label = '';
+            if (point.type === 'origem') label = `<span class="badge badge-primary mr-2">Origem</span>`;
+            else if (point.type === 'destino') label = `<span class="badge badge-success mr-2">Destino</span>`;
+            else label = `<span class="badge badge-info mr-2">Parada</span>`;
+
             div.innerHTML = `
-                <span class="stop-name flex-grow-1">${stop.name} (${stop.store_id})</span>
-                <button class="btn btn-sm btn-light mx-1" onclick="RouteManager.moveStopUp(${idx})"><i class="fas fa-arrow-up"></i></button>
-                <button class="btn btn-sm btn-light mx-1" onclick="RouteManager.moveStopDown(${idx})"><i class="fas fa-arrow-down"></i></button>
-                <button class="btn btn-sm btn-danger mx-1" onclick="RouteManager.removeStop(${idx})"><i class="fas fa-times"></i></button>
+                ${label}
+                <span class="stop-name flex-grow-1">${point.name || point.store_id} (${point.store_id})</span>
+                ${point.type === 'parada' ? `
+                    <button class="btn btn-sm btn-light mx-1" onclick="RouteManager.moveStopUp(${point.idx})"><i class="fas fa-arrow-up"></i></button>
+                    <button class="btn btn-sm btn-light mx-1" onclick="RouteManager.moveStopDown(${point.idx})"><i class="fas fa-arrow-down"></i></button>
+                    <button class="btn btn-sm btn-danger mx-1" onclick="RouteManager.removeStop(${point.idx})"><i class="fas fa-times"></i></button>
+                ` : ''}
             `;
             list.appendChild(div);
         });

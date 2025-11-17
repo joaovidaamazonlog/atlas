@@ -107,8 +107,6 @@ html, body {
 
 /* --- Painéis Flutuantes --- */
 
-
-
 /* --- Painel de Controles --- */
 /* Posição do botão de medição */
 #measure-toggle-button {
@@ -199,7 +197,13 @@ html, body {
     display: flex;
     align-items: center;
     padding: 5px;
-}   
+} 
+
+#route-content {
+    max-height: 350px; /* ajuste conforme necessário */
+    overflow-y: auto;
+    padding-right: 8px; /* opcional, para evitar corte da barra de rolagem */
+}
 
 .form-search {
     flex: 1;

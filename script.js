@@ -770,6 +770,7 @@ const RouteManager = {
             ...this.stops.map(s => L.latLng(s.lat, s.lon)),
             L.latLng(toData.lat, toData.lon)
         ];
+        console.log("Waypoints:", waypoints);
         AppState.routingControl = L.Routing.control({
             waypoints: waypoints,
             routeWhileDragging: true,

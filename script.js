@@ -789,6 +789,8 @@ const RouteManager = {
         NewStop.placeholder = 'Pesquisar parada...';
         document.getElementById('stops-list').appendChild(NewStop);
 
+        const self = this;
+
         // Autocomplete
         const createAutocomplete = (inputElement, onSelect) => {
             const resultsContainer = document.getElementById('autocomplete-results');
@@ -823,8 +825,8 @@ const RouteManager = {
         createAutocomplete(NewStop, partner => {
             NewStop.value = partner.name;
             document.getElementById('inputNewStop').value = partner.store_id;
-            this.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
-            this.renderStopsList();
+            self.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
+            self.renderStopsList();
             NewStop.remove();
         });
         

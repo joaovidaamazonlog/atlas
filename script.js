@@ -1022,6 +1022,10 @@ const RouteManager = {
 document.addEventListener('DOMContentLoaded', () => {
     MapManager.initialize();
     DataManager.loadAllDataAndInitialize();
+    chrome.storage.local.get("sortPlanningData", (res) => {
+        console.log("Loaded sortPlanningData from storage:", res.sortPlanningData);
+        AppState.sortPlanningData = res.sortPlanningData || {};
+    });
 
     // Panel Toggles
     document.querySelectorAll('.panel-header').forEach(header => {

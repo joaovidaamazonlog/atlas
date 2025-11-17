@@ -27,7 +27,7 @@ const AppState = {
     }),
     houseIcon : L.icon({
         iconUrl: 'https://cdn-icons-png.flaticon.com/512/25/25694.png',
-        iconSize: [32, 32],
+        iconSize: [18, 18],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32]
     }),

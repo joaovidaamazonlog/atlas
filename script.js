@@ -804,10 +804,14 @@ const RouteManager = {
 
         const fromId = document.getElementById('routeFromId').value;
         const toId = document.getElementById('routeToId').value;
-        if (!fromId || !toId) { alert("Selecione origem e destino."); return; }
-        const fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
-        const toData = AppState.allMarkersData.find(m => m.store_id === toId);
-        if (!fromData || !toData) { alert("Parceiro inválido."); return; }
+
+        let fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
+        if (!fromData) fromData = AppState.deliveryStations.find(ds => ds.name === fromId || ds.store_id === fromId);
+
+        let toData = AppState.allMarkersData.find(m => m.store_id === toId);
+        if (!toData) toData = AppState.deliveryStations.find(ds => ds.name === toId || ds.store_id === toId);
+
+        if (!fromData || !toData) { alert("Parceiro ou Delivery Station inválido."); return; }
 
         // Se houver paradas, otimiza a ordem (TSP)
         let stopsOrder = this.stops;

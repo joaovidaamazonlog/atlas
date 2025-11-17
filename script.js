@@ -349,6 +349,7 @@ const UIManager = {
     setupAutocomplete: function() {
         const fromInput = document.getElementById('routeFromInput');
         const toInput = document.getElementById('routeToInput');
+        const inputNewStop = document.createElement('inputNewStop');
         const searchInput = document.getElementById('search-input');
         const resultsContainer = document.getElementById('autocomplete-results');
 
@@ -392,6 +393,10 @@ const UIManager = {
         createAutocomplete(toInput, partner => {
             toInput.value = partner.name;
             document.getElementById('routeToId').value = partner.store_id;
+        });
+        createAutocomplete(inputNewStop, partner => {
+            inputNewStop.value = partner.name;
+            document.getElementById('inputNewStop').value = partner.store_id;
         });
 
         document.addEventListener('click', e => {
@@ -781,21 +786,21 @@ const RouteManager = {
 
     addStop: function() {
         // Abre autocomplete para selecionar parada
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'form-control form-control-sm mb-1';
-        input.placeholder = 'Pesquisar parada...';
-        document.getElementById('stops-list').appendChild(input);
+        const inputNewStop = document.createElement('inputNewStop');
+        inputNewStop.type = 'text';
+        inputNewStop.className = 'form-control form-control-sm mb-1';
+        inputNewStop.placeholder = 'Pesquisar parada...';
+        document.getElementById('stops-list').appendChild(inputNewStop);
 
         // Autocomplete simples
-        input.addEventListener('input', () => {
-            const query = input.value.toLowerCase();
+        inputNewStop.addEventListener('input', () => {
+            const query = inputNewStop.value.toLowerCase();
             const filtered = AppState.allMarkersData.filter(p => p.name && p.name.toLowerCase().includes(query)).slice(0, 5);
             if (filtered.length === 1) {
                 const partner = filtered[0];
                 RouteManager.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
                 RouteManager.renderStopsList();
-                input.remove();
+                inputNewStop.remove();
             }
         });
     },

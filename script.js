@@ -349,7 +349,6 @@ const UIManager = {
     setupAutocomplete: function() {
         const fromInput = document.getElementById('routeFromInput');
         const toInput = document.getElementById('routeToInput');
-        const inputNewStop = document.getElementById('inputNewStop');
         const searchInput = document.getElementById('search-input');
         const resultsContainer = document.getElementById('autocomplete-results');
 
@@ -393,10 +392,6 @@ const UIManager = {
         createAutocomplete(toInput, partner => {
             toInput.value = partner.name;
             document.getElementById('routeToId').value = partner.store_id;
-        });
-        createAutocomplete(inputNewStop, partner => {
-            inputNewStop.value = partner.name;
-            document.getElementById('inputNewStop').value = partner.store_id;
         });
 
         document.addEventListener('click', e => {
@@ -792,6 +787,50 @@ const RouteManager = {
         NewStop.className = 'form-control form-control-sm mb-1';
         NewStop.placeholder = 'Pesquisar parada...';
         document.getElementById('stops-list').appendChild(NewStop);
+
+        // Autocomplete
+        const createAutocomplete = (inputElement, onSelect) => {
+            inputElement.addEventListener('input', () => {
+                const query = inputElement.value.toLowerCase();
+                if (query.length < 2) {
+                    resultsContainer.style.display = 'none';
+                    return;
+                }
+                const filtered = AppState.allMarkersData.filter(p => (p.name && p.name.toLowerCase().includes(query)) || (p.store_id && p.store_id.toLowerCase().includes(query))).slice(0, 5);
+                resultsContainer.innerHTML = '';
+                if (filtered.length > 0) {
+                    filtered.forEach(partner => {
+                        const item = document.createElement('a');
+                        item.href = '#';
+                        item.className = 'list-group-item list-group-item-action py-1';
+                        item.innerText = `${partner.name} (${partner.store_id})`;
+                        item.onclick = e => { e.preventDefault(); onSelect(partner); resultsContainer.style.display = 'none'; };
+                        resultsContainer.appendChild(item);
+                    });
+                    const rect = inputElement.getBoundingClientRect();
+                    resultsContainer.style.top = `${rect.bottom + window.scrollY}px`;
+                    resultsContainer.style.left = `${rect.left + window.scrollX}px`;
+                    resultsContainer.style.width = `${rect.width}px`;
+                    resultsContainer.style.display = 'block';
+                } else {
+                    resultsContainer.style.display = 'none';
+                }
+            });
+        };
+
+        createAutocomplete(NewStop, partner => {
+            NewStop.value = partner.name;
+            this.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
+            this.renderStopsList();
+            NewStop.remove();
+        });
+
+        document.addEventListener('click', e => {
+            if (!resultsContainer.contains(e.target) && e.target !== NewStop) {
+                resultsContainer.style.display = 'none';
+            }
+        });
+        
     },
 
     renderStopsList: function() {

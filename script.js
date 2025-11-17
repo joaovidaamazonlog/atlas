@@ -791,18 +791,6 @@ const RouteManager = {
         inputNewStop.className = 'form-control form-control-sm mb-1';
         inputNewStop.placeholder = 'Pesquisar parada...';
         document.getElementById('stops-list').appendChild(inputNewStop);
-
-        // Autocomplete simples
-        inputNewStop.addEventListener('input', () => {
-            const query = inputNewStop.value.toLowerCase();
-            const filtered = AppState.allMarkersData.filter(p => p.name && p.name.toLowerCase().includes(query)).slice(0, 5);
-            if (filtered.length === 1) {
-                const partner = filtered[0];
-                RouteManager.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
-                RouteManager.renderStopsList();
-                inputNewStop.remove();
-            }
-        });
     },
 
     renderStopsList: function() {

@@ -48,6 +48,7 @@ const DataManager = {
         ]).then(([partnerData, polygonData, jurisdictionData]) => {
             AppState.allMarkersData = partnerData.allMarkerData;
             AppState.period = partnerData.period;
+            AppState.deliveryStations = partnerData.deliveryStations;
             AppState.polygonsData = polygonData;
             AppState.jurisdictionData = jurisdictionData;
 
@@ -63,14 +64,6 @@ const DataManager = {
             alert('Não foi possível carregar os arquivos de dados iniciais: ' + error.message);
             console.error(error);
         });
-
-        if (partnerData.deliveryStations) {
-            partnerData.deliveryStations.forEach(ds => {
-                const marker = L.marker([ds.lat, ds.lon], { icon: AppState.houseIcon });
-                marker.bindPopup(`<b>${ds.name}</b>`);
-                marker.addTo(AppState.map);
-            });
-        }
     },
 
     associatePartnersToPolygons: function() {
@@ -108,6 +101,7 @@ const DataManager = {
             return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch;
         });
 
+        MapManager.createMarkersDeliveryStations();
         MapManager.createMarkers(AppState.currentFilteredData, true);
         PolygonManager.updateFilteredPolygons();
         PolygonManager.updateFilteredJurisdiction();
@@ -135,6 +129,14 @@ const MapManager = {
         AppState.map.createPane('polygonsPane');
         AppState.map.getPane('polygonsPane').style.zIndex = 200;
         AppState.map.getPane('polygonsPane').style.pointerEvents = 'none';
+    },
+
+    createMarkersDeliveryStations: function() {
+        AppState.deliveryStations.forEach(ds => {
+            const marker = L.marker([ds.lat, ds.lon], { icon: AppState.houseIcon });
+            marker.bindPopup(`<b>${ds.name}</b>`);
+            marker.addTo(AppState.map);
+        });
     },
 
     createMarkers: function(dataToRender, fitToMarkers = false) {

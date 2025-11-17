@@ -820,16 +820,12 @@ const RouteManager = {
 
         createAutocomplete(NewStop, partner => {
             NewStop.value = partner.name;
-            this.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
-            this.renderStopsList();
-            NewStop.remove();
+            document.getElementById('inputNewStop').value = partner.store_id;
         });
 
-        document.addEventListener('click', e => {
-            if (!resultsContainer.contains(e.target) && e.target !== NewStop) {
-                resultsContainer.style.display = 'none';
-            }
-        });
+        this.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
+        this.renderStopsList();
+        NewStop.remove();
         
     },
 

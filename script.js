@@ -756,6 +756,7 @@ const HighlightManager = {
 
 // --- MODULE: RouteManager ---
 const RouteManager = {
+    stops: [],
     generateRoute: function() {
         const fromId = document.getElementById('routeFromId').value;
         const toId = document.getElementById('routeToId').value;
@@ -764,13 +765,74 @@ const RouteManager = {
         const toData = AppState.allMarkersData.find(m => m.store_id === toId);
         if (!fromData || !toData) { alert("Parceiro inválido."); return; }
         this.clearRoute();
+        const waypoints = [
+            L.latLng(fromData.lat, fromData.lon),
+            ...this.stops.map(s => L.latLng(s.lat, s.lon)),
+            L.latLng(toData.lat, toData.lon)
+        ];
         AppState.routingControl = L.Routing.control({
-            waypoints: [L.latLng(fromData.lat, fromData.lon), L.latLng(toData.lat, toData.lon)],
+            waypoints: waypoints,
             routeWhileDragging: true,
             router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
             createMarker: () => null,
             lineOptions: { styles: [{color: 'blue', opacity: 0.8, weight: 5}] }
         }).addTo(AppState.map);
+    },
+
+    addStop: function() {
+        // Abre autocomplete para selecionar parada
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'form-control form-control-sm mb-1';
+        input.placeholder = 'Pesquisar parada...';
+        document.getElementById('stops-list').appendChild(input);
+
+        // Autocomplete simples
+        input.addEventListener('input', () => {
+            const query = input.value.toLowerCase();
+            const filtered = AppState.allMarkersData.filter(p => p.name && p.name.toLowerCase().includes(query)).slice(0, 5);
+            if (filtered.length === 1) {
+                const partner = filtered[0];
+                RouteManager.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
+                RouteManager.renderStopsList();
+                input.remove();
+            }
+        });
+    },
+
+    renderStopsList: function() {
+        const list = document.getElementById('stops-list');
+        list.innerHTML = '';
+        RouteManager.stops.forEach((stop, idx) => {
+            const div = document.createElement('div');
+            div.className = 'stop-item d-flex align-items-center mb-1';
+            div.innerHTML = `
+                <span class="stop-name flex-grow-1">${stop.name} (${stop.store_id})</span>
+                <button class="btn btn-sm btn-light mx-1" onclick="RouteManager.moveStopUp(${idx})"><i class="fas fa-arrow-up"></i></button>
+                <button class="btn btn-sm btn-light mx-1" onclick="RouteManager.moveStopDown(${idx})"><i class="fas fa-arrow-down"></i></button>
+                <button class="btn btn-sm btn-danger mx-1" onclick="RouteManager.removeStop(${idx})"><i class="fas fa-times"></i></button>
+            `;
+            list.appendChild(div);
+        });
+    },
+
+    moveStopUp: function(idx) {
+        if (idx > 0) {
+            [this.stops[idx - 1], this.stops[idx]] = [this.stops[idx], this.stops[idx - 1]];
+            this.renderStopsList();
+        }
+    },
+
+    moveStopDown: function(idx) {
+        if (idx < this.stops.length - 1) {
+            [this.stops[idx], this.stops[idx + 1]] = [this.stops[idx + 1], this.stops[idx]];
+            this.renderStopsList();
+        }
+    },
+
+    removeStop: function(idx) {
+        this.stops.splice(idx, 1);
+        this.renderStopsList();
     },
 
     clearRoute: function() {
@@ -782,6 +844,8 @@ const RouteManager = {
         document.getElementById('routeToInput').value = "";
         document.getElementById('routeFromId').value = "";
         document.getElementById('routeToId').value = "";
+        this.stops = [];
+        this.renderStopsList();
     },
 
     startRouteFromHere: function(event, storeId, storeName) {

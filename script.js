@@ -383,7 +383,7 @@ const UIManager = {
         };
 
         createAutocomplete(searchInput, partner => {
-            searchInput.value = '';
+            searchInput.value = partner.name;
             this.searchPartner(partner.store_id);
         });
         createAutocomplete(fromInput, partner => {
@@ -786,7 +786,7 @@ const RouteManager = {
 
     addStop: function() {
         // Abre autocomplete para selecionar parada
-        const NewStop = document.createElement('inputNewStop');
+        const NewStop = document.createElement('input');
         NewStop.type = 'text';
         NewStop.className = 'form-control form-control-sm mb-1';
         NewStop.placeholder = 'Pesquisar parada...';

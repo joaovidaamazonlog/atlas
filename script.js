@@ -349,7 +349,7 @@ const UIManager = {
     setupAutocomplete: function() {
         const fromInput = document.getElementById('routeFromInput');
         const toInput = document.getElementById('routeToInput');
-        const inputNewStop = document.createElement('inputNewStop');
+        const inputNewStop = document.getElementById('inputNewStop');
         const searchInput = document.getElementById('search-input');
         const resultsContainer = document.getElementById('autocomplete-results');
 
@@ -786,11 +786,11 @@ const RouteManager = {
 
     addStop: function() {
         // Abre autocomplete para selecionar parada
-        const inputNewStop = document.createElement('inputNewStop');
-        inputNewStop.type = 'text';
-        inputNewStop.className = 'form-control form-control-sm mb-1';
-        inputNewStop.placeholder = 'Pesquisar parada...';
-        document.getElementById('stops-list').appendChild(inputNewStop);
+        const NewStop = document.createElement('inputNewStop');
+        NewStop.type = 'text';
+        NewStop.className = 'form-control form-control-sm mb-1';
+        NewStop.placeholder = 'Pesquisar parada...';
+        document.getElementById('stops-list').appendChild(NewStop);
     },
 
     renderStopsList: function() {

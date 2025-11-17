@@ -790,6 +790,7 @@ const RouteManager = {
 
         // Autocomplete
         const createAutocomplete = (inputElement, onSelect) => {
+            const resultsContainer = document.getElementById('autocomplete-results');
             inputElement.addEventListener('input', () => {
                 const query = inputElement.value.toLowerCase();
                 if (query.length < 2) {
@@ -821,11 +822,10 @@ const RouteManager = {
         createAutocomplete(NewStop, partner => {
             NewStop.value = partner.name;
             document.getElementById('inputNewStop').value = partner.store_id;
+            this.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
+            this.renderStopsList();
+            NewStop.remove();
         });
-
-        this.stops.push({ store_id: partner.store_id, name: partner.name, lat: partner.lat, lon: partner.lon });
-        this.renderStopsList();
-        NewStop.remove();
         
     },
 

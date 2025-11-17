@@ -764,13 +764,12 @@ const RouteManager = {
         const fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
         const toData = AppState.allMarkersData.find(m => m.store_id === toId);
         if (!fromData || !toData) { alert("Parceiro inválido."); return; }
-        this.clearRoute();
         const waypoints = [
             L.latLng(fromData.lat, fromData.lon),
             ...this.stops.map(s => L.latLng(s.lat, s.lon)),
             L.latLng(toData.lat, toData.lon)
         ];
-        console.log("Waypoints:", waypoints);
+        this.clearRoute();
         AppState.routingControl = L.Routing.control({
             waypoints: waypoints,
             routeWhileDragging: true,

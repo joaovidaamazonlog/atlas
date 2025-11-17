@@ -758,6 +758,12 @@ const HighlightManager = {
 const RouteManager = {
     stops: [],
     generateRoute: function() {
+        // Verifica se já existe uma rota e remove
+        if (AppState.routingControl) {
+            AppState.map.removeControl(AppState.routingControl);
+            AppState.routingControl = null;
+        }
+
         const fromId = document.getElementById('routeFromId').value;
         const toId = document.getElementById('routeToId').value;
         if (!fromId || !toId) { alert("Selecione origem e destino."); return; }
@@ -788,7 +794,7 @@ const RouteManager = {
                 dist += L.latLng(prev.lat, prev.lon).distanceTo(L.latLng(toData.lat, toData.lon));
                 return dist;
             }
-            
+
             const allOrders = permute(this.stops);
             let minDist = Infinity;
             allOrders.forEach(order => {

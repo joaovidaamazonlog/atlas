@@ -764,12 +764,50 @@ const RouteManager = {
         const fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
         const toData = AppState.allMarkersData.find(m => m.store_id === toId);
         if (!fromData || !toData) { alert("Parceiro inválido."); return; }
+
+        // Se houver paradas, otimiza a ordem (TSP)
+        let stopsOrder = this.stops;
+        if (this.stops.length > 1) {
+            // Permutação de todas as ordens possíveis
+            function permute(arr) {
+                if (arr.length <= 1) return [arr];
+                let result = [];
+                for (let i = 0; i < arr.length; i++) {
+                    let rest = permute(arr.slice(0, i).concat(arr.slice(i + 1)));
+                    rest.forEach(r => result.push([arr[i]].concat(r)));
+                }
+                return result;
+            }
+            function totalDistance(order) {
+                let dist = 0;
+                let prev = fromData;
+                order.forEach(stop => {
+                    dist += L.latLng(prev.lat, prev.lon).distanceTo(L.latLng(stop.lat, stop.lon));
+                    prev = stop;
+                });
+                dist += L.latLng(prev.lat, prev.lon).distanceTo(L.latLng(toData.lat, toData.lon));
+                return dist;
+            }
+            
+            const allOrders = permute(this.stops);
+            let minDist = Infinity;
+            allOrders.forEach(order => {
+                const d = totalDistance(order);
+                if (d < minDist) {
+                    minDist = d;
+                    stopsOrder = order;
+                }
+            });
+            // Atualiza a ordem das paradas para refletir a melhor rota
+            this.stops = stopsOrder;
+            this.renderStopsList();
+        }
+
         const waypoints = [
             L.latLng(fromData.lat, fromData.lon),
-            ...this.stops.map(s => L.latLng(s.lat, s.lon)),
+            ...stopsOrder.map(s => L.latLng(s.lat, s.lon)),
             L.latLng(toData.lat, toData.lon)
         ];
-        this.clearRoute();
         AppState.routingControl = L.Routing.control({
             waypoints: waypoints,
             routeWhileDragging: true,

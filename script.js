@@ -17,6 +17,7 @@ const AppState = {
     deliveryStations: [],
     jurisdictionData: null,
     jurisdictionLayer: null,
+    sortPlanningData: null,
     highlightIcon: L.icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -115,7 +116,7 @@ const DataManager = {
         const stationFilter = document.getElementById('stationFilter');
         Array.from(stationFilter.options).forEach(opt => opt.selected = (opt.value === 'all'));
         this.applyFilters();
-    }
+    },
 };
 
 // --- MODULE: MapManager ---

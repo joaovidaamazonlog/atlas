@@ -376,15 +376,36 @@ const UIManager = {
                     resultsContainer.style.display = 'none';
                     return;
                 }
-                const filtered = AppState.allMarkersData.filter(p => (p.name && p.name.toLowerCase().includes(query)) || (p.store_id && p.store_id.toLowerCase().includes(query))).slice(0, 5);
+                const allOptions = [
+                    ...AppState.allMarkersData.map(p => ({
+                        type: 'partner',
+                        name: p.name,
+                        store_id: p.store_id,
+                        lat: p.lat,
+                        lon: p.lon
+                    })),
+                    ...AppState.deliveryStations.map(ds => ({
+                        type: 'station',
+                        name: ds.name,
+                        store_id: ds.name,
+                        lat: ds.lat,
+                        lon: ds.lon
+                    }))
+                ];
+                const filtered = allOptions.filter(opt =>
+                    (opt.name && opt.name.toLowerCase().includes(query)) ||
+                    (opt.store_id && opt.store_id.toLowerCase().includes(query))
+                ).slice(0, 5);
                 resultsContainer.innerHTML = '';
                 if (filtered.length > 0) {
-                    filtered.forEach(partner => {
+                    filtered.forEach(opt => {
                         const item = document.createElement('a');
                         item.href = '#';
                         item.className = 'list-group-item list-group-item-action py-1';
-                        item.innerText = `${partner.name} (${partner.store_id})`;
-                        item.onclick = e => { e.preventDefault(); onSelect(partner); resultsContainer.style.display = 'none'; };
+                        item.innerHTML = opt.type === 'station'
+                            ? `<i class="fas fa-home mr-1"></i> ${opt.name} (Delivery Station)`
+                            : `${opt.name} (${opt.store_id})`;
+                        item.onclick = e => { e.preventDefault(); onSelect(opt); resultsContainer.style.display = 'none'; };
                         resultsContainer.appendChild(item);
                     });
                     const rect = inputElement.getBoundingClientRect();

@@ -787,6 +787,7 @@ const RouteManager = {
     addStop: function() {
         // Abre autocomplete para selecionar parada
         const NewStop = document.createElement('input');
+        NewStop.id = 'inputNewStop';
         NewStop.type = 'text';
         NewStop.className = 'form-control form-control-sm mb-1';
         NewStop.placeholder = 'Pesquisar parada...';

@@ -88,7 +88,7 @@ const DataManager = {
 
     applyFilters: function() {
         const statusFilter = document.getElementById('statusFilter');
-        const selectedStatuses = Array.froms(statusFilter.selectedOptions).map(opt => opt.value);
+        const selectedStatuses = Array.from(statusFilter.selectedOptions).map(opt => opt.value);
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
         const initiativesFilter = document.getElementById('initiativesFilter').value;

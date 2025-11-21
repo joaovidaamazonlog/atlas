@@ -87,15 +87,17 @@ const DataManager = {
     },
 
     applyFilters: function() {
-        const statusFilter = document.getElementById('statusFilter').value;
+        const statusFilter = document.getElementById('statusFilter');
+        const selectedStatuses = Array.froms(statusFilter.selectedOptions).map(opt => opt.value);
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
         const initiativesFilter = document.getElementById('initiativesFilter').value;
         const jurisdictionFilter = document.getElementById('jurisdictionFilter').value;
         const stationAllSelected = selectedStations.includes('all');
+        const statusAllSelected = selectedStatuses.includes('all');
 
         AppState.currentFilteredData = AppState.allMarkersData.filter(marker => {
-            const statusMatch = statusFilter === 'all' || marker.status === statusFilter;
+            const statusMatch = statusAllSelected || selectedStatuses.includes(marker.status);
             const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station);
             const initiativesMatch = initiativesFilter === 'all' || marker.hub_delivey_initiatives === initiativesFilter;
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;

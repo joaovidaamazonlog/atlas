@@ -389,8 +389,8 @@ const UIManager = {
                     })),
                     ...AppState.deliveryStations.map(ds => ({
                         type: 'station',
-                        name: ds.name,
-                        store_id: ds.name,
+                        name: ds.nome,
+                        store_id: ds.nome,
                         lat: ds.lat,
                         lon: ds.lon
                     }))
@@ -453,7 +453,7 @@ const UIManager = {
 
         if (!foundData) {
             const ds = AppState.deliveryStations.find(ds =>
-                ds.name.toLowerCase() === searchTerm);
+                ds.nome.toLowerCase() === searchTerm);
             if (ds) {
                 AppState.map.setView([ds.lat, ds.lon], 13);
                 return;

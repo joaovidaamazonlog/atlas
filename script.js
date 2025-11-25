@@ -910,8 +910,8 @@ const RouteManager = {
                     })),
                     ...AppState.deliveryStations.map(ds => ({
                         type: 'station',
-                        name: ds.name,
-                        store_id: ds.name, // ou ds.store_id se existir
+                        name: ds.nome,
+                        store_id: ds.nome, // ou ds.store_id se existir
                         lat: ds.lat,
                         lon: ds.lon
                     }))

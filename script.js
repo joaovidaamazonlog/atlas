@@ -451,6 +451,18 @@ const UIManager = {
             (data.name && data.name.toLowerCase().includes(searchTerm))
         );
 
+        if (!foundData) {
+            const ds = AppState.deliveryStations.find(ds =>
+                ds.name.toLowerCase() === searchTerm);
+            if (ds) {
+                AppState.map.setView([ds.lat, ds.lon], 13);
+                return;
+            }else {
+                alert("Parceiro ou Delivery Station não encontrado.");
+                return;
+                }
+        } 
+
         if (foundData) {
             const markerOnMap = AppState.markerObjects.find(m => m.markerData.store_id === foundData.store_id);
             if (markerOnMap) {

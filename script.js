@@ -137,7 +137,7 @@ const MapManager = {
     createMarkersDeliveryStations: function() {
         AppState.deliveryStations.forEach(ds => {
             const marker = L.marker([ds.lat, ds.lon], { icon: AppState.houseIcon });
-            marker.bindPopup(`<b>${ds.name}</b>`);
+            marker.bindPopup(`<b>${ds.nome}</b>`);
             marker.addTo(AppState.map);
         });
     },

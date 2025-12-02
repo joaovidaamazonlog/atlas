@@ -1077,7 +1077,7 @@ const RouteManager = {
 
             // DBSCAN clustering
             const points = turf.featureCollection(hosts.map(h => turf.point([h.lon, h.lat])));
-            const clustered = turf.clustersDbscan(points, 10, { units: 'kilometers' });
+            const clustered = turf.clustersDbscan(points, 4, { units: 'kilometers' });
 
             // Organiza grupos (máx. 10 paradas, máx. 18 parceiros)
             let groups = [];

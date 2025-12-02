@@ -92,6 +92,7 @@ const DataManager = {
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
         const initiativesFilter = document.getElementById('initiativesFilter').value;
+        const supplyRun = document.getElementById('supplyRun').value;
         const jurisdictionFilter = document.getElementById('jurisdictionFilter').value;
         const stationAllSelected = selectedStations.includes('all');
         const statusAllSelected = selectedStatuses.includes('all');
@@ -101,7 +102,8 @@ const DataManager = {
             const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station);
             const initiativesMatch = initiativesFilter === 'all' || marker.hub_delivey_initiatives === initiativesFilter;
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;
-            return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch;
+            const supplyRunMatch = supplyRun === 'all' || marker.supply_run === supplyRun;
+            return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && supplyRunMatch;
         });
 
         MapManager.createMarkersDeliveryStations();

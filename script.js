@@ -1,7 +1,5 @@
 /* FrontEnd/script.js */
 
-import * as turf from '@turf/turf';
-
 // --- GLOBAL STATE & CONSTANTS ---
 const AppState = {
     map: L.map('map').setView([-14.235, -51.925], 5), // Centro do Brasil
@@ -1041,125 +1039,153 @@ const RouteManager = {
     },
 
     suggestOptimizedRoutes: async function() {
-        // 1. Filtra Host Partners/Hub Hero
-        const stationFilter = document.getElementById('stationFilter');
-        const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-        if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
-            alert("Selecione apenas uma Delivery Station para sugerir rotas.");
-            return;
-        }
-        const deliveryStation = selectedStations[0];
-        const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
 
-        // Host Partners e Hub Hero (paradas)
-        const hosts = AppState.allMarkersData.filter(p =>
-            p.delivery_station === deliveryStation &&
-            (p.hub_delivey_initiatives === 'HCP Host Partner' || p.hub_delivey_initiatives === 'Hub Hero')
-        );
+        let loadingDiv = document.createElement('div');
+        loadingDiv.id = 'routes-loading';
+        loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
+        loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
+            <i class="fas fa-spinner fa-spin mr-2"></i> Processando rotas otimizadas, aguarde...
+        </div>`;
+        document.body.appendChild(loadingDiv);
 
-        // Pick Up Partners
-        const pickUps = AppState.allMarkersData.filter(p =>
-            p.delivery_station === deliveryStation &&
-            p.hub_delivey_initiatives === 'HCP Pick Up Partner' &&
-            p.HCP_host_partner
-        );
-        hosts.forEach(host => {
-            host.pickUps = pickUps.filter(pu => pu.HCP_host_partner === host.name || pu.HCP_host_partner === host.store_id);
-        });
+        try {
+            // 1. Filtra Host Partners/Hub Hero
+            const stationFilter = document.getElementById('stationFilter');
+            const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
+            if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
+                alert("Selecione apenas uma Delivery Station para sugerir rotas.");
+                return;
+            }
+            const deliveryStation = selectedStations[0];
+            const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
 
-        // 2. Agrupamento KMeans (máx. 10 paradas por grupo)
-        const numClusters = Math.ceil(hosts.length / 10);
-        const points = turf.featureCollection(hosts.map(h => turf.point([h.lon, h.lat])));
-        const clustered = turf.clustersKmeans(points, {numberOfClusters: numClusters});
+            // Host Partners e Hub Hero (paradas)
+            const hosts = AppState.allMarkersData.filter(p =>
+                p.delivery_station === deliveryStation &&
+                (p.hub_delivey_initiatives === 'HCP Host Partner' || p.hub_delivey_initiatives === 'Hub Hero')
+            );
 
-        // Organiza grupos
-        let groups = [];
-        for (let i = 0; i < numClusters; i++) {
-            let groupHosts = hosts.filter((h, idx) => clustered.features[idx].properties.cluster === i);
-            let groupPickUps = [];
-            groupHosts.forEach(h => {
-                if (h.pickUps) groupPickUps = groupPickUps.concat(h.pickUps);
+            // Pick Up Partners
+            const pickUps = AppState.allMarkersData.filter(p =>
+                p.delivery_station === deliveryStation &&
+                p.hub_delivey_initiatives === 'HCP Pick Up Partner' &&
+                p.HCP_host_partner
+            );
+            hosts.forEach(host => {
+                host.pickUps = pickUps.filter(pu => pu.HCP_host_partner === host.name || pu.HCP_host_partner === host.store_id);
             });
-            // Limite de 18 parceiros por rota
-            if (groupHosts.length + groupPickUps.length > 18) {
-                // Se exceder, divide em subgrupos de 18
-                for (let j = 0; j < groupHosts.length; j += 10) {
-                    let subHosts = groupHosts.slice(j, j + 10);
-                    let subPickUps = [];
-                    subHosts.forEach(h => {
-                        if (h.pickUps) subPickUps = subPickUps.concat(h.pickUps);
-                    });
-                    groups.push({hosts: subHosts, pickUps: subPickUps});
-                }
-            } else {
-                groups.push({hosts: groupHosts, pickUps: groupPickUps});
-            }
-        }
 
-        // 3. Para cada grupo, envia para OSRM Trip API para otimizar ordem
-        const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-        for (let idx = 0; idx < groups.length; idx++) {
-            const group = groups[idx];
-            const stops = group.hosts;
-            // Monta coordenadas para OSRM
-            const coords = [
-                [dsData.lon, dsData.lat], // Origem
-                ...stops.map(p => [p.lon, p.lat]),
-                [dsData.lon, dsData.lat]  // Destino
-            ];
-            const coordStr = coords.map(c => c.join(',')).join(';');
-            // Chama OSRM Trip API
-            const url = `https://router.project-osrm.org/trip/v1/driving/${coordStr}?source=first&destination=last&roundtrip=false`;
-            const res = await fetch(url);
-            const data = await res.json();
-            // Ordena paradas conforme OSRM
-            let orderedStops = [];
-            if (data.trips && data.trips[0] && data.trips[0].waypoints) {
-                // Remove origem/destino dos waypoints
-                const waypoints = data.trips[0].waypoints.slice(1, -1);
-                orderedStops = waypoints.map(wp => stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]));
-            } else {
-                orderedStops = stops;
-            }
+            // DBSCAN clustering
+            const points = turf.featureCollection(hosts.map(h => turf.point([h.lon, h.lat])));
+            const clustered = turf.clustersDbscan(points, 10, { units: 'kilometers' });
 
-            // Calcula tempo estimado
-            let totalKm = data.trips[0]?.distance ? data.trips[0].distance / 1000 : 0;
-            let travelTime = totalKm / 40;
-            let stopTime = orderedStops.length * 0.25;
-            let totalTime = travelTime + stopTime;
-
-            // Plota rota no mapa
-            const waypointsLatLng = [
-                L.latLng(dsData.lat, dsData.lon),
-                ...orderedStops.map(p => L.latLng(p.lat, p.lon)),
-                L.latLng(dsData.lat, dsData.lon)
-            ];
-            const color = colors[idx % colors.length];
-            const control = L.Routing.control({
-                waypoints: waypointsLatLng,
-                routeWhileDragging: false,
-                router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-                createMarker: () => null,
-                lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
-            }).addTo(AppState.map);
-
-            // Adiciona popup à rota
-            control.on('routesfound', function(e) {
-                const route = e.routes[0];
-                let popupHtml = `<b>Rota ${idx+1}</b><br><b>Tempo estimado:</b> ${totalTime.toFixed(2)}h<br><ol>`;
-                orderedStops.forEach(stop => {
-                    popupHtml += `<li>${stop.name || stop.store_id}`;
-                    if (stop.pickUps && stop.pickUps.length > 0) {
-                        popupHtml += `<br><small>Pick Ups: ${stop.pickUps.map(pu => pu.name || pu.store_id).join(', ')}</small>`;
-                    }
-                    popupHtml += `</li>`;
+            // Organiza grupos (máx. 10 paradas, máx. 18 parceiros)
+            let groups = [];
+            const clusters = [...new Set(clustered.features.map(f => f.properties.cluster))].filter(c => c !== undefined);
+            clusters.forEach(clusterId => {
+                let groupHosts = hosts.filter((h, idx) => clustered.features[idx].properties.cluster === clusterId);
+                let groupPickUps = [];
+                groupHosts.forEach(h => {
+                    if (h.pickUps) groupPickUps = groupPickUps.concat(h.pickUps);
                 });
-                popupHtml += '</ol>';
-                const midIdx = Math.floor(route.coordinates.length / 2);
-                const midLatLng = L.latLng(route.coordinates[midIdx].lat, route.coordinates[midIdx].lng);
-                L.popup().setLatLng(midLatLng).setContent(popupHtml).openOn(AppState.map);
+                // Limite de 10 paradas e 18 parceiros
+                if (groupHosts.length > 10 || (groupHosts.length + groupPickUps.length) > 18) {
+                    for (let j = 0; j < groupHosts.length; j += 10) {
+                        let subHosts = groupHosts.slice(j, j + 10);
+                        let subPickUps = [];
+                        subHosts.forEach(h => {
+                            if (h.pickUps) subPickUps = subPickUps.concat(h.pickUps);
+                        });
+                        groups.push({hosts: subHosts, pickUps: subPickUps});
+                    }
+                } else {
+                    groups.push({hosts: groupHosts, pickUps: groupPickUps});
+                }
             });
+
+            // 3. Para cada grupo, envia para OSRM Trip API para otimizar ordem
+            const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
+            
+            for (let idx = 0; idx < groups.length; idx++) {
+                const group = groups[idx];
+                const stops = group.hosts;
+                // Monta jobs para VROOM
+                const jobs = stops.map((p, i) => ({
+                    id: i + 1,
+                    location: [p.lon, p.lat]
+                }));
+
+                // Delivery Station como origem/destino
+                const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
+                const vehicles = [{
+                    id: 1,
+                    profile: "car",
+                    start: [dsData.lon, dsData.lat],
+                    end: [dsData.lon, dsData.lat]
+                }];
+
+                // Chama VROOM API
+                const vroomPayload = {
+                    jobs: jobs,
+                    vehicles: vehicles
+                };
+
+                const res = await fetch('https://vroom.project-osrm.org', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(vroomPayload)
+                });
+                const data = await res.json();
+
+                // Ordena paradas conforme VROOM
+                let orderedStops = [];
+                if (data.routes && data.routes[0] && data.routes[0].steps) {
+                    orderedStops = data.routes[0].steps
+                        .filter(step => step.type === 'job')
+                        .map(step => stops[step.job - 1]);
+                } else {
+                    orderedStops = stops;
+                }
+
+                // Plota rota no mapa
+                const waypointsLatLng = [
+                    L.latLng(dsData.lat, dsData.lon),
+                    ...orderedStops.map(p => L.latLng(p.lat, p.lon)),
+                    L.latLng(dsData.lat, dsData.lon)
+                ];
+                const color = colors[idx % colors.length];
+                const control = L.Routing.control({
+                    waypoints: waypointsLatLng,
+                    routeWhileDragging: false,
+                    router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+                    createMarker: () => null,
+                    lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
+                }).addTo(AppState.map);
+
+                // Adiciona popup à rota
+                control.on('routesfound', function(e) {
+                    const route = e.routes[0];
+                    let popupHtml = `<b>Rota ${idx+1}</b><br><b>Tempo estimado:</b> ${totalTime.toFixed(2)}h<br><ol>`;
+                    orderedStops.forEach(stop => {
+                        popupHtml += `<li>${stop.name || stop.store_id}`;
+                        if (stop.pickUps && stop.pickUps.length > 0) {
+                            popupHtml += `<br><small>Pick Ups: ${stop.pickUps.map(pu => pu.name || pu.store_id).join(', ')}</small>`;
+                        }
+                        popupHtml += `</li>`;
+                    });
+                    popupHtml += '</ol>';
+                    const midIdx = Math.floor(route.coordinates.length / 2);
+                    const midLatLng = L.latLng(route.coordinates[midIdx].lat, route.coordinates[midIdx].lng);
+                    L.popup().setLatLng(midLatLng).setContent(popupHtml).openOn(AppState.map);
+                });
+            }
+        } finally {
+            // Remove alerta/spinner ao finalizar
+            const div = document.getElementById('routes-loading');
+            if (div) div.remove();
         }
+
+        
     },
 
     clearRoute: function() {

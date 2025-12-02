@@ -117,6 +117,7 @@ const DataManager = {
         document.getElementById('statusFilter').value = 'all';
         document.getElementById('initiativesFilter').value = 'all';
         document.getElementById('jurisdictionFilter').value = 'all';
+        document.getElementById('supplyRun').value = 'all';
         const stationFilter = document.getElementById('stationFilter');
         Array.from(stationFilter.options).forEach(opt => opt.selected = (opt.value === 'all'));
         this.applyFilters();
@@ -372,7 +373,7 @@ const UIManager = {
 
         initiatives.forEach(p => initiativesFilter.innerHTML += `<option value="${p}">${p}</option>`);
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
-        supplyRunsFilter.innerHTML += `<option value="all">Todos</option>`;
+        supplyRunsFilter.innerHTML += `<option value="all">TODOS</option>`;
 
         // Função para atualizar supply runs dinamicamente
         function updateSupplyRunsOptions() {

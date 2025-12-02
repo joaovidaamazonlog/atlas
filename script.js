@@ -1061,7 +1061,7 @@ const RouteManager = {
 
             // Host Partners e Hub Hero (paradas)
             const hosts = AppState.allMarkersData.filter(p =>
-                p.delivery_station === deliveryStation &&
+                p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding') &&
                 (p.hub_delivey_initiatives === 'HCP Host Partner' || p.hub_delivey_initiatives === 'Hub Hero')
             );
 

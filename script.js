@@ -1039,7 +1039,6 @@ const RouteManager = {
     },
 
     suggestOptimizedRoutes: async function() {
-
         let loadingDiv = document.createElement('div');
         loadingDiv.id = 'routes-loading';
         loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
@@ -1109,43 +1108,36 @@ const RouteManager = {
             for (let idx = 0; idx < groups.length; idx++) {
                 const group = groups[idx];
                 const stops = group.hosts;
-                // Monta jobs para VROOM
-                const jobs = stops.map((p, i) => ({
-                    id: i + 1,
-                    location: [p.lon, p.lat]
-                }));
 
-                // Delivery Station como origem/destino
-                const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
-                const vehicles = [{
-                    id: 1,
-                    profile: "car",
-                    start: [dsData.lon, dsData.lat],
-                    end: [dsData.lon, dsData.lat]
-                }];
+                // Monta coordenadas para OSRM Trip API
+                const coords = [
+                    [dsData.lon, dsData.lat], // Origem
+                    ...stops.map(p => [p.lon, p.lat]),
+                    [dsData.lon, dsData.lat]  // Destino
+                ];
+                // Remove duplicidade da origem/destino para OSRM Trip API
+                const tripCoords = stops.map(p => `${p.lon},${p.lat}`).join(';');
+                const url = `https://router.project-osrm.org/trip/v1/driving/${tripCoords}?source=first&destination=last&roundtrip=false`;
 
-                // Chama VROOM API
-                const vroomPayload = {
-                    jobs: jobs,
-                    vehicles: vehicles
-                };
-
-                const res = await fetch('https://vroom.project-osrm.org', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(vroomPayload)
-                });
+                const res = await fetch(url);
                 const data = await res.json();
 
-                // Ordena paradas conforme VROOM
+                // Ordena paradas conforme OSRM
                 let orderedStops = [];
-                if (data.routes && data.routes[0] && data.routes[0].steps) {
-                    orderedStops = data.routes[0].steps
-                        .filter(step => step.type === 'job')
-                        .map(step => stops[step.job - 1]);
+                if (data.trips && data.trips[0] && data.trips[0].waypoints) {
+                    // OSRM retorna waypoints na ordem otimizada
+                    orderedStops = data.trips[0].waypoints.map(wp => {
+                        return stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]);
+                    }).filter(Boolean);
                 } else {
                     orderedStops = stops;
                 }
+
+                // Calcula tempo estimado
+                let totalKm = data.trips[0]?.distance ? data.trips[0].distance / 1000 : 0;
+                let travelTime = totalKm / 40; // média 40km/h
+                let stopTime = orderedStops.length * 0.25; // 15min por parada
+                let totalTime = travelTime + stopTime;
 
                 // Plota rota no mapa
                 const waypointsLatLng = [
@@ -1184,8 +1176,6 @@ const RouteManager = {
             const div = document.getElementById('routes-loading');
             if (div) div.remove();
         }
-
-        
     },
 
     clearRoute: function() {

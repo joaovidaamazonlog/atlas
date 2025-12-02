@@ -89,6 +89,7 @@ class JsonGenerator:
                 "supply_run": row.get("Supply Run"),
                 "hub_delivey_initiatives": row.get("Hub Delivery Initiatives"),
                 "HCP_rate_card": row.get("HCP Rate Card"),
+                "HCP_host_partner": row.get("HCP Host Partner"),
                 "sorte_code": row.get("Sorte Code"),
                 "zip_code": row.get("CEP"),
                 "city": row.get("Cidade"),

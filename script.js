@@ -14,6 +14,7 @@ const AppState = {
     routingControl: null,
     polygonsData: null,
     polygonLayer: null,
+    generatedRoutes: [],
     deliveryStations: [],
     jurisdictionData: null,
     jurisdictionLayer: null,
@@ -1043,7 +1044,7 @@ const RouteManager = {
         loadingDiv.id = 'routes-loading';
         loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
         loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-            <i class="fas fa-spinner fa-spin mr-2"></i> Processando rotas otimizadas, aguarde...
+            <i class="fas fa-spinner fa-spin mr-2"></i> Criando rotas otimizadas, aguarde...
         </div>`;
         document.body.appendChild(loadingDiv);
 
@@ -1170,7 +1171,58 @@ const RouteManager = {
                     const midLatLng = L.latLng(route.coordinates[midIdx].lat, route.coordinates[midIdx].lng);
                     L.popup().setLatLng(midLatLng).setContent(popupHtml).openOn(AppState.map);
                 });
+
+                if (!AppState.generatedRoutes) AppState.generatedRoutes = [];
+                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
             }
+
+            let panel = document.getElementById('routes-control-panel');
+
+            if (!panel) {
+                panel = document.createElement('div');
+                panel.id = 'routes-control-panel';
+                panel.style = 'position:fixed;top:80px;right:20px;z-index:9999;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 8px #0003;max-width:350px;';
+                document.body.appendChild(panel);
+            }
+
+            panel.innerHTML = '<h5>Rotas Geradas</h5>';
+            AppState.generatedRoutes.forEach(routeObj => {
+                panel.innerHTML += `
+                    <div style="margin-bottom:8px;">
+                        <span style="display:inline-block;width:18px;height:18px;background:${routeObj.color};border-radius:50%;margin-right:8px;"></span>
+                        <b>Rota ${routeObj.idx+1}</b>
+                        <button onclick="toggleRoute(${routeObj.idx})" style="margin-left:8px;">Mostrar/Ocultar</button>
+                        <button onclick="showRouteInfo(${routeObj.idx})" style="margin-left:4px;">Info</button>
+                    </div>
+                `;
+            });
+
+            // Funções globais para controle
+            window.toggleRoute = function(idx) {
+                const routeObj = AppState.generatedRoutes[idx];
+                if (!routeObj) return;
+                const control = routeObj.control;
+                if (control._container && control._container.parentNode) {
+                    AppState.map.removeControl(control);
+                } else {
+                    control.addTo(AppState.map);
+                }
+            };
+            window.showRouteInfo = function(idx) {
+                const routeObj = AppState.generatedRoutes[idx];
+                if (!routeObj) return;
+                let popupHtml = `<b>Rota ${routeObj.idx+1}</b><br><b>Tempo estimado:</b> ${routeObj.totalTime.toFixed(2)}h<br><ol>`;
+                routeObj.orderedStops.forEach(stop => {
+                    popupHtml += `<li>${stop.name || stop.store_id}`;
+                    if (stop.pickUps && stop.pickUps.length > 0) {
+                        popupHtml += `<br><small>Pick Ups: ${stop.pickUps.map(pu => pu.name || pu.store_id).join(', ')}</small>`;
+                    }
+                    popupHtml += `</li>`;
+                });
+                popupHtml += '</ol>';
+                // Mostra popup no centro do mapa
+                AppState.map.openPopup(L.popup().setLatLng(AppState.map.getCenter()).setContent(popupHtml));
+            };
         } finally {
             // Remove alerta/spinner ao finalizar
             const div = document.getElementById('routes-loading');
@@ -1179,6 +1231,7 @@ const RouteManager = {
     },
 
     clearRoute: function() {
+        // Remove rota manual (única)
         if (AppState.routingControl) {
             AppState.map.removeControl(AppState.routingControl);
             AppState.routingControl = null;
@@ -1189,6 +1242,17 @@ const RouteManager = {
         document.getElementById('routeToId').value = "";
         this.stops = [];
         this.renderStopsList();
+
+        // Remove rotas sugeridas
+        if (AppState.generatedRoutes && AppState.generatedRoutes.length > 0) {
+            AppState.generatedRoutes.forEach(routeObj => {
+                if (routeObj.control) AppState.map.removeControl(routeObj.control);
+            });
+            AppState.generatedRoutes = [];
+        }
+        // Remove painel de controle das rotas
+        const panel = document.getElementById('routes-control-panel');
+        if (panel) panel.remove();
     },
 
     startRouteFromHere: function(event, storeId, storeName) {

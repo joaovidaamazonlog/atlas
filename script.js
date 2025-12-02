@@ -362,10 +362,14 @@ const UIManager = {
     populateFilters: function() {
         const initiatives = [...new Set(AppState.allMarkersData.map(m => m.hub_delivey_initiatives).filter(Boolean))].sort();
         const stations = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
+        const supplyRuns = [...new Set(AppState.allMarkersData.map(m => m.supply_run).filter(Boolean))].sort();
         const initiativesFilter = document.getElementById('initiativesFilter');
         const stationFilter = document.getElementById('stationFilter');
+        const supplyRunsFilter = document.getElementById('supplyRun');
         initiatives.forEach(p => initiativesFilter.innerHTML += `<option value="${p}">${p}</option>`);
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
+        supplyRuns.forEach(s => supplyRunsFilter.innerHTML += `<option value="${s}">${s}</option>`);
+
     },
 
     setupAutocomplete: function() {

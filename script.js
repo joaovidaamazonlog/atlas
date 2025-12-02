@@ -368,8 +368,9 @@ const UIManager = {
         stationFilter.innerHTML = '';
         supplyRunsFilter.innerHTML = '';
 
+        stationFilter.innerHTML += `<option value="all" selected>Todos</option>`;
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
-        supplyRunsFilter.innerHTML += `<option value="all">TODOS</option>`;
+        supplyRunsFilter.innerHTML += `<option value="all">Todos</option>`;
 
         // Função para atualizar supply runs dinamicamente
         function updateSupplyRunsOptions() {

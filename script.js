@@ -362,14 +362,40 @@ const UIManager = {
     populateFilters: function() {
         const initiatives = [...new Set(AppState.allMarkersData.map(m => m.hub_delivey_initiatives).filter(Boolean))].sort();
         const stations = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
-        const supplyRuns = [...new Set(AppState.allMarkersData.map(m => m.supply_run).filter(Boolean))].sort();
+        const supplyRunsFilter = document.getElementById('supplyRun');
         const initiativesFilter = document.getElementById('initiativesFilter');
         const stationFilter = document.getElementById('stationFilter');
-        const supplyRunsFilter = document.getElementById('supplyRun');
+
+        initiativesFilter.innerHTML = '';
+        stationFilter.innerHTML = '';
+        supplyRunsFilter.innerHTML = '';
+
         initiatives.forEach(p => initiativesFilter.innerHTML += `<option value="${p}">${p}</option>`);
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
-        supplyRuns.forEach(s => supplyRunsFilter.innerHTML += `<option value="${s}">${s}</option>`);
+        supplyRunsFilter.innerHTML += `<option value="all">Todos</option>`;
 
+        // Função para atualizar supply runs dinamicamente
+        function updateSupplyRunsOptions() {
+            const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
+            let filteredSupplyRuns;
+            if (selectedStations.includes('all')) {
+                filteredSupplyRuns = [...new Set(AppState.allMarkersData.map(m => m.supply_run).filter(Boolean))];
+            } else {
+                filteredSupplyRuns = [...new Set(
+                    AppState.allMarkersData
+                        .filter(m => selectedStations.includes(m.delivery_station))
+                        .map(m => m.supply_run)
+                        .filter(Boolean)
+                )];
+            }
+            supplyRunsFilter.innerHTML = `<option value="all">Todos</option>`;
+            filteredSupplyRuns.forEach(s => supplyRunsFilter.innerHTML += `<option value="${s}">${s}</option>`);
+        }
+
+        // Atualiza supply runs ao mudar a seleção de Delivery Station
+        stationFilter.addEventListener('change', updateSupplyRunsOptions);
+
+        updateSupplyRunsOptions();
     },
 
     setupAutocomplete: function() {

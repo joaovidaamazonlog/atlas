@@ -1150,6 +1150,9 @@ const RouteManager = {
             AppState.map.removeControl(AppState.routingControl);
             AppState.routingControl = null;
         }
+
+        AppState.generatedRoutes = AppState.generatedRoutes.filter(r => r && r.control);
+
         AppState.generatedRoutes.forEach(r => AppState.map.removeControl(r.control));
         AppState.generatedRoutes = [];
 
@@ -1233,6 +1236,9 @@ const RouteManager = {
             let rotas_otimizadas_count = 0;
 
             for (let idx = 0; idx < rotas_brutas.length; idx++) {
+                if (control) {
+                    AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime, totalPartners });
+                }
                 const stops = rotas_brutas[idx];
 
                 // Monta coordenadas para OSRM Trip API (para otimizar a ordem - TSP)

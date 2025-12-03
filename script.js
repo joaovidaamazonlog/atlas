@@ -14,7 +14,6 @@ const AppState = {
     routingControl: null,
     polygonsData: null,
     polygonLayer: null,
-    generatedRoutes: [],
     deliveryStations: [],
     jurisdictionData: null,
     jurisdictionLayer: null,
@@ -904,9 +903,9 @@ const RouteManager = {
         ];
         AppState.routingControl = L.Routing.control({
             waypoints: waypoints,
-            routeWhileDragging: true,
+            routeWhileDragging: false,
             router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-            createMarker: () => null,
+            createMarker: (i, wp) => L.marker(wp.latLng),
             lineOptions: { styles: [{color: 'blue', opacity: 0.8, weight: 5}] }
         }).addTo(AppState.map);
     },
@@ -1051,17 +1050,6 @@ const RouteManager = {
         document.getElementById('routeToId').value = "";
         this.stops = [];
         this.renderStopsList();
-
-        // Remove rotas sugeridas
-        if (AppState.generatedRoutes && AppState.generatedRoutes.length > 0) {
-            AppState.generatedRoutes.forEach(routeObj => {
-                if (routeObj.control) AppState.map.removeControl(routeObj.control);
-            });
-            AppState.generatedRoutes = [];
-        }
-        // Remove painel de controle das rotas
-        const panel = document.getElementById('routes-control-panel');
-        if (panel) panel.remove();
     },
 
     startRouteFromHere: function(event, storeId, storeName) {

@@ -1085,7 +1085,7 @@ const RouteManager = {
             }
 
             // 4. Seleção de HCP (Host Partner)
-            const { hcp_final, parceiros_nao_cobertos } = await selectHCPs(parceiros_elegiveis);
+            const { hcp_final, parceiros_nao_cobertos } = await RouteManager.selectHCPs(parceiros_elegiveis);
 
             // 5. Montar a lista final de paradas para o VRP
             // As paradas serão: HCPs + Parceiros Não Cobertos
@@ -1100,7 +1100,7 @@ const RouteManager = {
             }
 
             // 6. Iniciar a otimização VRP (VROOM)
-            const vroom_result = await getVROOMOptimizedRoutes(dsData, paradas_vrp);
+            const vroom_result = await RouteManager.getVROOMOptimizedRoutes(dsData, paradas_vrp);
 
             if (!vroom_result || vroom_result.code !== 0) {
                 alert("A otimização VROOM falhou. Verifique o console para detalhes.");
@@ -1270,7 +1270,7 @@ const RouteManager = {
         if (elegiveis.length === 0) return { hcp_final: [], parceiros_nao_cobertos: [] };
 
         // 2. Obter a matriz de tempo/distância real
-        const { times, distances } = await getOSRMTimeDistanceMatrix(elegiveis);
+        const { times, distances } = await RouteManager.getOSRMTimeDistanceMatrix(elegiveis);
         if (times.length === 0) return { hcp_final: [], parceiros_nao_cobertos: elegiveis };
 
         let hcp_candidatos = [];

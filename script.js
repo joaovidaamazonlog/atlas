@@ -926,7 +926,7 @@ const RouteManager = {
 
             // Ícone do veículo (pode ser um GIF ou PNG)
             const vehicleIcon = L.icon({
-                iconUrl: 'https://cdn-icons-png.flaticon.com/512/743/743007.png', //caminhão
+                iconUrl: 'delivery.png', //caminhão
                 iconSize: [32, 32],
                 iconAnchor: [16, 16]
             });

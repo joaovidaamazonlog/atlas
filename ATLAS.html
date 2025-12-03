@@ -26,7 +26,7 @@
             <div class="header">
                 <!-- Esquerda -->
                 <div class="left">
-                    <img class="logo" src="AmazonHub.ico" alt="Amazon Hub Logo">
+                    <img class="logo" src="icons/AmazonHub.ico" alt="Amazon Hub Logo">
                 </div>
 
                 <!-- Centro -->
@@ -184,7 +184,7 @@
                                         <button class="btn btn-success btn-sm btn-block" onclick="RouteManager.generateRoute()">
                                             <i class="fas fa-map-signs"></i> Buscar Melhor Rota
                                         </button>
-                                        <button id="suggest-routes-btn" class="btn btn-warning btn-block" style="display:none;">Sugerir HCP Initiatives</button>
+                                        <button id="suggest-routes-btn" class="btn btn-warning btn-block" onclick="RouteManager.hcpSuggestHostClusters()" style="display:none;">Sugerir HCP Initiatives</button>
                                         <button class="btn btn-secondary btn-sm btn-block" onclick="RouteManager.clearRoute()">
                                             <i class="fas fa-times-circle"></i> Limpar Rota
                                         </button>

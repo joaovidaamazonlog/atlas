@@ -27,7 +27,7 @@ const AppState = {
         shadowSize: [41, 41]
     }),
     houseIcon : L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/25/25694.png',
+        iconUrl: 'icons/warehouse.png',
         iconSize: [18, 18],
         iconAnchor: [16, 32],
         popupAnchor: [0, -32]
@@ -1082,22 +1082,20 @@ const RouteManager = {
         document.body.appendChild(loadingDiv);
 
         try {
-            const parceiros = parceiros.filter(parceiro => {
-                // 1. DS igual à filtrada
-                const dsFiltrada = parceiro.ds === AppState.currentFilterdData;
+            const parceiros = AppState.currentFilteredData.filter(parceiro => {
 
-                // 2. Status Active ou Onboarding
+                // 1. Status Active ou Onboarding
                 const statusValido = parceiro.status === 'Active' || parceiro.status === 'Onboarding';
 
-                // 3. hubDeliveryInitiatives diferente de HCP Host Partner ou Pick Up Partner quando hcpRateCard for diferente de Tier 1
+                // 2. hubDeliveryInitiatives diferente de HCP Host Partner ou Pick Up Partner quando hcpRateCard for diferente de Tier 1
                 let hubDeliveryValido = true;
-                if (parceiro.hcpRateCard !== 'Tier 1') {
-                    hubDeliveryValido = parceiro.hubDeliveryInitiatives !== 'HCP Host Partner' &&
-                                        parceiro.hubDeliveryInitiatives !== 'Pick Up Partner';
+                if (parceiro.HCP_rate_card !== 'Tier 1') {
+                    hubDeliveryValido = parceiro.hub_delivey_initiatives !== 'HCP Host Partner' &&
+                                        parceiro.hub_delivey_initiatives !== 'HCP Pick Up Partner';
                 }
 
-                return dsFiltrada && statusValido && hubDeliveryValido;
-            }); 
+                return statusValido && hubDeliveryValido;
+            });
 
             if (!parceiros || parceiros.length === 0) {
                 alert("Nenhum parceiro carregado no mapa.");
@@ -1205,7 +1203,7 @@ const RouteManager = {
                             const dist = route.distance;   // metros
                             const dur = route.duration;    // segundos
 
-                            if (dist <= 6000 || dur <= 900) {
+                            if (dist <= 6000 && dur <= 900) {
                                 pickups.push(f);
                             }
                         }
@@ -1226,11 +1224,7 @@ const RouteManager = {
                 btn.classList.remove('btn-primary');
                 btn.classList.add('btn-danger');
                 btn.onclick = function() {
-                    RouteManager.resetHcpSuggestions();
-                    btn.textContent = 'Sugerir HCP Initiatives';
-                    btn.classList.remove('btn-danger');
-                    btn.classList.add('btn-primary');
-                    btn.onclick = () => RouteManager.hcpSuggestHostClusters();
+                    RouteManager.resetHcpSuggestions();                    
                 };
             }
 
@@ -1245,13 +1239,13 @@ const RouteManager = {
     // --- Aplicação visual no mapa ---
     hcpApplyClustersToMap: function(groups) {
         const hostIcon = L.icon({
-            iconUrl: "https://cdn-icons-png.flaticon.com/512/25/25694.png",
+            iconUrl: "icons/chain.png",
             iconSize: [30, 30],
             iconAnchor: [15, 30]
         });
 
         const pickupIcon = L.icon({
-            iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149059.png",
+            iconUrl: "icons/pickup.png",
             iconSize: [24, 24],
             iconAnchor: [12, 24]
         });
@@ -1285,6 +1279,8 @@ const RouteManager = {
             });
         });
 
+        DataManager.applyFilters();
+
         // --- Popup geral com todas as sugestões ---
         let popupDiv = document.getElementById('hcp-suggestions-popup');
         if (!popupDiv) {
@@ -1299,7 +1295,8 @@ const RouteManager = {
                 background:#fff; 
                 padding:24px 18px 18px 18px;
                 border-radius:8px;
-                box-shadow:0 2px 8px #0003; 
+                box-shadow:0 2px 8px #0003;
+                max-height:750px; 
                 max-width:350px;
                 min-width:220px;
                 font-size:1em;
@@ -1328,13 +1325,23 @@ const RouteManager = {
 
     resetHcpSuggestions: function() {
         // Remove todos os marcadores do mapa
-        AppState.markerObjects.forEach(m => AppState.map.removeLayer(m));
-        AppState.markerObjects = [];
-        // Recria marcadores com popups originais
-        MapManager.createMarkers(AppState.currentFilteredData, true);
+        AppState.map.eachLayer(function(layer) {
+            if (!(layer instanceof L.TileLayer)) {
+                AppState.map.removeLayer(layer);
+            }
+        });
         // Remove popup geral, se existir
         const popupDiv = document.getElementById('hcp-suggestions-popup');
         if (popupDiv) popupDiv.remove();
+        const btn = document.getElementById('suggest-routes-btn');
+        if (btn) {
+            btn.textContent = 'Sugerir HCP Initiatives';
+            btn.classList.remove('btn-danger');
+            btn.classList.add('btn-primary');
+            btn.onclick = () => RouteManager.hcpSuggestHostClusters();
+        }
+
+        DataManager.applyFilters();
     },
 
     startRouteFromHere: function(event, storeId, storeName) {
@@ -1391,7 +1398,5 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedStations = Array.from(this.selectedOptions).map(opt => opt.value);
         document.getElementById('suggest-routes-btn').style.display = (selectedStations.length === 1 && selectedStations[0] !== 'all') ? 'block' : 'none';
     });
-    document.getElementById('suggest-routes-btn').addEventListener('click', () => RouteManager.hcpSuggestHostClusters());
-
 });
 

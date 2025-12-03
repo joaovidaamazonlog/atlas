@@ -1340,7 +1340,9 @@ const RouteManager = {
         // Remove rotas sugeridas
         if (AppState.generatedRoutes && AppState.generatedRoutes.length > 0) {
             AppState.generatedRoutes.forEach(routeObj => {
-                if (routeObj.control) AppState.map.removeControl(routeObj.control);
+                if (routeObj && routeObj.control) {
+                    AppState.map.removeControl(routeObj.control);
+                }
             });
             AppState.generatedRoutes = [];
         }

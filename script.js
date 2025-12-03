@@ -1082,7 +1082,23 @@ const RouteManager = {
         document.body.appendChild(loadingDiv);
 
         try {
-            const parceiros = AppState.currentFilteredData; 
+            const parceiros = parceiros.filter(parceiro => {
+                // 1. DS igual à filtrada
+                const dsFiltrada = parceiro.ds === AppState.currentFilterdData;
+
+                // 2. Status Active ou Onboarding
+                const statusValido = parceiro.status === 'Active' || parceiro.status === 'Onboarding';
+
+                // 3. hubDeliveryInitiatives diferente de HCP Host Partner ou Pick Up Partner quando hcpRateCard for diferente de Tier 1
+                let hubDeliveryValido = true;
+                if (parceiro.hcpRateCard !== 'Tier 1') {
+                    hubDeliveryValido = parceiro.hubDeliveryInitiatives !== 'HCP Host Partner' &&
+                                        parceiro.hubDeliveryInitiatives !== 'Pick Up Partner';
+                }
+
+                return dsFiltrada && statusValido && hubDeliveryValido;
+            }); 
+
             if (!parceiros || parceiros.length === 0) {
                 alert("Nenhum parceiro carregado no mapa.");
                 return;
@@ -1210,10 +1226,7 @@ const RouteManager = {
                 btn.classList.remove('btn-primary');
                 btn.classList.add('btn-danger');
                 btn.onclick = function() {
-                    // Limpa marcadores sugeridos e restaura o mapa
-                    DataManager.applyFilters();
-                    const popupDiv = document.getElementById('hcp-suggestions-popup');
-                    if (popupDiv) popupDiv.remove();
+                    RouteManager.resetHcpSuggestions();
                     btn.textContent = 'Sugerir HCP Initiatives';
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-primary');
@@ -1252,8 +1265,10 @@ const RouteManager = {
             if (hostMarker) {
                 hostMarker.setStyle?.({});
                 const latlng = hostMarker.getLatLng();
+                const popupContent = hostMarker.getPopup() ? hostMarker.getPopup().getContent() : null;
                 AppState.map.removeLayer(hostMarker);
                 const newHostMarker = L.marker(latlng, { icon: hostIcon }).addTo(AppState.map);
+                if (popupContent) newHostMarker.bindPopup(popupContent);
                 markers[host.properties.store_id] = newHostMarker;
             }
             pickups.forEach(p => {
@@ -1261,8 +1276,10 @@ const RouteManager = {
                 if (pickupMarker) {
                     pickupMarker.setStyle?.({});
                     const latlng = pickupMarker.getLatLng();
+                    const popupContent = pickupMarker.getPopup() ? pickupMarker.getPopup().getContent() : null;
                     AppState.map.removeLayer(pickupMarker);
                     const newPickupMarker = L.marker(latlng, { icon: pickupIcon }).addTo(AppState.map);
+                    if (popupContent) newPickupMarker.bindPopup(popupContent);
                     markers[p.properties.store_id] = newPickupMarker;
                 }
             });
@@ -1274,9 +1291,18 @@ const RouteManager = {
             popupDiv = document.createElement('div');
             popupDiv.id = 'hcp-suggestions-popup';
             popupDiv.style = `
-                position:fixed; top:80px; right:20px; z-index:9999; background:#fff; 
-                padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 2px 8px #0003; 
-                max-width:350px; min-width:220px; font-size:1em;
+                position:fixed;
+                top:80px;
+                right:20px;
+                overflow-y:auto;
+                z-index:9999;
+                background:#fff; 
+                padding:24px 18px 18px 18px;
+                border-radius:8px;
+                box-shadow:0 2px 8px #0003; 
+                max-width:350px;
+                min-width:220px;
+                font-size:1em;
             `;
             document.body.appendChild(popupDiv);
         }
@@ -1298,6 +1324,17 @@ const RouteManager = {
             }
         });
         popupDiv.innerHTML = html;
+    },
+
+    resetHcpSuggestions: function() {
+        // Remove todos os marcadores do mapa
+        AppState.markerObjects.forEach(m => AppState.map.removeLayer(m));
+        AppState.markerObjects = [];
+        // Recria marcadores com popups originais
+        MapManager.createMarkers(AppState.currentFilteredData, true);
+        // Remove popup geral, se existir
+        const popupDiv = document.getElementById('hcp-suggestions-popup');
+        if (popupDiv) popupDiv.remove();
     },
 
     startRouteFromHere: function(event, storeId, storeName) {

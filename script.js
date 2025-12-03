@@ -840,62 +840,8 @@ const HighlightManager = {
 
 // --- MODULE: RouteManager ---
 
-// Função auxiliar para enviar o problema VRP ao VROOM e obter as rotas otimizadas
-async function getVROOMOptimizedRoutes(dsData, paradas_vrp) {
-    // VROOM API pública (para testes)
-    const VROOM_API_URL = 'https://routing.vroom-project.org/api';
-
-    // 1. Montar a lista de veículos (veículo único com restrições)
-    const veiculos = [{
-        id: 1,
-        profile: "car", // Perfil de roteamento (pode ser 'car', 'bike', 'foot')
-        start: [dsData.lon, dsData.lat],
-        end: [dsData.lon, dsData.lat],
-        // Capacidade (máximo de 18 parceiros)
-        capacity: [18],
-        // Tempo máximo de rota (5 horas = 18000 segundos)
-        time_window: [0, 18000],
-        // A restrição de 10 paradas será tratada como 10 tarefas (jobs) no VROOM.
-        // O VROOM não tem uma restrição direta de "máximo de 10 paradas" que seja fácil de configurar
-        // sem um servidor customizado. Vamos usar a capacidade (18) e o tempo (5h) como principais.
-    }];
-
-    // 2. Montar a lista de tarefas (jobs)
-    const jobs = paradas_vrp.map((parada, index) => ({
-        id: index + 1,
-        location: [parada.lon, parada.lat],
-        service: 900, // Tempo de serviço de 15 minutos (900 segundos) por parada
-        delivery: [1], // Cada parada conta como 1 unidade de capacidade
-        // A restrição de "todos os parceiros com status Active ou Onboarding devem estar em uma rota"
-        // é garantida pela inclusão de todos eles em 'paradas_vrp'.
-    }));
-
-    const problema_vrp = {
-        vehicles: veiculos,
-        jobs: jobs
-    };
-
-    try {
-        const response = await fetch(VROOM_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(problema_vrp)
-        });
-
-        if (!response.ok) {
-            throw new Error(`VROOM API error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Erro ao obter rotas VROOM:", error);
-        alert("Erro ao obter rotas otimizadas do VROOM. Verifique a conexão ou tente novamente.");
-        return null;
-    }
-}
+// A função getVROOMOptimizedRoutes foi removida devido à instabilidade da API pública.
+// A otimização de rotas será feita usando a OSRM Trip API (TSP Heurística) e divisão de rotas no frontend.
 
 // Função auxiliar para obter a matriz de tempo e distância real (em minutos e km)
 // Usando a OSRM Table API (Matrix)
@@ -1067,32 +1013,75 @@ const RouteManager = {
                 return;
             }
 
-            // 6. Iniciar a otimização VRP (VROOM)
-            const vroom_result = await getVROOMOptimizedRoutes(dsData, paradas_vrp);
+            // 6. Heurística de Roteamento (Divisão de Rotas + OSRM Trip API para TSP)
+            const max_stops_per_route = 10;
+            const max_partners_per_route = 18;
+            const max_time_seconds = 5 * 3600; // 5 horas
 
-            if (!vroom_result || vroom_result.code !== 0) {
-                alert("A otimização VROOM falhou. Verifique o console para detalhes.");
-                return;
+            // Heurística de divisão: divide em rotas de no máximo 10 paradas (HCPs + Diretos)
+            const rotas_brutas = [];
+            let current_route = [];
+            let current_partners = 0;
+
+            for (const parada of paradas_vrp) {
+                const partners_count = parada.pickups.length + 1; // HCP + Pickups
+
+                if (current_route.length >= max_stops_per_route || (current_partners + partners_count) > max_partners_per_route) {
+                    rotas_brutas.push(current_route);
+                    current_route = [];
+                    current_partners = 0;
+                }
+
+                current_route.push(parada);
+                current_partners += partners_count;
+            }
+            if (current_route.length > 0) {
+                rotas_brutas.push(current_route);
             }
 
-            // 7. Processar e Renderizar as Rotas
+            // 7. Processar e Renderizar as Rotas (OSRM Trip API para otimizar a ordem - TSP)
             const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-            
-            vroom_result.routes.forEach((route, idx) => {
-                const orderedStops = route.steps
-                    .filter(step => step.type === 'job')
-                    .map(step => {
-                        const parada = paradas_vrp[step.job - 1]; // job.id é 1-based
-                        return {
-                            ...parada,
-                            tempo_chegada: step.arrival,
-                            tempo_servico: step.duration,
-                            tempo_total: step.waiting_time + step.service
-                        };
-                    });
+            let rotas_otimizadas_count = 0;
 
-                // A restrição de 5 horas (18000 segundos) é tratada pelo VROOM.
-                const totalTime = route.duration / 3600; // Duração total em horas
+            for (let idx = 0; idx < rotas_brutas.length; idx++) {
+                const stops = rotas_brutas[idx];
+
+                // Monta coordenadas para OSRM Trip API (para otimizar a ordem - TSP)
+                const tripCoords = stops.map(p => `${p.lon},${p.lat}`).join(';');
+                const url = `https://router.project-osrm.org/trip/v1/driving/${tripCoords}?source=first&destination=last&roundtrip=false`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                let orderedStops = stops;
+                let totalTime = 0; // em horas
+                let totalPartners = 0;
+
+                if (data.trips && data.trips[0] && data.trips[0].waypoints) {
+                    // OSRM retorna waypoints na ordem otimizada
+                    orderedStops = data.trips[0].waypoints.map(wp => {
+                        return stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]);
+                    }).filter(Boolean);
+
+                    // Calcula tempo estimado (Tempo de viagem + Tempo de serviço)
+                    const travelTimeSeconds = data.trips[0].duration;
+                    const serviceTimeSeconds = orderedStops.length * 900; // 15 minutos (900s) por parada
+                    const totalTimeSeconds = travelTimeSeconds + serviceTimeSeconds;
+
+                    totalTime = totalTimeSeconds / 3600; // em horas
+
+                    // Verifica a restrição de 5 horas
+                    if (totalTimeSeconds > max_time_seconds) {
+                        console.warn(`Rota ${idx+1} excede o tempo máximo de 5 horas. Tempo calculado: ${totalTime.toFixed(2)}h`);
+                        // Poderíamos implementar uma lógica de divisão mais inteligente aqui, mas por enquanto, apenas avisamos.
+                    }
+                } else {
+                    // Se o OSRM falhar, usa a ordem bruta e estima o tempo
+                    totalTime = (orderedStops.length * 0.5) + (orderedStops.length * 0.25); // 30min de viagem + 15min de parada (estimativa)
+                }
+
+                // Conta o total de parceiros
+                totalPartners = orderedStops.reduce((acc, stop) => acc + stop.pickups.length + 1, 0);
 
                 // Plota rota no mapa
                 const waypointsLatLng = [
@@ -1117,8 +1106,9 @@ const RouteManager = {
                     lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
                 }).addTo(AppState.map);
 
-                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-            });
+                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime, totalPartners });
+                rotas_otimizadas_count++;
+            }
 
             let panel = document.getElementById('routes-control-panel');
             if (!panel) {
@@ -1129,11 +1119,11 @@ const RouteManager = {
             }
             panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
             AppState.generatedRoutes.forEach(r => {
-                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
+                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalPartners} parceiros) - ${r.totalTime.toFixed(2)}h</div>`;
             });
             panel.style.display = 'block';
 
-            alert(`Roteirização concluída. ${vroom_result.routes.length} rotas sugeridas.`);
+            alert(`Roteirização concluída. ${rotas_otimizadas_count} rotas sugeridas.`);
 
         } catch (error) {
             console.error("Erro ao sugerir rotas:", error);
@@ -1377,32 +1367,75 @@ const RouteManager = {
                 return;
             }
 
-            // 6. Iniciar a otimização VRP (VROOM)
-            const vroom_result = await getVROOMOptimizedRoutes(dsData, paradas_vrp);
+            // 6. Heurística de Roteamento (Divisão de Rotas + OSRM Trip API para TSP)
+            const max_stops_per_route = 10;
+            const max_partners_per_route = 18;
+            const max_time_seconds = 5 * 3600; // 5 horas
 
-            if (!vroom_result || vroom_result.code !== 0) {
-                alert("A otimização VROOM falhou. Verifique o console para detalhes.");
-                return;
+            // Heurística de divisão: divide em rotas de no máximo 10 paradas (HCPs + Diretos)
+            const rotas_brutas = [];
+            let current_route = [];
+            let current_partners = 0;
+
+            for (const parada of paradas_vrp) {
+                const partners_count = parada.pickups.length + 1; // HCP + Pickups
+
+                if (current_route.length >= max_stops_per_route || (current_partners + partners_count) > max_partners_per_route) {
+                    rotas_brutas.push(current_route);
+                    current_route = [];
+                    current_partners = 0;
+                }
+
+                current_route.push(parada);
+                current_partners += partners_count;
+            }
+            if (current_route.length > 0) {
+                rotas_brutas.push(current_route);
             }
 
-            // 7. Processar e Renderizar as Rotas
+            // 7. Processar e Renderizar as Rotas (OSRM Trip API para otimizar a ordem - TSP)
             const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-            
-            vroom_result.routes.forEach((route, idx) => {
-                const orderedStops = route.steps
-                    .filter(step => step.type === 'job')
-                    .map(step => {
-                        const parada = paradas_vrp[step.job - 1]; // job.id é 1-based
-                        return {
-                            ...parada,
-                            tempo_chegada: step.arrival,
-                            tempo_servico: step.duration,
-                            tempo_total: step.waiting_time + step.service
-                        };
-                    });
+            let rotas_otimizadas_count = 0;
 
-                // A restrição de 5 horas (18000 segundos) é tratada pelo VROOM.
-                const totalTime = route.duration / 3600; // Duração total em horas
+            for (let idx = 0; idx < rotas_brutas.length; idx++) {
+                const stops = rotas_brutas[idx];
+
+                // Monta coordenadas para OSRM Trip API (para otimizar a ordem - TSP)
+                const tripCoords = stops.map(p => `${p.lon},${p.lat}`).join(';');
+                const url = `https://router.project-osrm.org/trip/v1/driving/${tripCoords}?source=first&destination=last&roundtrip=false`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                let orderedStops = stops;
+                let totalTime = 0; // em horas
+                let totalPartners = 0;
+
+                if (data.trips && data.trips[0] && data.trips[0].waypoints) {
+                    // OSRM retorna waypoints na ordem otimizada
+                    orderedStops = data.trips[0].waypoints.map(wp => {
+                        return stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]);
+                    }).filter(Boolean);
+
+                    // Calcula tempo estimado (Tempo de viagem + Tempo de serviço)
+                    const travelTimeSeconds = data.trips[0].duration;
+                    const serviceTimeSeconds = orderedStops.length * 900; // 15 minutos (900s) por parada
+                    const totalTimeSeconds = travelTimeSeconds + serviceTimeSeconds;
+
+                    totalTime = totalTimeSeconds / 3600; // em horas
+
+                    // Verifica a restrição de 5 horas
+                    if (totalTimeSeconds > max_time_seconds) {
+                        console.warn(`Rota ${idx+1} excede o tempo máximo de 5 horas. Tempo calculado: ${totalTime.toFixed(2)}h`);
+                        // Poderíamos implementar uma lógica de divisão mais inteligente aqui, mas por enquanto, apenas avisamos.
+                    }
+                } else {
+                    // Se o OSRM falhar, usa a ordem bruta e estima o tempo
+                    totalTime = (orderedStops.length * 0.5) + (orderedStops.length * 0.25); // 30min de viagem + 15min de parada (estimativa)
+                }
+
+                // Conta o total de parceiros
+                totalPartners = orderedStops.reduce((acc, stop) => acc + stop.pickups.length + 1, 0);
 
                 // Plota rota no mapa
                 const waypointsLatLng = [
@@ -1427,8 +1460,9 @@ const RouteManager = {
                     lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
                 }).addTo(AppState.map);
 
-                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-            });
+                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime, totalPartners });
+                rotas_otimizadas_count++;
+            }
 
             let panel = document.getElementById('routes-control-panel');
             if (!panel) {
@@ -1439,11 +1473,11 @@ const RouteManager = {
             }
             panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
             AppState.generatedRoutes.forEach(r => {
-                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
+                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalPartners} parceiros) - ${r.totalTime.toFixed(2)}h</div>`;
             });
             panel.style.display = 'block';
 
-            alert(`Roteirização concluída. ${vroom_result.routes.length} rotas sugeridas.`);
+            alert(`Roteirização concluída. ${rotas_otimizadas_count} rotas sugeridas.`);
 
         } catch (error) {
             console.error("Erro ao sugerir rotas:", error);

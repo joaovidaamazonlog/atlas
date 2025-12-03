@@ -1116,12 +1116,5 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeTab = $(e.target).attr('href').replace('#', '');
         UIManager.updateStats(activeTab);
     });
-
-    // Sugestions Route Tab
-    document.getElementById('stationFilter').addEventListener('change', function() {
-        const selectedStations = Array.from(this.selectedOptions).map(opt => opt.value);
-        document.getElementById('suggest-routes-btn').style.display = (selectedStations.length === 1 && selectedStations[0] !== 'all') ? 'block' : 'none';
-    });
-    document.getElementById('suggest-routes-btn').addEventListener('click', () => RouteManager.suggestOptimizedRoutes());
 });
 

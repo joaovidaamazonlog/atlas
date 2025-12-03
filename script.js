@@ -1073,127 +1073,160 @@ const RouteManager = {
     // --- HCP Host/Pick-up Suggestion System ---
     hcpSuggestHostClusters: async function() {
 
-        const parceiros = AppState.currentFilteredData; 
-        if (!parceiros || parceiros.length === 0) {
-            alert("Nenhum parceiro carregado no mapa.");
-            return;
-        }
+        let loadingDiv = document.createElement('div');
+        loadingDiv.id = 'routes-loading';
+        loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
+        loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
+            <i class="fas fa-spinner fa-spin mr-2"></i> Processando rotas otimizadas, aguarde...
+        </div>`;
+        document.body.appendChild(loadingDiv);
 
-        // GeoJSON base
-        const features = parceiros.map(p => ({
-            type: "Feature",
-            properties: { 
-                store_id: p.store_id,
-                name: p.name,
-                lat: p.lat,
-                lon: p.lon
-            },
-            geometry: { type: "Point", coordinates: [p.lon, p.lat] }
-        }));
+        try {
+            const parceiros = AppState.currentFilteredData; 
+            if (!parceiros || parceiros.length === 0) {
+                alert("Nenhum parceiro carregado no mapa.");
+                return;
+            }
 
-        const fc = { type: "FeatureCollection", features };
+            // GeoJSON base
+            const features = parceiros.map(p => ({
+                type: "Feature",
+                properties: { 
+                    store_id: p.store_id,
+                    name: p.name,
+                    lat: p.lat,
+                    lon: p.lon
+                },
+                geometry: { type: "Point", coordinates: [p.lon, p.lat] }
+            }));
 
-        // Estimar número de clusters
-        const numClusters = Math.ceil(parceiros.length / 5);
+            const fc = { type: "FeatureCollection", features };
 
-        // Rodar KMeans
-        let clustered = turf.clustersKmeans(fc, { numberOfClusters: numClusters });
+            // Estimar número de clusters
+            const numClusters = Math.ceil(parceiros.length / 5);
 
-        // Agrupar clusters
-        let clusters = {};
-        clustered.features.forEach(f => {
-            const cid = f.properties.cluster;
-            if (!clusters[cid]) clusters[cid] = [];
-            clusters[cid].push(f);
-        });
+            // Rodar KMeans
+            let clustered = turf.clustersKmeans(fc, { numberOfClusters: numClusters });
 
-        // Função para quebrar clusters >6
-        const splitCluster = (grupo) => {
-            const qtd = grupo.length;
-            const needed = Math.ceil(qtd / 6);
-            const subC = turf.clustersKmeans({
-                type: "FeatureCollection",
-                features: grupo
-            }, { numberOfClusters: needed });
-
-            let out = {};
-            subC.features.forEach(f => {
+            // Agrupar clusters
+            let clusters = {};
+            clustered.features.forEach(f => {
                 const cid = f.properties.cluster;
-                if (!out[cid]) out[cid] = [];
-                out[cid].push(f);
+                if (!clusters[cid]) clusters[cid] = [];
+                clusters[cid].push(f);
             });
 
-            return Object.values(out).filter(c => c.length >= 4 && c.length <= 6);
-        };
+            // Função para quebrar clusters >6
+            const splitCluster = (grupo) => {
+                const qtd = grupo.length;
+                const needed = Math.ceil(qtd / 6);
+                const subC = turf.clustersKmeans({
+                    type: "FeatureCollection",
+                    features: grupo
+                }, { numberOfClusters: needed });
 
-        // Validar clusters
-        let validClusters = [];
-        for (const cid in clusters) {
-            const grupo = clusters[cid];
-            
-            if (grupo.length < 4) continue;
-            if (grupo.length > 6) {
-                validClusters.push(...splitCluster(grupo));
-            } else {
-                validClusters.push(grupo);
-            }
-        }
+                let out = {};
+                subC.features.forEach(f => {
+                    const cid = f.properties.cluster;
+                    if (!out[cid]) out[cid] = [];
+                    out[cid].push(f);
+                });
 
-        // Processar Host + Pick-ups
-        const result = [];
+                return Object.values(out).filter(c => c.length >= 4 && c.length <= 6);
+            };
 
-        for (const grupo of validClusters) {
-
-            // Centróide do cluster
-            const centroid = turf.centroid({
-                type: "FeatureCollection",
-                features: grupo
-            });
-
-            // Encontrar host = mais próximo do centróide
-            let host = null;
-            let bestDist = Infinity;
-
-            grupo.forEach(f => {
-                const d = turf.distance(centroid, f);
-                if (d < bestDist) {
-                    bestDist = d;
-                    host = f;
+            // Validar clusters
+            let validClusters = [];
+            for (const cid in clusters) {
+                const grupo = clusters[cid];
+                
+                if (grupo.length < 4) continue;
+                if (grupo.length > 6) {
+                    validClusters.push(...splitCluster(grupo));
+                } else {
+                    validClusters.push(grupo);
                 }
-            });
+            }
 
-            const hostCoords = host.geometry.coordinates;
-            const pickups = [];
+            // Processar Host + Pick-ups
+            const result = [];
 
-            // Validar pick-ups por OSRM
-            for (const f of grupo) {
-                if (f.properties.store_id === host.properties.store_id) continue;
+            for (const grupo of validClusters) {
 
-                const url = `'https://router.project-osrm.org/route/v1/driving/${f.geometry.coordinates[0]}${f.geometry.coordinates[1]}${hostCoords[0]},${hostCoords[1]}?overview=false'`;
+                // Centróide do cluster
+                const centroid = turf.centroid({
+                    type: "FeatureCollection",
+                    features: grupo
+                });
 
-                try {
-                    const res = await fetch(url);
-                    const data = await res.json();
+                // Encontrar host = mais próximo do centróide
+                let host = null;
+                let bestDist = Infinity;
 
-                    if (data.routes?.length > 0) {
-                        const route = data.routes[0];
-                        const dist = route.distance;   // metros
-                        const dur = route.duration;    // segundos
-
-                        if (dist <= 6000 || dur <= 900) {
-                            pickups.push(f);
-                        }
+                grupo.forEach(f => {
+                    const d = turf.distance(centroid, f);
+                    if (d < bestDist) {
+                        bestDist = d;
+                        host = f;
                     }
-                } catch (e) {
-                    console.warn(e);
+                });
+
+                const hostCoords = host.geometry.coordinates;
+                const pickups = [];
+
+                // Validar pick-ups por OSRM
+                for (const f of grupo) {
+                    if (f.properties.store_id === host.properties.store_id) continue;
+
+                    const url = `https://router.project-osrm.org/route/v1/driving/${f.geometry.coordinates[0]},${f.geometry.coordinates[1]};${hostCoords[0]},${hostCoords[1]}?overview=false`;
+
+                    try {
+                        const res = await fetch(url);
+                        const data = await res.json();
+
+                        if (data.routes?.length > 0) {
+                            const route = data.routes[0];
+                            const dist = route.distance;   // metros
+                            const dur = route.duration;    // segundos
+
+                            if (dist <= 6000 || dur <= 900) {
+                                pickups.push(f);
+                            }
+                        }
+                    } catch (e) {
+                        console.warn(e);
+                    }
                 }
+
+                result.push({ host, pickups });
             }
 
-            result.push({ host, pickups });
+            // Aplicar no mapa
+            this.hcpApplyClustersToMap(result);
+
+            const btn = document.getElementById('suggest-routes-btn');
+            if (btn) {
+                btn.textContent = 'Limpar Sugestões';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-danger');
+                btn.onclick = function() {
+                    // Limpa marcadores sugeridos e restaura o mapa
+                    DataManager.applyFilters();
+                    const popupDiv = document.getElementById('hcp-suggestions-popup');
+                    if (popupDiv) popupDiv.remove();
+                    btn.textContent = 'Sugerir HCP Initiatives';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-primary');
+                    btn.onclick = () => RouteManager.hcpSuggestHostClusters();
+                };
+            }
+
+        } finally {
+            // Remove alerta/spinner ao finalizar
+            const div = document.getElementById('routes-loading');
+            if (div) div.remove();
         }
 
-        // Aplicar no mapa
-        this.hcpApplyClustersToMap(result);
     },
 
     // --- Aplicação visual no mapa ---
@@ -1251,8 +1284,6 @@ const RouteManager = {
                 }
             });
         });
-
-        alert("Hosts e Pick-ups sugeridos com sucesso!");
     },
 
     startRouteFromHere: function(event, storeId, storeName) {

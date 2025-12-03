@@ -908,6 +908,38 @@ const RouteManager = {
             createMarker: (i, wp) => L.marker(wp.latLng),
             lineOptions: { styles: [{color: 'blue', opacity: 0.8, weight: 5}] }
         }).addTo(AppState.map);
+
+        AppState.routingControl.on('routesfound', function(e) {
+            const route = e.routes[0];
+            const coords = route.coordinates; // Array de {lat, lng}
+            if (!coords || coords.length === 0) return;
+
+            // Ícone do veículo (pode ser um GIF ou PNG)
+            const vehicleIcon = L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/743/743007.png', //caminhão
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            // Cria o marcador do veículo na origem
+            let vehicleMarker = L.marker([coords[0].lat, coords[0].lng], { icon: vehicleIcon }).addTo(AppState.map);
+
+            let idx = 0;
+            const speed = 50; // ms entre cada ponto (ajuste para mais suave/rápido)
+            let animation = setInterval(() => {
+                idx++;
+                if (idx >= coords.length) {
+                    clearInterval(animation);
+                    return;
+                }
+                vehicleMarker.setLatLng([coords[idx].lat, coords[idx].lng]);
+            }, speed);
+
+            // Opcional: remover marcador ao limpar rota
+            AppState.routingControl.on('routeselected', function() {
+                if (vehicleMarker) AppState.map.removeLayer(vehicleMarker);
+            });
+        });
     },
 
     addStop: function() {

@@ -1070,6 +1070,191 @@ const RouteManager = {
         this.renderStopsList();
     },
 
+    // --- HCP Host/Pick-up Suggestion System ---
+    hcpSuggestHostClusters: async function() {
+
+        const parceiros = AppState.currentFilteredData; 
+        if (!parceiros || parceiros.length === 0) {
+            alert("Nenhum parceiro carregado no mapa.");
+            return;
+        }
+
+        // GeoJSON base
+        const features = parceiros.map(p => ({
+            type: "Feature",
+            properties: { 
+                store_id: p.store_id,
+                name: p.name,
+                lat: p.lat,
+                lon: p.lon
+            },
+            geometry: { type: "Point", coordinates: [p.lon, p.lat] }
+        }));
+
+        const fc = { type: "FeatureCollection", features };
+
+        // Estimar número de clusters
+        const numClusters = Math.ceil(parceiros.length / 5);
+
+        // Rodar KMeans
+        let clustered = turf.clustersKmeans(fc, { numberOfClusters: numClusters });
+
+        // Agrupar clusters
+        let clusters = {};
+        clustered.features.forEach(f => {
+            const cid = f.properties.cluster;
+            if (!clusters[cid]) clusters[cid] = [];
+            clusters[cid].push(f);
+        });
+
+        // Função para quebrar clusters >6
+        const splitCluster = (grupo) => {
+            const qtd = grupo.length;
+            const needed = Math.ceil(qtd / 6);
+            const subC = turf.clustersKmeans({
+                type: "FeatureCollection",
+                features: grupo
+            }, { numberOfClusters: needed });
+
+            let out = {};
+            subC.features.forEach(f => {
+                const cid = f.properties.cluster;
+                if (!out[cid]) out[cid] = [];
+                out[cid].push(f);
+            });
+
+            return Object.values(out).filter(c => c.length >= 4 && c.length <= 6);
+        };
+
+        // Validar clusters
+        let validClusters = [];
+        for (const cid in clusters) {
+            const grupo = clusters[cid];
+            
+            if (grupo.length < 4) continue;
+            if (grupo.length > 6) {
+                validClusters.push(...splitCluster(grupo));
+            } else {
+                validClusters.push(grupo);
+            }
+        }
+
+        // Processar Host + Pick-ups
+        const result = [];
+
+        for (const grupo of validClusters) {
+
+            // Centróide do cluster
+            const centroid = turf.centroid({
+                type: "FeatureCollection",
+                features: grupo
+            });
+
+            // Encontrar host = mais próximo do centróide
+            let host = null;
+            let bestDist = Infinity;
+
+            grupo.forEach(f => {
+                const d = turf.distance(centroid, f);
+                if (d < bestDist) {
+                    bestDist = d;
+                    host = f;
+                }
+            });
+
+            const hostCoords = host.geometry.coordinates;
+            const pickups = [];
+
+            // Validar pick-ups por OSRM
+            for (const f of grupo) {
+                if (f.properties.store_id === host.properties.store_id) continue;
+
+                const url = `'https://router.project-osrm.org/route/v1/driving/${f.geometry.coordinates[0]}${f.geometry.coordinates[1]}${hostCoords[0]},${hostCoords[1]}?overview=false'`;
+
+                try {
+                    const res = await fetch(url);
+                    const data = await res.json();
+
+                    if (data.routes?.length > 0) {
+                        const route = data.routes[0];
+                        const dist = route.distance;   // metros
+                        const dur = route.duration;    // segundos
+
+                        if (dist <= 6000 || dur <= 900) {
+                            pickups.push(f);
+                        }
+                    }
+                } catch (e) {
+                    console.warn(e);
+                }
+            }
+
+            result.push({ host, pickups });
+        }
+
+        // Aplicar no mapa
+        this.hcpApplyClustersToMap(result);
+    },
+
+    // --- Aplicação visual no mapa ---
+    hcpApplyClustersToMap: function(groups) {
+
+        const hostIcon = L.icon({
+            iconUrl: "https://cdn-icons-png.flaticon.com/512/25/25694.png",
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+
+        const pickupIcon = L.icon({
+            iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149059.png",
+            iconSize: [24, 24],
+            iconAnchor: [12, 24]
+        });
+
+        // Mapa dos marcadores já renderizados
+        const markers = {};
+        AppState.markerObjects.forEach(m => markers[m.markerData.store_id] = m);
+
+        groups.forEach(({ host, pickups }) => {
+
+            const hostMarker = markers[host.properties.store_id];
+            if (hostMarker) {
+                hostMarker.setStyle?.({}); // remove estilo circleMarker
+                const latlng = hostMarker.getLatLng();
+                AppState.map.removeLayer(hostMarker);
+
+                const newHostMarker = L.marker(latlng, { icon: hostIcon }).addTo(AppState.map);
+                markers[host.properties.store_id] = newHostMarker;
+
+                // Popup do host
+                let html = `<b>HCP Host:</b> ${host.properties.name}<br>`;
+                html += `<b>Pick-ups:</b><br>`;
+                pickups.forEach(p => html += `• ${p.properties.name}<br>`);
+                
+                newHostMarker.bindPopup(html);
+            }
+
+            pickups.forEach(p => {
+                const pickupMarker = markers[p.properties.store_id];
+                if (pickupMarker) {
+                    pickupMarker.setStyle?.({});
+                    const latlng = pickupMarker.getLatLng();
+                    AppState.map.removeLayer(pickupMarker);
+
+                    const newPickupMarker = L.marker(latlng, { icon: pickupIcon }).addTo(AppState.map);
+                    markers[p.properties.store_id] = newPickupMarker;
+
+                    newPickupMarker.bindPopup(
+                        `<b>Pick-up:</b> ${p.properties.name}<br>` +
+                        `<b>Host:</b> ${host.properties.name}`
+                    );
+                }
+            });
+        });
+
+        alert("Hosts e Pick-ups sugeridos com sucesso!");
+    },
+
     startRouteFromHere: function(event, storeId, storeName) {
         event.stopPropagation();
         document.getElementById('routeFromId').value = storeId;
@@ -1120,5 +1305,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeTab = $(e.target).attr('href').replace('#', '');
         UIManager.updateStats(activeTab);
     });
+    document.getElementById('stationFilter').addEventListener('change', function() {
+        const selectedStations = Array.from(this.selectedOptions).map(opt => opt.value);
+        document.getElementById('suggest-routes-btn').style.display = (selectedStations.length === 1 && selectedStations[0] !== 'all') ? 'block' : 'none';
+    });
+    document.getElementById('suggest-routes-btn').addEventListener('click', () => RouteManager.hcpSuggestHostClusters());
+
 });
 

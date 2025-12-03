@@ -957,8 +957,8 @@ const RouteManager = {
             // Função para animar o caminhão continuamente
             function animateTruck() {
                 let idx = 0;
+                // Move o marcador existente para o ponto inicial
                 RouteManager.vehicleMarker.setLatLng([coords[0].lat, coords[0].lng]);
-                // Garante orientação inicial
                 if (coords.length > 1) {
                     const angle = getAngle(coords[0].lat, coords[0].lng, coords[1].lat, coords[1].lng);
                     RouteManager.vehicleMarker._icon.style.transform = `rotate(${angle}deg)`;
@@ -968,19 +968,18 @@ const RouteManager = {
                         idx++;
                         if (idx >= coords.length) {
                             clearInterval(RouteManager.vehicleAnimation);
-                            setTimeout(animateTruck, 2000); // Espera 2s e reinicia
+                            setTimeout(animateTruck, 2000); // Espera 2s e reinicia, sem criar novo marcador
                             return;
                         }
                         RouteManager.vehicleMarker.setLatLng([coords[idx].lat, coords[idx].lng]);
-                        // Rotaciona o ícone
                         if (idx < coords.length - 1) {
                             const angle = getAngle(coords[idx].lat, coords[idx].lng, coords[idx + 1].lat, coords[idx + 1].lng);
                             RouteManager.vehicleMarker._icon.style.transform = `rotate(${angle}deg)`;
                         }
                     }, 80);
-                }, 2000); // Espera 2s no ponto inicial
+                }, 2000);
             }
-
+            
             animateTruck();
         });
     },

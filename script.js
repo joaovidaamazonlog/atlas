@@ -921,29 +921,67 @@ const RouteManager = {
 
         AppState.routingControl.on('routesfound', function(e) {
             const route = e.routes[0];
-            const coords = route.coordinates; // Array de {lat, lng}
+            const coords = route.coordinates;
             if (!coords || coords.length === 0) return;
 
-            // Ícone do veículo (pode ser um GIF ou PNG)
+            // Caminhão customizado (use um PNG com orientação para a direita)
             const vehicleIcon = L.icon({
-                iconUrl: 'delivery.png', //caminhão
+                iconUrl: 'delivery.png',
                 iconSize: [32, 32],
-                iconAnchor: [16, 16]
+                iconAnchor: [16, 16],
+                className: 'vehicle-marker'
             });
 
-            // Cria o marcador do veículo na origem
-            let vehicleMarker = L.marker([coords[0].lat, coords[0].lng], { icon: vehicleIcon }).addTo(AppState.map);
+            // Remove marcador anterior se existir
+            if (RouteManager.vehicleMarker) {
+                AppState.map.removeLayer(RouteManager.vehicleMarker);
+                RouteManager.vehicleMarker = null;
+            }
+            // Remove animação anterior se existir
+            if (RouteManager.vehicleAnimation) {
+                clearInterval(RouteManager.vehicleAnimation);
+                RouteManager.vehicleAnimation = null;
+            }
 
-            let idx = 0;
-            const speed = 50; // ms entre cada ponto (ajuste para mais suave/rápido)
-            let animation = setInterval(() => {
-                idx++;
-                if (idx >= coords.length) {
-                    clearInterval(animation);
-                    return;
+            // Cria o marcador do caminhão na origem
+            RouteManager.vehicleMarker = L.marker([coords[0].lat, coords[0].lng], { icon: vehicleIcon }).addTo(AppState.map);
+
+            // Função para calcular ângulo entre dois pontos
+            function getAngle(lat1, lng1, lat2, lng2) {
+                const dy = lat2 - lat1;
+                const dx = lng2 - lng1;
+                const theta = Math.atan2(dy, dx);
+                return theta * (180 / Math.PI);
+            }
+
+            // Função para animar o caminhão continuamente
+            function animateTruck() {
+                let idx = 0;
+                RouteManager.vehicleMarker.setLatLng([coords[0].lat, coords[0].lng]);
+                // Garante orientação inicial
+                if (coords.length > 1) {
+                    const angle = getAngle(coords[0].lat, coords[0].lng, coords[1].lat, coords[1].lng);
+                    RouteManager.vehicleMarker._icon.style.transform = `rotate(${angle}deg)`;
                 }
-                vehicleMarker.setLatLng([coords[idx].lat, coords[idx].lng]);
-            }, speed);
+                setTimeout(() => {
+                    RouteManager.vehicleAnimation = setInterval(() => {
+                        idx++;
+                        if (idx >= coords.length) {
+                            clearInterval(RouteManager.vehicleAnimation);
+                            setTimeout(animateTruck, 2000); // Espera 2s e reinicia
+                            return;
+                        }
+                        RouteManager.vehicleMarker.setLatLng([coords[idx].lat, coords[idx].lng]);
+                        // Rotaciona o ícone
+                        if (idx < coords.length - 1) {
+                            const angle = getAngle(coords[idx].lat, coords[idx].lng, coords[idx + 1].lat, coords[idx + 1].lng);
+                            RouteManager.vehicleMarker._icon.style.transform = `rotate(${angle}deg)`;
+                        }
+                    }, 80);
+                }, 2000); // Espera 2s no ponto inicial
+            }
+
+            animateTruck();
         });
     },
 

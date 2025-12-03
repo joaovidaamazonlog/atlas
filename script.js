@@ -836,887 +836,9 @@ const HighlightManager = {
     resetHighlight: function() {
         DataManager.applyFilters();
     }
-};
+}
 
 // --- MODULE: RouteManager ---
-
-// Função auxiliar para enviar o problema VRP ao VROOM e obter as rotas otimizadas
-async function getVROOMOptimizedRoutes(dsData, paradas_vrp) {
-    // VROOM API pública (para testes)
-    const VROOM_API_URL = 'https://routing.vroom-project.org/api';
-
-    // 1. Montar a lista de veículos (veículo único com restrições)
-    const veiculos = [{
-        id: 1,
-        profile: "car", // Perfil de roteamento (pode ser 'car', 'bike', 'foot')
-        start: [dsData.lon, dsData.lat],
-        end: [dsData.lon, dsData.lat],
-        // Capacidade (máximo de 18 parceiros)
-        capacity: [18],
-        // Tempo máximo de rota (5 horas = 18000 segundos)
-        time_window: [0, 18000],
-        // A restrição de 10 paradas será tratada como 10 tarefas (jobs) no VROOM.
-        // O VROOM não tem uma restrição direta de "máximo de 10 paradas" que seja fácil de configurar
-        // sem um servidor customizado. Vamos usar a capacidade (18) e o tempo (5h) como principais.
-    }];
-
-    // 2. Montar a lista de tarefas (jobs)
-    const jobs = paradas_vrp.map((parada, index) => ({
-        id: index + 1,
-        location: [parada.lon, parada.lat],
-        service: 900, // Tempo de serviço de 15 minutos (900 segundos) por parada
-        delivery: [1], // Cada parada conta como 1 unidade de capacidade
-        // A restrição de "todos os parceiros com status Active ou Onboarding devem estar em uma rota"
-        // é garantida pela inclusão de todos eles em 'paradas_vrp'.
-    }));
-
-    const problema_vrp = {
-        vehicles: veiculos,
-        jobs: jobs
-    };
-
-    try {
-        const response = await fetch(VROOM_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(problema_vrp)
-        });
-
-        if (!response.ok) {
-            throw new Error(`VROOM API error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Erro ao obter rotas VROOM:", error);
-        alert("Erro ao obter rotas otimizadas do VROOM. Verifique a conexão ou tente novamente.");
-        return null;
-    }
-}
-
-// Função auxiliar para obter a matriz de tempo e distância real (em minutos e km)
-// Usando a OSRM Table API (Matrix)
-async function getOSRMTimeDistanceMatrix(points) {
-    if (points.length === 0) return { times: [], distances: [] };
-
-    // Coordenadas no formato OSRM: lon,lat;lon,lat;...
-    const coords = points.map(p => `${p.lon},${p.lat}`).join(';');
-    const url = `https://router.project-osrm.org/table/v1/driving/${coords}?annotations=duration,distance`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`OSRM API error: ${response.statusText}`);
-        }
-        const data = await response.json();
-
-        // durations está em segundos, convertemos para minutos
-        const times = data.durations.map(row => row.map(time => time / 60));
-        // distances está em metros, convertemos para km
-        const distances = data.distances.map(row => row.map(dist => dist / 1000));
-
-        return { times, distances };
-    } catch (error) {
-        console.error("Erro ao obter matriz OSRM:", error);
-        alert("Erro ao obter matriz de distância/tempo do OSRM. Verifique a conexão ou tente novamente.");
-        return { times: [], distances: [] };
-    }
-}
-
-// Função para selecionar os HCPs e Pick-up Points
-async function selectHCPs(parceiros) {
-    // 1. Filtrar parceiros elegíveis (Active ou Onboarding)
-    const elegiveis = parceiros.filter(p => p.status === 'Active' || p.status === 'Onboarding');
-    if (elegiveis.length === 0) return { hcp_final: [], parceiros_nao_cobertos: [] };
-
-    // 2. Obter a matriz de tempo/distância real
-    const { times, distances } = await getOSRMTimeDistanceMatrix(elegiveis);
-    if (times.length === 0) return { hcp_final: [], parceiros_nao_cobertos: elegiveis };
-
-    let hcp_candidatos = [];
-
-    // 3. Para cada parceiro elegível, verificar se ele pode ser um HCP
-    for (let i = 0; i < elegiveis.length; i++) {
-        const hcp = elegiveis[i];
-        let pickups_candidatos = [];
-
-        for (let j = 0; j < elegiveis.length; j++) {
-            if (i === j) continue; // Não é Pick-up de si mesmo
-
-            const parceiro = elegiveis[j];
-            const tempo = times[i][j]; // Tempo de i para j (em minutos)
-            const distancia = distances[i][j]; // Distância de i para j (em km)
-
-            // Critérios de Pick-up Point: max 6km e max 15 minutos
-            if (distancia <= 6 && tempo <= 15) {
-                pickups_candidatos.push({
-                    ...parceiro,
-                    tempo_percurso: tempo,
-                    distancia_percurso: distancia
-                });
-            }
-        }
-
-        // 4. Selecionar os 4 melhores Pick-ups (por menor distância)
-        const pickups_selecionados = pickups_candidatos
-            .sort((a, b) => a.distancia_percurso - b.distancia_percurso)
-            .slice(0, 4);
-
-        if (pickups_selecionados.length > 0) {
-            hcp_candidatos.push({
-                ...hcp,
-                isHCP: true,
-                pickUps: pickups_selecionados
-            });
-        }
-    }
-
-    // 5. Heurística de Seleção Final: Selecionar o HCP que cobre o maior número de parceiros únicos
-    let parceiros_cobertos = new Set();
-    let hcp_final = [];
-
-    // Ordena os HCPs candidatos pelo número de Pick-ups que eles cobrem
-    const hcp_ordenados = hcp_candidatos.sort((a, b) => b.pickUps.length - a.pickUps.length);
-
-    for (const hcp of hcp_ordenados) {
-        let novos_cobertos = hcp.pickUps.filter(p => !parceiros_cobertos.has(p.store_id));
-
-        if (novos_cobertos.length > 0) {
-            hcp_final.push(hcp);
-            novos_cobertos.forEach(p => parceiros_cobertos.add(p.store_id));
-        }
-    }
-
-    // 6. Marcar os parceiros restantes como "não cobertos"
-    const parceiros_nao_cobertos = elegiveis.filter(p => 
-        !parceiros_cobertos.has(p.store_id) && 
-        !hcp_final.some(h => h.store_id === p.store_id)
-    );
-
-    return { hcp_final, parceiros_nao_cobertos };
-}
-
-const RouteManager = {
-    stops: [],
-    generateRoute: function() {
-        // ... (código da função generateRoute)
-    },
-
-    // ... (outras funções do RouteManager)
-
-    suggestOptimizedRoutes: async function() {
-        alert("Iniciando roteirização inteligente. Este processo pode levar alguns segundos...");
-
-        // 1. Limpeza de rotas anteriores
-        if (AppState.routingControl) {
-            AppState.map.removeControl(AppState.routingControl);
-            AppState.routingControl = null;
-        }
-        AppState.generatedRoutes.forEach(r => AppState.map.removeControl(r.control));
-        AppState.generatedRoutes = [];
-
-        // Remove o loadingDiv se existir
-        const loadingDiv = document.getElementById('loading-overlay');
-        if (loadingDiv) document.body.removeChild(loadingDiv);
-
-        // Cria o loadingDiv
-        const newLoadingDiv = document.createElement('div');
-        newLoadingDiv.id = 'loading-overlay';
-        newLoadingDiv.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10000;display:flex;justify-content:center;align-items:center;';
-        newLoadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-            <i class="fas fa-spinner fa-spin mr-2"></i> Criando rotas otimizadas, aguarde...
-        </div>`;
-        document.body.appendChild(newLoadingDiv);
-
-        try {
-            // 2. Filtro e validação da Delivery Station
-            const stationFilter = document.getElementById('stationFilter');
-            const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-            if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
-                alert("Selecione apenas uma Delivery Station para sugerir rotas.");
-                return;
-            }
-            const deliveryStation = selectedStations[0];
-            const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
-
-            // 3. Filtrar parceiros elegíveis (Active ou Onboarding)
-            const parceiros_elegiveis = AppState.allMarkersData.filter(p =>
-                p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding')
-            );
-
-            if (parceiros_elegiveis.length === 0) {
-                alert("Nenhum parceiro 'Active' ou 'Onboarding' encontrado para esta Delivery Station.");
-                return;
-            }
-
-            // 4. Seleção de HCP (Host Partner)
-            const { hcp_final, parceiros_nao_cobertos } = await selectHCPs(parceiros_elegiveis);
-
-            // 5. Montar a lista final de paradas para o VRP
-            // As paradas serão: HCPs + Parceiros Não Cobertos
-            const paradas_vrp = [
-                ...hcp_final.map(h => ({ ...h, tipo: 'HCP', pickups: h.pickUps.map(p => p.store_id) })),
-                ...parceiros_nao_cobertos.map(p => ({ ...p, tipo: 'Direto', pickups: [] }))
-            ];
-
-            if (paradas_vrp.length === 0) {
-                alert("Nenhuma parada para roteirizar após a seleção de HCP.");
-                return;
-            }
-
-            // 6. Iniciar a otimização VRP (VROOM)
-            const vroom_result = await getVROOMOptimizedRoutes(dsData, paradas_vrp);
-
-            if (!vroom_result || vroom_result.code !== 0) {
-                alert("A otimização VROOM falhou. Verifique o console para detalhes.");
-                return;
-            }
-
-            // 7. Processar e Renderizar as Rotas
-            const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-            
-            vroom_result.routes.forEach((route, idx) => {
-                const orderedStops = route.steps
-                    .filter(step => step.type === 'job')
-                    .map(step => {
-                        const parada = paradas_vrp[step.job - 1]; // job.id é 1-based
-                        return {
-                            ...parada,
-                            tempo_chegada: step.arrival,
-                            tempo_servico: step.duration,
-                            tempo_total: step.waiting_time + step.service
-                        };
-                    });
-
-                // A restrição de 5 horas (18000 segundos) é tratada pelo VROOM.
-                const totalTime = route.duration / 3600; // Duração total em horas
-
-                // Plota rota no mapa
-                const waypointsLatLng = [
-                    L.latLng(dsData.lat, dsData.lon),
-                    ...orderedStops.map(p => L.latLng(p.lat, p.lon)),
-                    L.latLng(dsData.lat, dsData.lon)
-                ];
-                const color = colors[idx % colors.length];
-                const control = L.Routing.control({
-                    waypoints: waypointsLatLng,
-                    routeWhileDragging: false,
-                    router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-                    createMarker: (i, wp, n) => {
-                        if (i === 0) return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: 'home', iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(`<b>${dsData.nome}</b> (Início/Fim)`);
-                        if (i === n - 1) return null;
-                        const stopData = orderedStops[i - 1];
-                        const iconColor = stopData.tipo === 'HCP' ? 'green' : 'blue';
-                        const iconGlyph = stopData.tipo === 'HCP' ? 'star' : 'map-marker';
-                        const popupContent = `<b>${stopData.name}</b> (${stopData.store_id})<br>Tipo: ${stopData.tipo}<br>Pick-ups: ${stopData.pickups.length}`;
-                        return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: iconGlyph, iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${iconColor}.png`, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(popupContent);
-                    },
-                    lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
-                }).addTo(AppState.map);
-
-                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-            });
-
-            let panel = document.getElementById('routes-control-panel');
-            if (!panel) {
-                panel = document.createElement('div');
-                panel.id = 'routes-control-panel';
-                panel.style = 'position:fixed;top:80px;right:20px;z-index:9999;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 8px #0003;max-width:350px;';
-                document.body.appendChild(panel);
-            }
-            panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
-            AppState.generatedRoutes.forEach(r => {
-                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
-            });
-            panel.style.display = 'block';
-
-            alert(`Roteirização concluída. ${vroom_result.routes.length} rotas sugeridas.`);
-
-        } catch (error) {
-            console.error("Erro ao sugerir rotas:", error);
-            alert("Ocorreu um erro ao sugerir rotas. Verifique o console para mais detalhes.");
-        } finally {
-            // Remove o loadingDiv
-            const finalLoadingDiv = document.getElementById('loading-overlay');
-            if (finalLoadingDiv) document.body.removeChild(finalLoadingDiv);
-        }
-    }
-}
-
-// Função auxiliar para enviar o problema VRP ao VROOM e obter as rotas otimizadas
-async function getVROOMOptimizedRoutes(dsData, paradas_vrp) {
-    // VROOM API pública (para testes)
-    const VROOM_API_URL = 'https://routing.vroom-project.org/api';
-
-    // 1. Montar a lista de veículos (veículo único com restrições)
-    const veiculos = [{
-        id: 1,
-        profile: "car", // Perfil de roteamento (pode ser 'car', 'bike', 'foot')
-        start: [dsData.lon, dsData.lat],
-        end: [dsData.lon, dsData.lat],
-        // Capacidade (máximo de 18 parceiros)
-        capacity: [18],
-        // Tempo máximo de rota (5 horas = 18000 segundos)
-        time_window: [0, 18000],
-        // Restrição de paradas (máximo de 10 paradas) - VROOM usa 'max_tasks' ou 'max_tasks_per_route'
-        // Como não há um campo direto para 'max_stops', usaremos a capacidade e a contagem de tarefas.
-        // A restrição de 10 paradas será tratada como 10 tarefas (jobs) no VROOM.
-        // O VROOM não tem uma restrição direta de "máximo de 10 paradas" que seja fácil de configurar
-        // sem um servidor customizado. Vamos usar a capacidade (18) e o tempo (5h) como principais.
-        // Para simular as 10 paradas, vamos criar 2 veículos com capacidade de 10.
-        // No entanto, para simplificar a chamada à API pública, vamos usar 1 veículo com capacidade 18 e tempo 5h.
-        // A restrição de 10 paradas será uma heurística de divisão de rotas no frontend, se necessário.
-    }];
-
-    // 2. Montar a lista de tarefas (jobs)
-    const jobs = paradas_vrp.map((parada, index) => ({
-        id: index + 1,
-        location: [parada.lon, parada.lat],
-        service: 900, // Tempo de serviço de 15 minutos (900 segundos) por parada
-        delivery: [1], // Cada parada conta como 1 unidade de capacidade
-        // Adicionar o tempo de serviço ao tempo total da rota
-        // A restrição de "todos os parceiros com status Active ou Onboarding devem estar em uma rota"
-        // é garantida pela inclusão de todos eles em 'paradas_vrp'.
-    }));
-
-    const problema_vrp = {
-        vehicles: veiculos,
-        jobs: jobs
-    };
-
-    try {
-        const response = await fetch(VROOM_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(problema_vrp)
-        });
-
-        if (!response.ok) {
-            throw new Error(`VROOM API error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Erro ao obter rotas VROOM:", error);
-        alert("Erro ao obter rotas otimizadas do VROOM. Verifique a conexão ou tente novamente.");
-        return null;
-    }
-}
-
-
-
-// Função auxiliar para obter a matriz de tempo e distância real (em minutos e km)
-// Usando a OSRM Table API (Matrix)
-async function getOSRMTimeDistanceMatrix(points) {
-    if (points.length === 0) return { times: [], distances: [] };
-
-    // Coordenadas no formato OSRM: lon,lat;lon,lat;...
-    const coords = points.map(p => `${p.lon},${p.lat}`).join(';');
-    const url = `https://router.project-osrm.org/table/v1/driving/${coords}?annotations=duration,distance`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`OSRM API error: ${response.statusText}`);
-        }
-        const data = await response.json();
-
-        // durations está em segundos, convertemos para minutos
-        const times = data.durations.map(row => row.map(time => time / 60));
-        // distances está em metros, convertemos para km
-        const distances = data.distances.map(row => row.map(dist => dist / 1000));
-
-        return { times, distances };
-    } catch (error) {
-        console.error("Erro ao obter matriz OSRM:", error);
-        alert("Erro ao obter matriz de distância/tempo do OSRM. Verifique a conexão ou tente novamente.");
-        return { times: [], distances: [] };
-    }
-}
-
-// Função para selecionar os HCPs e Pick-up Points
-async function selectHCPs(parceiros) {
-    // 1. Filtrar parceiros elegíveis (Active ou Onboarding)
-    const elegiveis = parceiros.filter(p => p.status === 'Active' || p.status === 'Onboarding');
-    if (elegiveis.length === 0) return { hcp_final: [], parceiros_nao_cobertos: [] };
-
-    // 2. Obter a matriz de tempo/distância real
-    const { times, distances } = await getOSRMTimeDistanceMatrix(elegiveis);
-    if (times.length === 0) return { hcp_final: [], parceiros_nao_cobertos: elegiveis };
-
-    let hcp_candidatos = [];
-
-    // 3. Para cada parceiro elegível, verificar se ele pode ser um HCP
-    for (let i = 0; i < elegiveis.length; i++) {
-        const hcp = elegiveis[i];
-        let pickups_candidatos = [];
-
-        for (let j = 0; j < elegiveis.length; j++) {
-            if (i === j) continue; // Não é Pick-up de si mesmo
-
-            const parceiro = elegiveis[j];
-            const tempo = times[i][j]; // Tempo de i para j (em minutos)
-            const distancia = distances[i][j]; // Distância de i para j (em km)
-
-            // Critérios de Pick-up Point: max 6km e max 15 minutos
-            if (distancia <= 6 && tempo <= 15) {
-                pickups_candidatos.push({
-                    ...parceiro,
-                    tempo_percurso: tempo,
-                    distancia_percurso: distancia
-                });
-            }
-        }
-
-        // 4. Selecionar os 4 melhores Pick-ups (por menor distância)
-        const pickups_selecionados = pickups_candidatos
-            .sort((a, b) => a.distancia_percurso - b.distancia_percurso)
-            .slice(0, 4);
-
-        if (pickups_selecionados.length > 0) {
-            hcp_candidatos.push({
-                ...hcp,
-                isHCP: true,
-                pickUps: pickups_selecionados
-            });
-        }
-    }
-
-    // 5. Heurística de Seleção Final: Selecionar o HCP que cobre o maior número de parceiros únicos
-    let parceiros_cobertos = new Set();
-    let hcp_final = [];
-
-    // Ordena os HCPs candidatos pelo número de Pick-ups que eles cobrem
-    const hcp_ordenados = hcp_candidatos.sort((a, b) => b.pickUps.length - a.pickUps.length);
-
-    for (const hcp of hcp_ordenados) {
-        let novos_cobertos = hcp.pickUps.filter(p => !parceiros_cobertos.has(p.store_id));
-
-        if (novos_cobertos.length > 0) {
-            hcp_final.push(hcp);
-            novos_cobertos.forEach(p => parceiros_cobertos.add(p.store_id));
-        }
-    }
-
-    // 6. Marcar os parceiros restantes como "não cobertos"
-    const parceiros_nao_cobertos = elegiveis.filter(p => 
-        !parceiros_cobertos.has(p.store_id) && 
-        !hcp_final.some(h => h.store_id === p.store_id)
-    );
-
-    return { hcp_final, parceiros_nao_cobertos };
-}
-
-const RouteManager = {
-    stops: [],
-    generateRoute: function() {
-        // ... (código da função generateRoute)
-    },
-
-    // ... (outras funções doRouteManager.suggestOptimizedRoutes = async function() {
-        // 1. Limpeza de rotas anteriores
-        if (AppState.routingControl) {
-            AppState.map.removeControl(AppState.routingControl);
-            AppState.routingControl = null;
-        }
-        AppState.generatedRoutes.forEach(r => AppState.map.removeControl(r.control));
-        AppState.generatedRoutes = [];
-
-        // Remove o loadingDiv se existir
-        const loadingDiv = document.getElementById('loading-overlay');
-        if (loadingDiv) document.body.removeChild(loadingDiv);
-
-        // Cria o loadingDiv
-        const newLoadingDiv = document.createElement('div');
-        newLoadingDiv.id = 'loading-overlay';
-        newLoadingDiv.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10000;display:flex;justify-content:center;align-items:center;';
-        newLoadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-            <i class="fas fa-spinner fa-spin mr-2"></i> Criando rotas otimizadas, aguarde...
-        </div>`;
-        document.body.appendChild(newLoadingDiv);
-
-        try {
-            // 2. Filtro e validação da Delivery Station
-            const stationFilter = document.getElementById('stationFilter');
-            const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-            if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
-                alert("Selecione apenas uma Delivery Station para sugerir rotas.");
-                return;
-            }
-            const deliveryStation = selectedStations[0];
-            const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
-
-            // 3. Filtrar parceiros elegíveis (Active ou Onboarding)
-            const parceiros_elegiveis = AppState.allMarkersData.filter(p =>
-                p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding')
-            );
-
-            if (parceiros_elegiveis.length === 0) {
-                alert("Nenhum parceiro 'Active' ou 'Onboarding' encontrado para esta Delivery Station.");
-                return;
-            }
-
-            // 4. Seleção de HCP (Host Partner)
-            const { hcp_final, parceiros_nao_cobertos } = await selectHCPs(parceiros_elegiveis);
-
-            // 5. Montar a lista final de paradas para o VRP
-            // As paradas serão: HCPs + Parceiros Não Cobertos
-            const paradas_vrp = [
-                ...hcp_final.map(h => ({ ...h, tipo: 'HCP', pickups: h.pickUps.map(p => p.store_id) })),
-                ...parceiros_nao_cobertos.map(p => ({ ...p, tipo: 'Direto', pickups: [] }))
-            ];
-
-            if (paradas_vrp.length === 0) {
-                alert("Nenhuma parada para roteirizar após a seleção de HCP.");
-                return;
-            }
-
-            // 6. Iniciar a otimização VRP (VROOM)
-            const vroom_result = await getVROOMOptimizedRoutes(dsData, paradas_vrp);
-
-            if (!vroom_result || vroom_result.code !== 0) {
-                alert("A otimização VROOM falhou. Verifique o console para detalhes.");
-                return;
-            }
-
-            // 7. Processar e Renderizar as Rotas
-            const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-            
-            vroom_result.routes.forEach((route, idx) => {
-                const orderedStops = route.steps
-                    .filter(step => step.type === 'job')
-                    .map(step => {
-                        const parada = paradas_vrp[step.job - 1]; // job.id é 1-based
-                        return {
-                            ...parada,
-                            tempo_chegada: step.arrival,
-                            tempo_servico: step.duration,
-                            tempo_total: step.waiting_time + step.service
-                        };
-                    });
-
-                // A restrição de 5 horas (18000 segundos) é tratada pelo VROOM.
-                const totalTime = route.duration / 3600; // Duração total em horas
-
-                // Plota rota no mapa
-                const waypointsLatLng = [
-                    L.latLng(dsData.lat, dsData.lon),
-                    ...orderedStops.map(p => L.latLng(p.lat, p.lon)),
-                    L.latLng(dsData.lat, dsData.lon)
-                ];
-                const color = colors[idx % colors.length];
-                const control = L.Routing.control({
-                    waypoints: waypointsLatLng,
-                    routeWhileDragging: false,
-                    router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-                    createMarker: (i, wp, n) => {
-                        if (i === 0) return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: 'home', iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(`<b>${dsData.nome}</b> (Início/Fim)`);
-                        if (i === n - 1) return null;
-                        const stopData = orderedStops[i - 1];
-                        const iconColor = stopData.tipo === 'HCP' ? 'green' : 'blue';
-                        const iconGlyph = stopData.tipo === 'HCP' ? 'star' : 'map-marker';
-                        const popupContent = `<b>${stopData.name}</b> (${stopData.store_id})<br>Tipo: ${stopData.tipo}<br>Pick-ups: ${stopData.pickups.length}`;
-                        return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: iconGlyph, iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${iconColor}.png`, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(popupContent);
-                    },
-                    lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
-                }).addTo(AppState.map);
-
-                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-            });
-
-            let panel = document.getElementById('routes-control-panel');
-            if (!panel) {
-                panel = document.createElement('div');
-                panel.id = 'routes-control-panel';
-                panel.style = 'position:fixed;top:80px;right:20px;z-index:9999;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 8px #0003;max-width:350px;';
-                document.body.appendChild(panel);
-            }
-            panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
-            AppState.generatedRoutes.forEach(r => {
-                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
-            });
-            panel.style.display = 'block';
-
-            alert(`Roteirização concluída. ${vroom_result.routes.length} rotas sugeridas.`);
-
-        } catch (error) {
-            console.error("Erro ao sugerir rotas:", error);
-            alert("Ocorreu um erro ao sugerir rotas. Verifique o console para mais detalhes.");
-        } finally {
-            // Remove o loadingDiv
-            const finalLoadingDiv = document.getElementById('loading-overlay');
-            if (finalLoadingDiv) document.body.removeChild(finalLoadingDiv);
-        }
-    }
-    // ... (código da função suggestOptimizedRoutes)
-}{
-        if (AppState.routingControl) {
-            AppState.map.removeControl(AppState.routingControl);
-            AppState.routingControl = null;
-        }
-        AppState.generatedRoutes.forEach(r => AppState.map.removeControl(r.control));
-        AppState.generatedRoutes = [];
-
-        // Remove o loadingDiv se existir
-        const loadingDiv = document.getElementById('loading-overlay');
-        if (loadingDiv) document.body.removeChild(loadingDiv);
-
-        // Cria o loadingDiv
-        const newLoadingDiv = document.createElement('div');
-        newLoadingDiv.id = 'loading-overlay';
-        newLoadingDiv.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10000;display:flex;justify-content:center;align-items:center;';
-        newLoadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-            <i class="fas fa-spinner fa-spin mr-2"></i> Criando rotas otimizadas, aguarde...
-        </div>`;
-        document.body.appendChild(newLoadingDiv);
-
-        try {
-            // 1. Filtro e validação da Delivery Station
-            const stationFilter = document.getElementById('stationFilter');
-            const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-            if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
-                alert("Selecione apenas uma Delivery Station para sugerir rotas.");
-                return;
-            }
-            const deliveryStation = selectedStations[0];
-            const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
-
-            // 2. Filtrar parceiros elegíveis (Active ou Onboarding)
-            const parceiros_elegiveis = AppState.allMarkersData.filter(p =>
-                p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding')
-            );
-
-            if (parceiros_elegiveis.length === 0) {
-                alert("Nenhum parceiro 'Active' ou 'Onboarding' encontrado para esta Delivery Station.");
-                return;
-            }
-
-            // 3. Seleção de HCP (Host Partner)
-            const { hcp_final, parceiros_nao_cobertos } = await selectHCPs(parceiros_elegiveis);
-
-            // 4. Montar a lista final de paradas para o VRP
-            // As paradas serão: HCPs + Parceiros Não Cobertos
-            const paradas_vrp = [
-                ...hcp_final.map(h => ({ ...h, tipo: 'HCP', pickups: h.pickUps.map(p => p.store_id) })),
-                ...parceiros_nao_cobertos.map(p => ({ ...p, tipo: 'Direto', pickups: [] }))
-            ];
-
-            if (paradas_vrp.length === 0) {
-                alert("Nenhuma parada para roteirizar após a seleção de HCP.");
-                return;
-            }
-
-            // 5. Iniciar a otimização VRP (VROOM)
-            // A lógica de VROOM será implementada na próxima fase.
-            // Por enquanto, vamos simular a divisão em rotas com base na capacidade máxima de 10 paradas.
-
-            const max_stops_per_route = 10;
-            const rotas_simuladas = [];
-            for (let i = 0; i < paradas_vrp.length; i += max_stops_per_route) {
-                rotas_simuladas.push(paradas_vrp.slice(i, i + max_stops_per_route));
-            }
-
-            // 6. Processar e Renderizar as Rotas (Usando a lógica OSRM Trip API existente para otimizar a ordem)
-            const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-            
-            for (let idx = 0; idx < rotas_simuladas.length; idx++) {
-                const stops = rotas_simuladas[idx];
-
-                // Monta coordenadas para OSRM Trip API (para otimizar a ordem - TSP)
-                const tripCoords = stops.map(p => `${p.lon},${p.lat}`).join(';');
-                const url = `https://router.project-osrm.org/trip/v1/driving/${tripCoords}?source=first&destination=last&roundtrip=false`;
-
-                const res = await fetch(url);
-                const data = await res.json();
-
-                let orderedStops = stops;
-                if (data.trips && data.trips[0] && data.trips[0].waypoints) {
-                    // OSRM retorna waypoints na ordem otimizada
-                    orderedStops = data.trips[0].waypoints.map(wp => {
-                        return stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]);
-                    }).filter(Boolean);
-                }
-
-                // Calcula tempo estimado (Simulação da lógica antiga)
-                let totalKm = data.trips[0]?.distance ? data.trips[0].distance / 1000 : 0;
-                let travelTime = totalKm / 40; // média 40km/h
-                let stopTime = orderedStops.length * 0.25; // 15min por parada
-                let totalTime = travelTime + stopTime;
-
-                // Plota rota no mapa
-                const waypointsLatLng = [
-                    L.latLng(dsData.lat, dsData.lon),
-                    ...orderedStops.map(p => L.latLng(p.lat, p.lon)),
-                    L.latLng(dsData.lat, dsData.lon)
-                ];
-                const color = colors[idx % colors.length];
-                const control = L.Routing.control({
-                    waypoints: waypointsLatLng,
-                    routeWhileDragging: false,
-                    router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-                    createMarker: (i, wp, n) => {
-                        if (i === 0) return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: 'home', iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(`<b>${dsData.nome}</b> (Início/Fim)`);
-                        if (i === n - 1) return null;
-                        const stopData = orderedStops[i - 1];
-                        const iconColor = stopData.tipo === 'HCP' ? 'green' : 'blue';
-                        const iconGlyph = stopData.tipo === 'HCP' ? 'star' : 'map-marker';
-                        const popupContent = `<b>${stopData.name}</b> (${stopData.store_id})<br>Tipo: ${stopData.tipo}<br>Pick-ups: ${stopData.pickups.length}`;
-                        return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: iconGlyph, iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${iconColor}.png`, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(popupContent);
-                    },
-                    lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
-                }).addTo(AppState.map);
-
-                AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-            }
-
-            let panel = document.getElementById('routes-control-panel');
-            if (!panel) {
-                panel = document.createElement('div');
-                panel.id = 'routes-control-panel';
-                panel.style = 'position:fixed;top:80px;right:20px;z-index:9999;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 8px #0003;max-width:350px;';
-                document.body.appendChild(panel);
-            }
-            panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
-            AppState.generatedRoutes.forEach(r => {
-                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
-            });
-            panel.style.display = 'block';
-
-            alert(`Roteirização concluída. ${rotas_simuladas.length} rotas sugeridas.`);
-
-        } catch (error) {
-            console.error("Erro ao sugerir rotas:", error);
-            alert("Ocorreu um erro ao sugerir rotas. Verifique o console para mais detalhes.");
-        } finally {
-            // Remove o loadingDiv
-            const finalLoadingDiv = document.getElementById('loading-overlay');
-            if (finalLoadingDiv) document.body.removeChild(finalLoadingDiv);
-        }
-    }n() {
-        alert("Iniciando roteirização inteligente. Este processo pode levar alguns segundos...");
-
-        // 1. Limpeza de rotas anteriores
-        if (AppState.routingControl) {
-            AppState.map.removeControl(AppState.routingControl);
-            AppState.routingControl = null;
-        }
-        AppState.generatedRoutes.forEach(r => AppState.map.removeControl(r.control));
-        AppState.generatedRoutes = [];
-
-        // 2. Filtro e validação da Delivery Station
-        const stationFilter = document.getElementById('stationFilter');
-        const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-        if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
-            alert("Selecione apenas uma Delivery Station para sugerir rotas.");
-            return;
-        }
-        const deliveryStation = selectedStations[0];
-        const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
-
-        // 3. Filtrar parceiros elegíveis (Active ou Onboarding)
-        const parceiros_elegiveis = AppState.allMarkersData.filter(p =>
-            p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding')
-        );
-
-        if (parceiros_elegiveis.length === 0) {
-            alert("Nenhum parceiro 'Active' ou 'Onboarding' encontrado para esta Delivery Station.");
-            return;
-        }
-
-        // 4. Seleção de HCP (Host Partner)
-        const { hcp_final, parceiros_nao_cobertos } = await selectHCPs(parceiros_elegiveis);
-
-        // 5. Montar a lista final de paradas para o VRP
-        // As paradas serão: HCPs + Parceiros Não Cobertos
-        const paradas_vrp = [
-            ...hcp_final.map(h => ({ ...h, tipo: 'HCP', pickups: h.pickUps.map(p => p.store_id) })),
-            ...parceiros_nao_cobertos.map(p => ({ ...p, tipo: 'Direto', pickups: [] }))
-        ];
-
-        if (paradas_vrp.length === 0) {
-            alert("Nenhuma parada para roteirizar após a seleção de HCP.");
-            return;
-        }
-
-        // 6. Iniciar a otimização VRP (VROOM)
-        // A lógica de VROOM será implementada na próxima fase.
-        // Por enquanto, vamos simular a divisão em rotas com base na capacidade máxima de 10 paradas.
-
-        const max_stops_per_route = 10;
-        const rotas_simuladas = [];
-        for (let i = 0; i < paradas_vrp.length; i += max_stops_per_route) {
-            rotas_simuladas.push(paradas_vrp.slice(i, i + max_stops_per_route));
-        }
-
-        // 7. Processar e Renderizar as Rotas (Usando a lógica OSRM Trip API existente para otimizar a ordem)
-        const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
-        
-        for (let idx = 0; idx < rotas_simuladas.length; idx++) {
-            const stops = rotas_simuladas[idx];
-
-            // Monta coordenadas para OSRM Trip API (para otimizar a ordem - TSP)
-            const tripCoords = stops.map(p => `${p.lon},${p.lat}`).join(';');
-            const url = `https://router.project-osrm.org/trip/v1/driving/${tripCoords}?source=first&destination=last&roundtrip=false`;
-
-            const res = await fetch(url);
-            const data = await res.json();
-
-            let orderedStops = stops;
-            if (data.trips && data.trips[0] && data.trips[0].waypoints) {
-                // OSRM retorna waypoints na ordem otimizada
-                orderedStops = data.trips[0].waypoints.map(wp => {
-                    return stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]);
-                }).filter(Boolean);
-            }
-
-            // Calcula tempo estimado (Simulação da lógica antiga)
-            let totalKm = data.trips[0]?.distance ? data.trips[0].distance / 1000 : 0;
-            let travelTime = totalKm / 40; // média 40km/h
-            let stopTime = orderedStops.length * 0.25; // 15min por parada
-            let totalTime = travelTime + stopTime;
-
-            // Plota rota no mapa
-            const waypointsLatLng = [
-                L.latLng(dsData.lat, dsData.lon),
-                ...orderedStops.map(p => L.latLng(p.lat, p.lon)),
-                L.latLng(dsData.lat, dsData.lon)
-            ];
-            const color = colors[idx % colors.length];
-            const control = L.Routing.control({
-                waypoints: waypointsLatLng,
-                routeWhileDragging: false,
-                router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-                createMarker: (i, wp, n) => {
-                    if (i === 0) return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: 'home', iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(`<b>${dsData.nome}</b> (Início/Fim)`);
-                    if (i === n - 1) return null;
-                    const stopData = orderedStops[i - 1];
-                    const iconColor = stopData.tipo === 'HCP' ? 'green' : 'blue';
-                    const iconGlyph = stopData.tipo === 'HCP' ? 'star' : 'map-marker';
-                    const popupContent = `<b>${stopData.name}</b> (${stopData.store_id})<br>Tipo: ${stopData.tipo}<br>Pick-ups: ${stopData.pickups.length}`;
-                    return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: iconGlyph, iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${iconColor}.png`, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(popupContent);
-                },
-                lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
-            }).addTo(AppState.map);
-
-            AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-        }
-
-        let panel = document.getElementById('routes-control-panel');
-        panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
-        AppState.generatedRoutes.forEach(r => {
-            panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
-        });
-        panel.style.display = 'block';
-
-        alert(`Roteirização concluída. ${rotas_simuladas.length} rotas sugeridas.`);
-    }
-}
 const RouteManager = {
     stops: [],
     generateRoute: function() {
@@ -1918,16 +1040,31 @@ const RouteManager = {
     },
 
     suggestOptimizedRoutes: async function() {
-        let loadingDiv = document.createElement('div');
-        loadingDiv.id = 'routes-loading';
-        loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
-        loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
+        alert("Iniciando roteirização inteligente. Este processo pode levar alguns segundos...");
+
+        // 1. Limpeza de rotas anteriores
+        if (AppState.routingControl) {
+            AppState.map.removeControl(AppState.routingControl);
+            AppState.routingControl = null;
+        }
+        AppState.generatedRoutes.forEach(r => AppState.map.removeControl(r.control));
+        AppState.generatedRoutes = [];
+
+        // Remove o loadingDiv se existir
+        const loadingDiv = document.getElementById('loading-overlay');
+        if (loadingDiv) document.body.removeChild(loadingDiv);
+
+        // Cria o loadingDiv
+        const newLoadingDiv = document.createElement('div');
+        newLoadingDiv.id = 'loading-overlay';
+        newLoadingDiv.style = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10000;display:flex;justify-content:center;align-items:center;';
+        newLoadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
             <i class="fas fa-spinner fa-spin mr-2"></i> Criando rotas otimizadas, aguarde...
         </div>`;
-        document.body.appendChild(loadingDiv);
+        document.body.appendChild(newLoadingDiv);
 
         try {
-            // 1. Filtra Host Partners/Hub Hero
+            // 2. Filtro e validação da Delivery Station
             const stationFilter = document.getElementById('stationFilter');
             const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
             if (selectedStations.length !== 1 || selectedStations[0] === 'all') {
@@ -1937,86 +1074,57 @@ const RouteManager = {
             const deliveryStation = selectedStations[0];
             const dsData = AppState.deliveryStations.find(ds => ds.nome === deliveryStation);
 
-            // Host Partners e Hub Hero (paradas)
-            const hosts = AppState.allMarkersData.filter(p =>
-                p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding') &&
-                (p.hub_delivey_initiatives === 'HCP Host Partner' || p.hub_delivey_initiatives === 'Hub Hero')
+            // 3. Filtrar parceiros elegíveis (Active ou Onboarding)
+            const parceiros_elegiveis = AppState.allMarkersData.filter(p =>
+                p.delivery_station === deliveryStation && (p.status === 'Active' || p.status === 'Onboarding')
             );
 
-            // Pick Up Partners
-            const pickUps = AppState.allMarkersData.filter(p =>
-                p.delivery_station === deliveryStation &&
-                p.hub_delivey_initiatives === 'HCP Pick Up Partner' &&
-                p.HCP_host_partner
-            );
-            hosts.forEach(host => {
-                host.pickUps = pickUps.filter(pu => pu.HCP_host_partner === host.name || pu.HCP_host_partner === host.store_id);
-            });
+            if (parceiros_elegiveis.length === 0) {
+                alert("Nenhum parceiro 'Active' ou 'Onboarding' encontrado para esta Delivery Station.");
+                return;
+            }
 
-            // DBSCAN clustering
-            const points = turf.featureCollection(hosts.map(h => turf.point([h.lon, h.lat])));
-            const clustered = turf.clustersDbscan(points, 4, { units: 'kilometers' });
+            // 4. Seleção de HCP (Host Partner)
+            const { hcp_final, parceiros_nao_cobertos } = await selectHCPs(parceiros_elegiveis);
 
-            // Organiza grupos (máx. 10 paradas, máx. 18 parceiros)
-            let groups = [];
-            const clusters = [...new Set(clustered.features.map(f => f.properties.cluster))].filter(c => c !== undefined);
-            clusters.forEach(clusterId => {
-                let groupHosts = hosts.filter((h, idx) => clustered.features[idx].properties.cluster === clusterId);
-                let groupPickUps = [];
-                groupHosts.forEach(h => {
-                    if (h.pickUps) groupPickUps = groupPickUps.concat(h.pickUps);
-                });
-                // Limite de 10 paradas e 18 parceiros
-                if (groupHosts.length > 10 || (groupHosts.length + groupPickUps.length) > 18) {
-                    for (let j = 0; j < groupHosts.length; j += 10) {
-                        let subHosts = groupHosts.slice(j, j + 10);
-                        let subPickUps = [];
-                        subHosts.forEach(h => {
-                            if (h.pickUps) subPickUps = subPickUps.concat(h.pickUps);
-                        });
-                        groups.push({hosts: subHosts, pickUps: subPickUps});
-                    }
-                } else {
-                    groups.push({hosts: groupHosts, pickUps: groupPickUps});
-                }
-            });
+            // 5. Montar a lista final de paradas para o VRP
+            // As paradas serão: HCPs + Parceiros Não Cobertos
+            const paradas_vrp = [
+                ...hcp_final.map(h => ({ ...h, tipo: 'HCP', pickups: h.pickUps.map(p => p.store_id) })),
+                ...parceiros_nao_cobertos.map(p => ({ ...p, tipo: 'Direto', pickups: [] }))
+            ];
 
-            // 3. Para cada grupo, envia para OSRM Trip API para otimizar ordem
+            if (paradas_vrp.length === 0) {
+                alert("Nenhuma parada para roteirizar após a seleção de HCP.");
+                return;
+            }
+
+            // 6. Iniciar a otimização VRP (VROOM)
+            const vroom_result = await getVROOMOptimizedRoutes(dsData, paradas_vrp);
+
+            if (!vroom_result || vroom_result.code !== 0) {
+                alert("A otimização VROOM falhou. Verifique o console para detalhes.");
+                return;
+            }
+
+            // 7. Processar e Renderizar as Rotas
             const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999'];
             
-            for (let idx = 0; idx < groups.length; idx++) {
-                const group = groups[idx];
-                const stops = group.hosts;
+            vroom_result.routes.forEach((route, idx) => {
+                const orderedStops = route.steps
+                    .filter(step => step.type === 'job')
+                    .map(step => {
+                        const parada = paradas_vrp[step.job - 1]; // job.id é 1-based
+                        return {
+                            ...parada,
+                            tempo_chegada: step.arrival,
+                            tempo_servico: step.duration,
+                            tempo_total: step.waiting_time + step.service
+                        };
+                    });
 
-                // Monta coordenadas para OSRM Trip API
-                const coords = [
-                    [dsData.lon, dsData.lat], // Origem
-                    ...stops.map(p => [p.lon, p.lat]),
-                    [dsData.lon, dsData.lat]  // Destino
-                ];
-                // Remove duplicidade da origem/destino para OSRM Trip API
-                const tripCoords = stops.map(p => `${p.lon},${p.lat}`).join(';');
-                const url = `https://router.project-osrm.org/trip/v1/driving/${tripCoords}?source=first&destination=last&roundtrip=false`;
-
-                const res = await fetch(url);
-                const data = await res.json();
-
-                // Ordena paradas conforme OSRM
-                let orderedStops = [];
-                if (data.trips && data.trips[0] && data.trips[0].waypoints) {
-                    // OSRM retorna waypoints na ordem otimizada
-                    orderedStops = data.trips[0].waypoints.map(wp => {
-                        return stops.find(s => s.lat === wp.location[1] && s.lon === wp.location[0]);
-                    }).filter(Boolean);
-                } else {
-                    orderedStops = stops;
-                }
-
-                // Calcula tempo estimado
-                let totalKm = data.trips[0]?.distance ? data.trips[0].distance / 1000 : 0;
-                let travelTime = totalKm / 40; // média 40km/h
-                let stopTime = orderedStops.length * 0.25; // 15min por parada
-                let totalTime = travelTime + stopTime;
+                // A restrição de 5 horas (18000 segundos) é tratada pelo VROOM.
+                const totalTime = route.duration / 3600; // Duração total em horas
 
                 // Plota rota no mapa
                 const waypointsLatLng = [
@@ -2029,83 +1137,203 @@ const RouteManager = {
                     waypoints: waypointsLatLng,
                     routeWhileDragging: false,
                     router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-                    createMarker: () => null,
+                    createMarker: (i, wp, n) => {
+                        if (i === 0) return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: 'home', iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(`<b>${dsData.nome}</b> (Início/Fim)`);
+                        if (i === n - 1) return null;
+                        const stopData = orderedStops[i - 1];
+                        const iconColor = stopData.tipo === 'HCP' ? 'green' : 'blue';
+                        const iconGlyph = stopData.tipo === 'HCP' ? 'star' : 'map-marker';
+                        const popupContent = `<b>${stopData.name}</b> (${stopData.store_id})<br>Tipo: ${stopData.tipo}<br>Pick-ups: ${stopData.pickups.length}`;
+                        return L.marker(wp.latLng, { icon: L.icon.glyph({ prefix: 'fa', glyph: iconGlyph, iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${iconColor}.png`, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png' }) }).bindPopup(popupContent);
+                    },
                     lineOptions: { styles: [{color: color, opacity: 0.8, weight: 5}] }
                 }).addTo(AppState.map);
 
-                // Adiciona popup à rota
-                control.on('routesfound', function(e) {
-                    const route = e.routes[0];
-                    let popupHtml = `<b>Rota ${idx+1}</b><br><b>Tempo estimado:</b> ${totalTime.toFixed(2)}h<br><ol>`;
-                    orderedStops.forEach(stop => {
-                        popupHtml += `<li>${stop.name || stop.store_id}`;
-                        if (stop.pickUps && stop.pickUps.length > 0) {
-                            popupHtml += `<br><small>Pick Ups: ${stop.pickUps.map(pu => pu.name || pu.store_id).join(', ')}</small>`;
-                        }
-                        popupHtml += `</li>`;
-                    });
-                    popupHtml += '</ol>';
-                    const midIdx = Math.floor(route.coordinates.length / 2);
-                    const midLatLng = L.latLng(route.coordinates[midIdx].lat, route.coordinates[midIdx].lng);
-                    L.popup().setLatLng(midLatLng).setContent(popupHtml).openOn(AppState.map);
-                });
-
-                if (!AppState.generatedRoutes) AppState.generatedRoutes = [];
                 AppState.generatedRoutes.push({ control, orderedStops, color, idx, totalTime });
-            }
+            });
 
             let panel = document.getElementById('routes-control-panel');
-
             if (!panel) {
                 panel = document.createElement('div');
                 panel.id = 'routes-control-panel';
                 panel.style = 'position:fixed;top:80px;right:20px;z-index:9999;background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 8px #0003;max-width:350px;';
                 document.body.appendChild(panel);
             }
+            panel.innerHTML = '<h6>Rotas Sugeridas</h6>';
+            AppState.generatedRoutes.forEach(r => {
+                panel.innerHTML += `<div class="route-summary" style="border-left: 5px solid ${r.color}; padding-left: 5px; margin-bottom: 5px;">Rota ${r.idx+1}: ${r.orderedStops.length} paradas (${r.totalTime.toFixed(2)}h)</div>`;
+            });
+            panel.style.display = 'block';
 
-            panel.innerHTML = '<h5>Rotas Geradas</h5>';
-            AppState.generatedRoutes.forEach(routeObj => {
-                panel.innerHTML += `
-                    <div style="margin-bottom:8px;">
-                        <span style="display:inline-block;width:18px;height:18px;background:${routeObj.color};border-radius:50%;margin-right:8px;"></span>
-                        <b>Rota ${routeObj.idx+1}</b>
-                        <button onclick="toggleRoute(${routeObj.idx})" style="margin-left:8px;">Mostrar/Ocultar</button>
-                        <button onclick="showRouteInfo(${routeObj.idx})" style="margin-left:4px;">Info</button>
-                    </div>
-                `;
+            alert(`Roteirização concluída. ${vroom_result.routes.length} rotas sugeridas.`);
+
+        } catch (error) {
+            console.error("Erro ao sugerir rotas:", error);
+            alert("Ocorreu um erro ao sugerir rotas. Verifique o console para mais detalhes.");
+        } finally {
+            // Remove o loadingDiv
+            const finalLoadingDiv = document.getElementById('loading-overlay');
+            if (finalLoadingDiv) document.body.removeChild(finalLoadingDiv);
+        }
+    },
+
+    // Função auxiliar para enviar o problema VRP ao VROOM e obter as rotas otimizadas
+    getVROOMOptimizedRoutes: async function (dsData, paradas_vrp) {
+        // VROOM API pública (para testes)
+        const VROOM_API_URL = 'https://routing.vroom-project.org/api';
+
+        // 1. Montar a lista de veículos (veículo único com restrições)
+        const veiculos = [{
+            id: 1,
+            profile: "car", // Perfil de roteamento (pode ser 'car', 'bike', 'foot')
+            start: [dsData.lon, dsData.lat],
+            end: [dsData.lon, dsData.lat],
+            // Capacidade (máximo de 18 parceiros)
+            capacity: [18],
+            // Tempo máximo de rota (5 horas = 18000 segundos)
+            time_window: [0, 18000],
+            // A restrição de 10 paradas será tratada como 10 tarefas (jobs) no VROOM.
+            // O VROOM não tem uma restrição direta de "máximo de 10 paradas" que seja fácil de configurar
+            // sem um servidor customizado. Vamos usar a capacidade (18) e o tempo (5h) como principais.
+        }];
+
+        // 2. Montar a lista de tarefas (jobs)
+        const jobs = paradas_vrp.map((parada, index) => ({
+            id: index + 1,
+            location: [parada.lon, parada.lat],
+            service: 900, // Tempo de serviço de 15 minutos (900 segundos) por parada
+            delivery: [1], // Cada parada conta como 1 unidade de capacidade
+            // A restrição de "todos os parceiros com status Active ou Onboarding devem estar em uma rota"
+            // é garantida pela inclusão de todos eles em 'paradas_vrp'.
+        }));
+
+        const problema_vrp = {
+            vehicles: veiculos,
+            jobs: jobs
+        };
+
+        try {
+            const response = await fetch(VROOM_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(problema_vrp)
             });
 
-            // Funções globais para controle
-            window.toggleRoute = function(idx) {
-                const routeObj = AppState.generatedRoutes[idx];
-                if (!routeObj) return;
-                const control = routeObj.control;
-                if (control._container && control._container.parentNode) {
-                    AppState.map.removeControl(control);
-                } else {
-                    control.addTo(AppState.map);
-                }
-            };
-            window.showRouteInfo = function(idx) {
-                const routeObj = AppState.generatedRoutes[idx];
-                if (!routeObj) return;
-                let popupHtml = `<b>Rota ${routeObj.idx+1}</b><br><b>Tempo estimado:</b> ${routeObj.totalTime.toFixed(2)}h<br><ol>`;
-                routeObj.orderedStops.forEach(stop => {
-                    popupHtml += `<li>${stop.name || stop.store_id}`;
-                    if (stop.pickUps && stop.pickUps.length > 0) {
-                        popupHtml += `<br><small>Pick Ups: ${stop.pickUps.map(pu => pu.name || pu.store_id).join(', ')}</small>`;
-                    }
-                    popupHtml += `</li>`;
-                });
-                popupHtml += '</ol>';
-                // Mostra popup no centro do mapa
-                AppState.map.openPopup(L.popup().setLatLng(AppState.map.getCenter()).setContent(popupHtml));
-            };
-        } finally {
-            // Remove alerta/spinner ao finalizar
-            const div = document.getElementById('routes-loading');
-            if (div) div.remove();
+            if (!response.ok) {
+                throw new Error(`VROOM API error: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Erro ao obter rotas VROOM:", error);
+            alert("Erro ao obter rotas otimizadas do VROOM. Verifique a conexão ou tente novamente.");
+            return null;
         }
+    },
+
+    // Função auxiliar para obter a matriz de tempo e distância real (em minutos e km)
+    // Usando a OSRM Table API (Matrix)
+    getOSRMTimeDistanceMatrix: async function(points) {
+        if (points.length === 0) return { times: [], distances: [] };
+
+        // Coordenadas no formato OSRM: lon,lat;lon,lat;...
+        const coords = points.map(p => `${p.lon},${p.lat}`).join(';');
+        const url = `https://router.project-osrm.org/table/v1/driving/${coords}?annotations=duration,distance`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`OSRM API error: ${response.statusText}`);
+            }
+            const data = await response.json();
+
+            // durations está em segundos, convertemos para minutos
+            const times = data.durations.map(row => row.map(time => time / 60));
+            // distances está em metros, convertemos para km
+            const distances = data.distances.map(row => row.map(dist => dist / 1000));
+
+            return { times, distances };
+        } catch (error) {
+            console.error("Erro ao obter matriz OSRM:", error);
+            alert("Erro ao obter matriz de distância/tempo do OSRM. Verifique a conexão ou tente novamente.");
+            return { times: [], distances: [] };
+        }
+    },
+
+    // Função para selecionar os HCPs e Pick-up Points
+    selectHCPs: async function (parceiros) {
+        // 1. Filtrar parceiros elegíveis (Active ou Onboarding)
+        const elegiveis = parceiros.filter(p => p.status === 'Active' || p.status === 'Onboarding');
+        if (elegiveis.length === 0) return { hcp_final: [], parceiros_nao_cobertos: [] };
+
+        // 2. Obter a matriz de tempo/distância real
+        const { times, distances } = await getOSRMTimeDistanceMatrix(elegiveis);
+        if (times.length === 0) return { hcp_final: [], parceiros_nao_cobertos: elegiveis };
+
+        let hcp_candidatos = [];
+
+        // 3. Para cada parceiro elegível, verificar se ele pode ser um HCP
+        for (let i = 0; i < elegiveis.length; i++) {
+            const hcp = elegiveis[i];
+            let pickups_candidatos = [];
+
+            for (let j = 0; j < elegiveis.length; j++) {
+                if (i === j) continue; // Não é Pick-up de si mesmo
+
+                const parceiro = elegiveis[j];
+                const tempo = times[i][j]; // Tempo de i para j (em minutos)
+                const distancia = distances[i][j]; // Distância de i para j (em km)
+
+                // Critérios de Pick-up Point: max 6km e max 15 minutos
+                if (distancia <= 6 && tempo <= 15) {
+                    pickups_candidatos.push({
+                        ...parceiro,
+                        tempo_percurso: tempo,
+                        distancia_percurso: distancia
+                    });
+                }
+            }
+
+            // 4. Selecionar os 4 melhores Pick-ups (por menor distância)
+            const pickups_selecionados = pickups_candidatos
+                .sort((a, b) => a.distancia_percurso - b.distancia_percurso)
+                .slice(0, 4);
+
+            if (pickups_selecionados.length > 0) {
+                hcp_candidatos.push({
+                    ...hcp,
+                    isHCP: true,
+                    pickUps: pickups_selecionados
+                });
+            }
+        }
+
+        // 5. Heurística de Seleção Final: Selecionar o HCP que cobre o maior número de parceiros únicos
+        let parceiros_cobertos = new Set();
+        let hcp_final = [];
+
+        // Ordena os HCPs candidatos pelo número de Pick-ups que eles cobrem
+        const hcp_ordenados = hcp_candidatos.sort((a, b) => b.pickUps.length - a.pickUps.length);
+
+        for (const hcp of hcp_ordenados) {
+            let novos_cobertos = hcp.pickUps.filter(p => !parceiros_cobertos.has(p.store_id));
+
+            if (novos_cobertos.length > 0) {
+                hcp_final.push(hcp);
+                novos_cobertos.forEach(p => parceiros_cobertos.add(p.store_id));
+            }
+        }
+
+        // 6. Marcar os parceiros restantes como "não cobertos"
+        const parceiros_nao_cobertos = elegiveis.filter(p => 
+            !parceiros_cobertos.has(p.store_id) && 
+            !hcp_final.some(h => h.store_id === p.store_id)
+        );
+
+        return { hcp_final, parceiros_nao_cobertos };
     },
 
     clearRoute: function() {

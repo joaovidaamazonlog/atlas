@@ -839,12 +839,22 @@ const HighlightManager = {
 
 // --- MODULE: RouteManager ---
 const RouteManager = {
+    vehicleMarker: null,
+    vehicleAnimation: null,
     stops: [],
     generateRoute: function() {
         // Verifica se já existe uma rota e remove
         if (AppState.routingControl) {
             AppState.map.removeControl(AppState.routingControl);
             AppState.routingControl = null;
+        }
+        if (this.vehicleMarker) {
+            AppState.map.removeLayer(this.vehicleMarker);
+            this.vehicleMarker = null;
+        }
+        if (this.vehicleAnimation) {
+            clearInterval(this.vehicleAnimation);
+            this.vehicleAnimation = null;
         }
 
         const fromId = document.getElementById('routeFromId').value;
@@ -934,11 +944,6 @@ const RouteManager = {
                 }
                 vehicleMarker.setLatLng([coords[idx].lat, coords[idx].lng]);
             }, speed);
-
-            // Opcional: remover marcador ao limpar rota
-            AppState.routingControl.on('routeselected', function() {
-                if (vehicleMarker) AppState.map.removeLayer(vehicleMarker);
-            });
         });
     },
 
@@ -1071,10 +1076,18 @@ const RouteManager = {
     },
 
     clearRoute: function() {
-        // Remove rota manual (única)
         if (AppState.routingControl) {
             AppState.map.removeControl(AppState.routingControl);
             AppState.routingControl = null;
+        }
+        // Remove caminhão animado
+        if (this.vehicleMarker) {
+            AppState.map.removeLayer(this.vehicleMarker);
+            this.vehicleMarker = null;
+        }
+        if (this.vehicleAnimation) {
+            clearInterval(this.vehicleAnimation);
+            this.vehicleAnimation = null;
         }
         document.getElementById('routeFromInput').value = "";
         document.getElementById('routeToInput').value = "";

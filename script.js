@@ -1077,7 +1077,7 @@ const RouteManager = {
         loadingDiv.id = 'routes-loading';
         loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
         loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-            <i class="fas fa-spinner fa-spin mr-2"></i> Processando rotas otimizadas, aguarde...
+            <i class="fas fa-spinner fa-spin mr-2"></i> Buscando parceiros ideais para ser Host Partners e Pick-Up Partners, aguarde...
         </div>`;
         document.body.appendChild(loadingDiv);
 
@@ -1231,7 +1231,6 @@ const RouteManager = {
 
     // --- Aplicação visual no mapa ---
     hcpApplyClustersToMap: function(groups) {
-
         const hostIcon = L.icon({
             iconUrl: "https://cdn-icons-png.flaticon.com/512/25/25694.png",
             iconSize: [30, 30],
@@ -1249,41 +1248,56 @@ const RouteManager = {
         AppState.markerObjects.forEach(m => markers[m.markerData.store_id] = m);
 
         groups.forEach(({ host, pickups }) => {
-
             const hostMarker = markers[host.properties.store_id];
             if (hostMarker) {
-                hostMarker.setStyle?.({}); // remove estilo circleMarker
+                hostMarker.setStyle?.({});
                 const latlng = hostMarker.getLatLng();
                 AppState.map.removeLayer(hostMarker);
-
                 const newHostMarker = L.marker(latlng, { icon: hostIcon }).addTo(AppState.map);
                 markers[host.properties.store_id] = newHostMarker;
-
-                // Popup do host
-                let html = `<b>HCP Host:</b> ${host.properties.name}<br>`;
-                html += `<b>Pick-ups:</b><br>`;
-                pickups.forEach(p => html += `• ${p.properties.name}<br>`);
-                
-                newHostMarker.bindPopup(html);
             }
-
             pickups.forEach(p => {
                 const pickupMarker = markers[p.properties.store_id];
                 if (pickupMarker) {
                     pickupMarker.setStyle?.({});
                     const latlng = pickupMarker.getLatLng();
                     AppState.map.removeLayer(pickupMarker);
-
                     const newPickupMarker = L.marker(latlng, { icon: pickupIcon }).addTo(AppState.map);
                     markers[p.properties.store_id] = newPickupMarker;
-
-                    newPickupMarker.bindPopup(
-                        `<b>Pick-up:</b> ${p.properties.name}<br>` +
-                        `<b>Host:</b> ${host.properties.name}`
-                    );
                 }
             });
         });
+
+        // --- Popup geral com todas as sugestões ---
+        let popupDiv = document.getElementById('hcp-suggestions-popup');
+        if (!popupDiv) {
+            popupDiv = document.createElement('div');
+            popupDiv.id = 'hcp-suggestions-popup';
+            popupDiv.style = `
+                position:fixed; top:80px; right:20px; z-index:9999; background:#fff; 
+                padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 2px 8px #0003; 
+                max-width:350px; min-width:220px; font-size:1em;
+            `;
+            document.body.appendChild(popupDiv);
+        }
+        let html = `<div style="display:flex;justify-content:space-between;align-items:center;">
+            <b>Sugestões HCP</b>
+            <button onclick="document.getElementById('hcp-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
+        </div><hr style="margin:8px 0;">`;
+
+        groups.forEach(({ host, pickups }) => {
+            html += `<h2 style="font-size:1.1em;font-weight:bold;margin-bottom:4px;">${host.properties.name}</h2>`;
+            if (pickups.length === 0) {
+                html += `<div style="margin-left:12px;color:#888;">Nenhum Pick-up</div>`;
+            } else {
+                html += `<ul style="margin-left:18px;margin-bottom:8px;">`;
+                pickups.forEach(p => {
+                    html += `<li>${p.properties.name}</li>`;
+                });
+                html += `</ul>`;
+            }
+        });
+        popupDiv.innerHTML = html;
     },
 
     startRouteFromHere: function(event, storeId, storeName) {

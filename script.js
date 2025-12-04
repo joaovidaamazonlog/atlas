@@ -1071,153 +1071,210 @@ const RouteManager = {
     },
 
     // --- HCP Host/Pick-up Suggestion System ---
-    hcpSuggestHostClusters: async function() {
+    getCurrentHcpGroups: function() {
+        const all = AppState.currentFilteredData.filter(p => p.status !== 'Exited');
+        const hosts = all.filter(p => p.hub_delivey_initiatives === 'HCP Host Partner');
+        const pickups = all.filter(p => p.hub_delivey_initiatives === 'HCP Pick Up Partner');
+        const heros = all.filter(p => p.hub_delivey_initiatives === 'Hub Hero');
+        return { hosts, pickups, heros, all };
+    },
 
+    optimizeCurrentPickups: async function(groups) {
+        // Para cada pickup, verifica se existe host mais próximo (com vaga)
+        // Se sim, sugere troca (marca como "novo pickup sugerido")
+        // Atualiza lista de pickups de cada host
+        const hosts = groups.hosts.map(h => ({...h,
+        pickups: groups.pickups.filter(p => p.HCP_host_partner === h.name)
+        }));
+        const suggestedMoves = [];
+        for (const pickup of groups.pickups) {
+            let bestHost = null;
+            let bestDist = Infinity;
+            for (const host of hosts) {
+                if (host.pickups.length >= 5) continue;
+                const dist = L.latLng(pickup.lat, pickup.lon).distanceTo(L.latLng(host.lat, host.lon));
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestHost = host;
+                }
+            }
+            // Se o host mais próximo for diferente do atual, sugere troca
+            if (bestHost && pickup.HCP_host_partner !== bestHost.name) {
+                suggestedMoves.push({
+                    pickup,
+                    from: pickup.HCP_host_partner,
+                    to: bestHost.name,
+                    type: 'move'
+                });
+                // Só adiciona se ainda não estiver na lista
+                if (!bestHost.pickups.some(p => p.store_id === pickup.store_id)) {
+                    bestHost.pickups.push(pickup);
+                }
+            }
+        }
+        return { optimizedHosts: hosts, optimizedPickups: groups.pickups, suggestedMoves };
+    },
+
+    clusterForExpansion: async function(groups, optimized) {
+        // Clusters com todos os parceiros
+        // Só sugere novos pickups/hosts para heros que não são host/pickup
+        // Respeita limite de 5 pickups por host
+        const all = groups.all;
+        const hosts = optimized.optimizedHosts;
+        const heros = groups.heros.filter(h => !hosts.some(host => host.store_id === h.store_id) && !optimized.optimizedPickups.some(p => p.store_id === h.store_id));
+        const suggestions = [];
+        for (const hero of heros) {
+            // Tenta alocar em host existente com vaga
+            let bestHost = null;
+            let bestDist = Infinity;
+            for (const host of hosts) {
+                if (host.pickups.length >= 5) continue;
+                const dist = L.latLng(hero.lat, hero.lon).distanceTo(L.latLng(host.lat, host.lon));
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestHost = host;
+                }
+            }
+            if (bestHost) {
+                suggestions.push({
+                    host: bestHost,
+                    pickup: hero,
+                    type: 'new-pickup'
+                });
+                if (!bestHost.pickups.some(p => p.store_id === hero.store_id)) {
+                    bestHost.pickups.push(hero);
+                }
+            } else {
+                // Sugerir novo host se não houver host com vaga
+                suggestions.push({
+                    host: hero,
+                    pickup: null,
+                    type: 'new-host'
+                });
+                hosts.push({ ...hero, pickups: [] });
+            }
+        }
+        return suggestions;
+    },
+
+    generateHcpReport: function(optimized, clusters) {
+        // Gera HTML do popup geral conforme regras:
+        let html = `
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <b>Sugestões HCP</b>
+                <button onclick="document.getElementById('hcp-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
+            </div>
+            <div style="overflow-y:auto;max-height:750px;padding-top:8px;">
+        `;
+        // Hosts atuais e sugeridos
+        const allHosts = [...optimized.optimizedHosts];
+        clusters.forEach(s => {
+            if (s.type === 'new-host' && !allHosts.some(h => h.store_id === s.host.store_id)) {
+                allHosts.push({ ...s.host, pickups: [] });
+            }
+        });
+
+        allHosts.forEach(host => {
+            const isNewHost = clusters.some(s => s.type === 'new-host' && s.host.store_id === host.store_id);
+            html += `<h2 style="font-size:1.1em;font-weight:bold;margin-bottom:4px;">${isNewHost ? '(Novo Host Sugerido) ' : ''}${host.name}</h2>`;
+            if (host.pickups && host.pickups.length > 0) {
+                html += `<ul style="margin-left:18px;margin-bottom:8px;">`;
+                host.pickups.forEach(pickup => {
+                    const isNewPickup = clusters.some(s => s.type === 'new-pickup' && s.pickup && s.pickup.store_id === pickup.store_id && s.host.store_id === host.store_id);
+                    html += `<li>${isNewPickup ? '(novo pickup sugerido) ' : ''}${pickup.name}</li>`;
+                });
+                html += `</ul>`;
+            } else {
+                html += `<div style="margin-left:12px;color:#888;">Nenhum Pick-up</div>`;
+            }
+        });
+
+        html += `</div>`; // Fecha a div da lista
+
+        return html;
+
+    },
+
+    applyHcpSuggestionsToMap: function(optimized, clusters) {
+        // Atualiza marcadores conforme sugestões, mantém popups originais
+        // Limpa marcadores antigos
+        AppState.markerObjects.forEach(m => AppState.map.removeLayer(m));
+        AppState.markerObjects = [];
+        // Recria todos os marcadores
+        const all = AppState.currentFilteredData.filter(p => p.status !== 'Exited');
+        all.forEach(data => {
+            let icon = null;
+            // Novo host sugerido
+            if (clusters.some(s => s.type === 'new-host' && s.host.store_id === data.store_id)) {
+                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/1995/1995526.png', iconSize: [28, 28], iconAnchor: [14, 28] });
+            }
+            // Novo pickup sugerido
+            else if (clusters.some(s => s.type === 'new-pickup' && s.pickup && s.pickup.store_id === data.store_id)) {
+                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png', iconSize: [24, 24], iconAnchor: [12, 24] });
+            }
+            // Host atual
+            else if (optimized.optimizedHosts.some(h => h.store_id === data.store_id)) {
+                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/25/25694.png', iconSize: [28, 28], iconAnchor: [14, 28] });
+            }
+            // Pickup atual
+            else if (optimized.optimizedPickups.some(p => p.store_id === data.store_id)) {
+                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149059.png', iconSize: [24, 24], iconAnchor: [12, 24] });
+            }
+            // Hero ou outro
+            else {
+                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png', iconSize: [20, 20], iconAnchor: [10, 20] });
+            }
+            const marker = L.marker([data.lat, data.lon], { icon });
+            marker.markerData = data;
+            marker.bindPopup(UIManager.getMarkerPopupContent(data));
+            marker.on('click', MapManager.onMarkerClick);
+            AppState.markerObjects.push(marker);
+            marker.addTo(AppState.map);
+        });
+
+    },
+
+    hcpSuggestHostClusters: async function() {
+        // Mostra loading/spinner
         let loadingDiv = document.createElement('div');
         loadingDiv.id = 'routes-loading';
         loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
         loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-            <i class="fas fa-spinner fa-spin mr-2"></i> Buscando parceiros ideais para ser Host Partners e Pick-Up Partners, aguarde...
-        </div>`;
+                                    <i class="fas fa-spinner fa-spin mr-2"></i> Otimizando HCP Hosts e Pick-ups, aguarde...
+                                </div>`;
         document.body.appendChild(loadingDiv);
 
         try {
-            const parceiros = AppState.currentFilteredData.filter(parceiro => {
+            // 1. Identificar grupos
+            const groups = this.getCurrentHcpGroups();
 
-                // 1. Status Active ou Onboarding
-                const statusValido = parceiro.status === 'Active' || parceiro.status === 'Onboarding';
+            // 2. Otimizar pickups atuais
+            const optimized = await this.optimizeCurrentPickups(groups);
 
-                // 2. hubDeliveryInitiatives diferente de HCP Host Partner ou Pick Up Partner quando hcpRateCard for diferente de Tier 1
-                let hubDeliveryValido = true;
-                if (parceiro.HCP_rate_card !== 'Tier 1') {
-                    hubDeliveryValido = parceiro.hub_delivey_initiatives !== 'HCP Host Partner' &&
-                                        parceiro.hub_delivey_initiatives !== 'HCP Pick Up Partner';
-                }
+            // 3. Clusterização para expansão
+            const clusters = await this.clusterForExpansion(groups, optimized);
 
-                return statusValido && hubDeliveryValido;
-            });
+            // 4. Gerar relatório
+            const reportHtml = this.generateHcpReport(optimized, clusters);
 
-            if (!parceiros || parceiros.length === 0) {
-                alert("Nenhum parceiro carregado no mapa.");
-                return;
+            // 5. Aplicar sugestões no mapa
+            this.applyHcpSuggestionsToMap(optimized, clusters);
+
+            // 6. Exibir popup geral
+            let popupDiv = document.getElementById('hcp-suggestions-popup');
+            if (!popupDiv) {
+                popupDiv = document.createElement('div');
+                popupDiv.id = 'hcp-suggestions-popup';
+                popupDiv.style = `
+                    position:fixed; top:80px; right:20px; z-index:9999; background:#fff; 
+                    padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 2px 8px #0003; 
+                    max-width:350px; min-width:220px; font-size:1em;
+                `;
+                document.body.appendChild(popupDiv);
             }
+            popupDiv.innerHTML = reportHtml;
 
-            // GeoJSON base
-            const features = parceiros.map(p => ({
-                type: "Feature",
-                properties: { 
-                    store_id: p.store_id,
-                    name: p.name,
-                    lat: p.lat,
-                    lon: p.lon
-                },
-                geometry: { type: "Point", coordinates: [p.lon, p.lat] }
-            }));
-
-            const fc = { type: "FeatureCollection", features };
-
-            // Estimar número de clusters
-            const numClusters = Math.ceil(parceiros.length / 5);
-
-            // Rodar KMeans
-            let clustered = turf.clustersKmeans(fc, { numberOfClusters: numClusters });
-
-            // Agrupar clusters
-            let clusters = {};
-            clustered.features.forEach(f => {
-                const cid = f.properties.cluster;
-                if (!clusters[cid]) clusters[cid] = [];
-                clusters[cid].push(f);
-            });
-
-            // Função para quebrar clusters >6
-            const splitCluster = (grupo) => {
-                const qtd = grupo.length;
-                const needed = Math.ceil(qtd / 6);
-                const subC = turf.clustersKmeans({
-                    type: "FeatureCollection",
-                    features: grupo
-                }, { numberOfClusters: needed });
-
-                let out = {};
-                subC.features.forEach(f => {
-                    const cid = f.properties.cluster;
-                    if (!out[cid]) out[cid] = [];
-                    out[cid].push(f);
-                });
-
-                return Object.values(out).filter(c => c.length >= 4 && c.length <= 6);
-            };
-
-            // Validar clusters
-            let validClusters = [];
-            for (const cid in clusters) {
-                const grupo = clusters[cid];
-                
-                if (grupo.length < 4) continue;
-                if (grupo.length > 6) {
-                    validClusters.push(...splitCluster(grupo));
-                } else {
-                    validClusters.push(grupo);
-                }
-            }
-
-            // Processar Host + Pick-ups
-            const result = [];
-
-            for (const grupo of validClusters) {
-
-                // Centróide do cluster
-                const centroid = turf.centroid({
-                    type: "FeatureCollection",
-                    features: grupo
-                });
-
-                // Encontrar host = mais próximo do centróide
-                let host = null;
-                let bestDist = Infinity;
-
-                grupo.forEach(f => {
-                    const d = turf.distance(centroid, f);
-                    if (d < bestDist) {
-                        bestDist = d;
-                        host = f;
-                    }
-                });
-
-                const hostCoords = host.geometry.coordinates;
-                const pickups = [];
-
-                // Validar pick-ups por OSRM
-                for (const f of grupo) {
-                    if (f.properties.store_id === host.properties.store_id) continue;
-
-                    const url = `https://router.project-osrm.org/route/v1/driving/${f.geometry.coordinates[0]},${f.geometry.coordinates[1]};${hostCoords[0]},${hostCoords[1]}?overview=false`;
-
-                    try {
-                        const res = await fetch(url);
-                        const data = await res.json();
-
-                        if (data.routes?.length > 0) {
-                            const route = data.routes[0];
-                            const dist = route.distance;   // metros
-                            const dur = route.duration;    // segundos
-
-                            if (dist <= 6000 && dur <= 900) {
-                                pickups.push(f);
-                            }
-                        }
-                    } catch (e) {
-                        console.warn(e);
-                    }
-                }
-
-                result.push({ host, pickups });
-            }
-
-            // Aplicar no mapa
-            this.hcpApplyClustersToMap(result);
-
+            // Atualiza botão
             const btn = document.getElementById('suggest-routes-btn');
             if (btn) {
                 btn.textContent = 'Limpar Sugestões';
@@ -1227,100 +1284,11 @@ const RouteManager = {
                     RouteManager.resetHcpSuggestions();                    
                 };
             }
-
         } finally {
-            // Remove alerta/spinner ao finalizar
+            // Remove spinner
             const div = document.getElementById('routes-loading');
             if (div) div.remove();
         }
-
-    },
-
-    // --- Aplicação visual no mapa ---
-    hcpApplyClustersToMap: function(groups) {
-        const hostIcon = L.icon({
-            iconUrl: "icons/chain.png",
-            iconSize: [30, 30],
-            iconAnchor: [15, 30]
-        });
-
-        const pickupIcon = L.icon({
-            iconUrl: "icons/pickup.png",
-            iconSize: [24, 24],
-            iconAnchor: [12, 24]
-        });
-
-        // Mapa dos marcadores já renderizados
-        const markers = {};
-        AppState.markerObjects.forEach(m => markers[m.markerData.store_id] = m);
-
-        groups.forEach(({ host, pickups }) => {
-            const hostMarker = markers[host.properties.store_id];
-            if (hostMarker) {
-                hostMarker.setStyle?.({});
-                const latlng = hostMarker.getLatLng();
-                const popupContent = hostMarker.getPopup() ? hostMarker.getPopup().getContent() : null;
-                AppState.map.removeLayer(hostMarker);
-                const newHostMarker = L.marker(latlng, { icon: hostIcon }).addTo(AppState.map);
-                if (popupContent) newHostMarker.bindPopup(popupContent);
-                markers[host.properties.store_id] = newHostMarker;
-            }
-            pickups.forEach(p => {
-                const pickupMarker = markers[p.properties.store_id];
-                if (pickupMarker) {
-                    pickupMarker.setStyle?.({});
-                    const latlng = pickupMarker.getLatLng();
-                    const popupContent = pickupMarker.getPopup() ? pickupMarker.getPopup().getContent() : null;
-                    AppState.map.removeLayer(pickupMarker);
-                    const newPickupMarker = L.marker(latlng, { icon: pickupIcon }).addTo(AppState.map);
-                    if (popupContent) newPickupMarker.bindPopup(popupContent);
-                    markers[p.properties.store_id] = newPickupMarker;
-                }
-            });
-        });
-
-        DataManager.applyFilters();
-
-        // --- Popup geral com todas as sugestões ---
-        let popupDiv = document.getElementById('hcp-suggestions-popup');
-        if (!popupDiv) {
-            popupDiv = document.createElement('div');
-            popupDiv.id = 'hcp-suggestions-popup';
-            popupDiv.style = `
-                position:fixed;
-                top:80px;
-                right:20px;
-                overflow-y:auto;
-                z-index:9999;
-                background:#fff; 
-                padding:24px 18px 18px 18px;
-                border-radius:8px;
-                box-shadow:0 2px 8px #0003;
-                max-height:750px; 
-                max-width:350px;
-                min-width:220px;
-                font-size:1em;
-            `;
-            document.body.appendChild(popupDiv);
-        }
-        let html = `<div style="display:flex;justify-content:space-between;align-items:center;">
-            <b>Sugestões HCP</b>
-            <button onclick="document.getElementById('hcp-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
-        </div><hr style="margin:8px 0;">`;
-
-        groups.forEach(({ host, pickups }) => {
-            html += `<h2 style="font-size:1.1em;font-weight:bold;margin-bottom:4px;">${host.properties.name}</h2>`;
-            if (pickups.length === 0) {
-                html += `<div style="margin-left:12px;color:#888;">Nenhum Pick-up</div>`;
-            } else {
-                html += `<ul style="margin-left:18px;margin-bottom:8px;">`;
-                pickups.forEach(p => {
-                    html += `<li>${p.properties.name}</li>`;
-                });
-                html += `</ul>`;
-            }
-        });
-        popupDiv.innerHTML = html;
     },
 
     resetHcpSuggestions: function() {

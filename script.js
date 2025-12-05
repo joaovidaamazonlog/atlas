@@ -8,6 +8,7 @@ const AppState = {
     currentFilteredData: [],
     markerObjects: [],
     circleObjects: [],
+    hcpSuggestionCache: {},
     highlightedMarkers: [],
     tempMarker: null,
     legendControl: null,
@@ -38,6 +39,10 @@ const AppState = {
         DSA8: 750, DPR2: 1080, DRS5: 1060, DEFAULT: 600
     }
 };
+
+AppState.hcpSuggestionCache = AppState.hcpSuggestionCache || {};
+AppState.hcpUsedStores = AppState.hcpUsedStores || {};
+AppState.hcpSuggestionsActive = AppState.hcpSuggestionsActive || false; 
 
 // --- MODULE: DataManager ---
 const DataManager = {
@@ -920,6 +925,15 @@ const RouteManager = {
         }).addTo(AppState.map);
     },
 
+    startRouteFromHere: function(event, storeId, storeName) {
+        event.stopPropagation();
+        document.getElementById('routeFromId').value = storeId;
+        document.getElementById('routeFromInput').value = storeName;
+        $('#controlTabs a[href="#route-content"]').tab('show');
+        document.getElementById('routeToInput').focus();
+        AppState.map.closePopup();
+    },
+
     addStop: function() {
         // Abre autocomplete para selecionar parada
         const NewStop = document.createElement('input');
@@ -1079,81 +1093,517 @@ const RouteManager = {
         return { hosts, pickups, heros, all };
     },
 
-    optimizeCurrentPickups: async function(groups) {
-        // Para cada pickup, verifica se existe host mais próximo (com vaga)
-        // Se sim, sugere troca (marca como "novo pickup sugerido")
-        // Atualiza lista de pickups de cada host
-        const hosts = groups.hosts.map(h => ({...h,
-        pickups: groups.pickups.filter(p => p.HCP_host_partner === h.name)
-        }));
-        const suggestedMoves = [];
-        for (const pickup of groups.pickups) {
-            let bestHost = null;
-            let bestDist = Infinity;
-            for (const host of hosts) {
-                if (host.pickups.length >= 5) continue;
-                const dist = L.latLng(pickup.lat, pickup.lon).distanceTo(L.latLng(host.lat, host.lon));
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    bestHost = host;
-                }
-            }
-            // Se o host mais próximo for diferente do atual, sugere troca
-            if (bestHost && pickup.HCP_host_partner !== bestHost.name) {
-                suggestedMoves.push({
-                    pickup,
-                    from: pickup.HCP_host_partner,
-                    to: bestHost.name,
-                    type: 'move'
-                });
-                // Só adiciona se ainda não estiver na lista
-                if (!bestHost.pickups.some(p => p.store_id === pickup.store_id)) {
-                    bestHost.pickups.push(pickup);
-                }
-            }
+    async osrmTableMatrix(coords, sources = null, destinations = null) {
+        if (!coords || coords.length === 0) throw new Error("coords empty");
+        const coordStr = coords.map(c => `${c.lon},${c.lat}`).join(';');
+        const params = new URLSearchParams();
+        params.set('annotations', 'distance,duration');
+        if (sources && sources.length > 0) params.set('sources', sources.join(';'));
+        if (destinations && destinations.length > 0) params.set('destinations', destinations.join(';'));
+        const url = `https://router.project-osrm.org/table/v1/driving/${coordStr}?${params.toString()}`;
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(OSRM `table error ${res.status}`);
+            const j = await res.json();
+            return { distances: j.distances || null, durations: j.durations || null, raw: j };
+        } catch (err) {
+            console.error('osrmTableMatrix failed', err);
+            throw err;
         }
-        return { optimizedHosts: hosts, optimizedPickups: groups.pickups, suggestedMoves };
     },
 
-    clusterForExpansion: async function(groups, optimized) {
-        // Clusters com todos os parceiros
-        // Só sugere novos pickups/hosts para heros que não são host/pickup
-        // Respeita limite de 5 pickups por host
-        const all = groups.all;
-        const hosts = optimized.optimizedHosts;
-        const heros = groups.heros.filter(h => !hosts.some(host => host.store_id === h.store_id) && !optimized.optimizedPickups.some(p => p.store_id === h.store_id));
-        const suggestions = [];
-        for (const hero of heros) {
-            // Tenta alocar em host existente com vaga
-            let bestHost = null;
-            let bestDist = Infinity;
-            for (const host of hosts) {
-                if (host.pickups.length >= 5) continue;
-                const dist = L.latLng(hero.lat, hero.lon).distanceTo(L.latLng(host.lat, host.lon));
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    bestHost = host;
-                }
+    extractOsrmResultFromMatrix(matrixDistances, matrixDurations, rowIndex, colIndex) {
+        if (!matrixDistances || !matrixDurations) return null;
+        const d = matrixDistances[rowIndex]?.[colIndex];
+        const t = matrixDurations[rowIndex]?.[colIndex];
+        if (d === null || t === null || d === undefined || t === undefined) return null;
+
+        return { distance: d, duration: t };
+    },
+
+    async optimizeCurrentPickupsPhase1(groups) {
+        // groups: { hosts, pickups, heros, all }
+        const hosts = groups.hosts.map(h => ({ ...h, pickups: groups.pickups.filter(p => p.HCP_host_partner === h.name).slice() }));
+        const pickups = groups.pickups.slice();
+        const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
+        if (!AppState.hcpUsedStores[station]) AppState.hcpUsedStores[station] = new Set();
+        const used = AppState.hcpUsedStores[station];
+
+        const moves = []; // { pickup, from, to }
+
+        if (pickups.length === 0 || hosts.length === 0) {
+            return { hosts, pickups, moves };
+        }
+
+        // Build coords: pickups then hosts
+        const coords = [];
+        pickups.forEach(p => coords.push({ lat: p.lat, lon: p.lon }));
+        const hostOffset = coords.length;
+        hosts.forEach(h => coords.push({ lat: h.lat, lon: h.lon }));
+
+        const sources = Array.from({ length: pickups.length }, (_, i) => i);
+        const destinations = Array.from({ length: hosts.length }, (_, j) => hostOffset + j);
+
+        let matrix;
+        try {
+            matrix = await this.osrmTableMatrix(coords, sources, destinations);
+        } catch (err) {
+            console.error('Phase1: osrmTableMatrix failed', err);
+            return { hosts, pickups, moves };
+        }
+
+        // For each pickup, find nearest valid host (respecting capacity and used set)
+        for (let i = 0; i < pickups.length; i++) {
+            const pickup = pickups[i];
+            // mark used pickups: if already used (e.g., by phase2 or prior), skip
+            if (used.has(pickup.store_id)) continue;
+
+            // Create array of host candidates with distance/duration
+            const hostCandidates = [];
+            for (let j = 0; j < hosts.length; j++) {
+            const host = hosts[j];
+            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, i, j);
+            if (!res) continue;
+            if (res.distance <= 6000 && res.duration <= 900) {
+                // host has capacity?
+                const cap = host.pickups ? host.pickups.length : 0;
+                if (cap < 5) hostCandidates.push({ hostIdx: j, host, distance: res.distance, duration: res.duration });
             }
-            if (bestHost) {
-                suggestions.push({
-                    host: bestHost,
-                    pickup: hero,
-                    type: 'new-pickup'
-                });
-                if (!bestHost.pickups.some(p => p.store_id === hero.store_id)) {
-                    bestHost.pickups.push(hero);
-                }
-            } else {
-                // Sugerir novo host se não houver host com vaga
-                suggestions.push({
-                    host: hero,
-                    pickup: null,
-                    type: 'new-host'
-                });
-                hosts.push({ ...hero, pickups: [] });
+            }
+            if (hostCandidates.length === 0) continue;
+            // sort by distance asc
+            hostCandidates.sort((a, b) => a.distance - b.distance);
+            // choose first available (nearest)
+            const chosen = hostCandidates[0];
+            const chosenHost = chosen.host;
+            // if different from current assigned host, suggest move
+            if (pickup.HCP_host_partner !== chosenHost.name) {
+            moves.push({ pickup, from: pickup.HCP_host_partner, to: chosenHost.name });
+            }
+            // add pickup to chosen host
+            if (!chosenHost.pickups) chosenHost.pickups = [];
+            // avoid duplicating in chosenHost.pickups
+            if (!chosenHost.pickups.some(p => p.store_id === pickup.store_id) && chosenHost.pickups.length < 5) {
+            chosenHost.pickups.push(pickup);
+            used.add(pickup.store_id);
             }
         }
+
+        return { hosts, pickups, moves };
+    },
+    
+    async allocateHeroesToExistingHostsPhase2(groups, currentHosts) {
+        // groups: { hosts, pickups, heros, all }
+        // currentHosts: hosts state after phase1 (with pickups arrays updated)
+        const hosts = currentHosts.map(h => ({ ...h, pickups: (h.pickups || []).slice() }));
+        const heros = groups.heros.slice();
+        const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
+        if (!AppState.hcpUsedStores[station]) AppState.hcpUsedStores[station] = new Set();
+        const used = AppState.hcpUsedStores[station];
+
+        const assignments = []; // { hero, host }
+
+        if (heros.length === 0 || hosts.length === 0) return { hosts, assignments, remainingHeros: heros.slice() };
+
+        // We'll compute matrix heroes x hosts (one call)
+        const coords = [];
+        heros.forEach(h => coords.push({ lat: h.lat, lon: h.lon }));
+        const hostOffset = coords.length;
+        hosts.forEach(h => coords.push({ lat: h.lat, lon: h.lon }));
+
+        const sources = Array.from({ length: heros.length }, (_, i) => i);
+        const destinations = Array.from({ length: hosts.length }, (_, j) => hostOffset + j);
+
+        let matrix;
+        try {
+            matrix = await this.osrmTableMatrix(coords, sources, destinations);
+        } catch (err) {
+            console.error('Phase2: osrmTableMatrix failed', err);
+            return { hosts, assignments, remainingHeros: heros.slice() };
+        }
+
+        // For each hero, attempt to assign to nearest host with capacity and within constraints
+        const remainingHeros = [];
+        for (let i = 0; i < heros.length; i++) {
+            const hero = heros[i];
+            if (used.has(hero.store_id)) continue; // already used
+            // build candidates with distance/duration and capacity
+            const candidates = [];
+            for (let j = 0; j < hosts.length; j++) {
+            const host = hosts[j];
+            const cap = host.pickups ? host.pickups.length : 0;
+            if (cap >= 5) continue;
+            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, i, j);
+            if (!res) continue;
+            if (res.distance <= 6000 && res.duration <= 900) {
+                candidates.push({ hostIdx: j, host, distance: res.distance, duration: res.duration });
+            }
+            }
+            if (candidates.length === 0) {
+            remainingHeros.push(hero);
+            continue;
+            }
+            candidates.sort((a, b) => a.distance - b.distance);
+            // choose nearest with available capacity
+            let assigned = false;
+            for (const cand of candidates) {
+            const host = cand.host;
+            if (!host.pickups) host.pickups = [];
+            if (host.pickups.length < 5) {
+                // assign hero -> pickup
+                host.pickups.push(hero);
+                assignments.push({ hero, host, distance: cand.distance, duration: cand.duration });
+                used.add(hero.store_id);
+                assigned = true;
+                break;
+            }
+            }
+            if (!assigned) remainingHeros.push(hero);
+        }
+
+        return { hosts, assignments, remainingHeros };
+    },
+
+    async clusterHeroesNewHostsPhase3(groups, currentHosts) {
+        // groups: { hosts, pickups, heros, all } - heros should be those remaining after phase2
+        // currentHosts: hosts after phase2
+        const turf = window.turf;
+        const hosts = currentHosts.map(h => ({ ...h, pickups: (h.pickups || []).slice() }));
+        const heros = groups.heros.slice();
+        const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
+        if (!AppState.hcpUsedStores[station]) AppState.hcpUsedStores[station] = new Set();
+        const used = AppState.hcpUsedStores[station];
+
+        const newHostSuggestions = []; // { hostCandidate, pickups: [p,...] }
+
+        if (heros.length < 4) return { hosts, newHostSuggestions };
+
+        // Determine k to try clusters ~5
+        const k = Math.max(1, Math.ceil(heros.length / 5));
+        const fc = turf.featureCollection(heros.map(h => turf.point([h.lon, h.lat], { store_id: h.store_id })));
+        let clustered;
+        try {
+            clustered = turf.clustersKmeans(fc, { numberOfClusters: k });
+        } catch (err) {
+            console.error('Phase3: turf clustersKmeans failed', err);
+            return { hosts, newHostSuggestions };
+        }
+
+        // group points
+        const clusterMap = new Map();
+        clustered.features.forEach(f => {
+            const cid = f.properties.cluster;
+            if (!clusterMap.has(cid)) clusterMap.set(cid, []);
+            clusterMap.get(cid).push(f);
+        });
+
+        // process each cluster
+        for (const [cid, features] of clusterMap.entries()) {
+            let members = features.map(f => heros.find(h => h.store_id === f.properties.store_id)).filter(Boolean);
+            if (members.length === 0) continue;
+
+            // reduce >6 by removing farthest
+            if (members.length > 6) {
+            const fcTmp = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
+            const centroidTmp = turf.centroid(fcTmp);
+            members.sort((a, b) => {
+                const da = turf.distance(centroidTmp, turf.point([a.lon, a.lat]), { units: 'kilometers' });
+                const db = turf.distance(centroidTmp, turf.point([b.lon, b.lat]), { units: 'kilometers' });
+                return db - da;
+            });
+            while (members.length > 6) members.shift(); // remove farthest
+            }
+
+            // density check: max distance to centroid <= 2.5 km
+            const fc2 = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
+            const centroid = turf.centroid(fc2);
+            let maxDistKm = 0;
+            members.forEach(m => {
+            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+            if (d > maxDistKm) maxDistKm = d;
+            });
+            if (maxDistKm > 2.5) continue;
+            if (members.length < 4) continue;
+
+            // host candidate = nearest to centroid
+            let hostCandidate = null;
+            let hostDist = Infinity;
+            members.forEach(m => {
+            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+            if (d < hostDist) { hostDist = d; hostCandidate = m; }
+            });
+            if (!hostCandidate) continue;
+
+            // skip if already used as host or suggested
+            if (used.has(hostCandidate.store_id)) continue;
+
+            // pickup candidates = members except host
+            const pickupCandidates = members.filter(m => m.store_id !== hostCandidate.store_id);
+            if (pickupCandidates.length === 0) continue;
+
+            // build coords: pickups then host
+            const coords = pickupCandidates.map(p => ({ lat: p.lat, lon: p.lon }));
+            const hostIdx = coords.length;
+            coords.push({ lat: hostCandidate.lat, lon: hostCandidate.lon });
+
+            const sources = Array.from({ length: pickupCandidates.length }, (_, i) => i);
+            const destinations = [hostIdx];
+
+            let matrix;
+            try {
+            matrix = await this.osrmTableMatrix(coords, sources, destinations);
+            } catch (err) {
+            console.error('Phase3: osrmTableMatrix failed for cluster', cid, err);
+            continue;
+            }
+
+            // validate pickups w/ matrix and avoid duplicates
+            const validPickups = [];
+            for (let r = 0; r < pickupCandidates.length; r++) {
+            const p = pickupCandidates[r];
+            if (used.has(p.store_id)) continue;
+            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, r, 0);
+            if (res && res.distance <= 6000 && res.duration <= 900) {
+                validPickups.push({ p, distance: res.distance, duration: res.duration });
+            }
+            }
+
+            // sort by distance and limit to 5
+            validPickups.sort((a, b) => a.distance - b.distance);
+            const finalPickups = validPickups.slice(0, 5).map(x => x.p);
+
+            // host must have at least 3 pickups to be valid new host
+            if (finalPickups.length < 3) continue;
+
+            // mark used
+            used.add(hostCandidate.store_id);
+            finalPickups.forEach(fp => used.add(fp.store_id));
+
+            // set original hdi and set new values (so legend updates)
+            if (!hostCandidate._original_hdi) hostCandidate._original_hdi = hostCandidate.hub_delivery_initiatives;
+            hostCandidate.hub_delivery_initiatives = 'New Host';
+            finalPickups.forEach(fp => {
+            if (!fp._original_hdi) fp._original_hdi = fp.hub_delivery_initiatives;
+            fp.hub_delivery_initiatives = 'New PickUp';
+            });
+
+            // push suggestion
+            newHostSuggestions.push({ hostCandidate, pickups: finalPickups });
+
+            // update hosts list so further clusters/allocations see this host as taken (with pickups)
+            hosts.push({ ...hostCandidate, pickups: finalPickups.slice() });
+        } // end cluster loop
+
+        return { hosts, newHostSuggestions };
+    },
+
+    _buildClustersCombinedFromPhases(movesPhase1, phase2Assignments, phase3Suggestions) {
+        // returns array of objects { type: 'move'|'new-host'|'new-pickup', host, pickup, from, to }
+        const combined = [];
+        // Phase1 moves
+        movesPhase1.forEach(m => {
+            combined.push({ type: 'move', pickup: m.pickup, from: m.from, to: m.to, host: null });
+        });
+        // Phase2 assignments (hero->host)
+        (phase2Assignments || []).forEach(a => {
+            combined.push({ type: 'new-pickup', pickup: a.hero, host: a.host });
+        });
+        // Phase3 suggestions
+        (phase3Suggestions || []).forEach(s => {
+            // s: { hostCandidate, pickups }
+            combined.push({ type: 'new-host', host: s.hostCandidate, pickup: null });
+            s.pickups.forEach(p => combined.push({ type: 'new-pickup', host: s.hostCandidate, pickup: p }));
+        });
+        return combined;
+    },
+
+    buildHcpFullReportHtml(movesPhase1, phase2Assignments, phase3Suggestions) {
+        let html = `<div style="display:flex;justify-content:space-between;align-items:center;"><b>Sugestões HCP</b><button onclick="document.getElementById('hcp-suggestions-popup')?.remove()" style="border:none;background:none;font-size:1.1em;">&times;</button></div><div style="max-height:700px;overflow:auto;padding-top:8px;">`;
+
+        // Phase1 moves
+        html += `<h4 style="margin-top:8px;">Mudanças sugeridas (Pickups atuais)</h4>`;
+        if (!movesPhase1 || movesPhase1.length === 0) {
+            html += `<div style="margin-left:12px;color:#666;">Nenhuma mudança sugerida para pickups atuais.</div>`;
+        } else {
+            html += `<ul>`;
+            movesPhase1.forEach(m => {
+            html += `<li><b>${m.pickup.name}</b> (${m.pickup.store_id}) — mover de <i>${m.from || 'N/A'}</i> para <i>${m.to}</i></li>`;
+            });
+            html += `</ul>`;
+        }
+
+        // Phase2 assignments
+        html += `<h4 style="margin-top:8px;">Alocações em hosts existentes (Hero → Pickup)</h4>`;
+        if (!phase2Assignments || phase2Assignments.length === 0) {
+            html += `<div style="margin-left:12px;color:#666;">Nenhum herói alocado a hosts existentes.</div>`;
+        } else {
+            html += `<ul>`;
+            phase2Assignments.forEach(a => {
+            html += `<li><b>${a.hero.name}</b> (${a.hero.store_id}) → Host: <b>${a.host.name}</b> (${a.host.store_id})</li>`;
+            });
+            html += `</ul>`;
+        }
+
+        // Phase3 new hosts/pickups
+        html += `<h4 style="margin-top:8px;">Novos Hosts sugeridos / Pickups (por cluster)</h4>`;
+        if (!phase3Suggestions || phase3Suggestions.length === 0) {
+            html += `<div style="margin-left:12px;color:#666;">Nenhum novo host sugerido por clusterização.</div>`;
+        } else {
+            phase3Suggestions.forEach((s, idx) => {
+            html += `<div style="margin-left:6px;margin-bottom:8px;"><b>Cluster ${idx + 1} — Host sugerido: ${s.hostCandidate.name} (${s.hostCandidate.store_id})</b><ul>`;
+            s.pickups.forEach(p => html += `<li>${p.name} (${p.store_id})</li>`);
+            html += `</ul></div>`;
+            });
+        }
+
+        html += `</div>`;
+        return html;
+    },
+
+    async clusterForExpansion(groups, optimized) {
+        const turf = window.turf;
+        const hosts = optimized.optimizedHosts ? optimized.optimizedHosts.slice() : [];
+        const heros = groups.heros.filter(h => !hosts.some(host => host.store_id === h.store_id) && !optimized.optimizedPickups.some(p => p.store_id === h.store_id));
+        const suggestions = [];
+        if (!heros || heros.length < 4) return suggestions;
+
+        // used set for this station (prevent duplicates)
+        const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
+        if (!AppState.hcpUsedStores[station]) AppState.hcpUsedStores[station] = new Set();
+        const used = AppState.hcpUsedStores[station];
+
+        // controle local para não sugerir o mesmo pickup/host mais de uma vez
+        const suggestedHostIds = new Set();
+        const suggestedPickupIds = new Set();
+
+        let k = Math.max(1, Math.ceil(heros.length / 5));
+        const fc = turf.featureCollection(heros.map(h => turf.point([h.lon, h.lat], { store_id: h.store_id })));
+
+        let clustered;
+        try {
+            clustered = turf.clustersKmeans(fc, { numberOfClusters: k });
+        } catch (err) {
+            console.error('clusterForExpansion – KMEANS falhou', err);
+            return suggestions;
+        }
+
+        // agrupa por cluster id
+        const clusterMap = new Map();
+        clustered.features.forEach(f => {
+            const cid = f.properties.cluster;
+            if (!clusterMap.has(cid)) clusterMap.set(cid, []);
+            clusterMap.get(cid).push(f);
+        });
+
+        // processa cada cluster
+        for (const [cid, features] of clusterMap.entries()) {
+            let members = features.map(f => heros.find(h => h.store_id === f.properties.store_id)).filter(Boolean);
+            if (members.length === 0) continue;
+
+            // reduzir cluster > 6 removendo os mais distantes do centroid
+            if (members.length > 6) {
+            const fcTmp = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
+            const centroidTmp = turf.centroid(fcTmp);
+            members.sort((a, b) => {
+                const da = turf.distance(centroidTmp, turf.point([a.lon, a.lat]), { units: 'kilometers' });
+                const db = turf.distance(centroidTmp, turf.point([b.lon, b.lat]), { units: 'kilometers' });
+                return db - da;
+            });
+            while (members.length > 6) {
+                const removed = members.shift(); // remove mais distante
+                // removed permanece hero
+            }
+            }
+
+            // densidade — max distância ao centroid ≤ 2.5 km
+            const fc2 = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
+            const centroid = turf.centroid(fc2);
+            let maxDistKm = 0;
+            members.forEach(m => {
+            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+            if (d > maxDistKm) maxDistKm = d;
+            });
+            if (maxDistKm > 2.5) continue;
+            if (members.length < 4) continue;
+
+            // escolher host candidato = mais próximo do centroid
+            let hostCandidate = null;
+            let hostDist = Infinity;
+            members.forEach(m => {
+            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+            if (d < hostDist) { hostDist = d; hostCandidate = m; }
+            });
+            if (!hostCandidate) continue;
+
+            // preparar pickups candidates (exceto host)
+            const pickupCandidates = members.filter(m => m.store_id !== hostCandidate.store_id);
+
+            // evitar sugerir host se já usado
+            if (used.has(hostCandidate.store_id) || suggestedHostIds.has(hostCandidate.store_id)) {
+            // host já sugerido/ocupado - não usá-lo como new-host
+            continue;
+            }
+
+            if (pickupCandidates.length === 0) continue;
+
+            // monta coords: pickups then host
+            const coords = pickupCandidates.map(p => ({ lat: p.lat, lon: p.lon }));
+            const hostIdx = coords.length;
+            coords.push({ lat: hostCandidate.lat, lon: hostCandidate.lon });
+
+            const sources = Array.from({ length: pickupCandidates.length }, (_, i) => i);
+            const destinations = [hostIdx];
+
+            let matrix;
+            try {
+            matrix = await this.osrmTableMatrix(coords, sources, destinations);
+            } catch (err) {
+            console.error('clusterForExpansion: osrm table falhou para cluster', cid, err);
+            continue;
+            }
+
+            // validar pickups via matrix e evitar duplicatas
+            const validPickups = [];
+            for (let r = 0; r < pickupCandidates.length; r++) {
+            const p = pickupCandidates[r];
+            if (used.has(p.store_id) || suggestedPickupIds.has(p.store_id)) continue; // já usado
+            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, r, 0);
+            if (res && res.distance <= 6000 && res.duration <= 900) {
+                validPickups.push(p);
+            }
+            }
+
+            // limitar a 5 pickups (host + pickups <= 6)
+            const finalPickups = validPickups.slice(0, 5);
+
+            // regra: host deve ter ao menos 3 pickups; caso contrário, desqualifica
+            if (finalPickups.length < 3) {
+            // não cria host; membros permanecem hero
+            continue;
+            }
+
+            // total participantes >= 4 (deveria ser) -> ok
+            // marca os IDs como sugeridos (no conjunto local e no global used)
+            suggestedHostIds.add(hostCandidate.store_id);
+            used.add(hostCandidate.store_id);
+            finalPickups.forEach(p => { suggestedPickupIds.add(p.store_id); used.add(p.store_id); });
+
+            // salva original hub_delivery_initiatives antes de alterar
+            if (!hostCandidate._original_hdi) hostCandidate._original_hdi = hostCandidate.hub_delivery_initiatives;
+            hostCandidate.hub_delivery_initiatives = 'New Host';
+
+            suggestions.push({ host: hostCandidate, pickup: null, type: 'new-host' });
+
+            finalPickups.forEach(p => {
+            if (!p._original_hdi) p._original_hdi = p.hub_delivery_initiatives;
+            p.hub_delivery_initiatives = 'New PickUp';
+            suggestions.push({ host: hostCandidate, pickup: p, type: 'new-pickup' });
+            });
+
+            // atualiza hosts para evitar uma cluster posterior usar este host como se estivesse livre
+            hosts.push({ ...hostCandidate, pickups: finalPickups.slice() });
+        } // fim loop clusters
+
         return suggestions;
     },
 
@@ -1195,130 +1645,252 @@ const RouteManager = {
 
     },
 
-    applyHcpSuggestionsToMap: function(optimized, clusters) {
-        // Atualiza marcadores conforme sugestões, mantém popups originais
-        // Limpa marcadores antigos
-        AppState.markerObjects.forEach(m => AppState.map.removeLayer(m));
-        AppState.markerObjects = [];
-        // Recria todos os marcadores
-        const all = AppState.currentFilteredData.filter(p => p.status !== 'Exited');
-        all.forEach(data => {
-            let icon = null;
-            // Novo host sugerido
-            if (clusters.some(s => s.type === 'new-host' && s.host.store_id === data.store_id)) {
-                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/1995/1995526.png', iconSize: [28, 28], iconAnchor: [14, 28] });
-            }
-            // Novo pickup sugerido
-            else if (clusters.some(s => s.type === 'new-pickup' && s.pickup && s.pickup.store_id === data.store_id)) {
-                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png', iconSize: [24, 24], iconAnchor: [12, 24] });
-            }
-            // Host atual
-            else if (optimized.optimizedHosts.some(h => h.store_id === data.store_id)) {
-                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/25/25694.png', iconSize: [28, 28], iconAnchor: [14, 28] });
-            }
-            // Pickup atual
-            else if (optimized.optimizedPickups.some(p => p.store_id === data.store_id)) {
-                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149059.png', iconSize: [24, 24], iconAnchor: [12, 24] });
-            }
-            // Hero ou outro
-            else {
-                icon = L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/190/190411.png', iconSize: [20, 20], iconAnchor: [10, 20] });
-            }
-            const marker = L.marker([data.lat, data.lon], { icon });
-            marker.markerData = data;
-            marker.bindPopup(UIManager.getMarkerPopupContent(data));
-            marker.on('click', MapManager.onMarkerClick);
-            AppState.markerObjects.push(marker);
-            marker.addTo(AppState.map);
+    applyHcpSuggestionsToMap: function (optimized, clusters) {
+        // Monta sets com os ids sugeridos
+        const suggestedHostIds = new Set(clusters.filter(c => c.type === 'new-host').map(c => c.host.store_id));
+        const suggestedPickupIds = new Set(clusters.filter(c => c.type === 'new-pickup' && c.pickup).map(c => c.pickup.store_id));
+
+        // Atualiza os dados (hub_delivery_initiatives) na fonte (currentFilteredData) para atualizar a legenda automaticamente
+        AppState.currentFilteredData.forEach(item => {
+            // salva original caso ainda não salvo
+            if (!item._original_hdi) item._original_hdi = item.hub_delivery_initiatives;
+
+            if (suggestedHostIds.has(item.store_id)) item.hub_delivery_initiatives = 'New Host';
+            else if (suggestedPickupIds.has(item.store_id)) item.hub_delivery_initiatives = 'New PickUp';
+            // se não está nas sugestões, mantemos o atributo (reset será feito em resetHcpSuggestions)
         });
 
-    },
+        // Cores dos highlights
+        const COLOR_HOST = '#8000FF'; // roxo
+        const COLOR_PICK = '#FF1493'; // rosa
 
-    hcpSuggestHostClusters: async function() {
-        // Mostra loading/spinner
-        let loadingDiv = document.createElement('div');
-        loadingDiv.id = 'routes-loading';
-        loadingDiv.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
-        loadingDiv.innerHTML = `<div style="background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px #0003;font-size:1.2em;">
-                                    <i class="fas fa-spinner fa-spin mr-2"></i> Otimizando HCP Hosts e Pick-ups, aguarde...
-                                </div>`;
-        document.body.appendChild(loadingDiv);
+        // Itera sobre os marcadores já existentes e altera apenas visual/estados
+        AppState.markerObjects.forEach(markerObj => {
+            // markerObj pode ser L.CircleMarker, L.Marker, L.LayerGroup, etc.
+            const data = markerObj?.markerData ?? null;
+            if (!data || !data.store_id) return;
 
-        try {
-            // 1. Identificar grupos
-            const groups = this.getCurrentHcpGroups();
+            const id = data.store_id;
+            const isNewHost = suggestedHostIds.has(id);
+            const isNewPickup = suggestedPickupIds.has(id);
 
-            // 2. Otimizar pickups atuais
-            const optimized = await this.optimizeCurrentPickups(groups);
-
-            // 3. Clusterização para expansão
-            const clusters = await this.clusterForExpansion(groups, optimized);
-
-            // 4. Gerar relatório
-            const reportHtml = this.generateHcpReport(optimized, clusters);
-
-            // 5. Aplicar sugestões no mapa
-            this.applyHcpSuggestionsToMap(optimized, clusters);
-
-            // 6. Exibir popup geral
-            let popupDiv = document.getElementById('hcp-suggestions-popup');
-            if (!popupDiv) {
-                popupDiv = document.createElement('div');
-                popupDiv.id = 'hcp-suggestions-popup';
-                popupDiv.style = `
-                    position:fixed; top:80px; right:20px; z-index:9999; background:#fff; 
-                    padding:24px 18px 18px 18px; border-radius:8px; box-shadow:0 2px 8px #0003; 
-                    max-width:350px; min-width:220px; font-size:1em;
-                `;
-                document.body.appendChild(popupDiv);
+            // REMOVE highlight anterior quando necessário
+            if (!isNewHost && !isNewPickup) {
+            // Se tiver highlight armazenado, remover e restaurar estilo original
+            if (data._hcp_highlight) {
+                try { AppState.map.removeLayer(data._hcp_highlight); } catch(e){}
+                delete data._hcp_highlight;
             }
-            popupDiv.innerHTML = reportHtml;
+            // Se for CircleMarker original e tiver estilo salvo, restaurar
+            if (markerObj instanceof L.CircleMarker) {
+                if (data._hcp_original_style) {
+                markerObj.setStyle(data._hcp_original_style);
+                delete data._hcp_original_style;
+                }
+            }
+            return;
+            }
 
-            // Atualiza botão
-            const btn = document.getElementById('suggest-routes-btn');
-            if (btn) {
-                btn.textContent = 'Limpar Sugestões';
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-danger');
-                btn.onclick = function() {
-                    RouteManager.resetHcpSuggestions();                    
+            // Se precisa destacar (new host/pickup)
+            const color = isNewHost ? COLOR_HOST : COLOR_PICK;
+
+            // Se for CircleMarker (geralmente seus marcadores originais são circleMarker)
+            if (markerObj instanceof L.CircleMarker) {
+            // Salva estilo original se ainda não salvo
+            if (!data._hcp_original_style) {
+                data._hcp_original_style = {
+                color: markerObj.options.color,
+                fillColor: markerObj.options.fillColor,
+                fillOpacity: markerObj.options.fillOpacity,
+                weight: markerObj.options.weight,
+                radius: markerObj.options.radius
                 };
             }
+            // Aplica novo estilo (mantém radius original)
+            markerObj.setStyle({
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.9,
+                weight: Math.max(2, (data._hcp_original_style?.weight || 1) + 2)
+            });
+            // remove highlight layer se existir (não precisamos de overlay para circleMarker)
+            if (data._hcp_highlight) { try { AppState.map.removeLayer(data._hcp_highlight); } catch(e){}; delete data._hcp_highlight; }
+            } else {
+            // Para L.Marker ou L.LayerGroup: criamos/atualizamos um circleMarker de highlight por cima, sem tocar no ícone original.
+            // Se já existe highlight, apenas atualiza a cor
+            if (data._hcp_highlight && data._hcp_highlight instanceof L.CircleMarker) {
+                data._hcp_highlight.setStyle({ color, fillColor: color });
+            } else {
+                // cria highlight (e salva em data para remoção posterior)
+                const highlight = L.circleMarker([data.lat, data.lon], {
+                radius: 18,
+                color,
+                fillColor: color,
+                fillOpacity: 0.45,
+                weight: 3,
+                interactive: false, // para não interferir em eventos
+                pane: 'overlayPane'
+                });
+                data._hcp_highlight = highlight;
+                highlight.addTo(AppState.map);
+            }
+            }
+
+            // OBS: mantemos markerObj.markerData atualizado (já atualizamos item.hub_delivery_initiatives acima)
+        });
+
+        // Opcional: atualizar legenda / restyling global (sua função já criada)
+        try { MapManager.restyleMarkers(); } catch (e) { /* ignore se MapManager não tiver ou falhar */ }
+    },
+
+    hcpSuggestHostClusters: async function () {
+        const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
+        if (!AppState.hcpSuggestionCache) AppState.hcpSuggestionCache = {};
+        if (!AppState.hcpUsedStores) AppState.hcpUsedStores = {};
+        if (!AppState.hcpUsedStores[station]) AppState.hcpUsedStores[station] = new Set();
+
+        const btn = document.getElementById('suggest-routes-btn');
+
+        // Toggle: if cache exists and not active -> show; if active -> hide
+        const cache = AppState.hcpSuggestionCache[station];
+        if (cache && !AppState.hcpSuggestionsActive) {
+            // apply cached changes
+            // ensure hub_delivery_initiatives are applied
+            (cache.suggestedHosts || []).forEach(id => {
+            const it = AppState.currentFilteredData.find(p => p.store_id === id);
+            if (it) { if (!it._original_hdi) it._original_hdi = it.hub_delivery_initiatives; it.hub_delivery_initiatives = 'New Host'; }
+            });
+            (cache.suggestedPickups || []).forEach(id => {
+            const it = AppState.currentFilteredData.find(p => p.store_id === id);
+            if (it) { if (!it._original_hdi) it._original_hdi = it.hub_delivery_initiatives; it.hub_delivery_initiatives = 'New PickUp'; }
+            });
+
+            // apply visual using combined clusters
+            this.applyHcpSuggestionsToMap(cache.optimized, cache.clustersCombined || []);
+
+            // show report
+            const html = this.buildHcpFullReportHtml(cache.movesPhase1 || [], cache.phase2Assignments || [], cache.phase3Suggestions || []);
+            let p = document.getElementById('hcp-suggestions-popup') || document.createElement('div');
+            p.id = 'hcp-suggestions-popup';
+            p.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
+            p.innerHTML = html;
+            document.body.appendChild(p);
+
+            AppState.hcpSuggestionsActive = true;
+            if (btn) { btn.textContent = 'Ocultar Sugestões'; btn.classList.remove('btn-primary'); btn.classList.add('btn-warning'); btn.onclick = () => RouteManager.resetHcpSuggestions(); }
+            return;
+        }
+        if (cache && AppState.hcpSuggestionsActive) {
+            // hide (reset visual)
+            this.resetHcpSuggestions();
+            return;
+        }
+
+        // If no cache: compute phases sequentially
+        // spinner
+        const loading = document.createElement('div');
+        loading.id = 'routes-loading';
+        loading.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:99999;display:flex;align-items:center;justify-content:center;';
+        loading.innerHTML = `<div style="background:#fff;padding:28px;border-radius:8px;"><i class="fas fa-spinner fa-spin mr-2"></i> Calculando sugestões HCP...</div>`;
+        document.body.appendChild(loading);
+
+        try {
+            const groups = this.getCurrentHcpGroups();
+
+            // Phase 1
+            const phase1 = await this.optimizeCurrentPickupsPhase1(groups);
+            // phase1.hosts contains updated hosts with pickups
+
+            // Phase 2: allocate heroes to existing hosts
+            // note: for phase2 we must recreate groups.heros as those not already used
+            const remainingHerosAfterP1 = groups.heros.filter(h => !AppState.hcpUsedStores[station].has(h.store_id));
+            const groupsPhase2 = { ...groups, heros: remainingHerosAfterP1 };
+            const phase2 = await this.allocateHeroesToExistingHostsPhase2(groupsPhase2, phase1.hosts);
+
+            // Phase 3: cluster remaining heroes (those still unassigned after phase2)
+            const remainingHerosAfterP2 = phase2.remainingHeros.filter(h => !AppState.hcpUsedStores[station].has(h.store_id));
+            const groupsPhase3 = { ...groups, heros: remainingHerosAfterP2 };
+            const phase3 = await this.clusterHeroesNewHostsPhase3(groupsPhase3, phase2.hosts);
+
+            // Build combined clusters for visual & cache
+            const clustersCombined = this._buildClustersCombinedFromPhases(phase1.moves, phase2.assignments, phase3.newHostSuggestions);
+
+            // Collect suggested lists for cache
+            const suggestedHosts = [];
+            const suggestedPickups = [];
+            clustersCombined.forEach(c => {
+            if (c.type === 'new-host' && c.host) suggestedHosts.push(c.host.store_id);
+            if (c.type === 'new-pickup' && c.pickup) suggestedPickups.push(c.pickup.store_id);
+            if (c.type === 'move' && c.pickup) {
+                // moves not classified as pickup/host but we keep track
+                // optionally we could add moved pickup to suggestedPickups
+            }
+            });
+
+            // Save cache
+            AppState.hcpSuggestionCache[station] = {
+            optimized: { hosts: phase2.hosts }, // hosts after phase2 (phase3 added new hosts in memory but we saved separate)
+            clustersCombined,
+            movesPhase1: phase1.moves,
+            phase2Assignments: phase2.assignments,
+            phase3Suggestions: phase3.newHostSuggestions,
+            suggestedHosts,
+            suggestedPickups
+            };
+
+            // Apply visual modifications and show popup
+            this.applyHcpSuggestionsToMap(AppState.hcpSuggestionCache[station].optimized, clustersCombined);
+
+            const html = this.buildHcpFullReportHtml(phase1.moves, phase2.assignments, phase3.newHostSuggestions);
+            let p = document.getElementById('hcp-suggestions-popup') || document.createElement('div');
+            p.id = 'hcp-suggestions-popup';
+            p.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
+            p.innerHTML = html;
+            document.body.appendChild(p);
+
+            AppState.hcpSuggestionsActive = true;
+            if (btn) { btn.textContent = 'Ocultar Sugestões'; btn.classList.remove('btn-primary'); btn.classList.add('btn-warning'); btn.onclick = () => RouteManager.resetHcpSuggestions(); }
+
         } finally {
-            // Remove spinner
-            const div = document.getElementById('routes-loading');
-            if (div) div.remove();
+            document.getElementById('routes-loading')?.remove();
         }
     },
 
-    resetHcpSuggestions: function() {
-        // Remove todos os marcadores do mapa
-        AppState.map.eachLayer(function(layer) {
-            if (!(layer instanceof L.TileLayer)) {
-                AppState.map.removeLayer(layer);
+    resetHcpSuggestions: function () {
+        const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
+        // Restaurar hub_delivery_initiatives originais para todos no filtro
+        AppState.currentFilteredData.forEach(p => {
+            if (p._original_hdi) {
+            p.hub_delivery_initiatives = p._original_hdi;
+            delete p._original_hdi;
             }
         });
-        // Remove popup geral, se existir
-        const popupDiv = document.getElementById('hcp-suggestions-popup');
-        if (popupDiv) popupDiv.remove();
+
+        // limpa marcadores da camada (mantém tilelayer)
+        AppState.map.eachLayer(layer => {
+            if (!(layer instanceof L.TileLayer)) {
+            AppState.map.removeLayer(layer);
+            }
+        });
+
+        // Remove popup
+        document.getElementById('hcp-suggestions-popup')?.remove();
+
+        // botão volta ao estado "Mostrar / Sugerir"
         const btn = document.getElementById('suggest-routes-btn');
         if (btn) {
             btn.textContent = 'Sugerir HCP Initiatives';
+            btn.classList.remove('btn-warning');
             btn.classList.remove('btn-danger');
             btn.classList.add('btn-primary');
             btn.onclick = () => RouteManager.hcpSuggestHostClusters();
         }
 
-        DataManager.applyFilters();
-    },
+        // Marca que sugestões estão inativas (mas cache permanece)
+        AppState.hcpSuggestionsActive = false;
 
-    startRouteFromHere: function(event, storeId, storeName) {
-        event.stopPropagation();
-        document.getElementById('routeFromId').value = storeId;
-        document.getElementById('routeFromInput').value = storeName;
-        $('#controlTabs a[href="#route-content"]').tab('show');
-        document.getElementById('routeToInput').focus();
-        AppState.map.closePopup();
+        // reconstrói marcadores padrão (reaplica filtros)
+        DataManager.applyFilters();
     }
 };
 

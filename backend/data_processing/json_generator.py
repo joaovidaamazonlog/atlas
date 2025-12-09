@@ -49,14 +49,19 @@ class JsonGenerator:
         info_html += table_row("HCP Host Partner", row.get("HCP Host Partner"))
         info_html += table_row("Radius", f"{JsonGenerator._clean_value(row.get('Radius'), 'N/A')} m")
         info_html += "</table>"
-
+    
         metrics_html = "<h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'>"
         metrics_html += table_row("ADV", row.get("Actual ADV"))
         metrics_html += table_row("Eligible Packages", row.get("# Eligible Packages"))
         metrics_html += table_row("Partner Capacity", row.get("Partner Capacity"))
         metrics_html += "</table>"
+        
+        if row.get("Status") != "BG Checks":
+            link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Account/{row.get('Id')}/view" target="_blank">View in Salesforce</a>'
+        else:
+            link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Lead/{row.get('Id')}/view" target="_blank">View in Salesforce</a>'
 
-        return f'<div style="width: 300px; max-height: 400px; overflow-y: auto; font-size: 12px;">{info_html}{metrics_html}</div>'
+        return f'<div style="width: 300px; max-height: 400px; overflow-y: auto; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<hr class: "my-2">{metrics_html}</div>'
 
     @staticmethod
     def generate_json(period: dict, final_df: pd.DataFrame, output_path: str):
@@ -82,6 +87,7 @@ class JsonGenerator:
                 "tooltip": f"ID: {row.get('StoreID')} | Name: {row.get('Name')} | ADV: {row.get('Actual ADV')} | Raio: {row.get('Radius')}m",
                 "name": row.get("Name"),
                 "store_id": row.get("StoreID"),
+                "salesforce_id": row.get("Id"),
                 "delivery_station": row.get("Delivery Station"),
                 "status": row.get("Status"),
                 "jurisdiction_type": row.get("Jurisdiction Type"),

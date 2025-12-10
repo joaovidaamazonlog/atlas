@@ -18,8 +18,8 @@
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 209,
-            "percentual": 72.06896551724138
+            "atingido": 210,
+            "percentual": 72.41379310344827
         },
         "conversoes": {
             "meta": 290.0,
@@ -58,10 +58,10 @@
             {
                 "origem": "Referral",
                 "contatos": 273,
-                "cadastros": 70,
+                "cadastros": 71,
                 "conversoes": 39,
-                "taxa_conversao": 55.71,
-                "taxa_cadastro": 25.64,
+                "taxa_conversao": 54.93,
+                "taxa_cadastro": 26.01,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.5,
@@ -156,10 +156,10 @@
         {
             "responsavel": "Breno Santos",
             "contatos": 300,
-            "cadastros": 17,
+            "cadastros": 18,
             "conversoes": 8,
-            "taxa_conversao": 47.06,
-            "taxa_cadastro": 5.67,
+            "taxa_conversao": 44.44,
+            "taxa_cadastro": 6.0,
             "contatos_origem_Website Pardot Form": 22,
             "cadastros_origem_Website Pardot Form": 3,
             "contatos_origem_In-Person Visit": 37,
@@ -167,10 +167,10 @@
             "contatos_origem_Cold Call": 225,
             "cadastros_origem_Cold Call": 9,
             "contatos_origem_Referral": 16,
-            "cadastros_origem_Referral": 3,
+            "cadastros_origem_Referral": 4,
             "volume_score_contatos": 0.63,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.16,
+            "velocidade_score": 0.2,
             "consistencia": 0.3,
             "distribuicao_canais": 0.77,
             "score_final": 0.78
@@ -90373,7 +90373,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8967,
@@ -90383,7 +90383,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8968,
@@ -90593,7 +90593,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8989,
@@ -90753,7 +90753,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9005,
@@ -90763,7 +90763,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9006,
@@ -90877,13 +90877,13 @@
         },
         {
             "id": 9017,
-            "lead": "Ronan",
+            "lead": "MARIANA CRISTINA DA COSTA",
             "responsavel": "Breno Santos",
             "origem": "Referral",
             "data_contato": "2025-12-09",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-10",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 9018,
@@ -95143,7 +95143,7 @@
             "data_contato": "2025-12-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 9444,
@@ -95312,7 +95312,7 @@
         {
             "data_contato": "2025-12-09",
             "contatos": 376,
-            "cadastros": 8,
+            "cadastros": 9,
             "conversoes": 1
         }
     ]

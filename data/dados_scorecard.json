@@ -13,8 +13,8 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 9447,
-            "percentual": 74.09411764705882
+            "atingido": 9455,
+            "percentual": 74.15686274509804
         },
         "cadastros": {
             "meta": 290.0,
@@ -29,7 +29,7 @@
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
-                "contatos": 5577,
+                "contatos": 5585,
                 "cadastros": 85,
                 "conversoes": 44,
                 "taxa_conversao": 51.76,
@@ -37,7 +37,7 @@
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.5,
-                "consistencia": 0.38,
+                "consistencia": 0.39,
                 "distribuicao_canais": 0.59,
                 "score_final": 0.72
             },
@@ -507,24 +507,24 @@
         },
         {
             "responsavel": "João Kowalski",
-            "contatos": 319,
+            "contatos": 327,
             "cadastros": 5,
             "conversoes": 2,
             "taxa_conversao": 40.0,
-            "taxa_cadastro": 1.57,
+            "taxa_cadastro": 1.53,
             "contatos_origem_Website Pardot Form": 11,
             "cadastros_origem_Website Pardot Form": 2,
             "contatos_origem_In-Person Visit": 91,
             "cadastros_origem_In-Person Visit": 2,
-            "contatos_origem_Cold Call": 217,
+            "contatos_origem_Cold Call": 225,
             "cadastros_origem_Cold Call": 1,
             "contatos_origem_Referral": 0,
             "cadastros_origem_Referral": 0,
-            "volume_score_contatos": 0.52,
+            "volume_score_contatos": 0.53,
             "volume_score_cadastros": 0.5,
             "velocidade_score": 0.09,
-            "consistencia": 0.25,
-            "distribuicao_canais": 0.91,
+            "consistencia": 0.27,
+            "distribuicao_canais": 0.9,
             "score_final": 0.46
         },
         {
@@ -90453,7 +90453,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8975,
@@ -90473,7 +90473,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8977,
@@ -90613,7 +90613,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8991,
@@ -90653,7 +90653,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8995,
@@ -90693,7 +90693,7 @@
             "data_contato": "2025-12-08",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 8999,
@@ -95097,6 +95097,16 @@
         },
         {
             "id": 9439,
+            "lead": "Melissa Bubadra",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Working"
+        },
+        {
+            "id": 9440,
             "lead": "José Benites",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -95106,7 +95116,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 9440,
+            "id": 9441,
             "lead": "Vivian Pires",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -95116,18 +95126,8 @@
             "status": "Not Interested"
         },
         {
-            "id": 9441,
-            "lead": "Niara Vianna",
-            "responsavel": "João Kowalski",
-            "origem": "Cold Call",
-            "data_contato": "2025-12-09",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
             "id": 9442,
-            "lead": "Lutiane Urnauer",
+            "lead": "Roger Prates",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
             "data_contato": "2025-12-09",
@@ -95137,7 +95137,7 @@
         },
         {
             "id": 9443,
-            "lead": "Rosi Vieira",
+            "lead": "Niara Vianna",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
             "data_contato": "2025-12-09",
@@ -95147,17 +95147,17 @@
         },
         {
             "id": 9444,
-            "lead": "Vera Bernardi",
+            "lead": "Alexandre Vieira",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
             "data_contato": "2025-12-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 9445,
-            "lead": "Paulo Silva",
+            "lead": "Lutiane Urnauer",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
             "data_contato": "2025-12-09",
@@ -95167,6 +95167,86 @@
         },
         {
             "id": 9446,
+            "lead": "Rosi Vieira",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9447,
+            "lead": "Vera Bernardi",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Working"
+        },
+        {
+            "id": 9448,
+            "lead": "Paulo Silva",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9449,
+            "lead": "Patrícia Soares",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9450,
+            "lead": "Daniel Santos",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9451,
+            "lead": "Evandro Morais",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9452,
+            "lead": "Karine Bernardo",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9453,
+            "lead": "Fabiana Barreto",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9454,
             "lead": "MOZART OLIVEIRA ALMEIDA",
             "responsavel": "Desligado",
             "origem": "Website Pardot Form",
@@ -95311,7 +95391,7 @@
         },
         {
             "data_contato": "2025-12-09",
-            "contatos": 376,
+            "contatos": 384,
             "cadastros": 9,
             "conversoes": 1
         }

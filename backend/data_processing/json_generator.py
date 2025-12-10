@@ -60,8 +60,14 @@ class JsonGenerator:
             link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Account/{row.get('Id')}/view" target="_blank">View in Salesforce</a>'
         else:
             link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Lead/{row.get('Id')}/view" target="_blank">View in Salesforce</a>'
+            
+        link_whatsapp = ''
+        if pd.notna(row.get("Phone")):
+            phone_number = row.get("Phone").translate(str.maketrans({"(": "", ")": "", " ": "", "-": "", "+": ""}))
+            link_whatsapp = f'<br><a href="https://wa.me/{phone_number}" target="_blank">{phone_number}</a>'
+            
 
-        return f'<div style="width: 300px; max-height: 400px; overflow-y: auto; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<hr class: "my-2">{metrics_html}</div>'
+        return f'<div style="width: 300px; max-height: 400px; overflow-y: auto; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<br>{row.get('')}<hr class: "my-2">{metrics_html}</div>'
 
     @staticmethod
     def generate_json(period: dict, final_df: pd.DataFrame, output_path: str):
@@ -79,6 +85,17 @@ class JsonGenerator:
         output_dict["period"] = period
 
         for _, row in final_df.iterrows():
+            
+            phoneCorrection = str.maketrans({
+                "(": "", 
+                ")": "", 
+                " ": "", 
+                "-": "",
+                "+": "",
+            })
+            
+            phone = row.get("Phone").translate(phoneCorrection) if pd.notna(row.get("Phone")) else None
+            
             # 1. CAMPOS DE NÍVEL SUPERIOR
             top_level_data = {
                 "lat": row.get("Latitude"),
@@ -86,6 +103,7 @@ class JsonGenerator:
                 "popup": JsonGenerator._create_popup_html(row),
                 "tooltip": f"ID: {row.get('StoreID')} | Name: {row.get('Name')} | ADV: {row.get('Actual ADV')} | Raio: {row.get('Radius')}m",
                 "name": row.get("Name"),
+                "telefone": phone,
                 "store_id": row.get("StoreID"),
                 "salesforce_id": row.get("Id"),
                 "delivery_station": row.get("Delivery Station"),

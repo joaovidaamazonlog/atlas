@@ -67,7 +67,7 @@ class JsonGenerator:
             link_whatsapp = f'<br><a href="https://wa.me/{phone_number}" target="_blank">{phone_number}</a>'
             
 
-        return f'<div style="width: 350px; max-height: 400px; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<br>Enviar menssagem no WhatsApp ({link_whatsapp})<i class="fa fa-whatsapp" style="font-size:24px"></i><hr class: "my-2">{metrics_html}</div>'
+        return f'<div style="width: 350px; max-height: 400px; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<br>Enviar menssagem<br><button style="font-size:24px">Button <i class="fa fa-whatsapp"></i></{link_whatsapp}><hr class: "my-2">{metrics_html}</div>'
 
     @staticmethod
     def generate_json(period: dict, final_df: pd.DataFrame, output_path: str):

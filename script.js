@@ -794,7 +794,7 @@ const UIManager = {
 
         const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);
-            return p.status === 'Active' && p.storeId !== storeId && turf.booleanPointInPolygon(point, region);
+            return p.status === 'Active' && p.store_id !== storeId && turf.booleanPointInPolygon(point, region);
         });
 
         const distances = activePartners.map(p => {

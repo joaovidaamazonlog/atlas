@@ -799,12 +799,33 @@ const UIManager = {
 
         const distances = activePartners.map(p => {
             try {
-                const G = osm.graph_from_point(center, { distance: radius, network_type: 'drive' });
-                const origin = turf.point([p.lon, p.lat]);
-                const destination = turf.point([data.lon, data.lat]);
-                const route = osm.shortest_path(G, origin, destination, { weight: 'length' });
-                const route_length = osm.get_route_length(G, route, { units: 'kilometers' });
-                return [p, route_length];
+                var routingControl = L.Routing.control({
+                    waypoints: [
+                        L.latLng(latLngOrigem),
+                        L.latLng(latLngDestino)
+                    ],
+                    router: L.Routing.osrmv1({
+                        serviceUrl: 'router.project-osrm.org'
+                    }),
+                    routeWhileDragging: false,
+                    showAlternatives: false,
+                    show: false 
+                });
+
+                routingControl.on('routesfound', function(e) {
+                    var routes = e.routes;
+                    var summary = routes[0].summary;
+                    var distanceInMeters = summary.totalDistance;
+                    var distanceInKm = (distanceInMeters / 1000).toFixed(2);
+                    
+                    return [p, distanceInKm];
+                });
+
+                routingControl.on('routingerror', function(e) {
+                    document.getElementById('distance-info').innerHTML = 
+                        'Erro ao calcular a rota: ' + e.error.message;
+                });
+                
             } catch {
                 const route_length = turf.distance(center, [p.lon, p.lat], { units: 'kilometers' });
                 return [p, route_length];
@@ -823,11 +844,11 @@ const UIManager = {
 
         sortedPartners.forEach(([p, d]) => {
             if (d <= 2) {
-                bonnus = 50;
+                bonnus = 30;
             } else if (d <= 5) {
-                bonnus = 75;
+                bonnus = 40;
             } else {
-                bonnus = 100;
+                bonnus = 50;
             }
             bonnus_value.push(bonnus);
 

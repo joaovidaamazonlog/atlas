@@ -794,7 +794,7 @@ const UIManager = {
 
         const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);
-            return p.status === 'Active' && turf.booleanPointInPolygon(point, region);
+            return p.status === 'Active' && p.storeId !== marker.storeId && turf.booleanPointInPolygon(point, region);
         });
 
         const distances = activePartners.map(p => {
@@ -835,7 +835,7 @@ const UIManager = {
         let popup_assistence = document.getElementById('assistence-suggestions-popup') || document.createElement('div');
         popup_assistence.id = 'assistence-suggestions-popup';
         popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
-        popup_assistence.innerHTML = popup_content;
+        popup_assistence.innerText = popup_content;
         document.body.appendChild(popup_assistence);
 
         console.log(`Sugestões de resgate para ${data.name}:`, sortedPartners.map(([p, d], i) => ({

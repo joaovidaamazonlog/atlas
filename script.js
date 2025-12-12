@@ -817,7 +817,7 @@ const UIManager = {
         const bonnus_value = [];
         const popup_content = "";
 
-        for (const [p, d] of sortedPartners) {
+        sortedPartners.forEach(([p, d]) => {
             if (d <= 2) {
                 bonnus = 50;
             } else if (d <= 5) {
@@ -831,7 +831,7 @@ const UIManager = {
                                 <br><b>Distância:</b> ${d.toFixed(2)} km
                                 <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
                                 <hr class: 'my-2'>`;
-        }
+        });
 
         let popup_assistence = document.getElementById('assistence-suggestions-popup') || document.createElement('div');
         popup_assistence.id = 'assistence-suggestions-popup';

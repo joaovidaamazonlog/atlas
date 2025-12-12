@@ -805,10 +805,10 @@ const UIManager = {
                 const destination = (data.getLatLng());
                 const route = osm.shortest_path(G, origin, destination, {weight:'length'});
                 const route_length = osm.get_route_length(G, route, {units:'kilometers'});
-                distances.append([p, route_length]);
+                distances.push([p, route_length]);
             } catch{
                 const route_length = turf.distance(center, [p.lon, p.lat], {units:'kilometers'});
-                distances.append((p, route_length));
+                distances.push((p, route_length));
             }
         });
 
@@ -825,7 +825,7 @@ const UIManager = {
             } else {
                 bonnus = 100;
             }
-            bonnus_value.append(bonnus);
+            bonnus_value.push(bonnus);
 
             popup_content += `<p><b>${p.name}</b>
                                 <br><b>Distância:</b> ${d.toFixed(2)} km

@@ -846,9 +846,6 @@ const UIManager = {
         popup_assistence.id = 'assistence-suggestions-popup';
         popup_assistence.innerHTML = html;
         document.body.appendChild(popup_assistence);
-
-        console.log(popup_content)
-
     }
 };
 

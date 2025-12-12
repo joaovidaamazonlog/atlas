@@ -789,7 +789,7 @@ const UIManager = {
         const marker = AppState.markerObjects.find(m => m.markerData.store_id === storeId);
         if (!marker) return;
         const data = marker.markerData;
-        const center = (marker.getLatLng());
+        const center = [marker.getLatLng().lng, marker.getLatLng().lat];
         const region = turf.circle(center, radius, {steps:32, units:'km'});
 
         const activePartners = AppState.allMarkersData.filter(p => {

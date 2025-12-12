@@ -13,13 +13,13 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 9429,
-            "percentual": 73.95294117647059
+            "atingido": 9437,
+            "percentual": 74.0156862745098
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 195,
-            "percentual": 67.24137931034483
+            "atingido": 198,
+            "percentual": 68.27586206896552
         },
         "conversoes": {
             "meta": 290.0,
@@ -29,7 +29,7 @@
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
-                "contatos": 6053,
+                "contatos": 6059,
                 "cadastros": 85,
                 "conversoes": 49,
                 "taxa_conversao": 57.65,
@@ -57,28 +57,28 @@
             },
             {
                 "origem": "Referral",
-                "contatos": 269,
-                "cadastros": 66,
+                "contatos": 271,
+                "cadastros": 68,
                 "conversoes": 36,
-                "taxa_conversao": 54.55,
-                "taxa_cadastro": 24.54,
+                "taxa_conversao": 52.94,
+                "taxa_cadastro": 25.09,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.47,
-                "consistencia": 0.22,
+                "consistencia": 0.21,
                 "distribuicao_canais": 0.02,
                 "score_final": 0.67
             },
             {
                 "origem": "Website Pardot Form",
                 "contatos": 159,
-                "cadastros": 21,
+                "cadastros": 22,
                 "conversoes": 13,
-                "taxa_conversao": 61.9,
-                "taxa_cadastro": 13.21,
+                "taxa_conversao": 59.09,
+                "taxa_cadastro": 13.84,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.54,
+                "velocidade_score": 0.55,
                 "consistencia": 0.07,
                 "distribuicao_canais": 0.04,
                 "score_final": 0.66
@@ -177,35 +177,35 @@
         },
         {
             "responsavel": "Bruno Silva",
-            "contatos": 248,
+            "contatos": 254,
             "cadastros": 6,
             "conversoes": 4,
             "taxa_conversao": 66.67,
-            "taxa_cadastro": 2.42,
+            "taxa_cadastro": 2.36,
             "contatos_origem_Website Pardot Form": 7,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 143,
             "cadastros_origem_In-Person Visit": 3,
-            "contatos_origem_Cold Call": 94,
+            "contatos_origem_Cold Call": 100,
             "cadastros_origem_Cold Call": 1,
             "contatos_origem_Referral": 4,
             "cadastros_origem_Referral": 1,
-            "volume_score_contatos": 0.51,
+            "volume_score_contatos": 0.52,
             "volume_score_cadastros": 0.6,
             "velocidade_score": 0.63,
-            "consistencia": 0.35,
-            "distribuicao_canais": 0.78,
+            "consistencia": 0.32,
+            "distribuicao_canais": 0.79,
             "score_final": 0.57
         },
         {
             "responsavel": "Caroline Lima",
             "contatos": 229,
-            "cadastros": 3,
+            "cadastros": 4,
             "conversoes": 2,
-            "taxa_conversao": 66.67,
-            "taxa_cadastro": 1.31,
+            "taxa_conversao": 50.0,
+            "taxa_cadastro": 1.75,
             "contatos_origem_Website Pardot Form": 5,
-            "cadastros_origem_Website Pardot Form": 0,
+            "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 94,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 122,
@@ -213,11 +213,11 @@
             "contatos_origem_Referral": 8,
             "cadastros_origem_Referral": 2,
             "volume_score_contatos": 0.49,
-            "volume_score_cadastros": 0.3,
-            "velocidade_score": 0.87,
+            "volume_score_cadastros": 0.4,
+            "velocidade_score": 0.85,
             "consistencia": 0.19,
             "distribuicao_canais": 0.93,
-            "score_final": 0.41
+            "score_final": 0.46
         },
         {
             "responsavel": "Clerton Oliveira",
@@ -287,25 +287,25 @@
         },
         {
             "responsavel": "Eric Souza",
-            "contatos": 193,
-            "cadastros": 7,
+            "contatos": 195,
+            "cadastros": 8,
             "conversoes": 4,
-            "taxa_conversao": 57.14,
-            "taxa_cadastro": 3.63,
+            "taxa_conversao": 50.0,
+            "taxa_cadastro": 4.1,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 2,
             "contatos_origem_In-Person Visit": 143,
             "cadastros_origem_In-Person Visit": 3,
             "contatos_origem_Cold Call": 40,
             "cadastros_origem_Cold Call": 0,
-            "contatos_origem_Referral": 6,
-            "cadastros_origem_Referral": 2,
-            "volume_score_contatos": 0.46,
-            "volume_score_cadastros": 0.7,
-            "velocidade_score": 0.28,
+            "contatos_origem_Referral": 8,
+            "cadastros_origem_Referral": 3,
+            "volume_score_contatos": 0.49,
+            "volume_score_cadastros": 0.8,
+            "velocidade_score": 0.25,
             "consistencia": 0.09,
             "distribuicao_canais": 0.6,
-            "score_final": 0.56
+            "score_final": 0.62
         },
         {
             "responsavel": "Everton Martins",
@@ -662,10 +662,10 @@
         {
             "responsavel": "Sidney Lima",
             "contatos": 451,
-            "cadastros": 12,
+            "cadastros": 13,
             "conversoes": 10,
-            "taxa_conversao": 83.33,
-            "taxa_cadastro": 2.66,
+            "taxa_conversao": 76.92,
+            "taxa_cadastro": 2.88,
             "contatos_origem_Website Pardot Form": 14,
             "cadastros_origem_Website Pardot Form": 5,
             "contatos_origem_In-Person Visit": 112,
@@ -673,10 +673,10 @@
             "contatos_origem_Cold Call": 308,
             "cadastros_origem_Cold Call": 3,
             "contatos_origem_Referral": 17,
-            "cadastros_origem_Referral": 4,
+            "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.82,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.57,
+            "velocidade_score": 0.58,
             "consistencia": 0.24,
             "distribuicao_canais": 0.89,
             "score_final": 0.85
@@ -65073,7 +65073,7 @@
             "data_contato": "2025-12-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 6437,
@@ -65253,7 +65253,7 @@
             "data_contato": "2025-12-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Inactive"
         },
         {
             "id": 6455,
@@ -66823,7 +66823,7 @@
             "data_contato": "2025-12-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 6612,
@@ -77671,9 +77671,9 @@
             "responsavel": "Caroline Lima",
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-11",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-12",
             "data_conversao": null,
-            "status": "New"
+            "status": "BG Checks"
         },
         {
             "id": 7697,
@@ -81211,9 +81211,9 @@
             "responsavel": "Eric Souza",
             "origem": "Referral",
             "data_contato": "2025-12-03",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-12",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 8051,
@@ -85323,7 +85323,7 @@
             "data_contato": "2025-12-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 8462,
@@ -89781,9 +89781,9 @@
             "responsavel": "Sidney Lima",
             "origem": "Referral",
             "data_contato": "2025-12-11",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-12",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 8908,
@@ -94977,7 +94977,7 @@
         },
         {
             "id": 9427,
-            "lead": "JORGE",
+            "lead": "MAURO",
             "responsavel": "Bruno Silva",
             "origem": "Cold Call",
             "data_contato": "2025-12-10",
@@ -94987,6 +94987,16 @@
         },
         {
             "id": 9428,
+            "lead": "JORGE",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9429,
             "lead": "ROGERIO",
             "responsavel": "Bruno Silva",
             "origem": "Cold Call",
@@ -94994,6 +95004,76 @@
             "data_cadastro": null,
             "data_conversao": null,
             "status": "Not Interested"
+        },
+        {
+            "id": 9430,
+            "lead": "JOMAR",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9431,
+            "lead": "JORGE",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9432,
+            "lead": "MAURICIO",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9433,
+            "lead": "ELIAS",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9434,
+            "lead": "DULCE",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 9435,
+            "lead": "THAILAN DE JESUS",
+            "responsavel": "Eric Souza",
+            "origem": "Referral",
+            "data_contato": "2025-12-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 9436,
+            "lead": "Ana caroline",
+            "responsavel": "Eric Souza",
+            "origem": "Referral",
+            "data_contato": "2025-12-11",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
         }
     ],
     "daily_data": [
@@ -95096,7 +95176,7 @@
         {
             "data_contato": "2025-12-03",
             "contatos": 499,
-            "cadastros": 9,
+            "cadastros": 10,
             "conversoes": 6
         },
         {
@@ -95125,14 +95205,14 @@
         },
         {
             "data_contato": "2025-12-10",
-            "contatos": 459,
+            "contatos": 466,
             "cadastros": 4,
             "conversoes": 0
         },
         {
             "data_contato": "2025-12-11",
-            "contatos": 506,
-            "cadastros": 2,
+            "contatos": 507,
+            "cadastros": 4,
             "conversoes": 0
         }
     ]

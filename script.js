@@ -789,19 +789,19 @@ const UIManager = {
         const marker = AppState.markerObjects.find(m => m.markerData.store_id === storeId);
         if (!marker) return;
         const data = marker.markerData;
-        center = (marker.getLatLng());
-        region = turf.circle(center, radius, {steps:32, units:'km'});
+        const center = (marker.getLatLng());
+        const region = turf.circle(center, radius, {steps:32, units:'km'});
 
-        activePartners = AppState.allMarkersData.filter(p => {
+        const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);
             return p.status === 'Active' && turf.booleanPointInPolygon(point, region);
         });
 
-        distances = [];
+        const distances = [];
         activePartners.forEach(p => {
             try {
                 const G = osm.graph_from_point(center, {distance: radius, network_type:'drive'});
-                const origin = (p.lat, p.lon);
+                const origin = (p.getLatLng());
                 const destination = (data.getLatLng());
                 const route = osm.shortest_path(G, origin, destination, {weight:'length'});
                 const route_length = osm.get_route_length(G, route, {units:'km'});
@@ -812,10 +812,10 @@ const UIManager = {
             }
         });
 
-        sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
+        const sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
 
-        bonnus_value = [];
-        popup_content = "";
+        const bonnus_value = [];
+        const popup_content = "";
 
         for (const [p, d] of sortedPartners) {
             if (d <= 2) {
@@ -826,10 +826,18 @@ const UIManager = {
                 bonnus = 100;
             }
             bonnus_value.append(bonnus);
-            popup_content += `<p>${p.name}<br>Distância: ${d.toFixed(2)} km - Bônus: R$ ${bonnus}</p><br><a href='https://wa.me/${p.telefone}' target='_blank'><i class='fa fa-whatsapp'></i></a><hr class='my-2'>`;
+
+            popup_content += `<p><b>${p.name}</b>
+                                <br><b>Distância:</b> ${d.toFixed(2)} km
+                                <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
+                                <hr class: 'my-2'>`;
         }
 
-        return popupContent;
+        let popup_assistence = document.getElementById('assistence-suggestions-popup') || document.createElement('div');
+        popup_assistence.id = 'assistence-suggestions-popup';
+        popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
+        popup_assistence.innerHTML = popup_content;
+        document.body.appendChild(popup_assistence);
     }
 };
 

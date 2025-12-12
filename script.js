@@ -836,6 +836,7 @@ const UIManager = {
             html += `<p><b>${p.name}</b>
                                 <br><b>Distância:</b> ${d.toFixed(2)} km
                                 <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
+                                <br><a href="https://wa.me/${p.telefone}" target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>
                                 <hr class: 'my-2'>`;
         });
 

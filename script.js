@@ -826,7 +826,7 @@ const UIManager = {
             }
             bonnus_value.push(bonnus);
 
-            popup_content =+ `<p><b>${p.name}</b>
+            popup_content += `<p><b>${p.name}</b>
                                 <br><b>Distância:</b> ${d.toFixed(2)} km
                                 <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
                                 <hr class: 'my-2'>`;
@@ -839,7 +839,7 @@ const UIManager = {
         document.body.appendChild(popup_assistence);
 
         console.log(popup_content)
-        
+
     }
 };
 

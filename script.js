@@ -812,9 +812,7 @@ const UIManager = {
         });
 
         const sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
-
         const bonnus_value = [];
-
         let html = `
                     <div style="display:flex;justify-content:space-between;align-items:center;">
                         <b>Sugestões para resgate</b>
@@ -834,18 +832,20 @@ const UIManager = {
             bonnus_value.push(bonnus);
 
             html += `<p><b>${p.name}</b>
-                                <br><b>Distância:</b> ${d.toFixed(2)} km
-                                <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
-                                <br><a href="https://wa.me/${p.telefone}" target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>
-                                <hr class: 'my-2'>`;
+                    <br><b>Distância:</b> ${d.toFixed(2)} km
+                    <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
+                    <br><a href="https://wa.me/${p.telefone}" target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>
+                    <hr class: 'my-2'>`;
         });
 
         html += `</div>`;
 
         let popup_assistence = document.getElementById('assistence-suggestions-popup') || document.createElement('div');
         popup_assistence.id = 'assistence-suggestions-popup';
+        popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
         popup_assistence.innerHTML = html;
         document.body.appendChild(popup_assistence);
+        console.log(popup_assistence);
     }
 };
 
@@ -1672,44 +1672,6 @@ const RouteManager = {
         } // fim loop clusters
 
         return suggestions;
-    },
-
-    generateHcpReport: function(optimized, clusters) {
-        // Gera HTML do popup geral conforme regras:
-        let html = `
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <b>Sugestões HCP</b>
-                <button onclick="document.getElementById('hcp-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
-            </div>
-            <div style="overflow-y:auto;max-height:750px;padding-top:8px;">
-        `;
-        // Hosts atuais e sugeridos
-        const allHosts = [...optimized.optimizedHosts];
-        clusters.forEach(s => {
-            if (s.type === 'new-host' && !allHosts.some(h => h.store_id === s.host.store_id)) {
-                allHosts.push({ ...s.host, pickups: [] });
-            }
-        });
-
-        allHosts.forEach(host => {
-            const isNewHost = clusters.some(s => s.type === 'new-host' && s.host.store_id === host.store_id);
-            html += `<h2 style="font-size:1.1em;font-weight:bold;margin-bottom:4px;">${isNewHost ? '(Novo Host Sugerido) ' : ''}${host.name}</h2>`;
-            if (host.pickups && host.pickups.length > 0) {
-                html += `<ul style="margin-left:18px;margin-bottom:8px;">`;
-                host.pickups.forEach(pickup => {
-                    const isNewPickup = clusters.some(s => s.type === 'new-pickup' && s.pickup && s.pickup.store_id === pickup.store_id && s.host.store_id === host.store_id);
-                    html += `<li>${isNewPickup ? '(novo pickup sugerido) ' : ''}${pickup.name}</li>`;
-                });
-                html += `</ul>`;
-            } else {
-                html += `<div style="margin-left:12px;color:#888;">Nenhum Pick-up</div>`;
-            }
-        });
-
-        html += `</div>`; // Fecha a div da lista
-
-        return html;
-
     },
 
     applyHcpSuggestionsToMap: function (optimized, clusters) {

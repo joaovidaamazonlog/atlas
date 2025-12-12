@@ -814,7 +814,7 @@ const UIManager = {
         const sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
 
         const bonnus_value = [];
-        const popup_content = "";
+        let popup_content = "";
 
         sortedPartners.forEach(([p, d]) => {
             if (d <= 2) {
@@ -826,7 +826,7 @@ const UIManager = {
             }
             bonnus_value.push(bonnus);
 
-            popup_content += `<p><b>${p.name}</b>
+            popup_content =+ `<p><b>${p.name}</b>
                                 <br><b>Distância:</b> ${d.toFixed(2)} km
                                 <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
                                 <hr class: 'my-2'>`;

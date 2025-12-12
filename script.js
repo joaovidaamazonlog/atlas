@@ -817,7 +817,7 @@ const UIManager = {
                     var summary = routes[0].summary;
                     var distanceInMeters = summary.totalDistance;
                     var distanceInKm = (distanceInMeters / 1000).toFixed(2);
-
+                    console.log('Distância entre os pontos: ' + distanceInKm + ' km');
                     return [p, distanceInKm];
                 });
 
@@ -865,7 +865,7 @@ const UIManager = {
         popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
         popup_assistence.innerHTML = html;
         document.body.appendChild(popup_assistence);
-        console.log(popup_assistence);
+
     }
 };
 

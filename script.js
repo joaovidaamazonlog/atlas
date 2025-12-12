@@ -801,8 +801,8 @@ const UIManager = {
             try {
                 var routingControl = L.Routing.control({
                     waypoints: [
-                        L.latLng(latLngOrigem),
-                        L.latLng(latLngDestino)
+                        L.latLng(p.lat, p.lon),
+                        L.latLng(data.lat, data.lon)
                     ],
                     router: L.Routing.osrmv1({
                         serviceUrl: 'router.project-osrm.org'

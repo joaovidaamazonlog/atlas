@@ -817,13 +817,12 @@ const UIManager = {
                     var summary = routes[0].summary;
                     var distanceInMeters = summary.totalDistance;
                     var distanceInKm = (distanceInMeters / 1000).toFixed(2);
-                    
+
                     return [p, distanceInKm];
                 });
 
                 routingControl.on('routingerror', function(e) {
-                    document.getElementById('distance-info').innerHTML = 
-                        'Erro ao calcular a rota: ' + e.error.message;
+                    console.log(e.error.message);
                 });
                 
             } catch {

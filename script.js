@@ -790,7 +790,7 @@ const UIManager = {
         if (!marker) return;
         const data = marker.markerData;
         const center = [marker.getLatLng().lng, marker.getLatLng().lat];
-        const region = turf.circle(center, radius, {steps:32, units:'kilometers'});
+        const region = turf.circle(center, radius, {steps:32, units:"kilometers"});
 
         const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);
@@ -804,10 +804,10 @@ const UIManager = {
                 const origin = (p.getLatLng());
                 const destination = (data.getLatLng());
                 const route = osm.shortest_path(G, origin, destination, {weight:'length'});
-                const route_length = osm.get_route_length(G, route, {units:'km'});
+                const route_length = osm.get_route_length(G, route, {units:'kilometers'});
                 distances.append([p, route_length]);
             } catch{
-                const route_length = turf.distance(center, [p.lon, p.lat], {units:'km'});
+                const route_length = turf.distance(center, [p.lon, p.lat], {units:'kilometers'});
                 distances.append((p, route_length));
             }
         });

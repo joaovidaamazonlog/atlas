@@ -517,7 +517,9 @@ const UIManager = {
         return `
             ${data.popup}
             <hr class="my-2">
-            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}')">
+            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
+                <i class="fas fa-phone"></i> Solicitar Resgate
+            </button>
             <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${data.store_id}')">
                 <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
             </button>

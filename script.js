@@ -838,11 +838,8 @@ const UIManager = {
         popup_assistence.innerText = popup_content;
         document.body.appendChild(popup_assistence);
 
-        console.log(`Sugestões de resgate para ${data.name}:`, sortedPartners.map(([p, d], i) => ({
-            partner_name: p.name,
-            distance_km: d,
-            suggested_bonus: bonnus_value[i]
-        })));
+        console.log(popup_content)
+        
     }
 };
 

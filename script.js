@@ -790,7 +790,7 @@ const UIManager = {
         if (!marker) return;
         const data = marker.markerData;
         const center = [marker.getLatLng().lng, marker.getLatLng().lat];
-        const region = turf.circle(center, radius, {steps:32, units:'km'});
+        const region = turf.circle(center, radius, {steps:32, units:'kilometers'});
 
         const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);

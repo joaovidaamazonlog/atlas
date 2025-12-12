@@ -837,6 +837,12 @@ const UIManager = {
         popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
         popup_assistence.innerHTML = popup_content;
         document.body.appendChild(popup_assistence);
+
+        console.log(`Sugestões de resgate para ${data.name}:`, sortedPartners.map(([p, d], i) => ({
+            partner_name: p.name,
+            distance_km: d,
+            suggested_bonus: bonnus_value[i]
+        })));
     }
 };
 

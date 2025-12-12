@@ -797,18 +797,17 @@ const UIManager = {
             return p.status === 'Active' && turf.booleanPointInPolygon(point, region);
         });
 
-        const distances = [];
-        activePartners.forEach(p => {
+        const distances = activePartners.map(p => {
             try {
-                const G = osm.graph_from_point(center, {distance: radius, network_type:'drive'});
-                const origin = (p.getLatLng());
-                const destination = (data.getLatLng());
-                const route = osm.shortest_path(G, origin, destination, {weight:'length'});
-                const route_length = osm.get_route_length(G, route, {units:'kilometers'});
-                distances.push([p, route_length]);
-            } catch{
-                const route_length = turf.distance(center, [p.lon, p.lat], {units:'kilometers'});
-                distances.push((p, route_length));
+                const G = osm.graph_from_point(center, { distance: radius, network_type: 'drive' });
+                const origin = turf.point([p.lon, p.lat]);
+                const destination = turf.point([data.lon, data.lat]);
+                const route = osm.shortest_path(G, origin, destination, { weight: 'length' });
+                const route_length = osm.get_route_length(G, route, { units: 'kilometers' });
+                return [p, route_length];
+            } catch {
+                const route_length = turf.distance(center, [p.lon, p.lat], { units: 'kilometers' });
+                return [p, route_length];
             }
         });
 

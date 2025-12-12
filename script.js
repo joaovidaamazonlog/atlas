@@ -517,6 +517,7 @@ const UIManager = {
         return `
             ${data.popup}
             <hr class="my-2">
+            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}')">
             <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${data.store_id}')">
                 <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
             </button>
@@ -779,6 +780,54 @@ const UIManager = {
                 { title: "CPP", field: "cpp", formatter:c=>`R$ ${c.getValue()}` },
             ],
         });
+    },
+
+    requestAssistence: function(event, storeId, radius=5) {
+        event.stopPropagation();
+        const marker = AppState.markerObjects.find(m => m.markerData.store_id === storeId);
+        if (!marker) return;
+        const data = marker.markerData;
+        center = (marker.getLatLng());
+        region = turf.circle(center, radius, {steps:32, units:'km'});
+
+        activePartners = AppState.allMarkersData.filter(p => {
+            const point = turf.point([p.lon, p.lat]);
+            return p.status === 'Active' && turf.booleanPointInPolygon(point, region);
+        });
+
+        distances = [];
+        activePartners.forEach(p => {
+            try {
+                const G = osm.graph_from_point(center, {distance: radius, network_type:'drive'});
+                const origin = (p.lat, p.lon);
+                const destination = (data.getLatLng());
+                const route = osm.shortest_path(G, origin, destination, {weight:'length'});
+                const route_length = osm.get_route_length(G, route, {units:'km'});
+                distances.append([p, route_length]);
+            } catch{
+                const route_length = turf.distance(center, [p.lon, p.lat], {units:'km'});
+                distances.append((p, route_length));
+            }
+        });
+
+        sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
+
+        bonnus_value = [];
+        popup_content = "";
+
+        for (const [p, d] of sortedPartners) {
+            if (d <= 2) {
+                bonnus = 50;
+            } else if (d <= 5) {
+                bonnus = 75;
+            } else {
+                bonnus = 100;
+            }
+            bonnus_value.append(bonnus);
+            popup_content += `<p>${p.name}<br>Distância: ${d.toFixed(2)} km - Bônus: R$ ${bonnus}</p><br><a href='https://wa.me/${p.telefone}' target='_blank'><i class='fa fa-whatsapp'></i></a><hr class='my-2'>`;
+        }
+
+        return popupContent;
     }
 };
 

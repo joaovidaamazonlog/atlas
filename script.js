@@ -801,7 +801,7 @@ const UIManager = {
             try {
                 var routingControl = L.Routing.control({
                     waypoints: [
-                        L.latLng(p.lat, p.lon),
+                        L.latLng(marker.getLatLng().lng, marker.getLatLng().lat),
                         L.latLng(data.lat, data.lon)
                     ],
                     router: L.Routing.osrmv1({

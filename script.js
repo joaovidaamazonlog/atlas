@@ -814,7 +814,14 @@ const UIManager = {
         const sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
 
         const bonnus_value = [];
-        let popup_content = "";
+
+        let html = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <b>Sugestões para resgate</b>
+                        <button onclick="document.getElementById('assistence-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
+                    </div>
+                    <div style="overflow-y:auto;max-height:750px;padding-top:8px;">
+                `;
 
         sortedPartners.forEach(([p, d]) => {
             if (d <= 2) {
@@ -826,16 +833,17 @@ const UIManager = {
             }
             bonnus_value.push(bonnus);
 
-            popup_content += `<p><b>${p.name}</b>
+            html += `<p><b>${p.name}</b>
                                 <br><b>Distância:</b> ${d.toFixed(2)} km
                                 <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
                                 <hr class: 'my-2'>`;
         });
 
+        html += `</div>`;
+
         let popup_assistence = document.getElementById('assistence-suggestions-popup') || document.createElement('div');
         popup_assistence.id = 'assistence-suggestions-popup';
-        popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
-        popup_assistence.innerText = popup_content;
+        popup_assistence.innerHTML = html;
         document.body.appendChild(popup_assistence);
 
         console.log(popup_content)

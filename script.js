@@ -784,78 +784,76 @@ const UIManager = {
         });
     },
 
-    requestAssistence: function(event, storeId, radius=5) {
+    async requestAssistence(event, storeId, radius = 5) {
         event.stopPropagation();
+
         const marker = AppState.markerObjects.find(m => m.markerData.store_id === storeId);
         if (!marker) return;
+        
         const data = marker.markerData;
         const center = [marker.getLatLng().lng, marker.getLatLng().lat];
-        const region = turf.circle(center, radius, {steps:32, units:"kilometers"});
+        const region = turf.circle(center, radius, { steps: 32, units: "kilometers" });
 
+        // Filtra parceiros ativos dentro do raio
         const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);
             return p.status === 'Active' && p.store_id !== storeId && turf.booleanPointInPolygon(point, region);
         });
 
-        const distances = activePartners.map(p => {
-            try {
-                var routingControl = L.Routing.control({
-                    waypoints: [
-                        L.latLng(p.lat, p.lon),
-                        L.latLng(marker.getLatLng().lng, marker.getLatLng().lat)
-                    ],
-                    router: L.Routing.osrmv1({
-                        serviceUrl: 'router.project-osrm.org'
-                    }),
-                    routeWhileDragging: false,
-                    showAlternatives: false,
-                    show: false 
-                });
+        // Cria a lista de coordenadas para a matriz de distâncias
+        const allCoordinates = activePartners.map(p => [p.lon, p.lat]);
+        allCoordinates.push([marker.getLatLng().lng, marker.getLatLng().lat]); // Adiciona a coordenada do parceiro analisado no final
 
-                routingControl.on('routesfound', function(e) {
-                    var routes = e.routes;
-                    var summary = routes[0].summary;
-                    var distanceInMeters = summary.totalDistance;
-                    var distanceInKm = (distanceInMeters / 1000).toFixed(2);
-                    console.log('Distância entre os pontos: ' + distanceInKm + ' km');
-                    return [p, distanceInKm];
-                });
+        // Faz a requisição para a API de Matriz de Distâncias do OSRM
+        const osrmUrl = `https://router.project-osrm.org/table/v1/driving/${allCoordinates.map(coord => coord.join(',')).join(';')}?annotations=distance`;
+        const response = await fetch(osrmUrl);
+        
+        if (!response.ok) {
+            console.error('Erro ao consultar OSRM:', response.statusText);
+            return;
+        }
 
-                routingControl.on('routingerror', function(e) {
-                    console.log(e.error.message);
-                });
-                
-            } catch {
-                const route_length = turf.distance(center, [p.lon, p.lat], { units: 'kilometers' });
-                return [p, route_length];
+        const dataOSRM = await response.json();
+        const distances = {};
+
+        // Processa a resposta e associa as distâncias aos parceiros
+        activePartners.forEach((partner, index) => {
+            const distanceInMeters = dataOSRM.distances[index][allCoordinates.length - 1];
+            const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+            distances[partner.store_id] = { partner, distance: distanceInKm };
+        });
+
+        // Ordena os parceiros por distância
+        const sortedPartners = Object.values(distances)
+            .sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance))
+            .slice(0, 10);
+
+        // Calcula o bônus sugerido
+        const bonus_value = sortedPartners.map(({ distance }) => {
+            if (distance <= 2) {
+                return 30;
+            } else if (distance <= 5) {
+                return 40;
+            } else {
+                return 50;
             }
         });
 
-        const sortedPartners = distances.sort((a, b) => a[1] - b[1]).slice(0, 10);
-        const bonnus_value = [];
+        // Gera o HTML do pop-up
         let html = `
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                        <b>Sugestões para resgate</b>
-                        <button onclick="document.getElementById('assistence-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
-                    </div>
-                    <div style="overflow-y:auto;max-height:750px;padding-top:8px;">
-                `;
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <b>Sugestões para resgate</b>
+                <button onclick="document.getElementById('assistence-suggestions-popup').remove()" style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
+            </div>
+            <div style="overflow-y:auto;max-height:750px;padding-top:8px;">
+        `;
 
-        sortedPartners.forEach(([p, d]) => {
-            if (d <= 2) {
-                bonnus = 30;
-            } else if (d <= 5) {
-                bonnus = 40;
-            } else {
-                bonnus = 50;
-            }
-            bonnus_value.push(bonnus);
-
-            html += `<p><b>${p.name}</b>
-                    <br><b>Distância:</b> ${d.toFixed(2)} km
-                    <br><b>Bônus sugerido:</b> R$ ${bonnus}</p>
-                    <br><a href="https://wa.me/${p.telefone}" target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>
-                    <hr class: 'my-2'>`;
+        sortedPartners.forEach(({ partner, distance }, index) => {
+            html += `<p><b>${partner.name}</b>
+                    <br><b>Distância:</b> ${distance} km
+                    <br><b>Bônus sugerido:</b> R$ ${bonus_value[index]}</p>
+                    <br><a href="https://wa.me/${partner.telefone}" target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>
+                    <hr class="my-2">`;
         });
 
         html += `</div>`;
@@ -865,8 +863,8 @@ const UIManager = {
         popup_assistence.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;max-width:420px;box-shadow:0 2px 8px #0003;';
         popup_assistence.innerHTML = html;
         document.body.appendChild(popup_assistence);
-
     }
+
 };
 
 // --- MODULE: HighlightManager ---

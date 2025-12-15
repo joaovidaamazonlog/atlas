@@ -47,6 +47,7 @@ class JsonGenerator:
         info_html += table_row("Launch Date", format_date_to_str(row.get("Launch Date")))
         info_html += table_row("HCP Initiatives", row.get("Hub Delivery Initiatives"))
         info_html += table_row("HCP Host Partner", row.get("HCP Host Partner"))
+        info_html += table_row("HCP Rate Card", row.get("HCP Rate Card"))
         info_html += table_row("Radius", f"{JsonGenerator._clean_value(row.get('Radius'), 'N/A')} m")
         info_html += "</table>"
     

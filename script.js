@@ -793,18 +793,13 @@ const UIManager = {
         const data = marker.markerData;
         const center = [marker.getLatLng().lng, marker.getLatLng().lat];
         const region = turf.circle(center, radius, { steps: 32, units: "kilometers" });
-
-        // Filtra parceiros ativos dentro do raio
         const activePartners = AppState.allMarkersData.filter(p => {
             const point = turf.point([p.lon, p.lat]);
             return p.status === 'Active' && p.store_id !== storeId && turf.booleanPointInPolygon(point, region);
         });
 
-        // Cria a lista de coordenadas para a matriz de distâncias
         const allCoordinates = activePartners.map(p => [p.lon, p.lat]);
-        allCoordinates.push([marker.getLatLng().lng, marker.getLatLng().lat]); // Adiciona a coordenada do parceiro analisado no final
-
-        // Faz a requisição para a API de Matriz de Distâncias do OSRM
+        allCoordinates.push([marker.getLatLng().lng, marker.getLatLng().lat]);
         const osrmUrl = `https://router.project-osrm.org/table/v1/driving/${allCoordinates.map(coord => coord.join(',')).join(';')}?annotations=distance`;
         const response = await fetch(osrmUrl);
         
@@ -816,19 +811,16 @@ const UIManager = {
         const dataOSRM = await response.json();
         const distances = {};
 
-        // Processa a resposta e associa as distâncias aos parceiros
         activePartners.forEach((partner, index) => {
             const distanceInMeters = dataOSRM.distances[index][allCoordinates.length - 1];
             const distanceInKm = (distanceInMeters / 1000).toFixed(2);
             distances[partner.store_id] = { partner, distance: distanceInKm };
         });
 
-        // Ordena os parceiros por distância
         const sortedPartners = Object.values(distances)
             .sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance))
             .slice(0, 10);
 
-        // Calcula o bônus sugerido
         const bonus_value = sortedPartners.map(({ distance }) => {
             if (distance <= 2) {
                 return 30;
@@ -839,7 +831,6 @@ const UIManager = {
             }
         });
 
-        // Gera o HTML do pop-up
         let html = `
             <div style="display:flex;justify-content:space-between;align-items:center;">
                 <b>Sugestões para resgate</b>
@@ -1786,8 +1777,7 @@ const RouteManager = {
             // OBS: mantemos markerObj.markerData atualizado (já atualizamos item.hub_delivery_initiatives acima)
         });
 
-        // Opcional: atualizar legenda / restyling global (sua função já criada)
-        try { MapManager.restyleMarkers(); } catch (e) { /* ignore se MapManager não tiver ou falhar */ }
+        try { MapManager.restyleMarkers(); } catch (e) { console.error('restyleMarkers falhou', e);}
     },
 
     hcpSuggestHostClusters: async function () {

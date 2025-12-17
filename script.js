@@ -185,12 +185,15 @@ const MapManager = {
         const marker = e.target;
         AppState.map.setView(marker.getLatLng(), 15);
         const markers = AppState.markerObjects;
-        markers.forEach(m =>{
-            if (m !== marker) {
-                m.removeLayer(m.circle);
+        const toggleRadii = document.getElementById('showRadii');
+        if (toggleRadii.checked) {
+            if(this._radiusShown){
+                AppState.map.removeLayer(this._radiusShown);
             }
-        });
-        marker.addLayer(marker.circle);
+            if(marker.markerData.radius){
+                this._radiusShown = L.circle(marker.getLatLng(), { radius: marker.markerData.radius, color: 'blue', weight: 2, fillOpacity: 0.1 }).addTo(AppState.map);
+            }
+        }
         const initialPopupContent = `
             ${marker.markerData.popup}
                 <hr class="my-2">

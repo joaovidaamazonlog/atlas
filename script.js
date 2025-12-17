@@ -184,6 +184,13 @@ const MapManager = {
     onMarkerClick: function(e) {
         const marker = e.target;
         AppState.map.setView(marker.getLatLng(), 15);
+        const markers = AppState.markerObjects;
+        markers.forEach(m =>{
+            if (m !== marker) {
+                m.removeLayer(m.circle);
+            }
+        });
+        marker.addLayer(marker.circle);
         const initialPopupContent = `
             ${marker.markerData.popup}
                 <hr class="my-2">

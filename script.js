@@ -184,16 +184,6 @@ const MapManager = {
     onMarkerClick: function(e) {
         const marker = e.target;
         AppState.map.setView(marker.getLatLng(), 15);
-        const markers = AppState.markerObjects;
-        const toggleRadii = document.getElementById('showRadii');
-        if (toggleRadii.checked) {
-            if(this._radiusShown){
-                AppState.map.removeLayer(this._radiusShown);
-            }
-            if(marker.markerData.radius){
-                this._radiusShown = L.circle(marker.getLatLng(), { radius: marker.markerData.radius, color: 'blue', weight: 2, fillOpacity: 0.1 }).addTo(AppState.map);
-            }
-        }
         const initialPopupContent = `
             ${marker.markerData.popup}
                 <hr class="my-2">

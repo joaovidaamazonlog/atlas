@@ -1,5 +1,3 @@
-# /seu_projeto/main.py
-
 import os
 import time
 from datetime import datetime

@@ -13,8 +13,8 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 8771,
-            "percentual": 68.7921568627451
+            "atingido": 8775,
+            "percentual": 68.82352941176471
         },
         "cadastros": {
             "meta": 290.0,
@@ -29,7 +29,7 @@
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
-                "contatos": 5277,
+                "contatos": 5281,
                 "cadastros": 84,
                 "conversoes": 47,
                 "taxa_conversao": 55.95,
@@ -661,24 +661,24 @@
         },
         {
             "responsavel": "Sidney Lima",
-            "contatos": 425,
+            "contatos": 429,
             "cadastros": 17,
             "conversoes": 9,
             "taxa_conversao": 52.94,
-            "taxa_cadastro": 4.0,
+            "taxa_cadastro": 3.96,
             "contatos_origem_Website Pardot Form": 20,
             "cadastros_origem_Website Pardot Form": 5,
             "contatos_origem_In-Person Visit": 123,
             "cadastros_origem_In-Person Visit": 0,
-            "contatos_origem_Cold Call": 265,
+            "contatos_origem_Cold Call": 269,
             "cadastros_origem_Cold Call": 4,
             "contatos_origem_Referral": 17,
             "cadastros_origem_Referral": 8,
             "volume_score_contatos": 0.83,
             "volume_score_cadastros": 1,
             "velocidade_score": 0.44,
-            "consistencia": 0.37,
-            "distribuicao_canais": 0.94,
+            "consistencia": 0.38,
+            "distribuicao_canais": 0.93,
             "score_final": 0.85
         },
         {
@@ -88377,7 +88377,7 @@
         },
         {
             "id": 8767,
-            "lead": "Sandra Goncalves da Silva",
+            "lead": "Daniel Martins de Almeida",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
             "data_contato": "2025-12-17",
@@ -88387,7 +88387,7 @@
         },
         {
             "id": 8768,
-            "lead": "Getulio Gomes dos Santos",
+            "lead": "Antonio Marcio Araripe Gomes",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
             "data_contato": "2025-12-17",
@@ -88397,7 +88397,7 @@
         },
         {
             "id": 8769,
-            "lead": "Vanderli Sales de Sousa",
+            "lead": "Sandra Goncalves da Silva",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
             "data_contato": "2025-12-17",
@@ -88407,7 +88407,47 @@
         },
         {
             "id": 8770,
+            "lead": "Getulio Gomes dos Santos",
+            "responsavel": "Sidney Lima",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8771,
+            "lead": "Vanderli Sales de Sousa",
+            "responsavel": "Sidney Lima",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8772,
             "lead": "Izabel Marinho da Silva",
+            "responsavel": "Sidney Lima",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8773,
+            "lead": "Francisco Jorgivan Limao Feitoza",
+            "responsavel": "Sidney Lima",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8774,
+            "lead": "Klevia dos Santos Lima Sousa",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
             "data_contato": "2025-12-17",
@@ -88551,7 +88591,7 @@
         },
         {
             "data_contato": "2025-12-17",
-            "contatos": 387,
+            "contatos": 391,
             "cadastros": 5,
             "conversoes": 0
         }

@@ -65,7 +65,7 @@ def run_pipeline():
         #Gerar os arquivos JSON para mapa e Scorecard
     
         period_data = adv_raw_df["Start Period"]
-        period = DataProcessor._calculate_period(period_data)
+        period = datetime.today().strftime("%Y-%m-%d")
         
         json_filename = f"{config.OUTPUT_JSON_FILENAME_PREFIX}.json"
         json_scorecard_filename = f"{config.OUTPUT_JSON_SCORECARD_FILENAME_PREFIX}.json"

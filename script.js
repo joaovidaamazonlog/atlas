@@ -361,7 +361,7 @@ const UIManager = {
 
     updatePeriodInfo: function(period) {
         document.getElementById('periodInfo').textContent = (period.start && period.end)
-            ? `Período dos Dados: ${period.start} a ${period.end}`
+            ? `Última Atualização: ${period}`
             : "Período dos dados não especificado.";
     },
 

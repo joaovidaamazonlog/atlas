@@ -59143,7 +59143,7 @@
             "data_contato": "2025-12-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Not Interested"
         },
         {
             "id": 5844,
@@ -70803,7 +70803,7 @@
             "data_contato": "2025-12-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7010,
@@ -71793,7 +71793,7 @@
             "data_contato": "2025-12-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Not Interested"
         },
         {
             "id": 7109,
@@ -72973,7 +72973,7 @@
             "data_contato": "2025-12-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 7227,
@@ -75803,7 +75803,7 @@
             "data_contato": "2025-12-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 7510,
@@ -79873,7 +79873,7 @@
             "data_contato": "2025-12-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 7917,
@@ -81203,7 +81203,7 @@
             "data_contato": "2025-12-19",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 8050,
@@ -81483,7 +81483,7 @@
             "data_contato": "2025-12-19",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 8078,
@@ -81523,7 +81523,7 @@
             "data_contato": "2025-12-19",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Inactive"
         },
         {
             "id": 8082,

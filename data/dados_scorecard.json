@@ -18,22 +18,22 @@
         },
         "cadastros": {
             "meta": 232.0,
-            "atingido": 211,
-            "percentual": 90.94827586206897
+            "atingido": 213,
+            "percentual": 91.8103448275862
         },
         "conversoes": {
             "meta": 232.0,
-            "atingido": 137,
-            "percentual": 59.05172413793104
+            "atingido": 141,
+            "percentual": 60.775862068965516
         },
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
                 "contatos": 5045,
-                "cadastros": 82,
-                "conversoes": 53,
-                "taxa_conversao": 64.63,
-                "taxa_cadastro": 1.63,
+                "cadastros": 83,
+                "conversoes": 57,
+                "taxa_conversao": 68.67,
+                "taxa_cadastro": 1.65,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.64,
@@ -72,13 +72,13 @@
             {
                 "origem": "Website Pardot Form",
                 "contatos": 151,
-                "cadastros": 29,
+                "cadastros": 30,
                 "conversoes": 19,
-                "taxa_conversao": 65.52,
-                "taxa_cadastro": 19.21,
+                "taxa_conversao": 63.33,
+                "taxa_cadastro": 19.87,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.63,
+                "velocidade_score": 0.61,
                 "consistencia": 0,
                 "distribuicao_canais": 0.04,
                 "score_final": 0.66
@@ -91,8 +91,8 @@
             "responsavel": "Aline Melo",
             "contatos": 233,
             "cadastros": 27,
-            "conversoes": 10,
-            "taxa_conversao": 37.04,
+            "conversoes": 11,
+            "taxa_conversao": 40.74,
             "taxa_cadastro": 11.59,
             "contatos_origem_Website Pardot Form": 3,
             "cadastros_origem_Website Pardot Form": 1,
@@ -267,8 +267,8 @@
             "responsavel": "Cícero Almeida",
             "contatos": 288,
             "cadastros": 7,
-            "conversoes": 6,
-            "taxa_conversao": 85.71,
+            "conversoes": 7,
+            "taxa_conversao": 100.0,
             "taxa_cadastro": 2.43,
             "contatos_origem_Website Pardot Form": 8,
             "cadastros_origem_Website Pardot Form": 0,
@@ -553,8 +553,8 @@
             "responsavel": "Lilian Mata",
             "contatos": 135,
             "cadastros": 21,
-            "conversoes": 11,
-            "taxa_conversao": 52.38,
+            "conversoes": 12,
+            "taxa_conversao": 57.14,
             "taxa_cadastro": 15.56,
             "contatos_origem_Website Pardot Form": 0,
             "cadastros_origem_Website Pardot Form": 0,
@@ -566,7 +566,7 @@
             "cadastros_origem_Referral": 6,
             "volume_score_contatos": 0.32,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.54,
+            "velocidade_score": 0.55,
             "consistencia": 0.69,
             "distribuicao_canais": 0.61,
             "score_final": 0.8
@@ -574,12 +574,12 @@
         {
             "responsavel": "Maria Silva",
             "contatos": 341,
-            "cadastros": 4,
+            "cadastros": 5,
             "conversoes": 2,
-            "taxa_conversao": 50.0,
-            "taxa_cadastro": 1.17,
+            "taxa_conversao": 40.0,
+            "taxa_cadastro": 1.47,
             "contatos_origem_Website Pardot Form": 10,
-            "cadastros_origem_Website Pardot Form": 0,
+            "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 37,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 270,
@@ -587,18 +587,18 @@
             "contatos_origem_Referral": 24,
             "cadastros_origem_Referral": 4,
             "volume_score_contatos": 0.7,
-            "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.45,
+            "volume_score_cadastros": 0.62,
+            "velocidade_score": 0.36,
             "consistencia": 0.45,
             "distribuicao_canais": 0.75,
-            "score_final": 0.53
+            "score_final": 0.6
         },
         {
             "responsavel": "Pedro Neto",
             "contatos": 387,
             "cadastros": 7,
-            "conversoes": 5,
-            "taxa_conversao": 71.43,
+            "conversoes": 6,
+            "taxa_conversao": 85.71,
             "taxa_cadastro": 1.81,
             "contatos_origem_Website Pardot Form": 14,
             "cadastros_origem_Website Pardot Form": 2,
@@ -662,24 +662,24 @@
         {
             "responsavel": "Sidney Lima",
             "contatos": 429,
-            "cadastros": 19,
+            "cadastros": 20,
             "conversoes": 14,
-            "taxa_conversao": 73.68,
-            "taxa_cadastro": 4.43,
+            "taxa_conversao": 70.0,
+            "taxa_cadastro": 4.66,
             "contatos_origem_Website Pardot Form": 21,
             "cadastros_origem_Website Pardot Form": 6,
             "contatos_origem_In-Person Visit": 103,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 287,
-            "cadastros_origem_Cold Call": 3,
+            "cadastros_origem_Cold Call": 4,
             "contatos_origem_Referral": 18,
             "cadastros_origem_Referral": 10,
             "volume_score_contatos": 0.89,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.46,
+            "velocidade_score": 0.44,
             "consistencia": 0.41,
             "distribuicao_canais": 0.89,
-            "score_final": 0.87
+            "score_final": 0.86
         },
         {
             "responsavel": "Wagner Silva",
@@ -812,8 +812,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-18",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2025-12-22",
+            "status": "Converted"
         },
         {
             "id": 11,
@@ -28097,13 +28097,13 @@
         },
         {
             "id": 2739,
-            "lead": "Junior Ricardo Mendes",
+            "lead": "RICARDO MENDES DE SOUZA JUNIOR",
             "responsavel": "Maria Silva",
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-12",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-22",
             "data_conversao": null,
-            "status": "Working"
+            "status": "BG Checks"
         },
         {
             "id": 2740,
@@ -29722,8 +29722,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-02",
             "data_cadastro": "2025-12-04",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2025-12-22",
+            "status": "Converted"
         },
         {
             "id": 2902,
@@ -59161,9 +59161,9 @@
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
             "data_contato": "2025-12-11",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-22",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 5846,
@@ -63293,7 +63293,7 @@
             "data_contato": "2025-12-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Working"
         },
         {
             "id": 6259,
@@ -65162,8 +65162,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-16",
             "data_cadastro": "2025-12-16",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2025-12-22",
+            "status": "Converted"
         },
         {
             "id": 6446,
@@ -72932,8 +72932,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-17",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2025-12-22",
+            "status": "Converted"
         },
         {
             "id": 7223,
@@ -81593,7 +81593,7 @@
             "data_contato": "2025-12-02",
             "contatos": 517,
             "cadastros": 12,
-            "conversoes": 10
+            "conversoes": 11
         },
         {
             "data_contato": "2025-12-03",
@@ -81634,13 +81634,13 @@
         {
             "data_contato": "2025-12-11",
             "contatos": 520,
-            "cadastros": 17,
+            "cadastros": 18,
             "conversoes": 11
         },
         {
             "data_contato": "2025-12-12",
             "contatos": 40,
-            "cadastros": 4,
+            "cadastros": 5,
             "conversoes": 4
         },
         {
@@ -81653,19 +81653,19 @@
             "data_contato": "2025-12-16",
             "contatos": 414,
             "cadastros": 15,
-            "conversoes": 8
+            "conversoes": 9
         },
         {
             "data_contato": "2025-12-17",
             "contatos": 464,
             "cadastros": 10,
-            "conversoes": 0
+            "conversoes": 1
         },
         {
             "data_contato": "2025-12-18",
             "contatos": 421,
             "cadastros": 8,
-            "conversoes": 1
+            "conversoes": 2
         },
         {
             "data_contato": "2025-12-19",

@@ -13,13 +13,13 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 8218,
-            "percentual": 64.45490196078431
+            "atingido": 8231,
+            "percentual": 64.55686274509804
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 215,
-            "percentual": 74.13793103448276
+            "atingido": 216,
+            "percentual": 74.48275862068967
         },
         "conversoes": {
             "meta": 290.0,
@@ -29,7 +29,7 @@
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
-                "contatos": 5142,
+                "contatos": 5155,
                 "cadastros": 85,
                 "conversoes": 57,
                 "taxa_conversao": 67.06,
@@ -37,9 +37,9 @@
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.63,
-                "consistencia": 0.32,
+                "consistencia": 0.33,
                 "distribuicao_canais": 0.59,
-                "score_final": 0.72
+                "score_final": 0.73
             },
             {
                 "origem": "In-Person Visit",
@@ -72,19 +72,19 @@
             {
                 "origem": "Website Pardot Form",
                 "contatos": 160,
-                "cadastros": 30,
+                "cadastros": 31,
                 "conversoes": 19,
-                "taxa_conversao": 63.33,
-                "taxa_cadastro": 18.75,
+                "taxa_conversao": 61.29,
+                "taxa_cadastro": 19.38,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.61,
+                "velocidade_score": 0.59,
                 "consistencia": 0.0,
                 "distribuicao_canais": 0.04,
                 "score_final": 0.66
             }
         ],
-        "scorecard_geral": 0.6900000000000001
+        "scorecard_geral": 0.6925
     },
     "per_responsavel": [
         {
@@ -331,25 +331,25 @@
         },
         {
             "responsavel": "Fabiane Krampe",
-            "contatos": 399,
+            "contatos": 412,
             "cadastros": 16,
             "conversoes": 13,
             "taxa_conversao": 81.25,
-            "taxa_cadastro": 4.01,
+            "taxa_cadastro": 3.88,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 2,
             "contatos_origem_In-Person Visit": 100,
             "cadastros_origem_In-Person Visit": 0,
-            "contatos_origem_Cold Call": 274,
+            "contatos_origem_Cold Call": 287,
             "cadastros_origem_Cold Call": 7,
             "contatos_origem_Referral": 21,
             "cadastros_origem_Referral": 7,
             "volume_score_contatos": 0.68,
             "volume_score_cadastros": 1,
             "velocidade_score": 0.5,
-            "consistencia": 0.3,
-            "distribuicao_canais": 0.87,
-            "score_final": 0.83
+            "consistencia": 0.41,
+            "distribuicao_canais": 0.86,
+            "score_final": 0.84
         },
         {
             "responsavel": "Felipe Duarte",
@@ -662,12 +662,12 @@
         {
             "responsavel": "Sidney Lima",
             "contatos": 429,
-            "cadastros": 20,
+            "cadastros": 21,
             "conversoes": 14,
-            "taxa_conversao": 70.0,
-            "taxa_cadastro": 4.66,
+            "taxa_conversao": 66.67,
+            "taxa_cadastro": 4.9,
             "contatos_origem_Website Pardot Form": 21,
-            "cadastros_origem_Website Pardot Form": 6,
+            "cadastros_origem_Website Pardot Form": 7,
             "contatos_origem_In-Person Visit": 103,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 287,
@@ -676,7 +676,7 @@
             "cadastros_origem_Referral": 10,
             "volume_score_contatos": 0.8,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.44,
+            "velocidade_score": 0.42,
             "consistencia": 0.41,
             "distribuicao_canais": 0.89,
             "score_final": 0.85
@@ -25051,9 +25051,9 @@
             "responsavel": "Sidney Lima",
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-16",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-23",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 2435,
@@ -82857,7 +82857,7 @@
         },
         {
             "id": 8215,
-            "lead": "Raissa Kelly Viana Araujo na",
+            "lead": "Bruna Torres De Assis NA",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
             "data_contato": "2025-12-22",
@@ -82867,7 +82867,7 @@
         },
         {
             "id": 8216,
-            "lead": "Vitoria Donadio NA",
+            "lead": "Raissa Kelly Viana Araujo na",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
             "data_contato": "2025-12-22",
@@ -82877,13 +82877,143 @@
         },
         {
             "id": 8217,
+            "lead": "Vitoria Donadio NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8218,
+            "lead": "Carolina NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8219,
             "lead": "Thaisa Alves Costa NA",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
             "data_contato": "2025-12-22",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
+        },
+        {
+            "id": 8220,
+            "lead": "Humberto Martins Costa NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8221,
+            "lead": "Giselle Maria NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8222,
+            "lead": "Flavia Carvalho de Donadio Jardim NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8223,
+            "lead": "Ana Denise de Padua Siqueira NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8224,
+            "lead": "Eduardo NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8225,
+            "lead": "Ej Consultoria e Servicos Ltda NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8226,
+            "lead": "Laisa Pimenta Cardoso NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8227,
+            "lead": "Marcos Rassi Fernandes Filho NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8228,
+            "lead": "Silvana Goncalves Peres na",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8229,
+            "lead": "Maria Inez NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8230,
+            "lead": "Eloisa Civile Pereira NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
         }
     ],
     "daily_data": [
@@ -82992,7 +83122,7 @@
         {
             "data_contato": "2025-12-16",
             "contatos": 414,
-            "cadastros": 15,
+            "cadastros": 16,
             "conversoes": 9
         },
         {
@@ -83015,7 +83145,7 @@
         },
         {
             "data_contato": "2025-12-22",
-            "contatos": 134,
+            "contatos": 147,
             "cadastros": 1,
             "conversoes": 0
         }

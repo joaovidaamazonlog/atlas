@@ -13,13 +13,13 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 8193,
-            "percentual": 64.25882352941177
+            "atingido": 8218,
+            "percentual": 64.45490196078431
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 214,
-            "percentual": 73.79310344827587
+            "atingido": 215,
+            "percentual": 74.13793103448276
         },
         "conversoes": {
             "meta": 290.0,
@@ -29,15 +29,15 @@
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
-                "contatos": 5117,
-                "cadastros": 84,
+                "contatos": 5142,
+                "cadastros": 85,
                 "conversoes": 57,
-                "taxa_conversao": 67.86,
-                "taxa_cadastro": 1.64,
+                "taxa_conversao": 67.06,
+                "taxa_cadastro": 1.65,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.64,
-                "consistencia": 0.3,
+                "velocidade_score": 0.63,
+                "consistencia": 0.32,
                 "distribuicao_canais": 0.59,
                 "score_final": 0.72
             },
@@ -111,25 +111,25 @@
         },
         {
             "responsavel": "Allan Carvalho",
-            "contatos": 388,
-            "cadastros": 2,
+            "contatos": 398,
+            "cadastros": 3,
             "conversoes": 1,
-            "taxa_conversao": 50.0,
-            "taxa_cadastro": 0.52,
+            "taxa_conversao": 33.33,
+            "taxa_cadastro": 0.75,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 103,
             "cadastros_origem_In-Person Visit": 1,
-            "contatos_origem_Cold Call": 281,
-            "cadastros_origem_Cold Call": 1,
+            "contatos_origem_Cold Call": 291,
+            "cadastros_origem_Cold Call": 2,
             "contatos_origem_Referral": 3,
             "cadastros_origem_Referral": 0,
             "volume_score_contatos": 0.54,
-            "volume_score_cadastros": 0.2,
-            "velocidade_score": 0.42,
-            "consistencia": 0.23,
+            "volume_score_cadastros": 0.3,
+            "velocidade_score": 0.28,
+            "consistencia": 0.34,
             "distribuicao_canais": 0.86,
-            "score_final": 0.31
+            "score_final": 0.37
         },
         {
             "responsavel": "Brenda Souza",
@@ -177,25 +177,25 @@
         },
         {
             "responsavel": "Bruno Silva",
-            "contatos": 224,
+            "contatos": 234,
             "cadastros": 5,
             "conversoes": 4,
             "taxa_conversao": 80.0,
-            "taxa_cadastro": 2.23,
+            "taxa_cadastro": 2.14,
             "contatos_origem_Website Pardot Form": 8,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 120,
             "cadastros_origem_In-Person Visit": 2,
-            "contatos_origem_Cold Call": 91,
+            "contatos_origem_Cold Call": 101,
             "cadastros_origem_Cold Call": 1,
             "contatos_origem_Referral": 5,
             "cadastros_origem_Referral": 2,
-            "volume_score_contatos": 0.49,
+            "volume_score_contatos": 0.5,
             "volume_score_cadastros": 0.5,
             "velocidade_score": 0.65,
-            "consistencia": 0.31,
-            "distribuicao_canais": 0.82,
-            "score_final": 0.51
+            "consistencia": 0.49,
+            "distribuicao_canais": 0.84,
+            "score_final": 0.53
         },
         {
             "responsavel": "Caroline Lima",
@@ -331,25 +331,25 @@
         },
         {
             "responsavel": "Fabiane Krampe",
-            "contatos": 394,
+            "contatos": 399,
             "cadastros": 16,
             "conversoes": 13,
             "taxa_conversao": 81.25,
-            "taxa_cadastro": 4.06,
+            "taxa_cadastro": 4.01,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 2,
             "contatos_origem_In-Person Visit": 100,
             "cadastros_origem_In-Person Visit": 0,
-            "contatos_origem_Cold Call": 269,
+            "contatos_origem_Cold Call": 274,
             "cadastros_origem_Cold Call": 7,
             "contatos_origem_Referral": 21,
             "cadastros_origem_Referral": 7,
             "volume_score_contatos": 0.68,
             "volume_score_cadastros": 1,
             "velocidade_score": 0.5,
-            "consistencia": 0.25,
-            "distribuicao_canais": 0.88,
-            "score_final": 0.82
+            "consistencia": 0.3,
+            "distribuicao_canais": 0.87,
+            "score_final": 0.83
         },
         {
             "responsavel": "Felipe Duarte",
@@ -67937,7 +67937,7 @@
         },
         {
             "id": 6723,
-            "lead": "Jaime",
+            "lead": "CAROLINA FREITAS DE ALMEIDA",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
             "data_contato": "2025-12-18",
@@ -79241,9 +79241,9 @@
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
             "data_contato": "2025-12-18",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-23",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 7854,
@@ -80393,7 +80393,7 @@
             "data_contato": "2025-12-19",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Not Interested"
         },
         {
             "id": 7969,
@@ -82163,7 +82163,7 @@
             "data_contato": "2025-12-22",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 8146,
@@ -82253,7 +82253,7 @@
             "data_contato": "2025-12-22",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Working"
         },
         {
             "id": 8155,
@@ -82633,7 +82633,257 @@
             "data_contato": "2025-12-22",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
+        },
+        {
+            "id": 8193,
+            "lead": "OLIVIA",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8194,
+            "lead": "NATUSA",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8195,
+            "lead": "ROGER",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8196,
+            "lead": "SALON NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8197,
+            "lead": "PATRICIA DE CARVALHO FERREIRA BUENO NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Inactive"
+        },
+        {
+            "id": 8198,
+            "lead": "SORAYA",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8199,
+            "lead": "MARCELO",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8200,
+            "lead": "EDUARDO",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8201,
+            "lead": "ELIEZER",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8202,
+            "lead": "ROSANGELA",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8203,
+            "lead": "LORENA NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8204,
+            "lead": "YOPPI NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8205,
+            "lead": "MARVIM NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8206,
+            "lead": "GINGER BAR NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8207,
+            "lead": "KAROLINE NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8208,
+            "lead": "CE NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8209,
+            "lead": "BLUUEEE CAR NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8210,
+            "lead": "BRUNO",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8211,
+            "lead": "LUCIANA REZENDE NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Inactive"
+        },
+        {
+            "id": 8212,
+            "lead": "JOSE",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8213,
+            "lead": "Taina Fiuza Moraes NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8214,
+            "lead": "Antonio Evaldo Oliveira NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8215,
+            "lead": "Raissa Kelly Viana Araujo na",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8216,
+            "lead": "Vitoria Donadio NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 8217,
+            "lead": "Thaisa Alves Costa NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2025-12-22",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
         }
     ],
     "daily_data": [
@@ -82754,7 +83004,7 @@
         {
             "data_contato": "2025-12-18",
             "contatos": 421,
-            "cadastros": 8,
+            "cadastros": 9,
             "conversoes": 2
         },
         {
@@ -82765,7 +83015,7 @@
         },
         {
             "data_contato": "2025-12-22",
-            "contatos": 109,
+            "contatos": 134,
             "cadastros": 1,
             "conversoes": 0
         }

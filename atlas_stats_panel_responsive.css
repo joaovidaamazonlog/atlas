@@ -1,0 +1,68 @@
+/* atlas_stats_panel_responsive.css */
+
+/* Estilo do Container Principal */
+.cards-container, .table-container {
+    background-color: transparent;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* --- ESTILO DOS CARDS (GRID LAYOUT) --- */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.metric-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* --- ESTILO DA TABELA --- */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.data-table th, .data-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .cards-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .metric-value {
+        font-size: 1.3rem;
+    }
+    
+    .data-table {
+        font-size: 0.75rem;
+    }
+}

@@ -1,5 +1,5 @@
 {
-    "period": "2025-12-27 : 22h:11m",
+    "period": "2025-12-29 : 10h:59m",
     "deliveryStations": [
         {
             "nome": "DAM1",
@@ -143242,7 +143242,7 @@
         {
             "lat": -3.76887,
             "lon": -38.59757,
-            "popup": "<div style=\"width: auto; max-height: auto; font-size: 12px;\"><h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'><tr><td style='width:40%'><b>Store ID:</b></td><td style='width:60%'>5864333266</td></tr><tr><td style='width:40%'><b>Name:</b></td><td style='width:60%'>FRANCISCO DAS CHAGAS PINHEIRO 53866657315</td></tr><tr><td style='width:40%'><b>Status:</b></td><td style='width:60%'>Active</td></tr><tr><td style='width:40%'><b>Delivery Station:</b></td><td style='width:60%'>DCE3</td></tr><tr><td style='width:40%'><b>Jurisdiction Type:</b></td><td style='width:60%'>Shared</td></tr><tr><td style='width:40%'><b>Launch Date:</b></td><td style='width:60%'>2025/09/30</td></tr><tr><td style='width:40%'><b>HCP Initiatives:</b></td><td style='width:60%'>Hub Hero</td></tr><tr><td style='width:40%'><b>HCP Host Partner:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>HCP Rate Card:</b></td><td style='width:60%'>Tier 1</td></tr><tr><td style='width:40%'><b>Radius:</b></td><td style='width:60%'>1500 m</td></tr></table><hr class: \"my-2\"><a href=\"https://dsp-portal.lightning.force.com/lightning/r/Account/001at00000HhYxeAAF/view\" target=\"_blank\">View in Salesforce</a><br>Enviar menssagem <a href=\"https://wa.me/85988045329\" target=\"_blank\"><i class=\"fa fa-whatsapp\" style=\"font-size:24px\"></i></a><hr class: \"my-2\"><h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'><tr><td style='width:40%'><b>ADV:</b></td><td style='width:60%'>25.91</td></tr><tr><td style='width:40%'><b>Eligible Packages:</b></td><td style='width:60%'>238.59</td></tr><tr><td style='width:40%'><b>Partner Capacity:</b></td><td style='width:60%'>26.18</td></tr></table></div>",
+            "popup": "<div style=\"width: auto; max-height: auto; font-size: 12px;\"><h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'><tr><td style='width:40%'><b>Store ID:</b></td><td style='width:60%'>5864333266</td></tr><tr><td style='width:40%'><b>Name:</b></td><td style='width:60%'>FRANCISCO DAS CHAGAS PINHEIRO 53866657315</td></tr><tr><td style='width:40%'><b>Status:</b></td><td style='width:60%'>Active</td></tr><tr><td style='width:40%'><b>Delivery Station:</b></td><td style='width:60%'>DCE3</td></tr><tr><td style='width:40%'><b>Jurisdiction Type:</b></td><td style='width:60%'>Shared</td></tr><tr><td style='width:40%'><b>Launch Date:</b></td><td style='width:60%'>2025/09/30</td></tr><tr><td style='width:40%'><b>HCP Initiatives:</b></td><td style='width:60%'>HCP Pick Up Partner</td></tr><tr><td style='width:40%'><b>HCP Host Partner:</b></td><td style='width:60%'>40737489 FRANCISCO ANGELO SANTIAGO FILHO</td></tr><tr><td style='width:40%'><b>HCP Rate Card:</b></td><td style='width:60%'>Tier 1</td></tr><tr><td style='width:40%'><b>Radius:</b></td><td style='width:60%'>1500 m</td></tr></table><hr class: \"my-2\"><a href=\"https://dsp-portal.lightning.force.com/lightning/r/Account/001at00000HhYxeAAF/view\" target=\"_blank\">View in Salesforce</a><br>Enviar menssagem <a href=\"https://wa.me/85988045329\" target=\"_blank\"><i class=\"fa fa-whatsapp\" style=\"font-size:24px\"></i></a><hr class: \"my-2\"><h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'><tr><td style='width:40%'><b>ADV:</b></td><td style='width:60%'>25.91</td></tr><tr><td style='width:40%'><b>Eligible Packages:</b></td><td style='width:60%'>238.59</td></tr><tr><td style='width:40%'><b>Partner Capacity:</b></td><td style='width:60%'>26.18</td></tr></table></div>",
             "tooltip": "ID: 5864333266 | Name: FRANCISCO DAS CHAGAS PINHEIRO 53866657315 | ADV: 25.91 | Raio: 1500m",
             "name": "FRANCISCO DAS CHAGAS PINHEIRO 53866657315",
             "telefone": "85988045329",
@@ -143253,9 +143253,9 @@
             "jurisdiction_type": "Shared",
             "launch_date": "2025/09/30",
             "supply_run": "DCE3_MRE",
-            "hub_delivey_initiatives": "Hub Hero",
+            "hub_delivey_initiatives": "HCP Pick Up Partner",
             "HCP_rate_card": "Tier 1",
-            "HCP_host_partner": null,
+            "HCP_host_partner": "40737489 FRANCISCO ANGELO SANTIAGO FILHO",
             "sorte_code": null,
             "zip_code": "60532430",
             "city": "Fortaleza",

@@ -13,13 +13,13 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 6185,
-            "percentual": 48.509803921568626
+            "atingido": 6186,
+            "percentual": 48.517647058823535
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 171,
-            "percentual": 58.9655172413793
+            "atingido": 172,
+            "percentual": 59.310344827586206
         },
         "conversoes": {
             "meta": 290.0,
@@ -57,15 +57,15 @@
             },
             {
                 "origem": "Referral",
-                "contatos": 215,
-                "cadastros": 66,
+                "contatos": 216,
+                "cadastros": 67,
                 "conversoes": 37,
-                "taxa_conversao": 56.06,
-                "taxa_cadastro": 30.7,
+                "taxa_conversao": 55.22,
+                "taxa_cadastro": 31.02,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.5,
-                "consistencia": 0.18,
+                "velocidade_score": 0.49,
+                "consistencia": 0.19,
                 "distribuicao_canais": 0.02,
                 "score_final": 0.67
             },
@@ -331,25 +331,25 @@
         },
         {
             "responsavel": "Fabiane Krampe",
-            "contatos": 339,
+            "contatos": 340,
             "cadastros": 14,
             "conversoes": 12,
             "taxa_conversao": 85.71,
-            "taxa_cadastro": 4.13,
+            "taxa_cadastro": 4.12,
             "contatos_origem_Website Pardot Form": 3,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 61,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 254,
             "cadastros_origem_Cold Call": 6,
-            "contatos_origem_Referral": 21,
+            "contatos_origem_Referral": 22,
             "cadastros_origem_Referral": 7,
             "volume_score_contatos": 0.58,
             "volume_score_cadastros": 1,
             "velocidade_score": 0.56,
-            "consistencia": 0.58,
+            "consistencia": 0.29,
             "distribuicao_canais": 0.8,
-            "score_final": 0.84
+            "score_final": 0.81
         },
         {
             "responsavel": "Felipe Duarte",
@@ -552,10 +552,10 @@
         {
             "responsavel": "Maria Silva",
             "contatos": 305,
-            "cadastros": 5,
+            "cadastros": 6,
             "conversoes": 2,
-            "taxa_conversao": 40.0,
-            "taxa_cadastro": 1.64,
+            "taxa_conversao": 33.33,
+            "taxa_cadastro": 1.97,
             "contatos_origem_Website Pardot Form": 12,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 31,
@@ -563,13 +563,13 @@
             "contatos_origem_Cold Call": 242,
             "cadastros_origem_Cold Call": 0,
             "contatos_origem_Referral": 20,
-            "cadastros_origem_Referral": 4,
+            "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.61,
-            "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.36,
+            "volume_score_cadastros": 0.6,
+            "velocidade_score": 0.3,
             "consistencia": 0.5,
             "distribuicao_canais": 0.75,
-            "score_final": 0.51
+            "score_final": 0.57
         },
         {
             "responsavel": "Pedro Neto",
@@ -45635,13 +45635,13 @@
         },
         {
             "id": 4495,
-            "lead": "Conceição Soares",
+            "lead": "MARIA DA CONCEICAO SOARES DA SILVA",
             "responsavel": "Maria Silva",
             "origem": "Referral",
             "data_contato": "2025-12-16",
-            "data_cadastro": null,
+            "data_cadastro": "2025-12-30",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 4496,
@@ -62532,6 +62532,16 @@
             "data_cadastro": null,
             "data_conversao": null,
             "status": "Working"
+        },
+        {
+            "id": 6185,
+            "lead": "Eliane na",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Referral",
+            "data_contato": "2025-12-29",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
         }
     ],
     "daily_data": [
@@ -62610,7 +62620,7 @@
         {
             "data_contato": "2025-12-16",
             "contatos": 414,
-            "cadastros": 17,
+            "cadastros": 18,
             "conversoes": 9
         },
         {
@@ -62651,7 +62661,7 @@
         },
         {
             "data_contato": "2025-12-29",
-            "contatos": 147,
+            "contatos": 148,
             "cadastros": 1,
             "conversoes": 0
         }

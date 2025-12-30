@@ -1,5 +1,5 @@
 {
-    "period": "2025-12-30 : 16h:38m",
+    "period": "2025-12-30 : 18h:31m",
     "deliveryStations": [
         {
             "nome": "DAM1",
@@ -226260,7 +226260,7 @@
         {
             "lat": -23.43553303747751,
             "lon": -46.55225430403164,
-            "popup": "<div style=\"width: auto; max-height: auto; font-size: 12px;\"><h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'><tr><td style='width:40%'><b>Store ID:</b></td><td style='width:60%'>2115597474</td></tr><tr><td style='width:40%'><b>Name:</b></td><td style='width:60%'>63.188.756 SUELLEN MADALENA CANDIDO</td></tr><tr><td style='width:40%'><b>Status:</b></td><td style='width:60%'>Active</td></tr><tr><td style='width:40%'><b>Delivery Station:</b></td><td style='width:60%'>DSP2</td></tr><tr><td style='width:40%'><b>Jurisdiction Type:</b></td><td style='width:60%'>Shared</td></tr><tr><td style='width:40%'><b>Launch Date:</b></td><td style='width:60%'>2025/11/11</td></tr><tr><td style='width:40%'><b>HCP Initiatives:</b></td><td style='width:60%'>HCP Pick Up Partner</td></tr><tr><td style='width:40%'><b>HCP Host Partner:</b></td><td style='width:60%'>52.289.434 KARINA APARECIDA TEIXEIRA DE OLIVEIRA</td></tr><tr><td style='width:40%'><b>HCP Rate Card:</b></td><td style='width:60%'>Tier 1</td></tr><tr><td style='width:40%'><b>Radius:</b></td><td style='width:60%'>1500 m</td></tr></table><hr class: \"my-2\"><a href=\"https://dsp-portal.lightning.force.com/lightning/r/Account/001at00000OSUF3AAP/view\" target=\"_blank\">View in Salesforce</a><br>Enviar menssagem <a href=\"https://wa.me/11975442768\" target=\"_blank\"><i class=\"fa fa-whatsapp\" style=\"font-size:24px\"></i></a><hr class: \"my-2\"><h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'><tr><td style='width:40%'><b>ADV:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Eligible Packages:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Partner Capacity:</b></td><td style='width:60%'>N/A</td></tr></table></div>",
+            "popup": "<div style=\"width: auto; max-height: auto; font-size: 12px;\"><h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'><tr><td style='width:40%'><b>Store ID:</b></td><td style='width:60%'>2115597474</td></tr><tr><td style='width:40%'><b>Name:</b></td><td style='width:60%'>63.188.756 SUELLEN MADALENA CANDIDO</td></tr><tr><td style='width:40%'><b>Status:</b></td><td style='width:60%'>Active</td></tr><tr><td style='width:40%'><b>Delivery Station:</b></td><td style='width:60%'>DSP2</td></tr><tr><td style='width:40%'><b>Jurisdiction Type:</b></td><td style='width:60%'>Shared</td></tr><tr><td style='width:40%'><b>Launch Date:</b></td><td style='width:60%'>2025/11/11</td></tr><tr><td style='width:40%'><b>HCP Initiatives:</b></td><td style='width:60%'>HCP Host Partner</td></tr><tr><td style='width:40%'><b>HCP Host Partner:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>HCP Rate Card:</b></td><td style='width:60%'>Tier 1</td></tr><tr><td style='width:40%'><b>Radius:</b></td><td style='width:60%'>1500 m</td></tr></table><hr class: \"my-2\"><a href=\"https://dsp-portal.lightning.force.com/lightning/r/Account/001at00000OSUF3AAP/view\" target=\"_blank\">View in Salesforce</a><br>Enviar menssagem <a href=\"https://wa.me/11975442768\" target=\"_blank\"><i class=\"fa fa-whatsapp\" style=\"font-size:24px\"></i></a><hr class: \"my-2\"><h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'><tr><td style='width:40%'><b>ADV:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Eligible Packages:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Partner Capacity:</b></td><td style='width:60%'>N/A</td></tr></table></div>",
             "tooltip": "ID: 2115597474 | Name: 63.188.756 SUELLEN MADALENA CANDIDO | ADV: None | Raio: 1500m",
             "name": "63.188.756 SUELLEN MADALENA CANDIDO",
             "telefone": "11975442768",
@@ -226271,9 +226271,9 @@
             "jurisdiction_type": "Shared",
             "launch_date": "2025/11/11",
             "supply_run": "DSP2_MRB",
-            "hub_delivey_initiatives": "HCP Pick Up Partner",
+            "hub_delivey_initiatives": "HCP Host Partner",
             "HCP_rate_card": "Tier 1",
-            "HCP_host_partner": "52.289.434 KARINA APARECIDA TEIXEIRA DE OLIVEIRA",
+            "HCP_host_partner": null,
             "sorte_code": null,
             "zip_code": "07083160",
             "city": "Guarulhos",
@@ -263388,7 +263388,7 @@
         {
             "lat": -23.436243582340754,
             "lon": -46.51379799061842,
-            "popup": "<div style=\"width: auto; max-height: auto; font-size: 12px;\"><h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'><tr><td style='width:40%'><b>Store ID:</b></td><td style='width:60%'>7570870778</td></tr><tr><td style='width:40%'><b>Name:</b></td><td style='width:60%'>41.943.296 WAGNER CONCEICAO SILVA</td></tr><tr><td style='width:40%'><b>Status:</b></td><td style='width:60%'>Active</td></tr><tr><td style='width:40%'><b>Delivery Station:</b></td><td style='width:60%'>DSP2</td></tr><tr><td style='width:40%'><b>Jurisdiction Type:</b></td><td style='width:60%'>Shared</td></tr><tr><td style='width:40%'><b>Launch Date:</b></td><td style='width:60%'>2025/12/16</td></tr><tr><td style='width:40%'><b>HCP Initiatives:</b></td><td style='width:60%'>Hub Hero</td></tr><tr><td style='width:40%'><b>HCP Host Partner:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>HCP Rate Card:</b></td><td style='width:60%'>Tier 1</td></tr><tr><td style='width:40%'><b>Radius:</b></td><td style='width:60%'>1500 m</td></tr></table><hr class: \"my-2\"><a href=\"https://dsp-portal.lightning.force.com/lightning/r/Account/001at00000RpuTrAAJ/view\" target=\"_blank\">View in Salesforce</a><br>Enviar menssagem <a href=\"https://wa.me/11980418569\" target=\"_blank\"><i class=\"fa fa-whatsapp\" style=\"font-size:24px\"></i></a><hr class: \"my-2\"><h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'><tr><td style='width:40%'><b>ADV:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Eligible Packages:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Partner Capacity:</b></td><td style='width:60%'>N/A</td></tr></table></div>",
+            "popup": "<div style=\"width: auto; max-height: auto; font-size: 12px;\"><h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'><tr><td style='width:40%'><b>Store ID:</b></td><td style='width:60%'>7570870778</td></tr><tr><td style='width:40%'><b>Name:</b></td><td style='width:60%'>41.943.296 WAGNER CONCEICAO SILVA</td></tr><tr><td style='width:40%'><b>Status:</b></td><td style='width:60%'>Active</td></tr><tr><td style='width:40%'><b>Delivery Station:</b></td><td style='width:60%'>DSP2</td></tr><tr><td style='width:40%'><b>Jurisdiction Type:</b></td><td style='width:60%'>Shared</td></tr><tr><td style='width:40%'><b>Launch Date:</b></td><td style='width:60%'>2025/12/16</td></tr><tr><td style='width:40%'><b>HCP Initiatives:</b></td><td style='width:60%'>HCP Pick Up Partner</td></tr><tr><td style='width:40%'><b>HCP Host Partner:</b></td><td style='width:60%'>63.188.756 SUELLEN MADALENA CANDIDO</td></tr><tr><td style='width:40%'><b>HCP Rate Card:</b></td><td style='width:60%'>Tier 1</td></tr><tr><td style='width:40%'><b>Radius:</b></td><td style='width:60%'>1500 m</td></tr></table><hr class: \"my-2\"><a href=\"https://dsp-portal.lightning.force.com/lightning/r/Account/001at00000RpuTrAAJ/view\" target=\"_blank\">View in Salesforce</a><br>Enviar menssagem <a href=\"https://wa.me/11980418569\" target=\"_blank\"><i class=\"fa fa-whatsapp\" style=\"font-size:24px\"></i></a><hr class: \"my-2\"><h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'><tr><td style='width:40%'><b>ADV:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Eligible Packages:</b></td><td style='width:60%'>N/A</td></tr><tr><td style='width:40%'><b>Partner Capacity:</b></td><td style='width:60%'>N/A</td></tr></table></div>",
             "tooltip": "ID: 7570870778 | Name: 41.943.296 WAGNER CONCEICAO SILVA | ADV: None | Raio: 1500m",
             "name": "41.943.296 WAGNER CONCEICAO SILVA",
             "telefone": "11980418569",
@@ -263399,9 +263399,9 @@
             "jurisdiction_type": "Shared",
             "launch_date": "2025/12/16",
             "supply_run": "DSP2_MRB",
-            "hub_delivey_initiatives": "Hub Hero",
+            "hub_delivey_initiatives": "HCP Pick Up Partner",
             "HCP_rate_card": "Tier 1",
-            "HCP_host_partner": null,
+            "HCP_host_partner": "63.188.756 SUELLEN MADALENA CANDIDO",
             "sorte_code": null,
             "zip_code": "07133490",
             "city": "Guarulhos",

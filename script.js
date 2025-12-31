@@ -105,7 +105,19 @@ const DataManager = {
         AppState.currentFilteredData = AppState.allMarkersData.filter(marker => {
             const statusMatch = statusAllSelected || selectedStatuses.includes(marker.status);
             const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station);
-            const initiativesMatch = initiativesFilter === 'all' || marker.hub_delivey_initiatives === initiativesFilter;
+            let initiativesMatch = true;
+            if (initiativesFilter !== 'all') {
+                if (initiativesFilter === 'null') {
+                    initiativesMatch = (
+                        marker.hub_delivey_initiatives === null ||
+                        marker.hub_delivey_initiatives === undefined ||
+                        marker.hub_delivey_initiatives === '' ||
+                        marker.hub_delivey_initiatives === 'N/A'
+                    );
+                } else {
+                    initiativesMatch = marker.hub_delivey_initiatives === initiativesFilter;
+                }
+            }
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;
             const supplyRunMatch = supplyRun === 'all' || marker.supply_run === supplyRun;
             return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && supplyRunMatch;
@@ -418,12 +430,21 @@ const UIManager = {
         supplyRunsFilter.innerHTML += `<option value="all">Todos</option>`;
 
         // Preencher iniciativas dinamicamente
-        const initiatives = [...new Set(AppState.allMarkersData.map(m => m.hub_delivey_initiatives).filter(Boolean))].sort();
+        const initiativesRaw = AppState.allMarkersData.map(m => m.hub_delivey_initiatives);
+        const initiativesSet = new Set();
+        let hasNullInitiative = false;
+        initiativesRaw.forEach(i => {
+            if (i === null || i === undefined || i === '' || i === 'N/A') {
+                hasNullInitiative = true;
+            } else {
+                initiativesSet.add(i);
+            }
+        });
+        const initiatives = Array.from(initiativesSet).sort();
         initiativesFilter.innerHTML += `<option value="all" selected>Todos</option>`;
         initiatives.forEach(i => initiativesFilter.innerHTML += `<option value="${i}">${i}</option>`);
-        // Se quiser manter "N/A" para não alocados:
-        if (AppState.allMarkersData.some(m => !m.hub_delivey_initiatives || m.hub_delivey_initiatives === 'N/A')) {
-            initiativesFilter.innerHTML += `<option value="N/A">N/A</option>`;
+        if (hasNullInitiative) {
+            initiativesFilter.innerHTML += `<option value="null">Não alocado</option>`;
         }
 
         // Função para atualizar supply runs dinamicamente

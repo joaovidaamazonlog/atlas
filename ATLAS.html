@@ -73,10 +73,26 @@
                                     <i class="fas fa-chevron-down"></i>
                                 </div>
                                 <div class="panel-content">
-                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="delivery_station" checked onchange="MapManager.restyleMarkers()"><label class="form-check-label">Delivery Station</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="status" onchange="MapManager.restyleMarkers()"><label class="form-check-label">Status</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="hub_delivey_initiatives" onchange="MapManager.restyleMarkers()"><label class="form-check-label">Hub Delivery Initiatives</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="radio" name="categoryStyle" value="supply_run" onchange="MapManager.restyleMarkers()"><label class="form-check-label">Supply Run</label></div>
+                                    <!-- Novo: Dois selects para estilização por dois parâmetros -->
+                                    <div class="form-group">
+                                        <label for="primaryStyle">Estilizar por:</label>
+                                        <select id="primaryStyle" class="form-control form-control-sm" onchange="MapManager.restyleMarkers()">
+                                            <option value="delivery_station">Delivery Station</option>
+                                            <option value="status">Status</option>
+                                            <option value="hub_delivey_initiatives">Hub Delivery Initiatives</option>
+                                            <option value="supply_run" selected>Supply Run</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="secondaryStyle">Segundo parâmetro:</label>
+                                        <select id="secondaryStyle" class="form-control form-control-sm" onchange="MapManager.restyleMarkers()">
+                                            <option value="">Nenhum</option>
+                                            <option value="delivery_station">Delivery Station</option>
+                                            <option value="status">Status</option>
+                                            <option value="hub_delivey_initiatives" selected>Hub Delivery Initiatives</option>
+                                            <option value="supply_run">Supply Run</option>
+                                        </select>
+                                    </div>
                                     <hr>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="showRadii" onchange="MapManager.toggleRadii()"><label class="form-check-label">Exibir Raios</label></div>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="showPolygons" onchange="PolygonManager.togglePolygons()"><label class="form-check-label">Exibir Ares de Prospecção</label></div>

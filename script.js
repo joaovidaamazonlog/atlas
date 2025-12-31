@@ -199,36 +199,74 @@ const MapManager = {
     },
 
     restyleMarkers: function() {
-        const styleField = document.querySelector('input[name="categoryStyle"]:checked').value;
-        const colorMap = this.generateColorMap(AppState.currentFilteredData, styleField);
+        const primary = document.getElementById('primaryStyle').value;
+        const secondary = document.getElementById('secondaryStyle').value;
+
+        // Gera mapa de cores para o parâmetro da borda
+        const borderColorMap = this.generateColorMap(AppState.currentFilteredData, primary, null, true);
+
+        // Gera mapa de cores para o parâmetro do preenchimento
+        let fillColorMap = {};
+        if (secondary && secondary !== primary) {
+            fillColorMap = this.generateColorMap(AppState.currentFilteredData, secondary);
+        }
 
         AppState.markerObjects.forEach(marker => {
-            const categoryValue = marker.markerData[styleField] || 'N/A';
-            const newColor = colorMap[categoryValue] || '#808080';
-            marker.setStyle({ fillColor: newColor });
+            const borderKey = marker.markerData[primary] || 'N/A';
+            const borderColor = borderColorMap[borderKey] || '#FF1493';
+            let borderWeight = 3;
+
+            let fillColor = '#fff';
+            if (secondary && secondary !== primary) {
+                const fillKey = marker.markerData[secondary] || 'N/A';
+                fillColor = fillColorMap[fillKey] || '#808080';
+            }
+
+            marker.setStyle({
+                fillColor: fillColor,
+                color: borderColor,
+                weight: borderWeight,
+                fillOpacity: 0.9
+            });
+
             const circle = AppState.circleObjects.find(c => c.markerData.store_id === marker.markerData.store_id);
-            if (circle) circle.setStyle({ color: newColor });
+            if (circle) circle.setStyle({ color: borderColor });
         });
 
-        this.createLegend(colorMap);
+        this.createLegend(fillColorMap, borderColorMap, primary, secondary);
     },
 
-    generateColorMap: function(data, field) {
-        const uniqueValues = [...new Set(data.map(item => item[field] || 'N/A'))].sort();
-        const palette = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'];
+    generateColorMap: function(data, field, _unused = null, isBorder = false) {
+        const keys = data.map(item => item[field] || 'N/A');
+        const uniqueKeys = [...new Set(keys)].sort();
+        
+        const palette = isBorder
+            ? ['#FF1493', '#FF9800', '#009688', '#3F51B5', '#E91E63', '#8BC34A', '#FFC107', '#00BCD4', '#9C27B0', '#CDDC39']
+            : [
+                '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00',
+                '#ffff33', '#a65628', '#f781bf', '#999999', '#66c2a5',
+                '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f'
+            ];
         const colorMap = {};
-        uniqueValues.forEach((val, idx) => colorMap[val] = palette[idx % palette.length]);
+        uniqueKeys.forEach((val, idx) => colorMap[val] = palette[idx % palette.length]);
         return colorMap;
     },
 
-    createLegend: function(colorMap) {
+    createLegend: function(fillColorMap, borderColorMap, primary, secondary) {
         if (AppState.legendControl) AppState.map.removeControl(AppState.legendControl);
         AppState.legendControl = L.control({ position: 'bottomright' });
         AppState.legendControl.onAdd = function() {
             const div = L.DomUtil.create('div', 'info legend');
             div.innerHTML += '<h5>Legenda</h5>';
-            for (const key in colorMap) {
-                div.innerHTML += `<i style="background:${colorMap[key]}"></i> ${key}<br>`;
+            div.innerHTML += `<b>Borda (${primary}):</b><br>`;
+            for (const key in borderColorMap) {
+                div.innerHTML += `<i style="background:#fff;border:3.5px solid ${borderColorMap[key]}"></i> ${key}<br>`;
+            }
+            if (secondary && fillColorMap && Object.keys(fillColorMap).length > 0) {
+                div.innerHTML += `<hr style="margin:4px 0;"><b>Preenchimento (${secondary}):</b><br>`;
+                for (const key in fillColorMap) {
+                    div.innerHTML += `<i style="background:${fillColorMap[key]};border:1.5px solid #222"></i> ${key}<br>`;
+                }
             }
             return div;
         };

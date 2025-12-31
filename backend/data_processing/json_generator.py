@@ -42,6 +42,7 @@ class JsonGenerator:
         info_html += table_row("Store ID", row.get("StoreID"))
         info_html += table_row("Name", row.get("Name"))
         info_html += table_row("Status", row.get("Status"))
+        info_html += table_row("Supply Run", row.get("Supply Run"))
         info_html += table_row("Delivery Station", row.get("Delivery Station"))
         info_html += table_row("Jurisdiction Type", row.get("Jurisdiction Type"))
         info_html += table_row("Launch Date", format_date_to_str(row.get("Launch Date")))

@@ -407,13 +407,24 @@ const UIManager = {
         const stations = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
         const supplyRunsFilter = document.getElementById('supplyRun');
         const stationFilter = document.getElementById('stationFilter');
+        const initiativesFilter = document.getElementById('initiativesFilter');
 
         stationFilter.innerHTML = '';
         supplyRunsFilter.innerHTML = '';
+        initiativesFilter.innerHTML = '';
 
         stationFilter.innerHTML += `<option value="all" selected>Todos</option>`;
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
         supplyRunsFilter.innerHTML += `<option value="all">Todos</option>`;
+
+        // Preencher iniciativas dinamicamente
+        const initiatives = [...new Set(AppState.allMarkersData.map(m => m.hub_delivey_initiatives).filter(Boolean))].sort();
+        initiativesFilter.innerHTML += `<option value="all" selected>Todos</option>`;
+        initiatives.forEach(i => initiativesFilter.innerHTML += `<option value="${i}">${i}</option>`);
+        // Se quiser manter "N/A" para não alocados:
+        if (AppState.allMarkersData.some(m => !m.hub_delivey_initiatives || m.hub_delivey_initiatives === 'N/A')) {
+            initiativesFilter.innerHTML += `<option value="N/A">Não alocado</option>`;
+        }
 
         // Função para atualizar supply runs dinamicamente
         function updateSupplyRunsOptions() {

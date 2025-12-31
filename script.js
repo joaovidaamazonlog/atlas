@@ -423,7 +423,7 @@ const UIManager = {
         initiatives.forEach(i => initiativesFilter.innerHTML += `<option value="${i}">${i}</option>`);
         // Se quiser manter "N/A" para não alocados:
         if (AppState.allMarkersData.some(m => !m.hub_delivey_initiatives || m.hub_delivey_initiatives === 'N/A')) {
-            initiativesFilter.innerHTML += `<option value="N/A">Não alocado</option>`;
+            initiativesFilter.innerHTML += `<option value="N/A">N/A</option>`;
         }
 
         // Função para atualizar supply runs dinamicamente

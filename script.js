@@ -266,10 +266,12 @@ const MapManager = {
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
             document.querySelector('.leaflet-popup-content').style.height = '350px';
+            AppState.map.setView(marker.getLatLng(), 15)
             optContent.style.display = 'block';
             wrapper.style.transform = 'translateX(-50%)';
         } else {
             document.querySelector('.leaflet-popup-content').style.height = 'auto';
+            AppState.map.setView(marker.getLatLng(), 15)
             wrapper.style.transform = 'translateX(0)';
             setTimeout(() => { optContent.style.display = 'none'; }, 300);
         }
@@ -298,7 +300,7 @@ const MapManager = {
                 blur: 15,
                 maxZoom: 17,
                 minOpacity: 0.3,
-                gradient: {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+                gradient: {4: 'blue', 6.5: 'lime', 15: 'red'}
             }).addTo(AppState.map);
         } else {
             // Exemplo para outros tipos
@@ -329,7 +331,7 @@ const MapManager = {
                                     }
                                 });
                             }
-                        }).addTo(AppState.map);
+                        })
                     }
                 }
             }).addTo(AppState.map);

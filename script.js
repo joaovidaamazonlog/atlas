@@ -273,7 +273,15 @@ const MapManager = {
             }
             if (mainContent && optContent) {
                 mainContent.innerHTML = optContent.innerHTML;
-                mainContent.style.padding = "0"; // opcional: remove padding extra
+                mainContent.style.padding = "0";
+                // Reatribui evento ao botão "Voltar"
+                const backBtn = mainContent.querySelector('button.btn-secondary');
+                if (backBtn) {
+                    backBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        MapManager.togglePopupSlide(this, false);
+                    });
+                }
             }
         } else {
             // Restaura o conteúdo original
@@ -281,6 +289,14 @@ const MapManager = {
                 mainContent.innerHTML = wrapper._originalContent;
                 mainContent.style.padding = "5px";
                 delete wrapper._originalContent;
+                // Reatribui evento ao botão "Ver Otimização"
+                const optBtn = mainContent.querySelector('button.btn-warning');
+                if (optBtn) {
+                    optBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        MapManager.togglePopupSlide(this, true);
+                    });
+                }
             }
         }
     },

@@ -241,14 +241,20 @@ const MapManager = {
         ` : '';
 
         const popupContent = `
-            <div class="popup-container" style="width:250px; overflow:hidden; position:relative;">
+            <div class="popup-container" style="width:auto; overflow:hidden; position:relative;">
                 <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease; width: 200%;">
-                    <div class="main-popup-content" style="min-width:50%; padding:5px;">
+                    <div class="main-popup-content" style="min-width:100%; padding:5px;">
                         ${data.popup}
                         <hr class="my-2">
                         ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
                     </div>
                     ${optimizationHtml}
+                    <button class="btn btn-info btn-sm btn-block" onclick="showComparisonInPopup(event, '${marker.markerData.store_id}')">
+                        <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
+                    </button>
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${marker.markerData.store_id}', '${marker.markerData.name.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-route"></i> Rota a Partir Daqui
+                    </button>
                 </div>
             </div>
         `;

@@ -266,12 +266,10 @@ const MapManager = {
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
             document.querySelector('.leaflet-popup-content').style.height = '350px';
-            AppState.map.setView(marker.getLatLng(), 15)
             optContent.style.display = 'block';
             wrapper.style.transform = 'translateX(-50%)';
         } else {
             document.querySelector('.leaflet-popup-content').style.height = 'auto';
-            AppState.map.setView(marker.getLatLng(), 15)
             wrapper.style.transform = 'translateX(0)';
             setTimeout(() => { optContent.style.display = 'none'; }, 300);
         }

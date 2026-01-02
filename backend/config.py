@@ -9,6 +9,7 @@ DEST_FOLDER = r"C:\Users\joaovida\Documents\Projetos\atlas\data"
 
 # Arquivo Excel de entrada
 EXCEL_FILE_PATH = f"{BASE_PATH}\\terra.xlsm"
+BASE_DIR = f"{BASE_PATH}\\base_pacotes.csv"
 
 #Arquivo CSV de entrada para clustering
 CSV_INPUT_PATH = f"{BASE_PATH}\\pontos_teste.csv"
@@ -18,6 +19,7 @@ CSV_INPUT_PATH = f"{BASE_PATH}\\pontos_teste.csv"
 OUTPUT_JSON_DIR = DEST_FOLDER 
 OUTPUT_JSON_FILENAME_PREFIX = "dados_mapa"
 OUTPUT_JSON_SCORECARD_FILENAME_PREFIX = "dados_scorecard"
+
 
 # --- Configurações do Excel ---
 MACRO_NAME = "RefreshAll_Save"

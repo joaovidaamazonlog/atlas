@@ -241,8 +241,8 @@ const MapManager = {
         ` : '';
 
         const popupContent = `
-            <div class="popup-container" style="position:relative; overflow:hidden; width:250px;">
-                <div class="popup-wrapper" style="transition: transform 0.3s ease;" width="200%">
+            <div class="popup-container" style="position:relative; overflow:hidden;">
+                <div class="popup-wrapper" style="transition: transform 0.3s ease;">
                     <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
                         ${data.popup}
                         <hr class="my-2">

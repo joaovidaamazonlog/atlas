@@ -302,38 +302,31 @@ const MapManager = {
                 minOpacity: 0.3,
                 gradient: {4: 'blue', 6.5: 'lime', 15: 'red'}
             }).addTo(AppState.map);
-        } else {
-            // Exemplo para outros tipos
+        } else if (type === 'gap_opportunity') {
             AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
                 filter: (f) => f.properties.type === type,
-                style: (f) => {
-                    if (type === 'gap_opportunity') {
-                        AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
-                            filter: (f) => f.properties.type === type,
-                            style: (f) => ({ color: "#ff4444", weight: 2, fillOpacity: 0.4 }),
-                            onEachFeature: function (feature, layer) {
-                                layer.on('click', function (e) {
-                                    // Se CTRL está pressionado, acumula seleção
-                                    if (e.originalEvent.ctrlKey) {
-                                        if (!AppState.selectedGrids) AppState.selectedGrids = [];
-                                        if (!AppState.selectedGrids.includes(feature.properties.grid_id)) {
-                                            AppState.selectedGrids.push(feature.properties.grid_id);
-                                        }
-                                        // Soma os package_count das regiões selecionadas
-                                        const total = AppState.optimizationData.features
-                                            .filter(f => AppState.selectedGrids.includes(f.properties.grid_id))
-                                            .reduce((sum, f) => sum + (f.properties.package_count || 0), 0);
-                                        layer.bindPopup(`Total selecionado: <b>${total}</b>`, { autoClose: false }).openPopup();
-                                    } else {
-                                        // Seleção simples, mostra apenas o valor do grid clicado
-                                        AppState.selectedGrids = [feature.properties.grid_id];
-                                        layer.bindPopup(`Pacotes na célula: <b>${feature.properties.package_count}</b>`, { autoClose: false }).openPopup();
-                                    }
-                                });
+                style: (f) => ({ color: "#ff4444", weight: 2, fillOpacity: 0.4 }),
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        if (e.originalEvent.ctrlKey) {
+                            if (!AppState.selectedGrids) AppState.selectedGrids = [];
+                            if (!AppState.selectedGrids.includes(feature.properties.grid_id)) {
+                                AppState.selectedGrids.push(feature.properties.grid_id);
                             }
-                        })
-                    }
+                            const total = AppState.optimizationData.features
+                                .filter(f => AppState.selectedGrids.includes(f.properties.grid_id))
+                                .reduce((sum, f) => sum + (f.properties.package_count || 0), 0);
+                            layer.bindPopup(`Total selecionado: <b>${total}</b>`, { autoClose: false }).openPopup();
+                        } else {
+                            AppState.selectedGrids = [feature.properties.grid_id];
+                            layer.bindPopup(`Pacotes na célula: <b>${feature.properties.package_count}</b>`, { autoClose: false }).openPopup();
+                        }
+                    });
                 }
+            }).addTo(AppState.map);
+        } else {
+            AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
+                filter: (f) => f.properties.type === type
             }).addTo(AppState.map);
         }
     },

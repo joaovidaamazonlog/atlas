@@ -223,7 +223,7 @@ const MapManager = {
         AppState.map.setView(marker.getLatLng(), 15);
         
         const optimizationHtml = data.optimization ? `
-            <div class="opt-slide-content" style="display:none; padding: 10px; min-width: 100%;">
+            <div class="opt-slide-content" style="display:none; padding: 10px; height:auto; min-width: 100%;">
                 <h5 style="font-weight:bold;">Otimização de Raio</h5>
                 <table style="width:100%; font-size:11px;">
                     <tr><td><b>Raio 1km:</b></td><td>${data.optimization.vol_1000m} pkgs</td></tr>
@@ -282,26 +282,31 @@ const MapManager = {
 
         if (!AppState.optimizationData) return;
 
-        AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
-            filter: (f) => f.properties.type === type,
-            style: (f) => {
-                if (type === 'gap_opportunity') {
-                    return { color: "#ff4444", weight: 2, fillOpacity: 0.4 };
+        if (type === 'heatmap_point') {
+            // Extrai os pontos do GeoJSON para o formato [lat, lon, intensidade]
+            const heatPoints = AppState.optimizationData.features.map(f => {
+                const [lon, lat] = f.geometry.coordinates;
+                const intensity = f.properties.intensity || 1;
+                return [lat, lon, intensity];
+            });
+            AppState.optimizationLayer = L.heatLayer(heatPoints, {
+                radius: 25,
+                blur: 15,
+                maxZoom: 17,
+                minOpacity: 0.3,
+                gradient: {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+            }).addTo(AppState.map);
+        } else {
+            // Exemplo para outros tipos
+            AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
+                filter: (f) => f.properties.type === type,
+                style: (f) => {
+                    if (type === 'gap_opportunity') {
+                        return { color: "#ff4444", weight: 2, fillOpacity: 0.4 };
+                    }
                 }
-            },
-            pointToLayer: (f, latlng) => {
-                if (type === 'heatmap_point') {
-                    return L.circleMarker(latlng, {
-                        radius: Math.sqrt(f.properties.intensity) * 2,
-                        fillColor: "#ffae00",
-                        color: "#000",
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.6
-                    });
-                }
-            }
-        }).addTo(AppState.map);
+            }).addTo(AppState.map);
+        }
     },
 
     restyleMarkers: function() {

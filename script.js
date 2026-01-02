@@ -267,14 +267,16 @@ const MapManager = {
         let mainContent = wrapper.querySelector('.main-popup-content');
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
+            // Salva o conteúdo original apenas uma vez
             if (!wrapper._originalContent && mainContent) {
                 wrapper._originalContent = mainContent.innerHTML;
             }
             if (mainContent && optContent) {
                 mainContent.innerHTML = optContent.innerHTML;
-                mainContent.style.padding = "0";
+                mainContent.style.padding = "0"; // opcional: remove padding extra
             }
         } else {
+            // Restaura o conteúdo original
             if (wrapper._originalContent && mainContent) {
                 mainContent.innerHTML = wrapper._originalContent;
                 mainContent.style.padding = "5px";

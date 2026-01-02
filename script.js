@@ -241,17 +241,21 @@ const MapManager = {
         ` : '';
 
         const popupContent = `
-            <div class="popup-wrapper">
-                ${data.popup}
-                <hr class="my-2">
-                ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
-                <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${marker.markerData.store_id}')">
-                        <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
-                </button>
-                <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
-                    <i class="fas fa-route"></i> Rota a Partir Daqui
-                </button>
-                ${optimizationHtml}
+            <div class="popup-container" style="position:relative; overflow:hidden; width:250px;">
+                <div class="popup-wrapper" style="transition: transform 0.3s ease;" width="200%">
+                    <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
+                        ${data.popup}
+                        <hr class="my-2">
+                        ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
+                        <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${marker.markerData.store_id}')">
+                                <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
+                        </button>
+                        <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-route"></i> Rota a Partir Daqui
+                        </button>
+                    </div>
+                    ${optimizationHtml}
+                </div>
             </div>
         `;
         marker.bindPopup(popupContent).openPopup();

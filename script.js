@@ -243,7 +243,7 @@ const MapManager = {
         const popupContent = `
             ${data.popup}
             <hr class="my-2">
-            <button class="btn btn-info btn-sm btn-block" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>
+            ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
             <button class="btn btn-info btn-sm btn-block" onclick="showComparisonInPopup(event, '${marker.markerData.store_id}')">
                     <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
             </button>

@@ -170,6 +170,11 @@ const MapManager = {
             const marker = L.circleMarker([data.lat, data.lon], { radius: 7, color: 'white', weight: 1.5, fillOpacity: 0.9 });
             marker.markerData = data;
             marker.on('click', this.onMarkerClick);
+
+            if (data.tooltip) {
+                marker.bindTooltip(data.tooltip, { direction: 'top', sticky: true, className: 'custom-tooltip' });
+            };
+            
             AppState.markerObjects.push(marker);
             marker.addTo(AppState.map);
 

@@ -101,7 +101,7 @@ class JsonGenerator:
                 "lat": row.get("Latitude"),
                 "lon": row.get("Longitude"),
                 "popup": JsonGenerator._create_popup_html(row),
-                "tooltip": f"ID: {row.get('StoreID')} | Name: {row.get('Name')} | ADV: {row.get('Actual ADV')} | Raio: {row.get('Radius')}m",
+                "tooltip": f"ID: {row.get('StoreID')} | Name: {row.get('Name')} | Supply Run: {row.get('Supply Run')} | HUB Delivery Initiatives: {row.get('Hub Delivery Initiatives')} | Raio: {row.get('Radius')}m",
                 "name": row.get("Name"),
                 "telefone": phone,
                 "store_id": row.get("StoreID"),
@@ -166,7 +166,6 @@ class JsonGenerator:
             output_dict["allMarkerData"].append(top_level_data)
 
         with open(output_path, 'w', encoding='utf-8') as f:
-            # Agora que tudo está limpo, o json.dump não precisa de um conversor default
             json.dump(output_dict, f, ensure_ascii=False, indent=4)
             
         print(f"Arquivo JSON gerado com sucesso em '{output_path}'.")

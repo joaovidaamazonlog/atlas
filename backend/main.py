@@ -61,9 +61,22 @@ def run_pipeline():
         
         if initial_rows > filtered_rows:
             print(f"AVISO: {initial_rows - filtered_rows} lojas foram removidas por não terem coordenadas válidas.")
+        
+        # Otimização Hub Delivery  
+        from optimization_hub_delivery import OptimizationHubDelivery
+        hub = OptimizationHubDelivery(
+            packages_path= config.BASE_DIR,
+            partners_path= config.DEST_FOLDER+'\\dados_mapa.json',
+            clusters_path= config.DEST_FOLDER+'\\clusters_output_filled.geojson'
+        )
+        
+        hub.run_all_analyses()
+        
+        reduction_df = hub.analyze_density_reduction()
+        opt_map = reduction_df.set_index('store_id').to_dict(orient='index')
+        final_df['optimization_data'] = final_df['StoreID'].map(opt_map)
 
         #Gerar os arquivos JSON para mapa e Scorecard
-    
         period_data = adv_raw_df["Start Period"]
         period = datetime.today().strftime("%Y-%m-%d : %Hh:%Mm")
 
@@ -73,17 +86,6 @@ def run_pipeline():
         output_path_scorecard = os.path.join(config.OUTPUT_JSON_DIR, json_scorecard_filename)
         JsonGenerator.generate_json(period, final_df, output_path)
         ScorecardGenerator(scorecard_df, output_path_scorecard, config.SCORECARD_CONFIG).generate_scorecard()
-        
-        from optimization_hub_delivery import OptimizationHubDelivery
-        hub = OptimizationHubDelivery(
-            packages_path= config.BASE_DIR,
-            partners_path= config.DEST_FOLDER+'\\dados_mapa.json',
-            clusters_path= config.DEST_FOLDER+'\\clusters_output_filled.geojson'
-        )
-        results = hub.run_all_analyses()
-        print("\n--- Resultados da Otimização Hub Delivery ---")
-        for key, value in results.items():
-            print(f"\n{key}:\n{value}")
         
     except Exception as e:
         print(f"\nERRO CRÍTICO DURANTE A EXECUÇÃO DO PIPELINE: {e}")

@@ -206,7 +206,7 @@ const MapManager = {
         const initialPopupContent = `
             ${marker.markerData.popup}
                 <hr class="my-2">
-                <button class="btn btn-info btn-sm btn-block" onclick="showComparisonInPopup(event, '${marker.markerData.store_id}')">
+                <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${marker.markerData.store_id}')">
                     <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
                 </button>
                 <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${marker.markerData.store_id}', '${marker.markerData.name.replace(/'/g, "\\'")}')">
@@ -244,7 +244,7 @@ const MapManager = {
             ${data.popup}
             <hr class="my-2">
             ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
-            <button class="btn btn-info btn-sm btn-block" onclick="showComparisonInPopup(event, '${marker.markerData.store_id}')">
+            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${marker.markerData.store_id}')">
                     <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
             </button>
             <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">

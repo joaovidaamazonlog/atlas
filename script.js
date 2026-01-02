@@ -170,9 +170,11 @@ const MapManager = {
             const marker = L.circleMarker([data.lat, data.lon], { radius: 7, color: 'white', weight: 1.5, fillOpacity: 0.9 });
             marker.markerData = data;
             marker.on('click', this.onMarkerClick);
+            
             if (data.tooltip) {
                 marker.bindTooltip(data.tooltip, { direction: 'top', sticky: true, className: 'custom-tooltip' });
-            };
+            }
+            
             AppState.markerObjects.push(marker);
             marker.addTo(AppState.map);
 
@@ -217,9 +219,39 @@ const MapManager = {
 
     onMarkerClick: function(e) {
         const marker = e.target;
+        const data = marker.markerData;
         AppState.map.setView(marker.getLatLng(), 15);
+        
+        const optimizationHtml = data.optimization ? `
+            <div class="opt-slide-content" style="display:none; padding: 10px; min-width: 100%;">
+                <h5 style="font-weight:bold;">Otimização de Raio</h5>
+                <table style="width:100%; font-size:11px;">
+                    <tr><td><b>Raio 1km:</b></td><td>${data.optimization.vol_1000m} pkgs</td></tr>
+                    <tr><td><b>Raio 750m:</b></td><td>${data.optimization.vol_750m} pkgs</td></tr>
+                    <tr><td><b>Raio 500m:</b></td><td>${data.optimization.vol_500m} pkgs</td></tr>
+                    <tr><td><b>Raio 300m:</b></td><td>${data.optimization.vol_300m} pkgs</td></tr>
+                </table>
+                <hr>
+                <div style="background:#f0f0f0; padding:5px; border-radius:4px; font-size:11px;">
+                    <b>Recomendação:</b><br>
+                    ${data.optimization.vol_500m >= 45 ? '<span style="color:green">✅ Elegível para redução (500m)</span>' : '<span style="color:orange">⚠️ Manter raio atual</span>'}
+                </div>
+                <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
+            </div>
+        ` : '';
 
-        const popupContent = UIManager.getMarkerPopupContent(marker.markerData);
+        const popupContent = `
+            <div class="popup-container" style="width:250px; overflow:hidden; position:relative;">
+                <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease; width: 200%;">
+                    <div class="main-popup-content" style="min-width:50%; padding:5px;">
+                        ${data.popup}
+                        <hr class="my-2">
+                        ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
+                    </div>
+                    ${optimizationHtml}
+                </div>
+            </div>
+        `;
         marker.bindPopup(popupContent).openPopup();
     },
 
@@ -640,38 +672,19 @@ const UIManager = {
     },
 
     getMarkerPopupContent: function(data) {
-
-        const optimizationHtml = data.optimization ? `
-            <div class="opt-slide-content" style="display:none; padding: 10px; min-width: 100%;">
-                <h5 style="font-weight:bold;">Otimização de Raio</h5>
-                <table style="width:100%; font-size:11px;">
-                    <tr><td><b>Raio 1km:</b></td><td>${data.optimization.vol_1000m} pkgs</td></tr>
-                    <tr><td><b>Raio 750m:</b></td><td>${data.optimization.vol_750m} pkgs</td></tr>
-                    <tr><td><b>Raio 500m:</b></td><td>${data.optimization.vol_500m} pkgs</td></tr>
-                    <tr><td><b>Raio 300m:</b></td><td>${data.optimization.vol_300m} pkgs</td></tr>
-                </table>
-                <hr>
-                <div style="background:#f0f0f0; padding:5px; border-radius:4px; font-size:11px;">
-                    <b>Recomendação:</b><br>
-                    ${data.optimization.vol_500m >= 45 ? '<span style="color:green">✅ Elegível para redução (500m)</span>' : '<span style="color:orange">⚠️ Manter raio atual</span>'}
-                </div>
-                <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
-            </div>
-        ` : '';
-
-        const popupContent = `
+        return `
             ${data.popup}
             <hr class="my-2">
-            ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
-            ${optimizationHtml}
-            <button class="btn btn-info btn-sm btn-block" onclick="showComparisonInPopup(event, '${data.markerData.store_id}')">
+            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
+                <i class="fas fa-phone"></i> Solicitar Resgate
+            </button>
+            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${data.store_id}')">
                 <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
             </button>
-            <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.markerData.store_id}', '${data.markerData.name.replace(/'/g, "\\'")}')">
+            <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
                 <i class="fas fa-route"></i> Rota a Partir Daqui
             </button>
         `;
-        return popupContent;
     },
 
     showComparisonInPopup: function(event, storeId) {

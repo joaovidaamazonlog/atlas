@@ -1,3 +1,5 @@
+# /seu_projeto/output/json_generator.py
+
 import pandas as pd
 import json
 import numpy as np
@@ -121,9 +123,8 @@ class JsonGenerator:
                 "eligible_packages": row.get("# Eligible Packages"),
                 "partner_capacity": row.get("Partner Capacity"),
                 "ADV": row.get("Actual ADV"),
-                "optimization": row.get("optimization_data"),
             }
-            
+            # Limpa todos os valores no dicionário de nível superior
             top_level_data = {k: JsonGenerator._clean_value(v) for k, v in top_level_data.items()}
 
             # 2. CAMPO "overlap_data"

@@ -265,6 +265,7 @@ const MapManager = {
         const wrapper = btn.closest('.popup-wrapper');
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
+            document.querySelector('.leaflet-popup-content').style.height = '350px';
             optContent.style.display = 'block';
             wrapper.style.transform = 'translateX(-50%)';
         } else {
@@ -284,11 +285,13 @@ const MapManager = {
 
         if (type === 'heatmap_point') {
             // Extrai os pontos do GeoJSON para o formato [lat, lon, intensidade]
-            const heatPoints = AppState.optimizationData.features.map(f => {
-                const [lon, lat] = f.geometry.coordinates;
-                const intensity = f.properties.intensity || 1;
-                return [lat, lon, intensity];
-            });
+            const heatPoints = AppState.optimizationData.features
+                .filter(f => f.geometry.type === 'Point')
+                .map(f => {
+                    const [lon, lat] = f.geometry.coordinates;
+                    const intensity = f.properties.intensity || 1;
+                    return [lat, lon, intensity];
+                });
             AppState.optimizationLayer = L.heatLayer(heatPoints, {
                 radius: 25,
                 blur: 15,
@@ -302,7 +305,30 @@ const MapManager = {
                 filter: (f) => f.properties.type === type,
                 style: (f) => {
                     if (type === 'gap_opportunity') {
-                        return { color: "#ff4444", weight: 2, fillOpacity: 0.4 };
+                        AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
+                            filter: (f) => f.properties.type === type,
+                            style: (f) => ({ color: "#ff4444", weight: 2, fillOpacity: 0.4 }),
+                            onEachFeature: function (feature, layer) {
+                                layer.on('click', function (e) {
+                                    // Se CTRL está pressionado, acumula seleção
+                                    if (e.originalEvent.ctrlKey) {
+                                        if (!AppState.selectedGrids) AppState.selectedGrids = [];
+                                        if (!AppState.selectedGrids.includes(feature.properties.grid_id)) {
+                                            AppState.selectedGrids.push(feature.properties.grid_id);
+                                        }
+                                        // Soma os package_count das regiões selecionadas
+                                        const total = AppState.optimizationData.features
+                                            .filter(f => AppState.selectedGrids.includes(f.properties.grid_id))
+                                            .reduce((sum, f) => sum + (f.properties.package_count || 0), 0);
+                                        layer.bindPopup(`Total selecionado: <b>${total}</b>`, { autoClose: false }).openPopup();
+                                    } else {
+                                        // Seleção simples, mostra apenas o valor do grid clicado
+                                        AppState.selectedGrids = [feature.properties.grid_id];
+                                        layer.bindPopup(`Pacotes na célula: <b>${feature.properties.package_count}</b>`, { autoClose: false }).openPopup();
+                                    }
+                                });
+                            }
+                        }).addTo(AppState.map);
                     }
                 }
             }).addTo(AppState.map);
@@ -2143,6 +2169,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('stationFilter').addEventListener('change', function() {
         const selectedStations = Array.from(this.selectedOptions).map(opt => opt.value);
         document.getElementById('suggest-routes-btn').style.display = (selectedStations.length === 1 && selectedStations[0] !== 'all') ? 'block' : 'none';
+    });
+    document.addEventListener('click', function(e) {
+        if (!e.ctrlKey && AppState.selectedGrids) {
+            AppState.selectedGrids = [];
+            AppState.map.closePopup();
+        }
     });
 });
 

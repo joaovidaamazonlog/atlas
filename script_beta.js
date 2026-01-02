@@ -58,10 +58,15 @@ const DataManager = {
 
             UIManager.updatePeriodInfo(AppState.period);
             this.associatePartnersToPolygons();
+
             UIManager.populateFilters();
+            UIManager.setupAutocomplete();
             this.applyFilters();
+
+            console.log("Todos os dados foram carregados e inicializados.");
         }).catch(error => {
-            console.error('Erro ao carregar dados:', error);
+            alert('Não foi possível carregar os arquivos de dados iniciais: ' + error.message);
+            console.error(error);
         });
     },
 

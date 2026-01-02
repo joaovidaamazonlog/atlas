@@ -241,7 +241,7 @@ const MapManager = {
         ` : '';
 
         const popupContent = `
-            <div class="popup-container" style="position:relative; overflow:hidden; width:400px;">
+            <div class="popup-container" style="position:relative; overflow:hidden; width:250px;">
                 <div class="popup-wrapper" style="transition: transform 0.3s ease;" width="200%">
                     <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
                         ${data.popup}
@@ -265,11 +265,15 @@ const MapManager = {
         const wrapper = btn.closest('.popup-wrapper');
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
-            optContent.style.display = 'block';
-            wrapper.style.transform = 'translateX(-50%)';
+            if (!wrapper._originalContent) {
+                wrapper._originalContent = wrapper.innerHTML;
+            }
+            wrapper.innerHTML = optContent.innerHTML;
         } else {
-            wrapper.style.transform = 'translateX(0)';
-            setTimeout(() => { optContent.style.display = 'none'; }, 300);
+            if (wrapper._originalContent) {
+                wrapper.innerHTML = wrapper._originalContent;
+                delete wrapper._originalContent;
+            }
         }
     },
 

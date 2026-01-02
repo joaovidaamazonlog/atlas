@@ -263,15 +263,21 @@ const MapManager = {
 
     togglePopupSlide: function(btn, showOpt) {
         const wrapper = btn.closest('.popup-wrapper');
+        if (!wrapper) return;
+        let mainContent = wrapper.querySelector('.main-popup-content');
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
-            if (!wrapper._originalContent) {
-                wrapper._originalContent = wrapper.innerHTML;
+            if (!wrapper._originalContent && mainContent) {
+                wrapper._originalContent = mainContent.innerHTML;
             }
-            wrapper.innerHTML = optContent.innerHTML;
+            if (mainContent && optContent) {
+                mainContent.innerHTML = optContent.innerHTML;
+                mainContent.style.padding = "0";
+            }
         } else {
-            if (wrapper._originalContent) {
-                wrapper.innerHTML = wrapper._originalContent;
+            if (wrapper._originalContent && mainContent) {
+                mainContent.innerHTML = wrapper._originalContent;
+                mainContent.style.padding = "5px";
                 delete wrapper._originalContent;
             }
         }

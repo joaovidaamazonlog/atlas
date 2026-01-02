@@ -269,6 +269,7 @@ const MapManager = {
             optContent.style.display = 'block';
             wrapper.style.transform = 'translateX(-50%)';
         } else {
+            document.querySelector('.leaflet-popup-content').style.height = 'auto';
             wrapper.style.transform = 'translateX(0)';
             setTimeout(() => { optContent.style.display = 'none'; }, 300);
         }

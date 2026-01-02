@@ -242,7 +242,7 @@ const MapManager = {
 
         const popupContent = `
             <div class="popup-container" style="position:relative; overflow:hidden;">
-                <div class="popup-wrapper" style="transition: transform 0.3s ease;">
+                <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease;">
                     <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
                         ${data.popup}
                         <hr class="my-2">
@@ -263,41 +263,13 @@ const MapManager = {
 
     togglePopupSlide: function(btn, showOpt) {
         const wrapper = btn.closest('.popup-wrapper');
-        if (!wrapper) return;
-        let mainContent = wrapper.querySelector('.main-popup-content');
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
-            // Salva o conteúdo original apenas uma vez
-            if (!wrapper._originalContent && mainContent) {
-                wrapper._originalContent = mainContent.innerHTML;
-            }
-            if (mainContent && optContent) {
-                mainContent.innerHTML = optContent.innerHTML;
-                mainContent.style.padding = "0";
-                // Reatribui evento ao botão "Voltar"
-                const backBtn = mainContent.querySelector('button.btn-secondary');
-                if (backBtn) {
-                    backBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        MapManager.togglePopupSlide(this, false);
-                    });
-                }
-            }
+            optContent.style.display = 'block';
+            wrapper.style.transform = 'translateX(-50%)';
         } else {
-            // Restaura o conteúdo original
-            if (wrapper._originalContent && mainContent) {
-                mainContent.innerHTML = wrapper._originalContent;
-                mainContent.style.padding = "5px";
-                delete wrapper._originalContent;
-                // Reatribui evento ao botão "Ver Otimização"
-                const optBtn = mainContent.querySelector('button.btn-warning');
-                if (optBtn) {
-                    optBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        MapManager.togglePopupSlide(this, true);
-                    });
-                }
-            }
+            wrapper.style.transform = 'translateX(0)';
+            setTimeout(() => { optContent.style.display = 'none'; }, 300);
         }
     },
 

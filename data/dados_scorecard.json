@@ -18,21 +18,21 @@
         },
         "cadastros": {
             "meta": 232.0,
-            "atingido": 120,
-            "percentual": 51.724137931034484
+            "atingido": 124,
+            "percentual": 53.44827586206896
         },
         "conversoes": {
             "meta": 232.0,
-            "atingido": 62,
-            "percentual": 26.72413793103448
+            "atingido": 80,
+            "percentual": 34.48275862068966
         },
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
                 "contatos": 2982,
                 "cadastros": 48,
-                "conversoes": 26,
-                "taxa_conversao": 54.17,
+                "conversoes": 29,
+                "taxa_conversao": 60.42,
                 "taxa_cadastro": 1.61,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
@@ -45,26 +45,26 @@
                 "origem": "In-Person Visit",
                 "contatos": 1016,
                 "cadastros": 8,
-                "conversoes": 4,
-                "taxa_conversao": 50.0,
+                "conversoes": 5,
+                "taxa_conversao": 62.5,
                 "taxa_cadastro": 0.79,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1.0,
-                "velocidade_score": 0.77,
+                "velocidade_score": 0.78,
                 "consistencia": 0,
                 "distribuicao_canais": 0.35,
-                "score_final": 0.69
+                "score_final": 0.7
             },
             {
                 "origem": "Referral",
                 "contatos": 165,
-                "cadastros": 45,
-                "conversoes": 21,
-                "taxa_conversao": 46.67,
-                "taxa_cadastro": 27.27,
+                "cadastros": 48,
+                "conversoes": 32,
+                "taxa_conversao": 66.67,
+                "taxa_cadastro": 29.09,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.56,
+                "velocidade_score": 0.55,
                 "consistencia": 0.52,
                 "distribuicao_canais": 0.02,
                 "score_final": 0.71
@@ -72,27 +72,27 @@
             {
                 "origem": "Website Pardot Form",
                 "contatos": 111,
-                "cadastros": 19,
-                "conversoes": 11,
-                "taxa_conversao": 57.89,
-                "taxa_cadastro": 17.12,
+                "cadastros": 20,
+                "conversoes": 14,
+                "taxa_conversao": 70.0,
+                "taxa_cadastro": 18.02,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.65,
+                "velocidade_score": 0.64,
                 "consistencia": 0.2,
                 "distribuicao_canais": 0.04,
                 "score_final": 0.69
             }
         ],
-        "scorecard_geral": 0.7074999999999999
+        "scorecard_geral": 0.71
     },
     "per_responsavel": [
         {
             "responsavel": "Aline Melo",
             "contatos": 134,
             "cadastros": 17,
-            "conversoes": 6,
-            "taxa_conversao": 35.29,
+            "conversoes": 8,
+            "taxa_conversao": 47.06,
             "taxa_cadastro": 12.69,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 0,
@@ -104,7 +104,7 @@
             "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.3,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.84,
+            "velocidade_score": 0.85,
             "consistencia": 0,
             "distribuicao_canais": 0.75,
             "score_final": 0.77
@@ -135,8 +135,8 @@
             "responsavel": "Brenda Souza",
             "contatos": 273,
             "cadastros": 2,
-            "conversoes": 0,
-            "taxa_conversao": 0.0,
+            "conversoes": 1,
+            "taxa_conversao": 50.0,
             "taxa_cadastro": 0.73,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 0,
@@ -148,17 +148,17 @@
             "cadastros_origem_Referral": 2,
             "volume_score_contatos": 0.49,
             "volume_score_cadastros": 0.25,
-            "velocidade_score": 0.8,
+            "velocidade_score": 0.85,
             "consistencia": 0.63,
             "distribuicao_canais": 0.69,
-            "score_final": 0.4
+            "score_final": 0.41
         },
         {
             "responsavel": "Breno Santos",
             "contatos": 144,
             "cadastros": 9,
-            "conversoes": 7,
-            "taxa_conversao": 77.78,
+            "conversoes": 9,
+            "taxa_conversao": 100.0,
             "taxa_cadastro": 6.25,
             "contatos_origem_Website Pardot Form": 11,
             "cadastros_origem_Website Pardot Form": 2,
@@ -170,7 +170,7 @@
             "cadastros_origem_Referral": 3,
             "volume_score_contatos": 0.48,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.68,
+            "velocidade_score": 0.71,
             "consistencia": 0,
             "distribuicao_canais": 0.79,
             "score_final": 0.78
@@ -267,8 +267,8 @@
             "responsavel": "Eric Souza",
             "contatos": 107,
             "cadastros": 5,
-            "conversoes": 1,
-            "taxa_conversao": 20.0,
+            "conversoes": 2,
+            "taxa_conversao": 40.0,
             "taxa_cadastro": 4.67,
             "contatos_origem_Website Pardot Form": 2,
             "cadastros_origem_Website Pardot Form": 0,
@@ -280,39 +280,39 @@
             "cadastros_origem_Referral": 4,
             "volume_score_contatos": 0.31,
             "volume_score_cadastros": 0.62,
-            "velocidade_score": 0.2,
+            "velocidade_score": 0.22,
             "consistencia": 0.95,
             "distribuicao_canais": 0.76,
             "score_final": 0.57
         },
         {
             "responsavel": "Everton Martins",
-            "contatos": 227,
+            "contatos": 228,
             "cadastros": 6,
-            "conversoes": 5,
-            "taxa_conversao": 83.33,
-            "taxa_cadastro": 2.64,
+            "conversoes": 6,
+            "taxa_conversao": 100.0,
+            "taxa_cadastro": 2.63,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 3,
             "contatos_origem_In-Person Visit": 63,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 148,
             "cadastros_origem_Cold Call": 1,
-            "contatos_origem_Referral": 12,
+            "contatos_origem_Referral": 13,
             "cadastros_origem_Referral": 2,
             "volume_score_contatos": 0.56,
             "volume_score_cadastros": 0.75,
-            "velocidade_score": 0.6,
-            "consistencia": 0.44,
+            "velocidade_score": 0.62,
+            "consistencia": 0.45,
             "distribuicao_canais": 0.91,
-            "score_final": 0.68
+            "score_final": 0.69
         },
         {
             "responsavel": "Fabiane Krampe",
             "contatos": 253,
             "cadastros": 7,
-            "conversoes": 5,
-            "taxa_conversao": 71.43,
+            "conversoes": 6,
+            "taxa_conversao": 85.71,
             "taxa_cadastro": 2.77,
             "contatos_origem_Website Pardot Form": 2,
             "cadastros_origem_Website Pardot Form": 0,
@@ -324,7 +324,7 @@
             "cadastros_origem_Referral": 3,
             "volume_score_contatos": 0.56,
             "volume_score_cadastros": 0.88,
-            "velocidade_score": 0.55,
+            "velocidade_score": 0.57,
             "consistencia": 0.62,
             "distribuicao_canais": 0.82,
             "score_final": 0.77
@@ -355,8 +355,8 @@
             "responsavel": "Felipe Oliveira",
             "contatos": 95,
             "cadastros": 4,
-            "conversoes": 1,
-            "taxa_conversao": 25.0,
+            "conversoes": 3,
+            "taxa_conversao": 75.0,
             "taxa_cadastro": 4.21,
             "contatos_origem_Website Pardot Form": 7,
             "cadastros_origem_Website Pardot Form": 3,
@@ -368,61 +368,61 @@
             "cadastros_origem_Referral": 1,
             "volume_score_contatos": 0.37,
             "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.85,
+            "velocidade_score": 0.9,
             "consistencia": 0.08,
             "distribuicao_canais": 0.84,
-            "score_final": 0.49
+            "score_final": 0.5
         },
         {
             "responsavel": "Helena Melo",
-            "contatos": 120,
-            "cadastros": 4,
-            "conversoes": 2,
-            "taxa_conversao": 50.0,
-            "taxa_cadastro": 3.33,
+            "contatos": 119,
+            "cadastros": 5,
+            "conversoes": 4,
+            "taxa_conversao": 80.0,
+            "taxa_cadastro": 4.2,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 56,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 42,
             "cadastros_origem_Cold Call": 0,
-            "contatos_origem_Referral": 21,
-            "cadastros_origem_Referral": 3,
+            "contatos_origem_Referral": 20,
+            "cadastros_origem_Referral": 4,
             "volume_score_contatos": 0.37,
-            "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.63,
-            "consistencia": 0.0,
-            "distribuicao_canais": 0.73,
-            "score_final": 0.45
+            "volume_score_cadastros": 0.62,
+            "velocidade_score": 0.54,
+            "consistencia": 0,
+            "distribuicao_canais": 0.74,
+            "score_final": 0.52
         },
         {
             "responsavel": "Josimar Junior",
             "contatos": 171,
-            "cadastros": 4,
+            "cadastros": 6,
             "conversoes": 3,
-            "taxa_conversao": 75.0,
-            "taxa_cadastro": 2.34,
+            "taxa_conversao": 50.0,
+            "taxa_cadastro": 3.51,
             "contatos_origem_Website Pardot Form": 9,
-            "cadastros_origem_Website Pardot Form": 0,
+            "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 62,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 88,
             "cadastros_origem_Cold Call": 0,
             "contatos_origem_Referral": 12,
-            "cadastros_origem_Referral": 4,
+            "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.54,
-            "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.65,
+            "volume_score_cadastros": 0.75,
+            "velocidade_score": 0.49,
             "consistencia": 0,
             "distribuicao_canais": 0.93,
-            "score_final": 0.49
+            "score_final": 0.63
         },
         {
             "responsavel": "João Kowalski",
             "contatos": 169,
             "cadastros": 3,
-            "conversoes": 1,
-            "taxa_conversao": 33.33,
+            "conversoes": 2,
+            "taxa_conversao": 66.67,
             "taxa_cadastro": 1.78,
             "contatos_origem_Website Pardot Form": 4,
             "cadastros_origem_Website Pardot Form": 0,
@@ -434,10 +434,10 @@
             "cadastros_origem_Referral": 1,
             "volume_score_contatos": 0.33,
             "volume_score_cadastros": 0.38,
-            "velocidade_score": 0.6,
+            "velocidade_score": 0.63,
             "consistencia": 0.04,
             "distribuicao_canais": 0.85,
-            "score_final": 0.38
+            "score_final": 0.39
         },
         {
             "responsavel": "Kelvin Fernandes",
@@ -465,8 +465,8 @@
             "responsavel": "Lilian Mata",
             "contatos": 40,
             "cadastros": 13,
-            "conversoes": 5,
-            "taxa_conversao": 38.46,
+            "conversoes": 6,
+            "taxa_conversao": 46.15,
             "taxa_cadastro": 32.5,
             "contatos_origem_Website Pardot Form": 0,
             "cadastros_origem_Website Pardot Form": 0,
@@ -478,7 +478,7 @@
             "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.2,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.76,
+            "velocidade_score": 0.77,
             "consistencia": 0.29,
             "distribuicao_canais": 0.61,
             "score_final": 0.77
@@ -487,8 +487,8 @@
             "responsavel": "Maria Silva",
             "contatos": 243,
             "cadastros": 4,
-            "conversoes": 1,
-            "taxa_conversao": 25.0,
+            "conversoes": 2,
+            "taxa_conversao": 50.0,
             "taxa_cadastro": 1.65,
             "contatos_origem_Website Pardot Form": 10,
             "cadastros_origem_Website Pardot Form": 1,
@@ -500,10 +500,10 @@
             "cadastros_origem_Referral": 3,
             "volume_score_contatos": 0.58,
             "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.43,
+            "velocidade_score": 0.45,
             "consistencia": 0.61,
             "distribuicao_canais": 0.68,
-            "score_final": 0.52
+            "score_final": 0.53
         },
         {
             "responsavel": "Pedro Neto",
@@ -575,8 +575,8 @@
             "responsavel": "Sidney Lima",
             "contatos": 218,
             "cadastros": 13,
-            "conversoes": 7,
-            "taxa_conversao": 53.85,
+            "conversoes": 10,
+            "taxa_conversao": 76.92,
             "taxa_cadastro": 5.96,
             "contatos_origem_Website Pardot Form": 14,
             "cadastros_origem_Website Pardot Form": 3,
@@ -588,7 +588,7 @@
             "cadastros_origem_Referral": 7,
             "volume_score_contatos": 0.63,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.37,
+            "velocidade_score": 0.39,
             "consistencia": 0,
             "distribuicao_canais": 0.88,
             "score_final": 0.78
@@ -596,10 +596,10 @@
         {
             "responsavel": "Wagner Silva",
             "contatos": 109,
-            "cadastros": 0,
+            "cadastros": 1,
             "conversoes": 0,
-            "taxa_conversao": 0,
-            "taxa_cadastro": 0.0,
+            "taxa_conversao": 0.0,
+            "taxa_cadastro": 0.92,
             "contatos_origem_Website Pardot Form": 0,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 38,
@@ -607,13 +607,13 @@
             "contatos_origem_Cold Call": 67,
             "cadastros_origem_Cold Call": 0,
             "contatos_origem_Referral": 4,
-            "cadastros_origem_Referral": 0,
+            "cadastros_origem_Referral": 1,
             "volume_score_contatos": 0.26,
-            "volume_score_cadastros": 0.0,
-            "velocidade_score": 0,
+            "volume_score_cadastros": 0.12,
+            "velocidade_score": 0.0,
             "consistencia": 0,
             "distribuicao_canais": 0.96,
-            "score_final": 0.09
+            "score_final": 0.16
         }
     ],
     "summary": [
@@ -874,8 +874,8 @@
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-16",
             "data_cadastro": "2025-12-23",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 26,
@@ -1123,9 +1123,9 @@
             "responsavel": "Josimar Junior",
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-11",
-            "data_cadastro": null,
+            "data_cadastro": "2026-01-05",
             "data_conversao": null,
-            "status": "New"
+            "status": "BG Checks"
         },
         {
             "id": 51,
@@ -1564,8 +1564,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-08",
             "data_cadastro": "2025-12-17",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 95,
@@ -5334,8 +5334,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-09",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 472,
@@ -8964,8 +8964,8 @@
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-15",
             "data_cadastro": "2025-12-17",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 835,
@@ -10494,8 +10494,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-16",
             "data_cadastro": "2025-12-16",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 988,
@@ -14264,8 +14264,8 @@
             "origem": "Website Pardot Form",
             "data_contato": "2025-12-15",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 1365,
@@ -18974,8 +18974,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-16",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 1836,
@@ -20824,8 +20824,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-15",
             "data_cadastro": "2025-12-16",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2021,
@@ -21344,8 +21344,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-15",
             "data_cadastro": "2025-12-17",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2073,
@@ -22894,8 +22894,8 @@
             "origem": "Cold Call",
             "data_contato": "2025-12-18",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2228,
@@ -23754,8 +23754,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-16",
             "data_cadastro": "2025-12-19",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2314,
@@ -26694,8 +26694,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-17",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2608,
@@ -29854,8 +29854,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-17",
             "data_cadastro": "2025-12-19",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2924,
@@ -30514,8 +30514,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-17",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 2990,
@@ -30834,8 +30834,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-18",
             "data_cadastro": "2025-12-19",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 3022,
@@ -31354,8 +31354,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-18",
             "data_cadastro": "2025-12-19",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 3074,
@@ -33734,8 +33734,8 @@
             "origem": "In-Person Visit",
             "data_contato": "2025-12-15",
             "data_cadastro": "2025-12-18",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 3312,
@@ -35074,8 +35074,8 @@
             "origem": "Referral",
             "data_contato": "2025-12-18",
             "data_cadastro": "2025-12-19",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-01-05",
+            "status": "Converted"
         },
         {
             "id": 3446,
@@ -35895,7 +35895,7 @@
             "data_contato": "2025-12-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3528,
@@ -35975,7 +35975,7 @@
             "data_contato": "2025-12-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3536,
@@ -36155,7 +36155,7 @@
             "data_contato": "2025-12-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3554,
@@ -36235,7 +36235,7 @@
             "data_contato": "2025-12-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3562,
@@ -36389,13 +36389,13 @@
         },
         {
             "id": 3577,
-            "lead": "Juliana Lucas",
+            "lead": "Juliana Lucas Da Silva Rodrigues",
             "responsavel": "Josimar Junior",
             "origem": "Referral",
             "data_contato": "2025-12-19",
-            "data_cadastro": null,
+            "data_cadastro": "2026-01-05",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 3578,
@@ -38205,7 +38205,7 @@
             "data_contato": "2025-12-23",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3759,
@@ -38315,7 +38315,7 @@
             "data_contato": "2025-12-23",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3770,
@@ -38325,7 +38325,7 @@
             "data_contato": "2025-12-23",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3771,
@@ -38355,7 +38355,7 @@
             "data_contato": "2025-12-23",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3774,
@@ -39870,7 +39870,7 @@
         {
             "id": 3925,
             "lead": "JOSE ROBERTO",
-            "responsavel": "Helena Melo",
+            "responsavel": "Everton Martins",
             "origem": "Referral",
             "data_contato": "2025-12-26",
             "data_cadastro": null,
@@ -39883,9 +39883,9 @@
             "responsavel": "Helena Melo",
             "origem": "Referral",
             "data_contato": "2025-12-29",
-            "data_cadastro": null,
+            "data_cadastro": "2026-01-05",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 3927,
@@ -39979,13 +39979,13 @@
         },
         {
             "id": 3936,
-            "lead": "Gigi Indicação",
+            "lead": "GERCILENE CERQUEIRA COSTA",
             "responsavel": "Wagner Silva",
             "origem": "Referral",
             "data_contato": "2025-12-29",
-            "data_cadastro": null,
+            "data_cadastro": "2026-01-05",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 3937,
@@ -40125,7 +40125,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3951,
@@ -40135,7 +40135,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3952,
@@ -40145,7 +40145,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3953,
@@ -40195,7 +40195,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 3958,
@@ -40805,7 +40805,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4019,
@@ -41165,7 +41165,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4055,
@@ -41185,7 +41185,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4057,
@@ -41195,7 +41195,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4058,
@@ -41205,7 +41205,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4059,
@@ -41215,7 +41215,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4060,
@@ -41225,7 +41225,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4061,
@@ -41235,7 +41235,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4062,
@@ -41245,7 +41245,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4063,
@@ -41255,7 +41255,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4064,
@@ -41265,7 +41265,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4065,
@@ -41275,7 +41275,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4066,
@@ -41285,7 +41285,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4067,
@@ -41305,7 +41305,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4069,
@@ -41335,7 +41335,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4072,
@@ -41355,7 +41355,7 @@
             "data_contato": "2025-12-29",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4074,
@@ -42065,7 +42065,7 @@
             "data_contato": "2025-12-30",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 4145,
@@ -43363,13 +43363,13 @@
             "data_contato": "2025-12-08",
             "contatos": 346,
             "cadastros": 12,
-            "conversoes": 10
+            "conversoes": 11
         },
         {
             "data_contato": "2025-12-09",
             "contatos": 447,
             "cadastros": 14,
-            "conversoes": 11
+            "conversoes": 12
         },
         {
             "data_contato": "2025-12-10",
@@ -43380,7 +43380,7 @@
         {
             "data_contato": "2025-12-11",
             "contatos": 520,
-            "cadastros": 18,
+            "cadastros": 19,
             "conversoes": 11
         },
         {
@@ -43393,30 +43393,30 @@
             "data_contato": "2025-12-15",
             "contatos": 383,
             "cadastros": 12,
-            "conversoes": 6
+            "conversoes": 11
         },
         {
             "data_contato": "2025-12-16",
             "contatos": 414,
             "cadastros": 18,
-            "conversoes": 9
+            "conversoes": 13
         },
         {
             "data_contato": "2025-12-17",
             "contatos": 464,
             "cadastros": 10,
-            "conversoes": 1
+            "conversoes": 4
         },
         {
             "data_contato": "2025-12-18",
             "contatos": 421,
             "cadastros": 9,
-            "conversoes": 2
+            "conversoes": 6
         },
         {
             "data_contato": "2025-12-19",
             "contatos": 65,
-            "cadastros": 7,
+            "cadastros": 8,
             "conversoes": 0
         },
         {
@@ -43440,7 +43440,7 @@
         {
             "data_contato": "2025-12-29",
             "contatos": 158,
-            "cadastros": 1,
+            "cadastros": 3,
             "conversoes": 0
         },
         {

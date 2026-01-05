@@ -72,7 +72,7 @@ class OptimizationHubDelivery:
     # -------------------------------------------------
     # Cluster Coverage + Gaps
     # -------------------------------------------------
-    def analyze_cluster_coverage(self, packages_per_partner=120):
+    def analyze_cluster_coverage(self, packages_per_partner=45):
         results = []
 
         for _, cluster in self.gdf_clusters.iterrows():

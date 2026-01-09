@@ -50,6 +50,12 @@ class DataProcessor:
                 df["Radius"] = pd.to_numeric(df["Radius"], errors='coerce').fillna(1500)
             else:
                 df["Radius"] = 1500
+        
+        for df in [active_df, launches_df]:
+            if "Volume Cap" in df.columns:
+                df["Volume Cap"] = pd.to_numeric(df["Volume Cap"], errors='coerce').fillna(45)
+            else:
+                df["Volume Cap"] = 45
 
         if 'Id' in active_df.columns and 'Name' in active_df.columns and 'HCP Host Partner' in active_df.columns:
             map_host_partner = dict(zip(active_df['Id'].astype(str), active_df['Name']))

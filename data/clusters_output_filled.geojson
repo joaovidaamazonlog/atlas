@@ -16,7 +16,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -44.023934798105557,
                 "centroid_lat": -19.991677898866158,
-                "area_m2": 21447397.547167238
+                "area_m2": 21447397.547167238,
+                "daily_volume": 634.55,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -882,7 +884,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -43.985989443539694,
                 "centroid_lat": -19.81609102992439,
-                "area_m2": 18174426.616524607
+                "area_m2": 18174426.616524607,
+                "daily_volume": 623.45,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -1448,7 +1452,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -43.953851072800092,
                 "centroid_lat": -19.817796338744042,
-                "area_m2": 13232833.170569394
+                "area_m2": 13232833.170569394,
+                "daily_volume": 508.55,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -1626,7 +1632,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -43.914664037615793,
                 "centroid_lat": -19.903363111944898,
-                "area_m2": 25057319.980830327
+                "area_m2": 25057319.980830327,
+                "daily_volume": 2868.09,
+                "needed_partners": 36
             },
             "geometry": {
                 "type": "Polygon",
@@ -1860,7 +1868,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -43.983592555296283,
                 "centroid_lat": -19.951612691744568,
-                "area_m2": 28377703.029670537
+                "area_m2": 28377703.029670537,
+                "daily_volume": 3338.45,
+                "needed_partners": 42
             },
             "geometry": {
                 "type": "Polygon",
@@ -1898,7 +1908,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -43.990951762942693,
                 "centroid_lat": -19.910545246291584,
-                "area_m2": 13518954.705086723
+                "area_m2": 13518954.705086723,
+                "daily_volume": 1629.45,
+                "needed_partners": 21
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -2822,7 +2834,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -43.91434182379448,
                 "centroid_lat": -19.957928604748904,
-                "area_m2": 37163992.903655559
+                "area_m2": 37163992.903655559,
+                "daily_volume": 3775.36,
+                "needed_partners": 48
             },
             "geometry": {
                 "type": "Polygon",
@@ -3204,7 +3218,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -43.982316680472067,
                 "centroid_lat": -19.871362910928212,
-                "area_m2": 14023894.382941267
+                "area_m2": 14023894.382941267,
+                "daily_volume": 1026.45,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -3318,7 +3334,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -43.935876275632744,
                 "centroid_lat": -19.860506114577891,
-                "area_m2": 18553882.078205686
+                "area_m2": 18553882.078205686,
+                "daily_volume": 815.27,
+                "needed_partners": 11
             },
             "geometry": {
                 "type": "Polygon",
@@ -3356,7 +3374,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -43.901041098846342,
                 "centroid_lat": -19.846724766331462,
-                "area_m2": 8823935.7792403139
+                "area_m2": 8823935.7792403139,
+                "daily_volume": 332.82,
+                "needed_partners": 5
             },
             "geometry": {
                 "type": "Polygon",
@@ -3594,7 +3614,9 @@
                 "num_points": null,
                 "centroid_lon": null,
                 "centroid_lat": null,
-                "area_m2": null
+                "area_m2": null,
+                "daily_volume": 5989.36,
+                "needed_partners": 75
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -5242,7 +5264,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -43.218672277114784,
                 "centroid_lat": -22.821355539305884,
-                "area_m2": 24476136.500021107
+                "area_m2": 24476136.500021107,
+                "daily_volume": 912.64,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "Polygon",
@@ -5556,7 +5580,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -43.223583078842694,
                 "centroid_lat": -22.981022956295028,
-                "area_m2": 13756053.546993159
+                "area_m2": 13756053.546993159,
+                "daily_volume": 3591.18,
+                "needed_partners": 45
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -6368,7 +6394,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -43.238516746711404,
                 "centroid_lat": -22.913250183781901,
-                "area_m2": 17823588.000289552
+                "area_m2": 17823588.000289552,
+                "daily_volume": 3241.73,
+                "needed_partners": 41
             },
             "geometry": {
                 "type": "Polygon",
@@ -7220,7 +7248,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -43.184797187617207,
                 "centroid_lat": -22.933181780854131,
-                "area_m2": 23184449.106902432
+                "area_m2": 23184449.106902432,
+                "daily_volume": 4830.91,
+                "needed_partners": 61
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -10144,7 +10174,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -43.365069834619248,
                 "centroid_lat": -22.968924397620327,
-                "area_m2": 32957958.112961013
+                "area_m2": 32957958.112961013,
+                "daily_volume": 3145.09,
+                "needed_partners": 40
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -11196,7 +11228,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -43.398811802157716,
                 "centroid_lat": -22.894025554704186,
-                "area_m2": 33180782.571289711
+                "area_m2": 33180782.571289711,
+                "daily_volume": 705.64,
+                "needed_partners": 9
             },
             "geometry": {
                 "type": "Polygon",
@@ -12116,7 +12150,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -43.347462533200456,
                 "centroid_lat": -22.878406967603848,
-                "area_m2": 44840104.159473382
+                "area_m2": 44840104.159473382,
+                "daily_volume": 1131.82,
+                "needed_partners": 15
             },
             "geometry": {
                 "type": "Polygon",
@@ -14112,7 +14148,9 @@
                 "num_points": 6.0,
                 "centroid_lon": -43.292985227530011,
                 "centroid_lat": -22.897014856411062,
-                "area_m2": 5038037.2770809187
+                "area_m2": 5038037.2770809187,
+                "daily_volume": 1039.36,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -15340,7 +15378,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -43.306568993996507,
                 "centroid_lat": -23.001393972981891,
-                "area_m2": 14808843.576475469
+                "area_m2": 14808843.576475469,
+                "daily_volume": 1191.64,
+                "needed_partners": 15
             },
             "geometry": {
                 "type": "Polygon",
@@ -16178,7 +16218,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -43.452773162266759,
                 "centroid_lat": -22.999734377745284,
-                "area_m2": 47894721.773602054
+                "area_m2": 47894721.773602054,
+                "daily_volume": 1966.27,
+                "needed_partners": 25
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -17090,7 +17132,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -47.286478852444816,
                 "centroid_lat": -23.239209689824897,
-                "area_m2": 60540326.79605031
+                "area_m2": 60540326.79605031,
+                "daily_volume": 1037.09,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -20792,7 +20836,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -47.009588577722447,
                 "centroid_lat": -23.002865909877475,
-                "area_m2": 27242385.435524814
+                "area_m2": 27242385.435524814,
+                "daily_volume": 268.09,
+                "needed_partners": 4
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -21480,7 +21526,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -47.22094019377483,
                 "centroid_lat": -23.095188933607997,
-                "area_m2": 41257938.323222011
+                "area_m2": 41257938.323222011,
+                "daily_volume": 1398.09,
+                "needed_partners": 18
             },
             "geometry": {
                 "type": "Polygon",
@@ -22626,7 +22674,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -47.083549552174667,
                 "centroid_lat": -22.922937867753056,
-                "area_m2": 33734221.195348926
+                "area_m2": 33734221.195348926,
+                "daily_volume": 1887.64,
+                "needed_partners": 24
             },
             "geometry": {
                 "type": "Polygon",
@@ -23096,7 +23146,9 @@
                 "num_points": 17.0,
                 "centroid_lon": -47.029843360895313,
                 "centroid_lat": -22.880521524139319,
-                "area_m2": 59470388.200048432
+                "area_m2": 59470388.200048432,
+                "daily_volume": 1834.45,
+                "needed_partners": 23
             },
             "geometry": {
                 "type": "Polygon",
@@ -25166,7 +25218,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -47.008754985075697,
                 "centroid_lat": -22.950723981238269,
-                "area_m2": 35258254.871188805
+                "area_m2": 35258254.871188805,
+                "daily_volume": 880.09,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "Polygon",
@@ -26176,7 +26230,9 @@
                 "num_points": 5.0,
                 "centroid_lon": -47.123172156219105,
                 "centroid_lat": -22.971455074539612,
-                "area_m2": 20455941.508005608
+                "area_m2": 20455941.508005608,
+                "daily_volume": 390.45,
+                "needed_partners": 5
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -29728,7 +29784,9 @@
                 "num_points": 5.0,
                 "centroid_lon": -47.081307599467372,
                 "centroid_lat": -22.813783155915807,
-                "area_m2": 14254288.230092032
+                "area_m2": 14254288.230092032,
+                "daily_volume": 754.36,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -33106,7 +33164,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -46.595854504991841,
                 "centroid_lat": -23.667197199705964,
-                "area_m2": 24971970.870524786
+                "area_m2": 24971970.870524786,
+                "daily_volume": 1001.82,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -33330,7 +33390,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -46.562404866521184,
                 "centroid_lat": -23.713041225073976,
-                "area_m2": 28940295.982544381
+                "area_m2": 28940295.982544381,
+                "daily_volume": 1240.82,
+                "needed_partners": 16
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -34118,7 +34180,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -46.537893182234356,
                 "centroid_lat": -23.638083263793483,
-                "area_m2": 31638747.615854785
+                "area_m2": 31638747.615854785,
+                "daily_volume": 2586.45,
+                "needed_partners": 33
             },
             "geometry": {
                 "type": "Polygon",
@@ -34316,7 +34380,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -46.697919077797231,
                 "centroid_lat": -23.558645644587465,
-                "area_m2": 12269942.519433891
+                "area_m2": 12269942.519433891,
+                "daily_volume": 1521.27,
+                "needed_partners": 20
             },
             "geometry": {
                 "type": "Polygon",
@@ -34886,7 +34952,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -46.702927692853137,
                 "centroid_lat": -23.667081341507334,
-                "area_m2": 16423910.840586517
+                "area_m2": 16423910.840586517,
+                "daily_volume": 2229.64,
+                "needed_partners": 28
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -35262,7 +35330,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -46.642088815162147,
                 "centroid_lat": -23.595440482502234,
-                "area_m2": 14120261.981983429
+                "area_m2": 14120261.981983429,
+                "daily_volume": 2465.82,
+                "needed_partners": 31
             },
             "geometry": {
                 "type": "Polygon",
@@ -35300,7 +35370,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -46.615767626219082,
                 "centroid_lat": -23.60892486415085,
-                "area_m2": 19529889.80710537
+                "area_m2": 19529889.80710537,
+                "daily_volume": 2910.55,
+                "needed_partners": 37
             },
             "geometry": {
                 "type": "Polygon",
@@ -35350,7 +35422,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -46.64520120554868,
                 "centroid_lat": -23.558048567449443,
-                "area_m2": 9322946.6549438275
+                "area_m2": 9322946.6549438275,
+                "daily_volume": 4814.09,
+                "needed_partners": 61
             },
             "geometry": {
                 "type": "Polygon",
@@ -35696,7 +35770,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -46.675861250326427,
                 "centroid_lat": -23.589586984636998,
-                "area_m2": 9497306.4040002823
+                "area_m2": 9497306.4040002823,
+                "daily_volume": 2358.55,
+                "needed_partners": 30
             },
             "geometry": {
                 "type": "Polygon",
@@ -35790,7 +35866,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -46.668943328158676,
                 "centroid_lat": -23.633034618785807,
-                "area_m2": 13598931.073515212
+                "area_m2": 13598931.073515212,
+                "daily_volume": 2324.73,
+                "needed_partners": 30
             },
             "geometry": {
                 "type": "Polygon",
@@ -35844,7 +35922,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -46.757903828382204,
                 "centroid_lat": -23.614167412916199,
-                "area_m2": 14360369.071883943
+                "area_m2": 14360369.071883943,
+                "daily_volume": 2374.45,
+                "needed_partners": 30
             },
             "geometry": {
                 "type": "Polygon",
@@ -36202,7 +36282,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -46.715570217622229,
                 "centroid_lat": -23.589110358408771,
-                "area_m2": 13447271.996667029
+                "area_m2": 13447271.996667029,
+                "daily_volume": 5415.27,
+                "needed_partners": 68
             },
             "geometry": {
                 "type": "Polygon",
@@ -37854,7 +37936,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -46.956567115021755,
                 "centroid_lat": -23.607351970616854,
-                "area_m2": 80769428.720203355
+                "area_m2": 80769428.720203355,
+                "daily_volume": 741.36,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -40610,7 +40694,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -46.844958481089087,
                 "centroid_lat": -23.645842925821672,
-                "area_m2": 69622595.395737886
+                "area_m2": 69622595.395737886,
+                "daily_volume": 805.0,
+                "needed_partners": 11
             },
             "geometry": {
                 "type": "Polygon",
@@ -40952,7 +41038,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -46.738803960667724,
                 "centroid_lat": -23.499734103918094,
-                "area_m2": 19056153.383420236
+                "area_m2": 19056153.383420236,
+                "daily_volume": 812.45,
+                "needed_partners": 11
             },
             "geometry": {
                 "type": "Polygon",
@@ -41170,7 +41258,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -46.697088455235075,
                 "centroid_lat": -23.526699321993032,
-                "area_m2": 11278162.847765381
+                "area_m2": 11278162.847765381,
+                "daily_volume": 5008.82,
+                "needed_partners": 63
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -41622,7 +41712,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -46.753175343463823,
                 "centroid_lat": -23.540835583716916,
-                "area_m2": 18368811.784592707
+                "area_m2": 18368811.784592707,
+                "daily_volume": 1372.73,
+                "needed_partners": 18
             },
             "geometry": {
                 "type": "Polygon",
@@ -41688,7 +41780,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -46.501479055045174,
                 "centroid_lat": -23.520578289669725,
-                "area_m2": 30247675.933323998
+                "area_m2": 30247675.933323998,
+                "daily_volume": 1195.82,
+                "needed_partners": 15
             },
             "geometry": {
                 "type": "Polygon",
@@ -41902,7 +41996,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -46.414391321932413,
                 "centroid_lat": -23.438422908003915,
-                "area_m2": 35786306.799038082
+                "area_m2": 35786306.799038082,
+                "daily_volume": 900.45,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -46232,7 +46328,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -46.578182811183403,
                 "centroid_lat": -23.568575725150499,
-                "area_m2": 27153046.581836019
+                "area_m2": 27153046.581836019,
+                "daily_volume": 1387.64,
+                "needed_partners": 18
             },
             "geometry": {
                 "type": "Polygon",
@@ -46454,7 +46552,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -46.596582511156051,
                 "centroid_lat": -23.468979951448642,
-                "area_m2": 19479691.575066704
+                "area_m2": 19479691.575066704,
+                "daily_volume": 1376.91,
+                "needed_partners": 18
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -48042,7 +48142,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -46.588970102799927,
                 "centroid_lat": -23.517831604266814,
-                "area_m2": 28611079.699707076
+                "area_m2": 28611079.699707076,
+                "daily_volume": 1562.18,
+                "needed_partners": 20
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -48768,7 +48870,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -46.660703266193387,
                 "centroid_lat": -23.491898824092129,
-                "area_m2": 22107272.665970869
+                "area_m2": 22107272.665970869,
+                "daily_volume": 652.18,
+                "needed_partners": 9
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -50516,7 +50620,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -46.530782690313416,
                 "centroid_lat": -23.448800556928475,
-                "area_m2": 33878810.228252627
+                "area_m2": 33878810.228252627,
+                "daily_volume": 1516.18,
+                "needed_partners": 19
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -52332,7 +52438,9 @@
                 "num_points": 1.0,
                 "centroid_lon": -49.533308831158095,
                 "centroid_lat": -25.465299021004075,
-                "area_m2": 384227.19009191013
+                "area_m2": 384227.19009191013,
+                "daily_volume": 206.91,
+                "needed_partners": 3
             },
             "geometry": {
                 "type": "Polygon",
@@ -58330,7 +58438,9 @@
                 "num_points": 2.0,
                 "centroid_lon": -49.406664436889038,
                 "centroid_lat": -25.589594062624752,
-                "area_m2": 1241313.5731937191
+                "area_m2": 1241313.5731937191,
+                "daily_volume": 443.45,
+                "needed_partners": 6
             },
             "geometry": {
                 "type": "Polygon",
@@ -60856,7 +60966,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -49.289762577236637,
                 "centroid_lat": -25.535445314901295,
-                "area_m2": 22123346.895531647
+                "area_m2": 22123346.895531647,
+                "daily_volume": 761.18,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -60970,7 +61082,9 @@
                 "num_points": 5.0,
                 "centroid_lon": -49.220915169844837,
                 "centroid_lat": -25.499181322502537,
-                "area_m2": 7690348.313419559
+                "area_m2": 7690348.313419559,
+                "daily_volume": 420.91,
+                "needed_partners": 6
             },
             "geometry": {
                 "type": "Polygon",
@@ -61008,7 +61122,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -49.184055118281961,
                 "centroid_lat": -25.532200720003161,
-                "area_m2": 30249447.48438713
+                "area_m2": 30249447.48438713,
+                "daily_volume": 734.36,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -62114,7 +62230,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -49.280462327504893,
                 "centroid_lat": -25.4463226308497,
-                "area_m2": 16616152.556140162
+                "area_m2": 16616152.556140162,
+                "daily_volume": 2195.55,
+                "needed_partners": 28
             },
             "geometry": {
                 "type": "Polygon",
@@ -62156,7 +62274,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -49.331629593861031,
                 "centroid_lat": -25.41533961172464,
-                "area_m2": 39285230.60232731
+                "area_m2": 39285230.60232731,
+                "daily_volume": 888.45,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -63212,7 +63332,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -49.322124950699155,
                 "centroid_lat": -25.477957420893695,
-                "area_m2": 33145258.351505272
+                "area_m2": 33145258.351505272,
+                "daily_volume": 1057.91,
+                "needed_partners": 14
             },
             "geometry": {
                 "type": "Polygon",
@@ -63330,7 +63452,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -49.258747715287839,
                 "centroid_lat": -25.510484486638035,
-                "area_m2": 20836820.232609965
+                "area_m2": 20836820.232609965,
+                "daily_volume": 826.64,
+                "needed_partners": 11
             },
             "geometry": {
                 "type": "Polygon",
@@ -63376,7 +63500,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -49.228704583221806,
                 "centroid_lat": -25.383476613189146,
-                "area_m2": 21082954.453626312
+                "area_m2": 21082954.453626312,
+                "daily_volume": 971.55,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -63418,7 +63544,9 @@
                 "num_points": 4.0,
                 "centroid_lon": -49.18484810645861,
                 "centroid_lat": -25.355864002695057,
-                "area_m2": 9403917.4877039585
+                "area_m2": 9403917.4877039585,
+                "daily_volume": 311.45,
+                "needed_partners": 4
             },
             "geometry": {
                 "type": "Polygon",
@@ -65212,7 +65340,9 @@
                 "num_points": 3.0,
                 "centroid_lon": -49.280341228917294,
                 "centroid_lat": -25.341766356967199,
-                "area_m2": 9824911.4321773779
+                "area_m2": 9824911.4321773779,
+                "daily_volume": 244.27,
+                "needed_partners": 4
             },
             "geometry": {
                 "type": "Polygon",
@@ -67926,7 +68056,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -49.268802853284178,
                 "centroid_lat": -25.398064628085187,
-                "area_m2": 25396330.952549022
+                "area_m2": 25396330.952549022,
+                "daily_volume": 1285.27,
+                "needed_partners": 17
             },
             "geometry": {
                 "type": "Polygon",
@@ -67968,7 +68100,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -49.158766377381426,
                 "centroid_lat": -25.439287312958626,
-                "area_m2": 74888052.684094876
+                "area_m2": 74888052.684094876,
+                "daily_volume": 505.0,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -70706,7 +70840,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -49.244429223628266,
                 "centroid_lat": -25.454972395005193,
-                "area_m2": 16318120.317421077
+                "area_m2": 16318120.317421077,
+                "daily_volume": 948.18,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "Polygon",
@@ -70752,7 +70888,9 @@
                 "num_points": null,
                 "centroid_lon": null,
                 "centroid_lat": null,
-                "area_m2": null
+                "area_m2": null,
+                "daily_volume": 5166.27,
+                "needed_partners": 65
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -89080,7 +89218,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -51.154132531685171,
                 "centroid_lat": -29.742511870528244,
-                "area_m2": 72474255.508785576
+                "area_m2": 72474255.508785576,
+                "daily_volume": 889.55,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "Polygon",
@@ -89198,7 +89338,9 @@
                 "num_points": 1.0,
                 "centroid_lon": -51.346331590513508,
                 "centroid_lat": -29.587184611967555,
-                "area_m2": 384227.19009190815
+                "area_m2": 384227.19009190815,
+                "daily_volume": 0.0,
+                "needed_partners": 0
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -93622,7 +93764,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -51.077677497875399,
                 "centroid_lat": -29.672996266037782,
-                "area_m2": 50679279.515185438
+                "area_m2": 50679279.515185438,
+                "daily_volume": 606.55,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -95988,7 +96132,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -51.153041476077298,
                 "centroid_lat": -29.887043852350914,
-                "area_m2": 92456598.099158928
+                "area_m2": 92456598.099158928,
+                "daily_volume": 1590.91,
+                "needed_partners": 20
             },
             "geometry": {
                 "type": "Polygon",
@@ -96418,7 +96564,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -51.194197296932082,
                 "centroid_lat": -30.047010798946268,
-                "area_m2": 28382614.009341672
+                "area_m2": 28382614.009341672,
+                "daily_volume": 3775.18,
+                "needed_partners": 48
             },
             "geometry": {
                 "type": "Polygon",
@@ -96832,7 +96980,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -51.174568528930543,
                 "centroid_lat": -30.000312819041895,
-                "area_m2": 24504765.236926243
+                "area_m2": 24504765.236926243,
+                "daily_volume": 2031.18,
+                "needed_partners": 26
             },
             "geometry": {
                 "type": "Polygon",
@@ -96966,7 +97116,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -51.230251620912306,
                 "centroid_lat": -30.087421562340136,
-                "area_m2": 21251245.7654652
+                "area_m2": 21251245.7654652,
+                "daily_volume": 956.73,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -101666,7 +101818,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -51.097934525839136,
                 "centroid_lat": -30.058257464926744,
-                "area_m2": 91251552.310257196
+                "area_m2": 91251552.310257196,
+                "daily_volume": 1238.18,
+                "needed_partners": 16
             },
             "geometry": {
                 "type": "Polygon",
@@ -102908,7 +103062,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -51.210375659459203,
                 "centroid_lat": -30.130601876155961,
-                "area_m2": 19400699.185104501
+                "area_m2": 19400699.185104501,
+                "daily_volume": 672.82,
+                "needed_partners": 9
             },
             "geometry": {
                 "type": "Polygon",
@@ -105246,7 +105402,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -40.339137110774431,
                 "centroid_lat": -20.349653529264284,
-                "area_m2": 32626457.751734134
+                "area_m2": 32626457.751734134,
+                "daily_volume": 1023.55,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -105816,7 +105974,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -40.299576964847866,
                 "centroid_lat": -20.33182418098253,
-                "area_m2": 18152338.897572603
+                "area_m2": 18152338.897572603,
+                "daily_volume": 1216.64,
+                "needed_partners": 16
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -106656,7 +106816,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -40.42429063848396,
                 "centroid_lat": -20.330353807152523,
-                "area_m2": 111149914.84608698
+                "area_m2": 111149914.84608698,
+                "daily_volume": 480.91,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -107118,7 +107280,9 @@
                 "num_points": 2.0,
                 "centroid_lon": -40.346293467379262,
                 "centroid_lat": -20.460623507792608,
-                "area_m2": 3194036.1319268094
+                "area_m2": 3194036.1319268094,
+                "daily_volume": 452.09,
+                "needed_partners": 6
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -130486,7 +130650,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -49.313585475779327,
                 "centroid_lat": -16.78747384931658,
-                "area_m2": 53426672.549075961
+                "area_m2": 53426672.549075961,
+                "daily_volume": 633.0,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -131266,7 +131432,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -49.329726452297649,
                 "centroid_lat": -16.709669795970111,
-                "area_m2": 33208896.921526324
+                "area_m2": 33208896.921526324,
+                "daily_volume": 978.0,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -132068,7 +132236,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -49.257026958945389,
                 "centroid_lat": -16.738120282589755,
-                "area_m2": 38490675.646314017
+                "area_m2": 38490675.646314017,
+                "daily_volume": 1774.82,
+                "needed_partners": 23
             },
             "geometry": {
                 "type": "Polygon",
@@ -134138,7 +134308,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -49.243617013859975,
                 "centroid_lat": -16.634970106158555,
-                "area_m2": 23898140.055721179
+                "area_m2": 23898140.055721179,
+                "daily_volume": 591.73,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -134384,7 +134556,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -49.306883724475654,
                 "centroid_lat": -16.643625671075466,
-                "area_m2": 22409791.332110606
+                "area_m2": 22409791.332110606,
+                "daily_volume": 500.64,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -134430,7 +134604,9 @@
                 "num_points": 6.0,
                 "centroid_lon": -49.295327123721023,
                 "centroid_lat": -16.605306444176865,
-                "area_m2": 13803608.301296975
+                "area_m2": 13803608.301296975,
+                "daily_volume": 283.45,
+                "needed_partners": 4
             },
             "geometry": {
                 "type": "Polygon",
@@ -134552,7 +134728,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -49.231181962843038,
                 "centroid_lat": -16.676522283209131,
-                "area_m2": 20385484.875797398
+                "area_m2": 20385484.875797398,
+                "daily_volume": 1553.36,
+                "needed_partners": 20
             },
             "geometry": {
                 "type": "Polygon",
@@ -136426,7 +136604,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -49.290391694814403,
                 "centroid_lat": -16.693194843515837,
-                "area_m2": 16178027.828231147
+                "area_m2": 16178027.828231147,
+                "daily_volume": 1714.18,
+                "needed_partners": 22
             },
             "geometry": {
                 "type": "Polygon",
@@ -136468,7 +136648,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -48.030977894684582,
                 "centroid_lat": -16.016881803804452,
-                "area_m2": 42129683.708931379
+                "area_m2": 42129683.708931379,
+                "daily_volume": 847.36,
+                "needed_partners": 11
             },
             "geometry": {
                 "type": "Polygon",
@@ -136798,7 +136980,9 @@
                 "num_points": 4.0,
                 "centroid_lon": -47.766866911089274,
                 "centroid_lat": -15.781264432313121,
-                "area_m2": 22241779.624388702
+                "area_m2": 22241779.624388702,
+                "daily_volume": 500.64,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -136860,7 +137044,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -47.797530678129263,
                 "centroid_lat": -15.900061470640468,
-                "area_m2": 48324399.591226295
+                "area_m2": 48324399.591226295,
+                "daily_volume": 1084.55,
+                "needed_partners": 14
             },
             "geometry": {
                 "type": "Polygon",
@@ -136966,7 +137152,9 @@
                 "num_points": 5.0,
                 "centroid_lon": -47.666408893422933,
                 "centroid_lat": -15.618221295019957,
-                "area_m2": 10051721.506919058
+                "area_m2": 10051721.506919058,
+                "daily_volume": 536.0,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -137064,7 +137252,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -47.857645881768676,
                 "centroid_lat": -15.727459494928201,
-                "area_m2": 19913655.020656951
+                "area_m2": 19913655.020656951,
+                "daily_volume": 688.82,
+                "needed_partners": 9
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -137140,7 +137330,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -47.860488071073455,
                 "centroid_lat": -15.821424898376033,
-                "area_m2": 51267954.372180127
+                "area_m2": 51267954.372180127,
+                "daily_volume": 730.27,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -137182,7 +137374,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -47.911532737336366,
                 "centroid_lat": -15.828929733764388,
-                "area_m2": 12257187.758702815
+                "area_m2": 12257187.758702815,
+                "daily_volume": 1827.27,
+                "needed_partners": 23
             },
             "geometry": {
                 "type": "Polygon",
@@ -137224,7 +137418,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -48.108059924725126,
                 "centroid_lat": -15.813282134390031,
-                "area_m2": 17282201.270129226
+                "area_m2": 17282201.270129226,
+                "daily_volume": 766.55,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -137326,7 +137522,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -47.943830411632263,
                 "centroid_lat": -15.797202626789639,
-                "area_m2": 21757866.128477775
+                "area_m2": 21757866.128477775,
+                "daily_volume": 2013.09,
+                "needed_partners": 26
             },
             "geometry": {
                 "type": "Polygon",
@@ -137384,7 +137582,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -47.891727636113053,
                 "centroid_lat": -15.755991099331617,
-                "area_m2": 11187110.037390959
+                "area_m2": 11187110.037390959,
+                "daily_volume": 3343.27,
+                "needed_partners": 42
             },
             "geometry": {
                 "type": "Polygon",
@@ -137466,7 +137666,9 @@
                 "num_points": 14.0,
                 "centroid_lon": -47.8298170243215,
                 "centroid_lat": -15.659094339381713,
-                "area_m2": 42281428.976603813
+                "area_m2": 42281428.976603813,
+                "daily_volume": 1165.91,
+                "needed_partners": 15
             },
             "geometry": {
                 "type": "Polygon",
@@ -137592,7 +137794,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -48.038570663527295,
                 "centroid_lat": -15.869520076526682,
-                "area_m2": 22143635.406392589
+                "area_m2": 22143635.406392589,
+                "daily_volume": 713.36,
+                "needed_partners": 9
             },
             "geometry": {
                 "type": "Polygon",
@@ -137634,7 +137838,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -48.074478693269796,
                 "centroid_lat": -15.904335784952792,
-                "area_m2": 25042338.368449457
+                "area_m2": 25042338.368449457,
+                "daily_volume": 626.64,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -137720,7 +137926,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -47.956876643633024,
                 "centroid_lat": -15.874885890077882,
-                "area_m2": 40695773.423434809
+                "area_m2": 40695773.423434809,
+                "daily_volume": 605.45,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -137774,7 +137982,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -47.993195844028371,
                 "centroid_lat": -15.824572623508805,
-                "area_m2": 14922647.409766309
+                "area_m2": 14922647.409766309,
+                "daily_volume": 1594.09,
+                "needed_partners": 20
             },
             "geometry": {
                 "type": "Polygon",
@@ -137832,7 +138042,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -48.0276277214383,
                 "centroid_lat": -15.835262912932373,
-                "area_m2": 13776606.57498629
+                "area_m2": 13776606.57498629,
+                "daily_volume": 3344.73,
+                "needed_partners": 42
             },
             "geometry": {
                 "type": "Polygon",
@@ -137870,7 +138082,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -48.072316092195905,
                 "centroid_lat": -15.818458271025515,
-                "area_m2": 10468962.633092161
+                "area_m2": 10468962.633092161,
+                "daily_volume": 966.91,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -137932,7 +138146,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -38.345178964210618,
                 "centroid_lat": -12.732019580239198,
-                "area_m2": 51329418.472554944
+                "area_m2": 51329418.472554944,
+                "daily_volume": 235.91,
+                "needed_partners": 3
             },
             "geometry": {
                 "type": "Polygon",
@@ -142786,7 +143002,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -38.352855101382872,
                 "centroid_lat": -12.909211195047332,
-                "area_m2": 87238390.788373977
+                "area_m2": 87238390.788373977,
+                "daily_volume": 1238.18,
+                "needed_partners": 16
             },
             "geometry": {
                 "type": "Polygon",
@@ -143732,7 +143950,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -38.49300226335798,
                 "centroid_lat": -12.968207744865969,
-                "area_m2": 12639177.118282245
+                "area_m2": 12639177.118282245,
+                "daily_volume": 517.09,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -143840,7 +144060,9 @@
                 "num_points": 3.0,
                 "centroid_lon": -38.47206356446025,
                 "centroid_lat": -12.853106187370917,
-                "area_m2": 3467070.086300394
+                "area_m2": 3467070.086300394,
+                "daily_volume": 9.18,
+                "needed_partners": 1
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -144124,7 +144346,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -38.498889852988164,
                 "centroid_lat": -12.998475788069056,
-                "area_m2": 17618714.95537404
+                "area_m2": 17618714.95537404,
+                "daily_volume": 1418.91,
+                "needed_partners": 18
             },
             "geometry": {
                 "type": "Polygon",
@@ -145234,7 +145458,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -38.464772639784258,
                 "centroid_lat": -12.911573946459896,
-                "area_m2": 42433129.782506689
+                "area_m2": 42433129.782506689,
+                "daily_volume": 411.82,
+                "needed_partners": 6
             },
             "geometry": {
                 "type": "Polygon",
@@ -145356,7 +145582,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -38.448793360448278,
                 "centroid_lat": -12.972220287995381,
-                "area_m2": 19617717.691346008
+                "area_m2": 19617717.691346008,
+                "daily_volume": 1603.91,
+                "needed_partners": 21
             },
             "geometry": {
                 "type": "Polygon",
@@ -145626,7 +145854,9 @@
                 "num_points": 3.0,
                 "centroid_lon": -35.012738730282514,
                 "centroid_lat": -8.2669879091200826,
-                "area_m2": 7866953.6891557239
+                "area_m2": 7866953.6891557239,
+                "daily_volume": 224.73,
+                "needed_partners": 3
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -148488,7 +148718,9 @@
                 "num_points": 6.0,
                 "centroid_lon": -35.046593194433974,
                 "centroid_lat": -8.1142122979771596,
-                "area_m2": 15026979.412620522
+                "area_m2": 15026979.412620522,
+                "daily_volume": 379.55,
+                "needed_partners": 5
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -151172,7 +151404,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -35.009892822453835,
                 "centroid_lat": -7.988522128905708,
-                "area_m2": 66422189.967520803
+                "area_m2": 66422189.967520803,
+                "daily_volume": 677.09,
+                "needed_partners": 9
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -154940,7 +155174,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -34.913396625539512,
                 "centroid_lat": -8.0985328324661161,
-                "area_m2": 26456326.835563712
+                "area_m2": 26456326.835563712,
+                "daily_volume": 2632.09,
+                "needed_partners": 33
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -157512,7 +157748,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -34.925476467517598,
                 "centroid_lat": -8.1795086343310519,
-                "area_m2": 25386476.08597488
+                "area_m2": 25386476.08597488,
+                "daily_volume": 1502.45,
+                "needed_partners": 19
             },
             "geometry": {
                 "type": "Polygon",
@@ -157966,7 +158204,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -34.89880359033728,
                 "centroid_lat": -8.0499724123927585,
-                "area_m2": 25333591.944093261
+                "area_m2": 25333591.944093261,
+                "daily_volume": 3419.18,
+                "needed_partners": 43
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -159948,7 +160188,9 @@
                 "num_points": 13.0,
                 "centroid_lon": -34.95388847866306,
                 "centroid_lat": -8.1095530739734709,
-                "area_m2": 24750982.399999503
+                "area_m2": 24750982.399999503,
+                "daily_volume": 1071.0,
+                "needed_partners": 14
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -160434,7 +160676,9 @@
                 "num_points": 23.0,
                 "centroid_lon": -34.845150646449312,
                 "centroid_lat": -7.1323509336770474,
-                "area_m2": 44997298.215730608
+                "area_m2": 44997298.215730608,
+                "daily_volume": 3280.73,
+                "needed_partners": 42
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -162518,7 +162762,9 @@
                 "num_points": 6.0,
                 "centroid_lon": -34.839033842760109,
                 "centroid_lat": -7.035123852571969,
-                "area_m2": 19886976.168718029
+                "area_m2": 19886976.168718029,
+                "daily_volume": 910.55,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -164346,7 +164592,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -34.932603240607634,
                 "centroid_lat": -7.1439660105547746,
-                "area_m2": 45403951.309413478
+                "area_m2": 45403951.309413478,
+                "daily_volume": 357.45,
+                "needed_partners": 5
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -164910,7 +165158,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -34.863169351763176,
                 "centroid_lat": -7.1873086542542222,
-                "area_m2": 22045388.67277471
+                "area_m2": 22045388.67277471,
+                "daily_volume": 1032.73,
+                "needed_partners": 13
             },
             "geometry": {
                 "type": "Polygon",
@@ -167376,7 +167626,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -38.610489046689274,
                 "centroid_lat": -3.7969509165739743,
-                "area_m2": 18889928.874144539
+                "area_m2": 18889928.874144539,
+                "daily_volume": 499.18,
+                "needed_partners": 7
             },
             "geometry": {
                 "type": "Polygon",
@@ -167450,7 +167702,9 @@
                 "num_points": 7.0,
                 "centroid_lon": -38.617159333610502,
                 "centroid_lat": -3.7561282764380239,
-                "area_m2": 12277838.205698472
+                "area_m2": 12277838.205698472,
+                "daily_volume": 820.36,
+                "needed_partners": 11
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -167570,7 +167824,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -38.466831946932246,
                 "centroid_lat": -3.8508708106521481,
-                "area_m2": 34753423.238996834
+                "area_m2": 34753423.238996834,
+                "daily_volume": 931.91,
+                "needed_partners": 12
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -168766,7 +169022,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -38.463260406083087,
                 "centroid_lat": -3.7648017730202201,
-                "area_m2": 18805481.396442469
+                "area_m2": 18805481.396442469,
+                "daily_volume": 1240.09,
+                "needed_partners": 16
             },
             "geometry": {
                 "type": "Polygon",
@@ -169196,7 +169454,9 @@
                 "num_points": 11.0,
                 "centroid_lon": -38.646019697622471,
                 "centroid_lat": -3.8746530777498802,
-                "area_m2": 36297357.205986381
+                "area_m2": 36297357.205986381,
+                "daily_volume": 619.27,
+                "needed_partners": 8
             },
             "geometry": {
                 "type": "Polygon",
@@ -169734,7 +169994,9 @@
                 "num_points": 12.0,
                 "centroid_lon": -38.577694581491365,
                 "centroid_lat": -3.8459570142797839,
-                "area_m2": 39782729.699893422
+                "area_m2": 39782729.699893422,
+                "daily_volume": 412.91,
+                "needed_partners": 6
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -169946,7 +170208,9 @@
                 "num_points": 6.0,
                 "centroid_lon": -38.532725373901592,
                 "centroid_lat": -3.7679646561519591,
-                "area_m2": 8447636.5137978923
+                "area_m2": 8447636.5137978923,
+                "daily_volume": 777.55,
+                "needed_partners": 10
             },
             "geometry": {
                 "type": "Polygon",
@@ -169984,7 +170248,9 @@
                 "num_points": 9.0,
                 "centroid_lon": -38.505257110089865,
                 "centroid_lat": -3.7462829393618957,
-                "area_m2": 22653214.566077624
+                "area_m2": 22653214.566077624,
+                "daily_volume": 3731.64,
+                "needed_partners": 47
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -170300,7 +170566,9 @@
                 "num_points": 8.0,
                 "centroid_lon": -38.496383203704333,
                 "centroid_lat": -3.818026001619621,
-                "area_m2": 11215807.974359076
+                "area_m2": 11215807.974359076,
+                "daily_volume": 1489.27,
+                "needed_partners": 19
             },
             "geometry": {
                 "type": "Polygon",
@@ -171018,7 +171286,9 @@
                 "num_points": 15.0,
                 "centroid_lon": -38.557642279594234,
                 "centroid_lat": -3.791785827359861,
-                "area_m2": 20832196.597389419
+                "area_m2": 20832196.597389419,
+                "daily_volume": 1441.09,
+                "needed_partners": 19
             },
             "geometry": {
                 "type": "Polygon",
@@ -171064,7 +171334,9 @@
                 "num_points": 10.0,
                 "centroid_lon": -38.547898780993229,
                 "centroid_lat": -3.7339595508843315,
-                "area_m2": 11418689.024054501
+                "area_m2": 11418689.024054501,
+                "daily_volume": 1417.82,
+                "needed_partners": 18
             },
             "geometry": {
                 "type": "Polygon",

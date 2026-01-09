@@ -108,6 +108,7 @@ class JsonGenerator:
                 "salesforce_id": row.get("Id"),
                 "delivery_station": row.get("Delivery Station"),
                 "status": row.get("Status"),
+                "capacity": row.get("Volume Cap"),
                 "jurisdiction_type": row.get("Jurisdiction Type"),
                 "launch_date": format_date_to_str(row.get("Launch Date")),
                 "supply_run": row.get("Supply Run"),

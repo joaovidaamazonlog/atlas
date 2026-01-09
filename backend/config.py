@@ -9,7 +9,9 @@ DEST_FOLDER = r"C:\Users\joaovida\Documents\Projetos\atlas\data"
 
 # Arquivo Excel de entrada
 EXCEL_FILE_PATH = f"{BASE_PATH}\\terra.xlsm"
-BASE_DIR = f"{BASE_PATH}\\base_pacotes.csv"
+BASE_PACKAGES = f"{BASE_PATH}\\base_pacotes.csv"
+BASE_PARTNERS = f"{DEST_FOLDER}\\dados_mapa.json"
+BASE_PREVIOUS_SNAPSHOT = f"{DEST_FOLDER}\\snapshot_current.json"
 
 #Arquivo CSV de entrada para clustering
 CSV_INPUT_PATH = f"{BASE_PATH}\\pontos_teste.csv"

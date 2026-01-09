@@ -1,278 +1,324 @@
+# optimization_hub_full_engine.py
+
+import json
+import math
+import h3
 import pandas as pd
 import numpy as np
-import json
-import geopandas as gpd
-from shapely.geometry import Point, Polygon
-from scipy.spatial import KDTree
+from datetime import datetime
+from collections import defaultdict
+from typing import Dict, List, Any
+import logging
 import os
-import config
 
+# =========================
+# CONFIG
+# =========================
+H3_RESOLUTION = 9
+HEX_EDGE_M = 174
+MIN_CAPACITY = 45
+MAX_CAPACITY = 70
+NEW_PARTNER_THRESHOLD = 45
+LOG_FILE = "executed_actions_log.txt"
 
-class OptimizationHubDelivery:
-    def __init__(self, packages_path, partners_path, clusters_path):
-        print("Iniciando Optimization Hub Delivery...")
-        self.packages_path = packages_path
-        self.partners_path = partners_path
-        self.clusters_path = clusters_path
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# =========================
+# MODELS
+# =========================
+class Partner:
+    __slots__ = ("id", "origin_hex", "capacity", "k", "latitude", "longitude")
+
+    def __init__(self, partner_id: str, origin_hex: str, capacity: int, k: int, lat: float, lon: float):
+        self.id = partner_id
+        self.origin_hex = origin_hex
+        self.capacity = capacity
+        self.k = k
+        self.latitude = lat
+        self.longitude = lon
+
+# =========================
+# DATA INGESTION
+# =========================
+class DataIngestion:
+    @staticmethod
+    def load_packages(csv_path):
+        logger.info(f"Carregando pacotes de {csv_path}...")
+        df = pd.read_csv(csv_path, usecols=['latitude', 'longitude', 'plan_date'])
         
-        # Carregar dados
-        self.df_packages = pd.read_csv(packages_path)
-        if 'data' in self.df_packages.columns:
-            self.df_packages = (
-                self.df_packages
-                .groupby(['latitude', 'longitude', 'data'])
-                .size()
-                .reset_index(name='package_count')
-            )
-            self.df_packages = (
-                self.df_packages
-                .groupby(['latitude', 'longitude'])
-                .agg({'package_count': 'mean'})
-                .reset_index()
-            )
+        if 'plan_date' in df.columns:
+            df['plan_date'] = pd.to_datetime(df['plan_date'])
+            num_days = df['plan_date'].nunique()
         else:
-            self.df_packages['package_count'] = 1
-
-        with open(partners_path, 'r', encoding='utf-8') as f:
-            self.partners_data = json.load(f)
-        self.gdf_clusters = gpd.read_file(clusters_path)
-        
-        # Preparar DataFrame de parceiros
-        self.df_partners = pd.DataFrame(self.partners_data['allMarkerData'])
-        # Filtrar parceiros válidos (com lat/lon)
-        self.df_partners = self.df_partners[
-            (self.df_partners['status'] == 'Active') & 
-            self.df_partners['lat'].notnull() & 
-            self.df_partners['lon'].notnull()
-        ]
-        
-    def run_all_analyses(self):
-        print("Executando todas as análises...")
-        results = {}
-        results['eligibility'] = self.analyze_eligibility()
-        results['density_reduction'] = self.analyze_density_reduction()
-        results['gaps'] = self.generate_optimization_layers()
-        results['overlap'] = self.analyze_overlap()
-        results['cluster_coverage'] = self.analyze_cluster_coverage()
-        return results
-
-    def analyze_eligibility(self):
-        """1. Pacotes elegíveis por parceiro (Heatmap de cobertura)"""
-        print("Analisando elegibilidade...")
-        # Criar KDTree para busca rápida de vizinhos
-        tree = KDTree(self.df_partners[['lat', 'lon']].values)
-        
-        # Para cada pacote, encontrar o parceiro mais próximo
-        distances, indices = tree.query(self.df_packages[['latitude', 'longitude']].values, k=1)
-        
-        # Converter distâncias de graus para metros (aproximado)
-        # 1 grau ~ 111.32 km
-        distances_m = distances * 111320
-        
-        self.df_packages['nearest_partner_idx'] = indices
-        self.df_packages['distance_to_partner'] = distances_m
-        
-        # Verificar se está dentro do raio do parceiro
-        partner_radii = self.df_partners['radius'].values
-        self.df_packages['is_eligible'] = self.df_packages.apply(
-            lambda x: x['distance_to_partner'] <= partner_radii[int(x['nearest_partner_idx'])], axis=1
-        )
-        
-        summary = self.df_packages[self.df_packages['is_eligible']].groupby('nearest_partner_idx').size()
-        return summary.to_dict()
-
-    def analyze_density_reduction(self, thresholds=[1000, 750, 500, 300], min_volume=45):
-        """2. Análise de densidade para redução de raio"""
-        print("Analisando redução de raio...")
-        reduction_results = []
-        
-        for idx, partner in self.df_partners.iterrows():
-            partner_packages = self.df_packages[self.df_packages['nearest_partner_idx'] == idx]
+            num_days = 1
             
-            partner_res = {'store_id': partner.get('store_id'), 'name': partner.get('name'), 'current_radius': partner.get('radius')}
+        df['hex_id'] = [h3.latlng_to_cell(lat, lon, H3_RESOLUTION) for lat, lon in zip(df['latitude'], df['longitude'])]
+        hex_counts = df.groupby('hex_id').size().reset_index(name='total_pkgs')
+        hex_counts['daily_avg'] = hex_counts['total_pkgs'] / num_days
+        
+        return hex_counts.set_index('hex_id')['daily_avg'].to_dict()
+
+    @staticmethod
+    def load_partners(json_path):
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            df = pd.DataFrame(data['allMarkerData'])
             
-            for r in thresholds:
-                count = partner_packages.loc[partner_packages['distance_to_partner'] <= r, 'package_count'].sum()
-                partner_res[f'vol_{r}m'] = int(count)
-                partner_res[f'eligible_{r}m'] = count >= min_volume
-            
-            reduction_results.append(partner_res)
-            
-        return pd.DataFrame(reduction_results)
+        df = df[(df['status'] == 'Active') & df['lat'].notnull()].copy()
+        df['latitude'] = df['lat'].astype(float)
+        df['longitude'] = df['lon'].astype(float)
+        df['radius'] = pd.to_numeric(df['radius'], errors='coerce').fillna(1500)
+        df['capacity'] = pd.to_numeric(df['capacity'], errors='coerce').fillna(45)
+        
+        partners = []
+        for _, row in df.iterrows():
+            origin_hex = h3.latlng_to_cell(row['latitude'], row['longitude'], H3_RESOLUTION)
+            k = max(1, math.ceil((row['radius'] / 1000) / 0.174))
+            partners.append(Partner(
+                partner_id=row['store_id'],
+                origin_hex=origin_hex,
+                capacity=int(row['capacity']),
+                k=k,
+                lat=row['latitude'],
+                lon=row['longitude']
+            ))
+        return partners
 
-    def generate_optimization_layers(self, grid_size_gaps=0.005, grid_size_heatmap=0.002):
-        """Gera um único arquivo GeoJSON com a camada de Gaps (hexágonos) e a camada de Heatmap (pontos)."""
-        print("Gerando camadas de otimização (Gaps e Heatmap)... ")
-        all_features = []
+    @staticmethod
+    def load_snapshot(path):
+        if not path or not os.path.exists(path):
+            return {}
+        try:
+            with open(path, 'r') as f:
+                return json.load(f)
+        except Exception:
+            return {}
 
-        # --- 1. Geração de Gaps (Hexágonos/Quadrados) ---
-        self.df_packages["grid_lat_gap"] = np.round(self.df_packages["latitude"] / grid_size_gaps) * grid_size_gaps
-        self.df_packages["grid_lon_gap"] = np.round(self.df_packages["longitude"] / grid_size_gaps) * grid_size_gaps
-        grid_counts = self.df_packages.groupby(["grid_lat_gap", "grid_lon_gap"]).size().reset_index(name="package_count")
-        
-        tree = KDTree(self.df_partners[["lat", "lon"]].values)
-        distances, _ = tree.query(grid_counts[["grid_lat_gap", "grid_lon_gap"]].values, k=1)
-        grid_counts["dist_to_nearest_partner"] = distances * 111320
-        
-        gaps = grid_counts[(grid_counts["dist_to_nearest_partner"] > 2000) & (grid_counts["package_count"] > 30)]
-        
-        for _, row in gaps.iterrows():
-            lat, lon = row["grid_lat_gap"], row["grid_lon_gap"]
-            d = grid_size_gaps / 2.0
-            poly = Polygon([
-                (lon - d, lat - d), (lon + d, lat - d), (lon + d, lat + d), (lon - d, lat + d), (lon - d, lat - d)
-            ])
-            all_features.append({
-                "type": "Feature",
-                "properties": {
-                    "type": "gap_opportunity",
-                    "package_count": int(row["package_count"])
-                },
-                "geometry": poly.__geo_interface__
-            })
+# =========================
+# OPTIMIZATION ENGINE
+# =========================
+class OptimizationEngine:
+    def __init__(self, partners: List[Partner], hex_packages: Dict[str, float]):
+        self.partners = partners
+        self.hex_packages = hex_packages
+        self.hex_to_partners = defaultdict(list)
+        self.partner_demand = defaultdict(float)
+        self.uncovered_hexes = {}
 
-        # --- 2. Geração de Heatmap (Pontos com intensidade) ---
-        self.df_packages["grid_lat_heat"] = np.round(self.df_packages["latitude"] / grid_size_heatmap) * grid_size_heatmap
-        self.df_packages["grid_lon_heat"] = np.round(self.df_packages["longitude"] / grid_size_heatmap) * grid_size_heatmap
-        heatmap_counts = self.df_packages.groupby(["grid_lat_heat", "grid_lon_heat"]).size().reset_index(name="intensity")
+    def run(self):
+        for p in self.partners:
+            covered_hexes = h3.grid_disk(p.origin_hex, p.k)
+            for h in covered_hexes:
+                if h in self.hex_packages:
+                    self.hex_to_partners[h].append(p)
 
-        for _, row in heatmap_counts.iterrows():
-            all_features.append({
-                "type": "Feature",
-                "properties": {
-                    "type": "heatmap_point",
-                    "intensity": int(row["intensity"])
-                },
-                "geometry": Point(row["grid_lon_heat"], row["grid_lat_heat"]).__geo_interface__
-            })
-
-        # --- Salvar GeoJSON unificado ---
-        geojson = {"type": "FeatureCollection", "features": all_features}
-        output_path = os.path.join(os.path.dirname(self.partners_path), "optimization_layers.geojson")
-        with open(output_path, "w") as f:
-            json.dump(geojson, f)
-        print(f"Arquivo de camadas de otimização salvo em: {output_path}")
-        return gaps
-
-    def analyze_overlap(self):
-        """4. Análise de sobreposição de áreas"""
-        print("Analisando sobreposição (versão otimizada)...")
-        # Usar KDTree para encontrar parceiros próximos
-        tree = KDTree(self.df_partners[['lat', 'lon']].values)
-        
-        # Encontrar todos os parceiros em um raio de 5km (máximo esperado)
-        max_radius_deg = 5000 / 111320
-        indices_list = tree.query_ball_point(self.df_packages[['latitude', 'longitude']].values, r=max_radius_deg)
-        
-        # Vetorizar o cálculo de distância para os parceiros encontrados
-        overlap_counts = np.zeros(len(self.df_packages), dtype=int)
-        
-        # Converter parceiros para arrays numpy para acesso rápido
-        p_lats = self.df_partners['lat'].values
-        p_lons = self.df_partners['lon'].values
-        p_radii = self.df_partners['radius'].values
-        
-        pkg_lats = self.df_packages['latitude'].values
-        pkg_lons = self.df_packages['longitude'].values
-        
-        for i, indices in enumerate(indices_list):
-            if not indices:
+        for h_id, demand in self.hex_packages.items():
+            covering_partners = self.hex_to_partners.get(h_id, [])
+            if not covering_partners:
+                self.uncovered_hexes[h_id] = demand
                 continue
-            
-            # Distância euclidiana aproximada em metros
-            dists = np.sqrt((pkg_lats[i] - p_lats[indices])**2 + (pkg_lons[i] - p_lons[indices])**2) * 111320
-            overlap_counts[i] = np.sum(dists <= p_radii[indices])
-            
-        self.df_packages['partner_count'] = overlap_counts
-        overlapping_packages = self.df_packages[self.df_packages['partner_count'] > 1]
-        
+            total_capacity = sum(p.capacity for p in covering_partners)
+            for p in covering_partners:
+                share = (p.capacity / total_capacity) if total_capacity > 0 else (1 / len(covering_partners))
+                self.partner_demand[p.id] += demand * share
+
         return {
-            'total_overlapping_packages': int(len(overlapping_packages)),
-            'percent_overlap': float(len(overlapping_packages) / len(self.df_packages) * 100)
+            "partner_demand": self.partner_demand,
+            "uncovered_hexes": self.uncovered_hexes,
+            "hex_to_partners": self.hex_to_partners
         }
 
-    def analyze_cluster_coverage(self):
-        """5. Cobertura por cluster/área"""
-        print("Analisando cobertura por cluster...")
-        # Converter pacotes para GeoDataFrame
-        geometry = [Point(xy) for xy in zip(self.df_packages.longitude, self.df_packages.latitude)]
-        gdf_packages = gpd.GeoDataFrame(self.df_packages, geometry=geometry, crs="EPSG:4326")
-        
-        # Garantir que os clusters estão no mesmo CRS
-        self.gdf_clusters = self.gdf_clusters.to_crs("EPSG:4326")
-        
-        # Spatial join entre pacotes e clusters
-        joined = gpd.sjoin(gdf_packages, self.gdf_clusters, how="left", predicate="within")
-        pkg_counts = joined.groupby('cluster').size().reset_index(name='package_count')
-        
-        # Contar parceiros por cluster
-        geometry_partners = [Point(xy) for xy in zip(self.df_partners.lon, self.df_partners.lat)]
-        gdf_partners = gpd.GeoDataFrame(self.df_partners, geometry=geometry_partners, crs="EPSG:4326")
-        partner_joined = gpd.sjoin(gdf_partners, self.gdf_clusters, how="left", predicate="within")
-        partner_counts = partner_joined.groupby('cluster').size().reset_index(name='partner_count')
-        
-        cluster_analysis = self.gdf_clusters.merge(pkg_counts, on='cluster', how='left')
-        cluster_analysis = cluster_analysis.merge(partner_counts, on='cluster', how='left')
-        
-        return cluster_analysis[['cluster', 'package_count', 'partner_count']]
+# =========================
+# DECISION ENGINE
+# =========================
+class DecisionEngine:
+    def __init__(self, partners: List[Partner], hex_packages: Dict[str, float], opt_output: Dict, previous_snapshot: Dict):
+        self.partners = {p.id: p for p in partners}
+        self.hex_packages = hex_packages
+        self.partner_demand = opt_output["partner_demand"]
+        self.uncovered_hexes = opt_output["uncovered_hexes"]
+        self.hex_to_partners = opt_output["hex_to_partners"]
+        self.previous_snapshot = previous_snapshot
+        self.decisions = []
 
-    def simulate_scenario(self, partners_to_remove=[], partners_to_add=[]):
-        """6. Simulação de cenários"""
-        print("Simulando cenário...")
-        # Criar cópia dos parceiros e aplicar mudanças
-        temp_partners = self.df_partners.copy()
-        if partners_to_remove:
-            temp_partners = temp_partners[~temp_partners['store_id'].isin(partners_to_remove)]
+    def run(self):
+        for p_id, p in self.partners.items():
+            self._evaluate_capacity(p)
+            self._evaluate_radius(p)
+
+        self._evaluate_new_partners()
+        self._apply_snapshot_logic()
+        self._log_executed_actions()
+        return self.decisions
+
+    def _evaluate_capacity(self, p: Partner):
+        demand = self.partner_demand.get(p.id, 0)
+        if demand > p.capacity and p.capacity < MAX_CAPACITY:
+            suggested = min(MAX_CAPACITY, math.ceil(demand))
+            self.decisions.append({
+                "entity": "PARTNER",
+                "partner_id": p.id,
+                "decision": "INCREASE_PARTNER_CAPACITY",
+                "current_capacity": p.capacity,
+                "suggested_capacity": suggested,
+                "reason": f"Demanda justa ({round(demand,1)}) excede capacidade atual",
+                "execution_status": "NEW"
+            })
+
+    def _evaluate_radius(self, p: Partner):
+        demand = self.partner_demand.get(p.id, 0)
+        if demand < p.capacity * 0.8:
+            for k_new in range(p.k - 1, 0, -1):
+                new_hexes = h3.grid_disk(p.origin_hex, k_new)
+                simulated_demand = 0
+                for h in new_hexes:
+                    if h in self.hex_packages:
+                        partners = self.hex_to_partners.get(h, [])
+                        total_cap = sum(pt.capacity for pt in partners)
+                        share = (p.capacity / total_cap) if total_cap > 0 else 1
+                        simulated_demand += self.hex_packages[h] * share
+                
+                if simulated_demand >= MIN_CAPACITY:
+                    self.decisions.append({
+                        "entity": "PARTNER",
+                        "partner_id": p.id,
+                        "decision": "REDUCE_RADIUS",
+                        "current_k": p.k,
+                        "suggested_k": k_new,
+                        "reason": f"Folga detectada. Novo raio mantem volume minimo ({round(simulated_demand,1)})",
+                        "execution_status": "NEW"
+                    })
+                    break
+
+    def _evaluate_new_partners(self):
+        gap_clusters = self._cluster_hexes(self.uncovered_hexes)
+        for cluster in gap_clusters:
+            total_vol = sum(self.uncovered_hexes[h] for h in cluster)
+            if total_vol >= NEW_PARTNER_THRESHOLD:
+                qnt_partners = math.ceil(total_vol / MAX_CAPACITY)
+                self.decisions.append({
+                    "entity": "CLUSTER",
+                    "decision": "NEW_PARTNER_GAP",
+                    "hex_count": len(cluster),
+                    "suggested_partners": qnt_partners,
+                    "total_packages": round(total_vol, 2),
+                    "representative_hex": cluster[0],
+                    "reason": "Area totalmente descoberta com volume critico",
+                    "execution_status": "NEW"
+                })
+
+        saturated_hexes = {}
+        for h_id, demand in self.hex_packages.items():
+            if h_id in self.hex_to_partners:
+                total_cap = sum(p.capacity for p in self.hex_to_partners[h_id])
+                if demand > total_cap:
+                    saturated_hexes[h_id] = demand - total_cap
         
-        if partners_to_add:
-            new_df = pd.DataFrame(partners_to_add)
-            temp_partners = pd.concat([temp_partners, new_df], ignore_index=True)
+        opt_clusters = self._cluster_hexes(saturated_hexes)
+        for cluster in opt_clusters:
+            total_excess = sum(saturated_hexes[h] for h in cluster)
+            if total_excess >= NEW_PARTNER_THRESHOLD:
+                qnt_partners = math.ceil(total_excess / MAX_CAPACITY)
+                self.decisions.append({
+                    "entity": "CLUSTER",
+                    "decision": "NEW_PARTNER_OPTIMIZATION",
+                    "hex_count": len(cluster),
+                    "suggested_partners": qnt_partners,
+                    "excess_packages": round(total_excess, 2),
+                    "representative_hex": cluster[0],
+                    "reason": "Parceiros atuais saturados. Novo parceiro aumentaria eficiencia.",
+                    "execution_status": "NEW"
+                })
+
+    def _cluster_hexes(self, hex_dict: Dict[str, float]) -> List[List[str]]:
+        unvisited = set(hex_dict.keys())
+        clusters = []
+        while unvisited:
+            h = unvisited.pop()
+            current_cluster = [h]
+            queue = [h]
+            while queue:
+                curr = queue.pop(0)
+                neighbors = h3.grid_disk(curr, 1)
+                for n in neighbors:
+                    if n in unvisited:
+                        unvisited.remove(n)
+                        current_cluster.append(n)
+                        queue.append(n)
+            clusters.append(current_cluster)
+        return clusters
+
+    def _apply_snapshot_logic(self):
+        """Compara decisões atuais com o snapshot anterior para definir status."""
+        for d in self.decisions:
+            key = f"{d.get('partner_id', 'CLUSTER')}_{d['decision']}"
+            prev = self.previous_snapshot.get(key)
             
-        # Recalcular cobertura
-        tree = KDTree(temp_partners[['lat', 'lon']].values)
-        distances, indices = tree.query(self.df_packages[['latitude', 'longitude']].values, k=1)
-        distances_m = distances * 111320
-        
-        radii = temp_partners['radius'].values
-        eligible_count = sum(distances_m <= radii[indices])
-        
+            if prev:
+                # Se a decisão é a mesma e já foi executada, mantém como EXECUTED
+                if prev.get("execution_status") == "EXECUTED":
+                    # Verifica se os valores sugeridos mudaram
+                    if d.get("suggested_capacity") == prev.get("suggested_capacity") and \
+                       d.get("suggested_k") == prev.get("suggested_k"):
+                        d["execution_status"] = "EXECUTED"
+                    else:
+                        d["execution_status"] = "CHANGED"
+
+    def _log_executed_actions(self):
+        """Registra ações de parceiros existentes que foram concluidas."""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with open(LOG_FILE, "a") as f:
+            for d in self.decisions:
+                if d["entity"] == "PARTNER" and d["execution_status"] == "EXECUTED":
+                    log_line = f"[{timestamp}] PARTNER {d['partner_id']} | {d['decision']} | Concluido\n"
+                    f.write(log_line)
+
+# =========================
+# MAIN ORCHESTRATOR
+# =========================
+class OptimizationHub:
+    def __init__(self, pkg_csv, ptn_json, snapshot_json=None):
+        self.pkg_data = DataIngestion.load_packages(pkg_csv)
+        self.ptn_data = DataIngestion.load_partners(ptn_json)
+        self.snapshot = DataIngestion.load_snapshot(snapshot_json)
+
+    def run(self):
+        engine = OptimizationEngine(self.ptn_data, self.pkg_data)
+        opt_output = engine.run()
+        decisor = DecisionEngine(self.ptn_data, self.pkg_data, opt_output, self.snapshot)
+        decisions = decisor.run()
         return {
-            'new_eligible_total': int(eligible_count),
-            'coverage_change': int(eligible_count - self.df_packages['is_eligible'].sum())
+            "decisions": decisions,
+            "hex_packages": self.pkg_data,
+            "partner_demand": opt_output["partner_demand"]
         }
 
-if __name__ == "__main__":
-    # Exemplo de uso
-    hub = OptimizationHubDelivery(
-        packages_path= config.BASE_DIR,
-        partners_path= config.DEST_FOLDER+'\\dados_mapa.json',
-        clusters_path= config.DEST_FOLDER+'\\clusters_output_filled.geojson'
-    )
+def export_results(results, output_geojson, output_snapshot):
+    features = []
+    hex_decisions = defaultdict(list)
+    for d in results["decisions"]:
+        if d["entity"] == "CLUSTER":
+            hex_decisions[d["representative_hex"]].append(d)
+
+    for h_id, demand in results["hex_packages"].items():
+        boundary = h3.cell_to_boundary(h_id)
+        coords = [[c[1], c[0]] for c in boundary]
+        coords.append(coords[0])
+        
+        features.append({
+            "type": "Feature",
+            "geometry": {"type": "Polygon", "coordinates": [coords]},
+            "properties": {
+                "hex_id": h_id,
+                "packages": round(demand, 2),
+                "decisions": hex_decisions.get(h_id, [])
+            }
+        })
     
-    # Executar elegibilidade primeiro para marcar os pacotes
-    hub.analyze_eligibility()
-    
-    # 2. Redução de raio
-    reduction = hub.analyze_density_reduction()
-    print("\n--- Redução de Raio (Amostra) ---")
-    print(reduction.head())
-    
-    # 3. Gaps
-    gaps = hub.generate_optimization_layers()
-    print("\n--- Gaps de Cobertura (Amostra) ---")
-    print(gaps.head())
-    
-    # 4. Sobreposição
-    overlap = hub.analyze_overlap()
-    print("\n--- Análise de Sobreposição ---")
-    print(overlap)
-    
-    # 5. Cluster
-    clusters = hub.analyze_cluster_coverage()
-    print("\n--- Cobertura por Cluster (Amostra) ---")
-    print(clusters.head())
-    
-    # 6. Simulação
-    sim = hub.simulate_scenario(partners_to_remove=['None']) # Exemplo removendo o ID 'None'
-    print("\n--- Simulação de Cenário ---")
-    print(sim)
+    with open(output_geojson, 'w') as f:
+        json.dump({"type": "FeatureCollection", "features": features}, f)
+
+    snapshot = {f"{d.get('partner_id', 'CLUSTER')}_{d['decision']}": d for d in results["decisions"]}
+    with open(output_snapshot, 'w') as f:
+        json.dump(snapshot, f, indent=2)

@@ -192,6 +192,7 @@ class DecisionEngine:
                     break
 
     def _evaluate_new_partners(self):
+        total_oportunity = 0
         gap_clusters = self._cluster_hexes(self.uncovered_hexes)
         for cluster in gap_clusters:
             total_vol = sum(self.uncovered_hexes[h] for h in cluster)
@@ -207,6 +208,8 @@ class DecisionEngine:
                     "reason": "Area totalmente descoberta com volume critico",
                     "execution_status": "NEW"
                 })
+                total_oportunity += qnt_partners
+        print(total_oportunity)
 
         saturated_hexes = {}
         for h_id, demand in self.hex_packages.items():

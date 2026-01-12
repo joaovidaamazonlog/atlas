@@ -16,6 +16,15 @@ BASE_PREVIOUS_SNAPSHOT = f"{DEST_FOLDER}\\snapshot_current.json"
 #Arquivo CSV de entrada para clustering
 CSV_INPUT_PATH = f"{BASE_PATH}\\pontos_teste.csv"
 
+# Variaveis de configuração de otimização
+H3_RESOLUTION = 9
+HEX_EDGE_M = 174
+RADII_M = [200, 500, 800, 1100, 1500]
+CAPACITIES = [45, 55, 70]
+MIN_CAPACITY = 45
+MAX_CAPACITY = 70
+SCALING_FACTOR = 100  # Para converter float em int para o CP-SAT
+
 # Arquivo JSON de saída
 # O nome do arquivo será dinâmico, mas o diretório de saída é fixo.
 OUTPUT_JSON_DIR = DEST_FOLDER 

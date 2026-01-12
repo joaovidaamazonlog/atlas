@@ -683,9 +683,9 @@
     "reason": "Demanda justa (53.8) excede capacidade atual",
     "execution_status": "NEW"
   },
-  "2079509897_INCREASE_PARTNER_CAPACITY": {
+  "7379059436_INCREASE_PARTNER_CAPACITY": {
     "entity": "PARTNER",
-    "partner_id": "2079509897",
+    "partner_id": "7379059436",
     "decision": "INCREASE_PARTNER_CAPACITY",
     "current_capacity": 45,
     "suggested_capacity": 66,
@@ -6545,10 +6545,10 @@
   "CLUSTER_NEW_PARTNER_GAP": {
     "entity": "CLUSTER",
     "decision": "NEW_PARTNER_GAP",
-    "hex_count": 3,
-    "suggested_partners": 1,
-    "total_packages": 47.33,
-    "representative_hex": "898183d6957ffff",
+    "hex_count": 7,
+    "suggested_partners": 5,
+    "total_packages": 338.2,
+    "representative_hex": "89a8d1b2463ffff",
     "reason": "Area totalmente descoberta com volume critico",
     "execution_status": "NEW"
   },

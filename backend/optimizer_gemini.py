@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import config
 import traceback
+import math
 from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, List
@@ -63,61 +64,79 @@ class DataIngestion:
 # MOTOR DE OTIMIZAÇÃO (CP-SAT)
 # =====================================================
 class CapacityExpansionOptimizer:
-    def __init__(self, cluster_hexes: List[str], cluster_demand: Dict[str, int], max_partners: int = 20):
+    def __init__(self, cluster_id: int, cluster_hexes: List[str], cluster_demand: Dict[str, int]):
+        self.cluster_id = cluster_id
         self.cluster = cluster_hexes
         self.demand = cluster_demand
-        self.max_partners = max_partners
+        
+        # Estima o número de parceiros necessários para evitar testar parceiros demais
+        total_cluster_demand = sum(self.demand.values())
+        self.max_partners = min(25, math.ceil(total_cluster_demand / MIN_CAPACITY) + 2)
 
     def solve(self) -> List[Dict]:
         if not self.demand: return []
         
-        model = cp_model.CpModel()
+        # 1. REDUÇÃO DE CANDIDATOS (O Pulo do Gato para Performance)
+        # Selecionamos apenas os hexágonos com mais demanda para serem sedes (max 30)
+        # Isso reduz drasticamente a matriz de decisão
         H = list(self.demand.keys())
-        C = H 
-        S = range(self.max_partners)
+        C = sorted(H, key=lambda x: self.demand[x], reverse=True)[:30]
         
-        x = {} 
-        y = {} 
+        model = cp_model.CpModel()
+        S = range(self.max_partners)
+        x = {} # Parceiro j aberto em c, com raio r e cap k
+        y = {} # Alocação
 
+        # Pré-processamento de distâncias para evitar loops N^2
         for c in C:
             for s in S:
                 for r in RADII:
                     for k in CAPACITIES:
-                        x[(c, s, r['radius_m'], k)] = model.NewBoolVar(f'x_{c}_{s}_{r["radius_m"]}_{k}')
+                        x[(c, s, r['radius_m'], k)] = model.NewBoolVar(f'x_{c}{s}{r["radius_m"]}_{k}')
 
-        for h in H:
-            for c in C:
+        # Criar variáveis de alocação Y apenas para quem está no raio
+        for c in C:
+            # Buscamos apenas hexágonos no raio máximo de 1.5km (9 hexes de dist no H3)
+            possible_neighbors = [h for h in H if h3.grid_distance(h, c) <= 9]
+            for h in possible_neighbors:
                 dist = h3.grid_distance(h, c)
                 for s in S:
                     for r in RADII:
                         if dist <= r['hex_distance']:
                             for k in CAPACITIES:
-                                y[(h, c, s, r['radius_m'], k)] = model.NewBoolVar(f'y_{h}_{c}_{s}_{r["radius_m"]}_{k}')
+                                y[(h, c, s, r['radius_m'], k)] = model.NewBoolVar(f'y_{h}{c}{s}{r["radius_m"]}{k}')
 
+        # Restrições de Capacidade
         for c in C:
             for s in S:
                 for r in RADII:
-                    r_m = r['radius_m']
+                    rm = r['radius_m']
                     for k in CAPACITIES:
-                        vars_y = [y[key] for key in y if key[1:] == (c, s, r_m, k)]
-                        if not vars_y: continue
+                        relevant_y = [y[key] for key in y if key[1:] == (c, s, rm, k)]
+                        if not relevant_y: continue
                         
-                        load = sum(self.demand[key[0]] * var for key, var in zip([k for k in y if k[1:] == (c, s, r_m, k)], vars_y))
-                        model.Add(load <= k * x[(c, s, r_m, k)])
-                        model.Add(load >= MIN_CAPACITY * x[(c, s, r_m, k)])
+                        load = sum(self.demand[key[0]] * var for key, var in zip([k for k in y if k[1:] == (c, s, rm, k)], relevant_y))
+                        model.Add(load <= k * x[(c, s, rm, k)])
+                        model.Add(load >= MIN_CAPACITY * x[(c, s, rm, k)])
 
+        # Atendimento por hexágono
         for h in H:
-            model.Add(sum(var for key, var in y.items() if key[0] == h) <= 1)
+            relevant_h_y = [v for k, v in y.items() if k[0] == h]
+            if relevant_h_y:
+                model.Add(sum(relevant_h_y) <= 1)
 
-        obj_terms = [self.demand[k[0]] * v * 100 for k, v in y.items()]
+        # Objetivo: Maximizar pacotes - penalidade de raio (favorece raios menores)
+        obj = []
+        for k, v in y.items():
+            obj.append(self.demand[k[0]] * v * 100)
         for (c, s, r_m, k), v in x.items():
             penalty = next(rad['penalty'] for rad in RADII if rad['radius_m'] == r_m)
-            obj_terms.append(-penalty * v)
+            obj.append(-penalty * v)
         
-        model.Maximize(sum(obj_terms))
+        model.Maximize(sum(obj))
         
         solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = 15
+        solver.parameters.max_time_in_seconds = 20 # Limite por cluster
         status = solver.Solve(model)
 
         results = []
@@ -135,16 +154,18 @@ class CapacityExpansionOptimizer:
 # FUNÇÃO DE TRABALHO (Isolada para o Pool)
 # =====================================================
 def _solve_cluster_task(payload):
-    """
-    payload: (list_of_hexes, dict_of_local_demand)
-    """
-    cluster_hexes, local_demand = payload
+    idx, cluster_hexes, local_demand = payload
+    start = datetime.now()
+    # print(f" > Iniciando Cluster {idx} ({len(cluster_hexes)} hexágonos)...")
     try:
-        optimizer = CapacityExpansionOptimizer(cluster_hexes, local_demand)
-        return optimizer.solve()
-    except Exception:
+        opt = CapacityExpansionOptimizer(idx, cluster_hexes, local_demand)
+        res = opt.solve()
+        # duration = (datetime.now() - start).total_seconds()
+        # print(f" √ Cluster {idx} finalizado em {duration:.1f}s. Encontrados {len(res)} parceiros.")
+        return res
+    except Exception as e:
+        print(f" X Erro no Cluster {idx}: {str(e)}")
         return []
-
 # =====================================================
 # ORQUESTRADOR
 # =====================================================
@@ -166,23 +187,36 @@ class OptimizationHub:
             print("Nenhum cluster de expansão encontrado.")
             return self._compile_result(existing_results, [])
 
-        print(f"[{datetime.now()}] Preparando {len(clusters)} tarefas para execução paralela...")
-        # OTIMIZAÇÃO DE MEMÓRIA: Passar apenas a demanda local do cluster para o processo filho
+        # Preparação de tarefas ultra-leves (apenas o necessário por cluster)
         tasks = []
-        for c in clusters:
+        for idx, c in enumerate(clusters):
             local_demand = {h: self.hex_demand_residual[h] for h in c if h in self.hex_demand_residual}
-            tasks.append((c, local_demand))
+            tasks.append((idx, c, local_demand))
 
         new_partners = []
-        # Limitamos max_workers para não estourar a RAM no Windows
+        print(f"[{datetime.now()}] Iniciando Processamento Paralelo de {len(tasks)} clusters...")
+        
+        from concurrent.futures import as_completed
+        # max_workers=4 para evitar estouro de RAM no Windows
         with ProcessPoolExecutor(max_workers=4) as executor:
-            for batch in executor.map(_solve_cluster_task, tasks):
-                for res in batch:
-                    new_partners.append(res)
-                    for h, d in res["allocations"].items():
-                        if h in self.hex_demand_residual:
-                            self.hex_demand_residual[h] = max(0, self.hex_demand_residual[h] - d)
+            futures = [executor.submit(_solve_cluster_task, t) for t in tasks]
+            
+            for i, future in enumerate(as_completed(futures)):
+                try:
+                    batch = future.result()
+                    for res in batch:
+                        new_partners.append(res)
+                        # Atualiza o residual global para o snapshot final
+                        for h, d in res["allocations"].items():
+                            if h in self.hex_demand_residual:
+                                self.hex_demand_residual[h] = max(0, self.hex_demand_residual[h] - d)
+                    
+                    if i % 10 == 0:
+                        print(f"[{datetime.now()}] Progresso: {i}/{len(tasks)} clusters processados...")
+                except Exception as e:
+                    print(f"Erro ao processar resultado de um cluster: {e}")
 
+        # O retorno chama o mesmo compilador de resultados da versão anterior
         return self._compile_result(existing_results, new_partners)
 
     def _process_existing_partners(self):
@@ -215,39 +249,47 @@ class OptimizationHub:
         return results
 
     def _cluster_gaps(self):
-        # Filtro de densidade mínima para clusterizar
-        active_hexes = [h for h, d in self.hex_demand_residual.items() if d >= 2]
+        # Reduzi a exigência para 'd >= 1' para capturar áreas mais espalhadas
+        active_hexes = [h for h, d in self.hex_demand_residual.items() if d >= 1]
         if not active_hexes: return []
         
         coords = np.radians([h3.cell_to_latlng(h) for h in active_hexes])
-        # eps = 1.5km
-        db = DBSCAN(eps=1.5/6371.0088, min_samples=1, metric='haversine', algorithm='ball_tree').fit(coords)
+        # Aumentei levemente o epsilon para 1.6km para conectar áreas próximas
+        db = DBSCAN(eps=1.6/6371.0088, min_samples=1, metric='haversine').fit(coords)
         
         clusters_dict = {}
         for idx, lbl in enumerate(db.labels_):
             if lbl == -1: continue
             if lbl not in clusters_dict: clusters_dict[lbl] = []
             clusters_dict[lbl].append(active_hexes[idx])
-            
-        # Manter apenas clusters que podem sustentar pelo menos 1 parceiro (45 pacotes)
+                
         final_clusters = []
         for c in clusters_dict.values():
-            if sum(self.hex_demand_residual[h] for h in c) >= MIN_CAPACITY:
+            cluster_total = sum(self.hex_demand_residual[h] for h in c)
+            # Se o cluster tem pelo menos 45 pacotes, ele é elegível para um novo parceiro
+            if cluster_total >= MIN_CAPACITY:
                 final_clusters.append(c)
         return final_clusters
 
     def _compile_result(self, existing, new):
+        """Mantém a assinatura de saída idêntica para não quebrar os exports"""
+        served_ex = sum(p["total_assigned"] for p in existing)
+        served_new = sum(p["total_assigned"] for p in new)
         return {
             "summary": {
                 "total_demand": sum(self.hex_demand_original.values()),
-                "served_by_existing": sum(p["total_assigned"] for p in existing),
-                "served_by_new": sum(p["total_assigned"] for p in new),
+                "served_by_existing": served_ex,
+                "served_by_new": served_new,
                 "residual_demand": sum(self.hex_demand_residual.values()),
+                "existing_partners_used": len(existing),
                 "new_partners_suggested": len(new)
             },
             "existing_partners": existing,
             "new_partners": new,
-            "snapshots": {"before": self.hex_demand_original, "after": self.hex_demand_residual}
+            "snapshots": {
+                "before": self.hex_demand_original, 
+                "after": self.hex_demand_residual
+            }
         }
 
     @staticmethod
@@ -274,6 +316,68 @@ class OptimizationHub:
         with open(path / "mapa.geojson", "w") as f:
             json.dump({"type": "FeatureCollection", "features": features}, f)
 
+    @staticmethod
+    def export_rich_geojson(result, output_path):
+        features = []
+        
+        # Criar um mapa de Hexágono -> Lista de Parceiros que o atendem
+        hex_to_partners = {}
+        for p in result["existing_partners"] + result["new_partners"]:
+            p_id = p.get("partner_id", "NOVO_PARCEIRO")
+            for h_id in p["allocations"].keys():
+                if h_id not in hex_to_partners:
+                    hex_to_partners[h_id] = []
+                hex_to_partners[h_id].append(str(p_id))
+
+        # 1. GERAR POLÍGONOS DO GRID H3
+        all_hexes = set(result["snapshots"]["before"].keys())
+        for h_id in all_hexes:
+            total = result["snapshots"]["before"].get(h_id, 0)
+            residual = result["snapshots"]["after"].get(h_id, 0)
+            partners = hex_to_partners.get(h_id, [])
+            
+            # Lógica de Prospecção: Se sobrou demanda e não há parceiro, ou demanda residual alta
+            prospecting_score = 0
+            if residual > 0 and not partners:
+                prospecting_score = 1 # Recomendação simples
+                if residual > 10: prospecting_score = 2 # Alta prioridade
+                
+            boundary = h3.cell_to_boundary(h_id)
+            # H3 retorna (lat, lng), GeoJSON precisa de [lng, lat]
+            coords = [[c[1], c[0]] for c in boundary]
+            coords.append(coords[0]) # Fechar o polígono
+
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Polygon", "coordinates": [coords]},
+                "properties": {
+                    "hex_id": h_id,
+                    "total_demand": int(total),
+                    "residual_demand": int(residual),
+                    "partners_serving": ", ".join(partners) if partners else "Nenhum",
+                    "prospecting_indicator": prospecting_score,
+                    "fill": "#ff0000" if prospecting_score == 2 else "#feb24c" if prospecting_score == 1 else "#31a354"
+                }
+            })
+
+        # 2. GERAR PONTOS DOS PARCEIROS
+        for p in result["existing_partners"] + result["new_partners"]:
+            lat, lng = h3.cell_to_latlng(p["origin_hex"])
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [lng, lat]},
+                "properties": {
+                    "type": "PARTNER_LOCATION",
+                    "entity": p["entity"],
+                    "id": p.get("partner_id", "NOVO"),
+                    "radius_m": p["radius_m"],
+                    "total_assigned": p["total_assigned"],
+                    "marker-color": "#7b3294" if p["entity"] == "PARTNER" else "#008837"
+                }
+            })
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump({"type": "FeatureCollection", "features": features}, f)
 # =====================================================
 # EXECUÇÃO PRINCIPAL
 # =====================================================
@@ -284,6 +388,7 @@ if __name__ == "__main__":
         final_result = hub.run()
         
         OptimizationHub.save_all(final_result, config.DEST_FOLDER)
+        OptimizationHub.export_rich_geojson(final_result, Path(config.DEST_FOLDER) / "rich_map.geojson")
         print(f"Concluído! {final_result['summary']['new_partners_suggested']} novos parceiros sugeridos.")
         
     except Exception:

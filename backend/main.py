@@ -75,7 +75,8 @@ def run_pipeline():
         ScorecardGenerator(scorecard_df, output_path_scorecard, config.SCORECARD_CONFIG).generate_scorecard()
         
         #Otimização
-        opt_hub = optimization_hub_delivery.OptimizationHub(
+        
+        """opt_hub = optimization_hub_delivery.OptimizationHub(
             config.BASE_PACKAGES,
             config.BASE_PARTNERS,
             config.BASE_PREVIOUS_SNAPSHOT
@@ -87,7 +88,7 @@ def run_pipeline():
             results, 
             config.OUTPUT_JSON_DIR+"/optimization_layer.geojson", 
             config.OUTPUT_JSON_DIR+"/snapshot_current.json"
-        )
+        )"""
 
     except Exception as e:
         print(f"\nERRO CRÍTICO DURANTE A EXECUÇÃO DO PIPELINE: {e}")

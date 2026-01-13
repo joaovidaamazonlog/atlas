@@ -1,20 +1,21 @@
 # /seu_projeto/config.py
 
 from datetime import datetime
+from pathlib import Path
 
 # --- Caminhos de Arquivos e Pastas ---
 # Altere estes caminhos para corresponder ao seu ambiente
-BASE_PATH = r"C:\Users\joaovida\Documents\Projetos\atlas\backend"
-DEST_FOLDER = r"C:\Users\joaovida\Documents\Projetos\atlas\data"
+BASE_PATH = Path(r"C:\Users\joaovida\Documents\Projetos\atlas\backend")
+DEST_FOLDER = Path(r"C:\Users\joaovida\Documents\Projetos\atlas\data")
 
 # Arquivo Excel de entrada
-EXCEL_FILE_PATH = f"{BASE_PATH}\\terra.xlsm"
-BASE_PACKAGES = f"{BASE_PATH}\\base_pacotes.csv"
-BASE_PARTNERS = f"{DEST_FOLDER}\\dados_mapa.json"
-BASE_PREVIOUS_SNAPSHOT = f"{DEST_FOLDER}\\snapshot_current.json"
+EXCEL_FILE_PATH = BASE_PATH / "terra.xlsm"
+BASE_PACKAGES = Path(r"C:\Users\joaovida\Documents\Projetos\base_pacotes.csv")
+BASE_PARTNERS = DEST_FOLDER / "dados_mapa.json"
+BASE_PREVIOUS_SNAPSHOT = DEST_FOLDER / "snapshot_current.json"
 
 #Arquivo CSV de entrada para clustering
-CSV_INPUT_PATH = f"{BASE_PATH}\\pontos_teste.csv"
+CSV_INPUT_PATH = BASE_PATH / "pontos_teste.csv"
 
 # Variaveis de configuração de otimização
 H3_RESOLUTION = 9

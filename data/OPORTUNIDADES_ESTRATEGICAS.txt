@@ -1,0 +1,830 @@
+RELATÓRIO DE EXPANSÃO - GERADO EM 19/01/2026 17:15
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DAM1
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     5,753 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     4,377 pk
+  - Gap de Expansão (Residual):1,376 pk
+  - Potencial de Novos Pts:    64 vagas
+  - Média de Pacotes/Vaga:     68.4 pk
+  - Média de Raio Proposto:    556 m
+  - Divisão Geográfica:        61 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DAM1:
+
+  1º) DAM1_B4 - Potencial: 919 pk
+      14 vagas | Média: 65.6 pk/vaga | Raio Médio: 586m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.094586146556541,-60.000116212019144
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.094586146556541,-60.000116212019144
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.094586146556541,-60.000116212019144
+
+  2º) DAM1_B2 - Potencial: 900 pk
+      13 vagas | Média: 69.2 pk/vaga | Raio Médio: 546m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.100317062883526,-60.02200336069896
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.0931600998419952,-60.03792489951638
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.0960248702151696,-60.04886456721687
+
+  3º) DAM1_B6 - Potencial: 770 pk
+      11 vagas | Média: 70.0 pk/vaga | Raio Médio: 445m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.0891674333795818,-60.01341108448857
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.0718764684033433,-59.99373361219316
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.08763268803837,-60.01064024021144
+
+  4º) DAM1_B7 - Potencial: 685 pk
+      10 vagas | Média: 68.5 pk/vaga | Raio Médio: 620m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.105532466579877,-60.01411142932961
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.112078519362318,-60.014391575033386
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-3.107066920819109,-60.016882244796065
+
+  5º) DAM1_B8 - Potencial: 490 pk
+      7 vagas | Média: 70.0 pk/vaga | Raio Médio: 500m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.082121398711544,-60.0698986334637
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.0886652546001163,-60.07017912298338
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.065964905785987,-60.06379931954103
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DBH5
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     12,955 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     11,467 pk
+  - Gap de Expansão (Residual):1,488 pk
+  - Potencial de Novos Pts:    165 vagas
+  - Média de Pacotes/Vaga:     69.5 pk
+  - Média de Raio Proposto:    356 m
+  - Divisão Geográfica:        89 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DBH5:
+
+  1º) DBH5_B24 - Potencial: 5,730 pk
+      82 vagas | Média: 69.9 pk/vaga | Raio Médio: 306m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.92301986540898,-43.939830771485944
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.92621910556906,-43.939907994501496
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.92621910556906,-43.939907994501496
+
+  2º) DBH5_B23 - Potencial: 2,000 pk
+      29 vagas | Média: 69.0 pk/vaga | Raio Médio: 407m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.968621652689944,-43.96845212163007
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.968621652689944,-43.96845212163007
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.968621652689944,-43.96845212163007
+
+  3º) DBH5_B22 - Potencial: 1,534 pk
+      22 vagas | Média: 69.7 pk/vaga | Raio Médio: 364m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.979078454745398,-43.93812645368655
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.979078454745398,-43.93812645368655
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.95669307843475,-43.93758592435225
+
+  4º) DBH5_B20 - Potencial: 980 pk
+      14 vagas | Média: 70.0 pk/vaga | Raio Médio: 307m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.93681158443418,-43.961567429101805
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.937977920167228,-43.97688374718665
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.93192675052319,-43.964506962416365
+
+  5º) DBH5_B21 - Potencial: 560 pk
+      8 vagas | Média: 70.0 pk/vaga | Raio Médio: 462m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.900307555252645,-43.89341848699978
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.906365948046076,-43.90579501846346
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.906365948046076,-43.90579501846346
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DBR9
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     30,758 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     27,645 pk
+  - Gap de Expansão (Residual):3,113 pk
+  - Potencial de Novos Pts:    397 vagas
+  - Média de Pacotes/Vaga:     69.6 pk
+  - Média de Raio Proposto:    364 m
+  - Divisão Geográfica:        84 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DBR9:
+
+  1º) DBR9_B4 - Potencial: 4,969 pk
+      71 vagas | Média: 70.0 pk/vaga | Raio Médio: 293m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.576924563860256,-46.64793685072631
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.57218419402469,-46.65085758161229
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.57218419402469,-46.65085758161229
+
+  2º) DBR9_B11 - Potencial: 4,270 pk
+      61 vagas | Média: 70.0 pk/vaga | Raio Médio: 343m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.54291227641839,-46.653054274800475
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.55378740124668,-46.65031467609093
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.55378740124668,-46.65031467609093
+
+  3º) DBR9_B2 - Potencial: 3,290 pk
+      47 vagas | Média: 70.0 pk/vaga | Raio Médio: 315m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.570509431874974,-46.65386874516083
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.570509431874974,-46.65386874516083
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.558783914181284,-46.674945744512534
+
+  4º) DBR9_B5 - Potencial: 3,128 pk
+      45 vagas | Média: 69.5 pk/vaga | Raio Médio: 347m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.533966410363934,-46.68033302682614
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.533966410363934,-46.68033302682614
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.53564220661305,-46.67732232793479
+
+  5º) DBR9_B7 - Potencial: 2,849 pk
+      41 vagas | Média: 69.5 pk/vaga | Raio Médio: 324m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.6036583439147,-46.667090285892066
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.601983811460556,-46.670101423569925
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.601983811460556,-46.670101423569925
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DBS5
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     26,622 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     22,509 pk
+  - Gap de Expansão (Residual):4,113 pk
+  - Potencial de Novos Pts:    326 vagas
+  - Média de Pacotes/Vaga:     69.0 pk
+  - Média de Raio Proposto:    394 m
+  - Divisão Geográfica:        139 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DBS5:
+
+  1º) DBS5_B1 - Potencial: 3,975 pk
+      57 vagas | Média: 69.7 pk/vaga | Raio Médio: 253m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.835768227706193,-48.03989145179108
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.83782841697898,-48.03091814043726
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.83782841697898,-48.03091814043726
+
+  2º) DBS5_B59 - Potencial: 2,143 pk
+      31 vagas | Média: 69.1 pk/vaga | Raio Médio: 316m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.796393918657209,-47.92732380638523
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.796393918657209,-47.92732380638523
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.796393918657209,-47.92732380638523
+
+  3º) DBS5_B52 - Potencial: 2,008 pk
+      29 vagas | Média: 69.2 pk/vaga | Raio Médio: 366m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.820265957651138,-47.909940878560064
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.820265957651138,-47.909940878560064
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.820538454876921,-47.90392411035761
+
+  4º) DBS5_B51 - Potencial: 1,868 pk
+      27 vagas | Média: 69.2 pk/vaga | Raio Médio: 322m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.758496684674766,-47.89008406605917
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.758496684674766,-47.89008406605917
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.770163594403325,-47.88740839082943
+
+  5º) DBS5_B7 - Potencial: 1,795 pk
+      26 vagas | Média: 69.0 pk/vaga | Raio Médio: 385m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.840305975356518,-47.976784711912764
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.840305975356518,-47.976784711912764
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-15.840305975356518,-47.976784711912764
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DCE3
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     17,360 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     14,427 pk
+  - Gap de Expansão (Residual):2,933 pk
+  - Potencial de Novos Pts:    210 vagas
+  - Média de Pacotes/Vaga:     68.7 pk
+  - Média de Raio Proposto:    447 m
+  - Divisão Geográfica:        125 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DCE3:
+
+  1º) DCE3_B17 - Potencial: 3,500 pk
+      50 vagas | Média: 70.0 pk/vaga | Raio Médio: 314m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.725994482199715,-38.50101265168323
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.729522813905003,-38.49510595486621
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.729522813905003,-38.49510595486621
+
+  2º) DCE3_B13 - Potencial: 1,811 pk
+      26 vagas | Média: 69.7 pk/vaga | Raio Médio: 419m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.740964210717349,-38.533995861410425
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.740691257442779,-38.55186626590272
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.740691257442779,-38.55186626590272
+
+  3º) DCE3_B15 - Potencial: 1,345 pk
+      20 vagas | Média: 67.2 pk/vaga | Raio Médio: 410m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.7778300913953915,-38.48388500720894
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.7673363982612393,-38.495649607709765
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.79130959994014,-38.50195226589127
+
+  4º) DCE3_B8 - Potencial: 1,190 pk
+      17 vagas | Média: 70.0 pk/vaga | Raio Médio: 429m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.745218367377185,-38.48043798666273
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.743544862598397,-38.47743530198539
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.743544862598397,-38.47743530198539
+
+  5º) DCE3_B9 - Potencial: 910 pk
+      13 vagas | Média: 70.0 pk/vaga | Raio Médio: 454m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.757607264015253,-38.56998625584386
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-3.7747057641449646,-38.576192650869125
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-3.78325513210415,-38.579295988764216
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DES2
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     7,155 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     5,464 pk
+  - Gap de Expansão (Residual):1,691 pk
+  - Potencial de Novos Pts:    81 vagas
+  - Média de Pacotes/Vaga:     67.5 pk
+  - Média de Raio Proposto:    463 m
+  - Divisão Geográfica:        94 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DES2:
+
+  1º) DES2_B27 - Potencial: 1,519 pk
+      22 vagas | Média: 69.0 pk/vaga | Raio Médio: 377m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.29995497681052,-40.297146459325674
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.307951048144403,-40.29423702872552
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.296765622658654,-40.297086914485476
+
+  2º) DES2_B36 - Potencial: 978 pk
+      14 vagas | Média: 69.9 pk/vaga | Raio Médio: 350m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.331980745025238,-40.27939162996632
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.331980745025238,-40.27939162996632
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.331980745025238,-40.27939162996632
+
+  3º) DES2_B62 - Potencial: 840 pk
+      12 vagas | Média: 70.0 pk/vaga | Raio Médio: 400m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.19483837602443,-40.27071997320459
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-20.19483837602443,-40.27071997320459
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.245906592708934,-40.27167053091982
+
+  4º) DES2_B33 - Potencial: 700 pk
+      10 vagas | Média: 70.0 pk/vaga | Raio Médio: 380m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.377993470278057,-40.307781427934856
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.363721022694122,-40.298337478774734
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-20.382750421983605,-40.310929522740985
+
+  5º) DES2_B34 - Potencial: 389 pk
+      6 vagas | Média: 64.8 pk/vaga | Raio Médio: 650m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-20.353442195257852,-40.38991849397609
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-20.335932803446035,-40.38652975732448
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-20.335932803446035,-40.38652975732448
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DFR2
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     6,372 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     3,914 pk
+  - Gap de Expansão (Residual):2,458 pk
+  - Potencial de Novos Pts:    58 vagas
+  - Média de Pacotes/Vaga:     67.5 pk
+  - Média de Raio Proposto:    583 m
+  - Divisão Geográfica:        145 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DFR2:
+
+  1º) DFR2_B17 - Potencial: 1,018 pk
+      15 vagas | Média: 67.9 pk/vaga | Raio Médio: 560m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.597890361343904,-48.610854385924874
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-27.597890361343904,-48.610854385924874
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-27.597890361343904,-48.610854385924874
+
+  2º) DFR2_B66 - Potencial: 684 pk
+      10 vagas | Média: 68.4 pk/vaga | Raio Médio: 470m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.586183645435476,-48.49709534820338
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.57673643803187,-48.50902679600332
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.603166278183473,-48.50380842347104
+
+  3º) DFR2_B65 - Potencial: 628 pk
+      9 vagas | Média: 69.8 pk/vaga | Raio Médio: 467m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.591037988992028,-48.55854103371217
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.593931770054887,-48.55864091565725
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-27.588528075794503,-48.55232717232898
+
+  4º) DFR2_B18 - Potencial: 280 pk
+      4 vagas | Média: 70.0 pk/vaga | Raio Médio: 650m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-27.559108281964843,-48.6278893495442
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-27.555439087894815,-48.64001263501698
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-27.568565550022633,-48.61596561688824
+
+  5º) DFR2_B16 - Potencial: 267 pk
+      4 vagas | Média: 66.8 pk/vaga | Raio Médio: 650m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-27.622547243231196,-48.6790895096914
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-27.6415355880166,-48.67668657574612
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-27.629191486605567,-48.68850751455246
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DGO2
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     8,698 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     6,393 pk
+  - Gap de Expansão (Residual):2,305 pk
+  - Potencial de Novos Pts:    95 vagas
+  - Média de Pacotes/Vaga:     67.3 pk
+  - Média de Raio Proposto:    541 m
+  - Divisão Geográfica:        201 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DGO2:
+
+  1º) DGO2_B42 - Potencial: 2,074 pk
+      30 vagas | Média: 69.1 pk/vaga | Raio Médio: 410m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.718721215333538,-49.26592005927663
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.718721215333538,-49.26592005927663
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.715458809875205,-49.265818743112206
+
+  2º) DGO2_B48 - Potencial: 1,120 pk
+      16 vagas | Média: 70.0 pk/vaga | Raio Médio: 462m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.704908714583006,-49.31050103122358
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.698508328711792,-49.27729575343194
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.698508328711792,-49.27729575343194
+
+  3º) DGO2_B44 - Potencial: 618 pk
+      9 vagas | Média: 68.7 pk/vaga | Raio Médio: 567m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.650624258214325,-49.22479354831929
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.65799214127874,-49.24002749418416
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-16.668303812785197,-49.26135389398564
+
+  4º) DGO2_B49 - Potencial: 525 pk
+      8 vagas | Média: 65.6 pk/vaga | Raio Médio: 688m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.76080582083446,-49.27322962419576
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-16.7382939363428,-49.266527975932924
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-16.7382939363428,-49.266527975932924
+
+  5º) DGO2_B50 - Potencial: 409 pk
+      6 vagas | Média: 68.2 pk/vaga | Raio Médio: 600m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-16.67272189812116,-49.27049337677448
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-16.651348595410536,-49.27283043577316
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-16.645019430992143,-49.299637585962266
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DMG2
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     7,675 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     6,004 pk
+  - Gap de Expansão (Residual):1,671 pk
+  - Potencial de Novos Pts:    88 vagas
+  - Média de Pacotes/Vaga:     68.2 pk
+  - Média de Raio Proposto:    595 m
+  - Divisão Geográfica:        30 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DMG2:
+
+  1º) DMG2_B9 - Potencial: 957 pk
+      14 vagas | Média: 68.4 pk/vaga | Raio Médio: 543m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.878350302242485,-43.99072796121001
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.868748218023505,-43.99049558269177
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.886264404003562,-43.99397681937422
+
+  2º) DMG2_B11 - Potencial: 815 pk
+      12 vagas | Média: 67.9 pk/vaga | Raio Médio: 525m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.88764951094858,-43.94509215750736
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.899759154493907,-43.96984430627096
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.897594415739864,-43.93310209098633
+
+  3º) DMG2_B10 - Potencial: 693 pk
+      10 vagas | Média: 69.3 pk/vaga | Raio Médio: 560m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.89288010168389,-43.92993085382749
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.884965061523804,-43.92668249509921
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.872676314124114,-43.90804140312625
+
+  4º) DMG2_B7 - Potencial: 678 pk
+      10 vagas | Média: 67.8 pk/vaga | Raio Médio: 590m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-19.860356704888577,-43.947490867325314
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.860356704888577,-43.947490867325314
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.860356704888577,-43.947490867325314
+
+  5º) DMG2_B1 - Potencial: 544 pk
+      8 vagas | Média: 68.0 pk/vaga | Raio Médio: 575m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.94048098138119,-44.00140490704516
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.92262547716966,-44.01014453915085
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-19.933559704232394,-44.01958202081786
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DPB3
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     7,705 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     6,937 pk
+  - Gap de Expansão (Residual):768 pk
+  - Potencial de Novos Pts:    101 vagas
+  - Média de Pacotes/Vaga:     68.7 pk
+  - Média de Raio Proposto:    458 m
+  - Divisão Geográfica:        50 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DPB3:
+
+  1º) DPB3_B12 - Potencial: 2,829 pk
+      41 vagas | Média: 69.0 pk/vaga | Raio Médio: 434m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.101938339688647,-34.858292189431495
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.115695764004121,-34.82884926756188
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.115695764004121,-34.82884926756188
+
+  2º) DPB3_B11 - Potencial: 1,610 pk
+      23 vagas | Média: 70.0 pk/vaga | Raio Médio: 396m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.134447622701006,-34.831980282977185
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.134447622701006,-34.831980282977185
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.134447622701006,-34.831980282977185
+
+  3º) DPB3_B14 - Potencial: 1,120 pk
+      16 vagas | Média: 70.0 pk/vaga | Raio Médio: 350m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.083252580313444,-34.83741880008253
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.083252580313444,-34.83741880008253
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.083252580313444,-34.83741880008253
+
+  4º) DPB3_B13 - Potencial: 727 pk
+      11 vagas | Média: 66.1 pk/vaga | Raio Médio: 636m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.185488427307836,-34.86794397784854
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-7.185488427307836,-34.86794397784854
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-7.185488427307836,-34.86794397784854
+
+  5º) DPB3_B31 - Potencial: 210 pk
+      3 vagas | Média: 70.0 pk/vaga | Raio Médio: 600m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-7.200871319303329,-34.85921443347914
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-7.216273955406848,-34.8445698866711
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-7.2094518588236784,-34.84450641803553
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DPE4
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     19,990 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     17,380 pk
+  - Gap de Expansão (Residual):2,610 pk
+  - Potencial de Novos Pts:    252 vagas
+  - Média de Pacotes/Vaga:     69.0 pk
+  - Média de Raio Proposto:    394 m
+  - Divisão Geográfica:        109 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DPE4:
+
+  1º) DPE4_B19 - Potencial: 4,408 pk
+      63 vagas | Média: 70.0 pk/vaga | Raio Médio: 295m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.035960715304904,-34.89662940869738
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.035960715304904,-34.89662940869738
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.035960715304904,-34.89662940869738
+
+  2º) DPE4_B13 - Potencial: 3,500 pk
+      50 vagas | Média: 70.0 pk/vaga | Raio Médio: 272m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.126202978611536,-34.90636411736051
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.143231020178549,-34.90652451934547
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.110892396206637,-34.89733409112314
+
+  3º) DPE4_B18 - Potencial: 2,359 pk
+      34 vagas | Média: 69.4 pk/vaga | Raio Médio: 376m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.058051712706503,-34.92349359169678
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.030812037372888,-34.917312728782015
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.030812037372888,-34.917312728782015
+
+  4º) DPE4_B9 - Potencial: 1,592 pk
+      23 vagas | Média: 69.2 pk/vaga | Raio Médio: 383m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.180671740119896,-34.91872671783316
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.20278276794392,-34.933748584769454
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.172163049135015,-34.915684019571295
+
+  5º) DPE4_B11 - Potencial: 1,092 pk
+      16 vagas | Média: 68.2 pk/vaga | Raio Médio: 444m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.097184746572994,-34.94459918963473
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.086966159741909,-34.94450239104541
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-8.097184746572994,-34.94459918963473
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DPR2
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     12,538 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     8,879 pk
+  - Gap de Expansão (Residual):3,659 pk
+  - Potencial de Novos Pts:    131 vagas
+  - Média de Pacotes/Vaga:     67.8 pk
+  - Média de Raio Proposto:    521 m
+  - Divisão Geográfica:        221 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DPR2:
+
+  1º) DPR2_B30 - Potencial: 1,469 pk
+      21 vagas | Média: 70.0 pk/vaga | Raio Médio: 400m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.456218298764856,-49.28798063474628
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-25.456218298764856,-49.28798063474628
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-25.456218298764856,-49.28798063474628
+
+  2º) DPR2_B26 - Potencial: 840 pk
+      12 vagas | Média: 70.0 pk/vaga | Raio Médio: 400m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.413229737680208,-49.28345345223221
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.413229737680208,-49.28345345223221
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.405886428683175,-49.258850878045074
+
+  3º) DPR2_B32 - Potencial: 700 pk
+      10 vagas | Média: 70.0 pk/vaga | Raio Médio: 410m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.436873752526004,-49.24165433515893
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.418203217089655,-49.25318745966717
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.433098715167887,-49.25370067937448
+
+  4º) DPR2_B37 - Potencial: 608 pk
+      9 vagas | Média: 67.6 pk/vaga | Raio Médio: 600m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-25.430074452139504,-49.3448995970713
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-25.445849646155985,-49.35457418853248
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-25.445849646155985,-49.35457418853248
+
+  5º) DPR2_B34 - Potencial: 603 pk
+      9 vagas | Média: 67.0 pk/vaga | Raio Médio: 533m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.48083536045036,-49.276655084723885
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-25.48083536045036,-49.276655084723885
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-25.48083536045036,-49.276655084723885
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DRJ3
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     32,389 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     28,810 pk
+  - Gap de Expansão (Residual):3,579 pk
+  - Potencial de Novos Pts:    414 vagas
+  - Média de Pacotes/Vaga:     69.6 pk
+  - Média de Raio Proposto:    336 m
+  - Divisão Geográfica:        71 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DRJ3:
+
+  1º) DRJ3_B21 - Potencial: 6,020 pk
+      86 vagas | Média: 70.0 pk/vaga | Raio Médio: 252m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.93964748297116,-43.17521042862192
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.974918175328877,-43.19142157010372
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.974918175328877,-43.19142157010372
+
+  2º) DRJ3_B22 - Potencial: 4,035 pk
+      58 vagas | Média: 69.6 pk/vaga | Raio Médio: 267m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.930483760905393,-43.233393624828025
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.930483760905393,-43.233393624828025
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.930483760905393,-43.233393624828025
+
+  3º) DRJ3_B23 - Potencial: 3,990 pk
+      57 vagas | Média: 70.0 pk/vaga | Raio Médio: 274m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.98568819707806,-43.19475278921864
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.984213313461044,-43.19164351218609
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.984213313461044,-43.19164351218609
+
+  4º) DRJ3_B29 - Potencial: 1,810 pk
+      26 vagas | Média: 69.6 pk/vaga | Raio Médio: 396m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.02391434994403,-43.463103768374346
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.022636114995006,-43.512251438457625
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.02391434994403,-43.463103768374346
+
+  5º) DRJ3_B24 - Potencial: 1,680 pk
+      24 vagas | Média: 70.0 pk/vaga | Raio Médio: 338m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.92872346806846,-43.17802384046789
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.930347447278045,-43.17498874079579
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.930347447278045,-43.17498874079579
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DRS5
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     14,528 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     11,047 pk
+  - Gap de Expansão (Residual):3,481 pk
+  - Potencial de Novos Pts:    161 vagas
+  - Média de Pacotes/Vaga:     68.6 pk
+  - Média de Raio Proposto:    519 m
+  - Divisão Geográfica:        182 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DRS5:
+
+  1º) DRS5_B6 - Potencial: 2,362 pk
+      34 vagas | Média: 69.5 pk/vaga | Raio Médio: 403m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.034337784811008,-51.22438946005807
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.032696202658,-51.227364718570655
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.032696202658,-51.227364718570655
+
+  2º) DRS5_B11 - Potencial: 1,747 pk
+      25 vagas | Média: 69.9 pk/vaga | Raio Médio: 344m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.00856274027169,-51.16858504182705
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.00589026359044,-51.18368925945724
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.01850319258611,-51.16594452484422
+
+  3º) DRS5_B1 - Potencial: 962 pk
+      14 vagas | Média: 68.7 pk/vaga | Raio Médio: 436m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.05463716445786,-51.197833307895884
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.052204938515622,-51.161222569999005
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.04123850799435,-51.17599271582518
+
+  4º) DRS5_B0 - Potencial: 768 pk
+      11 vagas | Média: 69.8 pk/vaga | Raio Médio: 445m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.017183396352806,-51.13241874725946
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-30.017183396352806,-51.13241874725946
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-30.011748125552888,-51.14741447092933
+
+  5º) DRS5_B4 - Potencial: 626 pk
+      9 vagas | Média: 69.6 pk/vaga | Raio Médio: 567m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-30.091338419957474,-51.238871383801815
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-30.091338419957474,-51.238871383801815
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-30.112393746526124,-51.25189510606858
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DSA8
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     7,938 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     5,974 pk
+  - Gap de Expansão (Residual):1,964 pk
+  - Potencial de Novos Pts:    87 vagas
+  - Média de Pacotes/Vaga:     68.7 pk
+  - Média de Raio Proposto:    459 m
+  - Divisão Geográfica:        59 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DSA8:
+
+  1º) DSA8_B13 - Potencial: 1,960 pk
+      28 vagas | Média: 70.0 pk/vaga | Raio Médio: 371m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-13.002688053768003,-38.46507755573162
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-13.002688053768003,-38.46507755573162
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-12.999323878870422,-38.465027636728685
+
+  2º) DSA8_B17 - Potencial: 1,535 pk
+      22 vagas | Média: 69.8 pk/vaga | Raio Médio: 377m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-13.00404895842952,-38.52846055214464
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-13.000715865327319,-38.522375889893745
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-13.00404895842952,-38.52846055214464
+
+  3º) DSA8_B16 - Potencial: 827 pk
+      12 vagas | Média: 68.9 pk/vaga | Raio Médio: 475m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-12.950817309220376,-38.4069917634192
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-12.974224485414984,-38.43750361135701
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-12.964159992028877,-38.43132131667508
+
+  4º) DSA8_B15 - Potencial: 534 pk
+      8 vagas | Média: 66.8 pk/vaga | Raio Médio: 650m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-12.935803836451168,-38.379623660749196
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-12.905601350722666,-38.36108341278953
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-12.94587026933628,-38.38580426684264
+
+  5º) DSA8_B36 - Potencial: 265 pk
+      4 vagas | Média: 66.2 pk/vaga | Raio Médio: 575m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-12.94075136700084,-38.400810523229794
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-12.94075136700084,-38.400810523229794
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-12.94075136700084,-38.400810523229794
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DSP2
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     14,678 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     12,672 pk
+  - Gap de Expansão (Residual):2,006 pk
+  - Potencial de Novos Pts:    185 vagas
+  - Média de Pacotes/Vaga:     68.5 pk
+  - Média de Raio Proposto:    498 m
+  - Divisão Geográfica:        105 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DSP2:
+
+  1º) DSP2_B7 - Potencial: 1,445 pk
+      21 vagas | Média: 68.8 pk/vaga | Raio Médio: 414m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.58448763925878,-46.58388022752571
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.58448763925878,-46.58388022752571
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.589226533707066,-46.58095840220958
+
+  2º) DSP2_B0 - Potencial: 1,400 pk
+      20 vagas | Média: 70.0 pk/vaga | Raio Médio: 395m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.534029255001197,-46.579335583071085
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.529568123657803,-46.57614351888386
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.54379240673505,-46.56737825183314
+
+  3º) DSP2_B3 - Potencial: 1,352 pk
+      20 vagas | Média: 67.6 pk/vaga | Raio Médio: 455m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.501942636025877,-46.60899988943106
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.488273622741318,-46.60553723663295
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-23.488273622741318,-46.60553723663295
+
+  4º) DSP2_B8 - Potencial: 1,221 pk
+      18 vagas | Média: 67.8 pk/vaga | Raio Médio: 500m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.436928315809492,-46.55199924856091
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.44195360477905,-46.54296425819467
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-23.44195360477905,-46.54296425819467
+
+  5º) DSP2_B5 - Potencial: 1,166 pk
+      17 vagas | Média: 68.6 pk/vaga | Raio Médio: 465m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.536534828867474,-46.591652976579326
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.536534828867474,-46.591652976579326
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.557440660587925,-46.604511659831466
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DSP4
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     19,867 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     17,415 pk
+  - Gap de Expansão (Residual):2,452 pk
+  - Potencial de Novos Pts:    250 vagas
+  - Média de Pacotes/Vaga:     69.7 pk
+  - Média de Raio Proposto:    367 m
+  - Divisão Geográfica:        37 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DSP4:
+
+  1º) DSP4_B6 - Potencial: 3,277 pk
+      47 vagas | Média: 69.7 pk/vaga | Raio Médio: 302m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.615944775140935,-46.63378424261905
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.615944775140935,-46.63378424261905
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.615944775140935,-46.63378424261905
+
+  2º) DSP4_B5 - Potencial: 2,520 pk
+      36 vagas | Média: 70.0 pk/vaga | Raio Médio: 342m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.618410112411166,-46.679768964378965
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.646550812524346,-46.668358305845906
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.624252601618796,-46.68606303298825
+
+  3º) DSP4_B3 - Potencial: 2,167 pk
+      31 vagas | Média: 69.9 pk/vaga | Raio Médio: 355m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.622292573682294,-46.6951866964165
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.654026353964216,-46.70530828839293
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.646512796383824,-46.70202507661559
+
+  4º) DSP4_B4 - Potencial: 1,750 pk
+      25 vagas | Média: 70.0 pk/vaga | Raio Médio: 308m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.59840545931641,-46.614901081557235
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.60731734972919,-46.62128581266058
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.60731734972919,-46.62128581266058
+
+  5º) DSP4_B15 - Potencial: 1,606 pk
+      23 vagas | Média: 69.8 pk/vaga | Raio Médio: 317m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.64161526535246,-46.542698579874966
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.64161526535246,-46.542698579874966
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-23.67252666478786,-46.53748285879966
+
+================================================================================
+
+📍 UNIDADE OPERACIONAL: DSP5
+----------------------------------------
+RESUMO EXECUTIVO DA BASE:
+  - Demanda Total da Base:     8,292 pk
+  - Atendida por Ativos:       0 pk
+  - Alocada para Expansão:     5,872 pk
+  - Gap de Expansão (Residual):2,420 pk
+  - Potencial de Novos Pts:    87 vagas
+  - Média de Pacotes/Vaga:     67.5 pk
+  - Média de Raio Proposto:    569 m
+  - Divisão Geográfica:        195 bairros
+----------------------------------------
+TOP 5 BAIRROS PRIORITÁRIOS EM DSP5:
+
+  1º) DSP5_B42 - Potencial: 1,287 pk
+      19 vagas | Média: 67.7 pk/vaga | Raio Médio: 484m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.883011970550083,-47.049247348916495
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.897864113650847,-47.061906663522876
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.89198285982598,-47.05562312235391
+
+  2º) DSP5_B44 - Potencial: 560 pk
+      8 vagas | Média: 70.0 pk/vaga | Raio Médio: 500m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.853809568911796,-47.04532178479882
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.85351453315435,-47.051420567116
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-22.85969427071602,-47.05160504304585
+
+  3º) DSP5_B45 - Potencial: 490 pk
+      7 vagas | Média: 70.0 pk/vaga | Raio Médio: 543m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-22.958509521059646,-47.0545571347343
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-22.913600185158526,-47.05626897847118
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-22.930729262409873,-47.05372676821981
+
+  4º) DSP5_B47 - Potencial: 419 pk
+      6 vagas | Média: 69.8 pk/vaga | Raio Médio: 550m
+      • Vaga 70 pk (R:200m) -> maps.google.com/maps?q=-22.916898780468504,-47.08385285369759
+      • Vaga 70 pk (R:800m) -> maps.google.com/maps?q=-22.880432807748615,-47.07054714378792
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-22.915503329461508,-47.080757282735135
+
+  5º) DSP5_B0 - Potencial: 416 pk
+      6 vagas | Média: 69.3 pk/vaga | Raio Médio: 600m
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-23.071901866037635,-47.19844296901666
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-23.095338730253367,-47.22357875465722
+      • Vaga 70 pk (R:500m) -> maps.google.com/maps?q=-23.09654907071996,-47.19918657141027
+
+================================================================================

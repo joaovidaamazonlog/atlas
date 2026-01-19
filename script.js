@@ -2106,6 +2106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('showRadii').addEventListener('change', () => MapManager.toggleRadii());
     document.getElementById('showPolygons').addEventListener('change', () => PolygonManager.togglePolygons());
     document.getElementById('showJurisdictions').addEventListener('change', () => PolygonManager.toggleJurisdictons());
+    document.getElementById('showOptmizationLayer').addEventListener('change', () => PolygonManager.toggleOptimizationLayer());
 
     // Filter Tab
     document.querySelector('#filter-content button.btn-primary').addEventListener('click', () => DataManager.applyFilters());

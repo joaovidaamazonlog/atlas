@@ -51,7 +51,7 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/dados_mapa.json').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output_filled.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_layer.geojson').then(res => res.json()).catch(() => null)
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/mapa_estrategico.geojson').then(res => res.json()).catch(() => null)
         ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
             AppState.allMarkersData = partnerData.allMarkerData;
             AppState.period = partnerData.period;
@@ -278,60 +278,6 @@ const MapManager = {
         }
     },
 
-    toggleOptimizationLayer: function(type) {
-        if (AppState.optimizationLayer) {
-            AppState.map.removeLayer(AppState.optimizationLayer);
-            AppState.optimizationLayer = null;
-            if (type === 'none') return;
-        }
-
-        if (!AppState.optimizationData) return;
-
-        if (type === 'heatmap_point') {
-            // Extrai os pontos do GeoJSON para o formato [lat, lon, intensidade]
-            const heatPoints = AppState.optimizationData.features
-                .filter(f => f.geometry.type === 'Point')
-                .map(f => {
-                    const [lon, lat] = f.geometry.coordinates;
-                    const intensity = f.properties.intensity || 1;
-                    return [lat, lon, intensity];
-                });
-            AppState.optimizationLayer = L.heatLayer(heatPoints, {
-                radius: 25,
-                blur: 15,
-                maxZoom: 17,
-                minOpacity: 0.3,
-                gradient: {4: 'blue', 6.5: 'lime', 15: 'red'}
-            }).addTo(AppState.map);
-        } else if (type === 'gap_opportunity') {
-            AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
-                filter: (f) => f.properties.type === type,
-                style: (f) => ({ color: "#ff4444", weight: 2, fillOpacity: 0.4 }),
-                onEachFeature: function (feature, layer) {
-                    layer.on('click', function (e) {
-                        if (e.originalEvent.ctrlKey) {
-                            if (!AppState.selectedGrids) AppState.selectedGrids = [];
-                            if (!AppState.selectedGrids.includes(feature.properties.grid_id)) {
-                                AppState.selectedGrids.push(feature.properties.grid_id);
-                            }
-                            const total = AppState.optimizationData.features
-                                .filter(f => AppState.selectedGrids.includes(f.properties.grid_id))
-                                .reduce((sum, f) => sum + (f.properties.package_count || 0), 0);
-                            layer.bindPopup(`Total selecionado: <b>${total}</b>`, { autoClose: false }).openPopup();
-                        } else {
-                            AppState.selectedGrids = [feature.properties.grid_id];
-                            layer.bindPopup(`Pacotes na célula: <b>${feature.properties.package_count}</b>`, { autoClose: false }).openPopup();
-                        }
-                    });
-                }
-            }).addTo(AppState.map);
-        } else {
-            AppState.optimizationLayer = L.geoJSON(AppState.optimizationData, {
-                filter: (f) => f.properties.type === type
-            }).addTo(AppState.map);
-        }
-    },
-
     restyleMarkers: function() {
         const primary = document.getElementById('primaryStyle').value;
         const secondary = document.getElementById('secondaryStyle').value;
@@ -511,7 +457,26 @@ const PolygonManager = {
 
     toggleJurisdictons: function(){
         this.updateFilteredJurisdiction();
-    }
+    },
+
+    toggleOptimizationLayer: function(type) {
+        if (AppState.optimizationData) {
+            AppState.map.removeLayer(AppState.optimizationData);
+            AppState.optimizationData = null;
+        }
+        if (!AppState.optimizationData) return;
+
+        AppState.optimizationData = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
+            pane: 'polygonsPane',
+            style: f => ({ color: f.properties.cor || '#6E00B3', weight: 2, opacity: 0.8, fillOpacity: 0.2 }),
+            onEachFeature: (features, layer) => layer.bindPopup(features.properties.base)
+        });
+
+        if (document.getElementById('showJurisdictions').checked) {
+            AppState.optimizationData.addTo(AppState.map);
+        }
+    },
+
 };
 
 // --- MODULE: UIManager ---

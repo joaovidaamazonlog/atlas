@@ -43765,7 +43765,7 @@
             "data_contato": "2026-01-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Exited"
         },
         {
             "id": 4315,
@@ -44225,7 +44225,7 @@
             "data_contato": "2026-01-15",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 4361,
@@ -44475,7 +44475,7 @@
             "data_contato": "2026-01-15",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 4386,

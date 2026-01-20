@@ -101,7 +101,7 @@ class JsonGenerator:
                 "lat": row.get("Latitude"),
                 "lon": row.get("Longitude"),
                 "popup": JsonGenerator._create_popup_html(row),
-                "tooltip": f"ID: {row.get('StoreID')} | Name: {row.get('Name')} | Supply Run: {row.get('Supply Run')} | HUB Delivery Initiatives: {row.get('Hub Delivery Initiatives')} | Raio: {row.get('Radius')}m",
+                "tooltip": f"ID: {row.get('StoreID')} | Name: {row.get('Name')} | HUB Delivery Initiatives: {row.get('Hub Delivery Initiatives')}",
                 "name": row.get("Name"),
                 "telefone": phone,
                 "store_id": row.get("StoreID"),

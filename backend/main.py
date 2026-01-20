@@ -64,7 +64,6 @@ def run_pipeline():
             print(f"AVISO: {initial_rows - filtered_rows} lojas foram removidas por não terem coordenadas válidas.")
 
         #Gerar os arquivos JSON para mapa e Scorecard
-        period_data = adv_raw_df["Start Period"]
         period = datetime.today().strftime("%Y-%m-%d : %Hh:%Mm")
 
         json_filename = f"{config.OUTPUT_JSON_FILENAME_PREFIX}.json"
@@ -73,22 +72,6 @@ def run_pipeline():
         output_path_scorecard = os.path.join(config.OUTPUT_JSON_DIR, json_scorecard_filename)
         JsonGenerator.generate_json(period, final_df, output_path)
         ScorecardGenerator(scorecard_df, output_path_scorecard, config.SCORECARD_CONFIG).generate_scorecard()
-        
-        #Otimização
-        
-        """opt_hub = optimization_hub_delivery.OptimizationHub(
-            config.BASE_PACKAGES,
-            config.BASE_PARTNERS,
-            config.BASE_PREVIOUS_SNAPSHOT
-        )
-        
-        results = opt_hub.run()
-        
-        optimization_hub_delivery.export_results(
-            results, 
-            config.OUTPUT_JSON_DIR+"/optimization_layer.geojson", 
-            config.OUTPUT_JSON_DIR+"/snapshot_current.json"
-        )"""
 
     except Exception as e:
         print(f"\nERRO CRÍTICO DURANTE A EXECUÇÃO DO PIPELINE: {e}")

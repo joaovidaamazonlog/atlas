@@ -51,7 +51,7 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/dados_mapa.json').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output_filled.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/mapa_estrategico.geojson').then(res => res.json()).catch(() => null)
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data.geojson').then(res => res.json()).catch(() => null)
         ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
             AppState.allMarkersData = partnerData.allMarkerData;
             AppState.period = partnerData.period;
@@ -459,22 +459,42 @@ const PolygonManager = {
         this.updateFilteredJurisdiction();
     },
 
-    toggleOptimizationLayer: function(type) {
-        if (AppState.optimizationData) {
-            AppState.map.removeLayer(AppState.optimizationData);
-            AppState.optimizationData = null;
+    toggleOptimizationLayer: function() {
+        // 1. Limpa camada anterior se existir
+        if (AppState.optimizationLayer) {
+            AppState.map.removeLayer(AppState.optimizationLayer);
+            AppState.optimizationLayer = null;
         }
-        if (!AppState.optimizationData) return;
 
-        AppState.optimizationData = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
+        // 2. Verifica se o dado foi carregado (AppState.optimizationData)
+        if (!AppState.optimizationData) {
+            console.error("Dados de otimização não encontrados em AppState.");
+            return;
+        }
+
+        // 3. Filtra pelas estações selecionadas no seu stationFilter
+        const stationFilter = document.getElementById('stationFilter');
+        const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
+        
+        const filteredFeatures = selectedStations.includes('all')
+            ? AppState.optimizationData.features
+            : AppState.optimizationData.features.filter(f => selectedStations.includes(f.properties.delivery_station));
+
+        // 4. Renderiza os polígonos da otimização
+        AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
-            style: f => ({ color: f.properties.cor || '#6E00B3', weight: 2, opacity: 0.8, fillOpacity: 0.2 }),
-            onEachFeature: (features, layer) => layer.bindPopup(features.properties.base)
+            style: f => ({
+                color: f.properties.residual > 0 ? '#e74c3c' : '#2ecc71', // Vermelho se houver gap, verde se limpo
+                weight: 1,
+                fillOpacity: 0.3
+            }),
+            onEachFeature: (feature, layer) => {
+                // Reutiliza sua lógica de popup original
+                this.updatePolygonPopups(); 
+            }
         });
 
-        if (document.getElementById('showJurisdictions').checked) {
-            AppState.optimizationData.addTo(AppState.map);
-        }
+        AppState.optimizationLayer.addTo(AppState.map);
     },
 
 };

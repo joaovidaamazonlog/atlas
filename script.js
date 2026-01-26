@@ -466,7 +466,7 @@ const PolygonManager = {
             AppState.optimizationLayer = null;
         }
 
-        // 2. Verifica se o dado foi carregado (AppState.optimizationData)
+        // 2. Verifica se o dado foi carregado
         if (!AppState.optimizationData) {
             console.error("Dados de otimização não encontrados em AppState.");
             return;

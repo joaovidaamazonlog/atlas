@@ -8,7 +8,7 @@ RESUMO EXECUTIVO DA BASE:
   - Atendida (Ativos F1-F3):   0 pacotes
   - Reservada (Prospects F4):  0 pacotes
   - Alocada p/ Expansão (F5):  4,377 pacotes
-  - Gap Final (Não alocado):   1,376 pacotes
+  - Gap Final (Não alocado):   1,637 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F5):
   - Quantidade de Vagas:       64 vagas

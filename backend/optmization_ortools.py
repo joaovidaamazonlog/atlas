@@ -194,11 +194,11 @@ class OptimizationService:
         subset = self.partners_df[self.partners_df.status == "Prospect"]
         
         for _, p in subset.iterrows():
-            decision = "Pouco volume disponível"
+            decision = ""
             sug_rad, sug_cap, allocs = 0, 0, []
 
             if p.origin_hex not in self.demand_df[self.demand_df.station_code == base].hex.values:
-                decision = "Fora da área de atuação"
+                decision = "Fora da área de atuacao"
             else:
                 for r in Config.RADII:
                     in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
@@ -217,7 +217,7 @@ class OptimizationService:
                                 current_fill += take
                         break
             
-            results.append(PartnerMetrics(p.origin_hex, base, sug_rad, sug_cap, "EXISTING", "Prospect", str(p.store_id), decision, hex_to_cluster.get(p.origin_hex, "N/A"), allocs))
+            results.append(PartnerMetrics(p.origin_hex, base, sug_rad, sug_cap, "PROSPECT", "Prospect", str(p.salesforce_id), decision, hex_to_cluster.get(p.origin_hex, "N/A"), allocs))
         return results
 
     def run(self):
@@ -271,7 +271,7 @@ class OptimizationService:
                 station_code = base,
                 existing_partners = p1 + p2 + p3 + p4,
                 new_partners = p5,
-                demand_summary = {h: {"residual": res_dem.get(h, 0)} for h in orig_dem},
+                demand_summary = {h: {"total": orig_dem[h], "residual": res_dem.get(h, 0)} for h in orig_dem},
                 hex_to_cluster = hex_to_cluster,
                 base_metrics = m
             )
@@ -301,12 +301,12 @@ class OptimizationService:
                     "properties": {
                         "delivery_station": r.station_code, 
                         "cluster": r.hex_to_cluster.get(h, "Ativo/Vazio"),
+                        "demanda total": info["total"],
                         "residual": info["residual"]
                     }
                 })
             for p in r.existing_partners + r.new_partners:
                 lat, lng = h3.cell_to_latlng(p.origin_hex)
-                # Coleta CEPs para o GeoJSON também, caso queira ver no popup do Atlas
                 ceps_alocados = set()
                 alloc_list_json = []
                 for alloc in p.allocations:

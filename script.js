@@ -640,6 +640,10 @@ const PolygonManager = {
                 fillOpacity: 0.3
             }),
         });
+
+        if (document.getElementById('showOptimization').checked) {
+            AppState.optimizationLayer.addTo(AppState.map);
+        }
     },
 
     togglePolygons: function () {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 5611519753,Inactive,DBR9,Reativar cadastro,70,200
 2139375472,Exited,DBS5,Reativar cadastro,45,200
@@ -109,3 +110,6 @@ store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 7445306814,Exited,DSP5,Fora da área de atuacao,0,0
 6514541677,Inactive,DSP5,Reativar cadastro,45,800
 5948610503,Inactive,DSP5,Reativar cadastro,70,500
+=======
+name,store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
+>>>>>>> 0cfd86cc548cb416d08ba46b9f4c26646d302906

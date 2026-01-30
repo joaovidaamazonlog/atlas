@@ -361,7 +361,7 @@ const MapManager = {
 
 // --- MODULE: PolygonManager ---
 const PolygonManager = {
-    updateFilteredPolygons: function() {
+    updateFilteredPolygons: function () {
         if (AppState.polygonLayer) {
             AppState.map.removeLayer(AppState.polygonLayer);
             AppState.polygonLayer = null;
@@ -385,7 +385,158 @@ const PolygonManager = {
         }
     },
 
-    updatePolygonPopups: function() {
+    optimizationSelection: {
+        selectedPolygons: new Set(),
+        tooltipDiv: null,
+        _mousemoveHandler: null,
+        _layerClickHandlers: new Map(),
+
+        enableSelection() {
+            if (!AppState.optimizationLayer) return;
+            this.selectedPolygons.clear();
+
+            // Remove tooltip se já existir
+            this._removeTooltip();
+
+            // Cria tooltip
+            this.tooltipDiv = document.createElement('div');
+            this.tooltipDiv.setAttribute('role', 'tooltip');
+            this.tooltipDiv.setAttribute('aria-live', 'polite');
+            this.tooltipDiv.style.position = 'fixed';
+            this.tooltipDiv.style.background = '#fff';
+            this.tooltipDiv.style.border = '1px solid #333';
+            this.tooltipDiv.style.padding = '6px 12px';
+            this.tooltipDiv.style.borderRadius = '6px';
+            this.tooltipDiv.style.boxShadow = '0 2px 8px #0002';
+            this.tooltipDiv.style.pointerEvents = 'none';
+            this.tooltipDiv.style.zIndex = 99999;
+            this.tooltipDiv.style.display = 'none';
+            // Botão de fechar para acessibilidade
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '2px';
+            closeBtn.style.right = '6px';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.fontSize = '1.2em';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.setAttribute('aria-label', 'Fechar tooltip');
+            closeBtn.onclick = (e) => {
+                e.stopPropagation();
+                this.selectedPolygons.clear();
+                this._removeTooltip();
+                this._resetPolygonStyles();
+            };
+            this.tooltipDiv.appendChild(closeBtn);
+            document.body.appendChild(this.tooltipDiv);
+
+            // Remove event listeners antigos
+            this._removeLayerEvents();
+
+            // Adiciona evento de seleção aos polígonos
+            AppState.optimizationLayer.eachLayer(layer => {
+                const clickHandler = (e) => {
+                    const id = L.stamp(layer);
+                    if (this.selectedPolygons.has(id)) {
+                        this.selectedPolygons.delete(id);
+                        layer.setStyle({ weight: 1, fillOpacity: 0.3 });
+                    } else {
+                        this.selectedPolygons.add(id);
+                        layer.setStyle({ weight: 3, fillOpacity: 0.6 });
+                    }
+                    this.updateTooltip(e.originalEvent);
+                };
+                const mousemoveHandler = (e) => {
+                    this.updateTooltip(e.originalEvent);
+                };
+                layer.off('click').on('click', clickHandler);
+                layer.off('mousemove').on('mousemove', mousemoveHandler);
+                this._layerClickHandlers.set(layer, { clickHandler, mousemoveHandler });
+            });
+
+            // Evento global para esconder tooltip quando não houver seleção
+            if (this._mousemoveHandler) document.removeEventListener('mousemove', this._mousemoveHandler);
+            this._mousemoveHandler = (e) => {
+                if (this.selectedPolygons.size > 0) {
+                    this.updateTooltip(e);
+                } else {
+                    this._removeTooltip();
+                    this._resetPolygonStyles();
+                }
+            };
+            document.addEventListener('mousemove', this._mousemoveHandler);
+        },
+
+        disableSelection() {
+            this.selectedPolygons.clear();
+            this._removeTooltip();
+            this._removeLayerEvents();
+            if (this._mousemoveHandler) {
+                document.removeEventListener('mousemove', this._mousemoveHandler);
+                this._mousemoveHandler = null;
+            }
+            this._resetPolygonStyles();
+        },
+
+        updateTooltip(mouseEvent) {
+            if (!this.tooltipDiv) return;
+            if (this.selectedPolygons.size === 0) {
+                this.tooltipDiv.style.display = 'none';
+                return;
+            }
+            // Soma demanda total dos selecionados
+            let soma = 0;
+            let count = 0;
+            AppState.optimizationLayer.eachLayer(layer => {
+                if (this.selectedPolygons.has(L.stamp(layer))) {
+                    soma += layer.feature.properties['demanda total'] || 0;
+                    count++;
+                }
+            });
+            // Atualiza conteúdo, mantendo o botão de fechar
+            this.tooltipDiv.innerHTML = `<button style="position:absolute;top:2px;right:6px;background:none;border:none;font-size:1.2em;cursor:pointer;" aria-label="Fechar tooltip" onclick="PolygonManager.optimizationSelection.clearSelection(event)">&times;</button>
+                <b>Selecionados:</b> ${count}<br><b>Soma demanda total:</b> ${soma}`;
+            this.tooltipDiv.style.display = 'block';
+            this.tooltipDiv.style.left = (mouseEvent.clientX + 16) + 'px';
+            this.tooltipDiv.style.top = (mouseEvent.clientY + 16) + 'px';
+        },
+
+        clearSelection(e) {
+            if (e) e.stopPropagation();
+            this.selectedPolygons.clear();
+            this._removeTooltip();
+            this._resetPolygonStyles();
+        },
+
+        _removeTooltip() {
+            if (this.tooltipDiv) {
+                this.tooltipDiv.remove();
+                this.tooltipDiv = null;
+            }
+        },
+
+        _removeLayerEvents() {
+            if (!AppState.optimizationLayer) return;
+            AppState.optimizationLayer.eachLayer(layer => {
+                const handlers = this._layerClickHandlers.get(layer);
+                if (handlers) {
+                    layer.off('click', handlers.clickHandler);
+                    layer.off('mousemove', handlers.mousemoveHandler);
+                }
+            });
+            this._layerClickHandlers.clear();
+        },
+
+        _resetPolygonStyles() {
+            if (!AppState.optimizationLayer) return;
+            AppState.optimizationLayer.eachLayer(layer => {
+                layer.setStyle({ weight: 1, fillOpacity: 0.3 });
+            });
+        }
+    },
+
+    updatePolygonPopups: function () {
         if (!AppState.polygonLayer || !AppState.allMarkersData) return;
         AppState.polygonLayer.eachLayer(layer => {
             const props = layer.feature.properties;
@@ -412,7 +563,7 @@ const PolygonManager = {
         });
     },
 
-    calculatePriority: function(regionName, deliveryStation) {
+    calculatePriority: function (regionName, deliveryStation) {
         const polygonsSameStation = AppState.polygonsData.features.filter(f => f.properties.delivery_station === deliveryStation);
         const sorted = polygonsSameStation.map(f => {
             const region = f.properties.cluster;
@@ -427,7 +578,7 @@ const PolygonManager = {
         return idx >= 0 ? idx + 1 : polygonsSameStation.length;
     },
 
-    updateFilteredJurisdiction: function() {
+    updateFilteredJurisdiction: function () {
         if (AppState.jurisdictionLayer) {
             AppState.map.removeLayer(AppState.jurisdictionLayer);
             AppState.jurisdictionLayer = null;
@@ -451,50 +602,63 @@ const PolygonManager = {
         }
     },
 
-    togglePolygons: function() {
-        this.updateFilteredPolygons();
-    },
-
-    toggleJurisdictons: function(){
-        this.updateFilteredJurisdiction();
-    },
-
-    toggleOptimizationLayer: function() {
-        // 1. Limpa camada anterior se existir
+    OptimizationLayer: function () {
         if (AppState.optimizationLayer) {
             AppState.map.removeLayer(AppState.optimizationLayer);
             AppState.optimizationLayer = null;
         }
 
-        // 2. Verifica se o dado foi carregado
         if (!AppState.optimizationData) {
             console.error("Dados de otimização não encontrados em AppState.");
             return;
         }
 
-        // 3. Filtra pelas estações selecionadas no seu stationFilter
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-        
+
         const filteredFeatures = selectedStations.includes('all')
             ? AppState.optimizationData.features
             : AppState.optimizationData.features.filter(f => selectedStations.includes(f.properties.delivery_station));
 
-        // 4. Renderiza os polígonos da otimização
+        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demanda total'] || 0));
+        function getColor(demanda) {
+            if (maxDemanda === 0) return '#e74c3c';
+            const t = Math.max(0, Math.min(1, demanda / maxDemanda));
+            const r = Math.round(231 + (46 - 231) * t);
+            const g = Math.round(76 + (204 - 76) * t);
+            const b = Math.round(60 + (113 - 60) * t);
+            return `rgb(${r},${g},${b})`;
+        }
+
         AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
             style: f => ({
-                color: f.properties.residual > 0 ? '#e74c3c' : '#2ecc71', // Vermelho se houver gap, verde se limpo
+                color: getColor(f.properties['demanda total']),
                 weight: 1,
                 fillOpacity: 0.3
             }),
-            onEachFeature: (feature, layer) => {
-                // Reutiliza sua lógica de popup original
-                this.updatePolygonPopups(); 
-            }
         });
 
-        AppState.optimizationLayer.addTo(AppState.map);
+        if (document.getElementById('showOptimization').checked) {
+            AppState.optimizationLayer.addTo(AppState.map);
+        }
+    },
+
+    togglePolygons: function () {
+        this.updateFilteredPolygons();
+    },
+
+    toggleJurisdictons: function () {
+        this.updateFilteredJurisdiction();
+    },
+
+    toggleOptimizationLayer: function () {
+        this.OptimizationLayer();
+        if (AppState.optimizationLayer) {
+            PolygonManager.optimizationSelection.enableSelection();
+        } else {
+            PolygonManager.optimizationSelection.disableSelection();
+        }
     },
 
 };

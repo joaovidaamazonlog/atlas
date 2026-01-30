@@ -27,7 +27,7 @@ const AppState = {
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     }),
-    houseIcon : L.icon({
+    houseIcon: L.icon({
         iconUrl: 'icons/warehouse.png',
         iconSize: [18, 18],
         iconAnchor: [16, 32],
@@ -42,11 +42,11 @@ const AppState = {
 
 AppState.hcpSuggestionCache = AppState.hcpSuggestionCache || {};
 AppState.hcpUsedStores = AppState.hcpUsedStores || {};
-AppState.hcpSuggestionsActive = AppState.hcpSuggestionsActive || false; 
+AppState.hcpSuggestionsActive = AppState.hcpSuggestionsActive || false;
 
 // --- MODULE: DataManager ---
 const DataManager = {
-    loadAllDataAndInitialize: function() {
+    loadAllDataAndInitialize: function () {
         Promise.all([
             fetch('https://joaovidaamazonlog.github.io/atlas/data/dados_mapa.json').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output_filled.geojson').then(res => res.json()),
@@ -74,7 +74,7 @@ const DataManager = {
         });
     },
 
-    associatePartnersToPolygons: function() {
+    associatePartnersToPolygons: function () {
         if (!AppState.polygonsData || !AppState.allMarkersData) return;
         let associatedCount = 0;
         AppState.allMarkersData.forEach(partner => {
@@ -93,7 +93,7 @@ const DataManager = {
         console.log(`${associatedCount} parceiros associados a polígonos de ${AppState.allMarkersData.length} total`);
     },
 
-    applyFilters: function() {
+    applyFilters: function () {
         const statusFilter = document.getElementById('statusFilter');
         const selectedStatuses = Array.from(statusFilter.selectedOptions).map(opt => opt.value);
         const stationFilter = document.getElementById('stationFilter');
@@ -132,7 +132,7 @@ const DataManager = {
         UIManager.updateActiveStatsTab();
     },
 
-    resetFilters: function() {
+    resetFilters: function () {
         document.getElementById('statusFilter').value = 'all';
         document.getElementById('initiativesFilter').value = 'all';
         document.getElementById('jurisdictionFilter').value = 'all';
@@ -145,7 +145,7 @@ const DataManager = {
 
 // --- MODULE: MapManager ---
 const MapManager = {
-    initialize: function() {
+    initialize: function () {
         L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -156,7 +156,7 @@ const MapManager = {
         AppState.map.getPane('polygonsPane').style.pointerEvents = 'none';
     },
 
-    createMarkersDeliveryStations: function() {
+    createMarkersDeliveryStations: function () {
         AppState.deliveryStations.forEach(ds => {
             const marker = L.marker([ds.lat, ds.lon], { icon: AppState.houseIcon });
             marker.bindPopup(`<b>${ds.nome}</b>`);
@@ -164,17 +164,17 @@ const MapManager = {
         });
     },
 
-    createMarkers: function(dataToRender, fitToMarkers = false) {
+    createMarkers: function (dataToRender, fitToMarkers = false) {
         this.clearMarkers();
         dataToRender.forEach(data => {
             const marker = L.circleMarker([data.lat, data.lon], { radius: 7, color: 'white', weight: 1.5, fillOpacity: 0.9 });
             marker.markerData = data;
             marker.on('click', this.onMarkerClick);
-            
+
             if (data.tooltip) {
                 marker.bindTooltip(data.tooltip, { direction: 'top', sticky: true, className: 'custom-tooltip' });
             }
-            
+
             AppState.markerObjects.push(marker);
             marker.addTo(AppState.map);
 
@@ -193,14 +193,14 @@ const MapManager = {
         }
     },
 
-    clearMarkers: function() {
+    clearMarkers: function () {
         AppState.markerObjects.forEach(m => AppState.map.removeLayer(m));
         AppState.circleObjects.forEach(c => AppState.map.removeLayer(c));
         AppState.markerObjects = [];
         AppState.circleObjects = [];
     },
 
-    onMarkerClick2: function(e) {
+    onMarkerClick2: function (e) {
         const marker = e.target;
         AppState.map.setView(marker.getLatLng(), 15);
         const initialPopupContent = `
@@ -217,11 +217,11 @@ const MapManager = {
         marker.bindPopup(popupContent).openPopup();
     },
 
-    onMarkerClick: function(e) {
+    onMarkerClick: function (e) {
         const marker = e.target;
         const data = marker.markerData;
         AppState.map.setView(marker.getLatLng(), 15);
-        
+
         const optimizationHtml = data.optimization ? `
             <div class="opt-slide-content" style="display:none; padding: 10px; height:auto; min-width: 100%;">
                 <h5 style="font-weight:bold;">Otimização de Raio</h5>
@@ -264,7 +264,7 @@ const MapManager = {
         marker.bindPopup(popupContent).openPopup();
     },
 
-    togglePopupSlide: function(btn, showOpt) {
+    togglePopupSlide: function (btn, showOpt) {
         const wrapper = btn.closest('.popup-wrapper');
         const optContent = wrapper.querySelector('.opt-slide-content');
         if (showOpt) {
@@ -278,7 +278,7 @@ const MapManager = {
         }
     },
 
-    restyleMarkers: function() {
+    restyleMarkers: function () {
         const primary = document.getElementById('primaryStyle').value;
         const secondary = document.getElementById('secondaryStyle').value;
 
@@ -316,10 +316,10 @@ const MapManager = {
         this.createLegend(fillColorMap, borderColorMap, primary, secondary);
     },
 
-    generateColorMap: function(data, field, _unused = null, isBorder = false) {
+    generateColorMap: function (data, field, _unused = null, isBorder = false) {
         const keys = data.map(item => item[field] || 'N/A');
         const uniqueKeys = [...new Set(keys)].sort();
-        
+
         const palette = isBorder
             ? ['#FF1493', '#FF9800', '#009688', '#3F51B5', '#E91E63', '#8BC34A', '#FFC107', '#00BCD4', '#9C27B0', '#CDDC39']
             : [
@@ -332,10 +332,10 @@ const MapManager = {
         return colorMap;
     },
 
-    createLegend: function(fillColorMap, borderColorMap, primary, secondary) {
+    createLegend: function (fillColorMap, borderColorMap, primary, secondary) {
         if (AppState.legendControl) AppState.map.removeControl(AppState.legendControl);
         AppState.legendControl = L.control({ position: 'bottomright' });
-        AppState.legendControl.onAdd = function() {
+        AppState.legendControl.onAdd = function () {
             const div = L.DomUtil.create('div', 'info legend');
             div.innerHTML += '<h5>Legenda</h5>';
             div.innerHTML += `<b>Borda (${primary}):</b><br>`;
@@ -353,7 +353,7 @@ const MapManager = {
         AppState.legendControl.addTo(AppState.map);
     },
 
-    toggleRadii: function() {
+    toggleRadii: function () {
         const show = document.getElementById('showRadii').checked;
         AppState.circleObjects.forEach(c => show ? c.addTo(AppState.map) : AppState.map.removeLayer(c));
     }
@@ -361,7 +361,7 @@ const MapManager = {
 
 // --- MODULE: PolygonManager ---
 const PolygonManager = {
-    updateFilteredPolygons: function() {
+    updateFilteredPolygons: function () {
         if (AppState.polygonLayer) {
             AppState.map.removeLayer(AppState.polygonLayer);
             AppState.polygonLayer = null;
@@ -385,7 +385,158 @@ const PolygonManager = {
         }
     },
 
-    updatePolygonPopups: function() {
+    optimizationSelection: {
+        selectedPolygons: new Set(),
+        tooltipDiv: null,
+        _mousemoveHandler: null,
+        _layerClickHandlers: new Map(),
+
+        enableSelection() {
+            if (!AppState.optimizationLayer) return;
+            this.selectedPolygons.clear();
+
+            // Remove tooltip se já existir
+            this._removeTooltip();
+
+            // Cria tooltip
+            this.tooltipDiv = document.createElement('div');
+            this.tooltipDiv.setAttribute('role', 'tooltip');
+            this.tooltipDiv.setAttribute('aria-live', 'polite');
+            this.tooltipDiv.style.position = 'fixed';
+            this.tooltipDiv.style.background = '#fff';
+            this.tooltipDiv.style.border = '1px solid #333';
+            this.tooltipDiv.style.padding = '6px 12px';
+            this.tooltipDiv.style.borderRadius = '6px';
+            this.tooltipDiv.style.boxShadow = '0 2px 8px #0002';
+            this.tooltipDiv.style.pointerEvents = 'none';
+            this.tooltipDiv.style.zIndex = 99999;
+            this.tooltipDiv.style.display = 'none';
+            // Botão de fechar para acessibilidade
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '2px';
+            closeBtn.style.right = '6px';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.fontSize = '1.2em';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.setAttribute('aria-label', 'Fechar tooltip');
+            closeBtn.onclick = (e) => {
+                e.stopPropagation();
+                this.selectedPolygons.clear();
+                this._removeTooltip();
+                this._resetPolygonStyles();
+            };
+            this.tooltipDiv.appendChild(closeBtn);
+            document.body.appendChild(this.tooltipDiv);
+
+            // Remove event listeners antigos
+            this._removeLayerEvents();
+
+            // Adiciona evento de seleção aos polígonos
+            AppState.optimizationLayer.eachLayer(layer => {
+                const clickHandler = (e) => {
+                    const id = L.stamp(layer);
+                    if (this.selectedPolygons.has(id)) {
+                        this.selectedPolygons.delete(id);
+                        layer.setStyle({ weight: 1, fillOpacity: 0.3 });
+                    } else {
+                        this.selectedPolygons.add(id);
+                        layer.setStyle({ weight: 3, fillOpacity: 0.6 });
+                    }
+                    this.updateTooltip(e.originalEvent);
+                };
+                const mousemoveHandler = (e) => {
+                    this.updateTooltip(e.originalEvent);
+                };
+                layer.off('click').on('click', clickHandler);
+                layer.off('mousemove').on('mousemove', mousemoveHandler);
+                this._layerClickHandlers.set(layer, { clickHandler, mousemoveHandler });
+            });
+
+            // Evento global para esconder tooltip quando não houver seleção
+            if (this._mousemoveHandler) document.removeEventListener('mousemove', this._mousemoveHandler);
+            this._mousemoveHandler = (e) => {
+                if (this.selectedPolygons.size > 0) {
+                    this.updateTooltip(e);
+                } else {
+                    this._removeTooltip();
+                    this._resetPolygonStyles();
+                }
+            };
+            document.addEventListener('mousemove', this._mousemoveHandler);
+        },
+
+        disableSelection() {
+            this.selectedPolygons.clear();
+            this._removeTooltip();
+            this._removeLayerEvents();
+            if (this._mousemoveHandler) {
+                document.removeEventListener('mousemove', this._mousemoveHandler);
+                this._mousemoveHandler = null;
+            }
+            this._resetPolygonStyles();
+        },
+
+        updateTooltip(mouseEvent) {
+            if (!this.tooltipDiv) return;
+            if (this.selectedPolygons.size === 0) {
+                this.tooltipDiv.style.display = 'none';
+                return;
+            }
+            // Soma demanda total dos selecionados
+            let soma = 0;
+            let count = 0;
+            AppState.optimizationLayer.eachLayer(layer => {
+                if (this.selectedPolygons.has(L.stamp(layer))) {
+                    soma += layer.feature.properties['demanda total'] || 0;
+                    count++;
+                }
+            });
+            // Atualiza conteúdo, mantendo o botão de fechar
+            this.tooltipDiv.innerHTML = `<button style="position:absolute;top:2px;right:6px;background:none;border:none;font-size:1.2em;cursor:pointer;" aria-label="Fechar tooltip" onclick="PolygonManager.optimizationSelection.clearSelection(event)">&times;</button>
+                <b>Selecionados:</b> ${count}<br><b>Soma demanda total:</b> ${soma}`;
+            this.tooltipDiv.style.display = 'block';
+            this.tooltipDiv.style.left = (mouseEvent.clientX + 16) + 'px';
+            this.tooltipDiv.style.top = (mouseEvent.clientY + 16) + 'px';
+        },
+
+        clearSelection(e) {
+            if (e) e.stopPropagation();
+            this.selectedPolygons.clear();
+            this._removeTooltip();
+            this._resetPolygonStyles();
+        },
+
+        _removeTooltip() {
+            if (this.tooltipDiv) {
+                this.tooltipDiv.remove();
+                this.tooltipDiv = null;
+            }
+        },
+
+        _removeLayerEvents() {
+            if (!AppState.optimizationLayer) return;
+            AppState.optimizationLayer.eachLayer(layer => {
+                const handlers = this._layerClickHandlers.get(layer);
+                if (handlers) {
+                    layer.off('click', handlers.clickHandler);
+                    layer.off('mousemove', handlers.mousemoveHandler);
+                }
+            });
+            this._layerClickHandlers.clear();
+        },
+
+        _resetPolygonStyles() {
+            if (!AppState.optimizationLayer) return;
+            AppState.optimizationLayer.eachLayer(layer => {
+                layer.setStyle({ weight: 1, fillOpacity: 0.3 });
+            });
+        }
+    },
+
+    updatePolygonPopups: function () {
         if (!AppState.polygonLayer || !AppState.allMarkersData) return;
         AppState.polygonLayer.eachLayer(layer => {
             const props = layer.feature.properties;
@@ -412,7 +563,7 @@ const PolygonManager = {
         });
     },
 
-    calculatePriority: function(regionName, deliveryStation) {
+    calculatePriority: function (regionName, deliveryStation) {
         const polygonsSameStation = AppState.polygonsData.features.filter(f => f.properties.delivery_station === deliveryStation);
         const sorted = polygonsSameStation.map(f => {
             const region = f.properties.cluster;
@@ -427,7 +578,7 @@ const PolygonManager = {
         return idx >= 0 ? idx + 1 : polygonsSameStation.length;
     },
 
-    updateFilteredJurisdiction: function() {
+    updateFilteredJurisdiction: function () {
         if (AppState.jurisdictionLayer) {
             AppState.map.removeLayer(AppState.jurisdictionLayer);
             AppState.jurisdictionLayer = null;
@@ -451,62 +602,75 @@ const PolygonManager = {
         }
     },
 
-    togglePolygons: function() {
-        this.updateFilteredPolygons();
-    },
-
-    toggleJurisdictons: function(){
-        this.updateFilteredJurisdiction();
-    },
-
-    toggleOptimizationLayer: function() {
-        // 1. Limpa camada anterior se existir
+    OptimizationLayer: function () {
         if (AppState.optimizationLayer) {
             AppState.map.removeLayer(AppState.optimizationLayer);
             AppState.optimizationLayer = null;
         }
 
-        // 2. Verifica se o dado foi carregado
         if (!AppState.optimizationData) {
             console.error("Dados de otimização não encontrados em AppState.");
             return;
         }
 
-        // 3. Filtra pelas estações selecionadas no seu stationFilter
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-        
+
         const filteredFeatures = selectedStations.includes('all')
             ? AppState.optimizationData.features
             : AppState.optimizationData.features.filter(f => selectedStations.includes(f.properties.delivery_station));
 
-        // 4. Renderiza os polígonos da otimização
+        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demanda total'] || 0));
+        function getColor(demanda) {
+            if (maxDemanda === 0) return '#e74c3c';
+            const t = Math.max(0, Math.min(1, demanda / maxDemanda));
+            const r = Math.round(231 + (46 - 231) * t);
+            const g = Math.round(76 + (204 - 76) * t);
+            const b = Math.round(60 + (113 - 60) * t);
+            return `rgb(${r},${g},${b})`;
+        }
+
         AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
             style: f => ({
-                color: f.properties.residual > 0 ? '#e74c3c' : '#2ecc71', // Vermelho se houver gap, verde se limpo
+                color: getColor(f.properties['demanda total']),
                 weight: 1,
                 fillOpacity: 0.3
             }),
-            onEachFeature: (feature, layer) => {
-                // Reutiliza sua lógica de popup original
-                this.updatePolygonPopups(); 
-            }
         });
 
-        AppState.optimizationLayer.addTo(AppState.map);
+        if (document.getElementById('showOptimization').checked) {
+            AppState.optimizationLayer.addTo(AppState.map);
+        }
+    },
+
+    togglePolygons: function () {
+        this.updateFilteredPolygons();
+    },
+
+    toggleJurisdictons: function () {
+        this.updateFilteredJurisdiction();
+    },
+
+    toggleOptimizationLayer: function () {
+        this.OptimizationLayer();
+        if (AppState.optimizationLayer) {
+            PolygonManager.optimizationSelection.enableSelection();
+        } else {
+            PolygonManager.optimizationSelection.disableSelection();
+        }
     },
 
 };
 
 // --- MODULE: UIManager ---
 const UIManager = {
-    toggleMenu: function() {
+    toggleMenu: function () {
         const menu = document.getElementById("menuOptions");
         menu.style.display = (menu.style.display === "block") ? "none" : "block";
     },
 
-    togglePanelContent: function(headerElement) {
+    togglePanelContent: function (headerElement) {
         const content = headerElement.nextElementSibling;
         const icon = headerElement.querySelector('i.fas.fa-chevron-down, i.fas.fa-chevron-up');
         content.classList.toggle('collapsed');
@@ -516,13 +680,13 @@ const UIManager = {
         }
     },
 
-    updatePeriodInfo: function(period) {
+    updatePeriodInfo: function (period) {
         document.getElementById('periodInfo').textContent = period
             ? `Última Atualização: ${period}`
             : "Período dos dados não especificado.";
     },
 
-    populateFilters: function() {
+    populateFilters: function () {
         const stations = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
         const supplyRunsFilter = document.getElementById('supplyRun');
         const stationFilter = document.getElementById('stationFilter');
@@ -578,7 +742,7 @@ const UIManager = {
         updateSupplyRunsOptions();
     },
 
-    setupAutocomplete: function() {
+    setupAutocomplete: function () {
         const fromInput = document.getElementById('routeFromInput');
         const toInput = document.getElementById('routeToInput');
         const searchInput = document.getElementById('search-input');
@@ -654,11 +818,11 @@ const UIManager = {
         });
     },
 
-    searchPartner: function(partnerId) {
+    searchPartner: function (partnerId) {
 
         const searchTerm = partnerId || document.getElementById('search-input').value.toLowerCase();
         if (!searchTerm) return;
-        const foundData = AppState.allMarkersData.find(data => 
+        const foundData = AppState.allMarkersData.find(data =>
             (data.store_id && data.store_id.toLowerCase() === searchTerm) ||
             (data.name && data.name.toLowerCase().includes(searchTerm))
         );
@@ -669,11 +833,11 @@ const UIManager = {
             if (ds) {
                 AppState.map.setView([ds.lat, ds.lon], 13);
                 return;
-            }else {
+            } else {
                 alert("Parceiro ou Delivery Station não encontrado.");
                 return;
-                }
-        } 
+            }
+        }
 
         if (foundData) {
             const markerOnMap = AppState.markerObjects.find(m => m.markerData.store_id === foundData.store_id);
@@ -687,10 +851,10 @@ const UIManager = {
             alert("Parceiro não encontrado.");
         }
 
-        if(!partnerId) document.getElementById('search-input').value = '';
+        if (!partnerId) document.getElementById('search-input').value = '';
     },
 
-    getMarkerPopupContent: function(data) {
+    getMarkerPopupContent: function (data) {
         return `
             ${data.popup}
             <hr class="my-2">
@@ -706,7 +870,7 @@ const UIManager = {
         `;
     },
 
-    showComparisonInPopup: function(event, storeId) {
+    showComparisonInPopup: function (event, storeId) {
         event.stopPropagation();
         const marker = AppState.markerObjects.find(m => m.markerData.store_id === storeId);
         if (!marker) return;
@@ -772,7 +936,7 @@ const UIManager = {
         return new Intl.NumberFormat('pt-BR', { useGrouping: true }).format(num);
     },
 
-    updateActiveStatsTab: function() {
+    updateActiveStatsTab: function () {
         const activeTabEl = document.querySelector('#stats-inner-panel .nav-link.active');
         if (activeTabEl) {
             const activeTab = activeTabEl.getAttribute('href').substring(1);
@@ -780,13 +944,13 @@ const UIManager = {
         }
     },
 
-    updateStats: function(activeTab) {
+    updateStats: function (activeTab) {
         if (activeTab === 'Performance') this.updatePerformanceStats();
         else if (activeTab === 'Expansion') this.updateExpansionStats();
         else if (activeTab === 'Routes') this.updateRoutesStats();
     },
 
-    createCard: function(title, value, goal, container) {
+    createCard: function (title, value, goal, container) {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `<h3>${title}</h3><p class="metric-value">${value}</p>`;
@@ -796,12 +960,12 @@ const UIManager = {
         container.appendChild(card);
     },
 
-    updatePerformanceStats: function() {
+    updatePerformanceStats: function () {
         const data = AppState.currentFilteredData;
         const container = document.getElementById('performance-cards');
         container.innerHTML = '';
 
-        const working_days =  Math.round(Math.abs((new Date(AppState.period.start) - new Date(AppState.period.end)) / (24 * 60 * 60 * 1000))) + 1;
+        const working_days = Math.round(Math.abs((new Date(AppState.period.start) - new Date(AppState.period.end)) / (24 * 60 * 60 * 1000))) + 1;
         const activePartners = data.filter(p => p.status === 'Active').length;
         const advOverall = activePartners > 0 ? data.filter(p => p.status === 'Active').reduce((sum, p) => sum + (p.ADV || 0), 0) / activePartners : 0;
         const dispatchedPackages = this.formatNumber(data.reduce((sum, p) => sum + (p.main_store_data?.dispatched_packages || 0), 0))
@@ -813,38 +977,38 @@ const UIManager = {
         const fddsMean = mean(data.filter(p => p.status === 'Active').map(p => p.main_store_data?.fdds ?? 0));
         const ftdsMean = mean(data.filter(p => p.status === 'Active').map(p => p.main_store_data?.ftds ?? 0));
 
-        const goals = { activePartners: 600, advOverall: 40, dispatchedPackages:activePartners*40*working_days, deliveredPackages:(activePartners*40*0.985) , dea: 98.5, ead: 98.5, dcr: 96, fdds: 97.0, ftds: 98.5};
+        const goals = { activePartners: 600, advOverall: 40, dispatchedPackages: activePartners * 40 * working_days, deliveredPackages: (activePartners * 40 * 0.985), dea: 98.5, ead: 98.5, dcr: 96, fdds: 97.0, ftds: 98.5 };
 
         this.createCard('Parceiros Ativos', activePartners, goals.activePartners, container);
         this.createCard('ADV Médio', advOverall.toFixed(0), goals.advOverall, container);
         this.createCard('Dispatched Packages', dispatchedPackages, goals.dispatchedPackages, container);
         this.createCard('Delivered Packages', deliveredPackages, goals.deliveredPackages, container);
-        this.createCard('EAD', `${(eadMean.toFixed(1)*100)}%`, goals.ead, container);
-        this.createCard('DEA', `${(deaMean.toFixed(1)*100)}%`, goals.dea, container);
-        this.createCard('DCR', `${(dcrMean.toFixed(1)*100)}%`, goals.dcr, container);
-        this.createCard('FDDS', `${(fddsMean.toFixed(1)*100)}%`, goals.fdds, container);
-        this.createCard('FTDS', `${(ftdsMean.toFixed(1)*100)}%`, goals.ftds, container);
+        this.createCard('EAD', `${(eadMean.toFixed(1) * 100)}%`, goals.ead, container);
+        this.createCard('DEA', `${(deaMean.toFixed(1) * 100)}%`, goals.dea, container);
+        this.createCard('DCR', `${(dcrMean.toFixed(1) * 100)}%`, goals.dcr, container);
+        this.createCard('FDDS', `${(fddsMean.toFixed(1) * 100)}%`, goals.fdds, container);
+        this.createCard('FTDS', `${(ftdsMean.toFixed(1) * 100)}%`, goals.ftds, container);
 
-        const tableData = data.map(p => ({...p, ...p.main_store_data}));
+        const tableData = data.map(p => ({ ...p, ...p.main_store_data }));
         new Tabulator("#performance-table", {
             data: tableData, layout: "fitColumns", height: "400px", placeholder: "Nenhum dado para exibir com os filtros atuais.",
             columns: [
-                { title: "Store ID", field: "store_id"}, 
-                { title: "Store Name", field: "name", width: 200},
-                { title: "D. Station", field: "delivery_station" }, 
+                { title: "Store ID", field: "store_id" },
+                { title: "Store Name", field: "name", width: 200 },
+                { title: "D. Station", field: "delivery_station" },
                 { title: "ADV", field: "ADV" },
-                { title: "Dispatched Packages", field: "dispatched_packages"},
-                { title: "Delivered Packages", field: "delivered_packages"},
-                { title: "DEA", field: "dea"},
-                { title: "EAD", field: "ead"},
-                { title: "DCR", field: "dcr"},
-                { title: "FDDS", field: "fdds"},
-                { title: "FTDS", field: "ftds"},
+                { title: "Dispatched Packages", field: "dispatched_packages" },
+                { title: "Delivered Packages", field: "delivered_packages" },
+                { title: "DEA", field: "dea" },
+                { title: "EAD", field: "ead" },
+                { title: "DCR", field: "dcr" },
+                { title: "FDDS", field: "fdds" },
+                { title: "FTDS", field: "ftds" },
             ],
         });
     },
 
-    updateExpansionStats: function() {
+    updateExpansionStats: function () {
         const container = document.getElementById('expansion-cards');
         container.innerHTML = '';
 
@@ -910,7 +1074,7 @@ const UIManager = {
     },
 
 
-    updateRoutesStats: function() {
+    updateRoutesStats: function () {
         const container = document.getElementById('routes-cards');
         container.innerHTML = '';
 
@@ -937,7 +1101,7 @@ const UIManager = {
         const goalHCPPickupPartner = goalHCPHostPartner * 4;
         const avgSpr = routesData.length > 0 ? routesData.reduce((sum, r) => sum + parseFloat(r.spr), 0) / routesData.length : 0;
         const avgCpp = routesData.length > 0 ? routesData.reduce((sum, r) => sum + parseFloat(r.cpp), 0) / routesData.length : 0;
-        const avgHCPPickupPerHost = hcpHostPartners === 0 ? 0 : (hcpPickupPartners/hcpHostPartners).toFixed(0);
+        const avgHCPPickupPerHost = hcpHostPartners === 0 ? 0 : (hcpPickupPartners / hcpHostPartners).toFixed(0);
 
         this.createCard('Total de Rotas', supplyRuns.length, 0, container);
         this.createCard('SPR Médio', avgSpr.toFixed(0), 480, container);
@@ -956,7 +1120,7 @@ const UIManager = {
                 { title: "HCP Host Partners", field: "hcpHostPartners" },
                 { title: "HCP Pick-up Partners", field: "hcpPickupPartners" },
                 { title: "SPR", field: "spr" },
-                { title: "CPP", field: "cpp", formatter:c=>`R$ ${c.getValue()}` },
+                { title: "CPP", field: "cpp", formatter: c => `R$ ${c.getValue()}` },
             ],
         });
     },
@@ -966,7 +1130,7 @@ const UIManager = {
 
         const marker = AppState.markerObjects.find(m => m.markerData.store_id === storeId);
         if (!marker) return;
-        
+
         const data = marker.markerData;
         const center = [marker.getLatLng().lng, marker.getLatLng().lat];
         const region = turf.circle(center, radius, { steps: 32, units: "kilometers" });
@@ -979,7 +1143,7 @@ const UIManager = {
         allCoordinates.push([marker.getLatLng().lng, marker.getLatLng().lat]);
         const osrmUrl = `https://router.project-osrm.org/table/v1/driving/${allCoordinates.map(coord => coord.join(',')).join(';')}?annotations=distance`;
         const response = await fetch(osrmUrl);
-        
+
         if (!response.ok) {
             console.error('Erro ao consultar OSRM:', response.statusText);
             return;
@@ -1037,7 +1201,7 @@ const UIManager = {
 
 // --- MODULE: HighlightManager ---
 const HighlightManager = {
-    highlightStores: function() {
+    highlightStores: function () {
         const criteria = {
             eligibleOp: document.getElementById('eligiblePackagesOp').value,
             eligibleVal: parseFloat(document.getElementById('eligiblePackagesVal').value) || 0,
@@ -1071,7 +1235,7 @@ const HighlightManager = {
         }
     },
 
-    matchesCriteria: function(data, criteria) {
+    matchesCriteria: function (data, criteria) {
         const { eligibleOp, eligibleVal, allocatedOp, allocatedVal, statusHighlight, overlappingOp, overlappingVal } = criteria;
         const eligible_packages = parseFloat(data.eligible_packages) || 0;
         const allocated_current = parseFloat(data.ADV) || 0;
@@ -1090,47 +1254,53 @@ const HighlightManager = {
         return statusMatch && eligibleMatch && allocatedMatch && overlappingMatch;
     },
 
-    resetHighlight: function() {
+    resetHighlight: function () {
         DataManager.applyFilters();
     }
-}
+};
 
 // --- MODULE: RouteManager ---
 const RouteManager = {
     vehicleMarker: null,
     vehicleAnimation: null,
     stops: [],
-    generateRoute: function() {
+    generateRoute: function () {
         // Verifica se já existe uma rota e remove
         if (AppState.routingControl) {
             AppState.map.removeControl(AppState.routingControl);
-            AppState.routingControl = null;
+            AppState.routingControl = null
         }
         if (this.vehicleMarker) {
             AppState.map.removeLayer(this.vehicleMarker);
-            this.vehicleMarker = null;
+            this.vehicleMarker = null
         }
         if (this.vehicleAnimation) {
             clearInterval(this.vehicleAnimation);
-            this.vehicleAnimation = null;
+            this.vehicleAnimation = null
         }
 
         const fromId = document.getElementById('routeFromId').value;
         const toId = document.getElementById('routeToId').value;
 
         let fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
-        if (!fromData) fromData = AppState.deliveryStations.find(ds => ds.nome === fromId || ds.store_id === fromId);
+        if (!fromData){
+            fromData = AppState.deliveryStations.find(ds => ds.nome === fromId || ds.store_id === fromId);
+        }
 
         let toData = AppState.allMarkersData.find(m => m.store_id === toId);
-        if (!toData) toData = AppState.deliveryStations.find(ds => ds.nome === toId || ds.store_id === toId);
+        if (!toData){
+            toData = AppState.deliveryStations.find(ds => ds.nome === toId || ds.store_id === toId);
+        }
 
-        if (!fromData || !toData) { alert("Parceiro ou Delivery Station inválido."); return; }
+        if (!fromData || !toData) {
+            alert("Parceiro ou Delivery Station inválido.");
+            return;
+        }
 
         // Se houver paradas, otimiza a ordem (TSP)
         let stopsOrder = this.stops;
         if (this.stops.length > 1) {
-            // Permutação de todas as ordens possíveis
-            function permute(arr) {
+            const permute = arr => {
                 if (arr.length <= 1) return [arr];
                 let result = [];
                 for (let i = 0; i < arr.length; i++) {
@@ -1138,8 +1308,9 @@ const RouteManager = {
                     rest.forEach(r => result.push([arr[i]].concat(r)));
                 }
                 return result;
-            }
-            function totalDistance(order) {
+            };
+
+            const totalDistance = (order) => {
                 let dist = 0;
                 let prev = fromData;
                 order.forEach(stop => {
@@ -1148,7 +1319,7 @@ const RouteManager = {
                 });
                 dist += L.latLng(prev.lat, prev.lon).distanceTo(L.latLng(toData.lat, toData.lon));
                 return dist;
-            }
+            };
 
             const allOrders = permute(this.stops);
             let minDist = Infinity;
@@ -1159,7 +1330,7 @@ const RouteManager = {
                     stopsOrder = order;
                 }
             });
-            // Atualiza a ordem das paradas para refletir a melhor rota
+
             this.stops = stopsOrder;
             this.renderStopsList();
         }
@@ -1169,16 +1340,17 @@ const RouteManager = {
             ...stopsOrder.map(s => L.latLng(s.lat, s.lon)),
             L.latLng(toData.lat, toData.lon)
         ];
+
         AppState.routingControl = L.Routing.control({
             waypoints: waypoints,
             routeWhileDragging: false,
             router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
             createMarker: (i, wp) => L.marker(wp.latLng),
-            lineOptions: { styles: [{color: 'blue', opacity: 0.8, weight: 5}] }
+            lineOptions: { styles: [{ color: 'blue', opacity: 0.8, weight: 5 }] }
         }).addTo(AppState.map);
     },
 
-    startRouteFromHere: function(event, storeId, storeName) {
+    startRouteFromHere: function (event, storeId, storeName) {
         event.stopPropagation();
         document.getElementById('routeFromId').value = storeId;
         document.getElementById('routeFromInput').value = storeName;
@@ -1187,7 +1359,7 @@ const RouteManager = {
         AppState.map.closePopup();
     },
 
-    addStop: function() {
+    addStop: function () {
         // Abre autocomplete para selecionar parada
         const NewStop = document.createElement('input');
         NewStop.id = 'inputNewStop';
@@ -1258,10 +1430,10 @@ const RouteManager = {
             self.renderStopsList();
             NewStop.remove();
         });
-        
+
     },
 
-    renderStopsList: function() {
+    renderStopsList: function () {
         const list = document.getElementById('stops-list');
         list.innerHTML = '';
         const fromId = document.getElementById('routeFromId').value;
@@ -1296,26 +1468,26 @@ const RouteManager = {
         });
     },
 
-    moveStopUp: function(idx) {
+    moveStopUp: function (idx) {
         if (idx > 0) {
             [this.stops[idx - 1], this.stops[idx]] = [this.stops[idx], this.stops[idx - 1]];
             this.renderStopsList();
         }
     },
 
-    moveStopDown: function(idx) {
+    moveStopDown: function (idx) {
         if (idx < this.stops.length - 1) {
             [this.stops[idx], this.stops[idx + 1]] = [this.stops[idx + 1], this.stops[idx]];
             this.renderStopsList();
         }
     },
 
-    removeStop: function(idx) {
+    removeStop: function (idx) {
         this.stops.splice(idx, 1);
         this.renderStopsList();
     },
 
-    clearRoute: function() {
+    clearRoute: function () {
         if (AppState.routingControl) {
             AppState.map.removeControl(AppState.routingControl);
             AppState.routingControl = null;
@@ -1338,7 +1510,7 @@ const RouteManager = {
     },
 
     // --- HCP Host/Pick-up Suggestion System ---
-    getCurrentHcpGroups: function() {
+    getCurrentHcpGroups: function () {
         const all = AppState.currentFilteredData.filter(p => p.status !== 'Exited');
         const hosts = all.filter(p => p.hub_delivey_initiatives === 'HCP Host Partner');
         const pickups = all.filter(p => p.hub_delivey_initiatives === 'HCP Pick Up Partner');
@@ -1356,7 +1528,7 @@ const RouteManager = {
         const url = `https://router.project-osrm.org/table/v1/driving/${coordStr}?${params.toString()}`;
         try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error(OSRM `table error ${res.status}`);
+            if (!res.ok) throw new Error(OSRM`table error ${res.status}`);
             const j = await res.json();
             return { distances: j.distances || null, durations: j.durations || null, raw: j };
         } catch (err) {
@@ -1414,14 +1586,14 @@ const RouteManager = {
             // Create array of host candidates with distance/duration
             const hostCandidates = [];
             for (let j = 0; j < hosts.length; j++) {
-            const host = hosts[j];
-            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, i, j);
-            if (!res) continue;
-            if (res.distance <= 6000 && res.duration <= 900) {
-                // host has capacity?
-                const cap = host.pickups ? host.pickups.length : 0;
-                if (cap < 5) hostCandidates.push({ hostIdx: j, host, distance: res.distance, duration: res.duration });
-            }
+                const host = hosts[j];
+                const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, i, j);
+                if (!res) continue;
+                if (res.distance <= 6000 && res.duration <= 900) {
+                    // host has capacity?
+                    const cap = host.pickups ? host.pickups.length : 0;
+                    if (cap < 5) hostCandidates.push({ hostIdx: j, host, distance: res.distance, duration: res.duration });
+                }
             }
             if (hostCandidates.length === 0) continue;
             // sort by distance asc
@@ -1431,20 +1603,20 @@ const RouteManager = {
             const chosenHost = chosen.host;
             // if different from current assigned host, suggest move
             if (pickup.HCP_host_partner !== chosenHost.name) {
-            moves.push({ pickup, from: pickup.HCP_host_partner, to: chosenHost.name });
+                moves.push({ pickup, from: pickup.HCP_host_partner, to: chosenHost.name });
             }
             // add pickup to chosen host
             if (!chosenHost.pickups) chosenHost.pickups = [];
             // avoid duplicating in chosenHost.pickups
             if (!chosenHost.pickups.some(p => p.store_id === pickup.store_id) && chosenHost.pickups.length < 5) {
-            chosenHost.pickups.push(pickup);
-            used.add(pickup.store_id);
+                chosenHost.pickups.push(pickup);
+                used.add(pickup.store_id);
             }
         }
 
         return { hosts, pickups, moves };
     },
-    
+
     async allocateHeroesToExistingHostsPhase2(groups, currentHosts) {
         // groups: { hosts, pickups, heros, all }
         // currentHosts: hosts state after phase1 (with pickups arrays updated)
@@ -1483,33 +1655,33 @@ const RouteManager = {
             // build candidates with distance/duration and capacity
             const candidates = [];
             for (let j = 0; j < hosts.length; j++) {
-            const host = hosts[j];
-            const cap = host.pickups ? host.pickups.length : 0;
-            if (cap >= 5) continue;
-            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, i, j);
-            if (!res) continue;
-            if (res.distance <= 6000 && res.duration <= 900) {
-                candidates.push({ hostIdx: j, host, distance: res.distance, duration: res.duration });
-            }
+                const host = hosts[j];
+                const cap = host.pickups ? host.pickups.length : 0;
+                if (cap >= 5) continue;
+                const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, i, j);
+                if (!res) continue;
+                if (res.distance <= 6000 && res.duration <= 900) {
+                    candidates.push({ hostIdx: j, host, distance: res.distance, duration: res.duration });
+                }
             }
             if (candidates.length === 0) {
-            remainingHeros.push(hero);
-            continue;
+                remainingHeros.push(hero);
+                continue;
             }
             candidates.sort((a, b) => a.distance - b.distance);
             // choose nearest with available capacity
             let assigned = false;
             for (const cand of candidates) {
-            const host = cand.host;
-            if (!host.pickups) host.pickups = [];
-            if (host.pickups.length < 5) {
-                // assign hero -> pickup
-                host.pickups.push(hero);
-                assignments.push({ hero, host, distance: cand.distance, duration: cand.duration });
-                used.add(hero.store_id);
-                assigned = true;
-                break;
-            }
+                const host = cand.host;
+                if (!host.pickups) host.pickups = [];
+                if (host.pickups.length < 5) {
+                    // assign hero -> pickup
+                    host.pickups.push(hero);
+                    assignments.push({ hero, host, distance: cand.distance, duration: cand.duration });
+                    used.add(hero.store_id);
+                    assigned = true;
+                    break;
+                }
             }
             if (!assigned) remainingHeros.push(hero);
         }
@@ -1520,7 +1692,6 @@ const RouteManager = {
     async clusterHeroesNewHostsPhase3(groups, currentHosts) {
         // groups: { hosts, pickups, heros, all } - heros should be those remaining after phase2
         // currentHosts: hosts after phase2
-        const turf = window.turf;
         const hosts = currentHosts.map(h => ({ ...h, pickups: (h.pickups || []).slice() }));
         const heros = groups.heros.slice();
         const station = AppState.currentFilteredData[0]?.delivery_station || 'UNKNOWN';
@@ -1557,14 +1728,14 @@ const RouteManager = {
 
             // reduce >6 by removing farthest
             if (members.length > 6) {
-            const fcTmp = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
-            const centroidTmp = turf.centroid(fcTmp);
-            members.sort((a, b) => {
-                const da = turf.distance(centroidTmp, turf.point([a.lon, a.lat]), { units: 'kilometers' });
-                const db = turf.distance(centroidTmp, turf.point([b.lon, b.lat]), { units: 'kilometers' });
-                return db - da;
-            });
-            while (members.length > 6) members.shift(); // remove farthest
+                const fcTmp = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
+                const centroidTmp = turf.centroid(fcTmp);
+                members.sort((a, b) => {
+                    const da = turf.distance(centroidTmp, turf.point([a.lon, a.lat]), { units: 'kilometers' });
+                    const db = turf.distance(centroidTmp, turf.point([b.lon, b.lat]), { units: 'kilometers' });
+                    return db - da;
+                });
+                while (members.length > 6) members.shift(); // remove farthest
             }
 
             // density check: max distance to centroid <= 2.5 km
@@ -1572,8 +1743,8 @@ const RouteManager = {
             const centroid = turf.centroid(fc2);
             let maxDistKm = 0;
             members.forEach(m => {
-            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
-            if (d > maxDistKm) maxDistKm = d;
+                const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+                if (d > maxDistKm) maxDistKm = d;
             });
             if (maxDistKm > 2.5) continue;
             if (members.length < 4) continue;
@@ -1582,8 +1753,8 @@ const RouteManager = {
             let hostCandidate = null;
             let hostDist = Infinity;
             members.forEach(m => {
-            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
-            if (d < hostDist) { hostDist = d; hostCandidate = m; }
+                const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+                if (d < hostDist) { hostDist = d; hostCandidate = m; }
             });
             if (!hostCandidate) continue;
 
@@ -1604,21 +1775,21 @@ const RouteManager = {
 
             let matrix;
             try {
-            matrix = await this.osrmTableMatrix(coords, sources, destinations);
+                matrix = await this.osrmTableMatrix(coords, sources, destinations);
             } catch (err) {
-            console.error('Phase3: osrmTableMatrix failed for cluster', cid, err);
-            continue;
+                console.error('Phase3: osrmTableMatrix failed for cluster', cid, err);
+                continue;
             }
 
             // validate pickups w/ matrix and avoid duplicates
             const validPickups = [];
             for (let r = 0; r < pickupCandidates.length; r++) {
-            const p = pickupCandidates[r];
-            if (used.has(p.store_id)) continue;
-            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, r, 0);
-            if (res && res.distance <= 6000 && res.duration <= 900) {
-                validPickups.push({ p, distance: res.distance, duration: res.duration });
-            }
+                const p = pickupCandidates[r];
+                if (used.has(p.store_id)) continue;
+                const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, r, 0);
+                if (res && res.distance <= 6000 && res.duration <= 900) {
+                    validPickups.push({ p, distance: res.distance, duration: res.duration });
+                }
             }
 
             // sort by distance and limit to 5
@@ -1636,8 +1807,8 @@ const RouteManager = {
             if (!hostCandidate._original_hdi) hostCandidate._original_hdi = hostCandidate.hub_delivery_initiatives;
             hostCandidate.hub_delivery_initiatives = 'New Host';
             finalPickups.forEach(fp => {
-            if (!fp._original_hdi) fp._original_hdi = fp.hub_delivery_initiatives;
-            fp.hub_delivery_initiatives = 'New PickUp';
+                if (!fp._original_hdi) fp._original_hdi = fp.hub_delivery_initiatives;
+                fp.hub_delivery_initiatives = 'New PickUp';
             });
 
             // push suggestion
@@ -1680,7 +1851,7 @@ const RouteManager = {
         } else {
             html += `<ul>`;
             movesPhase1.forEach(m => {
-            html += `<li><b>${m.pickup.name}</b> (${m.pickup.store_id}) — mover de <i>${m.from || 'N/A'}</i> para <i>${m.to}</i></li>`;
+                html += `<li><b>${m.pickup.name}</b> (${m.pickup.store_id}) — mover de <i>${m.from || 'N/A'}</i> para <i>${m.to}</i></li>`;
             });
             html += `</ul>`;
         }
@@ -1692,7 +1863,7 @@ const RouteManager = {
         } else {
             html += `<ul>`;
             phase2Assignments.forEach(a => {
-            html += `<li><b>${a.hero.name}</b> (${a.hero.store_id}) → Host: <b>${a.host.name}</b> (${a.host.store_id})</li>`;
+                html += `<li><b>${a.hero.name}</b> (${a.hero.store_id}) → Host: <b>${a.host.name}</b> (${a.host.store_id})</li>`;
             });
             html += `</ul>`;
         }
@@ -1703,9 +1874,9 @@ const RouteManager = {
             html += `<div style="margin-left:12px;color:#666;">Nenhum novo host sugerido por clusterização.</div>`;
         } else {
             phase3Suggestions.forEach((s, idx) => {
-            html += `<div style="margin-left:6px;margin-bottom:8px;"><b>Cluster ${idx + 1} — Host sugerido: ${s.hostCandidate.name} (${s.hostCandidate.store_id})</b><ul>`;
-            s.pickups.forEach(p => html += `<li>${p.name} (${p.store_id})</li>`);
-            html += `</ul></div>`;
+                html += `<div style="margin-left:6px;margin-bottom:8px;"><b>Cluster ${idx + 1} — Host sugerido: ${s.hostCandidate.name} (${s.hostCandidate.store_id})</b><ul>`;
+                s.pickups.forEach(p => html += `<li>${p.name} (${p.store_id})</li>`);
+                html += `</ul></div>`;
             });
         }
 
@@ -1755,17 +1926,17 @@ const RouteManager = {
 
             // reduzir cluster > 6 removendo os mais distantes do centroid
             if (members.length > 6) {
-            const fcTmp = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
-            const centroidTmp = turf.centroid(fcTmp);
-            members.sort((a, b) => {
-                const da = turf.distance(centroidTmp, turf.point([a.lon, a.lat]), { units: 'kilometers' });
-                const db = turf.distance(centroidTmp, turf.point([b.lon, b.lat]), { units: 'kilometers' });
-                return db - da;
-            });
-            while (members.length > 6) {
-                const removed = members.shift(); // remove mais distante
-                // removed permanece hero
-            }
+                const fcTmp = turf.featureCollection(members.map(m => turf.point([m.lon, m.lat])));
+                const centroidTmp = turf.centroid(fcTmp);
+                members.sort((a, b) => {
+                    const da = turf.distance(centroidTmp, turf.point([a.lon, a.lat]), { units: 'kilometers' });
+                    const db = turf.distance(centroidTmp, turf.point([b.lon, b.lat]), { units: 'kilometers' });
+                    return db - da;
+                });
+                while (members.length > 6) {
+                    const removed = members.shift(); // remove mais distante
+                    // removed permanece hero
+                }
             }
 
             // densidade — max distância ao centroid ≤ 2.5 km
@@ -1773,8 +1944,8 @@ const RouteManager = {
             const centroid = turf.centroid(fc2);
             let maxDistKm = 0;
             members.forEach(m => {
-            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
-            if (d > maxDistKm) maxDistKm = d;
+                const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+                if (d > maxDistKm) maxDistKm = d;
             });
             if (maxDistKm > 2.5) continue;
             if (members.length < 4) continue;
@@ -1783,8 +1954,8 @@ const RouteManager = {
             let hostCandidate = null;
             let hostDist = Infinity;
             members.forEach(m => {
-            const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
-            if (d < hostDist) { hostDist = d; hostCandidate = m; }
+                const d = turf.distance(centroid, turf.point([m.lon, m.lat]), { units: 'kilometers' });
+                if (d < hostDist) { hostDist = d; hostCandidate = m; }
             });
             if (!hostCandidate) continue;
 
@@ -1793,8 +1964,8 @@ const RouteManager = {
 
             // evitar sugerir host se já usado
             if (used.has(hostCandidate.store_id) || suggestedHostIds.has(hostCandidate.store_id)) {
-            // host já sugerido/ocupado - não usá-lo como new-host
-            continue;
+                // host já sugerido/ocupado - não usá-lo como new-host
+                continue;
             }
 
             if (pickupCandidates.length === 0) continue;
@@ -1809,21 +1980,21 @@ const RouteManager = {
 
             let matrix;
             try {
-            matrix = await this.osrmTableMatrix(coords, sources, destinations);
+                matrix = await this.osrmTableMatrix(coords, sources, destinations);
             } catch (err) {
-            console.error('clusterForExpansion: osrm table falhou para cluster', cid, err);
-            continue;
+                console.error('clusterForExpansion: osrm table falhou para cluster', cid, err);
+                continue;
             }
 
             // validar pickups via matrix e evitar duplicatas
             const validPickups = [];
             for (let r = 0; r < pickupCandidates.length; r++) {
-            const p = pickupCandidates[r];
-            if (used.has(p.store_id) || suggestedPickupIds.has(p.store_id)) continue; // já usado
-            const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, r, 0);
-            if (res && res.distance <= 6000 && res.duration <= 900) {
-                validPickups.push(p);
-            }
+                const p = pickupCandidates[r];
+                if (used.has(p.store_id) || suggestedPickupIds.has(p.store_id)) continue; // já usado
+                const res = this.extractOsrmResultFromMatrix(matrix.distances, matrix.durations, r, 0);
+                if (res && res.distance <= 6000 && res.duration <= 900) {
+                    validPickups.push(p);
+                }
             }
 
             // limitar a 5 pickups (host + pickups <= 6)
@@ -1831,8 +2002,8 @@ const RouteManager = {
 
             // regra: host deve ter ao menos 3 pickups; caso contrário, desqualifica
             if (finalPickups.length < 3) {
-            // não cria host; membros permanecem hero
-            continue;
+                // não cria host; membros permanecem hero
+                continue;
             }
 
             // total participantes >= 4 (deveria ser) -> ok
@@ -1848,9 +2019,9 @@ const RouteManager = {
             suggestions.push({ host: hostCandidate, pickup: null, type: 'new-host' });
 
             finalPickups.forEach(p => {
-            if (!p._original_hdi) p._original_hdi = p.hub_delivery_initiatives;
-            p.hub_delivery_initiatives = 'New PickUp';
-            suggestions.push({ host: hostCandidate, pickup: p, type: 'new-pickup' });
+                if (!p._original_hdi) p._original_hdi = p.hub_delivery_initiatives;
+                p.hub_delivery_initiatives = 'New PickUp';
+                suggestions.push({ host: hostCandidate, pickup: p, type: 'new-pickup' });
             });
 
             // atualiza hosts para evitar uma cluster posterior usar este host como se estivesse livre
@@ -1891,19 +2062,19 @@ const RouteManager = {
 
             // REMOVE highlight anterior quando necessário
             if (!isNewHost && !isNewPickup) {
-            // Se tiver highlight armazenado, remover e restaurar estilo original
-            if (data._hcp_highlight) {
-                try { AppState.map.removeLayer(data._hcp_highlight); } catch(e){}
-                delete data._hcp_highlight;
-            }
-            // Se for CircleMarker original e tiver estilo salvo, restaurar
-            if (markerObj instanceof L.CircleMarker) {
-                if (data._hcp_original_style) {
-                markerObj.setStyle(data._hcp_original_style);
-                delete data._hcp_original_style;
+                // Se tiver highlight armazenado, remover e restaurar estilo original
+                if (data._hcp_highlight) {
+                    try { AppState.map.removeLayer(data._hcp_highlight); } catch (e) { }
+                    delete data._hcp_highlight;
                 }
-            }
-            return;
+                // Se for CircleMarker original e tiver estilo salvo, restaurar
+                if (markerObj instanceof L.CircleMarker) {
+                    if (data._hcp_original_style) {
+                        markerObj.setStyle(data._hcp_original_style);
+                        delete data._hcp_original_style;
+                    }
+                }
+                return;
             }
 
             // Se precisa destacar (new host/pickup)
@@ -1911,50 +2082,50 @@ const RouteManager = {
 
             // Se for CircleMarker (geralmente seus marcadores originais são circleMarker)
             if (markerObj instanceof L.CircleMarker) {
-            // Salva estilo original se ainda não salvo
-            if (!data._hcp_original_style) {
-                data._hcp_original_style = {
-                color: markerObj.options.color,
-                fillColor: markerObj.options.fillColor,
-                fillOpacity: markerObj.options.fillOpacity,
-                weight: markerObj.options.weight,
-                radius: markerObj.options.radius
-                };
-            }
-            // Aplica novo estilo (mantém radius original)
-            markerObj.setStyle({
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.9,
-                weight: Math.max(2, (data._hcp_original_style?.weight || 1) + 2)
-            });
-            // remove highlight layer se existir (não precisamos de overlay para circleMarker)
-            if (data._hcp_highlight) { try { AppState.map.removeLayer(data._hcp_highlight); } catch(e){}; delete data._hcp_highlight; }
-            } else {
-            // Para L.Marker ou L.LayerGroup: criamos/atualizamos um circleMarker de highlight por cima, sem tocar no ícone original.
-            // Se já existe highlight, apenas atualiza a cor
-            if (data._hcp_highlight && data._hcp_highlight instanceof L.CircleMarker) {
-                data._hcp_highlight.setStyle({ color, fillColor: color });
-            } else {
-                // cria highlight (e salva em data para remoção posterior)
-                const highlight = L.circleMarker([data.lat, data.lon], {
-                radius: 18,
-                color,
-                fillColor: color,
-                fillOpacity: 0.45,
-                weight: 3,
-                interactive: false, // para não interferir em eventos
-                pane: 'overlayPane'
+                // Salva estilo original se ainda não salvo
+                if (!data._hcp_original_style) {
+                    data._hcp_original_style = {
+                        color: markerObj.options.color,
+                        fillColor: markerObj.options.fillColor,
+                        fillOpacity: markerObj.options.fillOpacity,
+                        weight: markerObj.options.weight,
+                        radius: markerObj.options.radius
+                    };
+                }
+                // Aplica novo estilo (mantém radius original)
+                markerObj.setStyle({
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.9,
+                    weight: Math.max(2, (data._hcp_original_style?.weight || 1) + 2)
                 });
-                data._hcp_highlight = highlight;
-                highlight.addTo(AppState.map);
-            }
+                // remove highlight layer se existir (não precisamos de overlay para circleMarker)
+                if (data._hcp_highlight) { try { AppState.map.removeLayer(data._hcp_highlight); } catch (e) { }; delete data._hcp_highlight; }
+            } else {
+                // Para L.Marker ou L.LayerGroup: criamos/atualizamos um circleMarker de highlight por cima, sem tocar no ícone original.
+                // Se já existe highlight, apenas atualiza a cor
+                if (data._hcp_highlight && data._hcp_highlight instanceof L.CircleMarker) {
+                    data._hcp_highlight.setStyle({ color, fillColor: color });
+                } else {
+                    // cria highlight (e salva em data para remoção posterior)
+                    const highlight = L.circleMarker([data.lat, data.lon], {
+                        radius: 18,
+                        color,
+                        fillColor: color,
+                        fillOpacity: 0.45,
+                        weight: 3,
+                        interactive: false, // para não interferir em eventos
+                        pane: 'overlayPane'
+                    });
+                    data._hcp_highlight = highlight;
+                    highlight.addTo(AppState.map);
+                }
             }
 
             // OBS: mantemos markerObj.markerData atualizado (já atualizamos item.hub_delivery_initiatives acima)
         });
 
-        try { MapManager.restyleMarkers(); } catch (e) { console.error('restyleMarkers falhou', e);}
+        try { MapManager.restyleMarkers(); } catch (e) { console.error('restyleMarkers falhou', e); }
     },
 
     hcpSuggestHostClusters: async function () {
@@ -1971,12 +2142,12 @@ const RouteManager = {
             // apply cached changes
             // ensure hub_delivery_initiatives are applied
             (cache.suggestedHosts || []).forEach(id => {
-            const it = AppState.currentFilteredData.find(p => p.store_id === id);
-            if (it) { if (!it._original_hdi) it._original_hdi = it.hub_delivery_initiatives; it.hub_delivery_initiatives = 'New Host'; }
+                const it = AppState.currentFilteredData.find(p => p.store_id === id);
+                if (it) { if (!it._original_hdi) it._original_hdi = it.hub_delivery_initiatives; it.hub_delivery_initiatives = 'New Host'; }
             });
             (cache.suggestedPickups || []).forEach(id => {
-            const it = AppState.currentFilteredData.find(p => p.store_id === id);
-            if (it) { if (!it._original_hdi) it._original_hdi = it.hub_delivery_initiatives; it.hub_delivery_initiatives = 'New PickUp'; }
+                const it = AppState.currentFilteredData.find(p => p.store_id === id);
+                if (it) { if (!it._original_hdi) it._original_hdi = it.hub_delivery_initiatives; it.hub_delivery_initiatives = 'New PickUp'; }
             });
 
             // apply visual using combined clusters
@@ -2033,23 +2204,23 @@ const RouteManager = {
             const suggestedHosts = [];
             const suggestedPickups = [];
             clustersCombined.forEach(c => {
-            if (c.type === 'new-host' && c.host) suggestedHosts.push(c.host.store_id);
-            if (c.type === 'new-pickup' && c.pickup) suggestedPickups.push(c.pickup.store_id);
-            if (c.type === 'move' && c.pickup) {
-                // moves not classified as pickup/host but we keep track
-                // optionally we could add moved pickup to suggestedPickups
-            }
+                if (c.type === 'new-host' && c.host) suggestedHosts.push(c.host.store_id);
+                if (c.type === 'new-pickup' && c.pickup) suggestedPickups.push(c.pickup.store_id);
+                if (c.type === 'move' && c.pickup) {
+                    // moves not classified as pickup/host but we keep track
+                    // optionally we could add moved pickup to suggestedPickups
+                }
             });
 
             // Save cache
             AppState.hcpSuggestionCache[station] = {
-            optimized: { hosts: phase2.hosts }, // hosts after phase2 (phase3 added new hosts in memory but we saved separate)
-            clustersCombined,
-            movesPhase1: phase1.moves,
-            phase2Assignments: phase2.assignments,
-            phase3Suggestions: phase3.newHostSuggestions,
-            suggestedHosts,
-            suggestedPickups
+                optimized: { hosts: phase2.hosts }, // hosts after phase2 (phase3 added new hosts in memory but we saved separate)
+                clustersCombined,
+                movesPhase1: phase1.moves,
+                phase2Assignments: phase2.assignments,
+                phase3Suggestions: phase3.newHostSuggestions,
+                suggestedHosts,
+                suggestedPickups
             };
 
             // Apply visual modifications and show popup
@@ -2075,15 +2246,15 @@ const RouteManager = {
         // Restaurar hub_delivery_initiatives originais para todos no filtro
         AppState.currentFilteredData.forEach(p => {
             if (p._original_hdi) {
-            p.hub_delivery_initiatives = p._original_hdi;
-            delete p._original_hdi;
+                p.hub_delivery_initiatives = p._original_hdi;
+                delete p._original_hdi;
             }
         });
 
         // limpa marcadores da camada (mantém tilelayer)
         AppState.map.eachLayer(layer => {
             if (!(layer instanceof L.TileLayer)) {
-            AppState.map.removeLayer(layer);
+                AppState.map.removeLayer(layer);
             }
         });
 
@@ -2145,15 +2316,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     document.getElementById('close-stats-panel').addEventListener('click', () => statsPanel.classList.remove('open'));
-    $('#stats-inner-panel a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+    $('#stats-inner-panel a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         const activeTab = $(e.target).attr('href').replace('#', '');
         UIManager.updateStats(activeTab);
     });
-    document.getElementById('stationFilter').addEventListener('change', function() {
+    document.getElementById('stationFilter').addEventListener('change', function () {
         const selectedStations = Array.from(this.selectedOptions).map(opt => opt.value);
         document.getElementById('suggest-routes-btn').style.display = (selectedStations.length === 1 && selectedStations[0] !== 'all') ? 'block' : 'none';
     });
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (!e.ctrlKey && AppState.selectedGrids) {
             AppState.selectedGrids = [];
             AppState.map.closePopup();

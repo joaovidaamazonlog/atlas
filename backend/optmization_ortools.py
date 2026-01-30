@@ -2,6 +2,7 @@ import json, h3, math, traceback
 import pandas as pd
 import numpy as np
 import config as configuration
+import csv
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional, Set
@@ -38,6 +39,7 @@ class PartnerMetrics:
     entity_type: str 
     status: str
     store_id: Optional[str] = None
+    name: str = ""
     decision: str = ""
     priority_rank: int = 0
     cluster_name: str = "N/A"
@@ -51,6 +53,8 @@ class PartnerMetrics:
 class OptimizationReport:
     station_code: str
     existing_partners: List[PartnerMetrics]
+    inactive_partners: List[PartnerMetrics]
+    prospect_partners: List[PartnerMetrics]
     new_partners: List[PartnerMetrics]
     demand_summary: Dict[str, Dict]
     hex_to_cluster: Dict[str, str]
@@ -126,6 +130,7 @@ class OptimizationService:
     def __init__(self):
         self.reports: List[OptimizationReport] = []
         self.hex_to_ceps: Dict[str, Set[str]] = {}
+        self.hex_to_base: Dict[str, str] = {}
 
     def _load_data(self):
         print(f"[{datetime.now()}] Carregando dados...")
@@ -136,10 +141,12 @@ class OptimizationService:
         days = pd.to_datetime(df.plan_date).nunique() or 1
         self.demand_df = df.groupby(["station_code", "hex"]).size().reset_index(name="avg_demand")
         self.demand_df["avg_demand"] = (self.demand_df["avg_demand"] / days).round(0).astype(int)
-
+        self.hex_to_base = dict(zip(self.demand_df.hex, self.demand_df.station_code))
+        
         with open(Config.BASE_PARTNERS, "r", encoding="utf-8") as f:
             p_data = json.load(f)["allMarkerData"]
         self.partners_df = pd.DataFrame(p_data)
+        self.partners_df['exitedDate'] = pd.to_datetime(self.partners_df.get('exitedDate'), errors='coerce')
         self.partners_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
         self.partners_df["origin_hex"] = [h3.latlng_to_cell(float(la), float(lo), Config.H3_RES) for la, lo in zip(self.partners_df.lat, self.partners_df.lon)]
 
@@ -189,9 +196,72 @@ class OptimizationService:
                         break
         return results
     
-    def _evaluate_prospects(self, base, res_dem, hex_to_cluster):
+    def _evaluate_prospects(self, res_dem, hex_to_cluster):
         results = []
         subset = self.partners_df[self.partners_df.status == "Prospect"]
+
+        for _, p in subset.iterrows():
+            base = self.hex_to_base.get(p.origin_hex)
+            if not base:
+                decision = "Fora da área de atuacao"
+                sug_rad, sug_cap, allocs = 0, 0, []
+            else:
+                if p.origin_hex not in self.demand_df[self.demand_df.station_code == base].hex.values:
+                    decision = "Fora da área de atuacao"
+                    sug_rad, sug_cap, allocs = 0, 0, []
+                else:
+                    decision = ""
+                    sug_rad, sug_cap, allocs = 0, 0, []
+                    for r in Config.RADII:
+                        in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
+                        temp_total = sum(res_dem[h] for h in in_r)
+                        if temp_total >= Config.MIN_CAP:
+                            decision = "Seguir cadastro"
+                            sug_rad = r["radius_m"]
+                            sug_cap = Config.MAX_CAP if temp_total >= Config.MAX_CAP else Config.MIN_CAP
+                            current_fill = 0
+                            for h in sorted(in_r, key=lambda x: h3.grid_distance(x, p.origin_hex)):
+                                take = min(res_dem[h], sug_cap - current_fill)
+                                if take > 0:
+                                    allocs.append(Allocation(h, take))
+                                    res_dem[h] -= take
+                                    current_fill += take
+                            break
+                    if not decision:
+                        decision = "Fora da área de atuacao"
+
+            results.append(
+                PartnerMetrics(
+                    origin_hex=p.origin_hex,
+                    station_code=base if base else "",
+                    radius_m=sug_rad,
+                    capacity=sug_cap,
+                    entity_type="PROSPECT",
+                    status=str(p.status),
+                    store_id=str(p.salesforce_id),
+                    name=str(p.name),
+                    decision=decision,
+                    cluster_name=hex_to_cluster.get(p.origin_hex, "N/A"),
+                    allocations=allocs
+                )
+            )
+        return results
+    
+    def _evaluate_inactive_exited(self, base, res_dem, hex_to_cluster):
+        results = []
+        cutoff = pd.to_datetime("2026-01-01")
+        subset = self.partners_df[
+            (
+                (self.partners_df.status == "Inactive") |
+                (
+                    (self.partners_df.status == "Exited") &
+                    (self.partners_df.decision_status == "Exited - Regretted") &
+                    (self.partners_df.exitedDate >= cutoff)
+                )
+            ) &
+            (self.partners_df.station_code == base) &
+            (self.partners_df.jurisdiction_type == "Shared")
+        ]
         
         for _, p in subset.iterrows():
             decision = ""
@@ -205,7 +275,7 @@ class OptimizationService:
                     temp_total = sum(res_dem[h] for h in in_r)
                     
                     if temp_total >= Config.MIN_CAP:
-                        decision = "Seguir cadastro"
+                        decision = "Reativar cadastro"
                         sug_rad = r["radius_m"]
                         sug_cap = Config.MAX_CAP if temp_total >= Config.MAX_CAP else Config.MIN_CAP
                         current_fill = 0
@@ -216,8 +286,23 @@ class OptimizationService:
                                 res_dem[h] -= take
                                 current_fill += take
                         break
-            
-            results.append(PartnerMetrics(p.origin_hex, base, sug_rad, sug_cap, "PROSPECT", "Prospect", str(p.salesforce_id), decision, hex_to_cluster.get(p.origin_hex, "N/A"), allocs))
+                if not decision:
+                    decision = "Fora da área de atuacao"
+
+            results.append(PartnerMetrics(
+                origin_hex=p.origin_hex,
+                station_code=base,
+                radius_m=sug_rad,
+                capacity=sug_cap,
+                entity_type="INACTIVE/EXITED",
+                status=str(p.status),
+                store_id=str(p.store_id),
+                name=str(p.name),
+                decision=decision,
+                cluster_name=hex_to_cluster.get(p.origin_hex, "N/A"),
+                allocations=allocs
+            ))
+
         return results
 
     def run(self):
@@ -231,14 +316,15 @@ class OptimizationService:
             p1 = self._allocate_existing_by_status(base, res_dem, "Active")
             p2 = self._allocate_existing_by_status(base, res_dem, "Onboarding")
             p3 = self._allocate_existing_by_status(base, res_dem, "BG Checks")
-            
+
             # Identificação de Clusters
             islands, hex_to_cluster = self._find_neighborhood_clusters(res_dem, base)
             
-            p4 = self._evaluate_prospects(base, res_dem, hex_to_cluster)
+            p4 = self._evaluate_inactive_exited(base, res_dem, hex_to_cluster)
+            p5 = self._evaluate_prospects(res_dem, hex_to_cluster)
             
             # Fase 5: Novos (Solver paralelo nas islands com res_dem residual)
-            p5 = []
+            p6 = []
             if islands:
                 tasks = [{"station_code": base, "cluster_name": hex_to_cluster[h[0]], "hexes": h, "demand_map": res_dem} for h in islands]
                 with ProcessPoolExecutor(max_workers=10) as exc:
@@ -246,20 +332,23 @@ class OptimizationService:
                     for f in as_completed(futures):
                         for p_data in f.result():
                             p_new = PartnerMetrics(**{**p_data,"status": "New", "allocations": [Allocation(**a) for a in p_data['allocations']]})
-                            p5.append(p_new)
+                            p6.append(p_new)
                             for a in p_new.allocations: res_dem[a.hex_id] = max(0, res_dem.get(a.hex_id, 0) - a.packages_assigned)
             
             p_ativos = p1 + p2 + p3
-            p_prospects_ok = [p for p in p4 if p.decision == "Seguir cadastro"]
+            p_prospects_ok = [p for p in p5 if p.decision == "Seguir cadastro"]
+            p_inativos_ok = [p for p in p4 if p.decision == "Reativar cadastro"]
             
             total_atendido = sum(p.total_load for p in p_ativos)
             total_prospects_reserva = sum(p.total_load for p in p_prospects_ok)
-            total_novas_vagas = sum(p.total_load for p in p5)
-            
+            total_inativos_reserva = sum(p.total_load for p in p_inativos_ok)
+            total_novas_vagas = sum(p.total_load for p in p6)
+
             m = {
                 "total_demand": sum(orig_dem.values()),
                 "existing_absorbed": total_atendido,
                 "prospect_reserved": total_prospects_reserva,
+                "inactive_reserved": total_inativos_reserva,
                 "new_allocated": total_novas_vagas,
                 "residual": sum(res_dem.values()),
                 "new_partners_count": len(p5),
@@ -269,22 +358,26 @@ class OptimizationService:
             }                       
             report_base = OptimizationReport(
                 station_code = base,
-                existing_partners = p1 + p2 + p3 + p4,
-                new_partners = p5,
+                existing_partners = p1 + p2 + p3,
+                inactive_partners = p4,
+                prospect_partners = p5,
+                new_partners = p6,
                 demand_summary = {h: {"total": orig_dem[h], "residual": res_dem.get(h, 0)} for h in orig_dem},
                 hex_to_cluster = hex_to_cluster,
                 base_metrics = m
             )
             self.reports.append(report_base)            
-            self._print_summary(base, p1, p2, p3, p4, p5)
+            self._print_summary(base, p1, p2, p3, p4, p5, p6)
         
         self.export_strategic_results()
+        self.export_inactive_exited_report()
 
-    def _print_summary(self, base, p1, p2, p3, p4, p5):
+    def _print_summary(self, base, p1, p2, p3, p4, p5, p6):
         print(f"✅ Base {base} Concluída:")
         print(f"   [F1] Ativos: {len(p1)} | [F2] Onboarding: {len(p2)} | [F3] BG Checks: {len(p3)}")
-        print(f"   [F4] Leads Validados: {len([x for x in p4 if x.decision == 'Seguir cadastro'])}")
-        print(f"   [F5] Sugestões de Expansão: {len(p5)}")
+        print(f"   [F4] Inativos e Exited Validados: {len([x for x in p4 if x.decision == 'Reativar cadastro'])}")
+        print(f"   [F5] Leads Validados: {len([x for x in p5 if x.decision == 'Seguir cadastro'])}")
+        print(f"   [F6] Novos Parceiros: {len(p6)}")
 
     def export_strategic_results(self):
         dest = Path(Config.DEST_FOLDER); dest.mkdir(exist_ok=True)
@@ -305,7 +398,7 @@ class OptimizationService:
                         "residual": info["residual"]
                     }
                 })
-            for p in r.existing_partners + r.new_partners:
+            for p in r.existing_partners + r.new_partners + r.prospect_partners + r.inactive_partners:
                 lat, lng = h3.cell_to_latlng(p.origin_hex)
                 ceps_alocados = set()
                 alloc_list_json = []
@@ -346,11 +439,12 @@ class OptimizationService:
                 f.write(f"RESUMO EXECUTIVO DA BASE:\n")
                 f.write(f"  - Demanda Total da Base:     {m.get('total_demand', 0):,} pacotes\n")
                 f.write(f"  - Atendida (Ativos F1-F3):   {m.get('existing_absorbed', 0):,} pacotes\n")
-                f.write(f"  - Reservada (Prospects F4):  {m.get('prospect_reserved', 0):,} pacotes\n")
-                f.write(f"  - Alocada p/ Expansão (F5):  {m.get('new_allocated', 0):,} pacotes\n")
+                f.write(f"  - Alocada p/ Inativos (F4):   {m.get('inactive_reserved', 0):,} pacotes\n")
+                f.write(f"  - Alocada p/ Leads (F5):      {m.get('prospect_reserved', 0):,} pacotes\n")
+                f.write(f"  - Alocada p/ Expansão (F6):  {m.get('new_allocated', 0):,} pacotes\n")
                 f.write(f"  - Gap Final (Não alocado):   {m.get('residual', 0):,} pacotes\n")
                 f.write(f"{'-'*40}\n")
-                f.write(f"POTENCIAL DE NOVAS VAGAS (F5):\n")
+                f.write(f"POTENCIAL DE NOVAS VAGAS (F6):\n")
                 f.write(f"  - Quantidade de Vagas:       {m.get('new_partners_count', 0)} vagas\n")
                 f.write(f"  - Média de Pacotes/Vaga:     {m.get('avg_load', 0):.1f} pacotes\n")
                 f.write(f"  - Média de Raio Proposto:    {m.get('avg_radius', 0):.0f} m\n")
@@ -361,6 +455,18 @@ class OptimizationService:
                 if prospects:
                     f.write(f"📢 ANÁLISE DE LEADS (PROSPECTS):\n")
                     for p in prospects:
+                        f.write(f"  • ID: {p.store_id} | Decisão: {p.decision}\n")
+                        if p.decision == "Seguir cadastro":
+                            ceps_p = set()
+                            for a in p.allocations: ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
+                            f.write(f"    Sugerido: {p.total_load}pk (R:{p.radius_m}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
+                    f.write(f"{'-'*40}\n")
+                
+                #SEÇÃO DE INATIVOS/EXITED AVALIADOS
+                inativos = [p for p in r.inactive_partners]
+                if inativos:
+                    f.write(f"📢 ANÁLISE DE INATIVOS/EXITED AVALIADOS:\n")
+                    for p in inativos:
                         f.write(f"  • ID: {p.store_id} | Decisão: {p.decision}\n")
                         if p.decision == "Seguir cadastro":
                             ceps_p = set()
@@ -390,6 +496,25 @@ class OptimizationService:
                         f.write(f"        CEPs Alvo: {', '.join(list(ceps_vaga)[:8])}...\n")
                         f.write(f"        Google Maps: maps.google.com/maps?q={lat},{lng}\n\n")
                 f.write("\n" + "="*80 + "\n")
+
+    def export_inactive_exited_report(self, filename="INATIVOS_EXITED_AVALIADOS.csv"):
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
+        path = dest / filename
+
+        with open(path, "w", encoding="utf-8", newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(["store_id", "status", "delivery_station", "decision", "cap_sugerido", "raio_sugerido"])
+            for r in self.reports:
+                for p in r.inactive_partners:
+                    writer.writerow([
+                        p.store_id,
+                        p.status,
+                        r.station_code,
+                        p.decision,
+                        p.total_load,
+                        p.radius_m
+                    ])
 
 if __name__ == "__main__":
     try:

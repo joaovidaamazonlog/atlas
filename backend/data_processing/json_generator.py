@@ -111,6 +111,8 @@ class JsonGenerator:
                 "capacity": row.get("Volume Cap"),
                 "jurisdiction_type": row.get("Jurisdiction Type"),
                 "launch_date": format_date_to_str(row.get("Launch Date")),
+                "exitedDate": format_date_to_str(row.get("Exit_Date__c")),
+                "decision_status": row.get("Decision_Status__c"),
                 "supply_run": row.get("Supply Run"),
                 "hub_delivey_initiatives": row.get("Hub Delivery Initiatives"),
                 "HCP_rate_card": row.get("HCP Rate Card"),

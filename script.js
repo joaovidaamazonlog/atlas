@@ -18,6 +18,8 @@ const AppState = {
     deliveryStations: [],
     jurisdictionData: null,
     jurisdictionLayer: null,
+    optimizationData: null,
+    optimizationLayer: null,
     sortPlanningData: null,
     highlightIcon: L.icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',

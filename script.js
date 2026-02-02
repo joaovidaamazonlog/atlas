@@ -485,7 +485,8 @@ const PolygonManager = {
         },
 
         updateTooltip(mouseEvent) {
-            if (!this.tooltipDiv){
+            // Se o tooltip foi removido, recria
+            if (!this.tooltipDiv) {
                 this.tooltipDiv = document.createElement('div');
                 this.tooltipDiv.setAttribute('role', 'tooltip');
                 this.tooltipDiv.setAttribute('aria-live', 'polite');

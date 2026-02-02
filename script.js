@@ -447,9 +447,11 @@ const PolygonManager = {
                         this.selectedPolygons.add(id);
                         layer.setStyle({ weight: 3, fillOpacity: 0.6 });
                     }
-                    this.updateTooltip(e.originalEvent);
+                    // Use e.originalEvent ou, se não existir, use o último mousemove
+                    this.updateTooltip(e.originalEvent || window._lastMouseEvent);
                 };
                 const mousemoveHandler = (e) => {
+                    window._lastMouseEvent = e.originalEvent;
                     this.updateTooltip(e.originalEvent);
                 };
                 layer.off('click').on('click', clickHandler);
@@ -460,6 +462,7 @@ const PolygonManager = {
             // Evento global para esconder tooltip quando não houver seleção
             if (this._mousemoveHandler) document.removeEventListener('mousemove', this._mousemoveHandler);
             this._mousemoveHandler = (e) => {
+                window._lastMouseEvent = e;
                 if (this.selectedPolygons.size > 0) {
                     this.updateTooltip(e);
                 } else {
@@ -487,6 +490,8 @@ const PolygonManager = {
                 this.tooltipDiv.style.display = 'none';
                 return;
             }
+            // Fallback para último evento de mouse conhecido
+            if (!mouseEvent && window._lastMouseEvent) mouseEvent = window._lastMouseEvent;
             // Soma demanda total dos selecionados
             let soma = 0;
             let count = 0;
@@ -500,8 +505,10 @@ const PolygonManager = {
             this.tooltipDiv.innerHTML = `<button style="position:absolute;top:2px;right:6px;background:none;border:none;font-size:1.2em;cursor:pointer;" aria-label="Fechar tooltip" onclick="PolygonManager.optimizationSelection.clearSelection(event)">&times;</button>
                 <b>Selecionados:</b> ${count}<br><b>Soma demanda total:</b> ${soma}`;
             this.tooltipDiv.style.display = 'block';
-            this.tooltipDiv.style.left = (mouseEvent.clientX + 16) + 'px';
-            this.tooltipDiv.style.top = (mouseEvent.clientY + 16) + 'px';
+            if (mouseEvent) {
+                this.tooltipDiv.style.left = (mouseEvent.clientX + 16) + 'px';
+                this.tooltipDiv.style.top = (mouseEvent.clientY + 16) + 'px';
+            }
         },
 
         clearSelection(e) {

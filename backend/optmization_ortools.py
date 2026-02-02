@@ -446,18 +446,18 @@ class OptimizationService:
     def _evaluate_inactive_exited(self, base, res_dem, hex_to_cluster):
         results = []
         cutoff = pd.to_datetime("2026-01-01")
-        subset = self.partners_df[self.partners_df.store_id.isin(Config.PARTNERS_TO_EVALUATE) & (self.partners_df.station_code == base)]
-        """(
-            (self.partners_df.status == "Inactive") |
+        subset = self.partners_df[
             (
-                (self.partners_df.status == "Exited") &
-                (self.partners_df.decision_status == "Exited - Regretted") &
-                (self.partners_df.exitedDate >= cutoff)
-            ) |
-            (self.partners_df.store_id.isin(Config.PARTNERS_TO_EVALUATE))
-        ) &
-        (self.partners_df.station_code == base) &
-        (self.partners_df.jurisdiction_type == "Shared")"""
+                (self.partners_df.status == "Inactive") |
+                (
+                    (self.partners_df.status == "Exited") &
+                    (self.partners_df.decision_status == "Exited - Regretted") &
+                    (self.partners_df.exitedDate >= cutoff)
+                ) 
+            ) &
+            (self.partners_df.station_code == base) &
+            (self.partners_df.jurisdiction_type == "Shared")
+        ]
         
         for _, p in subset.iterrows():
             decision = ""

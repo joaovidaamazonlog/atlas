@@ -562,7 +562,8 @@ class OptimizationService:
                 "new_partners_count": len(p5),
                 "avg_load": (total_novas_vagas / len(p5)) if len(p5) > 0 else 0,
                 "avg_radius": (sum(p.radius_m for p in p5) / len(p5)) if len(p5) > 0 else 0,
-                "cluster_count": len(islands)
+                "cluster_count": len(islands),
+                "avg_partners_per_cluster": (len(p_ativos + p_prospects_ok + p_inativos_ok + p6) / len(islands)) if len(islands) > 0 else 0
             }                       
             report_base = OptimizationReport(
                 station_code = base,
@@ -653,6 +654,8 @@ class OptimizationService:
                 f.write(f"  - Gap Final (Não alocado):   {m.get('residual', 0):,} pacotes\n")
                 f.write(f"{'-'*40}\n")
                 f.write(f"POTENCIAL DE NOVAS VAGAS (F6):\n")
+                f.write(f"  - Quantidade de Clusters:    {r.base_metrics.get('cluster_count', 0)}\n")
+                f.write(f"  - Média de parceiros/cluster: {r.base_metrics.get('avg_partners_per_cluster', 0):.1f}\n")
                 f.write(f"  - Quantidade de Vagas:       {m.get('new_partners_count', 0)} vagas\n")
                 f.write(f"  - Média de Pacotes/Vaga:     {m.get('avg_load', 0):.1f} pacotes\n")
                 f.write(f"  - Média de Raio Proposto:    {m.get('avg_radius', 0):.0f} m\n")

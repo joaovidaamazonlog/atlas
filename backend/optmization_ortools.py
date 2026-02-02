@@ -24,6 +24,161 @@ class Config:
     CAPACITIES = configuration.CAPACITIES
     RADII = configuration.RADII_M
     BONUS_PER_OPEN = 1500 
+    PARTNERS_TO_EVALUATE = [
+    "2014644401",
+    "3857592834",
+    "8064721854",
+    "9481632038",
+    "6996006349",
+    "7916093446",
+    "7576302490",
+    "6747547249",
+    "7242932102",
+    "2805526155",
+    "4698881022",
+    "1041349648",
+    "4043030504",
+    "6625854445",
+    "3661723568",
+    "5784431295",
+    "3177448268",
+    "7568619126",
+    "6801124067",
+    "6788598219",
+    "6886216756",
+    "9909851555",
+    "7511333617",
+    "3138958968",
+    "1427271126",
+    "8481961104",
+    "3575011138",
+    "7126630871",
+    "6135947075",
+    "4546414567",
+    "8259009430",
+    "7402074332",
+    "4016033739",
+    "6345639425",
+    "5259756912",
+    "6544149469",
+    "8447167307",
+    "3602880562",
+    "5683660133",
+    "6132058026",
+    "7045795919",
+    "1755959459",
+    "8167237664",
+    "2326965334",
+    "5054036689",
+    "7084939417",
+    "7389914581",
+    "1125392880",
+    "9476037117",
+    "3773904830",
+    "4513763702",
+    "4862296245",
+    "4290494023",
+    "9757559519",
+    "3244551105",
+    "7509939829",
+    "6383652230",
+    "9869932492",
+    "4232493531",
+    "5916819743",
+    "5836606811",
+    "9523930283",
+    "1430775187",
+    "3447629085",
+    "1005193921",
+    "7886989484",
+    "4931919201",
+    "2755149565",
+    "2671921159",
+    "9820749867",
+    "7478530907",
+    "9239271304",
+    "2849016064",
+    "9510390499",
+    "9729504760",
+    "6271783995",
+    "6748803438",
+    "8956610920",
+    "7113486670",
+    "3899335041",
+    "6540332691",
+    "8289278548",
+    "9405287197",
+    "5621700235",
+    "6230445822",
+    "7474130054",
+    "4630617729",
+    "8985951644",
+    "2053196071",
+    "9119427541",
+    "4662396800",
+    "7286817261",
+    "4677998905",
+    "6067001624",
+    "2157925422",
+    "5138453833",
+    "6032760566",
+    "4515159681",
+    "1854996802",
+    "8053613574",
+    "2237747131",
+    "4292852949",
+    "8523916904",
+    "5927770520",
+    "9012475079",
+    "2111610464",
+    "3723882901",
+    "1143481426",
+    "2337263859",
+    "1766668243",
+    "6552612349",
+    "3616539221",
+    "5803762263",
+    "2022807224",
+    "1099542555",
+    "5405521946",
+    "5681624260",
+    "7730360958",
+    "6428886181",
+    "6705512868",
+    "6478386881",
+    "3544782975",
+    "7511341206",
+    "4747933998",
+    "5441529885",
+    "3248886658",
+    "9963213908",
+    "7642142507",
+    "5192704648",
+    "7816137321",
+    "4111778967",
+    "7302375194",
+    "1782224274",
+    "9589865235",
+    "6429060327",
+    "9526911236",
+    "4055116937",
+    "3135532006",
+    "8267671656",
+    "6586500496",
+    "9226773826",
+    "3367800093",
+    "3120737321",
+    "5236201354",
+    "7474636239",
+    "4831369782",
+    "9688618768",
+    "6697283815",
+    "9757410356",
+    "7782756174",
+    "4741403726",
+    "2342562201",
+    "6392091103",
+]
 
 @dataclass
 class Allocation:
@@ -176,6 +331,47 @@ class OptimizationService:
                 islands.append(hex_list); [hex_to_cluster.update({h: c_name}) for h in hex_list]
                 c_idx += 1
         return islands, hex_to_cluster
+    def _subdivide_clusters_by_partner_count(self, islands, hex_to_cluster, partners_df, max_per_cluster=50):
+        cluster_to_hexes = {}
+        for h, c in hex_to_cluster.items():
+            cluster_to_hexes.setdefault(c, []).append(h)
+            
+        cluster_to_partners = {}
+        for _, p in partners_df.iterrows():
+            c = hex_to_cluster.get(p.origin_hex)
+            if c:
+                cluster_to_partners.setdefault(c, []).append(p)
+
+        new_islands = []
+        new_hex_to_cluster = {}
+        cluster_counter = 0
+
+        for cluster_name, hexes in cluster_to_hexes.items():
+            partners_in_cluster = cluster_to_partners.get(cluster_name, [])
+            if len(partners_in_cluster) <= max_per_cluster:
+                new_islands.append(hexes)
+                for h in hexes:
+                    new_hex_to_cluster[h] = f"{cluster_name}_S{cluster_counter}"
+                cluster_counter += 1
+            else:
+                n_sub = int(np.ceil(len(partners_in_cluster) / max_per_cluster))
+                coords = [h3.cell_to_latlng(p.origin_hex) for p in partners_in_cluster]
+                if len(coords) < n_sub:
+                    n_sub = len(coords)
+                if n_sub == 0:
+                    continue
+                kmeans = KMeans(n_clusters=n_sub, random_state=42, n_init=5).fit(coords)
+                for sub_label in range(n_sub):
+                    sub_partners = [p for i, p in enumerate(partners_in_cluster) if kmeans.labels_[i] == sub_label]
+                    sub_hexes = [p.origin_hex for p in sub_partners]
+                    if not sub_hexes:
+                        continue
+                    new_islands.append(sub_hexes)
+                    for h in sub_hexes:
+                        new_hex_to_cluster[h] = f"{cluster_name}_S{cluster_counter}"
+                    cluster_counter += 1
+        return new_islands, new_hex_to_cluster
+    
     
     def _allocate_existing_by_status(self, base, res_dem, target_status):
         results = []
@@ -250,22 +446,23 @@ class OptimizationService:
     def _evaluate_inactive_exited(self, base, res_dem, hex_to_cluster):
         results = []
         cutoff = pd.to_datetime("2026-01-01")
-        subset = self.partners_df[
+        subset = self.partners_df[self.partners_df.store_id.isin(Config.PARTNERS_TO_EVALUATE) & (self.partners_df.station_code == base)]
+        """(
+            (self.partners_df.status == "Inactive") |
             (
-                (self.partners_df.status == "Inactive") |
-                (
-                    (self.partners_df.status == "Exited") &
-                    (self.partners_df.decision_status == "Exited - Regretted") &
-                    (self.partners_df.exitedDate >= cutoff)
-                )
-            ) &
-            (self.partners_df.station_code == base) &
-            (self.partners_df.jurisdiction_type == "Shared")
-        ]
+                (self.partners_df.status == "Exited") &
+                (self.partners_df.decision_status == "Exited - Regretted") &
+                (self.partners_df.exitedDate >= cutoff)
+            ) |
+            (self.partners_df.store_id.isin(Config.PARTNERS_TO_EVALUATE))
+        ) &
+        (self.partners_df.station_code == base) &
+        (self.partners_df.jurisdiction_type == "Shared")"""
         
         for _, p in subset.iterrows():
             decision = ""
             sug_rad, sug_cap, allocs = 0, 0, []
+            print(f"Analisando parceiro Inativo/Saido: {p.store_id}")
 
             if p.origin_hex not in self.demand_df[self.demand_df.station_code == base].hex.values:
                 decision = "Fora da área de atuacao"
@@ -311,19 +508,16 @@ class OptimizationService:
             print(f"\n--- 🚀 OTIMIZANDO BASE: {base} ---")
             orig_dem = self.demand_df[self.demand_df.station_code == base].set_index("hex")["avg_demand"].to_dict()
             res_dem = dict(orig_dem)
-            
-            # Fases 1, 2, 3
+
             p1 = self._allocate_existing_by_status(base, res_dem, "Active")
             p2 = self._allocate_existing_by_status(base, res_dem, "Onboarding")
             p3 = self._allocate_existing_by_status(base, res_dem, "BG Checks")
 
-            # Identificação de Clusters
             islands, hex_to_cluster = self._find_neighborhood_clusters(res_dem, base)
             
             p4 = self._evaluate_inactive_exited(base, res_dem, hex_to_cluster)
             p5 = self._evaluate_prospects(res_dem, hex_to_cluster)
             
-            # Fase 5: Novos (Solver paralelo nas islands com res_dem residual)
             p6 = []
             if islands:
                 tasks = [{"station_code": base, "cluster_name": hex_to_cluster[h[0]], "hexes": h, "demand_map": res_dem} for h in islands]
@@ -338,7 +532,21 @@ class OptimizationService:
             p_ativos = p1 + p2 + p3
             p_prospects_ok = [p for p in p5 if p.decision == "Seguir cadastro"]
             p_inativos_ok = [p for p in p4 if p.decision == "Reativar cadastro"]
-            
+
+            all_partners_for_clustering = pd.concat([
+                self.partners_df[self.partners_df.status.isin(["Active", "Onboarding", "BG Checks"]) & (self.partners_df.station_code == base)],
+                self.partners_df[(self.partners_df.status == "Prospect") & (self.partners_df.station_code == base)],
+                self.partners_df[(self.partners_df.status == "Inactive") & (self.partners_df.station_code == base)],
+                self.partners_df[(self.partners_df.status == "Exited") & (self.partners_df.station_code == base)]
+            ], ignore_index=True)
+
+            islands, hex_to_cluster = self._subdivide_clusters_by_partner_count(
+                islands, hex_to_cluster, all_partners_for_clustering, max_per_cluster=50
+            )
+
+            for p in p1 + p2 + p3 + p4 + p5 + p6:
+                p.cluster_name = hex_to_cluster.get(p.origin_hex, p.cluster_name)
+                
             total_atendido = sum(p.total_load for p in p_ativos)
             total_prospects_reserva = sum(p.total_load for p in p_prospects_ok)
             total_inativos_reserva = sum(p.total_load for p in p_inativos_ok)

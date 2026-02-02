@@ -485,7 +485,39 @@ const PolygonManager = {
         },
 
         updateTooltip(mouseEvent) {
-            if (!this.tooltipDiv) return;
+            if (!this.tooltipDiv){
+                this.tooltipDiv = document.createElement('div');
+                this.tooltipDiv.setAttribute('role', 'tooltip');
+                this.tooltipDiv.setAttribute('aria-live', 'polite');
+                this.tooltipDiv.style.position = 'fixed';
+                this.tooltipDiv.style.background = '#fff';
+                this.tooltipDiv.style.border = '1px solid #333';
+                this.tooltipDiv.style.padding = '6px 12px';
+                this.tooltipDiv.style.borderRadius = '6px';
+                this.tooltipDiv.style.boxShadow = '0 2px 8px #0002';
+                this.tooltipDiv.style.pointerEvents = 'none';
+                this.tooltipDiv.style.zIndex = 99999;
+                this.tooltipDiv.style.display = 'none';
+                // Botão de fechar
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '2px';
+                closeBtn.style.right = '6px';
+                closeBtn.style.background = 'none';
+                closeBtn.style.border = 'none';
+                closeBtn.style.fontSize = '1.2em';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.setAttribute('aria-label', 'Fechar tooltip');
+                closeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    this.selectedPolygons.clear();
+                    this._removeTooltip();
+                    this._resetPolygonStyles();
+                };
+                this.tooltipDiv.appendChild(closeBtn);
+                document.body.appendChild(this.tooltipDiv);
+            }
             if (this.selectedPolygons.size === 0) {
                 this.tooltipDiv.style.display = 'none';
                 return;

@@ -604,7 +604,7 @@ const PolygonManager = {
         }
     },
 
-    OptimizationLayer: function () {
+    renderOptimizationLayer: function () {
         if (AppState.optimizationLayer) {
             AppState.map.removeLayer(AppState.optimizationLayer);
             AppState.optimizationLayer = null;
@@ -641,7 +641,7 @@ const PolygonManager = {
             }),
         });
 
-        if (document.getElementById('showOptimization').checked) {
+        if (document.getElementById('showOptimizationLayer').checked) {
             AppState.optimizationLayer.addTo(AppState.map);
         }
     },
@@ -655,7 +655,7 @@ const PolygonManager = {
     },
 
     toggleOptimizationLayer: function () {
-        this.OptimizationLayer();
+        this.renderOptimizationLayer();
         if (AppState.optimizationLayer) {
             PolygonManager.optimizationSelection.enableSelection();
         } else {
@@ -2292,7 +2292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('showRadii').addEventListener('change', () => MapManager.toggleRadii());
     document.getElementById('showPolygons').addEventListener('change', () => PolygonManager.togglePolygons());
     document.getElementById('showJurisdictions').addEventListener('change', () => PolygonManager.toggleJurisdictons());
-    document.getElementById('showOptmizationLayer').addEventListener('change', () => PolygonManager.toggleOptimizationLayer());
+    document.getElementById('showOptimizationLayer').addEventListener('change', () => PolygonManager.toggleOptimizationLayer());
 
     // Filter Tab
     document.querySelector('#filter-content button.btn-primary').addEventListener('click', () => DataManager.applyFilters());

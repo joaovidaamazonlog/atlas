@@ -1,154 +1,117 @@
 store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
-6429060327,Active,DBH5,Fora da área de atuacao,0,0
-9909851555,Active,DBH5,Fora da área de atuacao,0,0
-8267671656,Active,DBH5,Fora da área de atuacao,0,0
-6552612349,Active,DBH5,Reativar cadastro,70,800
-6886216756,Active,DBR9,Reativar cadastro,70,200
-8289278548,Active,DBR9,Fora da área de atuacao,0,0
-9688618768,Active,DBR9,Reativar cadastro,70,800
-4232493531,Active,DBR9,Reativar cadastro,45,500
-7642142507,Active,DBR9,Reativar cadastro,70,800
-4630617729,Active,DBR9,Fora da área de atuacao,0,0
-4677998905,Active,DBR9,Fora da área de atuacao,0,0
-2342562201,Active,DBR9,Fora da área de atuacao,0,0
-7113486670,Active,DBR9,Fora da área de atuacao,0,0
-7242932102,Inactive,DBR9,Fora da área de atuacao,0,0
-6748803438,Active,DBR9,Fora da área de atuacao,0,0
-2337263859,Active,DBR9,Reativar cadastro,45,200
-7576302490,Active,DBR9,Fora da área de atuacao,0,0
-8481961104,Active,DBR9,Reativar cadastro,70,200
-3899335041,Active,DBR9,Fora da área de atuacao,0,0
-9405287197,Active,DBR9,Fora da área de atuacao,0,0
-7084939417,Active,DBR9,Reativar cadastro,70,500
-3602880562,Active,DBR9,Fora da área de atuacao,0,0
-7816137321,Active,DBR9,Reativar cadastro,70,500
-2671921159,Active,DBR9,Fora da área de atuacao,0,0
-8956610920,Active,DBR9,Reativar cadastro,70,500
-9239271304,Active,DBR9,Fora da área de atuacao,0,0
-7474130054,Active,DBS5,Reativar cadastro,70,500
-1766668243,Active,DBS5,Reativar cadastro,70,500
-7302375194,Active,DCE3,Reativar cadastro,70,1500
-3544782975,Active,DCE3,Fora da área de atuacao,0,0
-3447629085,Active,DCE3,Reativar cadastro,45,200
-9757410356,Active,DCE3,Reativar cadastro,45,1500
-8053613574,Active,DCE3,Fora da área de atuacao,0,0
-4831369782,Exited,DCE3,Fora da área de atuacao,0,0
+5611519753,Inactive,DBR9,Reativar cadastro,70,200
+2139375472,Exited,DBS5,Reativar cadastro,45,200
+8661808312,Inactive,DBS5,Reativar cadastro,70,500
+1342604696,Exited,DBS5,Fora da área de atuacao,0,0
+8103619517,Inactive,DBS5,Reativar cadastro,70,500
+5011947056,Inactive,DBS5,Fora da área de atuacao,0,0
+9230782915,Inactive,DBS5,Fora da área de atuacao,0,0
+7356460723,Exited,DBS5,Reativar cadastro,45,800
+2871034540,Exited,DBS5,Fora da área de atuacao,0,0
+2941123614,Exited,DBS5,Reativar cadastro,45,200
+8999063314,Inactive,DBS5,Reativar cadastro,70,500
+2973031371,Inactive,DBS5,Reativar cadastro,70,500
+7445304954,Exited,DBS5,Reativar cadastro,70,800
+8887362834,Exited,DCE3,Reativar cadastro,70,200
+6268439364,Inactive,DCE3,Fora da área de atuacao,0,0
+4075411696,Inactive,DCE3,Reativar cadastro,70,200
+3531708045,Exited,DCE3,Fora da área de atuacao,0,0
+4856286979,Inactive,DCE3,Fora da área de atuacao,0,0
+4710230823,Inactive,DCE3,Fora da área de atuacao,0,0
+2841422451,Exited,DCE3,Reativar cadastro,70,200
+9940871854,Exited,DCE3,Fora da área de atuacao,0,0
+8417186988,Exited,DCE3,Fora da área de atuacao,0,0
+8269588139,Inactive,DCE3,Reativar cadastro,70,800
+3424426321,Inactive,DCE3,Fora da área de atuacao,0,0
+8462609813,Inactive,DCE3,Reativar cadastro,70,200
+4280130213,Inactive,DCE3,Reativar cadastro,70,200
+9526978260,Inactive,DCE3,Reativar cadastro,70,500
 4111778967,Exited,DCE3,Fora da área de atuacao,0,0
-9589865235,Active,DCE3,Fora da área de atuacao,0,0
-6586500496,Active,DCE3,Reativar cadastro,70,800
-2326965334,Active,DES2,Reativar cadastro,70,1100
-9869932492,Active,DES2,Reativar cadastro,45,1100
-7045795919,Active,DES2,Reativar cadastro,70,800
-9510390499,Active,DES2,Reativar cadastro,70,500
-4546414567,Active,DES2,Reativar cadastro,70,500
-1427271126,Active,DES2,Reativar cadastro,70,200
-3575011138,Active,DES2,Reativar cadastro,70,1100
-6801124067,Active,DES2,Reativar cadastro,45,800
-6135947075,Active,DES2,Reativar cadastro,70,800
-6345639425,Active,DES2,Reativar cadastro,45,1500
-4741403726,Active,DES2,Reativar cadastro,45,800
-5138453833,Active,DES2,Reativar cadastro,70,800
-8523916904,Active,DGO2,Reativar cadastro,70,800
-7511341206,Active,DGO2,Reativar cadastro,70,800
-6540332691,Active,DMG2,Reativar cadastro,45,500
-6705512868,Active,DMG2,Reativar cadastro,70,800
-6383652230,Active,DMG2,Reativar cadastro,70,500
+2185247913,Exited,DCE3,Fora da área de atuacao,0,0
+2900973781,Exited,DES2,Reativar cadastro,45,1500
+3964899432,Inactive,DGO2,Reativar cadastro,70,200
+9701460499,Inactive,DGO2,Reativar cadastro,70,200
+5842372859,Inactive,DGO2,Reativar cadastro,70,500
+3137593395,Exited,DGO2,Reativar cadastro,70,500
+9869621600,Exited,DGO2,Reativar cadastro,70,800
+2479620919,Exited,DGO2,Reativar cadastro,70,800
+1281519444,Exited,DGO2,Reativar cadastro,45,800
+5818262334,Exited,DGO2,Reativar cadastro,45,500
+9101043765,Exited,DGO2,Reativar cadastro,70,200
+3055219278,Exited,DGO2,Reativar cadastro,70,200
+2061220833,Exited,DGO2,Reativar cadastro,70,500
+4835312858,Exited,DMG2,Reativar cadastro,70,800
+9592057305,Inactive,DMG2,Reativar cadastro,70,500
+7149108935,Inactive,DMG2,Reativar cadastro,70,800
 5803762263,Inactive,DMG2,Reativar cadastro,45,200
-5259756912,Active,DMG2,Reativar cadastro,70,500
-6478386881,Exited,DMG2,Reativar cadastro,45,500
+1212715400,Inactive,DMG2,Reativar cadastro,70,500
+6478386881,Exited,DMG2,Reativar cadastro,70,500
+7432931382,Inactive,DMG2,Reativar cadastro,70,800
 1782224274,Exited,DMG2,Reativar cadastro,70,800
-7886989484,Active,DPB3,Reativar cadastro,45,1500
-2022807224,Active,DPB3,Fora da área de atuacao,0,0
-3367800093,Active,DPE4,Reativar cadastro,70,1100
-3120737321,Exited,DPE4,Fora da área de atuacao,0,0
-5927770520,Active,DPE4,Reativar cadastro,70,1100
-9963213908,Active,DPE4,Fora da área de atuacao,0,0
-6230445822,Active,DPE4,Reativar cadastro,70,200
-5405521946,Active,DPE4,Reativar cadastro,70,800
+4789783864,Inactive,DMG2,Fora da área de atuacao,0,0
+6469167913,Inactive,DMG2,Fora da área de atuacao,0,0
+5674866393,Exited,DMG2,Reativar cadastro,45,500
+5782867344,Inactive,DMG2,Reativar cadastro,70,500
+6400516260,Exited,DPB3,Fora da área de atuacao,0,0
+5923412179,Exited,DPB3,Reativar cadastro,70,1100
+1690041426,Inactive,DPE4,Reativar cadastro,70,500
+6676774372,Exited,DPE4,Reativar cadastro,70,200
 3723882901,Exited,DPE4,Reativar cadastro,70,500
-6067001624,Active,DPE4,Fora da área de atuacao,0,0
-4662396800,Active,DPE4,Reativar cadastro,70,500
-7782756174,Active,DPR2,Reativar cadastro,70,500
+4664762905,Exited,DPE4,Reativar cadastro,45,800
+8292385825,Exited,DPE4,Reativar cadastro,70,800
+4748969752,Exited,DPE4,Reativar cadastro,70,500
+8425859118,Inactive,DPE4,Reativar cadastro,45,200
+9484140392,Exited,DPE4,Reativar cadastro,70,500
+2589035938,Exited,DPR2,Reativar cadastro,45,800
 1755959459,Exited,DPR2,Reativar cadastro,70,1500
-1041349648,Active,DPR2,Fora da área de atuacao,0,0
-6625854445,Active,DPR2,Reativar cadastro,70,1100
-7474636239,Active,DPR2,Reativar cadastro,70,500
-3244551105,Exited,DPR2,Fora da área de atuacao,0,0
-6428886181,Active,DPR2,Reativar cadastro,45,200
-5784431295,Active,DPR2,Reativar cadastro,70,200
-3661723568,Active,DPR2,Reativar cadastro,45,1100
-2157925422,Active,DPR2,Reativar cadastro,45,500
-1854996802,Active,DPR2,Reativar cadastro,70,800
-3248886658,Active,DPR2,Fora da área de atuacao,0,0
-6132058026,Active,DRJ3,Fora da área de atuacao,0,0
-9523930283,Active,DRJ3,Reativar cadastro,70,500
-7478530907,Active,DRJ3,Reativar cadastro,70,500
-9012475079,Active,DRS5,Reativar cadastro,70,500
-8259009430,Active,DRS5,Fora da área de atuacao,0,0
-4016033739,Active,DRS5,Reativar cadastro,70,1100
-6271783995,Active,DRS5,Reativar cadastro,70,500
-6788598219,Active,DRS5,Fora da área de atuacao,0,0
-7568619126,Active,DRS5,Reativar cadastro,45,500
-6032760566,Active,DRS5,Reativar cadastro,70,200
-9820749867,Active,DRS5,Reativar cadastro,70,200
-1125392880,Active,DRS5,Reativar cadastro,45,1100
-4931919201,Active,DRS5,Reativar cadastro,70,500
-1430775187,Active,DRS5,Reativar cadastro,70,800
-4515159681,Active,DRS5,Reativar cadastro,70,500
-1099542555,Active,DSA8,Reativar cadastro,45,800
-4043030504,Active,DSP2,Fora da área de atuacao,0,0
-3616539221,Active,DSP2,Reativar cadastro,70,500
-6392091103,Active,DSP2,Fora da área de atuacao,0,0
-9481632038,Active,DSP2,Fora da área de atuacao,0,0
-9476037117,Active,DSP2,Reativar cadastro,45,200
-5054036689,Active,DSP2,Reativar cadastro,70,800
-3138958968,Active,DSP2,Fora da área de atuacao,0,0
-2014644401,Active,DSP2,Fora da área de atuacao,0,0
-8064721854,Active,DSP2,Reativar cadastro,70,1500
-6747547249,Active,DSP2,Reativar cadastro,70,800
-2111610464,Active,DSP2,Reativar cadastro,70,1500
-4747933998,Active,DSP2,Fora da área de atuacao,0,0
-7916093446,Active,DSP2,Reativar cadastro,70,500
-5681624260,Exited,DSP2,Fora da área de atuacao,0,0
-9226773826,Active,DSP2,Fora da área de atuacao,0,0
-1143481426,Active,DSP2,Fora da área de atuacao,0,0
-2237747131,Active,DSP2,Reativar cadastro,70,500
-7402074332,Active,DSP2,Fora da área de atuacao,0,0
-5621700235,Active,DSP2,Reativar cadastro,45,500
-5236201354,Active,DSP2,Reativar cadastro,70,1500
-6697283815,Active,DSP2,Fora da área de atuacao,0,0
-7509939829,Active,DSP2,Reativar cadastro,70,500
-6996006349,Active,DSP2,Reativar cadastro,45,1500
-3177448268,Active,DSP2,Reativar cadastro,70,800
-2805526155,Active,DSP2,Fora da área de atuacao,0,0
-8167237664,Active,DSP2,Fora da área de atuacao,0,0
-4698881022,Active,DSP2,Fora da área de atuacao,0,0
-2849016064,Active,DSP2,Fora da área de atuacao,0,0
-8447167307,Active,DSP2,Fora da área de atuacao,0,0
-4513763702,Active,DSP2,Reativar cadastro,70,500
-2755149565,Active,DSP2,Reativar cadastro,70,500
-5836606811,Active,DSP2,Fora da área de atuacao,0,0
-7511333617,Active,DSP2,Fora da área de atuacao,0,0
-7126630871,Active,DSP2,Reativar cadastro,45,1500
-7389914581,Active,DSP2,Fora da área de atuacao,0,0
-1005193921,Active,DSP2,Reativar cadastro,70,500
-6544149469,Active,DSP2,Fora da área de atuacao,0,0
-3773904830,Active,DSP2,Reativar cadastro,45,500
-4862296245,Active,DSP2,Fora da área de atuacao,0,0
-5683660133,Active,DSP2,Reativar cadastro,70,500
-8985951644,Active,DSP2,Fora da área de atuacao,0,0
-5192704648,Active,DSP2,Fora da área de atuacao,0,0
-9757559519,Active,DSP2,Reativar cadastro,70,800
-9119427541,Active,DSP2,Reativar cadastro,45,1500
-5916819743,Active,DSP2,Fora da área de atuacao,0,0
-7286817261,Active,DSP2,Reativar cadastro,70,800
-4290494023,Active,DSP2,Fora da área de atuacao,0,0
-7730360958,Active,DSP2,Fora da área de atuacao,0,0
-2053196071,Active,DSP2,Reativar cadastro,70,500
-3135532006,Exited,DSP4,Reativar cadastro,70,500
-3857592834,Active,DSP4,Reativar cadastro,70,500
-9729504760,Active,DSP4,Reativar cadastro,45,200
-5441529885,Active,DSP4,Fora da área de atuacao,0,0
-4292852949,Active,DSP4,Fora da área de atuacao,0,0
-4055116937,Active,DSP5,Fora da área de atuacao,0,0
-9526911236,Active,DSP5,Reativar cadastro,70,500
+1447329126,Exited,DPR2,Fora da área de atuacao,0,0
+3244551105,Exited,DPR2,Reativar cadastro,45,1500
+1838041580,Exited,DPR2,Fora da área de atuacao,0,0
+5914014487,Exited,DPR2,Reativar cadastro,45,800
+9348484249,Exited,DPR2,Reativar cadastro,45,1100
+3053156360,Exited,DPR2,Reativar cadastro,45,500
+1863245760,Exited,DPR2,Reativar cadastro,70,800
+7997282058,Exited,DPR2,Reativar cadastro,45,800
+8913564271,Exited,DPR2,Reativar cadastro,70,800
+8938825205,Exited,DRJ3,Reativar cadastro,70,500
+1190153345,Inactive,DRJ3,Fora da área de atuacao,0,0
+6000843478,Exited,DRJ3,Reativar cadastro,45,800
+3682730194,Inactive,DRJ3,Reativar cadastro,70,200
+8327232277,Inactive,DRJ3,Reativar cadastro,70,1500
+1485095267,Exited,DRJ3,Fora da área de atuacao,0,0
+5998828088,Inactive,DRJ3,Reativar cadastro,70,500
+3603345360,Exited,DRJ3,Reativar cadastro,70,1100
+9733726210,Exited,DRJ3,Reativar cadastro,70,200
+7917935783,Exited,DRJ3,Fora da área de atuacao,0,0
+6446025817,Inactive,DRJ3,Reativar cadastro,70,200
+7434607388,Exited,DRJ3,Reativar cadastro,70,1100
+8036158544,Exited,DRJ3,Reativar cadastro,45,200
+1454340028,Exited,DRJ3,Reativar cadastro,70,500
+1509265623,Inactive,DRJ3,Fora da área de atuacao,0,0
+8287061151,Inactive,DRJ3,Reativar cadastro,70,200
+4091187207,Inactive,DRS5,Reativar cadastro,45,500
+2127564315,Exited,DRS5,Reativar cadastro,70,200
+9327256991,Exited,DRS5,Reativar cadastro,70,500
+8693135723,Exited,DRS5,Reativar cadastro,70,500
+5251669897,Exited,DRS5,Reativar cadastro,70,500
+8440829298,Exited,DRS5,Reativar cadastro,45,200
+9977002235,Exited,DSA8,Reativar cadastro,70,500
+5073210576,Exited,DSA8,Reativar cadastro,70,200
+5963081212,Inactive,DSP2,Reativar cadastro,70,500
+4392829511,Exited,DSP2,Reativar cadastro,70,800
+5474254949,Exited,DSP2,Reativar cadastro,70,500
+1049345673,Inactive,DSP2,Reativar cadastro,70,1500
+9643281439,Inactive,DSP2,Reativar cadastro,45,1100
+8589176601,Inactive,DSP2,Reativar cadastro,70,1500
+2899319478,Exited,DSP2,Fora da área de atuacao,0,0
+8588302310,Inactive,DSP2,Reativar cadastro,45,500
+1608828558,Inactive,DSP2,Reativar cadastro,45,500
+1166530959,Inactive,DSP2,Fora da área de atuacao,0,0
+8133663089,Inactive,DSP2,Fora da área de atuacao,0,0
+7089877325,Inactive,DSP2,Reativar cadastro,45,200
+9488151205,Inactive,DSP2,Fora da área de atuacao,0,0
+8975871195,Inactive,DSP4,Fora da área de atuacao,0,0
+7531815687,Inactive,DSP5,Reativar cadastro,45,800
+7445306814,Exited,DSP5,Fora da área de atuacao,0,0
+6514541677,Inactive,DSP5,Reativar cadastro,70,800
+5948610503,Inactive,DSP5,Reativar cadastro,45,200

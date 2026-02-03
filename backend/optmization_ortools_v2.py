@@ -331,6 +331,33 @@ class OptimizationService:
                 islands.append(hex_list); [hex_to_cluster.update({h: c_name}) for h in hex_list]
                 c_idx += 1
         return islands, hex_to_cluster
+    def _generate_operational_clusters(self, station_code, final_partners: List[PartnerMetrics], max_per_cluster=50):
+        
+        if not final_partners:
+            return {}
+
+        coords = [h3.cell_to_latlng(p.origin_hex) for p in final_partners]
+        n_partners = len(final_partners)
+
+        n_clusters = math.ceil(n_partners / max_per_cluster)
+        
+        if n_clusters <= 1:
+            cluster_name = f"{station_code}_C1"
+            for p in final_partners:
+                p.cluster_name = cluster_name
+            return {p.origin_hex: cluster_name for p in final_partners}
+
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10).fit(coords)
+        
+        hex_to_cluster = {}
+        for i, p in enumerate(final_partners):
+            cluster_id = kmeans.labels_[i] + 1
+            cluster_name = f"{station_code}_C{cluster_id}"
+            p.cluster_name = cluster_name
+            hex_to_cluster[p.origin_hex] = cluster_name
+            
+        return hex_to_cluster
+    
     
     def _allocate_existing_by_status(self, base, res_dem, target_status):
         results = []
@@ -491,6 +518,48 @@ class OptimizationService:
             p_ativos = p1 + p2 + p3
             p_prospects_ok = [p for p in p5 if p.decision == "Seguir cadastro"]
             p_inativos_ok = [p for p in p4 if p.decision == "Reativar cadastro"]
+
+            # Consolidar todos os parceiros que farão parte da malha final (F1 a F6)
+            # Filtramos apenas os que tiveram decisão positiva ou já são ativos
+            final_partners_list = (
+                p1 + p2 + p3 + 
+                [p for p in p4 if p.decision == "Reativar cadastro"] + 
+                [p for p in p5 if p.decision == "Seguir cadastro"] + 
+                p6
+            )
+
+            # Gerar clusters operacionais de no máximo 50 parceiros
+            op_hex_to_cluster = self._generate_operational_clusters(base, final_partners_list, max_per_cluster=50)
+
+            # Atribuição Universal: Todo hexágono deve pertencer a um cluster operacional
+            if op_hex_to_cluster:
+                # Pegamos os centroides de cada cluster operacional para atribuição por proximidade
+                cluster_centroids = {}
+                for p in final_partners_list:
+                    c_name = p.cluster_name
+                    if c_name not in cluster_centroids:
+                        cluster_centroids[c_name] = []
+                    cluster_centroids[c_name].append(h3.cell_to_latlng(p.origin_hex))
+                
+                # Média das coordenadas para o centroide do cluster
+                for c_name in cluster_centroids:
+                    lats, lons = zip(*cluster_centroids[c_name])
+                    cluster_centroids[c_name] = (np.mean(lats), np.mean(lons))
+
+                for h in orig_dem.keys():
+                    if h in op_hex_to_cluster:
+                        hex_to_cluster[h] = op_hex_to_cluster[h]
+                    else:
+                        centroid_hexes = {c: h3.latlng_to_cell(*cluster_centroids[c], Config.H3_RES) for c in cluster_centroids}
+                        best_c = min(
+                            centroid_hexes.keys(),
+                            key=lambda c: h3.grid_distance(h, centroid_hexes[c])
+                        )
+                        hex_to_cluster[h] = best_c
+            else:
+                # Caso não haja parceiros na base, mantém o nome da ilha ou "Sem Cluster"
+                for h in orig_dem.keys():
+                    hex_to_cluster[h] = hex_to_cluster.get(h, f"{base}_UNASSIGNED")
                 
             total_atendido = sum(p.total_load for p in p_ativos)
             total_prospects_reserva = sum(p.total_load for p in p_prospects_ok)
@@ -507,8 +576,8 @@ class OptimizationService:
                 "new_partners_count": len(p6),
                 "avg_load": (total_novas_vagas / len(p6)) if len(p6) > 0 else 0,
                 "avg_radius": (sum(p.radius_m for p in p6) / len(p6)) if len(p6) > 0 else 0,
-                "cluster_count": len(islands),
-                "avg_partners_per_cluster": (len(p_ativos + p_prospects_ok + p_inativos_ok + p6) / len(islands)) if len(islands) > 0 else 0
+                "cluster_count": len(op_hex_to_cluster),
+                "avg_partners_per_cluster": (len(p_ativos + p_prospects_ok + p_inativos_ok + p6) / len(op_hex_to_cluster)) if len(op_hex_to_cluster) > 0 else 0
             }                       
             report_base = OptimizationReport(
                 station_code = base,
@@ -560,6 +629,7 @@ class OptimizationService:
                     ceps_alocados.update(self.hex_to_ceps.get(alloc.hex_id, []))
                     alloc_list_json.append({"hex": str(alloc.hex_id), "pacotes": int(alloc.packages_assigned)})
                 
+                # Propriedades Base da Otimização
                 props = {
                         "store_id": str(p.store_id),
                         "status": str(p.status),
@@ -568,9 +638,20 @@ class OptimizationService:
                         "cluster": str(p.cluster_name), 
                         "cap": int(p.total_load), 
                         "rad": int(p.radius_m),
-                        "ceps": list(ceps_alocados)[:5], # Top 5 CEPs no popup
+                        "ceps": list(ceps_alocados)[:5],
                         "allocations": alloc_list_json
                     }
+                
+                # Enriquecimento com dados cadastrais do dados_mapa.json
+                if p.store_id and p.store_id in self.partners_df['store_id'].values:
+                    p_info = self.partners_df[self.partners_df['store_id'] == p.store_id].iloc[0].to_dict()
+                    # Excluir campos pesados conforme solicitado
+                    for field in ["main_store_data", "overlap_data", "allocations"]:
+                        p_info.pop(field, None)
+                    # Mesclar informações (preservando as da otimização em caso de conflito)
+                    for k, v in p_info.items():
+                        if k not in props:
+                            props[k] = str(v) if not isinstance(v, (int, float, list, dict)) else v
                 
                 features.append({
                     "type": "Feature", 
@@ -638,7 +719,7 @@ class OptimizationService:
                 clusters_stats.sort(key=lambda x: x['vol'], reverse=True)
                 
                 f.write(f"🏆 TOP CLUSTER PRIORITÁRIOS PARA PROSPECÇÃO:\n")
-                for i, c in enumerate(clusters_stats[:5], 1):
+                for i, c in enumerate(clusters_stats, 1):
                     f.write(f"\n  {i}º) {c['name']} - Potencial: {c['vol']:,} pacotes - {len(c['pts'])} novos parceiros.\n")
                     oportunidades_ordenadas = sorted(c['pts'], key=lambda x: x.total_load, reverse=True)
                     for idx, p in enumerate(oportunidades_ordenadas,1):

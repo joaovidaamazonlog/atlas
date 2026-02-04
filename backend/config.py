@@ -21,11 +21,11 @@ CSV_INPUT_PATH = BASE_PATH / "pontos_teste.csv"
 H3_RESOLUTION = 9
 HEX_EDGE_M = 174
 RADII_M = [
-        {"radius_m": 200, "hex_distance": 1, "penalty": 20},
-        {"radius_m": 500, "hex_distance": 3, "penalty": 50},
-        {"radius_m": 800, "hex_distance": 5, "penalty": 80},
-        {"radius_m": 1100, "hex_distance": 7, "penalty": 1000},
-        {"radius_m": 1500, "hex_distance": 9, "penalty": 5000}
+        {"radius_s": 200, "hex_distance": 1, "penalty": 20},
+        {"radius_s": 500, "hex_distance": 3, "penalty": 50},
+        {"radius_s": 800, "hex_distance": 5, "penalty": 80},
+        {"radius_s": 1100, "hex_distance": 7, "penalty": 1000},
+        {"radius_s": 1500, "hex_distance": 9, "penalty": 5000}
     ]
 CAPACITIES = [45, 55, 70]
 MIN_CAPACITY = 45

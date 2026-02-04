@@ -406,7 +406,7 @@ class OptimizationService:
                     total += take
                 if total >= Config.MIN_CAP:
                         results.append(PartnerMetrics(
-                            origin_hex=p.origin_hex, 
+                            origin_hex=p.origin_hex,
                             station_code=base,
                             radius_a=p.radius, 
                             radius_s=r["radius_s"],
@@ -743,7 +743,7 @@ class OptimizationService:
                 if p.store_id and p.store_id in self.partners_df['store_id'].values:
                     p_info = self.partners_df[self.partners_df['store_id'] == p.store_id].iloc[0].to_dict()
                     # Excluir campos pesados conforme solicitado
-                    for field in ["main_store_data", "overlap_data", "allocations"]:
+                    for field in ["main_store_data", "overlap_data", "allocations", "eligible_packages", "partner_capacity", "ADV"]:
                         p_info.pop(field, None)
                     # Mesclar informações (preservando as da otimização em caso de conflito)
                     for k, v in p_info.items():

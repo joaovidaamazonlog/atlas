@@ -1,12 +1,11 @@
 store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 5611519753,Inactive,DBR9,Reativar cadastro,70,200
-2139375472,Exited,DBS5,Reativar cadastro,45,200
-8661808312,Inactive,DBS5,Reativar cadastro,70,500
+2139375472,Exited,DBS5,Reativar cadastro,45,800
 1342604696,Exited,DBS5,Fora da área de atuacao,0,0
 8103619517,Inactive,DBS5,Reativar cadastro,70,500
 5011947056,Inactive,DBS5,Fora da área de atuacao,0,0
 9230782915,Inactive,DBS5,Fora da área de atuacao,0,0
-7356460723,Exited,DBS5,Reativar cadastro,45,800
+7356460723,Exited,DBS5,Reativar cadastro,70,1500
 2871034540,Exited,DBS5,Fora da área de atuacao,0,0
 2941123614,Exited,DBS5,Reativar cadastro,45,200
 8999063314,Inactive,DBS5,Reativar cadastro,70,500

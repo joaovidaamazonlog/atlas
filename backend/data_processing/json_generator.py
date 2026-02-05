@@ -36,38 +36,31 @@ class JsonGenerator:
             # Usa _clean_value para garantir que 'N/A' seja mostrado para dados ausentes
             return f"<tr><td style='width:40%'><b>{label}:</b></td><td style='width:60%'>{JsonGenerator._clean_value(value, 'N/A')}</td></tr>"
 
-        info_html = "<h5 style='font-weight: bold;'>Store Information</h5><table style='width:100%'>"
+        info_html = f"<h5 style='font-weight: bold;'>{row.get('Name')}</h5><table style='width:100%'>"
         info_html += table_row("Store ID", row.get("StoreID"))
-        info_html += table_row("Name", row.get("Name"))
         info_html += table_row("Status", row.get("Status"))
         info_html += table_row("Supply Run", row.get("Supply Run"))
         info_html += table_row("Delivery Station", row.get("Delivery Station"))
-        info_html += table_row("Jurisdiction Type", row.get("Jurisdiction Type"))
         info_html += table_row("Launch Date", format_date_to_str(row.get("Launch Date")))
         info_html += table_row("HCP Initiatives", row.get("Hub Delivery Initiatives"))
         info_html += table_row("HCP Host Partner", row.get("HCP Host Partner"))
         info_html += table_row("HCP Rate Card", row.get("HCP Rate Card"))
         info_html += table_row("Radius", f"{JsonGenerator._clean_value(row.get('Radius'), 'N/A')} m")
+        info_html += table_row("Capacity", f"{JsonGenerator._clean_value(row.get('Volume Cap'), 'N/A')} pkgs")
         info_html += "</table>"
-    
-        metrics_html = "<h5 style='font-weight: bold; margin-top: 10px;'>Metrics</h5><table style='width:100%'>"
-        metrics_html += table_row("ADV", row.get("Actual ADV"))
-        metrics_html += table_row("Eligible Packages", row.get("# Eligible Packages"))
-        metrics_html += table_row("Partner Capacity", row.get("Partner Capacity"))
-        metrics_html += "</table>"
         
         if row.get("Status") != "BG Checks":
-            link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Account/{row.get('Id')}/view" target="_blank">View in Salesforce</a>'
+            link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Account/{row.get('Id')}/view    " target="_blank">View in Salesforce<i class="fab fa-salesforce" style="font-size:24px"></i></a>'
         else:
-            link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Lead/{row.get('Id')}/view" target="_blank">View in Salesforce</a>'
-            
+            link_salesforce = f'<a href="https://dsp-portal.lightning.force.com/lightning/r/Lead/{row.get('Id')}/view   " target="_blank">View in Salesforce<i class="fab fa-salesforce" style="font-size:24px"></i></a>'
+
         link_whatsapp = ''
         if pd.notna(row.get("Phone")):
             phone_number = row.get("Phone").translate(str.maketrans({"(": "", ")": "", " ": "", "-": "", "+": ""}))
-            link_whatsapp = f'Enviar menssagem <a href="https://wa.me/{phone_number}" target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>'
+            link_whatsapp = f'Enviar menssagem <a href="https://wa.me/{phone_number}    " target="_blank"><i class="fa fa-whatsapp" style="font-size:24px"></i></a>'
             
 
-        return f'<div style="width: auto; max-height: auto; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<br>{link_whatsapp}<hr class: "my-2">{metrics_html}</div>'
+        return f'<div style="width: auto; max-height: auto; font-size: 12px;">{info_html}<hr class: "my-2">{link_salesforce}<br>{link_whatsapp}<hr</div>'
 
     @staticmethod
     def generate_json(period: dict, final_df: pd.DataFrame, output_path: str):

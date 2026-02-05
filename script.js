@@ -241,7 +241,7 @@ const MapManager = {
                 <hr>
                 <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
                 <table style="width:100%; font-size:11px;">
-                    <tr><td><b>Capacidade Sugerida:</b></td><td>${data.capacity_suggestion} pkgs</td></tr>
+                    <tr><td><b>Capacidade Sugerida:</b></td><td>${data.cap_suggestion} pkgs</td></tr>
                 </table>
                 <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
             </div> `;
@@ -252,7 +252,7 @@ const MapManager = {
                         <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
                             ${data.popup}
                             <hr class="my-2">
-                            ${data.decision === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
+                            ${data.decision === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Otimização Disponível</button>' : ''}
                             <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
                                 <i class="fas fa-phone"></i> Solicitar Resgate
                             </button>

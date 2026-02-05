@@ -63,6 +63,12 @@ const DataManager = {
             AppState.jurisdictionData = jurisdictionData;
             AppState.optimizationData = optData;
 
+            AppState.allMarkersData.forEach(marker => {
+                const { station_code: delivery_station,} = marker;
+                Object.assign(marker, { delivery_station });
+                delete marker.station_code;
+            });
+
             UIManager.updatePeriodInfo(AppState.period);
             this.associatePartnersToPolygons();
 
@@ -224,47 +230,45 @@ const MapManager = {
         const marker = e.target;
         const data = marker.markerData;
         AppState.map.setView(marker.getLatLng(), 15);
-        
-        const optimizationHtml = data.optimization ? `
+
+        if (data.decision.value === 'Optimization suggested') {
+            const optimizationHtml = `
             <div class="opt-slide-content" style="display:none; padding: 10px; height:auto; min-width: 100%;">
                 <h5 style="font-weight:bold;">Otimização de Raio</h5>
                 <table style="width:100%; font-size:11px;">
-                    <tr><td><b>Raio 1km:</b></td><td>${data.optimization.vol_1000m} pkgs</td></tr>
-                    <tr><td><b>Raio 750m:</b></td><td>${data.optimization.vol_750m} pkgs</td></tr>
-                    <tr><td><b>Raio 500m:</b></td><td>${data.optimization.vol_500m} pkgs</td></tr>
-                    <tr><td><b>Raio 300m:</b></td><td>${data.optimization.vol_300m} pkgs</td></tr>
+                    <tr><td><b>Raio Sugerido:</b></td><td>${data.radius_suggestion} m</td></tr>
                 </table>
                 <hr>
-                <div style="background:#f0f0f0; padding:5px; border-radius:4px; font-size:11px;">
-                    <b>Recomendação:</b><br>
-                    ${data.optimization.vol_500m >= 45 ? '<span style="color:green">✅ Elegível para redução (500m)</span>' : '<span style="color:orange">⚠️ Manter raio atual</span>'}
-                </div>
+                <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
+                <table style="width:100%; font-size:11px;">
+                    <tr><td><b>Capacidade Sugerida:</b></td><td>${data.capacity_suggestion} pkgs</td></tr>
+                </table>
                 <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
-            </div>
-        ` : '';
+            </div> `;
 
-        const popupContent = `
-            <div class="popup-container" style="position:relative; overflow:hidden;">
-                <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease;">
-                    <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
-                        ${data.popup}
-                        <hr class="my-2">
-                        ${data.optimization ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
-                        <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
-                            <i class="fas fa-phone"></i> Solicitar Resgate
-                        </button>
-                        <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${marker.markerData.store_id}')">
-                                <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
-                        </button>
-                        <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
-                            <i class="fas fa-route"></i> Rota a Partir Daqui
-                        </button>
+            const popupContent = `
+                <div class="popup-container" style="position:relative; overflow:hidden;">
+                    <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease;">
+                        <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
+                            ${data.popup}
+                            <hr class="my-2">
+                            ${data.decision.value === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
+                            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
+                                <i class="fas fa-phone"></i> Solicitar Resgate
+                            </button>
+                            <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-route"></i> Rota a Partir Daqui
+                            </button>
+                        </div>
+                        ${optimizationHtml}
                     </div>
-                    ${optimizationHtml}
                 </div>
-            </div>
-        `;
-        marker.bindPopup(popupContent).openPopup();
+            `;
+            marker.bindPopup(popupContent).openPopup();
+        } else {
+            const popupContent = UIManager.getMarkerPopupContent(data);
+            marker.bindPopup(popupContent).openPopup();
+        }
     },
 
     togglePopupSlide: function(btn, showOpt) {

@@ -55,7 +55,7 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data.geojson').then(res => res.json()).catch(() => null)
         ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
-            const allPoints = partnerData.features.filter(f => (f.geometry.type === 'Point')).map(f => f.properties);
+            const allPoints = optData.features.filter(f => (f.geometry.type === 'Point')).map(f => f.properties);
             AppState.allMarkersData = allPoints.length > 0 ? allPoints : partnerData.allMarkersData;
             AppState.period = partnerData.period;
             AppState.deliveryStations = partnerData.deliveryStations;

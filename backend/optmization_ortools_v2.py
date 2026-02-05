@@ -672,6 +672,9 @@ class OptimizationService:
                 "inactive_reserved": total_inativos_reserva,
                 "new_allocated": total_novas_vagas,
                 "residual": sum(res_dem.values()),
+                "active_partners_count": len(p1),
+                "onboarding_partners_count": len(p2),
+                "inactive_partners_count": len(p_inativos_ok),
                 "new_partners_count": len(p6),
                 "avg_load": (total_novas_vagas / len(p6)) if len(p6) > 0 else 0,
                 "avg_radius": (sum(p.radius_s for p in p6) / len(p6)) if len(p6) > 0 else 0,
@@ -693,6 +696,8 @@ class OptimizationService:
         
         self.export_strategic_results()
         self.export_inactive_exited_report()
+        self.executive_report()
+        self.mkt_report()
 
     def _print_summary(self, base, p1, p2, p3, p4, p5, p6):
         print(f"✅ Base {base} Concluída:")
@@ -734,8 +739,10 @@ class OptimizationService:
                         "status": str(p.status),
                         "type": str(p.entity_type), 
                         "decision": str(p.decision),
-                        "cluster": str(p.cluster_name), 
-                        "cap_suggestion": int(p.total_load), 
+                        "cluster": str(p.cluster_name),
+                        "lat": float(p.lat),
+                        "lon": float(p.lon),
+                        "cap_suggestion": int(p.total_load),
                         "radius_suggestion": int(p.radius_s),
                         "top_5_ceps": list(ceps_alocados)[:5],
                         "allocations": alloc_list_json
@@ -850,6 +857,70 @@ class OptimizationService:
                         p.total_load,
                         p.radius_s
                     ])
+    
+    def executive_report(self, filename="RELATORIO_EXECUTIVO.txt"):
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
+        path = dest / filename
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(f"RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            f.write("="*80 + "\n")
+            for r in self.reports:
+                m = r.base_metrics
+                f.write(f"\n📍 UNIDADE OPERACIONAL: {r.station_code}\n")
+                f.write(f"{'-'*40}\n")
+                f.write(f"RESUMO EXECUTIVO DA BASE:\n")
+                f.write(f"  - Demanda Total da Base:     {m.get('total_demand', 0):,} pacotes\n")
+                f.write(f"  - Atendida (Ativos F1-F3):   {m.get('existing_absorbed', 0):,} pacotes\n")
+                f.write(f"  - Alocada p/ Inativos (F4):   {m.get('inactive_reserved', 0):,} pacotes\n")
+                f.write(f"  - Alocada p/ Leads (F5):      {m.get('prospect_reserved', 0):,} pacotes\n")
+                f.write(f"  - Alocada p/ Expansão (F6):  {m.get('new_allocated', 0):,} pacotes\n")
+                f.write(f"  - Gap Final (Não alocado):   {m.get('residual', 0):,} pacotes\n")
+                f.write(f"{'-'*40}\n")
+                f.write(f"POTENCIAL DE NOVAS VAGAS (F6):\n")
+                f.write(f"  - Quantidade de Clusters:    {r.base_metrics.get('cluster_count', 0)}\n")
+                f.write(f"  - Média de parceiros/cluster: {r.base_metrics.get('avg_partners_per_cluster', 0):.1f}\n")
+                f.write(f"  - Total de parceiros Ativos: {m.get('active_partners_count', 0)}\n")
+                f.write(f"  - Total de parceiros Onboarding: {m.get('onboarding_partners_count', 0)}\n")
+                f.write(f"  - Total de parceiros Inativos aptos a serem reativados: {m.get('inactive_partners_count', 0)}\n")
+                f.write(f"  - Quantidade de Vagas:       {m.get('new_partners_count', 0)} vagas\n")
+                f.write(f"  - Média de pacotes por vaga: {m.get('avg_load', 0):.1f} pacotes\n")
+                
+    def mkt_report(self, filename="RELATORIO_MKT.txt"):
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
+        path = dest / filename
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(f"RELATÓRIO DE MARKETING - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            f.write("="*80 + "\n")
+            for r in self.reports:
+                m = r.base_metrics
+                f.write(f"\n📍 UNIDADE OPERACIONAL: {r.station_code}\n")
+                f.write(f"{'-'*40}\n")
+                f.write(f"POTENCIAL DE NOVAS VAGAS (F6):\n")
+                f.write(f"  - Quantidade de Clusters:    {r.base_metrics.get('cluster_count', 0)}\n")
+                f.write(f"  - Média de parceiros/cluster: {r.base_metrics.get('avg_partners_per_cluster', 0):.1f}\n")
+                f.write(f"  - Quantidade de Vagas:       {m.get('new_partners_count', 0)} vagas\n")
+                f.write(f"  - Média de pacotes por vaga: {m.get('avg_load', 0):.1f} pacotes\n")
+                f.write(f"  - Média de Raio Proposto:    {m.get('avg_radius', 0):.0f} m\n")
+                f.write(f"{'-'*40}\n")
+                f.write(f"DETALHAMENTO DAS OPORTUNIDADES:\n")
+                clusters_stats = []
+                for cn in set(p.cluster_name for p in r.new_partners):
+                    pts = [p for p in r.new_partners if p.cluster_name == cn]
+                    clusters_stats.append({"name": cn, "vol": sum(p.total_load for p in pts), "pts": pts})
+                clusters_stats.sort(key=lambda x: x['vol'], reverse=True)
+                for i, c in enumerate(clusters_stats, 1):
+                    f.write(f"\n  {i}º) {c['name']} - Potencial: {c['vol']:,} pacotes - {len(c['pts'])} novos parceiros.\n")
+                    f.write(f"  Oportunidades neste cluster:\n")
+                    oportunidades_ordenadas = sorted(c['pts'], key=lambda x: x.total_load, reverse=True)
+                    for idx, p in enumerate(oportunidades_ordenadas,1):
+                        ceps_vaga = set()
+                        for alloc in p.allocations:
+                            ceps_vaga.update(self.hex_to_ceps.get(alloc.hex_id, []))
+                        f.write(f"        CEPs Alvo: {', '.join(list(ceps_vaga))}...\n")
 
 if __name__ == "__main__":
     try:

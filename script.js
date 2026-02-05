@@ -231,7 +231,7 @@ const MapManager = {
         const data = marker.markerData;
         AppState.map.setView(marker.getLatLng(), 15);
 
-        if (data.decision.value === 'Optimization suggested') {
+        if (data.decision === 'Optimization suggested') {
             const optimizationHtml = `
             <div class="opt-slide-content" style="display:none; padding: 10px; height:auto; min-width: 100%;">
                 <h5 style="font-weight:bold;">Otimização de Raio</h5>
@@ -252,7 +252,7 @@ const MapManager = {
                         <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
                             ${data.popup}
                             <hr class="my-2">
-                            ${data.decision.value === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
+                            ${data.decision === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Ver Otimização</button>' : ''}
                             <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
                                 <i class="fas fa-phone"></i> Solicitar Resgate
                             </button>

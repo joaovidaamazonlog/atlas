@@ -1,11 +1,11 @@
 store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 5611519753,Inactive,DBR9,Reativar cadastro,70,200
-2139375472,Exited,DBS5,Reativar cadastro,45,800
+2139375472,Exited,DBS5,Reativar cadastro,70,500
 1342604696,Exited,DBS5,Fora da área de atuacao,0,0
 8103619517,Inactive,DBS5,Reativar cadastro,70,500
 5011947056,Inactive,DBS5,Fora da área de atuacao,0,0
 9230782915,Inactive,DBS5,Fora da área de atuacao,0,0
-7356460723,Exited,DBS5,Reativar cadastro,70,1500
+7356460723,Exited,DBS5,Reativar cadastro,45,1100
 2871034540,Exited,DBS5,Fora da área de atuacao,0,0
 2941123614,Exited,DBS5,Reativar cadastro,45,200
 8999063314,Inactive,DBS5,Reativar cadastro,70,500
@@ -13,7 +13,6 @@ store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 7445304954,Exited,DBS5,Reativar cadastro,70,800
 8887362834,Exited,DCE3,Reativar cadastro,70,200
 6268439364,Inactive,DCE3,Fora da área de atuacao,0,0
-4075411696,Inactive,DCE3,Reativar cadastro,70,200
 3531708045,Exited,DCE3,Fora da área de atuacao,0,0
 4856286979,Inactive,DCE3,Fora da área de atuacao,0,0
 4710230823,Inactive,DCE3,Fora da área de atuacao,0,0
@@ -22,7 +21,6 @@ store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 8417186988,Exited,DCE3,Fora da área de atuacao,0,0
 8269588139,Inactive,DCE3,Reativar cadastro,70,800
 3424426321,Inactive,DCE3,Fora da área de atuacao,0,0
-8462609813,Inactive,DCE3,Reativar cadastro,70,200
 4280130213,Inactive,DCE3,Reativar cadastro,70,200
 9526978260,Inactive,DCE3,Reativar cadastro,70,500
 4111778967,Exited,DCE3,Fora da área de atuacao,0,0
@@ -112,5 +110,4 @@ store_id,status,delivery_station,decision,cap_sugerido,raio_sugerido
 8975871195,Inactive,DSP4,Fora da área de atuacao,0,0
 7531815687,Inactive,DSP5,Reativar cadastro,45,800
 7445306814,Exited,DSP5,Fora da área de atuacao,0,0
-6514541677,Inactive,DSP5,Reativar cadastro,70,800
 5948610503,Inactive,DSP5,Reativar cadastro,45,200

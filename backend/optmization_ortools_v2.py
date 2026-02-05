@@ -416,7 +416,7 @@ class OptimizationService:
                             status=target_status, 
                             store_id=str(p.store_id),
                             name=str(p.name), 
-                            decision="Manter",
+                            decision="No optimization suggestions" if p.radius == r["radius_s"] and p.capacity == Config.MAX_CAP else "Optimization suggested",
                             lat=str(p.lat),
                             lon=str(p.lon),
                             popup=str(p.popup),
@@ -472,7 +472,7 @@ class OptimizationService:
                                     current_fill += take
                             break
                     if not decision:
-                        decision = "Fora da área de atuacao"
+                        decision = "Baixo volume na área de atuação"
 
             results.append(
                 PartnerMetrics(
@@ -608,7 +608,9 @@ class OptimizationService:
                     futures = [exc.submit(solve_island_exhaustion_worker, t) for t in tasks]
                     for f in as_completed(futures):
                         for p_data in f.result():
-                            p_new = PartnerMetrics(**{**p_data,"status": "New", "allocations": [Allocation(**a) for a in p_data['allocations']]})
+                            lat = h3.cell_to_latlng(p_data['origin_hex'])[0]
+                            lon = h3.cell_to_latlng(p_data['origin_hex'])[1]
+                            p_new = PartnerMetrics(**{**p_data, "lat": lat, "lon": lon, "decision": "Prospect a new partner", "entity_type": "NEW PARTNER", "status": "New", "allocations": [Allocation(**a) for a in p_data['allocations']]})
                             p6.append(p_new)
                             for a in p_new.allocations: res_dem[a.hex_id] = max(0, res_dem.get(a.hex_id, 0) - a.packages_assigned)
             
@@ -733,9 +735,9 @@ class OptimizationService:
                         "type": str(p.entity_type), 
                         "decision": str(p.decision),
                         "cluster": str(p.cluster_name), 
-                        "cap": int(p.total_load), 
-                        "rad": int(p.radius_s),
-                        "ceps": list(ceps_alocados)[:5],
+                        "cap_suggestion": int(p.total_load), 
+                        "radius_suggestion": int(p.radius_s),
+                        "top_5_ceps": list(ceps_alocados)[:5],
                         "allocations": alloc_list_json
                     }
                 

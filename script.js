@@ -232,234 +232,41 @@ const MapManager = {
         AppState.map.setView(marker.getLatLng(), 15);
 
         if (data.decision === 'Optimization suggested') {
-            popupContent = `
-            <div class="popup-container">
-                <!-- Abas de navegação -->
-                <div class="popup-tabs">
-                    <button class="tab-button active" onclick="showTab(event, 'info')">Informações</button>
-                    <button class="tab-button" onclick="showTab(event, 'optimization')">Otimização</button>
-                </div>
-                
-                <!-- Página 1 - Informações do Parceiro -->
-                <div id="info-tab" class="tab-content active">
-                    <h3>${data.name}</h3>
-                    <p><strong>Store ID:</strong> ${data.storeId}</p>
-                    <p><strong>Status:</strong> ${data.status}</p>
-                    <p><strong>Supply Run:</strong> ${data.supplyRun}</p>
-                    <p><strong>Delivery Station:</strong> ${data.deliveryStation}</p>
-                    <p><strong>Launch Date:</strong> ${data.launchDate}</p>
-                    <p><strong>HCP Initiatives:</strong> ${data.hcpInitiatives}</p>
-                    <p><strong>Radius:</strong> ${data.radius}</p>
-                    <p><strong>Capacity:</strong> ${data.capacity}</p>
-                    <a href="${data.salesforceLink}" target="_blank">View in Salesforce</a>
-                    <button onclick="sendMessage('${data.storeId}')">Enviar mensagem</button>
-                    <button onclick="requestRescue('${data.storeId}')">Solicitar Resgate</button>
-                    <button onclick="routeFrom('${data.lat}', '${data.lng}')">Rota a Partir Daqui</button>
-                </div>
-                
-                <!-- Página 2 - Otimização -->
-                <div id="optimization-tab" class="tab-content">
-                    <h3>🚀 Otimização Disponível</h3>
-                    <p><strong>Sugestões de Otimização:</strong></p>
-                    <table style="width:100%; font-size:11px;">
-                        <tr><td><b>Raio Sugerido:</b></td><td>${data.radius_suggestion} m</td></tr>
-                    </table>
-                    <hr>
-                    <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
-                    <table style="width:100%; font-size:11px;">
-                        <tr><td><b>Capacidade Sugerida:</b></td><td>${data.cap_suggestion} pkgs</td></tr>
-                    </table>
-                    <ul>
-                        <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
-                    </ul>
-                </div>
-            </div>`
-            ;
-            popupContent += `
-                <style>
-                    .popup-container {
-                        min-width: 300px;
-                        font-family: Arial, sans-serif;
-                    }
-                    
-                    .popup-tabs {
-                        display: flex;
-                        border-bottom: 2px solid #ddd;
-                        margin-bottom: 10px;
-                    }
-                    
-                    .tab-button {
-                        flex: 1;
-                        padding: 10px;
-                        background: #f0f0f0;
-                        border: none;
-                        cursor: pointer;
-                        font-weight: bold;
-                        transition: background 0.3s;
-                    }
-                    
-                    .tab-button:hover {
-                        background: #e0e0e0;
-                    }
-                    
-                    .tab-button.active {
-                        background: #fff;
-                        border-bottom: 3px solid #007bff;
-                    }
-                    
-                    .tab-content {
-                        padding: 10px;
-                        display: none;
-                    }
-                    
-                    .tab-content.active {
-                        display: block;
-                    }
-                    
-                    .popup-single-page {
-                        padding: 10px;
-                    }
-                    
-                    button {
-                        margin: 5px 2px;
-                        padding: 8px 12px;
-                        background: #007bff;
-                        color: white;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                    }
-                    
-                    button:hover {
-                        background: #0056b3;
-                    }
-                </style>
-                
-                <script>
-                    function showTab(event, tabName) {
-                        // Esconder todas as abas
-                        document.querySelectorAll('.tab-content').forEach(tab => {
-                            tab.style.display = 'none';
-                            tab.classList.remove('active');
-                        });
-                        
-                        // Desativar todos os botões
-                        document.querySelectorAll('.tab-button').forEach(btn => {
-                            btn.classList.remove('active');
-                        });
-                        
-                        // Mostrar a aba selecionada
-                        document.getElementById(tabName + '-tab').style.display = 'block';
-                        document.getElementById(tabName + '-tab').classList.add('active');
-                        
-                        // Ativar o botão correspondente
-                        event.target.classList.add('active');
-                    }
-                </script>
-            `;
-            marker.bindPopup(popupContent).openPopup();
-        } else {
-            popupContent = `
-                <div class="popup-container">
-                    <!-- Sem abas, apenas conteúdo direto -->
-                    <div class="popup-single-page">
-                        <h3>${data.name}</h3>
-                        <p><strong>Store ID:</strong> ${data.storeId}</p>
-                        <p><strong>Status:</strong> ${data.status}</p>
-                        <p><strong>Supply Run:</strong> ${data.supplyRun}</p>
-                        <p><strong>Delivery Station:</strong> ${data.deliveryStation}</p>
-                        <p><strong>Launch Date:</strong> ${data.launchDate}</p>
-                        <p><strong>HCP Initiatives:</strong> ${data.hcpInitiatives}</p>
-                        <p><strong>Radius:</strong> ${data.radius}</p>
-                        <p><strong>Capacity:</strong> ${data.capacity}</p>
-                        <a href="${data.salesforceLink}" target="_blank">View in Salesforce</a>
-                        <button onclick="sendMessage('${data.storeId}')">Enviar mensagem</button>
-                        <button onclick="requestRescue('${data.storeId}')">Solicitar Resgate</button>
-                        <button onclick="routeFrom('${data.lat}', '${data.lng}')">Rota a Partir Daqui</button>
+            const optimizationHtml = `
+            <div class="opt-slide-content" style="display:none; padding: 10px; height:auto; min-width: 100%;">
+                <h5 style="font-weight:bold;">Otimização de Raio</h5>
+                <table style="width:100%; font-size:11px;">
+                    <tr><td><b>Raio Sugerido:</b></td><td>${data.radius_suggestion} m</td></tr>
+                </table>
+                <hr>
+                <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
+                <table style="width:100%; font-size:11px;">
+                    <tr><td><b>Capacidade Sugerida:</b></td><td>${data.cap_suggestion} pkgs</td></tr>
+                </table>
+                <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
+            </div> `;
+
+            const popupContent = `
+                <div class="popup-container" style="position:relative; overflow:hidden;">
+                    <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease;">
+                        <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
+                            ${data.popup}
+                            <hr class="my-2">
+                            ${data.decision === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Otimização Disponível</button>' : ''}
+                            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
+                                <i class="fas fa-phone"></i> Solicitar Resgate
+                            </button>
+                            <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-route"></i> Rota a Partir Daqui
+                            </button>
+                        </div>
+                        ${optimizationHtml}
                     </div>
                 </div>
             `;
-            popupContent += `
-                <style>
-                    .popup-container {
-                        min-width: 300px;
-                        font-family: Arial, sans-serif;
-                    }
-                    
-                    .popup-tabs {
-                        display: flex;
-                        border-bottom: 2px solid #ddd;
-                        margin-bottom: 10px;
-                    }
-
-                    .tab-button {
-                        flex: 1;
-                        padding: 10px;
-                        background: #f0f0f0;
-                        border: none;
-                        cursor: pointer;
-                        font-weight: bold;
-                        transition: background 0.3s;
-                    }
-
-                    .tab-button:hover {
-                        background: #e0e0e0;
-                    }
-
-                    .tab-button.active {
-                        background: #fff;
-                        border-bottom: 3px solid #007bff;
-                    }
-
-                    .tab-content {
-                        padding: 10px;
-                        display: none;
-                    }
-
-                    .tab-content.active {
-                        display: block;
-                    }
-
-                    .popup-single-page {
-                        padding: 10px;
-                    }
-
-                    button {
-                        margin: 5px 2px;
-                        padding: 8px 12px;
-                        background: #007bff;
-                        color: white;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                    }
-
-                    button:hover {
-                        background: #0056b3;
-                    }
-                </style>
-                <script>
-                    function showTab(event, tabName) {
-                        // Esconder todas as abas
-                        document.querySelectorAll('.tab-content').forEach(tab => {
-                            tab.style.display = 'none';
-                            tab.classList.remove('active');
-                        });
-                        
-                        // Desativar todos os botões
-                        document.querySelectorAll('.tab-button').forEach(btn => {
-                            btn.classList.remove('active');
-                        });
-                        
-                        // Mostrar a aba selecionada
-                        document.getElementById(tabName + '-tab').style.display = 'block';
-                        document.getElementById(tabName + '-tab').classList.add('active');
-                        
-                        // Ativar o botão correspondente
-                        event.target.classList.add('active');
-                    }
-                </script>
-            `;
+            marker.bindPopup(popupContent).openPopup();
+        } else {
+            const popupContent = UIManager.getMarkerPopupContent(data);
             marker.bindPopup(popupContent).openPopup();
         }
     },

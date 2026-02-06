@@ -1,4 +1,4 @@
-RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 05/02/2026 18:05
+RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 06/02/2026 14:46
 ================================================================================
 
 📍 UNIDADE OPERACIONAL: DAM1
@@ -26,13 +26,13 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     13,829 pacotes
   - Atendida (Ativos F1-F3):   1,714 pacotes
   - Alocada p/ Inativos (F4):   0 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
+  - Alocada p/ Leads (F5):      90 pacotes
   - Alocada p/ Expansão (F6):  10,407 pacotes
-  - Gap Final (Não alocado):   1,708 pacotes
+  - Gap Final (Não alocado):   1,618 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    6
-  - Média de parceiros/cluster: 29.3
+  - Média de parceiros/cluster: 29.7
   - Total de parceiros Ativos: 22
   - Total de parceiros Onboarding: 4
   - Total de parceiros Inativos aptos a serem reativados: 0
@@ -45,9 +45,9 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     38,789 pacotes
   - Atendida (Ativos F1-F3):   3,389 pacotes
   - Alocada p/ Inativos (F4):   70 pacotes
-  - Alocada p/ Leads (F5):      45 pacotes
-  - Alocada p/ Expansão (F6):  32,760 pacotes
-  - Gap Final (Não alocado):   2,525 pacotes
+  - Alocada p/ Leads (F5):      0 pacotes
+  - Alocada p/ Expansão (F6):  32,820 pacotes
+  - Gap Final (Não alocado):   2,510 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    16
@@ -55,27 +55,27 @@ POTENCIAL DE NOVAS VAGAS (F6):
   - Total de parceiros Ativos: 50
   - Total de parceiros Onboarding: 0
   - Total de parceiros Inativos aptos a serem reativados: 1
-  - Quantidade de Vagas:       472 vagas
+  - Quantidade de Vagas:       473 vagas
   - Média de pacotes por vaga: 69.4 pacotes
 
 📍 UNIDADE OPERACIONAL: DBS5
 ----------------------------------------
 RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     32,029 pacotes
-  - Atendida (Ativos F1-F3):   4,874 pacotes
+  - Atendida (Ativos F1-F3):   4,931 pacotes
   - Alocada p/ Inativos (F4):   440 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  23,924 pacotes
-  - Gap Final (Não alocado):   2,791 pacotes
+  - Alocada p/ Leads (F5):      160 pacotes
+  - Alocada p/ Expansão (F6):  23,197 pacotes
+  - Gap Final (Não alocado):   3,301 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    12
-  - Média de parceiros/cluster: 35.7
-  - Total de parceiros Ativos: 60
-  - Total de parceiros Onboarding: 10
+  - Média de parceiros/cluster: 35.1
+  - Total de parceiros Ativos: 61
+  - Total de parceiros Onboarding: 11
   - Total de parceiros Inativos aptos a serem reativados: 7
-  - Quantidade de Vagas:       348 vagas
-  - Média de pacotes por vaga: 68.7 pacotes
+  - Quantidade de Vagas:       337 vagas
+  - Média de pacotes por vaga: 68.8 pacotes
 
 📍 UNIDADE OPERACIONAL: DCE3
 ----------------------------------------
@@ -83,18 +83,18 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     21,305 pacotes
   - Atendida (Ativos F1-F3):   9,262 pacotes
   - Alocada p/ Inativos (F4):   350 pacotes
-  - Alocada p/ Leads (F5):      70 pacotes
-  - Alocada p/ Expansão (F6):  10,123 pacotes
-  - Gap Final (Não alocado):   1,500 pacotes
+  - Alocada p/ Leads (F5):      645 pacotes
+  - Alocada p/ Expansão (F6):  9,450 pacotes
+  - Gap Final (Não alocado):   1,598 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
-  - Quantidade de Clusters:    9
-  - Média de parceiros/cluster: 32.8
+  - Quantidade de Clusters:    10
+  - Média de parceiros/cluster: 29.5
   - Total de parceiros Ativos: 129
-  - Total de parceiros Onboarding: 11
+  - Total de parceiros Onboarding: 13
   - Total de parceiros Inativos aptos a serem reativados: 5
-  - Quantidade de Vagas:       147 vagas
-  - Média de pacotes por vaga: 68.9 pacotes
+  - Quantidade de Vagas:       137 vagas
+  - Média de pacotes por vaga: 69.0 pacotes
 
 📍 UNIDADE OPERACIONAL: DES2
 ----------------------------------------
@@ -140,18 +140,18 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     12,334 pacotes
   - Atendida (Ativos F1-F3):   2,945 pacotes
   - Alocada p/ Inativos (F4):   720 pacotes
-  - Alocada p/ Leads (F5):      70 pacotes
-  - Alocada p/ Expansão (F6):  6,514 pacotes
-  - Gap Final (Não alocado):   2,085 pacotes
+  - Alocada p/ Leads (F5):      395 pacotes
+  - Alocada p/ Expansão (F6):  6,263 pacotes
+  - Gap Final (Não alocado):   2,011 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    5
-  - Média de parceiros/cluster: 30.6
+  - Média de parceiros/cluster: 30.8
   - Total de parceiros Ativos: 40
   - Total de parceiros Onboarding: 6
   - Total de parceiros Inativos aptos a serem reativados: 11
-  - Quantidade de Vagas:       95 vagas
-  - Média de pacotes por vaga: 68.6 pacotes
+  - Quantidade de Vagas:       91 vagas
+  - Média de pacotes por vaga: 68.8 pacotes
 
 📍 UNIDADE OPERACIONAL: DMG2
 ----------------------------------------
@@ -159,53 +159,53 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     9,746 pacotes
   - Atendida (Ativos F1-F3):   3,384 pacotes
   - Alocada p/ Inativos (F4):   650 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  3,620 pacotes
-  - Gap Final (Não alocado):   2,092 pacotes
+  - Alocada p/ Leads (F5):      115 pacotes
+  - Alocada p/ Expansão (F6):  3,347 pacotes
+  - Gap Final (Não alocado):   2,250 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    3
-  - Média de parceiros/cluster: 37.7
+  - Média de parceiros/cluster: 37.0
   - Total de parceiros Ativos: 48
   - Total de parceiros Onboarding: 2
   - Total de parceiros Inativos aptos a serem reativados: 10
-  - Quantidade de Vagas:       52 vagas
-  - Média de pacotes por vaga: 69.6 pacotes
+  - Quantidade de Vagas:       48 vagas
+  - Média de pacotes por vaga: 69.7 pacotes
 
 📍 UNIDADE OPERACIONAL: DPB3
 ----------------------------------------
 RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     9,188 pacotes
-  - Atendida (Ativos F1-F3):   5,092 pacotes
+  - Atendida (Ativos F1-F3):   5,162 pacotes
   - Alocada p/ Inativos (F4):   70 pacotes
   - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  3,596 pacotes
-  - Gap Final (Não alocado):   430 pacotes
+  - Alocada p/ Expansão (F6):  3,405 pacotes
+  - Gap Final (Não alocado):   551 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    5
-  - Média de parceiros/cluster: 26.0
+  - Média de parceiros/cluster: 25.6
   - Total de parceiros Ativos: 73
   - Total de parceiros Onboarding: 3
   - Total de parceiros Inativos aptos a serem reativados: 1
-  - Quantidade de Vagas:       52 vagas
-  - Média de pacotes por vaga: 69.2 pacotes
+  - Quantidade de Vagas:       49 vagas
+  - Média de pacotes por vaga: 69.5 pacotes
 
 📍 UNIDADE OPERACIONAL: DPE4
 ----------------------------------------
 RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     21,960 pacotes
-  - Atendida (Ativos F1-F3):   4,959 pacotes
+  - Atendida (Ativos F1-F3):   5,099 pacotes
   - Alocada p/ Inativos (F4):   510 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  14,398 pacotes
-  - Gap Final (Não alocado):   2,093 pacotes
+  - Alocada p/ Leads (F5):      70 pacotes
+  - Alocada p/ Expansão (F6):  14,385 pacotes
+  - Gap Final (Não alocado):   1,896 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    9
-  - Média de parceiros/cluster: 32.3
-  - Total de parceiros Ativos: 64
-  - Total de parceiros Onboarding: 7
+  - Média de parceiros/cluster: 32.7
+  - Total de parceiros Ativos: 65
+  - Total de parceiros Onboarding: 6
   - Total de parceiros Inativos aptos a serem reativados: 8
   - Quantidade de Vagas:       208 vagas
   - Média de pacotes por vaga: 69.2 pacotes
@@ -214,20 +214,20 @@ POTENCIAL DE NOVAS VAGAS (F6):
 ----------------------------------------
 RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     14,856 pacotes
-  - Atendida (Ativos F1-F3):   8,218 pacotes
-  - Alocada p/ Inativos (F4):   480 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  3,997 pacotes
-  - Gap Final (Não alocado):   2,161 pacotes
+  - Atendida (Ativos F1-F3):   8,288 pacotes
+  - Alocada p/ Inativos (F4):   435 pacotes
+  - Alocada p/ Leads (F5):      365 pacotes
+  - Alocada p/ Expansão (F6):  3,945 pacotes
+  - Gap Final (Não alocado):   1,823 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
-  - Quantidade de Clusters:    6
-  - Média de parceiros/cluster: 32.5
-  - Total de parceiros Ativos: 108
+  - Quantidade de Clusters:    7
+  - Média de parceiros/cluster: 28.7
+  - Total de parceiros Ativos: 109
   - Total de parceiros Onboarding: 15
-  - Total de parceiros Inativos aptos a serem reativados: 9
-  - Quantidade de Vagas:       60 vagas
-  - Média de pacotes por vaga: 66.6 pacotes
+  - Total de parceiros Inativos aptos a serem reativados: 8
+  - Quantidade de Vagas:       59 vagas
+  - Média de pacotes por vaga: 66.9 pacotes
 
 📍 UNIDADE OPERACIONAL: DRJ3
 ----------------------------------------
@@ -240,8 +240,8 @@ RESUMO EXECUTIVO DA BASE:
   - Gap Final (Não alocado):   2,136 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
-  - Quantidade de Clusters:    14
-  - Média de parceiros/cluster: 31.3
+  - Quantidade de Clusters:    13
+  - Média de parceiros/cluster: 33.7
   - Total de parceiros Ativos: 63
   - Total de parceiros Onboarding: 5
   - Total de parceiros Inativos aptos a serem reativados: 12
@@ -254,18 +254,18 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     19,034 pacotes
   - Atendida (Ativos F1-F3):   3,288 pacotes
   - Alocada p/ Inativos (F4):   370 pacotes
-  - Alocada p/ Leads (F5):      70 pacotes
-  - Alocada p/ Expansão (F6):  12,421 pacotes
-  - Gap Final (Não alocado):   2,885 pacotes
+  - Alocada p/ Leads (F5):      210 pacotes
+  - Alocada p/ Expansão (F6):  12,175 pacotes
+  - Gap Final (Não alocado):   2,991 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    7
-  - Média de parceiros/cluster: 34.1
+  - Média de parceiros/cluster: 33.9
   - Total de parceiros Ativos: 46
   - Total de parceiros Onboarding: 5
   - Total de parceiros Inativos aptos a serem reativados: 6
-  - Quantidade de Vagas:       181 vagas
-  - Média de pacotes por vaga: 68.6 pacotes
+  - Quantidade de Vagas:       177 vagas
+  - Média de pacotes por vaga: 68.8 pacotes
 
 📍 UNIDADE OPERACIONAL: DSA8
 ----------------------------------------
@@ -273,9 +273,9 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     11,235 pacotes
   - Atendida (Ativos F1-F3):   1,282 pacotes
   - Alocada p/ Inativos (F4):   140 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  8,349 pacotes
-  - Gap Final (Não alocado):   1,464 pacotes
+  - Alocada p/ Leads (F5):      70 pacotes
+  - Alocada p/ Expansão (F6):  8,275 pacotes
+  - Gap Final (Não alocado):   1,468 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    5
@@ -283,7 +283,7 @@ POTENCIAL DE NOVAS VAGAS (F6):
   - Total de parceiros Ativos: 15
   - Total de parceiros Onboarding: 4
   - Total de parceiros Inativos aptos a serem reativados: 2
-  - Quantidade de Vagas:       121 vagas
+  - Quantidade de Vagas:       120 vagas
   - Média de pacotes por vaga: 69.0 pacotes
 
 📍 UNIDADE OPERACIONAL: DSP2
@@ -292,18 +292,18 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     17,122 pacotes
   - Atendida (Ativos F1-F3):   9,863 pacotes
   - Alocada p/ Inativos (F4):   530 pacotes
-  - Alocada p/ Leads (F5):      140 pacotes
-  - Alocada p/ Expansão (F6):  5,395 pacotes
-  - Gap Final (Não alocado):   1,194 pacotes
+  - Alocada p/ Leads (F5):      250 pacotes
+  - Alocada p/ Expansão (F6):  5,276 pacotes
+  - Gap Final (Não alocado):   1,203 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    6
-  - Média de parceiros/cluster: 39.8
+  - Média de parceiros/cluster: 40.0
   - Total de parceiros Ativos: 143
   - Total de parceiros Onboarding: 3
   - Total de parceiros Inativos aptos a serem reativados: 9
-  - Quantidade de Vagas:       79 vagas
-  - Média de pacotes por vaga: 68.3 pacotes
+  - Quantidade de Vagas:       77 vagas
+  - Média de pacotes por vaga: 68.5 pacotes
 
 📍 UNIDADE OPERACIONAL: DSP4
 ----------------------------------------
@@ -311,18 +311,18 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     17,180 pacotes
   - Atendida (Ativos F1-F3):   2,310 pacotes
   - Alocada p/ Inativos (F4):   0 pacotes
-  - Alocada p/ Leads (F5):      70 pacotes
-  - Alocada p/ Expansão (F6):  13,163 pacotes
-  - Gap Final (Não alocado):   1,637 pacotes
+  - Alocada p/ Leads (F5):      0 pacotes
+  - Alocada p/ Expansão (F6):  13,248 pacotes
+  - Gap Final (Não alocado):   1,622 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    7
   - Média de parceiros/cluster: 32.1
-  - Total de parceiros Ativos: 28
-  - Total de parceiros Onboarding: 6
+  - Total de parceiros Ativos: 29
+  - Total de parceiros Onboarding: 5
   - Total de parceiros Inativos aptos a serem reativados: 0
-  - Quantidade de Vagas:       190 vagas
-  - Média de pacotes por vaga: 69.3 pacotes
+  - Quantidade de Vagas:       191 vagas
+  - Média de pacotes por vaga: 69.4 pacotes
 
 📍 UNIDADE OPERACIONAL: DSP5
 ----------------------------------------
@@ -330,15 +330,15 @@ RESUMO EXECUTIVO DA BASE:
   - Demanda Total da Base:     10,923 pacotes
   - Atendida (Ativos F1-F3):   2,055 pacotes
   - Alocada p/ Inativos (F4):   90 pacotes
-  - Alocada p/ Leads (F5):      0 pacotes
-  - Alocada p/ Expansão (F6):  6,050 pacotes
-  - Gap Final (Não alocado):   2,728 pacotes
+  - Alocada p/ Leads (F5):      45 pacotes
+  - Alocada p/ Expansão (F6):  6,190 pacotes
+  - Gap Final (Não alocado):   2,543 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
   - Quantidade de Clusters:    4
-  - Média de parceiros/cluster: 30.8
-  - Total de parceiros Ativos: 29
-  - Total de parceiros Onboarding: 3
+  - Média de parceiros/cluster: 31.5
+  - Total de parceiros Ativos: 30
+  - Total de parceiros Onboarding: 2
   - Total de parceiros Inativos aptos a serem reativados: 2
-  - Quantidade de Vagas:       89 vagas
+  - Quantidade de Vagas:       91 vagas
   - Média de pacotes por vaga: 68.0 pacotes

@@ -1,4 +1,4 @@
-RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 06/02/2026 14:46
+RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 06/02/2026 18:34
 ================================================================================
 
 📍 UNIDADE OPERACIONAL: DAM1
@@ -50,8 +50,8 @@ RESUMO EXECUTIVO DA BASE:
   - Gap Final (Não alocado):   2,510 pacotes
 ----------------------------------------
 POTENCIAL DE NOVAS VAGAS (F6):
-  - Quantidade de Clusters:    16
-  - Média de parceiros/cluster: 32.8
+  - Quantidade de Clusters:    15
+  - Média de parceiros/cluster: 34.9
   - Total de parceiros Ativos: 50
   - Total de parceiros Onboarding: 0
   - Total de parceiros Inativos aptos a serem reativados: 1

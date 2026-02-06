@@ -443,8 +443,8 @@ class OptimizationService:
     def _evaluate_prospects(self, res_dem, hex_to_cluster):
         results = []
         subset = self.partners_df[self.partners_df.status == "Prospect"]
-
         for _, p in subset.iterrows():
+            prospect = p['name']
             base = self.hex_to_base.get(p.origin_hex)
             if not base:
                 decision = "Fora da área de atuacao"
@@ -472,7 +472,7 @@ class OptimizationService:
                                     current_fill += take
                             break
                     if not decision:
-                        decision = "Baixo volume na área de atuação"
+                        decision = "Baixo volume na area de atuacao"
 
             results.append(
                 PartnerMetrics(
@@ -485,7 +485,7 @@ class OptimizationService:
                     entity_type="PROSPECT",
                     status=str(p.status),
                     store_id=str(p.store_id),
-                    name=str(p.name),
+                    name=prospect,
                     decision=decision,
                     lat=str(p.lat),
                     lon=str(p.lon),
@@ -610,7 +610,7 @@ class OptimizationService:
                         for p_data in f.result():
                             lat = h3.cell_to_latlng(p_data['origin_hex'])[0]
                             lon = h3.cell_to_latlng(p_data['origin_hex'])[1]
-                            p_new = PartnerMetrics(**{**p_data, "lat": lat, "lon": lon, "decision": "Prospect a new partner", "entity_type": "NEW PARTNER", "status": "New", "allocations": [Allocation(**a) for a in p_data['allocations']]})
+                            p_new = PartnerMetrics(**{**p_data, "lat": lat, "lon": lon, "decision": "Prospect a new partner","station_code": base, "entity_type": "NEW PARTNER", "status": "New", "allocations": [Allocation(**a) for a in p_data['allocations']]})
                             p6.append(p_new)
                             for a in p_new.allocations: res_dem[a.hex_id] = max(0, res_dem.get(a.hex_id, 0) - a.packages_assigned)
             
@@ -737,8 +737,10 @@ class OptimizationService:
                 props = {
                         "store_id": str(p.store_id),
                         "status": str(p.status),
+                        "name": str(p.name),
                         "type": str(p.entity_type), 
                         "decision": str(p.decision),
+                        "station_code": str(p.station_code),
                         "cluster": str(p.cluster_name),
                         "lat": float(p.lat),
                         "lon": float(p.lon),

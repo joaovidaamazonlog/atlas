@@ -345,54 +345,39 @@ class OptimizationService:
         self.hex_to_base: Dict[str, str] = {}
         
     def _resolve_hex_overlaps(self, df: pd.DataFrame) -> pd.DataFrame:
+       
         print(f"[{datetime.now()}] Resolvendo overlaps de hexágonos entre bases...")
-        
-        # Identificar hexágonos duplicados
-        hex_counts = df.groupby('hex')['station_code'].apply(list).to_dict()
-        duplicated_hexes = {h: bases for h, bases in hex_counts.items() if len(bases) > 1}
-        
-        if not duplicated_hexes:
+
+        # Adicionar coluna de prioridade
+        df['priority'] = df['station_code'].map(Config.BASE_PRIORITY).fillna(999)
+
+        # Identificar duplicatas e manter apenas a linha com maior prioridade (menor número)
+        df_sorted = df.sort_values('priority')
+        df_clean = df_sorted.drop_duplicates(subset='hex', keep='first')
+
+        # Calcular estatísticas de overlaps removidos
+        n_removed = len(df) - len(df_clean)
+
+        if n_removed == 0:
             print(f"   ✅ Nenhum overlap detectado!")
-            return df
-        
-        print(f"   ⚠️  Detectados {len(duplicated_hexes)} hexágonos com overlap")
-        
-        # Para cada hexágono duplicado, determinar a base prioritária
-        rows_to_remove = []
-        overlap_stats = {}
-        
-        for hex_id, bases in duplicated_hexes.items():
-            # Obter prioridades (menor número = maior prioridade)
-            base_priorities = {
-                base: Config.BASE_PRIORITY.get(base, 999) 
-                for base in bases
-            }
-            
-            # Base com maior prioridade (menor número)
-            priority_base = min(base_priorities.items(), key=lambda x: x[1])[0]
-            
-            # Marcar linhas das outras bases para remoção
-            for base in bases:
-                if base != priority_base:
-                    # Encontrar índices das linhas a remover
-                    mask = (df['hex'] == hex_id) & (df['station_code'] == base)
-                    rows_to_remove.extend(df[mask].index.tolist())
-                    
-                    # Estatísticas
-                    key = f"{base} -> {priority_base}"
-                    overlap_stats[key] = overlap_stats.get(key, 0) + 1
-        
-        # Remover linhas duplicadas
-        df_clean = df.drop(rows_to_remove).reset_index(drop=True)
-        
-        # Exibir estatísticas
-        print(f"   📊 Estatísticas de resolução de overlaps:")
-        for transfer, count in sorted(overlap_stats.items(), key=lambda x: x[1], reverse=True):
-            print(f"      • {transfer}: {count} hexágonos transferidos")
-        
-        print(f"   ✅ {len(rows_to_remove)} registros removidos")
+            df_clean = df_clean.drop('priority', axis=1)
+            return df_clean
+
+        print(f"   ⚠️  Detectados overlaps em {n_removed} registros")
+
+        # Estatísticas detalhadas (opcional, pode comentar se não precisar)
+        removed_df = df[~df.index.isin(df_clean.index)]
+        if len(removed_df) > 0:
+            overlap_stats = removed_df.groupby('station_code').size().to_dict()
+            print(f"   📊 Registros removidos por base:")
+            for base, count in sorted(overlap_stats.items(), key=lambda x: x, reverse=True):
+                print(f"      • {base}: {count} registros")
+
         print(f"   ✅ Overlaps resolvidos com sucesso!")
-        
+
+        # Remover coluna auxiliar
+        df_clean = df_clean.drop('priority', axis=1).reset_index(drop=True)
+
         return df_clean
 
     def _load_data(self):
@@ -400,7 +385,9 @@ class OptimizationService:
         df = pd.read_csv(Config.BASE_PACKAGES)
         df['cep'] = df['cep'].astype(str).str.replace(r'\D', '', regex=True).str.zfill(8)
         df["hex"] = [h3.latlng_to_cell(la, lo, Config.H3_RES) for la, lo in zip(df.latitude, df.longitude)]
-        df = self._resolve_hex_overlaps(df)
+        
+        """df = self._resolve_hex_overlaps(df)"""
+        
         self.hex_to_ceps = df.groupby('hex')['cep'].apply(set).to_dict()
         days = pd.to_datetime(df.plan_date).nunique() or 1
         self.demand_df = df.groupby(["station_code", "hex"]).size().reset_index(name="avg_demand")
@@ -441,88 +428,133 @@ class OptimizationService:
                 c_idx += 1
         return islands, hex_to_cluster
     
-    def _generate_operational_clusters(self, station_code, final_partners: List[PartnerMetrics], clusters_per_base: Dict[str, int]) -> Dict[str, ClusterMetrics]:
+    def _generate_operational_clusters_balanced(self, station_code: str, final_partners: List[PartnerMetrics], clusters_per_base: Dict[str, int]) -> tuple[Dict[str, ClusterMetrics], Dict[str, str]]:
         
         if not final_partners:
-            return {}
-
+            return {}, {}
+        
         n_clusters = clusters_per_base.get(station_code, 1)
         n_partners = len(final_partners)
-
-        # Tamanho ideal e limites para balanceamento
-        ideal_size = n_partners / n_clusters
-        min_size = int(np.floor(ideal_size))
-        max_size = int(np.ceil(ideal_size))
-
-        # Inicialização com K-Means padrão para obter centróides iniciais
-        coords = np.array([h3.cell_to_latlng(p.origin_hex) for p in final_partners])
-        kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10).fit(coords)
-        centroids = kmeans.cluster_centers_
-
-        # Modelo OR-Tools para atribuição balanceada
-        model = cp_model.CpModel()
-
-        # Variáveis: x[i,j] = 1 se parceiro i está no cluster j
-        x = {}
-        for i in range(n_partners):
-            for j in range(n_clusters):
-                x[i, j] = model.NewBoolVar(f'x_{i}_{j}')
-
-        # Restrição: cada parceiro em exatamente um cluster
-        for i in range(n_partners):
-            model.Add(sum(x[i, j] for j in range(n_clusters)) == 1)
-
-        # Restrição: balanceamento de tamanho dos clusters
-        for j in range(n_clusters):
-            cluster_size = sum(x[i, j] for i in range(n_partners))
-            model.Add(cluster_size >= min_size)
-            model.Add(cluster_size <= max_size)
-
-        # Objetivo: minimizar distância total aos centróides
-        # Calcular distâncias (multiplicar por 10000 para trabalhar com inteiros)
-        distances = {}
-        for i in range(n_partners):
-            for j in range(n_clusters):
-                # Distância euclidiana em graus (aproximação)
-                dist = np.sqrt(
-                    (coords[i][0] - centroids[j][0])**2 +
-                    (coords[i][1] - centroids[j][1])**2
-                )
-                distances[i, j] = int(dist * 10000)
-
-        # Minimizar soma das distâncias
-        model.Minimize(
-            sum(x[i, j] * distances[i, j]
-                for i in range(n_partners)
-                for j in range(n_clusters))
+        
+        print(f"   🔧 Criando {n_clusters} clusters balanceados para {n_partners} parceiros...")
+        
+        # ===== FASE 1: Clusterização da Demanda =====
+        hex_demand_map = {}
+        for p in final_partners:
+            for alloc in p.allocations:
+                hex_demand_map[alloc.hex_id] = hex_demand_map.get(alloc.hex_id, 0) + alloc.packages_assigned
+        
+        if not hex_demand_map:
+            print(f"   ⚠️  Nenhum hexágono com demanda para {station_code}")
+            return {}, {}
+        
+        # Preparar dados para KMeans ponderado
+        hex_coords_weighted = []
+        hex_ids = []
+        weights = []
+        
+        for hex_id, demand in hex_demand_map.items():
+            lat, lon = h3.cell_to_latlng(hex_id)
+            hex_coords_weighted.append([lat, lon])
+            hex_ids.append(hex_id)
+            weights.append(demand)
+        
+        hex_coords_weighted = np.array(hex_coords_weighted)
+        weights = np.array(weights)
+        
+        # KMeans nos hexágonos de demanda
+        kmeans_demand = KMeans(n_clusters=n_clusters, random_state=42, n_init=10).fit(
+            hex_coords_weighted, sample_weight=weights
         )
-
+        
+        # Centroides dos clusters baseados na demanda
+        cluster_centroids = kmeans_demand.cluster_centers_
+        
+        # ===== FASE 2: Atribuição Balanceada de Parceiros com OR-Tools =====
+        model = cp_model.CpModel()
+        
+        # Variáveis: x[p][c] = 1 se parceiro p é atribuído ao cluster c
+        x = {}
+        for p_idx in range(n_partners):
+            for c_idx in range(n_clusters):
+                x[(p_idx, c_idx)] = model.NewBoolVar(f'x_p{p_idx}_c{c_idx}')
+        
+        # Restrição 1: Cada parceiro deve ser atribuído a exatamente 1 cluster
+        for p_idx in range(n_partners):
+            model.Add(sum(x[(p_idx, c_idx)] for c_idx in range(n_clusters)) == 1)
+        
+        # Restrição 2: Balanceamento de parceiros por cluster
+        min_partners_per_cluster = n_partners // n_clusters
+        max_partners_per_cluster = min_partners_per_cluster + (1 if n_partners % n_clusters > 0 else 0)
+        
+        for c_idx in range(n_clusters):
+            cluster_size = sum(x[(p_idx, c_idx)] for p_idx in range(n_partners))
+            model.Add(cluster_size >= min_partners_per_cluster)
+            model.Add(cluster_size <= max_partners_per_cluster)
+        
+        # Função Objetivo: Minimizar distância total ponderada pela demanda
+        distances = np.zeros((n_partners, n_clusters))
+        partner_weights = []
+        
+        for p_idx, partner in enumerate(final_partners):
+            p_lat, p_lon = h3.cell_to_latlng(partner.origin_hex)
+            partner_demand = partner.total_load
+            partner_weights.append(partner_demand)
+            
+            for c_idx in range(n_clusters):
+                c_lat, c_lon = cluster_centroids[c_idx]
+                # Distância haversine simplificada (em graus)
+                dist = np.sqrt((p_lat - c_lat)**2 + (p_lon - c_lon)**2)
+                distances[p_idx, c_idx] = dist
+        
+        # Normalizar distâncias e converter para inteiros (para OR-Tools)
+        max_dist = distances.max()
+        if max_dist > 0:
+            distances_normalized = (distances / max_dist * 10000).astype(int)
+        else:
+            distances_normalized = distances.astype(int)
+        
+        # Termos da função objetivo
+        obj_terms = []
+        for p_idx in range(n_partners):
+            for c_idx in range(n_clusters):
+                # Ponderar pela demanda do parceiro
+                weight = max(1, partner_weights[p_idx] // 10)
+                cost = distances_normalized[p_idx, c_idx] * weight
+                obj_terms.append(cost * x[(p_idx, c_idx)])
+        
+        model.Minimize(sum(obj_terms))
+        
         # Resolver
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = 30
+        solver.parameters.log_search_progress = False
+        
         status = solver.Solve(model)
-
-        # Extrair solução
-        clusters = {j: [] for j in range(n_clusters)}
-
-        if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
-            # Solução encontrada pelo OR-Tools
-            for i in range(n_partners):
-                for j in range(n_clusters):
-                    if solver.Value(x[i, j]) == 1:
-                        clusters[j].append(final_partners[i])
-                        break
-            
-            print(f"✅ OR-Tools: Solução {'ÓTIMA' if status == cp_model.OPTIMAL else 'VIÁVEL'} para {station_code}")
+        
+        if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+            print(f"   ⚠️  Solver não encontrou solução ótima. Usando KMeans simples como fallback.")
+            # Fallback: usar KMeans simples nos parceiros
+            partner_coords = np.array([h3.cell_to_latlng(p.origin_hex) for p in final_partners])
+            kmeans_partners = KMeans(n_clusters=n_clusters, random_state=42, n_init=10).fit(partner_coords)
+            partner_assignments = kmeans_partners.labels_
         else:
-            # Fallback para KMeans simples se OR-Tools falhar
-            print(f"⚠️ OR-Tools não encontrou solução para {station_code}, usando KMeans como fallback")
-            for i, p in enumerate(final_partners):
-                label = kmeans.labels_[i]
-                clusters[label].append(p)
-
-        # Criar métricas por cluster
+            # Extrair atribuições da solução
+            partner_assignments = []
+            for p_idx in range(n_partners):
+                for c_idx in range(n_clusters):
+                    if solver.Value(x[(p_idx, c_idx)]) == 1:
+                        partner_assignments.append(c_idx)
+                        break
+        
+        # ===== FASE 3: Organizar Resultados =====
+        clusters = {}
+        for p_idx, cluster_label in enumerate(partner_assignments):
+            clusters.setdefault(cluster_label, []).append(final_partners[p_idx])
+        
+        # Criar métricas e atribuir nomes aos clusters
         cluster_metrics = {}
+        hex_to_cluster = {}
         
         for label, partners in clusters.items():
             cluster_name = f"{station_code}_C{label + 1}"
@@ -530,6 +562,9 @@ class OptimizationService:
             # Atribuir nome do cluster aos parceiros
             for p in partners:
                 p.cluster_name = cluster_name
+                # Mapear hexágonos deste parceiro ao cluster
+                for alloc in p.allocations:
+                    hex_to_cluster[alloc.hex_id] = cluster_name
             
             # Calcular métricas do cluster
             total_demand = sum(p.total_load for p in partners)
@@ -555,7 +590,12 @@ class OptimizationService:
                 attainment_percentage=attainment
             )
         
-        return cluster_metrics
+        # Estatísticas de balanceamento
+        cluster_sizes = [len(partners) for partners in clusters.values()]
+        print(f"   ✅ Clusters criados: {cluster_sizes}")
+        print(f"   📊 Balanceamento: min={min(cluster_sizes)}, max={max(cluster_sizes)}, diff={max(cluster_sizes)-min(cluster_sizes)}")
+        
+        return cluster_metrics, hex_to_cluster
     
     
     def _allocate_existing_by_status(self, base, res_dem, target_status):
@@ -792,8 +832,7 @@ class OptimizationService:
             )
 
             # Gerar clusters operacionais de no máximo 40 parceiros
-            cluster_metrics_dict = self._generate_operational_clusters(base, final_partners_list, clusters_per_base)
-            op_hex_to_cluster = {p.origin_hex: p.cluster_name for p in final_partners_list}
+            cluster_metrics_dict, op_hex_to_cluster = self._generate_operational_clusters_balanced(base, final_partners_list, clusters_per_base)
 
             # Atribuição Universal: Todo hexágono deve pertencer a um cluster operacional
             if op_hex_to_cluster:
@@ -1037,7 +1076,6 @@ class OptimizationService:
             for p in r.existing_partners + r.new_partners + r.prospect_partners + r.inactive_partners:
                 lat, lng = h3.cell_to_latlng(p.origin_hex)
                 partnerName = p.name if p.name else "N/A"
-                print(partnerName)
                 ceps_alocados = set()
                 alloc_list_json = []
                 

@@ -664,8 +664,8 @@ const PolygonManager = {
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
 
         const filteredFeatures = selectedStations.includes('all')
-            ? AppState.optimizationData.features
-            : AppState.optimizationData.features.filter(f => selectedStations.includes(f.properties.delivery_station));
+            ? AppState.optimizationData.features.filter(f => f.geometry.type === 'Polygon')
+            : AppState.optimizationData.features.filter(f => (selectedStations.includes(f.properties.delivery_station) && f.geometry.type === 'Polygon'));
 
         const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demanda total'] || 0));
         function getColor(demanda) {

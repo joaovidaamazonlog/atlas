@@ -861,7 +861,7 @@ const UIManager = {
             <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <!-- Div para o Nome do Parceiro -->
                 <div class="partner-header">
-                    <h5 style="font-weight: bold;">${data['name']}</h5>
+                    <h5 style="font-weight: bold;">${data.name}</h5>
                 </div>
                 <div class="partner-info" id="partnerInfo">
                     <table style="width:100%">
@@ -875,10 +875,6 @@ const UIManager = {
                                 <td style="width:60%">${data.status}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%"><b>Supply Run:</b></td>
-                                <td style="width:60%">${data.supply_run}</td>
-                            </tr>
-                            <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>
                                 <td style="width:60%">${data.delivery_station}</td>
                             </tr>
@@ -888,15 +884,15 @@ const UIManager = {
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>HCP Initiatives:</b></td>
-                                <td style="width:60%">${data.hcp_initiatives}</td>
+                                <td style="width:60%">${data.hub_delivey_initiatives}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>HCP Host Partner:</b></td>
-                                <td style="width:60%">${data.hcp_host_partner}</td>
+                                <td style="width:60%">${data.HCP_host_partner}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>HCP Rate Card:</b></td>
-                                <td style="width:60%">${data.hcp_rate_card}</td>
+                                <td style="width:60%">${data.HCP_rate_card}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Radius:</b></td>
@@ -951,10 +947,10 @@ const UIManager = {
                     <button class="btn btn-warning btn-sm btn-block mb-1" id="toggleOptBtn" onclick="MapManager.toggleOptimizationBtn()">
                         🚀 Otimização Disponível
                     </button>
-                    <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.storeId}', radius=5)">
+                    <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, ${data.storeId}, radius=5)">
                         <i class="fas fa-phone"></i> Solicitar Resgate
                     </button>
-                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.storeId}', '${data.name}')">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, ${data.storeId}, ${data.name})">
                         <i class="fas fa-route"></i> Rota a Partir Daqui
                     </button>
                 </div>

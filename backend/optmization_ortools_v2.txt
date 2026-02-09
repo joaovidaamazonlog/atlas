@@ -23,7 +23,8 @@ class Config:
     MAX_CAP = configuration.MAX_CAPACITY
     CAPACITIES = configuration.CAPACITIES
     RADII = configuration.RADII_M
-    BONUS_PER_OPEN = 1500 
+    BONUS_PER_OPEN = 1500
+    CLUSTER_PER_STATION = configuration.CLUSTER_PER_STATION
     PARTNERS_TO_EVALUATE = [
     "2014644401",
     "3857592834",
@@ -261,7 +262,8 @@ class OptimizationReport:
     new_partners: List[PartnerMetrics]
     demand_summary: Dict[str, Dict]
     hex_to_cluster: Dict[str, str]
-    base_metrics: Dict = field(default_factory=dict)
+    base_metrics: BaseMetrics
+    cluster_metrics: Dict[str, ClusterMetrics] = field(default_factory=dict)
 
 # ========================================
 # WORKER DO SOLVER
@@ -380,48 +382,65 @@ class OptimizationService:
                 c_idx += 1
         return islands, hex_to_cluster
     
-    def _generate_operational_clusters(self, station_code, final_partners: List[PartnerMetrics], max_per_cluster):
+    def _generate_operational_clusters(self, station_code, final_partners: List[PartnerMetrics], clusters_per_base: Dict[str, int]) -> Dict[str, ClusterMetrics]:
         if not final_partners:
             return {}
-
+        
+        # Obter número de clusters desejado para esta base
+        n_clusters = clusters_per_base.get(station_code, 1)
+        
+        # Coordenadas dos parceiros
         coords = [h3.cell_to_latlng(p.origin_hex) for p in final_partners]
-        n_partners = len(final_partners)
-        n_clusters = math.ceil(n_partners / max_per_cluster)
-
-        # Primeira clusterização
+        
+        # Clusterização com KMeans
         kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10).fit(coords)
+        
+        # Organizar parceiros por cluster
         clusters = {}
         for i, p in enumerate(final_partners):
             label = kmeans.labels_[i]
             clusters.setdefault(label, []).append(p)
-
-        # Pós-processamento: subdivide clusters grandes
-        cluster_names = {}
-        cluster_counter = 1
-        for partners in clusters.values():
-            if len(partners) <= max_per_cluster:
-                cname = f"{station_code}_C{cluster_counter}"
-                for p in partners:
-                    p.cluster_name = cname
-                    cluster_names[p.origin_hex] = cname
-                cluster_counter += 1
-            else:
-                # Subdivide novamente
-                n_sub = math.ceil(len(partners) / max_per_cluster)
-                sub_coords = [h3.cell_to_latlng(p.origin_hex) for p in partners]
-                sub_kmeans = KMeans(n_clusters=n_sub, random_state=42, n_init=5).fit(sub_coords)
-                sub_clusters = {}
-                for i, p in enumerate(partners):
-                    sub_label = sub_kmeans.labels_[i]
-                    sub_clusters.setdefault(sub_label, []).append(p)
-                for sub_partners in sub_clusters.values():
-                    cname = f"{station_code}_C{cluster_counter}"
-                    for p in sub_partners:
-                        p.cluster_name = cname
-                        cluster_names[p.origin_hex] = cname
-                    cluster_counter += 1
-
-        return cluster_names
+        
+        # Criar métricas por cluster
+        cluster_metrics = {}
+        
+        for label, partners in clusters.items():
+            cluster_name = f"{station_code}_C{label + 1}"
+            
+            # Atribuir nome do cluster aos parceiros
+            for p in partners:
+                p.cluster_name = cluster_name
+            
+            # Calcular métricas do cluster
+            total_demand = sum(p.total_load for p in partners)
+            active_count = sum(1 for p in partners if p.status == "Active")
+            onboarding_count = sum(1 for p in partners if p.status == "Onboarding")
+            prospects_count = sum(1 for p in partners if p.entity_type == "PROSPECT" and p.decision == "Seguir cadastro")
+            inactives_count = sum(1 for p in partners if p.entity_type == "INACTIVE_EXITED" and p.decision == "Reativar cadastro")
+            new_count = sum(1 for p in partners if p.entity_type == "NEW PARTNER")
+            
+            total_expected = len(partners)
+            attainment = (active_count / total_expected * 100) if total_expected > 0 else 0
+            
+            cluster_metrics[cluster_name] = ClusterMetrics(
+                base=station_code,
+                cluster_name=cluster_name,
+                total_demand=total_demand,
+                total_expected_partners=total_expected,
+                active_partners=active_count,
+                onboarding_partners=onboarding_count,
+                prospects_to_approve=prospects_count,
+                inactives_to_reactivate=inactives_count,
+                new_partners=new_count,
+                attainment_percentage=attainment
+            )
+        
+        # Criar mapeamento hex -> cluster_name
+        hex_to_cluster = {}
+        for p in final_partners:
+            hex_to_cluster[p.origin_hex] = p.cluster_name
+        
+        return cluster_metrics
     
     
     def _allocate_existing_by_status(self, base, res_dem, target_status):
@@ -619,6 +638,8 @@ class OptimizationService:
 
     def run(self):
         self._load_data()
+        clusters_per_base = Config.CLUSTER_PER_STATION
+
         for base in self.demand_df.station_code.unique():
             print(f"\n--- 🚀 OTIMIZANDO BASE: {base} ---")
             orig_dem = self.demand_df[self.demand_df.station_code == base].set_index("hex")["avg_demand"].to_dict()
@@ -645,10 +666,6 @@ class OptimizationService:
                             p_new = PartnerMetrics(**{**p_data, "lat": lat, "lon": lon, "decision": "Prospect a new partner","station_code": base, "entity_type": "NEW PARTNER", "status": "New", "allocations": [Allocation(**a) for a in p_data['allocations']]})
                             p6.append(p_new)
                             for a in p_new.allocations: res_dem[a.hex_id] = max(0, res_dem.get(a.hex_id, 0) - a.packages_assigned)
-            
-            p_ativos = p1 + p2 + p3
-            p_prospects_ok = [p for p in p5 if p.decision == "Seguir cadastro"]
-            p_inativos_ok = [p for p in p4 if p.decision == "Reativar cadastro"]
 
             # Consolidar todos os parceiros que farão parte da malha final (F1 a F6)
             # Filtramos apenas os que tiveram decisão positiva ou já são ativos
@@ -660,7 +677,8 @@ class OptimizationService:
             )
 
             # Gerar clusters operacionais de no máximo 40 parceiros
-            op_hex_to_cluster = self._generate_operational_clusters(base, final_partners_list, max_per_cluster=40)
+            cluster_metrics_dict = self._generate_operational_clusters(base, final_partners_list, clusters_per_base)
+            op_hex_to_cluster = {p.origin_hex: p.cluster_name for p in final_partners_list}
 
             # Atribuição Universal: Todo hexágono deve pertencer a um cluster operacional
             if op_hex_to_cluster:
@@ -692,44 +710,46 @@ class OptimizationService:
                 for h in orig_dem.keys():
                     hex_to_cluster[h] = hex_to_cluster.get(h, f"{base}_UNASSIGNED")
                 
-            total_atendido = sum(p.total_load for p in p_ativos)
-            total_prospects_reserva = sum(p.total_load for p in p_prospects_ok)
-            total_inativos_reserva = sum(p.total_load for p in p_inativos_ok)
+            total_atendido = sum(p.total_load for p in p1)
+            total_prospects_reserva = sum(p.total_load for p in [p for p in p5 if p.decision == "Seguir cadastro"])
+            total_inativos_reserva = sum(p.total_load for p in [p for p in p4 if p.decision == "Reativar cadastro"])
             total_novas_vagas = sum(p.total_load for p in p6)
             
             m = BaseMetrics(
-                total_demand = sum(orig_dem.values()),
-                existing_absorbed = total_atendido,
-                prospect_reserved = total_prospects_reserva,
-                inactive_reserved = total_inativos_reserva,
-                new_allocated = total_novas_vagas,
-                residual = sum(res_dem.values()),
-                active_partners_count = len(p1),
-                onboarding_partners_count = len(p2),
-                inactive_partners_count = len(p_inativos_ok),
-                vetting_partners_count = len(p3),
-                new_partners_count = len(p6),
-                avg_load = (total_novas_vagas / len(p6)) if len(p6) > 0 else 0,
-                avg_radius = (sum(p.radius_s for p in p6) / len(p6)) if len(p6) > 0 else 0,
-                cluster_count = len(set(op_hex_to_cluster.values())),
-                avg_partners_per_cluster = (len(p_ativos + p_prospects_ok + p_inativos_ok + p6) / len(set(op_hex_to_cluster.values()))) if len(set(op_hex_to_cluster.values())) > 0 else 0
+                total_demand=sum(orig_dem.values()),
+                existing_absorbed=total_atendido,
+                prospect_reserved=total_prospects_reserva,
+                inactive_reserved=total_inativos_reserva,
+                new_allocated=total_novas_vagas,
+                residual=sum(res_dem.values()),
+                active_partners_count=len(p1),
+                onboarding_partners_count=len(p2),
+                inactive_partners_count=len([p for p in p4 if p.decision == "Reativar cadastro"]),
+                vetting_partners_count=len(p3),
+                new_partners_count=len(p6),
+                avg_load=(total_novas_vagas / len(p6)) if len(p6) > 0 else 0,
+                avg_radius=(sum(p.radius_s for p in p6) / len(p6)) if len(p6) > 0 else 0,
+                cluster_count=len(cluster_metrics_dict),
+                avg_partners_per_cluster=(len(final_partners_list) / len(cluster_metrics_dict)) if len(cluster_metrics_dict) > 0 else 0
             )
                            
             report_base = OptimizationReport(
-                station_code = base,
-                existing_partners = p1 + p2 + p3,
-                inactive_partners = p4,
-                prospect_partners = p5,
-                new_partners = p6,
-                demand_summary = {h: {"total": orig_dem[h], "residual": res_dem.get(h, 0)} for h in orig_dem},
-                hex_to_cluster = hex_to_cluster,
-                base_metrics = m
+                station_code=base,
+                existing_partners=p1 + p2 + p3,
+                inactive_partners=p4,
+                prospect_partners=p5,
+                new_partners=p6,
+                demand_summary={h: {"total": orig_dem[h], "residual": res_dem.get(h, 0)} for h in orig_dem},
+                hex_to_cluster=hex_to_cluster,
+                base_metrics=m
             )
+            
+            report_base.cluster_metrics = cluster_metrics_dict
+            
             self.reports.append(report_base)            
             self._print_summary(base, p1, p2, p3, p4, p5, p6)
         
         self.export_strategic_results()
-        self.export_inactive_exited_report()
         self.executive_report()
         self.mkt_report()
 
@@ -740,57 +760,204 @@ class OptimizationService:
         print(f"   [F5] Leads Validados: {len([x for x in p5 if x.decision == 'Seguir cadastro'])}")
         print(f"   [F6] Novos Parceiros: {len(p6)}")
 
+    def executive_report(self, filename="RELATORIO_EXECUTIVO.txt"):
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
+        path = dest / filename
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(f"RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            f.write("="*80 + "\n")
+
+            for r in self.reports:
+                m = r.base_metrics
+
+                # Cálculos para a base
+                total_parceiros_esperados = (
+                    m.active_partners_count +
+                    m.onboarding_partners_count +
+                    m.vetting_partners_count +
+                    m.inactive_partners_count +
+                    m.new_partners_count
+                )
+
+                parceiros_ativos = m.active_partners_count
+                attainment = (parceiros_ativos / total_parceiros_esperados * 100) if total_parceiros_esperados > 0 else 0
+
+                total_pacotes_cluster = m.total_demand
+                pacotes_atendidos_ativos = m.existing_absorbed
+
+                f.write(f"BASE: {r.station_code}\n")
+                f.write(f"{'-'*80}\n")
+                f.write(f"  - Quantidade de Clusters:                    {m.cluster_count}\n")
+                f.write(f"  - Volume Total de Pacotes:                   {total_pacotes_cluster:,} pacotes\n")
+                f.write(f"  - Quantidade Total de Parceiros Ativos:      {parceiros_ativos}\n")
+                f.write(f"  - % de Attainment:                           {attainment:.1f}%\n")
+                f.write(f"  - Total de Pacotes do Cluster:               {total_pacotes_cluster:,} pacotes\n")
+                f.write(f"  - Total de Pacotes Atendidos (Ativos):       {pacotes_atendidos_ativos:,} pacotes\n")
+                f.write(f"{'-'*80}\n")
+
+                # Detalhamento por cluster usando cluster_metrics
+                f.write(f"DETALHAMENTO POR CLUSTER:\n")
+
+                # Usar o novo cluster_metrics do report
+                if hasattr(r, 'cluster_metrics') and r.cluster_metrics:
+                    for cluster_name, cluster_data in sorted(r.cluster_metrics.items()):
+                        f.write(f"  Cluster: {cluster_name}\n")
+                        f.write(f"    - Quantidade Total de Parceiros:           {cluster_data.total_expected_partners}\n")
+                        f.write(f"        • Ativos:                              {cluster_data.active_partners}\n")
+                        f.write(f"        • Onboarding:                          {cluster_data.onboarding_partners}\n")
+                        f.write(f"        • Prospects a Aprovar:                 {cluster_data.prospects_to_approve}\n")
+                        f.write(f"        • Inativos a Reativar:                 {cluster_data.inactives_to_reactivate}\n")
+                        f.write(f"        • Novos Parceiros:                     {cluster_data.new_partners}\n")
+                        f.write(f"    - Volume Total de Demanda:                 {cluster_data.total_demand:,} pacotes\n")
+                        f.write(f"    - % de Attainment:                         {cluster_data.attainment_percentage:.1f}%\n")
+                else:
+                    f.write("  Nenhum cluster disponível para esta base.\n")
+
+                f.write("="*80 + "\n")
+
+        print(f"✅ Relatório executivo salvo em: {path}")
+
+
+    def mkt_report(self, filename="RELATÓRIO_MKT.txt"):
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
+        path = dest / filename
+
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(f"RELATORIO DE MARKETING - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            f.write("="*80 + "\n")
+
+            for r in self.reports:
+                m = r.base_metrics
+                f.write(f"📍 UNIDADE OPERACIONAL: {r.station_code}\n")
+                f.write(f"{'-'*40}\n")
+                f.write(f"RESUMO GERAL:\n")
+                f.write(f"  - Quantidade de Clusters:        {m.cluster_count}\n")
+                f.write(f"  - Média de parceiros/cluster:    {m.avg_partners_per_cluster:.1f}\n")
+                f.write(f"  - Quantidade de Vagas (F6):      {m.new_partners_count} vagas\n")
+                f.write(f"  - Média de pacotes por vaga:     {m.avg_load:.1f} pacotes\n")
+                f.write(f"  - Média de Raio Proposto:        {m.avg_radius:.0f} m\n")
+                f.write(f"{'-'*40}\n")
+
+                # Detalhamento por cluster com métricas
+                if hasattr(r, 'cluster_metrics') and r.cluster_metrics:
+                    f.write(f"DETALHAMENTO POR CLUSTER:\n")
+
+                    # Ordenar clusters por demanda total
+                    clusters_sorted = sorted(
+                        r.cluster_metrics.items(), 
+                        key=lambda x: x[1].total_demand, 
+                        reverse=True
+                    )
+                    
+                    for i, (cluster_name, cluster_data) in enumerate(clusters_sorted, 1):
+                        f.write(f"  {i}º) {cluster_name}\n")
+                        f.write(f"     - Demanda Total:              {cluster_data.total_demand:,} pacotes\n")
+                        f.write(f"     - Total de Parceiros:         {cluster_data.total_expected_partners}\n")
+                        f.write(f"     - Novos Parceiros (F6):       {cluster_data.new_partners}\n")
+                        f.write(f"     - Prospects a Aprovar (F5):   {cluster_data.prospects_to_approve}\n")
+                        f.write(f"     - Inativos a Reativar (F4):   {cluster_data.inactives_to_reactivate}\n")
+                        f.write(f"     - % de Attainment:            {cluster_data.attainment_percentage:.1f}%\n")
+
+                # Detalhamento das oportunidades de novos parceiros
+                f.write(f"{'-'*40}\n")
+                f.write(f"OPORTUNIDADES DE NOVOS PARCEIROS (F6):\n")
+
+                clusters_stats = []
+                for cn in set(p.cluster_name for p in r.new_partners):
+                    pts = [p for p in r.new_partners if p.cluster_name == cn]
+                    clusters_stats.append({
+                        "name": cn, 
+                        "vol": sum(p.total_load for p in pts), 
+                        "pts": pts
+                    })
+                clusters_stats.sort(key=lambda x: x['vol'], reverse=True)
+                
+                for i, c in enumerate(clusters_stats, 1):
+                    f.write(f"  {i}º) {c['name']} - Potencial: {c['vol']:,} pacotes - {len(c['pts'])} novos parceiros\n")
+                    f.write(f"  Oportunidades neste cluster:\n")
+
+                    oportunidades_ordenadas = sorted(c['pts'], key=lambda x: x.total_load, reverse=True)
+                    for idx, p in enumerate(oportunidades_ordenadas, 1):
+                        ceps_vaga = set()
+                        for alloc in p.allocations:
+                            ceps_vaga.update(self.hex_to_ceps.get(alloc.hex_id, []))
+                        
+                        lat, lng = h3.cell_to_latlng(p.origin_hex)
+                        f.write(f"      • Oportunidade {idx}: {p.total_load} pacotes/dia | Raio: {p.radius_s}m\n")
+                        f.write(f"        CEPs Alvo: {', '.join(list(ceps_vaga)[:10])}{'...' if len(ceps_vaga) > 10 else ''}\n")
+                        f.write(f"        Google Maps: https://maps.google.com/maps?q={lat},{lng}\n")
+
+                f.write("="*80 + "\n")
+
+        print(f"✅ Relatório de marketing salvo em: {path}")
+
+
     def export_strategic_results(self):
-        dest = Path(Config.DEST_FOLDER); dest.mkdir(exist_ok=True)
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
         
         # GEOJSON
         features = []
         for r in self.reports:
+            # Hexágonos de demanda
             for h, info in r.demand_summary.items():
                 boundary = h3.cell_to_boundary(h)
-                coords = [[c[1], c[0]] for c in boundary]; coords.append(coords[0])
+                coords = [[c[1], c[0]] for c in boundary]
+                coords.append(coords[0])
                 features.append({
                     "type": "Feature", 
                     "geometry": {"type": "Polygon", "coordinates": [coords]},
                     "properties": {
                         "delivery_station": r.station_code, 
                         "cluster": r.hex_to_cluster.get(h, "Ativo/Vazio"),
-                        "demanda total": info["total"],
+                        "demanda_total": info["total"],
                         "residual": info["residual"]
                     }
                 })
+            
+            # Parceiros (todos os tipos)
             for p in r.existing_partners + r.new_partners + r.prospect_partners + r.inactive_partners:
                 lat, lng = h3.cell_to_latlng(p.origin_hex)
+                partnerName = p.name if p.name else "N/A"
                 ceps_alocados = set()
                 alloc_list_json = []
+                
                 for alloc in p.allocations:
                     ceps_alocados.update(self.hex_to_ceps.get(alloc.hex_id, []))
-                    alloc_list_json.append({"hex": str(alloc.hex_id), "pacotes": int(alloc.packages_assigned)})
+                    alloc_list_json.append({
+                        "hex": str(alloc.hex_id), 
+                        "pacotes": int(alloc.packages_assigned)
+                    })
                 
-                # Propriedades Base da Otimização
+                # Propriedades base da otimização
                 props = {
-                        "store_id": str(p.store_id),
-                        "status": str(p.status),
-                        "name": str(p.name),
-                        "type": str(p.entity_type), 
-                        "decision": str(p.decision),
-                        "station_code": str(p.station_code),
-                        "cluster": str(p.cluster_name),
-                        "lat": float(p.lat),
-                        "lon": float(p.lon),
-                        "cap_suggestion": int(p.total_load),
-                        "radius_suggestion": int(p.radius_s),
-                        "top_5_ceps": list(ceps_alocados)[:5],
-                        "allocations": alloc_list_json
-                    }
+                    "store_id": str(p.store_id) if p.store_id else "",
+                    "status": str(p.status),
+                    "name": str(partnerName),
+                    "type": str(p.entity_type), 
+                    "decision": str(p.decision),
+                    "station_code": str(p.station_code),
+                    "cluster": str(p.cluster_name),
+                    "lat": float(lat),
+                    "lon": float(lng),
+                    "cap_suggestion": int(p.total_load),
+                    "radius_suggestion": int(p.radius_s),
+                    "top_5_ceps": list(ceps_alocados)[:5],
+                    "allocations": alloc_list_json
+                }
                 
-                # Enriquecimento com dados cadastrais do dados_mapa.json
-                if p.store_id and p.store_id in self.partners_df['store_id'].values:
-                    p_info = self.partners_df[self.partners_df['store_id'] == p.store_id].iloc[0].to_dict()
-                    # Excluir campos pesados conforme solicitado
+                # Enriquecimento com dados cadastrais
+                if p.store_id and str(p.store_id) in self.partners_df['store_id'].astype(str).values:
+                    p_info = self.partners_df[self.partners_df['store_id'].astype(str) == str(p.store_id)].iloc[0].to_dict()
+                    
+                    # Excluir campos pesados
                     for field in ["main_store_data", "overlap_data", "allocations", "eligible_packages", "partner_capacity", "ADV"]:
                         p_info.pop(field, None)
-                    # Mesclar informações (preservando as da otimização em caso de conflito)
+                    
+                    # Mesclar informações
                     for k, v in p_info.items():
                         if k not in props:
                             props[k] = str(v) if not isinstance(v, (int, float, list, dict)) else v
@@ -801,193 +968,90 @@ class OptimizationService:
                     "properties": props
                 })
         
-        with open(dest / "optimization_data.geojson", "w") as f: 
-            json.dump({"type": "FeatureCollection", "features": features}, f)
+        with open(dest / "optimization_data.geojson", "w", encoding="utf-8") as f: 
+            json.dump({"type": "FeatureCollection", "features": features}, f, ensure_ascii=False, indent=2)
+        
+        print(f"✅ GeoJSON salvo em: {dest / 'optimization_data.geojson'}")
 
-        # TXT ESTRATÉGICO (Versão com CEPs Alvo)
+        # TXT ESTRATÉGICO
         with open(dest / "OPORTUNIDADES_ESTRATEGICAS.txt", "w", encoding="utf-8") as f:
             f.write(f"RELATÓRIO DE EXPANSÃO - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
             f.write("="*80 + "\n")
-            
+
             for r in self.reports:
                 m = r.base_metrics
-                f.write(f"\n📍 UNIDADE OPERACIONAL: {r.station_code}\n")
+                f.write(f"📍 UNIDADE OPERACIONAL: {r.station_code}\n")
                 f.write(f"{'-'*40}\n")
                 f.write(f"RESUMO EXECUTIVO DA BASE:\n")
-                f.write(f"  - Demanda Total da Base:     {m.get('total_demand', 0):,} pacotes\n")
-                f.write(f"  - Atendida (Ativos F1-F3):   {m.get('existing_absorbed', 0):,} pacotes\n")
-                f.write(f"  - Alocada p/ Inativos (F4):   {m.get('inactive_reserved', 0):,} pacotes\n")
-                f.write(f"  - Alocada p/ Leads (F5):      {m.get('prospect_reserved', 0):,} pacotes\n")
-                f.write(f"  - Alocada p/ Expansão (F6):  {m.get('new_allocated', 0):,} pacotes\n")
-                f.write(f"  - Gap Final (Não alocado):   {m.get('residual', 0):,} pacotes\n")
+                f.write(f"  - Demanda Total da Base:         {m.total_demand:,} pacotes\n")
+                f.write(f"  - Atendida (Ativos F1-F3):       {m.existing_absorbed:,} pacotes\n")
+                f.write(f"  - Alocada p/ Inativos (F4):      {m.inactive_reserved:,} pacotes\n")
+                f.write(f"  - Alocada p/ Leads (F5):         {m.prospect_reserved:,} pacotes\n")
+                f.write(f"  - Alocada p/ Expansão (F6):      {m.new_allocated:,} pacotes\n")
+                f.write(f"  - Gap Final (Não alocado):       {m.residual:,} pacotes\n")
                 f.write(f"{'-'*40}\n")
                 f.write(f"POTENCIAL DE NOVAS VAGAS (F6):\n")
-                f.write(f"  - Quantidade de Clusters:    {r.base_metrics.get('cluster_count', 0)}\n")
-                f.write(f"  - Média de parceiros/cluster: {r.base_metrics.get('avg_partners_per_cluster', 0):.1f}\n")
-                f.write(f"  - Quantidade de Vagas:       {m.get('new_partners_count', 0)} vagas\n")
-                f.write(f"  - Média de Pacotes/Vaga:     {m.get('avg_load', 0):.1f} pacotes\n")
-                f.write(f"  - Média de Raio Proposto:    {m.get('avg_radius', 0):.0f} m\n")
+                f.write(f"  - Quantidade de Clusters:        {m.cluster_count}\n")
+                f.write(f"  - Média de parceiros/cluster:    {m.avg_partners_per_cluster:.1f}\n")
+                f.write(f"  - Quantidade de Vagas:           {m.new_partners_count} vagas\n")
+                f.write(f"  - Média de Pacotes/Vaga:         {m.avg_load:.1f} pacotes\n")
+                f.write(f"  - Média de Raio Proposto:        {m.avg_radius:.0f} m\n")
                 f.write(f"{'-'*40}\n")
-                
-                # SEÇÃO DE PROSPECTS (ANÁLISE DE LEADS)
-                prospects = [p for p in r.existing_partners if p.status == "Prospect"]
+
+                # Análise de Prospects
+                prospects = [p for p in r.prospect_partners if p.decision == "Seguir cadastro"]
                 if prospects:
                     f.write(f"📢 ANÁLISE DE LEADS (PROSPECTS):\n")
                     for p in prospects:
-                        f.write(f"  • ID: {p.store_id} | Decisão: {p.decision}\n")
-                        if p.decision == "Seguir cadastro":
-                            ceps_p = set()
-                            for a in p.allocations: ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
-                            f.write(f"    Sugerido: {p.total_load}pk (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
+                        ceps_p = set()
+                        for a in p.allocations:
+                            ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
+                        f.write(f"  • Cluster: {p.cluster_name} | ID: {p.store_id}\n")
+                        f.write(f"    Sugerido: {p.total_load} pacotes (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
                     f.write(f"{'-'*40}\n")
-                
-                #SEÇÃO DE INATIVOS/EXITED AVALIADOS
-                inativos = [p for p in r.inactive_partners]
+
+                # Análise de Inativos/Exited
+                inativos = [p for p in r.inactive_partners if p.decision == "Reativar cadastro"]
                 if inativos:
                     f.write(f"📢 ANÁLISE DE INATIVOS/EXITED AVALIADOS:\n")
                     for p in inativos:
-                        f.write(f"  • ID: {p.store_id} | Decisão: {p.decision}\n")
-                        if p.decision == "Seguir cadastro":
-                            ceps_p = set()
-                            for a in p.allocations: ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
-                            f.write(f"    Sugerido: {p.total_load}pk (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
+                        ceps_p = set()
+                        for a in p.allocations:
+                            ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
+                        f.write(f"  • Cluster: {p.cluster_name}\n")
+                        f.write(f"    ID: {p.store_id}\n")
+                        f.write(f"    Sugerido: {p.total_load} pacotes (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
                     f.write(f"{'-'*40}\n")
 
-                # SEÇÃO DE NOVAS VAGAS POR CLUSTER
+                # Oportunidades por cluster
                 clusters_stats = []
                 for cn in set(p.cluster_name for p in r.new_partners):
                     pts = [p for p in r.new_partners if p.cluster_name == cn]
-                    clusters_stats.append({"name": cn, "vol": sum(p.total_load for p in pts), "pts": pts})
+                    clusters_stats.append({
+                        "name": cn, 
+                        "vol": sum(p.total_load for p in pts), 
+                        "pts": pts
+                    })
                 clusters_stats.sort(key=lambda x: x['vol'], reverse=True)
 
                 f.write(f"🚀 OPORTUNIDADES PARA PROSPECÇÃO:\n")
                 for i, c in enumerate(clusters_stats, 1):
-                    f.write(f"\n  {i}º) {c['name']} - Potencial: {c['vol']:,} pacotes - {len(c['pts'])} novos parceiros.\n")
+                    f.write(f"  {i}º) {c['name']} - Potencial: {c['vol']:,} pacotes - {len(c['pts'])} novos parceiros\n")
                     f.write(f"  Oportunidades neste cluster:\n")
+                    
                     oportunidades_ordenadas = sorted(c['pts'], key=lambda x: x.total_load, reverse=True)
-                    for idx, p in enumerate(oportunidades_ordenadas,1):
+                    for idx, p in enumerate(oportunidades_ordenadas, 1):
                         ceps_vaga = set()
                         for alloc in p.allocations:
                             ceps_vaga.update(self.hex_to_ceps.get(alloc.hex_id, []))
                         lat, lng = h3.cell_to_latlng(p.origin_hex)
-                        f.write(f"      • Oportunidade {idx}: {p.total_load} pacotes/dia e Raio de atução:{p.radius_s}m\n")
-                        f.write(f"        CEPs Alvo: {', '.join(list(ceps_vaga)[:8])}...\n")
-                        f.write(f"        Google Maps: maps.google.com/maps?q={lat},{lng}\n\n")
-                f.write("\n" + "="*80 + "\n")
+                        f.write(f"      • Oportunidade {idx}: {p.total_load} pacotes/dia | Raio: {p.radius_s}m\n")
+                        f.write(f"        CEPs Alvo: {', '.join(list(ceps_vaga)[:8])}{'...' if len(ceps_vaga) > 8 else ''}\n")
+                        f.write(f"        Google Maps: https://maps.google.com/maps?q={lat},{lng}\n")
 
-    def export_inactive_exited_report(self, filename="INATIVOS_EXITED_AVALIADOS.csv"):
-        dest = Path(Config.DEST_FOLDER)
-        dest.mkdir(exist_ok=True)
-        path = dest / filename
+                f.write("="*80 + "\n")
 
-        with open(path, "w", encoding="utf-8", newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(["store_id", "status", "delivery_station", "decision", "cap_sugerido", "raio_sugerido"])
-            for r in self.reports:
-                for p in r.inactive_partners:
-                    writer.writerow([
-                        p.store_id,
-                        p.status,
-                        r.station_code,
-                        p.decision,
-                        p.total_load,
-                        p.radius_s
-                    ])
-    
-    
-    def executive_report(self, filename="RELATORIO_EXECUTIVO.txt"):
-        dest = Path(Config.DEST_FOLDER)
-        dest.mkdir(exist_ok=True)
-        path = dest / filename
-
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(f"RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}")
-            f.write("="*80 + "")
-            
-            for r in self.reports:
-                m = r.base_metrics
-                
-                # Cálculos necessários para a base
-                total_parceiros_esperados = (
-                    m.get('active_partners_count', 0) + 
-                    m.get('onboarding_partners_count', 0) + 
-                    m.get('vetting_partners_count', 0) + 
-                    m.get('inactive_partners_count', 0) + 
-                    m.get('new_partners_count', 0)
-                )
-                
-                parceiros_ativos = m.get('active_partners_count', 0)
-                attainment = (parceiros_ativos / total_parceiros_esperados * 100) if total_parceiros_esperados > 0 else 0
-                
-                total_pacotes_cluster = m.get('total_demand', 0)
-                pacotes_atendidos_ativos = m.get('existing_absorbed', 0)
-                
-                f.write(f"BASE: {r.station_code}")
-                f.write(f"{'-'*80}")
-                f.write(f"  - Quantidade de Clusters:                    {m.get('cluster_count', 0)}")
-                f.write(f"  - Volume Total de Pacotes:                   {total_pacotes_cluster:,} pacotes")
-                f.write(f"  - Quantidade Total de Parceiros Ativos:      {parceiros_ativos}")
-                f.write(f"  - % de Attainment:                           {attainment:.1f}%")
-                f.write(f"  - Total de Pacotes do Cluster:               {total_pacotes_cluster:,} pacotes")
-                f.write(f"  - Total de Pacotes Atendidos (Ativos):       {pacotes_atendidos_ativos:,} pacotes")
-                f.write(f"{'-'*80}")
-
-                # Detalhamento por cluster
-                f.write(f"DETALHAMENTO POR CLUSTER:")
-                
-                for cluster in r.clusters:  # Assumindo que r.clusters contém os dados de cada cluster
-                    cluster_total_parceiros = (
-                        cluster.get('active_partners', 0) + 
-                        cluster.get('onboarding_partners', 0) + 
-                        cluster.get('vetting_partners', 0) + 
-                        cluster.get('inactive_partners', 0) + 
-                        cluster.get('new_partners', 0)
-                    )
-                    
-                    parceiros_ativos = cluster.get('active_partners', 0)
-                    attainment = (parceiros_ativos / total_parceiros_esperados * 100) if total_parceiros_esperados > 0 else 0
-                    
-                    f.write(f"  Cluster ID: {cluster.get('cluster_id', 'N/A')}")
-                    f.write(f"    - Quantidade Total de Parceiros:           {cluster_total_parceiros}")
-                    f.write(f"        • Ativos:                              {parceiros_ativos}")
-                    f.write(f"        • % de Attainment:                     {attainment:.1f}%")
-
-            print(f"✅ Relatório executivo salvo em: {path}")
-
-    def mkt_report(self, filename="RELATÓRIO_MKT.txt"):
-        dest = Path(Config.DEST_FOLDER)
-        dest.mkdir(exist_ok=True)
-        path = dest / filename
-
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(f"RELATÓRIO DE MARKETING - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
-            f.write("="*80 + "\n")
-            for r in self.reports:
-                m = r.base_metrics
-                f.write(f"\n📍 UNIDADE OPERACIONAL: {r.station_code}\n")
-                f.write(f"{'-'*40}\n")
-                f.write(f"POTENCIAL DE NOVAS VAGAS (F6):\n")
-                f.write(f"  - Quantidade de Clusters:    {r.base_metrics.get('cluster_count', 0)}\n")
-                f.write(f"  - Média de parceiros/cluster: {r.base_metrics.get('avg_partners_per_cluster', 0):.1f}\n")
-                f.write(f"  - Quantidade de Vagas:       {m.get('new_partners_count', 0)} vagas\n")
-                f.write(f"  - Média de pacotes por vaga: {m.get('avg_load', 0):.1f} pacotes\n")
-                f.write(f"  - Média de Raio Proposto:    {m.get('avg_radius', 0):.0f} m\n")
-                f.write(f"{'-'*40}\n")
-                f.write(f"DETALHAMENTO DAS OPORTUNIDADES:\n")
-                clusters_stats = []
-                for cn in set(p.cluster_name for p in r.new_partners):
-                    pts = [p for p in r.new_partners if p.cluster_name == cn]
-                    clusters_stats.append({"name": cn, "vol": sum(p.total_load for p in pts), "pts": pts})
-                clusters_stats.sort(key=lambda x: x['vol'], reverse=True)
-                for i, c in enumerate(clusters_stats, 1):
-                    f.write(f"\n  {i}º) {c['name']} - Potencial: {c['vol']:,} pacotes - {len(c['pts'])} novos parceiros.\n")
-                    f.write(f"  Oportunidades neste cluster:\n")
-                    oportunidades_ordenadas = sorted(c['pts'], key=lambda x: x.total_load, reverse=True)
-                    for idx, p in enumerate(oportunidades_ordenadas,1):
-                        ceps_vaga = set()
-                        for alloc in p.allocations:
-                            ceps_vaga.update(self.hex_to_ceps.get(alloc.hex_id, []))
-                        f.write(f"        CEPs Alvo: {', '.join(list(ceps_vaga))}...\n")
+        print(f"✅ Relatório estratégico salvo em: {dest / 'OPORTUNIDADES_ESTRATEGICAS.txt'}")
 
 if __name__ == "__main__":
     try:

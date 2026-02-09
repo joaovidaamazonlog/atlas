@@ -383,24 +383,85 @@ class OptimizationService:
         return islands, hex_to_cluster
     
     def _generate_operational_clusters(self, station_code, final_partners: List[PartnerMetrics], clusters_per_base: Dict[str, int]) -> Dict[str, ClusterMetrics]:
+        
         if not final_partners:
             return {}
-        
-        # Obter número de clusters desejado para esta base
+
         n_clusters = clusters_per_base.get(station_code, 1)
-        
-        # Coordenadas dos parceiros
-        coords = [h3.cell_to_latlng(p.origin_hex) for p in final_partners]
-        
-        # Clusterização com KMeans
+        n_partners = len(final_partners)
+
+        # Tamanho ideal e limites para balanceamento
+        ideal_size = n_partners / n_clusters
+        min_size = int(np.floor(ideal_size))
+        max_size = int(np.ceil(ideal_size))
+
+        # Inicialização com K-Means padrão para obter centróides iniciais
+        coords = np.array([h3.cell_to_latlng(p.origin_hex) for p in final_partners])
         kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10).fit(coords)
-        
-        # Organizar parceiros por cluster
-        clusters = {}
-        for i, p in enumerate(final_partners):
-            label = kmeans.labels_[i]
-            clusters.setdefault(label, []).append(p)
-        
+        centroids = kmeans.cluster_centers_
+
+        # Modelo OR-Tools para atribuição balanceada
+        model = cp_model.CpModel()
+
+        # Variáveis: x[i,j] = 1 se parceiro i está no cluster j
+        x = {}
+        for i in range(n_partners):
+            for j in range(n_clusters):
+                x[i, j] = model.NewBoolVar(f'x_{i}_{j}')
+
+        # Restrição: cada parceiro em exatamente um cluster
+        for i in range(n_partners):
+            model.Add(sum(x[i, j] for j in range(n_clusters)) == 1)
+
+        # Restrição: balanceamento de tamanho dos clusters
+        for j in range(n_clusters):
+            cluster_size = sum(x[i, j] for i in range(n_partners))
+            model.Add(cluster_size >= min_size)
+            model.Add(cluster_size <= max_size)
+
+        # Objetivo: minimizar distância total aos centróides
+        # Calcular distâncias (multiplicar por 10000 para trabalhar com inteiros)
+        distances = {}
+        for i in range(n_partners):
+            for j in range(n_clusters):
+                # Distância euclidiana em graus (aproximação)
+                dist = np.sqrt(
+                    (coords[i][0] - centroids[j][0])**2 +
+                    (coords[i][1] - centroids[j][1])**2
+                )
+                distances[i, j] = int(dist * 10000)
+
+        # Minimizar soma das distâncias
+        model.Minimize(
+            sum(x[i, j] * distances[i, j]
+                for i in range(n_partners)
+                for j in range(n_clusters))
+        )
+
+        # Resolver
+        solver = cp_model.CpSolver()
+        solver.parameters.max_time_in_seconds = 30
+        status = solver.Solve(model)
+
+        # Extrair solução
+        clusters = {j: [] for j in range(n_clusters)}
+
+        if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+            # Solução encontrada pelo OR-Tools
+            for i in range(n_partners):
+                for j in range(n_clusters):
+                    if solver.Value(x[i, j]) == 1:
+                        clusters[j].append(final_partners[i])
+                        break
+            
+            print(f"✅ OR-Tools: Solução {'ÓTIMA' if status == cp_model.OPTIMAL else 'VIÁVEL'} para {station_code}")
+        else:
+            # Fallback para KMeans simples se OR-Tools falhar
+            print(f"⚠️ OR-Tools não encontrou solução para {station_code}, usando KMeans como fallback")
+            for i, p in enumerate(final_partners):
+                label = kmeans.labels_[i]
+                clusters[label].append(p)
+
         # Criar métricas por cluster
         cluster_metrics = {}
         
@@ -434,11 +495,6 @@ class OptimizationService:
                 new_partners=new_count,
                 attainment_percentage=attainment
             )
-        
-        # Criar mapeamento hex -> cluster_name
-        hex_to_cluster = {}
-        for p in final_partners:
-            hex_to_cluster[p.origin_hex] = p.cluster_name
         
         return cluster_metrics
     
@@ -921,6 +977,7 @@ class OptimizationService:
             # Parceiros (todos os tipos)
             for p in r.existing_partners + r.new_partners + r.prospect_partners + r.inactive_partners:
                 lat, lng = h3.cell_to_latlng(p.origin_hex)
+                partnerName = p.name if p.name else "N/A"
                 ceps_alocados = set()
                 alloc_list_json = []
                 
@@ -935,7 +992,7 @@ class OptimizationService:
                 props = {
                     "store_id": str(p.store_id) if p.store_id else "",
                     "status": str(p.status),
-                    "name": str(p.name),
+                    "name": str(partnerName),
                     "type": str(p.entity_type), 
                     "decision": str(p.decision),
                     "station_code": str(p.station_code),

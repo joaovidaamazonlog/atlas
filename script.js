@@ -213,7 +213,7 @@ const MapManager = {
         const marker = e.target;
         const data = marker.markerData;
         AppState.map.setView(marker.getLatLng(), 15);
-        
+
         const popupContent = UIManager.getMarkerPopupContent(data);
         marker.bindPopup(popupContent).openPopup();
     },
@@ -858,10 +858,10 @@ const UIManager = {
 
     getMarkerPopupContent: function(data) {
         return `
-            <div style="width: auto; max-height: auto; font-size: 12px;">
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <!-- Div para o Nome do Parceiro -->
                 <div class="partner-header">
-                    <h5 style="font-weight: bold;">${data.name}</h5>
+                    <h5 style="font-weight: bold;">${data['name']}</h5>
                 </div>
                 <div class="partner-info" id="partnerInfo">
                     <table style="width:100%">
@@ -948,13 +948,13 @@ const UIManager = {
                 
                 <!-- Div para Botões de Ação -->
                 <div class="partner-actions">
-                    <button class="btn btn-warning btn-sm btn-block mb-1" id="toggleOptBtn" onclick="toggleOptimizationBtn()">
+                    <button class="btn btn-warning btn-sm btn-block mb-1" id="toggleOptBtn" onclick="MapManager.toggleOptimizationBtn()">
                         🚀 Otimização Disponível
                     </button>
                     <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.storeId}', radius=5)">
                         <i class="fas fa-phone"></i> Solicitar Resgate
                     </button>
-                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.storeId}', '696')">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.storeId}', '${data.name}')">
                         <i class="fas fa-route"></i> Rota a Partir Daqui
                     </button>
                 </div>

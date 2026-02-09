@@ -31,9 +31,9 @@ CAPACITIES = [45, 55, 70]
 MIN_CAPACITY = 45
 MAX_CAPACITY = 70
 CLUSTER_PER_STATION = {
-    "DBR9": 20,
-    "DSP2": 7,
-    "DSP4": 7,
+    "DBR9": 24,
+    "DSP2": 8,
+    "DSP4": 8,
     "DSP5": 5,
     "DBH5": 4,
     "DMG2": 2,
@@ -45,7 +45,7 @@ CLUSTER_PER_STATION = {
     "DPB3": 1,
     "DPE4": 3,
     "DPR2": 2,
-    "DRJ3": 4,
+    "DRJ3": 14,
     "DRS5": 3,
     "DSA8": 2,
     "DAM1": 2

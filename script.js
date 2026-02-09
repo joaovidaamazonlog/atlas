@@ -176,7 +176,7 @@ const MapManager = {
     createMarkers: function(dataToRender, fitToMarkers = false) {
         this.clearMarkers();
         dataToRender.forEach(data => {
-            const marker = L.circleMarker([data.lat, data.lon], { radius: 7, color: 'white', weight: 1.5, fillOpacity: 0.9 });
+            const marker = L.circleMarker([data.lat, data.lon], { radius: 7, color: 'orange', weight: 1.5, fillOpacity: 0.9 });
             marker.markerData = data;
             marker.on('click', this.onMarkerClick);
             
@@ -209,79 +209,34 @@ const MapManager = {
         AppState.circleObjects = [];
     },
 
-    onMarkerClick2: function(e) {
-        const marker = e.target;
-        AppState.map.setView(marker.getLatLng(), 15);
-        const initialPopupContent = `
-            ${marker.markerData.popup}
-                <hr class="my-2">
-                <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${marker.markerData.store_id}')">
-                    <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
-                </button>
-                <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${marker.markerData.store_id}', '${marker.markerData.name.replace(/'/g, "\\'")}')">
-                    <i class="fas fa-route"></i> Rota a Partir Daqui
-                </button>
-            `;
-        const popupContent = UIManager.getMarkerPopupContent(marker.markerData);
-        marker.bindPopup(popupContent).openPopup();
-    },
-
     onMarkerClick: function(e) {
         const marker = e.target;
         const data = marker.markerData;
         AppState.map.setView(marker.getLatLng(), 15);
-
-        if (data.decision === 'Optimization suggested') {
-            const optimizationHtml = `
-            <div class="opt-slide-content" style="display:none; padding: 10px; height:auto; min-width: 100%;">
-                <h5 style="font-weight:bold;">Otimização de Raio</h5>
-                <table style="width:100%; font-size:11px;">
-                    <tr><td><b>Raio Sugerido:</b></td><td>${data.radius_suggestion} m</td></tr>
-                </table>
-                <hr>
-                <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
-                <table style="width:100%; font-size:11px;">
-                    <tr><td><b>Capacidade Sugerida:</b></td><td>${data.cap_suggestion} pkgs</td></tr>
-                </table>
-                <button class="btn btn-secondary btn-sm btn-block mt-2" onclick="MapManager.togglePopupSlide(this, false)">⬅️ Voltar</button>
-            </div> `;
-
-            const popupContent = `
-                <div class="popup-container" style="position:relative; overflow:hidden;">
-                    <div class="popup-wrapper" style="display:flex; transition: transform 0.3s ease;">
-                        <div class="main-popup-content" style="padding: 5px; min-width: 50%;">
-                            ${data.popup}
-                            <hr class="my-2">
-                            ${data.decision === 'Optimization suggested' ? '<button class="btn btn-warning btn-sm btn-block mb-1" onclick="MapManager.togglePopupSlide(this, true)">🚀 Otimização Disponível</button>' : ''}
-                            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
-                                <i class="fas fa-phone"></i> Solicitar Resgate
-                            </button>
-                            <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
-                                <i class="fas fa-route"></i> Rota a Partir Daqui
-                            </button>
-                        </div>
-                        ${optimizationHtml}
-                    </div>
-                </div>
-            `;
-            marker.bindPopup(popupContent).openPopup();
-        } else {
-            const popupContent = UIManager.getMarkerPopupContent(data);
-            marker.bindPopup(popupContent).openPopup();
-        }
+        
+        const popupContent = UIManager.getMarkerPopupContent(data);
+        marker.bindPopup(popupContent).openPopup();
     },
 
-    togglePopupSlide: function(btn, showOpt) {
-        const wrapper = btn.closest('.popup-wrapper');
-        const optContent = wrapper.querySelector('.opt-slide-content');
-        if (showOpt) {
-            document.querySelector('.leaflet-popup-content').style.height = '350px';
-            optContent.style.display = 'block';
-            wrapper.style.transform = 'translateX(-50%)';
+    toggleOptimizationBtn: function() {
+        const partnerInfo = document.getElementById('partnerInfo');
+        const optimizationInfo = document.getElementById('optimizationInfo');
+        const toggleBtn = document.getElementById('toggleOptBtn');
+        
+        if (partnerInfo.style.display !== 'none') {
+            // Mostrar otimização
+            partnerInfo.style.display = 'none';
+            optimizationInfo.style.display = 'block';
+            toggleBtn.innerHTML = '⬅️ Voltar';
+            toggleBtn.classList.remove('btn-warning');
+            toggleBtn.classList.add('btn-secondary');
         } else {
-            document.querySelector('.leaflet-popup-content').style.height = 'auto';
-            wrapper.style.transform = 'translateX(0)';
-            setTimeout(() => { optContent.style.display = 'none'; }, 300);
+            // Mostrar informações do parceiro
+            partnerInfo.style.display = 'block';
+            optimizationInfo.style.display = 'none';
+            toggleBtn.innerHTML = '🚀 Otimização Disponível';
+            toggleBtn.classList.remove('btn-secondary');
+            toggleBtn.classList.add('btn-warning');
         }
     },
 
@@ -903,17 +858,107 @@ const UIManager = {
 
     getMarkerPopupContent: function(data) {
         return `
-            ${data.popup}
-            <hr class="my-2">
-            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
-                <i class="fas fa-phone"></i> Solicitar Resgate
-            </button>
-            <button class="btn btn-info btn-sm btn-block" onclick="UIManager.showComparisonInPopup(event, '${data.store_id}')">
-                <i class="fas fa-chart-bar"></i> Mostrar Métricas e Comparações
-            </button>
-            <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
-                <i class="fas fa-route"></i> Rota a Partir Daqui
-            </button>
+            <div style="width: auto; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.name}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Store ID:</b></td>
+                                <td style="width:60%">${data.store_id}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Status:</b></td>
+                                <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Supply Run:</b></td>
+                                <td style="width:60%">${data.supply_run}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Launch Date:</b></td>
+                                <td style="width:60%">${data.launch_date}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Initiatives:</b></td>
+                                <td style="width:60%">${data.hcp_initiatives}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Host Partner:</b></td>
+                                <td style="width:60%">${data.hcp_host_partner}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Rate Card:</b></td>
+                                <td style="width:60%">${data.hcp_rate_card}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Radius:</b></td>
+                                <td style="width:60%">${data.radius} m</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Capacity:</b></td>
+                                <td style="width:60%">${data.capacity} pkgs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                    <a href="https://dsp-portal.lightning.force.com/lightning/r/Account/${data.salesforce_id}/view" target="_blank">
+                        View in Salesforce <i class="fab fa-salesforce" style="font-size:24px"></i>
+                    </a>
+                    <br>
+                    Enviar mensagem 
+                    <a href="https://wa.me/${data.telefone}" target="_blank">
+                        <i class="fa fa-whatsapp" style="font-size:24px"></i>
+                    </a>
+                </div>
+
+                <!-- Div para Otimização (oculta inicialmente) -->
+                <div class="opt-slide-content" id="optimizationInfo" style="display: none; padding: 10px; height: auto; min-width: 100%;">
+                    <h5 style="font-weight:bold;">Otimização de Raio</h5>
+                    <table style="width:100%; font-size:11px;">
+                        <tbody>
+                            <tr>
+                                <td><b>Raio Sugerido:</b></td>
+                                <td>500 m</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
+                    <table style="width:100%; font-size:11px;">
+                        <tbody>
+                            <tr>
+                                <td><b>Capacidade Sugerida:</b></td>
+                                <td>67 pkgs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <hr class="my-2">
+                
+                <!-- Div para Botões de Ação -->
+                <div class="partner-actions">
+                    <button class="btn btn-warning btn-sm btn-block mb-1" id="toggleOptBtn" onclick="toggleOptimizationBtn()">
+                        🚀 Otimização Disponível
+                    </button>
+                    <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.storeId}', radius=5)">
+                        <i class="fas fa-phone"></i> Solicitar Resgate
+                    </button>
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.storeId}', '696')">
+                        <i class="fas fa-route"></i> Rota a Partir Daqui
+                    </button>
+                </div>
+            </div>
         `;
     },
 

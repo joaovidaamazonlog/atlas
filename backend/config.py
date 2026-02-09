@@ -30,6 +30,26 @@ RADII_M = [
 CAPACITIES = [45, 55, 70]
 MIN_CAPACITY = 45
 MAX_CAPACITY = 70
+CLUSTER_PER_STATION = {
+    "DBR9": 20,
+    "DSP2": 7,
+    "DSP4": 7,
+    "DSP5": 5,
+    "DBH5": 4,
+    "DMG2": 2,
+    "DBS5": 4,
+    "DCE3": 3,
+    "DES2": 1,
+    "DFR2": 2,
+    "DGO2": 2,
+    "DPB3": 1,
+    "DPE4": 3,
+    "DPR2": 2,
+    "DRJ3": 4,
+    "DRS5": 3,
+    "DSA8": 2,
+    "DAM1": 2
+}
 
 # Arquivo JSON de saída
 # O nome do arquivo será dinâmico, mas o diretório de saída é fixo.

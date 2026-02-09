@@ -1005,8 +1005,8 @@ class OptimizationService:
                         ceps_p = set()
                         for a in p.allocations:
                             ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
-                        f.write(f"  • ID: {p.store_id} | Cluster: {p.cluster_name}\n")
-                        f.write(f"    Sugerido: {p.total_load}pk (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
+                        f.write(f"  • Cluster: {p.cluster_name} | ID: {p.store_id}\n")
+                        f.write(f"    Sugerido: {p.total_load} pacotes (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
                     f.write(f"{'-'*40}\n")
 
                 # Análise de Inativos/Exited
@@ -1017,8 +1017,9 @@ class OptimizationService:
                         ceps_p = set()
                         for a in p.allocations:
                             ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
-                        f.write(f"  • ID: {p.store_id} | Cluster: {p.cluster_name}\n")
-                        f.write(f"    Sugerido: {p.total_load}pk (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
+                        f.write(f"  • Cluster: {p.cluster_name}\n")
+                        f.write(f"    ID: {p.store_id}\n")
+                        f.write(f"    Sugerido: {p.total_load} pacotes (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
                     f.write(f"{'-'*40}\n")
 
                 # Oportunidades por cluster

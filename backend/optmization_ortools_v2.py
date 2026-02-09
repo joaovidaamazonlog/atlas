@@ -847,6 +847,7 @@ class OptimizationService:
                 f.write(f"{'-'*80}\n")
                 f.write(f"  - Quantidade de Clusters:                    {m.cluster_count}\n")
                 f.write(f"  - Volume Total de Pacotes:                   {total_pacotes_cluster:,} pacotes\n")
+                f.write(f"  - Quantidade Total de Parceiros esperados:   {total_parceiros_esperados}\n")
                 f.write(f"  - Quantidade Total de Parceiros Ativos:      {parceiros_ativos}\n")
                 f.write(f"  - % de Attainment:                           {attainment:.1f}%\n")
                 f.write(f"  - Total de Pacotes do Cluster:               {total_pacotes_cluster:,} pacotes\n")
@@ -1062,7 +1063,7 @@ class OptimizationService:
                         ceps_p = set()
                         for a in p.allocations:
                             ceps_p.update(self.hex_to_ceps.get(a.hex_id, []))
-                        f.write(f"  • Cluster: {p.cluster_name} | ID: {p.store_id}\n")
+                        f.write(f"  • Cluster: {p.cluster_name} | Salesforce ID: {p.salesforce_id}\n")
                         f.write(f"    Sugerido: {p.total_load} pacotes (R:{p.radius_s}m) | CEPs: {', '.join(list(ceps_p)[:10])}\n")
                     f.write(f"{'-'*40}\n")
 

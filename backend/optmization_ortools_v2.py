@@ -25,6 +25,13 @@ class Config:
     RADII = configuration.RADII_M
     BONUS_PER_OPEN = 1500
     CLUSTER_PER_STATION = configuration.CLUSTER_PER_STATION
+    BASE_PRIORITY = {
+        "DMG2": 1,
+        "DBH5": 2,
+        "DSP2": 3,
+        "DSP4": 4,
+        "DBR9": 5
+    }
     PARTNERS_TO_EVALUATE = [
     "2014644401",
     "3857592834",
@@ -336,12 +343,64 @@ class OptimizationService:
         self.reports: List[OptimizationReport] = []
         self.hex_to_ceps: Dict[str, Set[str]] = {}
         self.hex_to_base: Dict[str, str] = {}
+        
+    def _resolve_hex_overlaps(self, df: pd.DataFrame) -> pd.DataFrame:
+        print(f"[{datetime.now()}] Resolvendo overlaps de hexágonos entre bases...")
+        
+        # Identificar hexágonos duplicados
+        hex_counts = df.groupby('hex')['station_code'].apply(list).to_dict()
+        duplicated_hexes = {h: bases for h, bases in hex_counts.items() if len(bases) > 1}
+        
+        if not duplicated_hexes:
+            print(f"   ✅ Nenhum overlap detectado!")
+            return df
+        
+        print(f"   ⚠️  Detectados {len(duplicated_hexes)} hexágonos com overlap")
+        
+        # Para cada hexágono duplicado, determinar a base prioritária
+        rows_to_remove = []
+        overlap_stats = {}
+        
+        for hex_id, bases in duplicated_hexes.items():
+            # Obter prioridades (menor número = maior prioridade)
+            base_priorities = {
+                base: Config.BASE_PRIORITY.get(base, 999) 
+                for base in bases
+            }
+            
+            # Base com maior prioridade (menor número)
+            priority_base = min(base_priorities.items(), key=lambda x: x[1])[0]
+            
+            # Marcar linhas das outras bases para remoção
+            for base in bases:
+                if base != priority_base:
+                    # Encontrar índices das linhas a remover
+                    mask = (df['hex'] == hex_id) & (df['station_code'] == base)
+                    rows_to_remove.extend(df[mask].index.tolist())
+                    
+                    # Estatísticas
+                    key = f"{base} -> {priority_base}"
+                    overlap_stats[key] = overlap_stats.get(key, 0) + 1
+        
+        # Remover linhas duplicadas
+        df_clean = df.drop(rows_to_remove).reset_index(drop=True)
+        
+        # Exibir estatísticas
+        print(f"   📊 Estatísticas de resolução de overlaps:")
+        for transfer, count in sorted(overlap_stats.items(), key=lambda x: x[1], reverse=True):
+            print(f"      • {transfer}: {count} hexágonos transferidos")
+        
+        print(f"   ✅ {len(rows_to_remove)} registros removidos")
+        print(f"   ✅ Overlaps resolvidos com sucesso!")
+        
+        return df_clean
 
     def _load_data(self):
         print(f"[{datetime.now()}] Carregando dados...")
         df = pd.read_csv(Config.BASE_PACKAGES)
         df['cep'] = df['cep'].astype(str).str.replace(r'\D', '', regex=True).str.zfill(8)
         df["hex"] = [h3.latlng_to_cell(la, lo, Config.H3_RES) for la, lo in zip(df.latitude, df.longitude)]
+        df = self._resolve_hex_overlaps(df)
         self.hex_to_ceps = df.groupby('hex')['cep'].apply(set).to_dict()
         days = pd.to_datetime(df.plan_date).nunique() or 1
         self.demand_df = df.groupby(["station_code", "hex"]).size().reset_index(name="avg_demand")

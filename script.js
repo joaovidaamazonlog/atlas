@@ -920,21 +920,21 @@ const UIManager = {
                 <!-- Div para Otimização (oculta inicialmente) -->
                 <div class="opt-slide-content" id="optimizationInfo" style="display: none; padding: 10px; height: auto; min-width: 100%;">
                     <h5 style="font-weight:bold;">Otimização de Raio</h5>
-                    <table style="width:100%; font-size:11px;">
+                    <table style="width:100%; font-size:12px;">
                         <tbody>
                             <tr>
                                 <td><b>Raio Sugerido:</b></td>
-                                <td>500 m</td>
+                                <td>${data.radius_suggestion} m</td>
                             </tr>
                         </tbody>
                     </table>
                     <hr>
                     <h5 style="font-weight:bold;">Otimização de Capacidade</h5>
-                    <table style="width:100%; font-size:11px;">
+                    <table style="width:100%; font-size:12px;">
                         <tbody>
                             <tr>
                                 <td><b>Capacidade Sugerida:</b></td>
-                                <td>67 pkgs</td>
+                                <td>${data.cap_suggestion} pkgs</td>
                             </tr>
                         </tbody>
                     </table>

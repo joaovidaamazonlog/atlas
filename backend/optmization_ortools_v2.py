@@ -850,7 +850,6 @@ class OptimizationService:
                 f.write(f"  - Quantidade Total de Parceiros esperados:   {total_parceiros_esperados}\n")
                 f.write(f"  - Quantidade Total de Parceiros Ativos:      {parceiros_ativos}\n")
                 f.write(f"  - % de Attainment:                           {attainment:.1f}%\n")
-                f.write(f"  - Total de Pacotes do Cluster:               {total_pacotes_cluster:,} pacotes\n")
                 f.write(f"  - Total de Pacotes Atendidos (Ativos):       {pacotes_atendidos_ativos:,} pacotes\n")
                 f.write(f"{'-'*80}\n")
 
@@ -979,6 +978,7 @@ class OptimizationService:
             for p in r.existing_partners + r.new_partners + r.prospect_partners + r.inactive_partners:
                 lat, lng = h3.cell_to_latlng(p.origin_hex)
                 partnerName = p.name if p.name else "N/A"
+                print(partnerName)
                 ceps_alocados = set()
                 alloc_list_json = []
                 

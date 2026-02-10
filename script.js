@@ -76,7 +76,7 @@ const DataManager = {
         });
     },
 
-    optimizationDataAggregateActive: function() {
+    optimizationDataAggregate: function() {
         if (!AppState.optimizationData) return null;
         AppState.allMarkersData.filter(p => p.status === "Active").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)

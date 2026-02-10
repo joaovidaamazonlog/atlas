@@ -232,7 +232,7 @@ class PartnerMetrics:
     capacity_s: int
     entity_type: str 
     status: str
-    name: str = ""
+    partner_name: str = ""
     decision: str = ""
     cluster_name: str = "N/A"
     lat: str = ""
@@ -399,6 +399,7 @@ class OptimizationService:
         self.partners_df = pd.DataFrame(p_data)
         self.partners_df['exitedDate'] = pd.to_datetime(self.partners_df.get('exitedDate'), errors='coerce')
         self.partners_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
+        self.partners_df.rename(columns={"name": "partner_name"}, inplace=True)
         self.partners_df["origin_hex"] = [h3.latlng_to_cell(float(la), float(lo), Config.H3_RES) for la, lo in zip(self.partners_df.lat, self.partners_df.lon)]
 
     def _find_neighborhood_clusters(self, res_dem, station_code):
@@ -601,7 +602,7 @@ class OptimizationService:
     def _allocate_existing_by_status(self, base, res_dem, target_status):
         results = []
         subset = self.partners_df[(self.partners_df.status == target_status) & (self.partners_df.station_code == base)]
-        
+
         for _, p in subset.iterrows():
             for r in Config.RADII:
                 in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
@@ -621,7 +622,7 @@ class OptimizationService:
                             entity_type="EXISTING", 
                             status=target_status, 
                             store_id=str(p.store_id),
-                            name=str(p.name), 
+                            partner_name=str(p.partner_name), 
                             decision="No optimization suggestions" if p.radius == r["radius_s"] and p.capacity == Config.MAX_CAP else "Optimization suggested",
                             lat=str(p.lat),
                             lon=str(p.lon),
@@ -650,7 +651,7 @@ class OptimizationService:
         results = []
         subset = self.partners_df[self.partners_df.status == "Prospect"]
         for _, p in subset.iterrows():
-            prospect = p['name']
+            prospect = p.partner_name
             base = self.hex_to_base.get(p.origin_hex)
             if not base:
                 decision = "Fora da área de atuacao"
@@ -691,7 +692,7 @@ class OptimizationService:
                     entity_type="PROSPECT",
                     status=str(p.status),
                     store_id=str(p.store_id),
-                    name=prospect,
+                    partner_name=prospect,
                     decision=decision,
                     lat=str(p.lat),
                     lon=str(p.lon),
@@ -733,6 +734,7 @@ class OptimizationService:
         
         for _, p in subset.iterrows():
             decision = ""
+            partner_name = p.partner_name
             sug_rad, sug_cap, allocs = 0, 0, []
 
             if p.origin_hex not in self.demand_df[self.demand_df.station_code == base].hex.values:
@@ -767,7 +769,7 @@ class OptimizationService:
                 entity_type="INACTIVE_EXITED",
                 status=str(p.status),
                 store_id=str(p.store_id),
-                name=str(p.name),
+                partner_name=str(partner_name),
                 decision=decision,
                 lat=str(p.lat),
                 lon=str(p.lon),
@@ -1074,8 +1076,9 @@ class OptimizationService:
             
             # Parceiros (todos os tipos)
             for p in r.existing_partners + r.new_partners + r.prospect_partners + r.inactive_partners:
-                lat, lng = h3.cell_to_latlng(p.origin_hex)
-                partnerName = p.name if p.name else "N/A"
+                lat = p.lat
+                lnt = p.lon
+                partnerName = p.partner_name
                 ceps_alocados = set()
                 alloc_list_json = []
                 
@@ -1096,7 +1099,7 @@ class OptimizationService:
                     "station_code": str(p.station_code),
                     "cluster": str(p.cluster_name),
                     "lat": float(lat),
-                    "lon": float(lng),
+                    "lon": float(lnt),
                     "cap_suggestion": int(p.total_load),
                     "radius_suggestion": int(p.radius_s),
                     "top_5_ceps": list(ceps_alocados)[:5],
@@ -1110,15 +1113,20 @@ class OptimizationService:
                     # Excluir campos pesados
                     for field in ["main_store_data", "overlap_data", "allocations", "eligible_packages", "partner_capacity", "ADV"]:
                         p_info.pop(field, None)
-                    
-                    # Mesclar informações
+
                     for k, v in p_info.items():
-                        if k not in props:
-                            props[k] = str(v) if not isinstance(v, (int, float, list, dict)) else v
-                
+                        if k.lower() in ["name", "nome", "partner_name"] and props.get("name") not in ["N/A", "None", ""]:
+                            continue  # Manter o nome já definido, que é mais amigável
+                        if k not in props:  # Evitar sobrescrever campos já definidos
+                            if pd.notna(v):
+                                if isinstance(v, str):
+                                    props[k] = v.strip()
+                                else:
+                                    props[k] = v if isinstance(v, (int, float, list, dict)) else str(v)
+
                 features.append({
-                    "type": "Feature", 
-                    "geometry": {"type": "Point", "coordinates": [lng, lat]},
+                    "type": "Feature",
+                    "geometry": {"type": "Point", "coordinates": [lnt, lat]},
                     "properties": props
                 })
         

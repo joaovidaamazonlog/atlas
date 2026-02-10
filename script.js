@@ -62,12 +62,6 @@ const DataManager = {
             AppState.jurisdictionData = jurisdictionData;
             AppState.optimizationData = optData;
 
-            AppState.allMarkersData.forEach(marker => {
-                const { station_code: delivery_station,} = marker;
-                Object.assign(marker, { delivery_station });
-                delete marker.station_code;
-            });
-
             UIManager.updatePeriodInfo(AppState.period);
             this.associatePartnersToPolygons();
 
@@ -946,7 +940,7 @@ const UIManager = {
                     <button class="btn btn-warning btn-sm btn-block mb-1" id="toggleOptBtn" onclick="MapManager.toggleOptimizationBtn()">
                         🚀 Otimização Disponível
                     </button>
-                    <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, ${data.store_id}, radius=5)">
+                    <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, ${data.store_id}, radius='5')">
                         <i class="fas fa-phone"></i> Solicitar Resgate
                     </button>
                     <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, ${data.store_id}, ${data.name})">

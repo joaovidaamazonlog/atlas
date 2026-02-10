@@ -42,18 +42,18 @@ const AppState = {
     }
 };
 
+const STATUS_HANDLERS = new Map([
+    ['Inactive', UIManager.getMarkerPopupContentInactive],
+    ['Exited', UIManager.getMarkerPopupContentInactive],
+    ['Onboarding', UIManager.getMarkerPopupContentOnboarding],
+    ['BG Checks', UIManager.getMarkerPopupContentVetting],
+    ['Prospect', UIManager.getMarkerPopupContentProspect],
+    ['Active', UIManager.getMarkerPopupContentActive]
+]);
+
 AppState.hcpSuggestionCache = AppState.hcpSuggestionCache || {};
 AppState.hcpUsedStores = AppState.hcpUsedStores || {};
 AppState.hcpSuggestionsActive = AppState.hcpSuggestionsActive || false; 
-
-const STATUS_HANDLERS = new Map([
-        ['Inactive', getMarkerPopupContentInactive],
-        ['Exited', getMarkerPopupContentInactive],
-        ['Onboarding', getMarkerPopupContentOnboarding],
-        ['BG Checks', getMarkerPopupContentBGChecks],
-        ['Prospect', getMarkerPopupContentProspect],
-        ['Active', getMarkerPopupContentActive]
-    ]);
 
 // --- MODULE: DataManager ---
 const DataManager = {
@@ -278,7 +278,7 @@ const MapManager = {
         }
 
         // Busca handler pelo status
-        const handler = STATUS_HANDLERS.get(UIManager&"."&data.status);
+        const handler = STATUS_HANDLERS.get(data.status);
         if (handler) {
             marker.bindPopup(handler(data)).openPopup();
         }

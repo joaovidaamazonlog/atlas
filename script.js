@@ -83,12 +83,12 @@ const DataManager = {
             (f.geometry.type === "Point") && (f.properties.status === "New")
         )
         newPartners.forEach(p => {
-            const delivery_station = {
+            const DS = {
                 ...p.properties,
-                novoNome: p.properties.station_code
+                delivery_station: p.properties.station_code
             };
-            delete delivery_station.station_code;
-            AppState.allMarkersData.push(delivery_station);
+            delete DS.station_code;
+            AppState.allMarkersData.push(DS);
         })
     },
 

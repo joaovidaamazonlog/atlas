@@ -85,9 +85,11 @@ const DataManager = {
         newPartners.forEach(p => {
             const DS = {
                 ...p.properties,
-                delivery_station: p.properties.station_code
+                delivery_station: p.properties.station_code,
+                radius: p.properties.radius_suggestion
             };
             delete DS.station_code;
+            delete DS.radius_suggestion
             AppState.allMarkersData.push(DS);
         })
     },

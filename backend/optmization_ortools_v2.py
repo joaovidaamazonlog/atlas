@@ -650,6 +650,7 @@ class OptimizationService:
     def _evaluate_prospects(self, res_dem, hex_to_cluster):
         results = []
         subset = self.partners_df[self.partners_df.status == "Prospect"]
+        print(f"   🔍 Avaliando {len(subset)} prospects...")
         for _, p in subset.iterrows():
             prospect = p.partner_name
             base = self.hex_to_base.get(p.origin_hex)

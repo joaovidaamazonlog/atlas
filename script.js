@@ -46,6 +46,15 @@ AppState.hcpSuggestionCache = AppState.hcpSuggestionCache || {};
 AppState.hcpUsedStores = AppState.hcpUsedStores || {};
 AppState.hcpSuggestionsActive = AppState.hcpSuggestionsActive || false; 
 
+const STATUS_HANDLERS = new Map([
+        ['Inactive', UIManager.getMarkerPopupContentInactive],
+        ['Exited', UIManager.getMarkerPopupContentInactive],
+        ['Onboarding', UIManager.getMarkerPopupContentOnboarding],
+        ['BG Checks', UIManager.getMarkerPopupContentBGChecks],
+        ['Prospect', UIManager.getMarkerPopupContentProspect],
+        ['Active', UIManager.getMarkerPopupContentActive]
+    ]);
+
 // --- MODULE: DataManager ---
 const DataManager = {
     loadAllDataAndInitialize: function() {
@@ -64,15 +73,69 @@ const DataManager = {
 
             UIManager.updatePeriodInfo(AppState.period);
             this.associatePartnersToPolygons();
-
             UIManager.populateFilters();
             UIManager.setupAutocomplete();
             this.applyFilters();
+            this.optimizationDataAggregate();
 
             console.log("Todos os dados foram carregados e inicializados.");
         }).catch(error => {
             alert('Não foi possível carregar os arquivos de dados iniciais: ' + error.message);
             console.error(error);
+        });
+    },
+
+    optimizationDataAggregateActive: function() {
+        if (!AppState.optimizationData) return null;
+        AppState.allMarkersData.filter(p => p.status === "Active").forEach(partner => {
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            if (optimizationInfo) {
+                partner.decision = optimizationInfo.properties.decision;
+                partner.optimization = {
+                    "radius_suggestion": optimizationInfo.properties.radius_suggestion,
+                    "cap_suggestion": optimizationInfo.properties.cap_suggestion
+                };
+            }
+        });
+        AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            if (optimizationInfo) {
+                partner.decision = optimizationInfo.properties.decision;
+                partner.optimization = {
+                    "radius_suggestion": optimizationInfo.properties.radius_suggestion,
+                    "cap_suggestion": optimizationInfo.properties.cap_suggestion
+                };
+            }
+        });
+        AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            if (optimizationInfo) {
+                partner.decision = optimizationInfo.properties.decision;
+                partner.optimization = {
+                    "radius_suggestion": optimizationInfo.properties.radius_suggestion,
+                    "cap_suggestion": optimizationInfo.properties.cap_suggestion
+                };
+            }
+        });
+        AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            if (optimizationInfo) {
+                partner.decision = optimizationInfo.properties.decision;
+                partner.optimization = {
+                    "radius_suggestion": optimizationInfo.properties.radius_suggestion,
+                    "cap_suggestion": optimizationInfo.properties.cap_suggestion
+                };
+            }
+        });
+        AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            if (optimizationInfo) {
+                partner.decision = optimizationInfo.properties.decision;
+                partner.optimization = {
+                    "radius_suggestion": optimizationInfo.properties.radius_suggestion,
+                    "cap_suggestion": optimizationInfo.properties.cap_suggestion
+                };
+            }
         });
     },
 
@@ -205,10 +268,20 @@ const MapManager = {
     onMarkerClick: function(e) {
         const marker = e.target;
         const data = marker.markerData;
+
         AppState.map.setView(marker.getLatLng(), 15);
 
-        const popupContent = UIManager.getMarkerPopupContent(data);
-        marker.bindPopup(popupContent).openPopup();
+        // Caso especial para otimização
+        if (data.decision !== "Optimization suggested" && data.status === "Active") {
+            marker.bindPopup(UIManager.getMarkerPopupContentOptimization(data)).openPopup();
+            return;
+        }
+
+        // Busca handler pelo status
+        const handler = STATUS_HANDLERS.get(data.status);
+        if (handler) {
+            marker.bindPopup(handler(data)).openPopup();
+        }
     },
 
     toggleOptimizationBtn: function() {
@@ -849,7 +922,340 @@ const UIManager = {
         if(!partnerId) document.getElementById('search-input').value = '';
     },
 
-    getMarkerPopupContent: function(data) {
+    getMarkerPopupContentActive: function(data) {
+        return `
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.name}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Store ID:</b></td>
+                                <td style="width:60%">${data.store_id}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Status:</b></td>
+                                <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Launch Date:</b></td>
+                                <td style="width:60%">${data.launch_date}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Initiatives:</b></td>
+                                <td style="width:60%">${data.hub_delivey_initiatives}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Host Partner:</b></td>
+                                <td style="width:60%">${data.HCP_host_partner}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Rate Card:</b></td>
+                                <td style="width:60%">${data.HCP_rate_card}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Radius:</b></td>
+                                <td style="width:60%">${data.radius} m</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Capacity:</b></td>
+                                <td style="width:60%">${data.capacity} pkgs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                    <a href="https://dsp-portal.lightning.force.com/lightning/r/Account/${data.salesforce_id}/view" target="_blank">
+                        View in Salesforce <i class="fab fa-salesforce" style="font-size:24px"></i>
+                    </a>
+                    <br>
+                    Enviar mensagem 
+                    <a href="https://wa.me/${data.telefone}" target="_blank">
+                        <i class="fa fa-whatsapp" style="font-size:24px"></i>
+                    </a>
+                </div>
+                <hr class="my-2">
+                
+                <!-- Div para Botões de Ação -->
+                <div class="partner-actions">
+                    <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
+                        <i class="fas fa-phone"></i> Solicitar Resgate
+                    </button>
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-route"></i> Rota a Partir Daqui
+                    </button>
+                </div>
+            </div>
+        `;
+    },
+    
+    getMarkerPopupContentInactive: function(data) {
+        return `
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.name}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Store ID:</b></td>
+                                <td style="width:60%">${data.store_id}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Status:</b></td>
+                                <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                    <a href="https://dsp-portal.lightning.force.com/lightning/r/Account/${data.salesforce_id}/view" target="_blank">
+                        View in Salesforce <i class="fab fa-salesforce" style="font-size:24px"></i>
+                    </a>
+                    <br>
+                    Enviar mensagem 
+                    <a href="https://wa.me/${data.telefone}" target="_blank">
+                        <i class="fa fa-whatsapp" style="font-size:24px"></i>
+                    </a>
+                </div>
+                <hr class="my-2">
+
+                <!-- Div para sugestões de cap, raio e decisão -->
+                <div class="partner-actions">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Decisão:</b></td>
+                                <td style="width:60%">${data.decision}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Capacidade Sugerida:</b></td>
+                                <td style="width:60%">${data.cap_suggestion} pkgs</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Raio Sugerido:</b></td>
+                                <td style="width:60%">${data.radius_suggestion} m</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    },
+
+    getMarkerPopupContentOnboarding: function(data) {
+        return `
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.name}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Store ID:</b></td>
+                                <td style="width:60%">${data.store_id}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Status:</b></td>
+                                <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Launch Date:</b></td>
+                                <td style="width:60%">${data.launch_date}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Initiatives:</b></td>
+                                <td style="width:60%">${data.hub_delivey_initiatives}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Host Partner:</b></td>
+                                <td style="width:60%">${data.HCP_host_partner}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>HCP Rate Card:</b></td>
+                                <td style="width:60%">${data.HCP_rate_card}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                    <a href="https://dsp-portal.lightning.force.com/lightning/r/Account/${data.salesforce_id}/view" target="_blank">
+                        View in Salesforce <i class="fab fa-salesforce" style="font-size:24px"></i>
+                    </a>
+                    <br>
+                    Enviar mensagem 
+                    <a href="https://wa.me/${data.telefone}" target="_blank">
+                        <i class="fa fa-whatsapp" style="font-size:24px"></i>
+                    </a>
+                </div>
+
+                <hr class="my-2">
+
+                <div class="partner-actions">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Capacidade Sugerida:</b></td>
+                                <td style="width:60%">${data.cap_suggestion} pkgs</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Raio Sugerido:</b></td>
+                                <td style="width:60%">${data.radius_suggestion} m</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Div para Botões de Ação -->
+                <div class="partner-actions">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                        <i class="fas fa-route"></i> Rota a Partir Daqui
+                    </button>
+                </div>
+            </div>
+        `;
+    },
+
+    getMarkerPopupContentVetting: function(data) {
+        return `
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.name}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Store ID:</b></td>
+                                <td style="width:60%">${data.store_id}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Status:</b></td>
+                                <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Launch Date:</b></td>
+                                <td style="width:60%">${data.launch_date}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                    <a href="https://dsp-portal.lightning.force.com/lightning/r/Account/${data.salesforce_id}/view" target="_blank">
+                        View in Salesforce <i class="fab fa-salesforce" style="font-size:24px"></i>
+                    </a>
+                    <br>
+                    Enviar mensagem 
+                    <a href="https://wa.me/${data.telefone}" target="_blank">
+                        <i class="fa fa-whatsapp" style="font-size:24px"></i>
+                    </a>
+                </div>
+
+                <hr class="my-2">
+
+                <div class="partner-actions">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Capacidade Sugerida:</b></td>
+                                <td style="width:60%">${data.cap_suggestion} pkgs</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Raio Sugerido:</b></td>
+                                <td style="width:60%">${data.radius_suggestion} m</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    },
+
+    getMarkerPopupContentProspect: function(data) {
+        return `
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.name}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Store ID:</b></td>
+                                <td style="width:60%">${data.store_id}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Status:</b></td>
+                                <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                    <a href="https://dsp-portal.lightning.force.com/lightning/r/Account/${data.salesforce_id}/view" target="_blank">
+                        View in Salesforce <i class="fab fa-salesforce" style="font-size:24px"></i>
+                    </a>
+                </div>
+                <hr class="my-2">
+
+                <!-- Div para sugestões de cap, raio e decisão -->
+                <div class="partner-actions">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Decisão:</b></td>
+                                <td style="width:60%">${data.decision}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Capacidade Sugerida:</b></td>
+                                <td style="width:60%">${data.cap_suggestion} pkgs</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Raio Sugerido:</b></td>
+                                <td style="width:60%">${data.radius_suggestion} m</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    },
+
+    getMarkerPopupContentOptimization: function(data) {
         return `
             <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <!-- Div para o Nome do Parceiro -->
@@ -917,7 +1323,7 @@ const UIManager = {
                         <tbody>
                             <tr>
                                 <td><b>Raio Sugerido:</b></td>
-                                <td>${data.radius_suggestion} m</td>
+                                <td>${data.optimization.radius_suggestion} m</td>
                             </tr>
                         </tbody>
                     </table>
@@ -927,7 +1333,7 @@ const UIManager = {
                         <tbody>
                             <tr>
                                 <td><b>Capacidade Sugerida:</b></td>
-                                <td>${data.cap_suggestion} pkgs</td>
+                                <td>${data.optimization.cap_suggestion} pkgs</td>
                             </tr>
                         </tbody>
                     </table>

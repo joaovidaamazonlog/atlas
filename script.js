@@ -263,7 +263,7 @@ const MapManager = {
         AppState.map.setView(marker.getLatLng(), 15);
 
         // Caso especial para otimização
-        if (data.decision !== "Optimization suggested" && data.status === "Active") {
+        if (data.decision === "Optimization suggested" && data.status === "Active") {
             marker.bindPopup(UIManager.getMarkerPopupContentOptimization(data)).openPopup();
             return;
         }

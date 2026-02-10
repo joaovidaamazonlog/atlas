@@ -68,12 +68,28 @@ const DataManager = {
             UIManager.setupAutocomplete();
             this.applyFilters();
             this.optimizationDataAggregate();
+            this.opportunities();
 
             console.log("Todos os dados foram carregados e inicializados.");
         }).catch(error => {
             alert('Não foi possível carregar os arquivos de dados iniciais: ' + error.message);
             console.error(error);
         });
+    },
+
+    opportunities: function(){
+        if(!AppState.optimizationData) return null;
+        const newPartners = AppState.optimizationData.features.filter(f =>
+            (f.geometry.type === "Point") && (f.properties.status === "New")
+        )
+        newPartners.forEach(p => {
+            const delivery_station = {
+                ...p.properties,
+                novoNome: p.properties.station_code
+            };
+            delete delivery_station.station_code;
+            AppState.allMarkersData.push(delivery_station);
+        })
     },
 
     optimizationDataAggregate: function() {

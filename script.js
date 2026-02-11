@@ -130,7 +130,7 @@ const DataManager = {
             }
         });
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.cluster = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
@@ -141,7 +141,7 @@ const DataManager = {
             }
         });
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.store_id === partner.store_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.cluster = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;

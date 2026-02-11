@@ -815,11 +815,66 @@ class OptimizationService:
                 return feature["properties"].get("delivery_station")
 
         return None
+    
+    def _get_prospects_outside_jurisdiction(self):
+        results = []
+        subset = self.partners_df[self.partners_df.status == "Prospect"]
+
+        for _, p in subset.iterrows():
+            partner_point = Point(float(p.lon), float(p.lat))
+
+            # Verificar se está dentro de alguma jurisdição
+            inside_jurisdiction = False
+            for feature in self.jurisdictions.get("features", []):
+                polygon = shape(feature["geometry"])
+                if polygon.contains(partner_point):
+                    inside_jurisdiction = True
+                    break
+
+            # Se não está em nenhuma jurisdição, adicionar aos resultados
+            if not inside_jurisdiction:
+                results.append(
+                    PartnerMetrics(
+                        origin_hex=p.origin_hex,
+                        station_code="",
+                        radius_a=p.radius,
+                        radius_s=0,
+                        capacity_a=p.capacity,
+                        capacity_s=0,
+                        entity_type="PROSPECT",
+                        status=str(p.status),
+                        store_id=str(p.store_id),
+                        partner_name=str(p.partner_name),
+                        decision="Fora da area de atuacao",
+                        lat=str(p.lat),
+                        lon=str(p.lon),
+                        popup=str(p.popup),
+                        tooltip=str(p.tooltip),
+                        cluster_name="N/A",
+                        telefone=str(p.telefone),
+                        salesforce_id=str(p.salesforce_id),
+                        jurisdiction_type=str(p.jurisdiction_type),
+                        launch_date=str(p.launch_date),
+                        exitedDate=str(p.exitedDate),
+                        decision_status=str(p.decision_status),
+                        supply_run=str(p.supply_run),
+                        hub_delivey_initiatives=str(p.hub_delivey_initiatives),
+                        HCP_rate_card=str(p.HCP_rate_card),
+                        HCP_host_partner=str(p.HCP_host_partner),
+                        zip_code=str(p.zip_code),
+                        city=str(p.city),
+                        allocations=[]
+                    )
+                )
+
+        return results
 
     def run(self):
         self._load_data()
         clusters_per_base = Config.CLUSTER_PER_STATION
         
+        prospects_outside = self._get_prospects_outside_jurisdiction()
+        print(f" ⚠️  {len(prospects_outside)} prospects fora de jurisdição identificados")
 
         for base in self.demand_df.station_code.unique():
             print(f"\n--- 🚀 OTIMIZANDO BASE: {base} ---")
@@ -854,7 +909,8 @@ class OptimizationService:
                 p1 + p2 + p3 + 
                 [p for p in p4 if p.decision == "Reativar cadastro"] + 
                 [p for p in p5 if p.decision == "Seguir cadastro"] + 
-                p6
+                p6 +
+                prospects_outside
             )
 
             # Gerar clusters operacionais de no máximo 40 parceiros

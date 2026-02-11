@@ -67,8 +67,8 @@ const DataManager = {
             UIManager.populateFilters();
             UIManager.setupAutocomplete();
             this.applyFilters();
-            this.optimizationDataAggregate();
             this.opportunities();
+            this.optimizationDataAggregate();
 
             console.log("Todos os dados foram carregados e inicializados.");
         }).catch(error => {
@@ -143,6 +143,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
+                partner.delivery_station = optimizationInfo.properties.station_code
                 partner.cluster = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {

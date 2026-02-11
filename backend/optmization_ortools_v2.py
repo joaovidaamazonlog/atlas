@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import config as configuration
 import csv
+from shapely.geometry import Point, shape
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional, Set
@@ -17,6 +18,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 class Config:
     BASE_PACKAGES = configuration.BASE_PACKAGES
     BASE_PARTNERS = configuration.BASE_PARTNERS
+    BASE_JURISDICTION = configuration.BASE_JURISDICTION
     DEST_FOLDER = configuration.DEST_FOLDER
     H3_RES = configuration.H3_RESOLUTION
     MIN_CAP = configuration.MIN_CAPACITY
@@ -401,6 +403,10 @@ class OptimizationService:
         self.partners_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
         self.partners_df.rename(columns={"name": "partner_name"}, inplace=True)
         self.partners_df["origin_hex"] = [h3.latlng_to_cell(float(la), float(lo), Config.H3_RES) for la, lo in zip(self.partners_df.lat, self.partners_df.lon)]
+        
+        with open(Config.BASE_JURISDICTION, "r", encoding="utf-8") as j:
+            self.jurisdictions = json.load(j)
+            
 
     def _find_neighborhood_clusters(self, res_dem, station_code):
         active_hexes = [h for h, v in res_dem.items() if v > 0]
@@ -647,45 +653,50 @@ class OptimizationService:
                         break
         return results
     
-    def _evaluate_prospects(self, res_dem, hex_to_cluster):
+    def _evaluate_prospects(self, base: str, res_dem, hex_to_cluster):
         results = []
-        subset = self.partners_df[self.partners_df.status == "Prospect"]
-        print(f"   🔍 Avaliando {len(subset)} prospects...")
+        subset = self.partners_df[self.partners_df.status == "Prospect"].copy()
+        subset['identified_base'] = subset.apply(
+            lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)),
+            axis=1
+        )
+        subset = subset[subset['identified_base'] == base]
+        print(f"   🔍 Avaliando {len(subset)} prospects para base {base}...")
+
         for _, p in subset.iterrows():
             prospect = p.partner_name
-            base = self.hex_to_base.get(p.origin_hex)
-            if not base:
-                decision = "Fora da área de atuacao"
-                sug_rad, sug_cap, allocs = 0, 0, []
-            else:
-                if p.origin_hex not in self.demand_df[self.demand_df.station_code == base].hex.values:
-                    decision = "Fora da área de atuacao"
-                    sug_rad, sug_cap, allocs = 0, 0, []
-                else:
-                    decision = ""
-                    sug_rad, sug_cap, allocs = 0, 0, []
-                    for r in Config.RADII:
-                        in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
-                        temp_total = sum(res_dem[h] for h in in_r)
-                        if temp_total >= Config.MIN_CAP:
-                            decision = "Seguir cadastro"
-                            sug_rad = r["radius_s"]
-                            sug_cap = Config.MAX_CAP if temp_total >= Config.MAX_CAP else Config.MIN_CAP
-                            current_fill = 0
-                            for h in sorted(in_r, key=lambda x: h3.grid_distance(x, p.origin_hex)):
-                                take = min(res_dem[h], sug_cap - current_fill)
-                                if take > 0:
-                                    allocs.append(Allocation(h, take))
-                                    res_dem[h] -= take
-                                    current_fill += take
-                            break
-                    if not decision:
-                        decision = "Baixo volume na area de atuacao"
+            decision = ""
+            sug_rad, sug_cap, allocs = 0, 0, []
+
+            for r in Config.RADII:
+                in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
+                temp_allocs, total = [], 0
+
+                for h in sorted(in_r, key=lambda x: h3.grid_distance(x, p.origin_hex)):
+                    take = min(res_dem[h], Config.MAX_CAP - total)
+                    if take > 0:
+                        temp_allocs.append(Allocation(hex_id=h, packages_assigned=take))
+                    total += take
+
+                # Verificar se atende o mínimo
+                if total >= Config.MIN_CAP:
+                    decision = "Seguir cadastro"
+                    sug_rad = r["radius_s"]
+                    sug_cap = Config.MAX_CAP if total >= Config.MAX_CAP else Config.MIN_CAP
+                    allocs = temp_allocs
+
+                    # Atualizar demanda residual
+                    for a in allocs:
+                        res_dem[a.hex_id] -= a.packages_assigned
+                    break
+
+            if not decision:
+                decision = "Pouca volumetria na area de atuacao"
 
             results.append(
                 PartnerMetrics(
                     origin_hex=p.origin_hex,
-                    station_code=base if base else "",
+                    station_code=base,
                     radius_a=p.radius,
                     radius_s=sug_rad,
                     capacity_a=p.capacity,
@@ -715,6 +726,7 @@ class OptimizationService:
                     allocations=allocs
                 )
             )
+
         return results
     
     def _evaluate_inactive_exited(self, base, res_dem, hex_to_cluster):
@@ -793,10 +805,21 @@ class OptimizationService:
             ))
 
         return results
+    
+    def _get_base_from_jurisdiction(self, lat: float, lon: float) -> Optional[str]:
+        partner_point = Point(float(lon), float(lat))
+
+        for feature in self.jurisdictions.get("features", []):
+            polygon = shape(feature["geometry"])
+            if polygon.contains(partner_point):
+                return feature["properties"].get("delivery_station")
+
+        return None
 
     def run(self):
         self._load_data()
         clusters_per_base = Config.CLUSTER_PER_STATION
+        
 
         for base in self.demand_df.station_code.unique():
             print(f"\n--- 🚀 OTIMIZANDO BASE: {base} ---")
@@ -810,7 +833,7 @@ class OptimizationService:
             islands, hex_to_cluster = self._find_neighborhood_clusters(res_dem, base)
             
             p4 = self._evaluate_inactive_exited(base, res_dem, hex_to_cluster)
-            p5 = self._evaluate_prospects(res_dem, hex_to_cluster)
+            p5 = self._evaluate_prospects(base, res_dem, hex_to_cluster)
             
             p6 = []
             if islands:
@@ -1093,6 +1116,7 @@ class OptimizationService:
                 # Propriedades base da otimização
                 props = {
                     "store_id": str(p.store_id) if p.store_id else "",
+                    "salesforce_id": str(p.salesforce_id),
                     "status": str(p.status),
                     "name": str(partnerName),
                     "type": str(p.entity_type), 
@@ -1107,24 +1131,6 @@ class OptimizationService:
                     "allocations": alloc_list_json
                 }
                 
-                # Enriquecimento com dados cadastrais
-                if p.store_id and str(p.store_id) in self.partners_df['store_id'].astype(str).values:
-                    p_info = self.partners_df[self.partners_df['store_id'].astype(str) == str(p.store_id)].iloc[0].to_dict()
-                    
-                    # Excluir campos pesados
-                    for field in ["main_store_data", "overlap_data", "allocations", "eligible_packages", "partner_capacity", "ADV"]:
-                        p_info.pop(field, None)
-
-                    for k, v in p_info.items():
-                        if k.lower() in ["name", "nome", "partner_name"] and props.get("name") not in ["N/A", "None", ""]:
-                            continue  # Manter o nome já definido, que é mais amigável
-                        if k not in props:  # Evitar sobrescrever campos já definidos
-                            if pd.notna(v):
-                                if isinstance(v, str):
-                                    props[k] = v.strip()
-                                else:
-                                    props[k] = v if isinstance(v, (int, float, list, dict)) else str(v)
-
                 features.append({
                     "type": "Feature",
                     "geometry": {"type": "Point", "coordinates": [lnt, lat]},

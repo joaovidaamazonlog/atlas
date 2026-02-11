@@ -12,6 +12,7 @@ DEST_FOLDER = Path(r"C:\Users\joaovida\Documents\Projetos\atlas\data")
 EXCEL_FILE_PATH = BASE_PATH / "terra.xlsm"
 BASE_PACKAGES = Path(r"C:\Users\joaovida\Documents\Projetos\base_pacotes.csv")
 BASE_PARTNERS = DEST_FOLDER / "dados_mapa.json"
+BASE_JURISDICTION = DEST_FOLDER / "jurisdiction.geojson"
 BASE_PREVIOUS_SNAPSHOT = DEST_FOLDER / "snapshot_current.json"
 
 #Arquivo CSV de entrada para clustering

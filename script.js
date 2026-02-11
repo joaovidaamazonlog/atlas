@@ -1023,6 +1023,11 @@ const UIManager = {
     },
     
     getMarkerPopupContentInactive: function(data) {
+        if(data.status == "Exited"){
+            data.optimization.cap_suggestion = data.capacity,
+            data.optimization.radius_suggestion = data.radius
+        }
+        
         return `
             <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <!-- Div para o Nome do Parceiro -->

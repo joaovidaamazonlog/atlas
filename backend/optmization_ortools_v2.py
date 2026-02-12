@@ -1181,7 +1181,7 @@ class OptimizationService:
                     "cluster": str(p.cluster_name),
                     "lat": float(lat),
                     "lon": float(lnt),
-                    "cap_suggestion": int(p.total_load),
+                    "cap_suggestion": int(p.capacity_s),
                     "radius_suggestion": int(p.radius_s),
                     "top_5_ceps": list(ceps_alocados)[:5],
                     "allocations": alloc_list_json

@@ -125,7 +125,11 @@ const DataManager = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
                     "cap_suggestion": optimizationInfo.properties.cap_suggestion
                 };
-            }
+            } else
+                partner.optimization = {
+                    "radius_suggestion": 1500,
+                    "cap_suggestion": 45
+                };
         });
         AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
@@ -136,7 +140,11 @@ const DataManager = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
                     "cap_suggestion": optimizationInfo.properties.cap_suggestion
                 };
-            }
+            } else
+                partner.optimization = {
+                    "radius_suggestion": 1500,
+                    "cap_suggestion": 45
+                };
         });
         AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
@@ -147,7 +155,11 @@ const DataManager = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
                     "cap_suggestion": optimizationInfo.properties.cap_suggestion
                 };
-            }
+            } else
+                partner.optimization = {
+                    "radius_suggestion": 1500,
+                    "cap_suggestion": 45
+                };
         });
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
@@ -158,7 +170,11 @@ const DataManager = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
                     "cap_suggestion": optimizationInfo.properties.cap_suggestion
                 };
-            }
+            } else
+                partner.optimization = {
+                    "radius_suggestion": 1500,
+                    "cap_suggestion": 45
+                };
         });
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
@@ -170,7 +186,11 @@ const DataManager = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
                     "cap_suggestion": optimizationInfo.properties.cap_suggestion
                 };
-            }
+            } else
+                partner.optimization = {
+                    "radius_suggestion": 0,
+                    "cap_suggestion": 0
+                };
         });
     },
 

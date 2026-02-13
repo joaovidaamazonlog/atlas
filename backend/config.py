@@ -1,22 +1,21 @@
-# /seu_projeto/config.py
+# ATLAS/backend/config.py
 
 from datetime import datetime
 from pathlib import Path
 
 # --- Caminhos de Arquivos e Pastas ---
-# Altere estes caminhos para corresponder ao seu ambiente
 BASE_PATH = Path(r"C:\Users\joaovida\Documents\Projetos\atlas\backend")
 DEST_FOLDER = Path(r"C:\Users\joaovida\Documents\Projetos\atlas\data")
-
-# Arquivo Excel de entrada
-EXCEL_FILE_PATH = BASE_PATH / "terra.xlsm"
+DB_PATH = Path(r"C:\Users\joaovida\Documents\Projetos\CNPJ_Brasil")
 BASE_PACKAGES = Path(r"C:\Users\joaovida\Documents\Projetos\base_pacotes.csv")
+
+# Arquivos de entrada
+EXCEL_FILE_PATH = BASE_PATH / "terra.xlsm"
 BASE_PARTNERS = DEST_FOLDER / "dados_mapa.json"
 BASE_JURISDICTION = DEST_FOLDER / "jurisdiction.geojson"
 BASE_PREVIOUS_SNAPSHOT = DEST_FOLDER / "snapshot_current.json"
-
-#Arquivo CSV de entrada para clustering
 CSV_INPUT_PATH = BASE_PATH / "pontos_teste.csv"
+DB_EMPRESAS = DB_PATH / "cnpj_2025_06.db"
 
 # Variaveis de configuração de otimização
 H3_RESOLUTION = 9
@@ -32,23 +31,23 @@ CAPACITIES = [45, 55, 70]
 MIN_CAPACITY = 45
 MAX_CAPACITY = 70
 CLUSTER_PER_STATION = {
-    "DBR9": 24,
-    "DSP2": 8,
-    "DSP4": 8,
+    "DBR9": 27,
+    "DSP2": 11,
+    "DSP4": 12,
     "DSP5": 5,
-    "DBH5": 4,
-    "DMG2": 2,
-    "DBS5": 4,
-    "DCE3": 3,
-    "DES2": 1,
+    "DBH5": 10,
+    "DMG2": 15,
+    "DBS5": 3,
+    "DCE3": 30,
+    "DES2": 3,
     "DFR2": 2,
     "DGO2": 2,
-    "DPB3": 1,
-    "DPE4": 3,
+    "DPB3": 5,
+    "DPE4": 20,
     "DPR2": 2,
-    "DRJ3": 14,
+    "DRJ3": 25,
     "DRS5": 3,
-    "DSA8": 2,
+    "DSA8": 4,
     "DAM1": 2
 }
 

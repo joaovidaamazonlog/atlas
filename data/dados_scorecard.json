@@ -13,59 +13,59 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 7260,
-            "percentual": 56.94117647058824
+            "atingido": 7287,
+            "percentual": 57.152941176470584
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 225,
-            "percentual": 77.58620689655173
+            "atingido": 228,
+            "percentual": 78.62068965517241
         },
         "conversoes": {
             "meta": 290.0,
-            "atingido": 149,
-            "percentual": 51.37931034482759
+            "atingido": 153,
+            "percentual": 52.758620689655174
         },
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
-                "contatos": 5188,
-                "cadastros": 78,
-                "conversoes": 50,
-                "taxa_conversao": 64.1,
-                "taxa_cadastro": 1.5,
+                "contatos": 5212,
+                "cadastros": 79,
+                "conversoes": 52,
+                "taxa_conversao": 65.82,
+                "taxa_cadastro": 1.52,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.58,
-                "consistencia": 0.38,
+                "velocidade_score": 0.57,
+                "consistencia": 0.37,
                 "distribuicao_canais": 0.59,
-                "score_final": 0.73
+                "score_final": 0.72
             },
             {
                 "origem": "In-Person Visit",
                 "contatos": 1398,
                 "cadastros": 23,
-                "conversoes": 17,
-                "taxa_conversao": 73.91,
+                "conversoes": 18,
+                "taxa_conversao": 78.26,
                 "taxa_cadastro": 1.65,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.53,
+                "velocidade_score": 0.54,
                 "consistencia": 0.29,
                 "distribuicao_canais": 0.35,
                 "score_final": 0.7
             },
             {
                 "origem": "Referral",
-                "contatos": 435,
-                "cadastros": 114,
-                "conversoes": 74,
-                "taxa_conversao": 64.91,
-                "taxa_cadastro": 26.21,
+                "contatos": 438,
+                "cadastros": 116,
+                "conversoes": 75,
+                "taxa_conversao": 64.66,
+                "taxa_cadastro": 26.48,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.37,
-                "consistencia": 0.3,
+                "velocidade_score": 0.38,
+                "consistencia": 0.29,
                 "distribuicao_canais": 0.02,
                 "score_final": 0.67
             },
@@ -84,15 +84,15 @@
                 "score_final": 0.67
             }
         ],
-        "scorecard_geral": 0.6925
+        "scorecard_geral": 0.69
     },
     "per_responsavel": [
         {
             "responsavel": "Aline Melo",
             "contatos": 178,
             "cadastros": 21,
-            "conversoes": 9,
-            "taxa_conversao": 42.86,
+            "conversoes": 10,
+            "taxa_conversao": 47.62,
             "taxa_cadastro": 11.8,
             "contatos_origem_Website Pardot Form": 12,
             "cadastros_origem_Website Pardot Form": 1,
@@ -156,45 +156,45 @@
         {
             "responsavel": "Breno Santos",
             "contatos": 313,
-            "cadastros": 13,
+            "cadastros": 14,
             "conversoes": 6,
-            "taxa_conversao": 46.15,
-            "taxa_cadastro": 4.15,
+            "taxa_conversao": 42.86,
+            "taxa_cadastro": 4.47,
             "contatos_origem_Website Pardot Form": 19,
             "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 17,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 268,
-            "cadastros_origem_Cold Call": 10,
+            "cadastros_origem_Cold Call": 11,
             "contatos_origem_Referral": 9,
             "cadastros_origem_Referral": 2,
             "volume_score_contatos": 0.6,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.54,
+            "velocidade_score": 0.5,
             "consistencia": 0.35,
             "distribuicao_canais": 0.7,
             "score_final": 0.81
         },
         {
             "responsavel": "Bruno Silva",
-            "contatos": 89,
+            "contatos": 93,
             "cadastros": 9,
             "conversoes": 4,
             "taxa_conversao": 44.44,
-            "taxa_cadastro": 10.11,
+            "taxa_cadastro": 9.68,
             "contatos_origem_Website Pardot Form": 11,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 28,
             "cadastros_origem_In-Person Visit": 5,
-            "contatos_origem_Cold Call": 30,
+            "contatos_origem_Cold Call": 34,
             "cadastros_origem_Cold Call": 0,
             "contatos_origem_Referral": 20,
             "cadastros_origem_Referral": 4,
-            "volume_score_contatos": 0.36,
+            "volume_score_contatos": 0.37,
             "volume_score_cadastros": 0.9,
             "velocidade_score": 0.56,
-            "consistencia": 0,
-            "distribuicao_canais": 0.71,
+            "consistencia": 0.02,
+            "distribuicao_canais": 0.73,
             "score_final": 0.69
         },
         {
@@ -288,10 +288,10 @@
         {
             "responsavel": "Everton Martins",
             "contatos": 384,
-            "cadastros": 16,
+            "cadastros": 18,
             "conversoes": 13,
-            "taxa_conversao": 81.25,
-            "taxa_cadastro": 4.17,
+            "taxa_conversao": 72.22,
+            "taxa_cadastro": 4.69,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 134,
@@ -299,10 +299,10 @@
             "contatos_origem_Cold Call": 205,
             "cadastros_origem_Cold Call": 0,
             "contatos_origem_Referral": 44,
-            "cadastros_origem_Referral": 16,
+            "cadastros_origem_Referral": 18,
             "volume_score_contatos": 0.67,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.32,
+            "velocidade_score": 0.37,
             "consistencia": 0.29,
             "distribuicao_canais": 0.91,
             "score_final": 0.81
@@ -443,8 +443,8 @@
             "responsavel": "Kelvin Fernandes",
             "contatos": 199,
             "cadastros": 1,
-            "conversoes": 0,
-            "taxa_conversao": 0.0,
+            "conversoes": 1,
+            "taxa_conversao": 100.0,
             "taxa_cadastro": 0.5,
             "contatos_origem_Website Pardot Form": 0,
             "cadastros_origem_Website Pardot Form": 0,
@@ -456,30 +456,30 @@
             "cadastros_origem_Referral": 0,
             "volume_score_contatos": 0.39,
             "volume_score_cadastros": 0.12,
-            "velocidade_score": 0.0,
+            "velocidade_score": 0.1,
             "consistencia": 0.53,
             "distribuicao_canais": 0.77,
-            "score_final": 0.22
+            "score_final": 0.23
         },
         {
             "responsavel": "Lilian Mata",
-            "contatos": 128,
+            "contatos": 133,
             "cadastros": 19,
             "conversoes": 16,
             "taxa_conversao": 84.21,
-            "taxa_cadastro": 14.84,
+            "taxa_cadastro": 14.29,
             "contatos_origem_Website Pardot Form": 13,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 0,
             "cadastros_origem_In-Person Visit": 0,
-            "contatos_origem_Cold Call": 99,
+            "contatos_origem_Cold Call": 101,
             "cadastros_origem_Cold Call": 16,
-            "contatos_origem_Referral": 16,
+            "contatos_origem_Referral": 19,
             "cadastros_origem_Referral": 3,
             "volume_score_contatos": 0.4,
             "volume_score_cadastros": 1,
             "velocidade_score": 0.64,
-            "consistencia": 0.09,
+            "consistencia": 0.13,
             "distribuicao_canais": 0.65,
             "score_final": 0.77
         },
@@ -487,8 +487,8 @@
             "responsavel": "Maria Silva",
             "contatos": 318,
             "cadastros": 7,
-            "conversoes": 4,
-            "taxa_conversao": 57.14,
+            "conversoes": 6,
+            "taxa_conversao": 85.71,
             "taxa_cadastro": 2.2,
             "contatos_origem_Website Pardot Form": 17,
             "cadastros_origem_Website Pardot Form": 0,
@@ -500,52 +500,52 @@
             "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.61,
             "volume_score_cadastros": 0.7,
-            "velocidade_score": 0.35,
+            "velocidade_score": 0.37,
             "consistencia": 0.25,
             "distribuicao_canais": 0.67,
-            "score_final": 0.6
+            "score_final": 0.61
         },
         {
             "responsavel": "Pedro Neto",
-            "contatos": 218,
+            "contatos": 221,
             "cadastros": 8,
             "conversoes": 7,
             "taxa_conversao": 87.5,
-            "taxa_cadastro": 3.67,
+            "taxa_cadastro": 3.62,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 140,
             "cadastros_origem_In-Person Visit": 1,
-            "contatos_origem_Cold Call": 77,
+            "contatos_origem_Cold Call": 80,
             "cadastros_origem_Cold Call": 7,
             "contatos_origem_Referral": 0,
             "cadastros_origem_Referral": 0,
-            "volume_score_contatos": 0.36,
+            "volume_score_contatos": 0.37,
             "volume_score_cadastros": 0.8,
             "velocidade_score": 0.59,
-            "consistencia": 0.21,
-            "distribuicao_canais": 0.71,
+            "consistencia": 0.22,
+            "distribuicao_canais": 0.72,
             "score_final": 0.65
         },
         {
             "responsavel": "Rafael Calçado ",
-            "contatos": 384,
+            "contatos": 399,
             "cadastros": 6,
             "conversoes": 3,
             "taxa_conversao": 50.0,
-            "taxa_cadastro": 1.56,
+            "taxa_cadastro": 1.5,
             "contatos_origem_Website Pardot Form": 13,
             "cadastros_origem_Website Pardot Form": 2,
             "contatos_origem_In-Person Visit": 49,
             "cadastros_origem_In-Person Visit": 0,
-            "contatos_origem_Cold Call": 312,
+            "contatos_origem_Cold Call": 327,
             "cadastros_origem_Cold Call": 1,
             "contatos_origem_Referral": 10,
             "cadastros_origem_Referral": 3,
-            "volume_score_contatos": 0.68,
+            "volume_score_contatos": 0.69,
             "volume_score_cadastros": 0.6,
             "velocidade_score": 0.29,
-            "consistencia": 0.29,
+            "consistencia": 0.3,
             "distribuicao_canais": 0.77,
             "score_final": 0.56
         },
@@ -965,7 +965,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Working"
         },
         {
             "id": 35,
@@ -1405,7 +1405,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Exited"
         },
         {
             "id": 79,
@@ -1555,7 +1555,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 94,
@@ -1895,7 +1895,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 128,
@@ -5955,7 +5955,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 534,
@@ -17644,8 +17644,8 @@
             "origem": "In-Person Visit",
             "data_contato": "2026-01-20",
             "data_cadastro": "2026-01-30",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-13",
+            "status": "Converted"
         },
         {
             "id": 1703,
@@ -18085,7 +18085,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 1747,
@@ -24514,8 +24514,8 @@
             "origem": "Referral",
             "data_contato": "2026-01-22",
             "data_cadastro": "2026-02-10",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-13",
+            "status": "Converted"
         },
         {
             "id": 2390,
@@ -24564,8 +24564,8 @@
             "origem": "Cold Call",
             "data_contato": "2026-01-21",
             "data_cadastro": "2026-02-10",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-13",
+            "status": "Converted"
         },
         {
             "id": 2395,
@@ -35645,7 +35645,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 3503,
@@ -46355,7 +46355,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 4574,
@@ -50319,13 +50319,13 @@
         },
         {
             "id": 4970,
-            "lead": "Marcia",
+            "lead": "FELIPE DE MELLO LEIVAS",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-03",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-13",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 4971,
@@ -51184,8 +51184,8 @@
             "origem": "Cold Call",
             "data_contato": "2026-02-09",
             "data_cadastro": "2026-02-09",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-13",
+            "status": "Converted"
         },
         {
             "id": 5057,
@@ -54045,7 +54045,7 @@
             "data_contato": "2026-02-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 5343,
@@ -54315,7 +54315,7 @@
             "data_contato": "2026-02-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5370,
@@ -56545,7 +56545,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5593,
@@ -56555,7 +56555,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5594,
@@ -57025,7 +57025,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5641,
@@ -57075,7 +57075,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5646,
@@ -57125,7 +57125,7 @@
             "data_contato": "2026-02-05",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5651,
@@ -60765,7 +60765,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6015,
@@ -61135,7 +61135,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6052,
@@ -61145,7 +61145,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6053,
@@ -61155,7 +61155,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6054,
@@ -61185,7 +61185,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6057,
@@ -61195,7 +61195,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6058,
@@ -61205,7 +61205,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6059,
@@ -61225,7 +61225,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6061,
@@ -61235,7 +61235,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6062,
@@ -61245,7 +61245,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6063,
@@ -61255,7 +61255,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6064,
@@ -61275,7 +61275,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6066,
@@ -61285,7 +61285,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6067,
@@ -61305,7 +61305,7 @@
             "data_contato": "2026-02-06",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6069,
@@ -61425,7 +61425,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6081,
@@ -61705,7 +61705,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6109,
@@ -62185,7 +62185,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 6157,
@@ -62215,7 +62215,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6160,
@@ -62975,7 +62975,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6236,
@@ -63835,7 +63835,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6322,
@@ -64325,7 +64325,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6371,
@@ -65955,7 +65955,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6534,
@@ -66005,7 +66005,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6539,
@@ -66215,7 +66215,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6560,
@@ -66985,7 +66985,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6637,
@@ -66995,7 +66995,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6638,
@@ -67055,7 +67055,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6644,
@@ -67165,7 +67165,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6655,
@@ -67775,7 +67775,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6716,
@@ -68015,7 +68015,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6740,
@@ -68165,7 +68165,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6755,
@@ -69993,9 +69993,9 @@
             "responsavel": "Everton Martins",
             "origem": "Referral",
             "data_contato": "2026-02-12",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-13",
             "data_conversao": null,
-            "status": "Working"
+            "status": "BG Checks"
         },
         {
             "id": 6938,
@@ -70135,7 +70135,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6952,
@@ -70225,7 +70225,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6961,
@@ -70365,7 +70365,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6975,
@@ -70465,7 +70465,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6985,
@@ -70735,7 +70735,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7012,
@@ -70775,7 +70775,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7016,
@@ -70999,13 +70999,13 @@
         },
         {
             "id": 7038,
-            "lead": "Alisson NA",
+            "lead": "Alisson Pereira Dos Santos",
             "responsavel": "Everton Martins",
             "origem": "Referral",
             "data_contato": "2026-02-12",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-13",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 7039,
@@ -71135,7 +71135,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7052,
@@ -71375,7 +71375,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7076,
@@ -72375,7 +72375,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7176,
@@ -72735,7 +72735,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7212,
@@ -72775,7 +72775,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7216,
@@ -72795,7 +72795,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7218,
@@ -72815,7 +72815,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7220,
@@ -72835,7 +72835,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7222,
@@ -72845,7 +72845,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7223,
@@ -72855,7 +72855,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 7224,
@@ -72899,6 +72899,16 @@
         },
         {
             "id": 7228,
+            "lead": "LUCIANO DA SILVA GUIMARAES",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7229,
             "lead": "Rodrigo Abreu da Silva Cortez",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -72908,7 +72918,7 @@
             "status": "New"
         },
         {
-            "id": 7229,
+            "id": 7230,
             "lead": "Francisca Roberlandia de Souza",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -72918,7 +72928,7 @@
             "status": "New"
         },
         {
-            "id": 7230,
+            "id": 7231,
             "lead": "Francisco Benas Chaves de Sousa",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -72928,7 +72938,7 @@
             "status": "New"
         },
         {
-            "id": 7231,
+            "id": 7232,
             "lead": "Juan Lima",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -72938,7 +72948,7 @@
             "status": "Working"
         },
         {
-            "id": 7232,
+            "id": 7233,
             "lead": "Francisca Antonia Coelho dos Santos",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -72948,7 +72958,7 @@
             "status": "New"
         },
         {
-            "id": 7233,
+            "id": 7234,
             "lead": "VIVIANE",
             "responsavel": "Bruno Silva",
             "origem": "In-Person Visit",
@@ -72958,7 +72968,7 @@
             "status": "Prospect"
         },
         {
-            "id": 7234,
+            "id": 7235,
             "lead": "Maria Micheli Vieira Lobo Ramos",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -72968,7 +72978,7 @@
             "status": "New"
         },
         {
-            "id": 7235,
+            "id": 7236,
             "lead": "Francisca Elisangela Cruz dos Santos",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -72978,7 +72988,7 @@
             "status": "New"
         },
         {
-            "id": 7236,
+            "id": 7237,
             "lead": "LUANA",
             "responsavel": "Bruno Silva",
             "origem": "Referral",
@@ -72988,7 +72998,7 @@
             "status": "Prospect"
         },
         {
-            "id": 7237,
+            "id": 7238,
             "lead": "RICHARD",
             "responsavel": "Bruno Silva",
             "origem": "Cold Call",
@@ -72998,7 +73008,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 7238,
+            "id": 7239,
             "lead": "Antonia Michele de Sousa da Silva",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73008,7 +73018,7 @@
             "status": "New"
         },
         {
-            "id": 7239,
+            "id": 7240,
             "lead": "Dyeniffer Pereira Costa",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73018,7 +73028,7 @@
             "status": "New"
         },
         {
-            "id": 7240,
+            "id": 7241,
             "lead": "Antonieta Modesto Nogueira",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73028,7 +73038,7 @@
             "status": "New"
         },
         {
-            "id": 7241,
+            "id": 7242,
             "lead": "Jose Raimundo de Oliveira Marques",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73038,7 +73048,7 @@
             "status": "New"
         },
         {
-            "id": 7242,
+            "id": 7243,
             "lead": "Francisco Deivid Araujo",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73048,7 +73058,7 @@
             "status": "New"
         },
         {
-            "id": 7243,
+            "id": 7244,
             "lead": "Ricardo Roberto Costa Damasceno",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73058,7 +73068,7 @@
             "status": "New"
         },
         {
-            "id": 7244,
+            "id": 7245,
             "lead": "Jefferson de Oliveira Vieira",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73068,17 +73078,17 @@
             "status": "New"
         },
         {
-            "id": 7245,
+            "id": 7246,
             "lead": "ESTHER",
             "responsavel": "Bruno Silva",
             "origem": "Referral",
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 7246,
+            "id": 7247,
             "lead": "Vitor Felipe Oliveira Machado",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73088,7 +73098,7 @@
             "status": "New"
         },
         {
-            "id": 7247,
+            "id": 7248,
             "lead": "Paulo Marcelo Santos do Nascimento",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73098,7 +73108,7 @@
             "status": "New"
         },
         {
-            "id": 7248,
+            "id": 7249,
             "lead": "Lucas Leandro da Silva",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73108,7 +73118,7 @@
             "status": "New"
         },
         {
-            "id": 7249,
+            "id": 7250,
             "lead": "Francisca de Fatima Araujo Rodrigues Bra",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -73118,7 +73128,7 @@
             "status": "New"
         },
         {
-            "id": 7250,
+            "id": 7251,
             "lead": "Liciano Viemar",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -73128,7 +73138,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 7251,
+            "id": 7252,
             "lead": "Isabelle Cristiane Machado",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73138,7 +73148,7 @@
             "status": "New"
         },
         {
-            "id": 7252,
+            "id": 7253,
             "lead": "Shirley Aparecida Ribeiro Sabchuk",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73148,7 +73158,7 @@
             "status": "New"
         },
         {
-            "id": 7253,
+            "id": 7254,
             "lead": "Lilian Lilian",
             "responsavel": "Pedro Neto",
             "origem": "In-Person Visit",
@@ -73158,7 +73168,7 @@
             "status": "Working"
         },
         {
-            "id": 7254,
+            "id": 7255,
             "lead": "Eduardo Cristiano Pereira de Paiva",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73168,7 +73178,7 @@
             "status": "New"
         },
         {
-            "id": 7255,
+            "id": 7256,
             "lead": "Evandro do Rosario Ribeiro",
             "responsavel": "Kelvin Fernandes",
             "origem": "Cold Call",
@@ -73178,7 +73188,7 @@
             "status": "New"
         },
         {
-            "id": 7256,
+            "id": 7257,
             "lead": "Luciana Luciana",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -73188,7 +73198,7 @@
             "status": "Working"
         },
         {
-            "id": 7257,
+            "id": 7258,
             "lead": "SANDRO",
             "responsavel": "Bruno Silva",
             "origem": "Cold Call",
@@ -73198,7 +73208,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 7258,
+            "id": 7259,
             "lead": "Jhonatan",
             "responsavel": "Lilian Mata",
             "origem": "Cold Call",
@@ -73208,7 +73218,267 @@
             "status": "Prospect"
         },
         {
-            "id": 7259,
+            "id": 7260,
+            "lead": "SILVIA",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7261,
+            "lead": "RODRIGO",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-10",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7262,
+            "lead": "MONICA",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-09",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7263,
+            "lead": "PAULO HENRIQUE FURTADO LIMA",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7264,
+            "lead": "SILAS",
+            "responsavel": "Bruno Silva",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-11",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7265,
+            "lead": "MMTX",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Working"
+        },
+        {
+            "id": 7266,
+            "lead": "IVAN MORAIS SILVA SANTOS",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7267,
+            "lead": "41 9871-5296 Evelyn Cristiane",
+            "responsavel": "Lilian Mata",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7268,
+            "lead": "HAIRA GONCALVES MATOS",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7269,
+            "lead": "FELIX LUCIO GANDRA",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Working"
+        },
+        {
+            "id": 7270,
+            "lead": "PATRICK CALIXTO QUINTAL",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Working"
+        },
+        {
+            "id": 7271,
+            "lead": "MARIA APARECIDA VIEIRA",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Working"
+        },
+        {
+            "id": 7272,
+            "lead": "JAQUELINE YASMIN DE ASSIS RAMOS",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7273,
+            "lead": "ESTEFANE CARVALHO SENA",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7274,
+            "lead": "JOAO VICTOR ISIDORO DA SILVA",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7275,
+            "lead": "ELGLER STEFANIA PIRES PEIXOTO",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7276,
+            "lead": "CELMA MARIA CRISPIM",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7277,
+            "lead": "PEDRO HENRIQUE PONTELO SOARES",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7278,
+            "lead": "JULIA CAROLINE DE BRITO NEVES",
+            "responsavel": "Rafael Calçado ",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 7279,
+            "lead": "Matheus ferreira Moreira Teixeira",
+            "responsavel": "Pedro Neto",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7280,
+            "lead": "Denilson Pereira",
+            "responsavel": "Pedro Neto",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7281,
+            "lead": "Ananias Alves Rodrigues",
+            "responsavel": "Lilian Mata",
+            "origem": "Referral",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7282,
+            "lead": "MATEUS ICARO DE SOUSA DAVILA",
+            "responsavel": "Pedro Neto",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7283,
+            "lead": "Hilary",
+            "responsavel": "Lilian Mata",
+            "origem": "Referral",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7284,
+            "lead": "Marcelo Marin Sassaki",
+            "responsavel": "Lilian Mata",
+            "origem": "Referral",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7285,
+            "lead": "Alexandre borges",
+            "responsavel": "Lilian Mata",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-12",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 7286,
             "lead": "CLEIDIANE DO CARMO SANTOS DUARTE",
             "responsavel": "Desligado",
             "origem": "Website Pardot Form",
@@ -73247,19 +73517,19 @@
             "data_contato": "2026-01-20",
             "contatos": 313,
             "cadastros": 10,
-            "conversoes": 7
+            "conversoes": 8
         },
         {
             "data_contato": "2026-01-21",
             "contatos": 400,
             "cadastros": 11,
-            "conversoes": 8
+            "conversoes": 9
         },
         {
             "data_contato": "2026-01-22",
             "contatos": 468,
             "cadastros": 10,
-            "conversoes": 9
+            "conversoes": 10
         },
         {
             "data_contato": "2026-01-23",
@@ -73312,7 +73582,7 @@
         {
             "data_contato": "2026-02-03",
             "contatos": 417,
-            "cadastros": 9,
+            "cadastros": 10,
             "conversoes": 8
         },
         {
@@ -73335,26 +73605,26 @@
         },
         {
             "data_contato": "2026-02-09",
-            "contatos": 448,
+            "contatos": 449,
             "cadastros": 12,
-            "conversoes": 7
+            "conversoes": 8
         },
         {
             "data_contato": "2026-02-10",
-            "contatos": 296,
+            "contatos": 298,
             "cadastros": 2,
             "conversoes": 0
         },
         {
             "data_contato": "2026-02-11",
-            "contatos": 127,
+            "contatos": 128,
             "cadastros": 6,
             "conversoes": 1
         },
         {
             "data_contato": "2026-02-12",
-            "contatos": 343,
-            "cadastros": 4,
+            "contatos": 366,
+            "cadastros": 6,
             "conversoes": 0
         }
     ]

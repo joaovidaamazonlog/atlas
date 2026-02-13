@@ -1,4 +1,4 @@
-RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 12/02/2026 19:05
+RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 13/02/2026 10:03
 ================================================================================
 BASE: DAM1
 --------------------------------------------------------------------------------
@@ -11,13 +11,13 @@ BASE: DAM1
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DAM1_C1
-    - Quantidade Total de Parceiros:           38
+    - Quantidade Total de Parceiros:           37
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     36
-    - Volume Total de Demanda:                 2,440 pacotes
+        • Novos Parceiros:                     33
+    - Volume Total de Demanda:                 2,251 pacotes
     - % de Attainment:                         0.0%
   Cluster: DAM1_C2
     - Quantidade Total de Parceiros:           38
@@ -25,8 +25,8 @@ DETALHAMENTO POR CLUSTER:
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     33
-    - Volume Total de Demanda:                 2,251 pacotes
+        • Novos Parceiros:                     36
+    - Volume Total de Demanda:                 2,440 pacotes
     - % de Attainment:                         0.0%
 ================================================================================
 BASE: DBH5
@@ -50,13 +50,13 @@ DETALHAMENTO POR CLUSTER:
     - % de Attainment:                         0.0%
   Cluster: DBH5_C2
     - Quantidade Total de Parceiros:           48
-        • Ativos:                              4
+        • Ativos:                              5
         • Onboarding:                          2
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     41
+        • Novos Parceiros:                     40
     - Volume Total de Demanda:                 3,360 pacotes
-    - % de Attainment:                         8.3%
+    - % de Attainment:                         10.4%
   Cluster: DBH5_C3
     - Quantidade Total de Parceiros:           48
         • Ativos:                              5
@@ -67,34 +67,34 @@ DETALHAMENTO POR CLUSTER:
     - Volume Total de Demanda:                 3,342 pacotes
     - % de Attainment:                         10.4%
   Cluster: DBH5_C4
-    - Quantidade Total de Parceiros:           48
-        • Ativos:                              13
+    - Quantidade Total de Parceiros:           47
+        • Ativos:                              12
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     28
+        • Novos Parceiros:                     29
     - Volume Total de Demanda:                 2,652 pacotes
-    - % de Attainment:                         27.1%
+    - % de Attainment:                         25.5%
 ================================================================================
 BASE: DBR9
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    24
   - Volume Total de Pacotes:                   38,789 pacotes
-  - Quantidade Total de Parceiros esperados:   522
-  - Quantidade Total de Parceiros Ativos:      50
-  - % de Attainment:                           9.6%
-  - Total de Pacotes Atendidos (Ativos):       3,389 pacotes
+  - Quantidade Total de Parceiros esperados:   521
+  - Quantidade Total de Parceiros Ativos:      48
+  - % de Attainment:                           9.2%
+  - Total de Pacotes Atendidos (Ativos):       3,255 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DBR9_C1
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              1
+        • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     21
+        • Novos Parceiros:                     22
     - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         4.5%
+    - % de Attainment:                         0.0%
   Cluster: DBR9_C10
     - Quantidade Total de Parceiros:           22
         • Ativos:                              0
@@ -106,13 +106,13 @@ DETALHAMENTO POR CLUSTER:
     - % de Attainment:                         0.0%
   Cluster: DBR9_C11
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              6
-        • Onboarding:                          1
+        • Ativos:                              0
+        • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     15
-    - Volume Total de Demanda:                 1,394 pacotes
-    - % de Attainment:                         27.3%
+        • Novos Parceiros:                     22
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         0.0%
   Cluster: DBR9_C12
     - Quantidade Total de Parceiros:           22
         • Ativos:                              3
@@ -124,14 +124,41 @@ DETALHAMENTO POR CLUSTER:
     - % de Attainment:                         13.6%
   Cluster: DBR9_C13
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              4
+        • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     18
-    - Volume Total de Demanda:                 1,533 pacotes
-    - % de Attainment:                         18.2%
+        • Novos Parceiros:                     22
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         0.0%
   Cluster: DBR9_C14
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              9
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     13
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         40.9%
+  Cluster: DBR9_C15
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     20
+    - Volume Total de Demanda:                 1,476 pacotes
+    - % de Attainment:                         9.1%
+  Cluster: DBR9_C16
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     20
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         9.1%
+  Cluster: DBR9_C17
     - Quantidade Total de Parceiros:           22
         • Ativos:                              1
         • Onboarding:                          0
@@ -140,79 +167,61 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     21
     - Volume Total de Demanda:                 1,540 pacotes
     - % de Attainment:                         4.5%
-  Cluster: DBR9_C15
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         0.0%
-  Cluster: DBR9_C16
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         0.0%
-  Cluster: DBR9_C17
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         0.0%
   Cluster: DBR9_C18
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              1
-        • Onboarding:                          1
-        • Prospects a Aprovar:                 1
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     19
+        • Novos Parceiros:                     20
     - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         4.5%
+    - % de Attainment:                         9.1%
   Cluster: DBR9_C19
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              3
+        • Ativos:                              1
         • Onboarding:                          0
-        • Prospects a Aprovar:                 1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     21
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         4.5%
+  Cluster: DBR9_C2
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              2
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     18
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         9.1%
+  Cluster: DBR9_C20
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              1
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     21
+    - Volume Total de Demanda:                 1,529 pacotes
+    - % de Attainment:                         4.5%
+  Cluster: DBR9_C21
+    - Quantidade Total de Parceiros:           21
+        • Ativos:                              4
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     11
+    - Volume Total de Demanda:                 892 pacotes
+    - % de Attainment:                         19.0%
+  Cluster: DBR9_C22
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              4
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
         • Novos Parceiros:                     18
     - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         13.6%
-  Cluster: DBR9_C2
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              3
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     19
-    - Volume Total de Demanda:                 1,473 pacotes
-    - % de Attainment:                         13.6%
-  Cluster: DBR9_C20
-    - Quantidade Total de Parceiros:           23
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     23
-    - Volume Total de Demanda:                 1,610 pacotes
-    - % de Attainment:                         0.0%
-  Cluster: DBR9_C21
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              2
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     20
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         9.1%
-  Cluster: DBR9_C22
+    - % de Attainment:                         18.2%
+  Cluster: DBR9_C23
     - Quantidade Total de Parceiros:           22
         • Ativos:                              0
         • Onboarding:                          0
@@ -221,51 +230,42 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     22
     - Volume Total de Demanda:                 1,540 pacotes
     - % de Attainment:                         0.0%
-  Cluster: DBR9_C23
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              8
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     13
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         36.4%
   Cluster: DBR9_C24
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              3
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     12
-    - Volume Total de Demanda:                 893 pacotes
-    - % de Attainment:                         13.6%
-  Cluster: DBR9_C3
-    - Quantidade Total de Parceiros:           22
-        • Ativos:                              2
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     20
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         9.1%
-  Cluster: DBR9_C4
-    - Quantidade Total de Parceiros:           23
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     23
-    - Volume Total de Demanda:                 1,610 pacotes
+        • Novos Parceiros:                     22
+    - Volume Total de Demanda:                 1,540 pacotes
     - % de Attainment:                         0.0%
-  Cluster: DBR9_C5
+  Cluster: DBR9_C3
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     22
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         0.0%
+  Cluster: DBR9_C4
     - Quantidade Total de Parceiros:           22
         • Ativos:                              6
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
         • Novos Parceiros:                     16
-    - Volume Total de Demanda:                 1,540 pacotes
+    - Volume Total de Demanda:                 1,506 pacotes
     - % de Attainment:                         27.3%
+  Cluster: DBR9_C5
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     22
+    - Volume Total de Demanda:                 1,540 pacotes
+    - % de Attainment:                         0.0%
   Cluster: DBR9_C6
     - Quantidade Total de Parceiros:           22
         • Ativos:                              2
@@ -277,136 +277,136 @@ DETALHAMENTO POR CLUSTER:
     - % de Attainment:                         9.1%
   Cluster: DBR9_C7
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              5
+        • Ativos:                              1
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     17
+        • Novos Parceiros:                     21
     - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         22.7%
+    - % de Attainment:                         4.5%
   Cluster: DBR9_C8
     - Quantidade Total de Parceiros:           22
-        • Ativos:                              0
-        • Onboarding:                          0
+        • Ativos:                              6
+        • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 1,540 pacotes
-    - % de Attainment:                         0.0%
+        • Novos Parceiros:                     15
+    - Volume Total de Demanda:                 1,434 pacotes
+    - % de Attainment:                         27.3%
   Cluster: DBR9_C9
-    - Quantidade Total de Parceiros:           23
-        • Ativos:                              0
+    - Quantidade Total de Parceiros:           22
+        • Ativos:                              2
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     23
-    - Volume Total de Demanda:                 1,610 pacotes
-    - % de Attainment:                         0.0%
+        • Novos Parceiros:                     20
+    - Volume Total de Demanda:                 1,538 pacotes
+    - % de Attainment:                         9.1%
 ================================================================================
 BASE: DBS5
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    4
   - Volume Total de Pacotes:                   32,029 pacotes
-  - Quantidade Total de Parceiros esperados:   421
-  - Quantidade Total de Parceiros Ativos:      61
-  - % de Attainment:                           14.5%
-  - Total de Pacotes Atendidos (Ativos):       4,080 pacotes
+  - Quantidade Total de Parceiros esperados:   420
+  - Quantidade Total de Parceiros Ativos:      67
+  - % de Attainment:                           16.0%
+  - Total de Pacotes Atendidos (Ativos):       4,447 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DBS5_C1
-    - Quantidade Total de Parceiros:           108
-        • Ativos:                              6
-        • Onboarding:                          3
+    - Quantidade Total de Parceiros:           107
+        • Ativos:                              8
+        • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 4
-        • Novos Parceiros:                     93
-    - Volume Total de Demanda:                 7,219 pacotes
-    - % de Attainment:                         5.6%
+        • Novos Parceiros:                     92
+    - Volume Total de Demanda:                 7,133 pacotes
+    - % de Attainment:                         7.5%
   Cluster: DBS5_C2
     - Quantidade Total de Parceiros:           108
-        • Ativos:                              27
+        • Ativos:                              29
         • Onboarding:                          7
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     71
-    - Volume Total de Demanda:                 7,543 pacotes
-    - % de Attainment:                         25.0%
+        • Prospects a Aprovar:                 3
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     68
+    - Volume Total de Demanda:                 7,526 pacotes
+    - % de Attainment:                         26.9%
   Cluster: DBS5_C3
     - Quantidade Total de Parceiros:           107
-        • Ativos:                              13
-        • Onboarding:                          2
-        • Prospects a Aprovar:                 1
+        • Ativos:                              14
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 2
-        • Novos Parceiros:                     82
-    - Volume Total de Demanda:                 6,571 pacotes
-    - % de Attainment:                         12.1%
+        • Novos Parceiros:                     84
+    - Volume Total de Demanda:                 6,689 pacotes
+    - % de Attainment:                         13.1%
   Cluster: DBS5_C4
-    - Quantidade Total de Parceiros:           108
-        • Ativos:                              15
-        • Onboarding:                          2
-        • Prospects a Aprovar:                 1
+    - Quantidade Total de Parceiros:           107
+        • Ativos:                              16
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 2
         • Novos Parceiros:                     88
-    - Volume Total de Demanda:                 7,551 pacotes
-    - % de Attainment:                         13.9%
+    - Volume Total de Demanda:                 7,487 pacotes
+    - % de Attainment:                         15.0%
 ================================================================================
 BASE: DCE3
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    3
   - Volume Total de Pacotes:                   21,305 pacotes
-  - Quantidade Total de Parceiros esperados:   289
-  - Quantidade Total de Parceiros Ativos:      133
-  - % de Attainment:                           46.0%
-  - Total de Pacotes Atendidos (Ativos):       8,691 pacotes
+  - Quantidade Total de Parceiros esperados:   287
+  - Quantidade Total de Parceiros Ativos:      136
+  - % de Attainment:                           47.4%
+  - Total de Pacotes Atendidos (Ativos):       8,901 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DCE3_C1
-    - Quantidade Total de Parceiros:           102
-        • Ativos:                              39
-        • Onboarding:                          5
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     47
-    - Volume Total de Demanda:                 6,102 pacotes
-    - % de Attainment:                         38.2%
-  Cluster: DCE3_C2
-    - Quantidade Total de Parceiros:           102
-        • Ativos:                              87
-        • Onboarding:                          4
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     7
-    - Volume Total de Demanda:                 6,763 pacotes
-    - % de Attainment:                         85.3%
-  Cluster: DCE3_C3
-    - Quantidade Total de Parceiros:           102
+    - Quantidade Total de Parceiros:           103
         • Ativos:                              7
         • Onboarding:                          1
         • Prospects a Aprovar:                 8
         • Inativos a Reativar:                 2
-        • Novos Parceiros:                     82
-    - Volume Total de Demanda:                 7,132 pacotes
-    - % de Attainment:                         6.9%
+        • Novos Parceiros:                     83
+    - Volume Total de Demanda:                 7,193 pacotes
+    - % de Attainment:                         6.8%
+  Cluster: DCE3_C2
+    - Quantidade Total de Parceiros:           102
+        • Ativos:                              42
+        • Onboarding:                          3
+        • Prospects a Aprovar:                 4
+        • Inativos a Reativar:                 2
+        • Novos Parceiros:                     45
+    - Volume Total de Demanda:                 6,167 pacotes
+    - % de Attainment:                         41.2%
+  Cluster: DCE3_C3
+    - Quantidade Total de Parceiros:           102
+        • Ativos:                              87
+        • Onboarding:                          3
+        • Prospects a Aprovar:                 2
+        • Inativos a Reativar:                 2
+        • Novos Parceiros:                     6
+    - Volume Total de Demanda:                 6,729 pacotes
+    - % de Attainment:                         85.3%
 ================================================================================
 BASE: DES2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    1
   - Volume Total de Pacotes:                   9,897 pacotes
   - Quantidade Total de Parceiros esperados:   125
-  - Quantidade Total de Parceiros Ativos:      38
-  - % de Attainment:                           30.4%
-  - Total de Pacotes Atendidos (Ativos):       2,401 pacotes
+  - Quantidade Total de Parceiros Ativos:      37
+  - % de Attainment:                           29.6%
+  - Total de Pacotes Atendidos (Ativos):       2,365 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DES2_C1
-    - Quantidade Total de Parceiros:           132
-        • Ativos:                              38
+    - Quantidade Total de Parceiros:           131
+        • Ativos:                              37
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
+        • Inativos a Reativar:                 2
         • Novos Parceiros:                     84
-    - Volume Total de Demanda:                 8,365 pacotes
-    - % de Attainment:                         28.8%
+    - Volume Total de Demanda:                 8,366 pacotes
+    - % de Attainment:                         28.2%
 ================================================================================
 BASE: DFR2
 --------------------------------------------------------------------------------
@@ -428,7 +428,7 @@ DETALHAMENTO POR CLUSTER:
     - Volume Total de Demanda:                 2,380 pacotes
     - % de Attainment:                         0.0%
   Cluster: DFR2_C2
-    - Quantidade Total de Parceiros:           34
+    - Quantidade Total de Parceiros:           33
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
@@ -442,58 +442,58 @@ BASE: DGO2
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   12,334 pacotes
   - Quantidade Total de Parceiros esperados:   149
-  - Quantidade Total de Parceiros Ativos:      42
-  - % de Attainment:                           28.2%
-  - Total de Pacotes Atendidos (Ativos):       2,679 pacotes
+  - Quantidade Total de Parceiros Ativos:      43
+  - % de Attainment:                           28.9%
+  - Total de Pacotes Atendidos (Ativos):       2,742 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DGO2_C1
-    - Quantidade Total de Parceiros:           79
-        • Ativos:                              28
-        • Onboarding:                          7
-        • Prospects a Aprovar:                 2
+    - Quantidade Total de Parceiros:           78
+        • Ativos:                              29
+        • Onboarding:                          6
+        • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 7
-        • Novos Parceiros:                     27
+        • Novos Parceiros:                     28
     - Volume Total de Demanda:                 4,709 pacotes
-    - % de Attainment:                         35.4%
+    - % de Attainment:                         37.2%
   Cluster: DGO2_C2
-    - Quantidade Total de Parceiros:           80
+    - Quantidade Total de Parceiros:           79
         • Ativos:                              14
         • Onboarding:                          2
         • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 5
-        • Novos Parceiros:                     58
-    - Volume Total de Demanda:                 5,470 pacotes
-    - % de Attainment:                         17.5%
+        • Novos Parceiros:                     57
+    - Volume Total de Demanda:                 5,400 pacotes
+    - % de Attainment:                         17.7%
 ================================================================================
 BASE: DMG2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   9,746 pacotes
-  - Quantidade Total de Parceiros esperados:   120
-  - Quantidade Total de Parceiros Ativos:      42
-  - % de Attainment:                           35.0%
-  - Total de Pacotes Atendidos (Ativos):       2,862 pacotes
+  - Quantidade Total de Parceiros esperados:   121
+  - Quantidade Total de Parceiros Ativos:      43
+  - % de Attainment:                           35.5%
+  - Total de Pacotes Atendidos (Ativos):       2,915 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DMG2_C1
     - Quantidade Total de Parceiros:           64
-        • Ativos:                              19
-        • Onboarding:                          3
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 11
-        • Novos Parceiros:                     24
-    - Volume Total de Demanda:                 3,948 pacotes
-    - % de Attainment:                         29.7%
-  Cluster: DMG2_C2
-    - Quantidade Total de Parceiros:           65
         • Ativos:                              23
         • Onboarding:                          2
         • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 7
-        • Novos Parceiros:                     28
-    - Volume Total de Demanda:                 4,307 pacotes
-    - % de Attainment:                         35.4%
+        • Novos Parceiros:                     27
+    - Volume Total de Demanda:                 4,262 pacotes
+    - % de Attainment:                         35.9%
+  Cluster: DMG2_C2
+    - Quantidade Total de Parceiros:           64
+        • Ativos:                              20
+        • Onboarding:                          3
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 10
+        • Novos Parceiros:                     26
+    - Volume Total de Demanda:                 4,028 pacotes
+    - % de Attainment:                         31.2%
 ================================================================================
 BASE: DPB3
 --------------------------------------------------------------------------------
@@ -506,81 +506,81 @@ BASE: DPB3
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DPB3_C1
-    - Quantidade Total de Parceiros:           128
+    - Quantidade Total de Parceiros:           127
         • Ativos:                              74
         • Onboarding:                          6
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
         • Novos Parceiros:                     40
     - Volume Total de Demanda:                 8,152 pacotes
-    - % de Attainment:                         57.8%
+    - % de Attainment:                         58.3%
 ================================================================================
 BASE: DPE4
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    3
   - Volume Total de Pacotes:                   21,960 pacotes
   - Quantidade Total de Parceiros esperados:   292
-  - Quantidade Total de Parceiros Ativos:      68
-  - % de Attainment:                           23.3%
-  - Total de Pacotes Atendidos (Ativos):       4,475 pacotes
+  - Quantidade Total de Parceiros Ativos:      67
+  - % de Attainment:                           22.9%
+  - Total de Pacotes Atendidos (Ativos):       4,406 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DPE4_C1
     - Quantidade Total de Parceiros:           101
-        • Ativos:                              12
+        • Ativos:                              11
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 3
+        • Inativos a Reativar:                 4
         • Novos Parceiros:                     84
     - Volume Total de Demanda:                 7,070 pacotes
-    - % de Attainment:                         11.9%
+    - % de Attainment:                         10.9%
   Cluster: DPE4_C2
     - Quantidade Total de Parceiros:           101
-        • Ativos:                              33
-        • Onboarding:                          5
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 5
-        • Novos Parceiros:                     49
-    - Volume Total de Demanda:                 5,901 pacotes
-    - % de Attainment:                         32.7%
-  Cluster: DPE4_C3
-    - Quantidade Total de Parceiros:           101
-        • Ativos:                              23
-        • Onboarding:                          3
+        • Ativos:                              22
+        • Onboarding:                          4
         • Prospects a Aprovar:                 3
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     68
+        • Novos Parceiros:                     69
     - Volume Total de Demanda:                 7,061 pacotes
-    - % de Attainment:                         22.8%
+    - % de Attainment:                         21.8%
+  Cluster: DPE4_C3
+    - Quantidade Total de Parceiros:           101
+        • Ativos:                              34
+        • Onboarding:                          5
+        • Prospects a Aprovar:                 2
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     48
+    - Volume Total de Demanda:                 5,922 pacotes
+    - % de Attainment:                         33.7%
 ================================================================================
 BASE: DPR2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   14,856 pacotes
-  - Quantidade Total de Parceiros esperados:   191
-  - Quantidade Total de Parceiros Ativos:      117
-  - % de Attainment:                           61.3%
-  - Total de Pacotes Atendidos (Ativos):       7,651 pacotes
+  - Quantidade Total de Parceiros esperados:   192
+  - Quantidade Total de Parceiros Ativos:      120
+  - % de Attainment:                           62.5%
+  - Total de Pacotes Atendidos (Ativos):       7,813 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DPR2_C1
-    - Quantidade Total de Parceiros:           103
-        • Ativos:                              69
-        • Onboarding:                          8
-        • Prospects a Aprovar:                 3
-        • Inativos a Reativar:                 7
-        • Novos Parceiros:                     9
-    - Volume Total de Demanda:                 6,152 pacotes
-    - % de Attainment:                         67.0%
-  Cluster: DPR2_C2
-    - Quantidade Total de Parceiros:           103
-        • Ativos:                              48
-        • Onboarding:                          7
-        • Prospects a Aprovar:                 5
+    - Quantidade Total de Parceiros:           101
+        • Ativos:                              47
+        • Onboarding:                          6
+        • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     40
-    - Volume Total de Demanda:                 6,828 pacotes
-    - % de Attainment:                         46.6%
+        • Novos Parceiros:                     44
+    - Volume Total de Demanda:                 6,798 pacotes
+    - % de Attainment:                         46.5%
+  Cluster: DPR2_C2
+    - Quantidade Total de Parceiros:           100
+        • Ativos:                              73
+        • Onboarding:                          7
+        • Prospects a Aprovar:                 2
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     7
+    - Volume Total de Demanda:                 5,973 pacotes
+    - % de Attainment:                         73.0%
 ================================================================================
 BASE: DRJ3
 --------------------------------------------------------------------------------
@@ -594,13 +594,13 @@ BASE: DRJ3
 DETALHAMENTO POR CLUSTER:
   Cluster: DRJ3_C1
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              0
+        • Ativos:                              1
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     32
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     30
     - Volume Total de Demanda:                 2,240 pacotes
-    - % de Attainment:                         0.0%
+    - % de Attainment:                         3.1%
   Cluster: DRJ3_C10
     - Quantidade Total de Parceiros:           32
         • Ativos:                              0
@@ -608,62 +608,62 @@ DETALHAMENTO POR CLUSTER:
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
         • Novos Parceiros:                     32
-    - Volume Total de Demanda:                 2,240 pacotes
+    - Volume Total de Demanda:                 2,215 pacotes
     - % de Attainment:                         0.0%
   Cluster: DRJ3_C11
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              2
+        • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     28
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     32
     - Volume Total de Demanda:                 2,240 pacotes
-    - % de Attainment:                         6.2%
+    - % de Attainment:                         0.0%
   Cluster: DRJ3_C12
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              13
-        • Onboarding:                          1
+        • Ativos:                              7
+        • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 6
-        • Novos Parceiros:                     12
-    - Volume Total de Demanda:                 1,971 pacotes
-    - % de Attainment:                         40.6%
+        • Novos Parceiros:                     19
+    - Volume Total de Demanda:                 2,189 pacotes
+    - % de Attainment:                         21.9%
   Cluster: DRJ3_C13
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              5
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     26
-    - Volume Total de Demanda:                 2,237 pacotes
-    - % de Attainment:                         15.6%
+        • Ativos:                              14
+        • Onboarding:                          2
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     11
+    - Volume Total de Demanda:                 1,951 pacotes
+    - % de Attainment:                         43.8%
   Cluster: DRJ3_C14
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              1
-        • Onboarding:                          1
+        • Ativos:                              3
+        • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
+        • Novos Parceiros:                     29
+    - Volume Total de Demanda:                 2,240 pacotes
+    - % de Attainment:                         9.4%
+  Cluster: DRJ3_C2
+    - Quantidade Total de Parceiros:           32
+        • Ativos:                              1
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
         • Novos Parceiros:                     30
     - Volume Total de Demanda:                 2,240 pacotes
     - % de Attainment:                         3.1%
-  Cluster: DRJ3_C2
-    - Quantidade Total de Parceiros:           32
-        • Ativos:                              5
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 2,187 pacotes
-    - % de Attainment:                         15.6%
   Cluster: DRJ3_C3
-    - Quantidade Total de Parceiros:           32
-        • Ativos:                              6
+    - Quantidade Total de Parceiros:           31
+        • Ativos:                              16
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     26
-    - Volume Total de Demanda:                 2,240 pacotes
-    - % de Attainment:                         18.8%
+        • Inativos a Reativar:                 7
+        • Novos Parceiros:                     2
+    - Volume Total de Demanda:                 1,460 pacotes
+    - % de Attainment:                         51.6%
   Cluster: DRJ3_C4
     - Quantidade Total de Parceiros:           32
         • Ativos:                              0
@@ -674,42 +674,33 @@ DETALHAMENTO POR CLUSTER:
     - Volume Total de Demanda:                 2,240 pacotes
     - % de Attainment:                         0.0%
   Cluster: DRJ3_C5
-    - Quantidade Total de Parceiros:           32
-        • Ativos:                              0
+    - Quantidade Total de Parceiros:           31
+        • Ativos:                              5
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     32
-    - Volume Total de Demanda:                 2,240 pacotes
-    - % de Attainment:                         0.0%
+        • Inativos a Reativar:                 2
+        • Novos Parceiros:                     24
+    - Volume Total de Demanda:                 2,141 pacotes
+    - % de Attainment:                         16.1%
   Cluster: DRJ3_C6
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              16
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 7
-        • Novos Parceiros:                     2
-    - Volume Total de Demanda:                 1,460 pacotes
-    - % de Attainment:                         50.0%
-  Cluster: DRJ3_C7
-    - Quantidade Total de Parceiros:           32
-        • Ativos:                              0
+        • Ativos:                              4
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     32
-    - Volume Total de Demanda:                 2,215 pacotes
-    - % de Attainment:                         0.0%
-  Cluster: DRJ3_C8
+        • Novos Parceiros:                     28
+    - Volume Total de Demanda:                 2,239 pacotes
+    - % de Attainment:                         12.5%
+  Cluster: DRJ3_C7
     - Quantidade Total de Parceiros:           32
-        • Ativos:                              9
+        • Ativos:                              6
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 5
-        • Novos Parceiros:                     18
-    - Volume Total de Demanda:                 2,171 pacotes
-    - % de Attainment:                         28.1%
-  Cluster: DRJ3_C9
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     26
+    - Volume Total de Demanda:                 2,240 pacotes
+    - % de Attainment:                         18.8%
+  Cluster: DRJ3_C8
     - Quantidade Total de Parceiros:           32
         • Ativos:                              0
         • Onboarding:                          0
@@ -718,27 +709,45 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     32
     - Volume Total de Demanda:                 2,237 pacotes
     - % de Attainment:                         0.0%
+  Cluster: DRJ3_C9
+    - Quantidade Total de Parceiros:           32
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     32
+    - Volume Total de Demanda:                 2,240 pacotes
+    - % de Attainment:                         0.0%
 ================================================================================
 BASE: DRS5
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    3
   - Volume Total de Pacotes:                   19,034 pacotes
-  - Quantidade Total de Parceiros esperados:   240
+  - Quantidade Total de Parceiros esperados:   241
   - Quantidade Total de Parceiros Ativos:      44
   - % de Attainment:                           18.3%
   - Total de Pacotes Atendidos (Ativos):       2,831 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DRS5_C1
-    - Quantidade Total de Parceiros:           84
+    - Quantidade Total de Parceiros:           83
         • Ativos:                              12
         • Onboarding:                          2
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     69
-    - Volume Total de Demanda:                 5,879 pacotes
-    - % de Attainment:                         14.3%
+        • Novos Parceiros:                     68
+    - Volume Total de Demanda:                 5,809 pacotes
+    - % de Attainment:                         14.5%
   Cluster: DRS5_C2
+    - Quantidade Total de Parceiros:           83
+        • Ativos:                              23
+        • Onboarding:                          4
+        • Prospects a Aprovar:                 3
+        • Inativos a Reativar:                 3
+        • Novos Parceiros:                     43
+    - Volume Total de Demanda:                 4,798 pacotes
+    - % de Attainment:                         27.7%
+  Cluster: DRS5_C3
     - Quantidade Total de Parceiros:           84
         • Ativos:                              9
         • Onboarding:                          2
@@ -747,15 +756,6 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     69
     - Volume Total de Demanda:                 5,850 pacotes
     - % de Attainment:                         10.7%
-  Cluster: DRS5_C3
-    - Quantidade Total de Parceiros:           83
-        • Ativos:                              23
-        • Onboarding:                          4
-        • Prospects a Aprovar:                 4
-        • Inativos a Reativar:                 3
-        • Novos Parceiros:                     41
-    - Volume Total de Demanda:                 4,709 pacotes
-    - % de Attainment:                         27.7%
 ================================================================================
 BASE: DSA8
 --------------------------------------------------------------------------------
@@ -768,136 +768,118 @@ BASE: DSA8
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DSA8_C1
-    - Quantidade Total de Parceiros:           76
+    - Quantidade Total de Parceiros:           75
         • Ativos:                              9
         • Onboarding:                          4
-        • Prospects a Aprovar:                 2
+        • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 2
-        • Novos Parceiros:                     52
-    - Volume Total de Demanda:                 4,650 pacotes
-    - % de Attainment:                         11.8%
+        • Novos Parceiros:                     53
+    - Volume Total de Demanda:                 4,635 pacotes
+    - % de Attainment:                         12.0%
   Cluster: DSA8_C2
-    - Quantidade Total de Parceiros:           77
+    - Quantidade Total de Parceiros:           76
         • Ativos:                              6
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     70
-    - Volume Total de Demanda:                 5,365 pacotes
-    - % de Attainment:                         7.8%
+        • Novos Parceiros:                     69
+    - Volume Total de Demanda:                 5,314 pacotes
+    - % de Attainment:                         7.9%
 ================================================================================
 BASE: DSP2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    8
   - Volume Total de Pacotes:                   17,122 pacotes
-  - Quantidade Total de Parceiros esperados:   238
+  - Quantidade Total de Parceiros esperados:   235
   - Quantidade Total de Parceiros Ativos:      143
-  - % de Attainment:                           60.1%
-  - Total de Pacotes Atendidos (Ativos):       9,455 pacotes
+  - % de Attainment:                           60.9%
+  - Total de Pacotes Atendidos (Ativos):       9,464 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DSP2_C1
     - Quantidade Total de Parceiros:           30
-        • Ativos:                              27
-        • Onboarding:                          3
+        • Ativos:                              10
+        • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     0
-    - Volume Total de Demanda:                 1,951 pacotes
-    - % de Attainment:                         90.0%
+        • Novos Parceiros:                     19
+    - Volume Total de Demanda:                 2,099 pacotes
+    - % de Attainment:                         33.3%
   Cluster: DSP2_C2
+    - Quantidade Total de Parceiros:           30
+        • Ativos:                              26
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     3
+    - Volume Total de Demanda:                 2,054 pacotes
+    - % de Attainment:                         86.7%
+  Cluster: DSP2_C3
     - Quantidade Total de Parceiros:           31
-        • Ativos:                              4
+        • Ativos:                              3
         • Onboarding:                          0
         • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 2,162 pacotes
-    - % de Attainment:                         12.9%
-  Cluster: DSP2_C3
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     27
+    - Volume Total de Demanda:                 2,161 pacotes
+    - % de Attainment:                         9.7%
+  Cluster: DSP2_C4
+    - Quantidade Total de Parceiros:           30
+        • Ativos:                              18
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 2
+        • Novos Parceiros:                     4
+    - Volume Total de Demanda:                 1,279 pacotes
+    - % de Attainment:                         60.0%
+  Cluster: DSP2_C5
     - Quantidade Total de Parceiros:           31
         • Ativos:                              18
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 3
         • Novos Parceiros:                     9
-    - Volume Total de Demanda:                 2,104 pacotes
+    - Volume Total de Demanda:                 2,106 pacotes
     - % de Attainment:                         58.1%
-  Cluster: DSP2_C4
-    - Quantidade Total de Parceiros:           31
+  Cluster: DSP2_C6
+    - Quantidade Total de Parceiros:           30
+        • Ativos:                              29
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     0
+    - Volume Total de Demanda:                 1,951 pacotes
+    - % de Attainment:                         96.7%
+  Cluster: DSP2_C7
+    - Quantidade Total de Parceiros:           30
         • Ativos:                              19
         • Onboarding:                          4
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 2
-        • Novos Parceiros:                     5
-    - Volume Total de Demanda:                 2,154 pacotes
-    - % de Attainment:                         61.3%
-  Cluster: DSP2_C5
-    - Quantidade Total de Parceiros:           31
-        • Ativos:                              21
+        • Novos Parceiros:                     4
+    - Volume Total de Demanda:                 2,077 pacotes
+    - % de Attainment:                         63.3%
+  Cluster: DSP2_C8
+    - Quantidade Total de Parceiros:           30
+        • Ativos:                              20
         • Onboarding:                          2
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     5
-    - Volume Total de Demanda:                 2,094 pacotes
-    - % de Attainment:                         67.7%
-  Cluster: DSP2_C6
-    - Quantidade Total de Parceiros:           31
-        • Ativos:                              27
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
+        • Inativos a Reativar:                 3
         • Novos Parceiros:                     4
-    - Volume Total de Demanda:                 2,099 pacotes
-    - % de Attainment:                         87.1%
-  Cluster: DSP2_C7
-    - Quantidade Total de Parceiros:           30
-        • Ativos:                              18
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     3
-    - Volume Total de Demanda:                 1,229 pacotes
-    - % de Attainment:                         60.0%
-  Cluster: DSP2_C8
-    - Quantidade Total de Parceiros:           31
-        • Ativos:                              9
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 2,167 pacotes
-    - % de Attainment:                         29.0%
+    - Volume Total de Demanda:                 2,044 pacotes
+    - % de Attainment:                         66.7%
 ================================================================================
 BASE: DSP4
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    8
   - Volume Total de Pacotes:                   17,180 pacotes
   - Quantidade Total de Parceiros esperados:   230
-  - Quantidade Total de Parceiros Ativos:      31
-  - % de Attainment:                           13.5%
-  - Total de Pacotes Atendidos (Ativos):       2,100 pacotes
+  - Quantidade Total de Parceiros Ativos:      30
+  - % de Attainment:                           13.0%
+  - Total de Pacotes Atendidos (Ativos):       2,030 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Cluster: DSP4_C1
-    - Quantidade Total de Parceiros:           30
-        • Ativos:                              2
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     28
-    - Volume Total de Demanda:                 2,088 pacotes
-    - % de Attainment:                         6.7%
-  Cluster: DSP4_C2
-    - Quantidade Total de Parceiros:           29
-        • Ativos:                              1
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     28
-    - Volume Total de Demanda:                 2,014 pacotes
-    - % de Attainment:                         3.4%
-  Cluster: DSP4_C3
     - Quantidade Total de Parceiros:           30
         • Ativos:                              5
         • Onboarding:                          0
@@ -906,7 +888,43 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     25
     - Volume Total de Demanda:                 2,088 pacotes
     - % de Attainment:                         16.7%
+  Cluster: DSP4_C2
+    - Quantidade Total de Parceiros:           30
+        • Ativos:                              9
+        • Onboarding:                          2
+        • Prospects a Aprovar:                 1
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     18
+    - Volume Total de Demanda:                 1,998 pacotes
+    - % de Attainment:                         30.0%
+  Cluster: DSP4_C3
+    - Quantidade Total de Parceiros:           30
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     28
+    - Volume Total de Demanda:                 2,088 pacotes
+    - % de Attainment:                         6.7%
   Cluster: DSP4_C4
+    - Quantidade Total de Parceiros:           29
+        • Ativos:                              3
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     26
+    - Volume Total de Demanda:                 2,007 pacotes
+    - % de Attainment:                         10.3%
+  Cluster: DSP4_C5
+    - Quantidade Total de Parceiros:           29
+        • Ativos:                              3
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     20
+    - Volume Total de Demanda:                 1,498 pacotes
+    - % de Attainment:                         10.3%
+  Cluster: DSP4_C6
     - Quantidade Total de Parceiros:           30
         • Ativos:                              2
         • Onboarding:                          0
@@ -915,24 +933,6 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     28
     - Volume Total de Demanda:                 2,092 pacotes
     - % de Attainment:                         6.7%
-  Cluster: DSP4_C5
-    - Quantidade Total de Parceiros:           29
-        • Ativos:                              3
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     19
-    - Volume Total de Demanda:                 1,407 pacotes
-    - % de Attainment:                         10.3%
-  Cluster: DSP4_C6
-    - Quantidade Total de Parceiros:           30
-        • Ativos:                              3
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     27
-    - Volume Total de Demanda:                 2,055 pacotes
-    - % de Attainment:                         10.0%
   Cluster: DSP4_C7
     - Quantidade Total de Parceiros:           30
         • Ativos:                              5
@@ -943,14 +943,14 @@ DETALHAMENTO POR CLUSTER:
     - Volume Total de Demanda:                 2,089 pacotes
     - % de Attainment:                         16.7%
   Cluster: DSP4_C8
-    - Quantidade Total de Parceiros:           30
-        • Ativos:                              10
-        • Onboarding:                          2
-        • Prospects a Aprovar:                 1
+    - Quantidade Total de Parceiros:           29
+        • Ativos:                              1
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     17
-    - Volume Total de Demanda:                 2,023 pacotes
-    - % de Attainment:                         33.3%
+        • Novos Parceiros:                     28
+    - Volume Total de Demanda:                 1,995 pacotes
+    - % de Attainment:                         3.4%
 ================================================================================
 BASE: DSP5
 --------------------------------------------------------------------------------
@@ -981,24 +981,15 @@ DETALHAMENTO POR CLUSTER:
     - Volume Total de Demanda:                 1,871 pacotes
     - % de Attainment:                         7.4%
   Cluster: DSP5_C3
-    - Quantidade Total de Parceiros:           27
+    - Quantidade Total de Parceiros:           26
         • Ativos:                              14
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
         • Novos Parceiros:                     5
     - Volume Total de Demanda:                 1,244 pacotes
-    - % de Attainment:                         51.9%
+    - % de Attainment:                         53.8%
   Cluster: DSP5_C4
-    - Quantidade Total de Parceiros:           27
-        • Ativos:                              4
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     23
-    - Volume Total de Demanda:                 1,841 pacotes
-    - % de Attainment:                         14.8%
-  Cluster: DSP5_C5
     - Quantidade Total de Parceiros:           27
         • Ativos:                              5
         • Onboarding:                          1
@@ -1007,4 +998,13 @@ DETALHAMENTO POR CLUSTER:
         • Novos Parceiros:                     21
     - Volume Total de Demanda:                 1,818 pacotes
     - % de Attainment:                         18.5%
+  Cluster: DSP5_C5
+    - Quantidade Total de Parceiros:           27
+        • Ativos:                              4
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     23
+    - Volume Total de Demanda:                 1,841 pacotes
+    - % de Attainment:                         14.8%
 ================================================================================

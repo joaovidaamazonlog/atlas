@@ -117,7 +117,7 @@ const DataManager = {
     optimizationDataAggregate: function() {
         if (!AppState.optimizationData) return null;
         AppState.allMarkersData.filter(p => p.status === "Active").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesfoce_id === partner.salesforce_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
@@ -132,7 +132,7 @@ const DataManager = {
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesfoce_id === partner.salesforce_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
@@ -147,7 +147,7 @@ const DataManager = {
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesfoce_id === partner.salesforce_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
@@ -162,7 +162,7 @@ const DataManager = {
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesfoce_id === partner.salesforce_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
@@ -177,9 +177,9 @@ const DataManager = {
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
-            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesfoce_id === partner.salesforce_id)
+            const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.delivery_station = optimizationInfo.properties.station
+                partner.delivery_station = optimizationInfo.properties.station_code
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {

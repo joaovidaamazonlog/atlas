@@ -119,7 +119,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Active").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.cluster = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -134,7 +134,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.cluster = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -149,7 +149,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.cluster = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -164,7 +164,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.cluster = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -180,7 +180,7 @@ const DataManager = {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.delivery_station = optimizationInfo.properties.station_code
-                partner.cluster = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.cluster;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -797,17 +797,17 @@ const UIManager = {
 
     populateFilters: function() {
         const stations = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
-        const supplyRunsFilter = document.getElementById('supplyRun');
+        const bucketsFilter = document.getElementById('bucket_ade');
         const stationFilter = document.getElementById('stationFilter');
         const initiativesFilter = document.getElementById('initiativesFilter');
 
         stationFilter.innerHTML = '';
-        supplyRunsFilter.innerHTML = '';
+        bucketsFilter.innerHTML = '';
         initiativesFilter.innerHTML = '';
 
         stationFilter.innerHTML += `<option value="all" selected>Todos</option>`;
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
-        supplyRunsFilter.innerHTML += `<option value="all">Todos</option>`;
+        bucketsFilter.innerHTML += `<option value="all">Todos</option>`;
 
         // Preencher iniciativas dinamicamente
         const initiativesRaw = AppState.allMarkersData.map(m => m.hub_delivey_initiatives);
@@ -828,27 +828,27 @@ const UIManager = {
         }
 
         // Função para atualizar supply runs dinamicamente
-        function updateSupplyRunsOptions() {
+        function updateBucketsOptions() {
             const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-            let filteredSupplyRuns;
+            let filteredbuckets;
             if (selectedStations.includes('all')) {
-                filteredSupplyRuns = [...new Set(AppState.allMarkersData.map(m => m.supply_run).filter(Boolean))];
+                filteredbuckets = [...new Set(AppState.allMarkersData.map(m => m.bucket_ade).filter(Boolean))];
             } else {
-                filteredSupplyRuns = [...new Set(
+                filteredbuckets = [...new Set(
                     AppState.allMarkersData
                         .filter(m => selectedStations.includes(m.delivery_station))
-                        .map(m => m.supply_run)
+                        .map(m => m.bucket_ade)
                         .filter(Boolean)
                 )];
             }
-            supplyRunsFilter.innerHTML = `<option value="all">Todos</option>`;
-            filteredSupplyRuns.forEach(s => supplyRunsFilter.innerHTML += `<option value="${s}">${s}</option>`);
+            bucketsFilter.innerHTML = `<option value="all">Todos</option>`;
+            filteredbuckets.forEach(s => bucketsFilter.innerHTML += `<option value="${s}">${s}</option>`);
         }
 
-        // Atualiza supply runs ao mudar a seleção de Delivery Station
-        stationFilter.addEventListener('change', updateSupplyRunsOptions);
+        // Atualiza os Buckets ao mudar a seleção de Delivery Station
+        stationFilter.addEventListener('change', updateBucketsOptions);
 
-        updateSupplyRunsOptions();
+        updateBucketsOptions();
     },
 
     setupAutocomplete: function() {

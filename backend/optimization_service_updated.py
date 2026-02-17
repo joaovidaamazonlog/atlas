@@ -186,7 +186,7 @@ class ReportGenerator:
                     f.write(f"      📦 Carteira: {stat.cluster_name}\n")
                     f.write(f"          - Demanda Total da Área:   {stat.total_demand} pacotes\n")
                     f.write(f"          - Qtd Parceiros esperados: {len(stat.partners)}\n")
-                    f.write(f"          - Qtd Parceiros Ativos:    {len(stat.active_partners)}\n")
+                    f.write(f"          - Qtd Parceiros Ativos:    {stat.active_partners}\n")
                     
                     # Listar parceiros novos (Oportunidades)
                     new_pts = [p for p in stat.partners if p.entity_type == "NEW PARTNER"]
@@ -237,19 +237,22 @@ class ReportGenerator:
                     "geometry": {"type": "Point", "coordinates": [p.lon, p.lat]},
                     "properties": {
                         "type": "PARTNER_POINT",
+                        "salesfoce_id": p.salesforce_id,
                         "name": p.partner_name,
                         "status": p.status,
                         "entity": p.entity_type,
                         "station": p.station_code,
                         "cluster_bdm": p.bdm_cluster,
                         "ctl": p.ctl_name,
+                        "decision": p.decision,
                         "bucket_ade": p.cluster_name,
-                        "load": p.total_load,
+                        "cap_suggestion": p.capacity_s,
+                        "radius_suggestion": p.radius_s,
                         "ceps": list(ceps)[:5]
                     }
                 })
 
-        filename = self.dest / "optimization_v2.geojson"
+        filename = self.dest / "optimization_data.geojson"
         with open(filename, "w", encoding="utf-8") as f:
             json.dump({"type": "FeatureCollection", "features": features}, f, ensure_ascii=False, indent=2)
         print(f"✅ GeoJSON salvo em {filename}")
@@ -506,7 +509,11 @@ class OptimizationService:
                     best_allocs, best_total, best_rad = allocs, total, r["radius_s"]
                     if total >= Config.MAX_CAP: break
             if best_total >= Config.MIN_CAP:
-                results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=best_rad, capacity_s=Config.MAX_CAP, entity_type="EXISTING", status=target_status, partner_name=str(p.partner_name), lat=float(p.lat), lon=float(p.lon), allocations=best_allocs))
+                results.append(PartnerMetrics(
+                    origin_hex=p.origin_hex, station_code=base, radius_s=best_rad, capacity_s=Config.MAX_CAP, 
+                    decision="No optimization suggestions" if p.radius == r["radius_s"] and p.capacity == Config.MAX_CAP else "Optimization suggested", 
+                    entity_type="EXISTING", status=target_status, partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id),
+                    lat=float(p.lat), lon=float(p.lon), allocations=best_allocs))
                 for a in best_allocs: res_dem[a.hex_id] -= a.packages_assigned
         return results
 
@@ -529,7 +536,9 @@ class OptimizationService:
                     for a in allocs: res_dem[a.hex_id] -= a.packages_assigned
                     break
             if not decision: decision = "Fora da área de atuacao"
-            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="INACTIVE_EXITED", status=str(p.status), partner_name=str(p.partner_name), decision=decision, lat=float(p.lat), lon=float(p.lon), allocations=allocs))
+            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="INACTIVE_EXITED", 
+                                          status=str(p.status), partner_name=str(p.partner_name),salesforce_id=str(p.salesforce_id), decision=decision, 
+                                          lat=float(p.lat), lon=float(p.lon), allocations=allocs))
         return results
 
     def _evaluate_prospects(self, base: str, res_dem: Dict[str, int]) -> List[PartnerMetrics]:
@@ -553,7 +562,9 @@ class OptimizationService:
                     for a in allocs: res_dem[a.hex_id] -= a.packages_assigned
                     break
             if not decision: decision = "Pouca volumetria na area de atuacao"
-            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="PROSPECT", status="Prospect", partner_name=str(p.partner_name), decision=decision, lat=float(p.lat), lon=float(p.lon), allocations=allocs))
+            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="PROSPECT", 
+                                          status="Prospect", partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), decision=decision, 
+                                          lat=float(p.lat), lon=float(p.lon), allocations=allocs))
         return results
     
     def _get_base_from_jurisdiction(self, lat: float, lon: float) -> Optional[str]:
@@ -582,7 +593,7 @@ class OptimizationService:
                 results.append(
                     PartnerMetrics(
                         origin_hex=p.origin_hex, station_code="", radius_s=0, capacity_s=0, entity_type="INACTIVE_EXITED",
-                        status=str(p.status), partner_name=str(p.partner_name), 
+                        status=str(p.status), partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), 
                         decision="Fora da area de atuacao", lat=float(p.lat), lon=float(p.lon), 
                         allocations=[]
                 ))
@@ -634,7 +645,22 @@ class OptimizationService:
             else:
                 for h in orig_dem.keys(): final_hex_map[h] = "UNASSIGNED"
 
-            m = BaseMetrics(total_demand=sum(orig_dem.values()), existing_absorbed=sum(p.total_load for p in p_active), prospect_reserved=sum(p.total_load for p in p_prospects if p.decision == "Seguir cadastro"), inactive_reserved=sum(p.total_load for p in p_inactives if p.decision == "Reativar cadastro"), new_allocated=sum(p.total_load for p in p_new), residual=sum(res_dem.values()), active_partners_count=len(p_active), onboarding_partners_count=len(p_onboarding), inactive_partners_count=len([p for p in p_inactives if p.decision == "Reativar cadastro"]), vetting_partners_count=len(p_bg), new_partners_count=len(p_new), avg_load=(sum(p.total_load for p in p_new)/len(p_new)) if p_new else 0, avg_radius=(sum(p.radius_s for p in p_new)/len(p_new)) if p_new else 0, cluster_count=len(cluster_metrics), avg_partners_per_cluster=len(all_final)/len(cluster_metrics) if cluster_metrics else 0)
+            m = BaseMetrics(
+                total_demand=sum(orig_dem.values()), 
+                existing_absorbed=sum(p.total_load for p in p_active), 
+                prospect_reserved=sum(p.total_load for p in p_prospects if p.decision == "Seguir cadastro"), 
+                inactive_reserved=sum(p.total_load for p in p_inactives if p.decision == "Reativar cadastro"), 
+                new_allocated=sum(p.total_load for p in p_new), 
+                residual=sum(res_dem.values()), 
+                active_partners_count=len(p_active), 
+                onboarding_partners_count=len(p_onboarding), 
+                inactive_partners_count=len([p for p in p_inactives if p.decision == "Reativar cadastro"]), 
+                vetting_partners_count=len(p_bg), new_partners_count=len(p_new), 
+                avg_load=(sum(p.total_load for p in p_new)/len(p_new)) if p_new else 0, 
+                avg_radius=(sum(p.radius_s for p in p_new)/len(p_new)) if p_new else 0, 
+                cluster_count=len(cluster_metrics), 
+                avg_partners_per_cluster=len(all_final)/len(cluster_metrics) if cluster_metrics else 0
+            )
             
             self.reports.append(OptimizationReport(
                 station_code=base, 

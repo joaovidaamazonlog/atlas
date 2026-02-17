@@ -232,7 +232,7 @@ const DataManager = {
         document.getElementById('statusFilter').value = 'all';
         document.getElementById('initiativesFilter').value = 'all';
         document.getElementById('jurisdictionFilter').value = 'all';
-        document.getElementById('supplyRun').value = 'all';
+        document.getElementById('bucket_ade').value = 'all';
         const stationFilter = document.getElementById('stationFilter');
         Array.from(stationFilter.options).forEach(opt => opt.selected = (opt.value === 'all'));
 

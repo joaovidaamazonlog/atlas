@@ -1525,21 +1525,15 @@ const UIManager = {
         this.createCard('FDDS', `${(fddsMean.toFixed(1)*100)}%`, goals.fdds, container);
         this.createCard('FTDS', `${(ftdsMean.toFixed(1)*100)}%`, goals.ftds, container);
 
-        const tableData = data.map(p => ({...p, ...p.main_store_data}));
+        const tableData = data.map(p => ({...p, ...p}));
         new Tabulator("#performance-table", {
             data: tableData, layout: "fitColumns", height: "400px", placeholder: "Nenhum dado para exibir com os filtros atuais.",
             columns: [
                 { title: "Store ID", field: "store_id"}, 
                 { title: "Store Name", field: "name", width: 200},
                 { title: "D. Station", field: "delivery_station" }, 
-                { title: "ADV", field: "ADV" },
-                { title: "Dispatched Packages", field: "dispatched_packages"},
-                { title: "Delivered Packages", field: "delivered_packages"},
-                { title: "DEA", field: "dea"},
-                { title: "EAD", field: "ead"},
-                { title: "DCR", field: "dcr"},
-                { title: "FDDS", field: "fdds"},
-                { title: "FTDS", field: "ftds"},
+                { title: "Bucket", field: "bucket_ade" },
+                { title: "Status", field: "status" },
             ],
         });
     },
@@ -1598,7 +1592,7 @@ const UIManager = {
             height: "400px",
             placeholder: "Nenhum dado para exibir com os filtros atuais.",
             columns: [
-                { title: "Polígono", field: "polygon" },
+                { title: "Bucket", field: "polygon" },
                 { title: "D. Station", field: "delivery_station" },
                 { title: "Ativos", field: "active_partners" },
                 { title: "Onboarding", field: "onboarding_partners" },

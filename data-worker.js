@@ -36,7 +36,7 @@ self.onmessage = function(e) {
             }
 
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;
-            const bucketsMatch = bucket_ade === 'all' || marker.bucket_ade === bucketsFilter;
+            const bucketsMatch = bucketsFilter === 'all' || marker.bucket_ade === bucketsFilter;
 
             return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && bucketsMatch;
         });

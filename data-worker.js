@@ -10,7 +10,7 @@ self.onmessage = function(e) {
             selectedStations, 
             initiativesFilter, 
             jurisdictionFilter, 
-            supplyRun 
+            bucket_ade 
         } = filters;
         
         const statusAllSelected = selectedStatuses.includes('all');
@@ -36,9 +36,9 @@ self.onmessage = function(e) {
             }
 
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;
-            const supplyRunMatch = supplyRun === 'all' || marker.supply_run === supplyRun;
+            const bucketsMatch = bucket_ade === 'all' || marker.bucket_ade === bucket_ade;
 
-            return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && supplyRunMatch;
+            return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && bucketsMatch;
         });
 
         // Retorna o resultado para a Main Thread

@@ -224,6 +224,9 @@ const DataManager = {
             jurisdictionFilter: document.getElementById('jurisdictionFilter').value
         };
 
+        if (filters.selectedStatuses.includes('all')) filters.selectedStatuses = 'all';
+        if (filters.selectedStations.includes('all')) filters.selectedStations = 'all';
+
         // Envia os dados para o Worker. A UI continua livre para interação!
         dataWorker.postMessage({ action: 'filter', filters });
     },
@@ -827,7 +830,7 @@ const UIManager = {
             initiativesFilter.innerHTML += `<option value="null">Não alocado</option>`;
         }
 
-        // Função para atualizar supply runs dinamicamente
+        // Função para atualizar buckets dinamicamente
         function updateBucketsOptions() {
             const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
             let filteredbuckets;

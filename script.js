@@ -119,7 +119,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Active").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -134,7 +134,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -149,7 +149,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -164,7 +164,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -180,7 +180,7 @@ const DataManager = {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.delivery_station = optimizationInfo.properties.station_code
-                partner.bucket_ade = optimizationInfo.properties.cluster;
+                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,

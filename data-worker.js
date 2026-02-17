@@ -10,7 +10,7 @@ self.onmessage = function(e) {
             selectedStations, 
             initiativesFilter, 
             jurisdictionFilter, 
-            bucket_ade 
+            bucketsFilter 
         } = filters;
         
         const statusAllSelected = selectedStatuses.includes('all');
@@ -36,7 +36,7 @@ self.onmessage = function(e) {
             }
 
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;
-            const bucketsMatch = bucket_ade === 'all' || marker.bucket_ade === bucket_ade;
+            const bucketsMatch = bucket_ade === 'all' || marker.bucket_ade === bucketsFilter;
 
             return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && bucketsMatch;
         });

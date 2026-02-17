@@ -237,7 +237,7 @@ class ReportGenerator:
                     "geometry": {"type": "Point", "coordinates": [p.lon, p.lat]},
                     "properties": {
                         "type": "PARTNER_POINT",
-                        "salesfoce_id": p.salesforce_id,
+                        "salesforce_id": p.salesforce_id,
                         "name": p.partner_name,
                         "status": p.status,
                         "entity": p.entity_type,

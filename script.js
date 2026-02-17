@@ -179,7 +179,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesfoce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.delivery_station = optimizationInfo.properties.station_code
+                partner.delivery_station = optimizationInfo.properties.station
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {

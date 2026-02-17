@@ -220,7 +220,7 @@ const DataManager = {
             selectedStatuses: Array.from(document.getElementById('statusFilter').selectedOptions).map(opt => opt.value),
             selectedStations: Array.from(document.getElementById('stationFilter').selectedOptions).map(opt => opt.value),
             initiativesFilter: document.getElementById('initiativesFilter').value,
-            supplyRun: document.getElementById('supplyRun').value,
+            supplyRun: document.getElementById('bucket_ade').value,
             jurisdictionFilter: document.getElementById('jurisdictionFilter').value
         };
 

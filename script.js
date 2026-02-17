@@ -1525,7 +1525,7 @@ const UIManager = {
         this.createCard('FDDS', `${(fddsMean.toFixed(1)*100)}%`, goals.fdds, container);
         this.createCard('FTDS', `${(ftdsMean.toFixed(1)*100)}%`, goals.ftds, container);
 
-        const tableData = data.map(p => ({...p, ...p}));
+        const tableData = data.map(p => ({...p}));
         new Tabulator("#performance-table", {
             data: tableData, layout: "fitColumns", height: "400px", placeholder: "Nenhum dado para exibir com os filtros atuais.",
             columns: [

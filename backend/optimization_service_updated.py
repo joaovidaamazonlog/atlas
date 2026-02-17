@@ -289,6 +289,36 @@ class ReportGenerator:
                     f.write(f"    - % de Attainment:                         {cluster_data.attainment_percentage:.1f}%\n")
                 f.write("="*80 + "\n")
         print(f"✅ Relatório executivo salvo em: {path}")
+        
+    def generate_partners_csv(self, reports: List[OptimizationReport]):
+        """Gera um CSV detalhando os parceiros por Estação e Bucket."""
+        filename = self.dest / "PARTNERS_PER_DS_BUCKET.csv"
+        
+        # Cabeçalhos solicitados
+        fieldnames = ["station_code", "bucket", "status", "salesforce_id", "partner_name"]
+        
+        try:
+            with open(filename, "w", encoding="utf-8", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for rep in reports:
+                    # Iteramos pelos clusters (buckets) definidos no relatório da base
+                    for cluster_name, cluster_data in rep.cluster_metrics.items():
+                        for p in cluster_data.partners:
+                            if p.status in ["Active", "Onboarding", "BG Checks"]:
+                                writer.writerow({
+                                    "station_code": rep.station_code,
+                                    "bucket": cluster_name,
+                                    "status": p.status,
+                                    "salesforce_id": p.salesforce_id,
+                                    "partner_name": p.partner_name,
+                                    "store_id": p.store_id
+                                })
+                            
+            print(f"✅ CSV de parceiros por bucket salvo em {filename}")
+        except Exception as e:
+            print(f"❌ Erro ao gerar CSV de parceiros: {e}")
 
 # =====================================================
 # WORKER DO SOLVER (PARALELISMO)
@@ -495,26 +525,66 @@ class OptimizationService:
 
     def _allocate_existing_by_status(self, base: str, res_dem: Dict[str, int], target_status: str) -> List[PartnerMetrics]:
         results = []
+        MIN_LIMIT = 40
+        MAX_LIMIT = 70
         subset = self.partners_df[(self.partners_df.status == target_status) & (self.partners_df.station_code == base)]
+        
         for _, p in subset.iterrows():
-            best_allocs, best_total, best_rad = [], 0, 0
+            best_allocs = []
+            chosen_cap = 0
+            chosen_rad = 0
+            found_ideal = False
+            actual_rad = getattr(p, 'radius_a', 0)
+            actual_cap = getattr(p, 'capacity_a', 0)
             for r in Config.RADII:
                 in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
-                allocs, total = [], 0
-                for h in sorted(in_r, key=lambda x: h3.grid_distance(x, p.origin_hex)):
-                    take = min(res_dem[h], Config.MAX_CAP - total)
-                    if take > 0: allocs.append(Allocation(hex_id=h, packages_assigned=take))
-                    total += take
-                if total >= Config.MIN_CAP:
-                    best_allocs, best_total, best_rad = allocs, total, r["radius_s"]
-                    if total >= Config.MAX_CAP: break
-            if best_total >= Config.MIN_CAP:
-                results.append(PartnerMetrics(
-                    origin_hex=p.origin_hex, station_code=base, radius_s=best_rad, capacity_s=Config.MAX_CAP, 
-                    decision="No optimization suggestions" if p.radius == r["radius_s"] and p.capacity == Config.MAX_CAP else "Optimization suggested", 
-                    entity_type="EXISTING", status=target_status, partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id),
-                    lat=float(p.lat), lon=float(p.lon), allocations=best_allocs))
-                for a in best_allocs: res_dem[a.hex_id] -= a.packages_assigned
+                total_available = sum(res_dem[h] for h in in_r)
+                
+                if total_available >= MIN_LIMIT:
+                    chosen_rad = r["radius_s"]
+                    chosen_cap = min(total_available, MAX_LIMIT)
+                    found_ideal = True
+                    break 
+            if not found_ideal:
+                max_r_config = Config.RADII[-1]
+                chosen_rad = max_r_config["radius_s"]
+                in_max_r = [h for h in h3.grid_disk(p.origin_hex, max_r_config["hex_distance"]) if res_dem.get(h, 0) > 0]
+                chosen_cap = sum(res_dem[h] for h in in_max_r)
+            if chosen_cap < MIN_LIMIT:
+                decision_str = "Max Available (Below Min)"
+            elif (chosen_rad != actual_rad) or (chosen_cap != actual_cap):
+                decision_str = "Optimization suggested"
+            else:
+                decision_str = "No optimization suggestions"
+            target_hex_dist = next(rad['hex_distance'] for rad in Config.RADII if rad['radius_s'] == chosen_rad)
+            available_hexes = [h for h in h3.grid_disk(p.origin_hex, target_hex_dist) if res_dem.get(h, 0) > 0]
+            
+            current_total = 0
+            for h in sorted(available_hexes, key=lambda x: h3.grid_distance(x, p.origin_hex)):
+                take = min(res_dem[h], chosen_cap - current_total)
+                if take > 0:
+                    best_allocs.append(Allocation(hex_id=h, packages_assigned=take))
+                    current_total += take
+                if current_total >= chosen_cap:
+                    break
+            results.append(PartnerMetrics(
+                origin_hex=p.origin_hex, 
+                station_code=base, 
+                radius_s=chosen_rad, 
+                capacity_s=chosen_cap, 
+                decision=decision_str, 
+                entity_type="EXISTING", 
+                status=target_status, 
+                partner_name=str(p.partner_name), 
+                salesforce_id=str(p.salesforce_id),
+                lat=float(p.lat), 
+                lon=float(p.lon), 
+                allocations=best_allocs
+            ))
+            
+            for a in best_allocs:
+                res_dem[a.hex_id] -= a.packages_assigned
+                    
         return results
 
     def _evaluate_inactive_exited(self, base, res_dem):
@@ -679,6 +749,7 @@ class OptimizationService:
         rg.generate_strategic_txt(self.reports, self.hex_to_ceps)
         rg.generate_geojson(self.reports, self.hex_to_ceps)
         rg.executive_report(self.reports)
+        rg.generate_partners_csv(self.reports)
 
 if __name__ == "__main__":
     try: OptimizationService().run()

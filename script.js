@@ -600,7 +600,7 @@ const PolygonManager = {
             let count = 0;
             AppState.optimizationLayer.eachLayer(layer => {
                 if (this.selectedPolygons.has(L.stamp(layer))) {
-                    soma += layer.feature.properties['demanda_total'] || 0;
+                    soma += layer.feature.properties['demand'] || 0;
                     count++;
                 }
             });
@@ -732,7 +732,7 @@ const PolygonManager = {
             ? AppState.optimizationData.features.filter(f => f.geometry.type === 'Polygon')
             : AppState.optimizationData.features.filter(f => (selectedStations.includes(f.properties.delivery_station) && f.geometry.type === 'Polygon'));
 
-        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demanda_total'] || 0));
+        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand'] || 0));
         function getColor(demanda) {
             if (maxDemanda === 0) return '#e74c3c';
             const t = Math.max(0, Math.min(1, demanda / maxDemanda));
@@ -745,7 +745,7 @@ const PolygonManager = {
         AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
             style: f => ({
-                color: getColor(f.properties['demanda_total']),
+                color: getColor(f.properties['demand']),
                 weight: 1,
                 fillOpacity: 0.3
             }),

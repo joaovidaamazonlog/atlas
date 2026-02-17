@@ -210,7 +210,7 @@ class ReportGenerator:
             # 1. Polígonos das Carteiras
             for h, bucket_name in rep.hex_to_cluster.items():
                 demand_info = rep.demand_summary.get(h)
-                if demand_info and demand_info["total"] > 0:
+                if demand_info and demand_info["residual"] > 0:
                     boundary = h3.cell_to_boundary(h)
                     coords = [[c[1], c[0]] for c in boundary]; coords.append(coords[0])
                     ts = rep.cluster_metrics.get(bucket_name)
@@ -223,7 +223,7 @@ class ReportGenerator:
                             "bucket": bucket_name,
                             "ctl": ts.ctl_name if ts else "N/A",
                             "bdm": rep.bdm_cluster,
-                            "demand": demand_info["total"]
+                            "demand": demand_info["residual"]
                         }
                     })
 

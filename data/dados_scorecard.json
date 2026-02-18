@@ -13,30 +13,30 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 6859,
-            "percentual": 53.79607843137255
+            "atingido": 6860,
+            "percentual": 53.80392156862746
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 225,
-            "percentual": 77.58620689655173
+            "atingido": 230,
+            "percentual": 79.3103448275862
         },
         "conversoes": {
             "meta": 290.0,
-            "atingido": 169,
-            "percentual": 58.27586206896552
+            "atingido": 172,
+            "percentual": 59.310344827586206
         },
         "metricas_gerais": [
             {
                 "origem": "Cold Call",
                 "contatos": 4763,
-                "cadastros": 82,
-                "conversoes": 59,
-                "taxa_conversao": 71.95,
-                "taxa_cadastro": 1.72,
+                "cadastros": 84,
+                "conversoes": 60,
+                "taxa_conversao": 71.43,
+                "taxa_cadastro": 1.76,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.57,
+                "velocidade_score": 0.56,
                 "consistencia": 0.4,
                 "distribuicao_canais": 0.59,
                 "score_final": 0.73
@@ -44,28 +44,28 @@
             {
                 "origem": "In-Person Visit",
                 "contatos": 1370,
-                "cadastros": 23,
+                "cadastros": 24,
                 "conversoes": 20,
-                "taxa_conversao": 86.96,
-                "taxa_cadastro": 1.68,
+                "taxa_conversao": 83.33,
+                "taxa_cadastro": 1.75,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.55,
+                "velocidade_score": 0.53,
                 "consistencia": 0.22,
                 "distribuicao_canais": 0.35,
                 "score_final": 0.69
             },
             {
                 "origem": "Referral",
-                "contatos": 435,
-                "cadastros": 109,
-                "conversoes": 79,
-                "taxa_conversao": 72.48,
-                "taxa_cadastro": 25.06,
+                "contatos": 436,
+                "cadastros": 111,
+                "conversoes": 81,
+                "taxa_conversao": 72.97,
+                "taxa_cadastro": 25.46,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
                 "velocidade_score": 0.42,
-                "consistencia": 0.37,
+                "consistencia": 0.38,
                 "distribuicao_canais": 0.02,
                 "score_final": 0.68
             },
@@ -157,8 +157,8 @@
             "responsavel": "Breno Santos",
             "contatos": 311,
             "cadastros": 14,
-            "conversoes": 8,
-            "taxa_conversao": 57.14,
+            "conversoes": 9,
+            "taxa_conversao": 64.29,
             "taxa_cadastro": 4.5,
             "contatos_origem_Website Pardot Form": 22,
             "cadastros_origem_Website Pardot Form": 1,
@@ -170,7 +170,7 @@
             "cadastros_origem_Referral": 2,
             "volume_score_contatos": 0.6,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.53,
+            "velocidade_score": 0.54,
             "consistencia": 0.56,
             "distribuicao_canais": 0.7,
             "score_final": 0.83
@@ -266,10 +266,10 @@
         {
             "responsavel": "Eric Souza",
             "contatos": 126,
-            "cadastros": 5,
+            "cadastros": 6,
             "conversoes": 5,
-            "taxa_conversao": 100.0,
-            "taxa_cadastro": 3.97,
+            "taxa_conversao": 83.33,
+            "taxa_cadastro": 4.76,
             "contatos_origem_Website Pardot Form": 6,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 20,
@@ -277,20 +277,20 @@
             "contatos_origem_Cold Call": 91,
             "cadastros_origem_Cold Call": 2,
             "contatos_origem_Referral": 9,
-            "cadastros_origem_Referral": 3,
+            "cadastros_origem_Referral": 4,
             "volume_score_contatos": 0.34,
-            "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.28,
+            "volume_score_cadastros": 0.6,
+            "velocidade_score": 0.23,
             "consistencia": 0,
             "distribuicao_canais": 0.81,
-            "score_final": 0.42
+            "score_final": 0.47
         },
         {
             "responsavel": "Everton Martins",
             "contatos": 410,
             "cadastros": 17,
-            "conversoes": 13,
-            "taxa_conversao": 76.47,
+            "conversoes": 14,
+            "taxa_conversao": 82.35,
             "taxa_cadastro": 4.15,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 0,
@@ -397,25 +397,25 @@
         },
         {
             "responsavel": "Josimar Junior",
-            "contatos": 361,
-            "cadastros": 14,
+            "contatos": 362,
+            "cadastros": 15,
             "conversoes": 12,
-            "taxa_conversao": 85.71,
-            "taxa_cadastro": 3.88,
+            "taxa_conversao": 80.0,
+            "taxa_cadastro": 4.14,
             "contatos_origem_Website Pardot Form": 6,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 131,
             "cadastros_origem_In-Person Visit": 5,
             "contatos_origem_Cold Call": 187,
             "cadastros_origem_Cold Call": 0,
-            "contatos_origem_Referral": 37,
-            "cadastros_origem_Referral": 9,
+            "contatos_origem_Referral": 38,
+            "cadastros_origem_Referral": 10,
             "volume_score_contatos": 0.69,
             "volume_score_cadastros": 1,
-            "velocidade_score": 0.33,
-            "consistencia": 0.22,
+            "velocidade_score": 0.36,
+            "consistencia": 0.24,
             "distribuicao_canais": 0.91,
-            "score_final": 0.8
+            "score_final": 0.81
         },
         {
             "responsavel": "João Kowalski",
@@ -465,8 +465,8 @@
             "responsavel": "Lilian Mata",
             "contatos": 119,
             "cadastros": 19,
-            "conversoes": 17,
-            "taxa_conversao": 89.47,
+            "conversoes": 18,
+            "taxa_conversao": 94.74,
             "taxa_cadastro": 15.97,
             "contatos_origem_Website Pardot Form": 12,
             "cadastros_origem_Website Pardot Form": 0,
@@ -508,24 +508,24 @@
         {
             "responsavel": "Pedro Neto",
             "contatos": 210,
-            "cadastros": 6,
+            "cadastros": 7,
             "conversoes": 5,
-            "taxa_conversao": 83.33,
-            "taxa_cadastro": 2.86,
+            "taxa_conversao": 71.43,
+            "taxa_cadastro": 3.33,
             "contatos_origem_Website Pardot Form": 1,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 131,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 78,
-            "cadastros_origem_Cold Call": 6,
+            "cadastros_origem_Cold Call": 7,
             "contatos_origem_Referral": 0,
             "cadastros_origem_Referral": 0,
             "volume_score_contatos": 0.35,
-            "volume_score_cadastros": 0.6,
-            "velocidade_score": 0.49,
+            "volume_score_cadastros": 0.7,
+            "velocidade_score": 0.44,
             "consistencia": 0.38,
             "distribuicao_canais": 0.73,
-            "score_final": 0.54
+            "score_final": 0.59
         },
         {
             "responsavel": "Rafael Calçado ",
@@ -574,14 +574,14 @@
         {
             "responsavel": "Sidney Lima",
             "contatos": 353,
-            "cadastros": 14,
+            "cadastros": 15,
             "conversoes": 11,
-            "taxa_conversao": 78.57,
-            "taxa_cadastro": 3.97,
+            "taxa_conversao": 73.33,
+            "taxa_cadastro": 4.25,
             "contatos_origem_Website Pardot Form": 9,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 89,
-            "cadastros_origem_In-Person Visit": 1,
+            "cadastros_origem_In-Person Visit": 2,
             "contatos_origem_Cold Call": 211,
             "cadastros_origem_Cold Call": 3,
             "contatos_origem_Referral": 44,
@@ -1215,7 +1215,7 @@
             "data_contato": "2026-02-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Hold"
+            "status": "Not Interested"
         },
         {
             "id": 60,
@@ -2005,7 +2005,7 @@
             "data_contato": "2026-02-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 139,
@@ -2313,9 +2313,9 @@
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
             "data_contato": "2026-01-22",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-18",
             "data_conversao": null,
-            "status": "Working"
+            "status": "BG Checks"
         },
         {
             "id": 170,
@@ -2604,8 +2604,8 @@
             "origem": "Referral",
             "data_contato": "2026-01-19",
             "data_cadastro": "2026-02-10",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-18",
+            "status": "Converted"
         },
         {
             "id": 199,
@@ -36959,7 +36959,7 @@
         },
         {
             "id": 3634,
-            "lead": "Carvalho",
+            "lead": "PAULO CESAR DE CARVALHO JUNIOR",
             "responsavel": "Desligado",
             "origem": "Cold Call",
             "data_contato": "2026-01-30",
@@ -41754,8 +41754,8 @@
             "origem": "Cold Call",
             "data_contato": "2026-02-03",
             "data_cadastro": "2026-02-13",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-18",
+            "status": "Converted"
         },
         {
             "id": 4114,
@@ -43553,9 +43553,9 @@
             "responsavel": "Sidney Lima",
             "origem": "In-Person Visit",
             "data_contato": "2026-02-03",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-18",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 4294,
@@ -53253,9 +53253,9 @@
             "responsavel": "Eric Souza",
             "origem": "Referral",
             "data_contato": "2026-02-09",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-18",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 5264,
@@ -54725,7 +54725,7 @@
             "data_contato": "2026-02-09",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Hold"
         },
         {
             "id": 5411,
@@ -60644,8 +60644,8 @@
             "origem": "Referral",
             "data_contato": "2026-02-11",
             "data_cadastro": "2026-02-12",
-            "data_conversao": null,
-            "status": "BG Checks"
+            "data_conversao": "2026-02-18",
+            "status": "Converted"
         },
         {
             "id": 6003,
@@ -61645,7 +61645,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6103,
@@ -61683,9 +61683,9 @@
             "responsavel": "Desligado",
             "origem": "Cold Call",
             "data_contato": "2026-02-12",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-18",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 6107,
@@ -61835,7 +61835,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6122,
@@ -63175,7 +63175,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6256,
@@ -64375,7 +64375,7 @@
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6376,
@@ -64855,7 +64855,7 @@
             "data_contato": "2026-02-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6424,
@@ -65305,7 +65305,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6469,
@@ -65335,7 +65335,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6472,
@@ -65365,7 +65365,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6475,
@@ -65535,7 +65535,7 @@
             "data_contato": "2026-02-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6492,
@@ -65555,7 +65555,7 @@
             "data_contato": "2026-02-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6494,
@@ -66085,7 +66085,7 @@
             "data_contato": "2026-02-13",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Hold"
+            "status": "Not Interested"
         },
         {
             "id": 6547,
@@ -66369,6 +66369,16 @@
         },
         {
             "id": 6575,
+            "lead": "Girlene Da Silva Goncalves",
+            "responsavel": "Josimar Junior",
+            "origem": "Referral",
+            "data_contato": "2026-02-16",
+            "data_cadastro": "2026-02-17",
+            "data_conversao": null,
+            "status": "BG Checks"
+        },
+        {
+            "id": 6576,
             "lead": "Jose Celio",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -66378,7 +66388,7 @@
             "status": "New"
         },
         {
-            "id": 6576,
+            "id": 6577,
             "lead": "Indira",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -66388,7 +66398,7 @@
             "status": "New"
         },
         {
-            "id": 6577,
+            "id": 6578,
             "lead": "Izandra dos Santos Garra",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -66398,7 +66408,7 @@
             "status": "New"
         },
         {
-            "id": 6578,
+            "id": 6579,
             "lead": "Wallison Galvão",
             "responsavel": "Wagner Silva",
             "origem": "Referral",
@@ -66408,7 +66418,7 @@
             "status": "Hold"
         },
         {
-            "id": 6579,
+            "id": 6580,
             "lead": "Claudeilson da Silva Tavares",
             "responsavel": "Helena Melo",
             "origem": "Referral",
@@ -66418,7 +66428,7 @@
             "status": "Hold"
         },
         {
-            "id": 6580,
+            "id": 6581,
             "lead": "Luis Baptista",
             "responsavel": "Breno Santos",
             "origem": "Website Pardot Form",
@@ -66428,7 +66438,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6581,
+            "id": 6582,
             "lead": "Regina Celia Barbosa",
             "responsavel": "Helena Melo",
             "origem": "Website Pardot Form",
@@ -66438,7 +66448,7 @@
             "status": "Hold"
         },
         {
-            "id": 6582,
+            "id": 6583,
             "lead": "PEDRO OLIVEIRA",
             "responsavel": "Breno Santos",
             "origem": "Website Pardot Form",
@@ -66448,7 +66458,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6583,
+            "id": 6584,
             "lead": "Katia Cristina De Lima",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66458,7 +66468,7 @@
             "status": "New"
         },
         {
-            "id": 6584,
+            "id": 6585,
             "lead": "Josefa Aldeonora",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66468,7 +66478,7 @@
             "status": "New"
         },
         {
-            "id": 6585,
+            "id": 6586,
             "lead": "Wilhiams NA",
             "responsavel": "Everton Martins",
             "origem": "Referral",
@@ -66478,7 +66488,7 @@
             "status": "Exited"
         },
         {
-            "id": 6586,
+            "id": 6587,
             "lead": "Patrick de Souza",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -66488,7 +66498,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6587,
+            "id": 6588,
             "lead": "Rafaela Rodrigues",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -66498,7 +66508,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6588,
+            "id": 6589,
             "lead": "Giselia Menezes Kelly",
             "responsavel": "Everton Martins",
             "origem": "Referral",
@@ -66508,7 +66518,7 @@
             "status": "BG Checks"
         },
         {
-            "id": 6589,
+            "id": 6590,
             "lead": "Douglas Mendes",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -66518,7 +66528,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6590,
+            "id": 6591,
             "lead": "ranier NA",
             "responsavel": "Everton Martins",
             "origem": "Referral",
@@ -66528,7 +66538,7 @@
             "status": "Exited"
         },
         {
-            "id": 6591,
+            "id": 6592,
             "lead": "Bruno Andre",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66538,7 +66548,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6592,
+            "id": 6593,
             "lead": "ranier NA",
             "responsavel": "Everton Martins",
             "origem": "Referral",
@@ -66548,7 +66558,7 @@
             "status": "Exited"
         },
         {
-            "id": 6593,
+            "id": 6594,
             "lead": "Erick de Souza",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66558,7 +66568,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6594,
+            "id": 6595,
             "lead": "Roberto Lima de carvalho",
             "responsavel": "Aline Melo",
             "origem": "Website Pardot Form",
@@ -66568,7 +66578,7 @@
             "status": "Working"
         },
         {
-            "id": 6595,
+            "id": 6596,
             "lead": "Italla Dos Santos",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66578,7 +66588,7 @@
             "status": "New"
         },
         {
-            "id": 6596,
+            "id": 6597,
             "lead": "Tercio Dantas",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66588,7 +66598,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6597,
+            "id": 6598,
             "lead": "Regina Tereza",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66598,7 +66608,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6598,
+            "id": 6599,
             "lead": "Angela Gaeta",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66608,7 +66618,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6599,
+            "id": 6600,
             "lead": "Sergio Oliveira",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66618,7 +66628,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6600,
+            "id": 6601,
             "lead": "Maria Rosangela",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66628,7 +66638,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6601,
+            "id": 6602,
             "lead": "Lucinalva Ramos",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66638,7 +66648,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6602,
+            "id": 6603,
             "lead": "Jaqueline Goncalves",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66648,7 +66658,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6603,
+            "id": 6604,
             "lead": "Cynthia de Fatima",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66658,7 +66668,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6604,
+            "id": 6605,
             "lead": "Roberia Vital",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66668,7 +66678,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6605,
+            "id": 6606,
             "lead": "Lucas Dourado",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66678,7 +66688,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6606,
+            "id": 6607,
             "lead": "Roberta Francisca",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66688,7 +66698,7 @@
             "status": "New"
         },
         {
-            "id": 6607,
+            "id": 6608,
             "lead": "Valter Bezerra",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66698,7 +66708,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6608,
+            "id": 6609,
             "lead": "DANIELA BEATRIZ DOS SANTOS",
             "responsavel": "Desligado",
             "origem": "Referral",
@@ -66708,7 +66718,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6609,
+            "id": 6610,
             "lead": "Thardife Vieira",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66718,7 +66728,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6610,
+            "id": 6611,
             "lead": "Ana Paula Barbosa",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66728,7 +66738,7 @@
             "status": "New"
         },
         {
-            "id": 6611,
+            "id": 6612,
             "lead": "Fabio De Lucena",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66738,7 +66748,7 @@
             "status": "New"
         },
         {
-            "id": 6612,
+            "id": 6613,
             "lead": "Matheus da Silva Teixeira",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -66748,7 +66758,7 @@
             "status": "New"
         },
         {
-            "id": 6613,
+            "id": 6614,
             "lead": "Rafael Valois",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66758,7 +66768,7 @@
             "status": "New"
         },
         {
-            "id": 6614,
+            "id": 6615,
             "lead": "Luana Maria",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66768,7 +66778,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6615,
+            "id": 6616,
             "lead": "Agnaldo Gonçalves Gamero Gamero",
             "responsavel": "Helena Melo",
             "origem": "Website Pardot Form",
@@ -66778,7 +66788,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6616,
+            "id": 6617,
             "lead": "Raquel dos Santos",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66788,7 +66798,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6617,
+            "id": 6618,
             "lead": "Fernando Wanderley",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66798,7 +66808,7 @@
             "status": "New"
         },
         {
-            "id": 6618,
+            "id": 6619,
             "lead": "Laiza Farias",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66808,7 +66818,7 @@
             "status": "New"
         },
         {
-            "id": 6619,
+            "id": 6620,
             "lead": "Ygor Eulalio",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66818,7 +66828,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6620,
+            "id": 6621,
             "lead": "Jose Vieira",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66828,7 +66838,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6621,
+            "id": 6622,
             "lead": "Sergio Lopes",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66838,7 +66848,7 @@
             "status": "New"
         },
         {
-            "id": 6622,
+            "id": 6623,
             "lead": "Magna de Fontes",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66848,7 +66858,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6623,
+            "id": 6624,
             "lead": "Anunciada Da Silva",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66858,7 +66868,7 @@
             "status": "New"
         },
         {
-            "id": 6624,
+            "id": 6625,
             "lead": "Josimar Soares da Silveira",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -66868,7 +66878,7 @@
             "status": "New"
         },
         {
-            "id": 6625,
+            "id": 6626,
             "lead": "Gustavo Rodrigo",
             "responsavel": "Everton Martins",
             "origem": "Cold Call",
@@ -66878,7 +66888,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6626,
+            "id": 6627,
             "lead": "Maria Luiza Dos Santos",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66888,7 +66898,7 @@
             "status": "New"
         },
         {
-            "id": 6627,
+            "id": 6628,
             "lead": "Maria da Paz Ferreira",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66898,7 +66908,7 @@
             "status": "New"
         },
         {
-            "id": 6628,
+            "id": 6629,
             "lead": "Luciana Ramos",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -66908,7 +66918,7 @@
             "status": "New"
         },
         {
-            "id": 6629,
+            "id": 6630,
             "lead": "Marcio",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
@@ -66918,7 +66928,7 @@
             "status": "New"
         },
         {
-            "id": 6630,
+            "id": 6631,
             "lead": "Antonio Pereira",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66928,7 +66938,7 @@
             "status": "New"
         },
         {
-            "id": 6631,
+            "id": 6632,
             "lead": "GUINCHE AUTO SOCORRO SILVA NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -66938,7 +66948,7 @@
             "status": "New"
         },
         {
-            "id": 6632,
+            "id": 6633,
             "lead": "Diego",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
@@ -66948,7 +66958,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6633,
+            "id": 6634,
             "lead": "Maria Augusta Soares",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66958,7 +66968,7 @@
             "status": "New"
         },
         {
-            "id": 6634,
+            "id": 6635,
             "lead": "Jayanderson Freira",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66968,7 +66978,7 @@
             "status": "New"
         },
         {
-            "id": 6635,
+            "id": 6636,
             "lead": "Isabela",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
@@ -66978,7 +66988,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6636,
+            "id": 6637,
             "lead": "Aline Gestoso",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -66988,7 +66998,7 @@
             "status": "New"
         },
         {
-            "id": 6637,
+            "id": 6638,
             "lead": "FABRICIO",
             "responsavel": "Helena Melo",
             "origem": "Cold Call",
@@ -66998,7 +67008,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6638,
+            "id": 6639,
             "lead": "Henrique",
             "responsavel": "Aline Melo",
             "origem": "Referral",
@@ -67008,7 +67018,7 @@
             "status": "Hold"
         },
         {
-            "id": 6639,
+            "id": 6640,
             "lead": "Hudson Guerrero",
             "responsavel": "Helena Melo",
             "origem": "Referral",
@@ -67018,8 +67028,8 @@
             "status": "Hold"
         },
         {
-            "id": 6640,
-            "lead": "LETICIA",
+            "id": 6641,
+            "lead": "LETICIA CRISTINA RODRIGUES SILVA",
             "responsavel": "Helena Melo",
             "origem": "Referral",
             "data_contato": "2026-02-16",
@@ -67028,7 +67038,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6641,
+            "id": 6642,
             "lead": "Makylany Silva",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -67038,7 +67048,7 @@
             "status": "New"
         },
         {
-            "id": 6642,
+            "id": 6643,
             "lead": "Bruno",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
@@ -67048,7 +67058,7 @@
             "status": "Hold"
         },
         {
-            "id": 6643,
+            "id": 6644,
             "lead": "FELIPE",
             "responsavel": "Helena Melo",
             "origem": "Referral",
@@ -67058,7 +67068,7 @@
             "status": "Hold"
         },
         {
-            "id": 6644,
+            "id": 6645,
             "lead": "Suely Angelica",
             "responsavel": "Maria Silva",
             "origem": "Cold Call",
@@ -67068,17 +67078,17 @@
             "status": "New"
         },
         {
-            "id": 6645,
+            "id": 6646,
             "lead": "Andre Amatti",
             "responsavel": "Lilian Mata",
             "origem": "Cold Call",
             "data_contato": "2026-02-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6646,
+            "id": 6647,
             "lead": "VIVIANE FERREIRA DE MARCHI VIVIANE FERREIRA DE MARCHI",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67088,7 +67098,7 @@
             "status": "Working"
         },
         {
-            "id": 6647,
+            "id": 6648,
             "lead": "Jairo Donizetti Ribeiro de Faria Jairo Donizetti Ribeiro de Faria",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67098,7 +67108,7 @@
             "status": "Working"
         },
         {
-            "id": 6648,
+            "id": 6649,
             "lead": "Atila de Souza Seles Atila de Souza Seles",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67108,7 +67118,7 @@
             "status": "Working"
         },
         {
-            "id": 6649,
+            "id": 6650,
             "lead": "Daniel Roberto Benites Daniel Roberto Benites",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67118,7 +67128,7 @@
             "status": "Working"
         },
         {
-            "id": 6650,
+            "id": 6651,
             "lead": "Victor Rodrigues Rocha Santos Victor Rodrigues Rocha Santos",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67128,7 +67138,7 @@
             "status": "Working"
         },
         {
-            "id": 6651,
+            "id": 6652,
             "lead": "CRISTINA MATTOS PAROLINI CRISTINA MATTOS PAROLINI",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67138,7 +67148,7 @@
             "status": "Working"
         },
         {
-            "id": 6652,
+            "id": 6653,
             "lead": "Ederson Nascimento Ribeiro NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67148,7 +67158,7 @@
             "status": "New"
         },
         {
-            "id": 6653,
+            "id": 6654,
             "lead": "Ana",
             "responsavel": "Josimar Junior",
             "origem": "Referral",
@@ -67158,7 +67168,7 @@
             "status": "Exited"
         },
         {
-            "id": 6654,
+            "id": 6655,
             "lead": "PINTOR JOGO RAPIDO NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67168,7 +67178,7 @@
             "status": "New"
         },
         {
-            "id": 6655,
+            "id": 6656,
             "lead": "Orival de Jesus Goncalves Orival de Jesus Goncalves",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67178,7 +67188,7 @@
             "status": "Working"
         },
         {
-            "id": 6656,
+            "id": 6657,
             "lead": "Carlos",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67188,7 +67198,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6657,
+            "id": 6658,
             "lead": "Luciano Luciano",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67198,7 +67208,7 @@
             "status": "Working"
         },
         {
-            "id": 6658,
+            "id": 6659,
             "lead": "Dalila Dalila",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -67208,7 +67218,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6659,
+            "id": 6660,
             "lead": "ELAINE MELERO HEITZMANN ELAINE MELERO HEITZMANN",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67218,7 +67228,7 @@
             "status": "Working"
         },
         {
-            "id": 6660,
+            "id": 6661,
             "lead": "MATHEUS MARANI MATHEUS MARANI",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67228,7 +67238,7 @@
             "status": "Working"
         },
         {
-            "id": 6661,
+            "id": 6662,
             "lead": "Whoston Andreotty NA",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
@@ -67238,7 +67248,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6662,
+            "id": 6663,
             "lead": "Rafael na",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
@@ -67248,7 +67258,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6663,
+            "id": 6664,
             "lead": "Marcelo Vieira Marcelo Vieira",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67258,7 +67268,7 @@
             "status": "Working"
         },
         {
-            "id": 6664,
+            "id": 6665,
             "lead": "JUNIO BATISTA DE ALMEIDA NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67268,7 +67278,7 @@
             "status": "New"
         },
         {
-            "id": 6665,
+            "id": 6666,
             "lead": "Sabrina Alessandra de Souz Sabrina Alessandra de Souz",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67278,7 +67288,7 @@
             "status": "Working"
         },
         {
-            "id": 6666,
+            "id": 6667,
             "lead": "Michele Pires de Gouveia Michele Pires de Gouveia",
             "responsavel": "Caroline Lima",
             "origem": "Cold Call",
@@ -67288,7 +67298,7 @@
             "status": "Working"
         },
         {
-            "id": 6667,
+            "id": 6668,
             "lead": "Raimundo Nonato Meireles de Oliveira",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67298,7 +67308,7 @@
             "status": "New"
         },
         {
-            "id": 6668,
+            "id": 6669,
             "lead": "Emilva Pinheiro Soares Amorim NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67308,7 +67318,7 @@
             "status": "New"
         },
         {
-            "id": 6669,
+            "id": 6670,
             "lead": "Natalia Silva de Matos NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67318,7 +67328,7 @@
             "status": "New"
         },
         {
-            "id": 6670,
+            "id": 6671,
             "lead": "Mateus Moura Faria NA",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
@@ -67328,7 +67338,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6671,
+            "id": 6672,
             "lead": "Camilo de Lima Gobbi",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67338,7 +67348,7 @@
             "status": "New"
         },
         {
-            "id": 6672,
+            "id": 6673,
             "lead": "Adriano Rodrigues Gallarraga",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67348,7 +67358,7 @@
             "status": "New"
         },
         {
-            "id": 6673,
+            "id": 6674,
             "lead": "Clodoaldo Barros Pereira Filho NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67358,7 +67368,7 @@
             "status": "New"
         },
         {
-            "id": 6674,
+            "id": 6675,
             "lead": "Micheli Mendes Vila na",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
@@ -67368,7 +67378,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6675,
+            "id": 6676,
             "lead": "Luciene Pereira Souza",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67378,7 +67388,7 @@
             "status": "New"
         },
         {
-            "id": 6676,
+            "id": 6677,
             "lead": "Jomar Dos Santos Leal",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67388,7 +67398,7 @@
             "status": "New"
         },
         {
-            "id": 6677,
+            "id": 6678,
             "lead": "Marcelo",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67398,7 +67408,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6678,
+            "id": 6679,
             "lead": "Bianca Bianca",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -67408,28 +67418,18 @@
             "status": "Not Interested"
         },
         {
-            "id": 6679,
+            "id": 6680,
             "lead": "DANIELLY",
             "responsavel": "Bruno Silva",
             "origem": "Referral",
             "data_contato": "2026-02-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
-        },
-        {
-            "id": 6680,
-            "lead": "Joao",
-            "responsavel": "Breno Santos",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
+            "status": "Hold"
         },
         {
             "id": 6681,
-            "lead": "Cledson",
+            "lead": "Joao",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-16",
@@ -67439,7 +67439,7 @@
         },
         {
             "id": 6682,
-            "lead": "Leonardo",
+            "lead": "Cledson",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-16",
@@ -67449,196 +67449,6 @@
         },
         {
             "id": 6683,
-            "lead": "Maria Leandro Nobrega Izza NA",
-            "responsavel": "Allan Carvalho",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6684,
-            "lead": "Karolina Martins Lobo na",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6685,
-            "lead": "Berenice Loff",
-            "responsavel": "Brenda Souza",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6686,
-            "lead": "Frederico Gomes NA",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6687,
-            "lead": "Júlio Soares",
-            "responsavel": "João Kowalski",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6688,
-            "lead": "Maria Clara Cardoso Matos Silva NA",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6689,
-            "lead": "Lorrany Cristiny NA",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6690,
-            "lead": "Liciamara Barbosa Viana NA",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6691,
-            "lead": "Alessandra",
-            "responsavel": "Breno Santos",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6692,
-            "lead": "Nathalia NA",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6693,
-            "lead": "EDUARDO na",
-            "responsavel": "Fabiane Krampe",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6694,
-            "lead": "Dimitri Alcantara Teixeira Alves",
-            "responsavel": "Brenda Souza",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6695,
-            "lead": "Lays Alves Rodrigues NA",
-            "responsavel": "Allan Carvalho",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6696,
-            "lead": "Giovana Palermo Schifino",
-            "responsavel": "Brenda Souza",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6697,
-            "lead": "Adelina Flores",
-            "responsavel": "João Kowalski",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Not Interested"
-        },
-        {
-            "id": 6698,
-            "lead": "Eliomar Jose Cardoso Filho",
-            "responsavel": "Allan Carvalho",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6699,
-            "lead": "Juliana Oliveira da Mota",
-            "responsavel": "Allan Carvalho",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6700,
-            "lead": "Jailton Cerqueira De Oliveira",
-            "responsavel": "Cristiane Conceição",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6701,
-            "lead": "Joao Vitor Ribeiro NA",
-            "responsavel": "Allan Carvalho",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-16",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6702,
             "lead": "Leonardo",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67648,7 +67458,207 @@
             "status": "Not Interested"
         },
         {
+            "id": 6684,
+            "lead": "Maria Leandro Nobrega Izza NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6685,
+            "lead": "Karolina Martins Lobo na",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6686,
+            "lead": "Berenice Loff",
+            "responsavel": "Brenda Souza",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6687,
+            "lead": "Frederico Gomes NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6688,
+            "lead": "Júlio Soares",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6689,
+            "lead": "Maria Clara Cardoso Matos Silva NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6690,
+            "lead": "Lorrany Cristiny NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6691,
+            "lead": "Liciamara Barbosa Viana NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6692,
+            "lead": "Alessandra",
+            "responsavel": "Breno Santos",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6693,
+            "lead": "Nathalia NA",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6694,
+            "lead": "EDUARDO na",
+            "responsavel": "Fabiane Krampe",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6695,
+            "lead": "Dimitri Alcantara Teixeira Alves",
+            "responsavel": "Brenda Souza",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6696,
+            "lead": "Lays Alves Rodrigues NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6697,
+            "lead": "Giovana Palermo Schifino",
+            "responsavel": "Brenda Souza",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6698,
+            "lead": "Adelina Flores",
+            "responsavel": "João Kowalski",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6699,
+            "lead": "Eliomar Jose Cardoso Filho",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6700,
+            "lead": "Juliana Oliveira da Mota",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6701,
+            "lead": "Jailton Cerqueira De Oliveira",
+            "responsavel": "Cristiane Conceição",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6702,
+            "lead": "Joao Vitor Ribeiro NA",
+            "responsavel": "Allan Carvalho",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
             "id": 6703,
+            "lead": "Leonardo",
+            "responsavel": "Breno Santos",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-16",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6704,
             "lead": "Jose Carlos Fernandes Silva NA",
             "responsavel": "Allan Carvalho",
             "origem": "Cold Call",
@@ -67658,7 +67668,7 @@
             "status": "New"
         },
         {
-            "id": 6704,
+            "id": 6705,
             "lead": "Gabriella Roza de Freitas Ruoso",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67668,7 +67678,7 @@
             "status": "New"
         },
         {
-            "id": 6705,
+            "id": 6706,
             "lead": "Hailton Matos Dos Santos Silva",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67678,7 +67688,7 @@
             "status": "New"
         },
         {
-            "id": 6706,
+            "id": 6707,
             "lead": "Maria Pereira",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67688,7 +67698,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6707,
+            "id": 6708,
             "lead": "Valter Valter",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -67698,7 +67708,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6708,
+            "id": 6709,
             "lead": "Gerson da Silva Rodrigues",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67708,7 +67718,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6709,
+            "id": 6710,
             "lead": "Maria De Lourdes Oliveira De Jesus Cerqu",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67718,7 +67728,7 @@
             "status": "New"
         },
         {
-            "id": 6710,
+            "id": 6711,
             "lead": "Joao",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67728,7 +67738,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6711,
+            "id": 6712,
             "lead": "Michelle",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67738,7 +67748,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6712,
+            "id": 6713,
             "lead": "Jose Thiago Lopes Oliveira Pereira",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67748,7 +67758,7 @@
             "status": "New"
         },
         {
-            "id": 6713,
+            "id": 6714,
             "lead": "Jaqueline da Silva Nunes",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67758,7 +67768,7 @@
             "status": "New"
         },
         {
-            "id": 6714,
+            "id": 6715,
             "lead": "VIAGATO",
             "responsavel": "Rafael Calçado ",
             "origem": "Cold Call",
@@ -67768,7 +67778,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6715,
+            "id": 6716,
             "lead": "Henrique",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
@@ -67778,7 +67788,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6716,
+            "id": 6717,
             "lead": "Filipe Oliveira Santana",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67788,7 +67798,7 @@
             "status": "New"
         },
         {
-            "id": 6717,
+            "id": 6718,
             "lead": "Joao Vitor Silveira Souza",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67798,7 +67808,7 @@
             "status": "New"
         },
         {
-            "id": 6718,
+            "id": 6719,
             "lead": "VIGABYTES INFORMATICA",
             "responsavel": "Rafael Calçado ",
             "origem": "Cold Call",
@@ -67808,7 +67818,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6719,
+            "id": 6720,
             "lead": "CENTRAL INFORMATICA BH",
             "responsavel": "Rafael Calçado ",
             "origem": "Cold Call",
@@ -67818,7 +67828,7 @@
             "status": "Working"
         },
         {
-            "id": 6720,
+            "id": 6721,
             "lead": "Geovane Da Conceicao Menezes",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67828,7 +67838,7 @@
             "status": "New"
         },
         {
-            "id": 6721,
+            "id": 6722,
             "lead": "Ester Tavares Coelho",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67838,7 +67848,7 @@
             "status": "New"
         },
         {
-            "id": 6722,
+            "id": 6723,
             "lead": "Anderson Luis Mendes",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67848,7 +67858,7 @@
             "status": "New"
         },
         {
-            "id": 6723,
+            "id": 6724,
             "lead": "Andreia Pires do Rosario",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67858,7 +67868,7 @@
             "status": "New"
         },
         {
-            "id": 6724,
+            "id": 6725,
             "lead": "Gabriel Conceicao De Jesus",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67868,17 +67878,17 @@
             "status": "New"
         },
         {
-            "id": 6725,
+            "id": 6726,
             "lead": "Willian",
             "responsavel": "Lilian Mata",
             "origem": "Cold Call",
             "data_contato": "2026-02-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6726,
+            "id": 6727,
             "lead": "PORTAL 37",
             "responsavel": "Rafael Calçado ",
             "origem": "Cold Call",
@@ -67888,7 +67898,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6727,
+            "id": 6728,
             "lead": "Claudia Issler",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67898,7 +67908,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6728,
+            "id": 6729,
             "lead": "IRANI RODRIGUES DE SOUZA",
             "responsavel": "Rafael Calçado ",
             "origem": "Cold Call",
@@ -67908,7 +67918,7 @@
             "status": "Working"
         },
         {
-            "id": 6729,
+            "id": 6730,
             "lead": "Pedro Lucio Castro de Avila",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67918,7 +67928,7 @@
             "status": "New"
         },
         {
-            "id": 6730,
+            "id": 6731,
             "lead": "Carla Santos Silva De Jesus",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67928,7 +67938,7 @@
             "status": "New"
         },
         {
-            "id": 6731,
+            "id": 6732,
             "lead": "Leticia Almeida Sousa",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67938,7 +67948,7 @@
             "status": "New"
         },
         {
-            "id": 6732,
+            "id": 6733,
             "lead": "Íris Haniele",
             "responsavel": "Josimar Junior",
             "origem": "Referral",
@@ -67948,7 +67958,7 @@
             "status": "Hold"
         },
         {
-            "id": 6733,
+            "id": 6734,
             "lead": "Wilton Almeida Do Rosario",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67958,7 +67968,7 @@
             "status": "New"
         },
         {
-            "id": 6734,
+            "id": 6735,
             "lead": "Antonio Carlos dos Santos Alff",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67968,7 +67978,7 @@
             "status": "New"
         },
         {
-            "id": 6735,
+            "id": 6736,
             "lead": "Ricardo Santos Da Silva",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67978,7 +67988,7 @@
             "status": "New"
         },
         {
-            "id": 6736,
+            "id": 6737,
             "lead": "Jamile Galdino Dos Santos Rocha",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -67988,7 +67998,7 @@
             "status": "New"
         },
         {
-            "id": 6737,
+            "id": 6738,
             "lead": "Luara Gabriely Condota Izeppi",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -67998,7 +68008,7 @@
             "status": "New"
         },
         {
-            "id": 6738,
+            "id": 6739,
             "lead": "Felipe Brito Cerqueira",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68008,7 +68018,7 @@
             "status": "New"
         },
         {
-            "id": 6739,
+            "id": 6740,
             "lead": "Valeska Eva Assis Costa",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68018,7 +68028,7 @@
             "status": "New"
         },
         {
-            "id": 6740,
+            "id": 6741,
             "lead": "Matheus Alves",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68028,7 +68038,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6741,
+            "id": 6742,
             "lead": "Nivaldo Q Casaes Silva",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68038,7 +68048,7 @@
             "status": "New"
         },
         {
-            "id": 6742,
+            "id": 6743,
             "lead": "Everaldo dos Santos Melo",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -68048,7 +68058,7 @@
             "status": "New"
         },
         {
-            "id": 6743,
+            "id": 6744,
             "lead": "Mateus Costa",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68058,7 +68068,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6744,
+            "id": 6745,
             "lead": "Andres Santos",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68068,7 +68078,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6745,
+            "id": 6746,
             "lead": "Antonio Cesar Dos Reis Santos",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68078,7 +68088,7 @@
             "status": "New"
         },
         {
-            "id": 6746,
+            "id": 6747,
             "lead": "Marcus Silva",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68088,7 +68098,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6747,
+            "id": 6748,
             "lead": "Fernando Brito Uchoa Leal",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -68098,7 +68108,7 @@
             "status": "New"
         },
         {
-            "id": 6748,
+            "id": 6749,
             "lead": "Andreia Santana Rodrigues De Souza",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68108,7 +68118,7 @@
             "status": "New"
         },
         {
-            "id": 6749,
+            "id": 6750,
             "lead": "Leonardo Muhlen",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68118,7 +68128,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6750,
+            "id": 6751,
             "lead": "Maicol Preto Camargo",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -68128,7 +68138,7 @@
             "status": "New"
         },
         {
-            "id": 6751,
+            "id": 6752,
             "lead": "Cristina Lescano",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68138,7 +68148,7 @@
             "status": "Exited"
         },
         {
-            "id": 6752,
+            "id": 6753,
             "lead": "Tiago Bona",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68148,7 +68158,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6753,
+            "id": 6754,
             "lead": "Thaiane Freitas",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68158,7 +68168,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6754,
+            "id": 6755,
             "lead": "Itamar Neves",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68168,7 +68178,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6755,
+            "id": 6756,
             "lead": "Katya Alice Prates Rodrigues",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -68178,7 +68188,7 @@
             "status": "New"
         },
         {
-            "id": 6756,
+            "id": 6757,
             "lead": "Deivid Ribas",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68188,7 +68198,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6757,
+            "id": 6758,
             "lead": "Elisabete Izeppi",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -68198,7 +68208,7 @@
             "status": "New"
         },
         {
-            "id": 6758,
+            "id": 6759,
             "lead": "Raiana Santos Evangelista",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68208,7 +68218,7 @@
             "status": "New"
         },
         {
-            "id": 6759,
+            "id": 6760,
             "lead": "Jovanildo Alves Da Silva",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68218,7 +68228,7 @@
             "status": "New"
         },
         {
-            "id": 6760,
+            "id": 6761,
             "lead": "Adriano Soares",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68228,7 +68238,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6761,
+            "id": 6762,
             "lead": "Carlos Santos",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68238,7 +68248,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6762,
+            "id": 6763,
             "lead": "Rodrigo Silva",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68248,7 +68258,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6763,
+            "id": 6764,
             "lead": "Monica De Jesus Reis Santos",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68258,7 +68268,7 @@
             "status": "New"
         },
         {
-            "id": 6764,
+            "id": 6765,
             "lead": "Fabio Machado De Jesus",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68268,7 +68278,7 @@
             "status": "New"
         },
         {
-            "id": 6765,
+            "id": 6766,
             "lead": "Giane Engel",
             "responsavel": "João Kowalski",
             "origem": "Cold Call",
@@ -68278,7 +68288,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6766,
+            "id": 6767,
             "lead": "Jonatan Silva Lemos",
             "responsavel": "Cristiane Conceição",
             "origem": "Cold Call",
@@ -68288,7 +68298,7 @@
             "status": "New"
         },
         {
-            "id": 6767,
+            "id": 6768,
             "lead": "Berg Lima",
             "responsavel": "Maria Silva",
             "origem": "Referral",
@@ -68298,18 +68308,8 @@
             "status": "Prospect"
         },
         {
-            "id": 6768,
-            "lead": "Eduardo Costa",
-            "responsavel": "Everton Martins",
-            "origem": "Referral",
-            "data_contato": "2026-02-17",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "Exited"
-        },
-        {
             "id": 6769,
-            "lead": "Michel Alcantara",
+            "lead": "Eduardo Costa",
             "responsavel": "Everton Martins",
             "origem": "Referral",
             "data_contato": "2026-02-17",
@@ -68319,7 +68319,7 @@
         },
         {
             "id": 6770,
-            "lead": "Eduardo Costa",
+            "lead": "Michel Alcantara",
             "responsavel": "Everton Martins",
             "origem": "Referral",
             "data_contato": "2026-02-17",
@@ -68339,16 +68339,6 @@
         },
         {
             "id": 6772,
-            "lead": "DAVI LEONCIO DA SILVA CUSTODIO",
-            "responsavel": "Cícero Almeida",
-            "origem": "Referral",
-            "data_contato": "2026-02-17",
-            "data_cadastro": "2026-02-18",
-            "data_conversao": null,
-            "status": "BG Checks"
-        },
-        {
-            "id": 6773,
             "lead": "Eduardo Costa",
             "responsavel": "Everton Martins",
             "origem": "Referral",
@@ -68358,7 +68348,27 @@
             "status": "Exited"
         },
         {
+            "id": 6773,
+            "lead": "DAVI LEONCIO DA SILVA CUSTODIO",
+            "responsavel": "Cícero Almeida",
+            "origem": "Referral",
+            "data_contato": "2026-02-17",
+            "data_cadastro": "2026-02-18",
+            "data_conversao": null,
+            "status": "BG Checks"
+        },
+        {
             "id": 6774,
+            "lead": "Eduardo Costa",
+            "responsavel": "Everton Martins",
+            "origem": "Referral",
+            "data_contato": "2026-02-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Exited"
+        },
+        {
+            "id": 6775,
             "lead": "Katy Cabelo.peruca.salao",
             "responsavel": "Wagner Silva",
             "origem": "Referral",
@@ -68368,7 +68378,7 @@
             "status": "Working"
         },
         {
-            "id": 6775,
+            "id": 6776,
             "lead": "Camilo Barbosa",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -68378,7 +68388,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6776,
+            "id": 6777,
             "lead": "Roberto Laurentino",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -68388,7 +68398,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6777,
+            "id": 6778,
             "lead": "Michel Alcantara",
             "responsavel": "Everton Martins",
             "origem": "Referral",
@@ -68398,7 +68408,7 @@
             "status": "Exited"
         },
         {
-            "id": 6778,
+            "id": 6779,
             "lead": "Maria de Lourdes",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -68408,17 +68418,17 @@
             "status": "Prospect"
         },
         {
-            "id": 6779,
+            "id": 6780,
             "lead": "Simonelli",
             "responsavel": "Wagner Silva",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6780,
+            "id": 6781,
             "lead": "Joana de Jesus",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -68428,17 +68438,17 @@
             "status": "Prospect"
         },
         {
-            "id": 6781,
+            "id": 6782,
             "lead": "Werikson",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6782,
+            "id": 6783,
             "lead": "Leandra na",
             "responsavel": "Fabiane Krampe",
             "origem": "Cold Call",
@@ -68448,7 +68458,7 @@
             "status": "New"
         },
         {
-            "id": 6783,
+            "id": 6784,
             "lead": "Joliano Freitas",
             "responsavel": "Pedro Neto",
             "origem": "In-Person Visit",
@@ -68458,7 +68468,7 @@
             "status": "Working"
         },
         {
-            "id": 6784,
+            "id": 6785,
             "lead": "ANDRE LUIZ FONSECA JUNIOR",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68468,17 +68478,17 @@
             "status": "Prospect"
         },
         {
-            "id": 6785,
+            "id": 6786,
             "lead": "Roberto",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6786,
+            "id": 6787,
             "lead": "Sarah Silva",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -68488,7 +68498,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6787,
+            "id": 6788,
             "lead": "Roseli Bataglia",
             "responsavel": "Felipe Oliveira",
             "origem": "Referral",
@@ -68498,27 +68508,27 @@
             "status": "Prospect"
         },
         {
-            "id": 6788,
+            "id": 6789,
             "lead": "Henrique",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6789,
+            "id": 6790,
             "lead": "Debora",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6790,
+            "id": 6791,
             "lead": "Juliete Freitas",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -68528,57 +68538,57 @@
             "status": "Working"
         },
         {
-            "id": 6791,
+            "id": 6792,
             "lead": "Mary",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6792,
+            "id": 6793,
             "lead": "Marco",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6793,
+            "id": 6794,
             "lead": "Starlen",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6794,
+            "id": 6795,
             "lead": "Larissa",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6795,
+            "id": 6796,
             "lead": "Vanderleia",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6796,
+            "id": 6797,
             "lead": "João João",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68588,7 +68598,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6797,
+            "id": 6798,
             "lead": "Luciano Freitas",
             "responsavel": "Pedro Neto",
             "origem": "In-Person Visit",
@@ -68598,17 +68608,17 @@
             "status": "Working"
         },
         {
-            "id": 6798,
+            "id": 6799,
             "lead": "Lauracy",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6799,
+            "id": 6800,
             "lead": "Geórgia Geórgia",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68618,37 +68628,37 @@
             "status": "Not Interested"
         },
         {
-            "id": 6800,
+            "id": 6801,
             "lead": "Juliana",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6801,
+            "id": 6802,
             "lead": "Fabio",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6802,
+            "id": 6803,
             "lead": "Vicente",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6803,
+            "id": 6804,
             "lead": "Jandira Lira",
             "responsavel": "Pedro Neto",
             "origem": "In-Person Visit",
@@ -68658,17 +68668,17 @@
             "status": "Working"
         },
         {
-            "id": 6804,
+            "id": 6805,
             "lead": "Mariana",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6805,
+            "id": 6806,
             "lead": "Fabricio Fabricio",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68678,7 +68688,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6806,
+            "id": 6807,
             "lead": "Eurides Eurides",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68688,18 +68698,8 @@
             "status": "New"
         },
         {
-            "id": 6807,
-            "lead": "Maria",
-            "responsavel": "Breno Santos",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-17",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
-        },
-        {
             "id": 6808,
-            "lead": "Lediene",
+            "lead": "Maria",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
@@ -68709,26 +68709,36 @@
         },
         {
             "id": 6809,
+            "lead": "Lediene",
+            "responsavel": "Breno Santos",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6810,
             "lead": "Carlos",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6810,
+            "id": 6811,
             "lead": "Simone",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6811,
+            "id": 6812,
             "lead": "MARIO LUCIO SANTOS DE LIMA",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68738,7 +68748,7 @@
             "status": "New"
         },
         {
-            "id": 6812,
+            "id": 6813,
             "lead": "Zelina Zelina",
             "responsavel": "Pedro Neto",
             "origem": "In-Person Visit",
@@ -68748,27 +68758,27 @@
             "status": "Working"
         },
         {
-            "id": 6813,
+            "id": 6814,
             "lead": "Marcus",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6814,
+            "id": 6815,
             "lead": "Silvano",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6815,
+            "id": 6816,
             "lead": "Livia Santana",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -68778,28 +68788,18 @@
             "status": "Working"
         },
         {
-            "id": 6816,
+            "id": 6817,
             "lead": "Graziella",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
-        },
-        {
-            "id": 6817,
-            "lead": "Elizabeth",
-            "responsavel": "Breno Santos",
-            "origem": "Cold Call",
-            "data_contato": "2026-02-17",
-            "data_cadastro": null,
-            "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 6818,
-            "lead": "Rafael",
+            "lead": "Elizabeth",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
@@ -68809,16 +68809,26 @@
         },
         {
             "id": 6819,
+            "lead": "Rafael",
+            "responsavel": "Breno Santos",
+            "origem": "Cold Call",
+            "data_contato": "2026-02-17",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Not Interested"
+        },
+        {
+            "id": 6820,
             "lead": "Auxiliadora",
             "responsavel": "Breno Santos",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
-            "id": 6820,
+            "id": 6821,
             "lead": "Jessica .",
             "responsavel": "Felipe Duarte",
             "origem": "In-Person Visit",
@@ -68828,7 +68838,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6821,
+            "id": 6822,
             "lead": "Maria Odete da Costa",
             "responsavel": "Sidney Lima",
             "origem": "Cold Call",
@@ -68838,7 +68848,7 @@
             "status": "Hold"
         },
         {
-            "id": 6822,
+            "id": 6823,
             "lead": "Thalina Thalina",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68848,7 +68858,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6823,
+            "id": 6824,
             "lead": "Marcos Marcos",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68858,7 +68868,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6824,
+            "id": 6825,
             "lead": "Fabiana Fabiana",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68868,7 +68878,7 @@
             "status": "Working"
         },
         {
-            "id": 6825,
+            "id": 6826,
             "lead": "JEAN DE SOUSA GOMES",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68878,17 +68888,17 @@
             "status": "New"
         },
         {
-            "id": 6826,
+            "id": 6827,
             "lead": "Sergio",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6827,
+            "id": 6828,
             "lead": "Cileide Cileide",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68898,7 +68908,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6828,
+            "id": 6829,
             "lead": "Maria Maria",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68908,7 +68918,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6829,
+            "id": 6830,
             "lead": "Douglas Douglas",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68918,7 +68928,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6830,
+            "id": 6831,
             "lead": "João João",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68928,7 +68938,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6831,
+            "id": 6832,
             "lead": "CARLA ERICA SOARES DA SILVA",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68938,7 +68948,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6832,
+            "id": 6833,
             "lead": "MOISES DAVID LIMA DE OLIVEIRA",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -68948,27 +68958,27 @@
             "status": "New"
         },
         {
-            "id": 6833,
+            "id": 6834,
             "lead": "Danilo",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6834,
+            "id": 6835,
             "lead": "Ddenis",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6835,
+            "id": 6836,
             "lead": "Rodrigo",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
@@ -68978,7 +68988,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6836,
+            "id": 6837,
             "lead": "Rodrigues",
             "responsavel": "Aline Melo",
             "origem": "Cold Call",
@@ -68988,7 +68998,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6837,
+            "id": 6838,
             "lead": "Marcos Roberto Bitsch",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -68998,7 +69008,7 @@
             "status": "Prospect"
         },
         {
-            "id": 6838,
+            "id": 6839,
             "lead": "Tamiris Vicente da Veiga",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69008,7 +69018,7 @@
             "status": "New"
         },
         {
-            "id": 6839,
+            "id": 6840,
             "lead": "Daniele Rodrigues Toledo",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69018,7 +69028,7 @@
             "status": "New"
         },
         {
-            "id": 6840,
+            "id": 6841,
             "lead": "Nicholas Lins da Silveira Beccon de Oliveira",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69028,7 +69038,7 @@
             "status": "New"
         },
         {
-            "id": 6841,
+            "id": 6842,
             "lead": "Douglas Moreira da Silva",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69038,7 +69048,7 @@
             "status": "New"
         },
         {
-            "id": 6842,
+            "id": 6843,
             "lead": "Luisa Heineck Neves",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69048,7 +69058,7 @@
             "status": "New"
         },
         {
-            "id": 6843,
+            "id": 6844,
             "lead": "Maria Julia Brutto Guimaraes",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69058,7 +69068,7 @@
             "status": "New"
         },
         {
-            "id": 6844,
+            "id": 6845,
             "lead": "Devino Fracazzo Neto",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69068,7 +69078,7 @@
             "status": "New"
         },
         {
-            "id": 6845,
+            "id": 6846,
             "lead": "Sofia Antognoli Lerrer",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69078,7 +69088,7 @@
             "status": "New"
         },
         {
-            "id": 6846,
+            "id": 6847,
             "lead": "William Rafael Simon",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69088,7 +69098,7 @@
             "status": "New"
         },
         {
-            "id": 6847,
+            "id": 6848,
             "lead": "James Domingues Mendes Taiss",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69098,7 +69108,7 @@
             "status": "New"
         },
         {
-            "id": 6848,
+            "id": 6849,
             "lead": "Quelen Andrea Zancan Soares",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69108,7 +69118,7 @@
             "status": "New"
         },
         {
-            "id": 6849,
+            "id": 6850,
             "lead": "Saionara de Souza Vieira",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69118,7 +69128,7 @@
             "status": "New"
         },
         {
-            "id": 6850,
+            "id": 6851,
             "lead": "Roselaine da Luz Trisch",
             "responsavel": "Brenda Souza",
             "origem": "Cold Call",
@@ -69128,7 +69138,7 @@
             "status": "New"
         },
         {
-            "id": 6851,
+            "id": 6852,
             "lead": "Barbara Silva",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -69138,7 +69148,7 @@
             "status": "Working"
         },
         {
-            "id": 6852,
+            "id": 6853,
             "lead": "Julimar Cruz",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -69148,17 +69158,17 @@
             "status": "Working"
         },
         {
-            "id": 6853,
+            "id": 6854,
             "lead": "Francisco Aldemar Barbosa Neto",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
             "data_contato": "2026-02-17",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
-            "id": 6854,
+            "id": 6855,
             "lead": "Fernando Lima",
             "responsavel": "Pedro Neto",
             "origem": "In-Person Visit",
@@ -69168,7 +69178,7 @@
             "status": "Not Interested"
         },
         {
-            "id": 6855,
+            "id": 6856,
             "lead": "Josivaldo Josivaldo",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -69178,7 +69188,7 @@
             "status": "Working"
         },
         {
-            "id": 6856,
+            "id": 6857,
             "lead": "Luciano Damas o",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -69188,7 +69198,7 @@
             "status": "Working"
         },
         {
-            "id": 6857,
+            "id": 6858,
             "lead": "Jaina Filipo",
             "responsavel": "Pedro Neto",
             "origem": "Cold Call",
@@ -69198,7 +69208,7 @@
             "status": "Working"
         },
         {
-            "id": 6858,
+            "id": 6859,
             "lead": "CLEIDIANE DO CARMO SANTOS DUARTE",
             "responsavel": "Desligado",
             "origem": "Website Pardot Form",
@@ -69213,7 +69223,7 @@
             "data_contato": "2026-01-19",
             "contatos": 404,
             "cadastros": 16,
-            "conversoes": 11
+            "conversoes": 12
         },
         {
             "data_contato": "2026-01-20",
@@ -69230,7 +69240,7 @@
         {
             "data_contato": "2026-01-22",
             "contatos": 467,
-            "cadastros": 10,
+            "cadastros": 11,
             "conversoes": 10
         },
         {
@@ -69284,8 +69294,8 @@
         {
             "data_contato": "2026-02-03",
             "contatos": 417,
-            "cadastros": 11,
-            "conversoes": 10
+            "cadastros": 12,
+            "conversoes": 11
         },
         {
             "data_contato": "2026-02-04",
@@ -69308,7 +69318,7 @@
         {
             "data_contato": "2026-02-09",
             "contatos": 448,
-            "cadastros": 14,
+            "cadastros": 15,
             "conversoes": 12
         },
         {
@@ -69321,12 +69331,12 @@
             "data_contato": "2026-02-11",
             "contatos": 128,
             "cadastros": 6,
-            "conversoes": 2
+            "conversoes": 3
         },
         {
             "data_contato": "2026-02-12",
             "contatos": 389,
-            "cadastros": 7,
+            "cadastros": 8,
             "conversoes": 3
         },
         {
@@ -69337,8 +69347,8 @@
         },
         {
             "data_contato": "2026-02-16",
-            "contatos": 233,
-            "cadastros": 3,
+            "contatos": 234,
+            "cadastros": 4,
             "conversoes": 0
         },
         {

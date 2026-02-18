@@ -184,9 +184,11 @@ class ReportGenerator:
                     
                     f.write("-" * 90 + "\n")
                     f.write(f"      📦 Carteira: {stat.cluster_name}\n")
-                    f.write(f"          - Demanda Total da Área:   {stat.total_demand} pacotes\n")
-                    f.write(f"          - Qtd Parceiros esperados: {len(stat.partners)}\n")
-                    f.write(f"          - Qtd Parceiros Ativos:    {stat.active_partners}\n")
+                    f.write(f"          - Demanda Total da Área:     {stat.total_demand} pacotes\n")
+                    f.write(f"          - Qtd Parceiros esperados:   {len(stat.partners)}\n")
+                    f.write(f"          - Qtd Parceiros Ativos:      {stat.active_partners}\n")
+                    f.write(f"          - Qtd Parceiros Onboarding:  {stat.onboarding_partners}\n")
+                    f.write(f"          - Qtd Parceiros Vetting:     {stat.bg_chacks_partners}\n")
                     
                     # Listar parceiros novos (Oportunidades)
                     new_pts = [p for p in stat.partners if p.entity_type == "NEW PARTNER"]

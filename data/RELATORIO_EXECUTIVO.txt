@@ -1,541 +1,541 @@
-RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 18/02/2026 14:24
+RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM 18/02/2026 16:40
 ================================================================================
 BASE: DCE3
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    3
   - Volume Total de Pacotes:                   21,305 pacotes
-  - Quantidade Total de Parceiros esperados:   284
+  - Quantidade Total de Parceiros esperados:   300
   - Quantidade Total de Parceiros Ativos:      136
-  - % de Attainment:                           47.9%
+  - % de Attainment:                           45.3%
   - Total de Pacotes Atendidos (Ativos):       8,307 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           96
+    - Quantidade Total de Parceiros:           102
         • Ativos:                              9
         • Onboarding:                          4
         • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     80
-    - Volume Total de Demanda:                 6,679 pacotes
-    - % de Attainment:                         9.4%
+        • Inativos a Reativar:                 3
+        • Novos Parceiros:                     84
+    - Volume Total de Demanda:                 7,081 pacotes
+    - % de Attainment:                         8.8%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           96
-        • Ativos:                              78
-        • Onboarding:                          9
-        • Prospects a Aprovar:                 2
-        • Inativos a Reativar:                 5
-        • Novos Parceiros:                     1
-    - Volume Total de Demanda:                 5,571 pacotes
-    - % de Attainment:                         81.2%
-  Careira ADE: bucket-3
-    - Quantidade Total de Parceiros:           96
-        • Ativos:                              49
+    - Quantidade Total de Parceiros:           101
+        • Ativos:                              44
         • Onboarding:                          6
         • Prospects a Aprovar:                 1
+        • Inativos a Reativar:                 4
+        • Novos Parceiros:                     45
+    - Volume Total de Demanda:                 6,500 pacotes
+    - % de Attainment:                         43.6%
+  Careira ADE: bucket-3
+    - Quantidade Total de Parceiros:           102
+        • Ativos:                              83
+        • Onboarding:                          9
+        • Prospects a Aprovar:                 3
         • Inativos a Reativar:                 5
-        • Novos Parceiros:                     34
-    - Volume Total de Demanda:                 6,181 pacotes
-    - % de Attainment:                         51.0%
+        • Novos Parceiros:                     1
+    - Volume Total de Demanda:                 5,970 pacotes
+    - % de Attainment:                         81.4%
 ================================================================================
 BASE: DSA8
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   11,235 pacotes
-  - Quantidade Total de Parceiros esperados:   101
+  - Quantidade Total de Parceiros esperados:   155
   - Quantidade Total de Parceiros Ativos:      19
-  - % de Attainment:                           18.8%
+  - % de Attainment:                           12.3%
   - Total de Pacotes Atendidos (Ativos):       739 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           52
+    - Quantidade Total de Parceiros:           79
         • Ativos:                              4
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     48
-    - Volume Total de Demanda:                 3,640 pacotes
-    - % de Attainment:                         7.7%
+        • Novos Parceiros:                     75
+    - Volume Total de Demanda:                 5,526 pacotes
+    - % de Attainment:                         5.1%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           51
+    - Quantidade Total de Parceiros:           78
         • Ativos:                              15
         • Onboarding:                          6
         • Prospects a Aprovar:                 2
         • Inativos a Reativar:                 2
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 2,747 pacotes
-    - % de Attainment:                         29.4%
+        • Novos Parceiros:                     52
+    - Volume Total de Demanda:                 4,589 pacotes
+    - % de Attainment:                         19.2%
 ================================================================================
 BASE: DPE4
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   21,960 pacotes
-  - Quantidade Total de Parceiros esperados:   241
+  - Quantidade Total de Parceiros esperados:   259
   - Quantidade Total de Parceiros Ativos:      62
-  - % de Attainment:                           25.7%
+  - % de Attainment:                           23.9%
   - Total de Pacotes Atendidos (Ativos):       4,059 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           122
-        • Ativos:                              19
-        • Onboarding:                          2
+    - Quantidade Total de Parceiros:           131
+        • Ativos:                              13
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 2
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     111
+    - Volume Total de Demanda:                 8,986 pacotes
+    - % de Attainment:                         9.9%
+  Careira ADE: bucket-2
+    - Quantidade Total de Parceiros:           131
+        • Ativos:                              49
+        • Onboarding:                          10
         • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 6
-        • Novos Parceiros:                     94
-    - Volume Total de Demanda:                 8,327 pacotes
-    - % de Attainment:                         15.6%
-  Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           121
-        • Ativos:                              43
-        • Onboarding:                          8
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 5
-        • Novos Parceiros:                     61
-    - Volume Total de Demanda:                 8,074 pacotes
-    - % de Attainment:                         35.5%
+        • Novos Parceiros:                     62
+    - Volume Total de Demanda:                 8,725 pacotes
+    - % de Attainment:                         37.4%
 ================================================================================
 BASE: DPB3
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    1
   - Volume Total de Pacotes:                   9,188 pacotes
-  - Quantidade Total de Parceiros esperados:   146
+  - Quantidade Total de Parceiros esperados:   152
   - Quantidade Total de Parceiros Ativos:      89
-  - % de Attainment:                           61.0%
+  - % de Attainment:                           58.6%
   - Total de Pacotes Atendidos (Ativos):       4,930 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           146
+    - Quantidade Total de Parceiros:           152
         • Ativos:                              89
         • Onboarding:                          11
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     43
-    - Volume Total de Demanda:                 8,475 pacotes
-    - % de Attainment:                         61.0%
+        • Novos Parceiros:                     49
+    - Volume Total de Demanda:                 8,850 pacotes
+    - % de Attainment:                         58.6%
 ================================================================================
 BASE: DAM1
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   6,350 pacotes
-  - Quantidade Total de Parceiros esperados:   36
+  - Quantidade Total de Parceiros esperados:   80
   - Quantidade Total de Parceiros Ativos:      0
   - % de Attainment:                           0.0%
   - Total de Pacotes Atendidos (Ativos):       0 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           18
+    - Quantidade Total de Parceiros:           40
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     18
-    - Volume Total de Demanda:                 1,260 pacotes
+        • Novos Parceiros:                     40
+    - Volume Total de Demanda:                 2,763 pacotes
     - % de Attainment:                         0.0%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           18
+    - Quantidade Total de Parceiros:           40
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     18
-    - Volume Total de Demanda:                 1,255 pacotes
+        • Novos Parceiros:                     40
+    - Volume Total de Demanda:                 2,800 pacotes
     - % de Attainment:                         0.0%
 ================================================================================
 BASE: DPR2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   14,856 pacotes
-  - Quantidade Total de Parceiros esperados:   181
+  - Quantidade Total de Parceiros esperados:   211
   - Quantidade Total de Parceiros Ativos:      115
-  - % de Attainment:                           63.5%
+  - % de Attainment:                           54.5%
   - Total de Pacotes Atendidos (Ativos):       7,179 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           91
-        • Ativos:                              71
-        • Onboarding:                          5
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     11
-    - Volume Total de Demanda:                 5,590 pacotes
-    - % de Attainment:                         78.0%
-  Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           91
-        • Ativos:                              44
+    - Quantidade Total de Parceiros:           106
+        • Ativos:                              39
         • Onboarding:                          5
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 6
-        • Novos Parceiros:                     34
-    - Volume Total de Demanda:                 5,981 pacotes
-    - % de Attainment:                         48.4%
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     56
+    - Volume Total de Demanda:                 6,944 pacotes
+    - % de Attainment:                         36.8%
+  Careira ADE: bucket-2
+    - Quantidade Total de Parceiros:           106
+        • Ativos:                              76
+        • Onboarding:                          5
+        • Prospects a Aprovar:                 1
+        • Inativos a Reativar:                 3
+        • Novos Parceiros:                     19
+    - Volume Total de Demanda:                 6,554 pacotes
+    - % de Attainment:                         71.7%
 ================================================================================
 BASE: DSP4
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    6
   - Volume Total de Pacotes:                   15,548 pacotes
-  - Quantidade Total de Parceiros esperados:   167
+  - Quantidade Total de Parceiros esperados:   206
   - Quantidade Total de Parceiros Ativos:      29
-  - % de Attainment:                           17.4%
+  - % de Attainment:                           14.1%
   - Total de Pacotes Atendidos (Ativos):       1,958 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           28
-        • Ativos:                              5
-        • Onboarding:                          1
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 1,960 pacotes
-    - % de Attainment:                         17.9%
-  Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           28
-        • Ativos:                              3
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     24
-    - Volume Total de Demanda:                 1,934 pacotes
-    - % de Attainment:                         10.7%
-  Careira ADE: bucket-3
-    - Quantidade Total de Parceiros:           28
-        • Ativos:                              4
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     24
-    - Volume Total de Demanda:                 1,952 pacotes
-    - % de Attainment:                         14.3%
-  Careira ADE: bucket-4
-    - Quantidade Total de Parceiros:           28
-        • Ativos:                              2
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 1,960 pacotes
-    - % de Attainment:                         7.1%
-  Careira ADE: bucket-5
-    - Quantidade Total de Parceiros:           28
+    - Quantidade Total de Parceiros:           34
         • Ativos:                              8
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 4
-        • Novos Parceiros:                     16
-    - Volume Total de Demanda:                 1,951 pacotes
-    - % de Attainment:                         28.6%
-  Careira ADE: bucket-6
-    - Quantidade Total de Parceiros:           28
-        • Ativos:                              7
+        • Novos Parceiros:                     22
+    - Volume Total de Demanda:                 2,331 pacotes
+    - % de Attainment:                         23.5%
+  Careira ADE: bucket-2
+    - Quantidade Total de Parceiros:           35
+        • Ativos:                              6
         • Onboarding:                          0
-        • Prospects a Aprovar:                 1
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     20
-    - Volume Total de Demanda:                 1,911 pacotes
-    - % de Attainment:                         25.0%
+        • Novos Parceiros:                     29
+    - Volume Total de Demanda:                 2,442 pacotes
+    - % de Attainment:                         17.1%
+  Careira ADE: bucket-3
+    - Quantidade Total de Parceiros:           35
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     32
+    - Volume Total de Demanda:                 2,450 pacotes
+    - % de Attainment:                         5.7%
+  Careira ADE: bucket-4
+    - Quantidade Total de Parceiros:           35
+        • Ativos:                              4
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 2
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     29
+    - Volume Total de Demanda:                 2,375 pacotes
+    - % de Attainment:                         11.4%
+  Careira ADE: bucket-5
+    - Quantidade Total de Parceiros:           35
+        • Ativos:                              7
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     26
+    - Volume Total de Demanda:                 2,433 pacotes
+    - % de Attainment:                         20.0%
+  Careira ADE: bucket-6
+    - Quantidade Total de Parceiros:           34
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     32
+    - Volume Total de Demanda:                 2,362 pacotes
+    - % de Attainment:                         5.9%
 ================================================================================
 BASE: DBR9
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    14
   - Volume Total de Pacotes:                   40,618 pacotes
-  - Quantidade Total de Parceiros esperados:   520
+  - Quantidade Total de Parceiros esperados:   570
   - Quantidade Total de Parceiros Ativos:      43
-  - % de Attainment:                           8.3%
+  - % de Attainment:                           7.5%
   - Total de Pacotes Atendidos (Ativos):       2,795 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     36
-    - Volume Total de Demanda:                 2,562 pacotes
-    - % de Attainment:                         0.0%
-  Careira ADE: bucket-10
-    - Quantidade Total de Parceiros:           38
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     38
-    - Volume Total de Demanda:                 2,660 pacotes
-    - % de Attainment:                         0.0%
-  Careira ADE: bucket-11
-    - Quantidade Total de Parceiros:           37
+    - Quantidade Total de Parceiros:           40
         • Ativos:                              3
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     32
+    - Volume Total de Demanda:                 2,741 pacotes
+    - % de Attainment:                         7.5%
+  Careira ADE: bucket-10
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     33
-    - Volume Total de Demanda:                 2,569 pacotes
-    - % de Attainment:                         8.1%
+        • Novos Parceiros:                     40
+    - Volume Total de Demanda:                 2,870 pacotes
+    - % de Attainment:                         0.0%
+  Careira ADE: bucket-11
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     41
+    - Volume Total de Demanda:                 2,845 pacotes
+    - % de Attainment:                         0.0%
   Careira ADE: bucket-12
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              8
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 7
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 2,443 pacotes
-    - % de Attainment:                         21.6%
-  Careira ADE: bucket-13
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              1
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     34
-    - Volume Total de Demanda:                 2,560 pacotes
-    - % de Attainment:                         2.7%
-  Careira ADE: bucket-14
-    - Quantidade Total de Parceiros:           38
-        • Ativos:                              0
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     38
-    - Volume Total de Demanda:                 2,641 pacotes
-    - % de Attainment:                         0.0%
-  Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              0
+    - Quantidade Total de Parceiros:           40
+        • Ativos:                              4
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     36
-    - Volume Total de Demanda:                 2,590 pacotes
-    - % de Attainment:                         0.0%
-  Careira ADE: bucket-3
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              4
-        • Onboarding:                          1
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     30
-    - Volume Total de Demanda:                 2,586 pacotes
-    - % de Attainment:                         10.8%
-  Careira ADE: bucket-4
-    - Quantidade Total de Parceiros:           38
-        • Ativos:                              2
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     36
-    - Volume Total de Demanda:                 2,660 pacotes
-    - % de Attainment:                         5.3%
-  Careira ADE: bucket-5
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              4
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     31
-    - Volume Total de Demanda:                 2,477 pacotes
-    - % de Attainment:                         10.8%
-  Careira ADE: bucket-6
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              1
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     36
-    - Volume Total de Demanda:                 2,588 pacotes
-    - % de Attainment:                         2.7%
-  Careira ADE: bucket-7
-    - Quantidade Total de Parceiros:           37
+        • Novos Parceiros:                     35
+    - Volume Total de Demanda:                 2,769 pacotes
+    - % de Attainment:                         10.0%
+  Careira ADE: bucket-13
+    - Quantidade Total de Parceiros:           41
         • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     41
+    - Volume Total de Demanda:                 2,870 pacotes
+    - % de Attainment:                         0.0%
+  Careira ADE: bucket-14
+    - Quantidade Total de Parceiros:           40
+        • Ativos:                              11
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 1
+        • Inativos a Reativar:                 8
+        • Novos Parceiros:                     19
+    - Volume Total de Demanda:                 2,700 pacotes
+    - % de Attainment:                         27.5%
+  Careira ADE: bucket-2
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              4
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
         • Novos Parceiros:                     37
-    - Volume Total de Demanda:                 2,585 pacotes
+    - Volume Total de Demanda:                 2,870 pacotes
+    - % de Attainment:                         9.8%
+  Careira ADE: bucket-3
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     40
+    - Volume Total de Demanda:                 2,856 pacotes
     - % de Attainment:                         0.0%
+  Careira ADE: bucket-4
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              6
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     33
+    - Volume Total de Demanda:                 2,842 pacotes
+    - % de Attainment:                         14.6%
+  Careira ADE: bucket-5
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              2
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     39
+    - Volume Total de Demanda:                 2,870 pacotes
+    - % de Attainment:                         4.9%
+  Careira ADE: bucket-6
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     41
+    - Volume Total de Demanda:                 2,836 pacotes
+    - % de Attainment:                         0.0%
+  Careira ADE: bucket-7
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              8
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 7
+        • Novos Parceiros:                     26
+    - Volume Total de Demanda:                 2,689 pacotes
+    - % de Attainment:                         19.5%
   Careira ADE: bucket-8
-    - Quantidade Total de Parceiros:           37
+    - Quantidade Total de Parceiros:           41
         • Ativos:                              5
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 3
-        • Novos Parceiros:                     29
-    - Volume Total de Demanda:                 2,517 pacotes
-    - % de Attainment:                         13.5%
+        • Novos Parceiros:                     33
+    - Volume Total de Demanda:                 2,794 pacotes
+    - % de Attainment:                         12.2%
   Careira ADE: bucket-9
-    - Quantidade Total de Parceiros:           37
-        • Ativos:                              15
-        • Onboarding:                          1
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 8
-        • Novos Parceiros:                     12
-    - Volume Total de Demanda:                 2,446 pacotes
-    - % de Attainment:                         40.5%
+    - Quantidade Total de Parceiros:           41
+        • Ativos:                              0
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     41
+    - Volume Total de Demanda:                 2,859 pacotes
+    - % de Attainment:                         0.0%
 ================================================================================
 BASE: DSP2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    7
   - Volume Total de Pacotes:                   16,976 pacotes
-  - Quantidade Total de Parceiros esperados:   244
+  - Quantidade Total de Parceiros esperados:   253
   - Quantidade Total de Parceiros Ativos:      128
-  - % de Attainment:                           52.5%
+  - % de Attainment:                           50.6%
   - Total de Pacotes Atendidos (Ativos):       7,436 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           35
-        • Ativos:                              11
-        • Onboarding:                          1
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 5
-        • Novos Parceiros:                     17
-    - Volume Total de Demanda:                 2,182 pacotes
-    - % de Attainment:                         31.4%
-  Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           35
-        • Ativos:                              29
-        • Onboarding:                          3
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     2
-    - Volume Total de Demanda:                 1,577 pacotes
-    - % de Attainment:                         82.9%
-  Careira ADE: bucket-3
-    - Quantidade Total de Parceiros:           35
-        • Ativos:                              9
+    - Quantidade Total de Parceiros:           37
+        • Ativos:                              30
         • Onboarding:                          3
         • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 5
-        • Novos Parceiros:                     17
-    - Volume Total de Demanda:                 2,244 pacotes
-    - % de Attainment:                         25.7%
-  Careira ADE: bucket-4
-    - Quantidade Total de Parceiros:           35
-        • Ativos:                              26
-        • Onboarding:                          5
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 4
-        • Novos Parceiros:                     0
-    - Volume Total de Demanda:                 2,146 pacotes
-    - % de Attainment:                         74.3%
-  Careira ADE: bucket-5
-    - Quantidade Total de Parceiros:           36
-        • Ativos:                              3
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 0
-        • Novos Parceiros:                     33
-    - Volume Total de Demanda:                 2,510 pacotes
-    - % de Attainment:                         8.3%
-  Careira ADE: bucket-6
-    - Quantidade Total de Parceiros:           35
-        • Ativos:                              29
-        • Onboarding:                          3
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 1
+        • Inativos a Reativar:                 2
         • Novos Parceiros:                     1
-    - Volume Total de Demanda:                 2,197 pacotes
-    - % de Attainment:                         82.9%
-  Careira ADE: bucket-7
+    - Volume Total de Demanda:                 2,314 pacotes
+    - % de Attainment:                         81.1%
+  Careira ADE: bucket-2
     - Quantidade Total de Parceiros:           36
+        • Ativos:                              28
+        • Onboarding:                          2
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     5
+    - Volume Total de Demanda:                 1,680 pacotes
+    - % de Attainment:                         77.8%
+  Careira ADE: bucket-3
+    - Quantidade Total de Parceiros:           37
         • Ativos:                              21
         • Onboarding:                          4
         • Prospects a Aprovar:                 1
         • Inativos a Reativar:                 6
-        • Novos Parceiros:                     3
-    - Volume Total de Demanda:                 2,242 pacotes
-    - % de Attainment:                         58.3%
+        • Novos Parceiros:                     4
+    - Volume Total de Demanda:                 2,342 pacotes
+    - % de Attainment:                         56.8%
+  Careira ADE: bucket-4
+    - Quantidade Total de Parceiros:           36
+        • Ativos:                              25
+        • Onboarding:                          6
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 4
+        • Novos Parceiros:                     1
+    - Volume Total de Demanda:                 2,170 pacotes
+    - % de Attainment:                         69.4%
+  Careira ADE: bucket-5
+    - Quantidade Total de Parceiros:           37
+        • Ativos:                              3
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 0
+        • Novos Parceiros:                     34
+    - Volume Total de Demanda:                 2,567 pacotes
+    - % de Attainment:                         8.1%
+  Careira ADE: bucket-6
+    - Quantidade Total de Parceiros:           37
+        • Ativos:                              9
+        • Onboarding:                          3
+        • Prospects a Aprovar:                 2
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     18
+    - Volume Total de Demanda:                 2,366 pacotes
+    - % de Attainment:                         24.3%
+  Careira ADE: bucket-7
+    - Quantidade Total de Parceiros:           37
+        • Ativos:                              12
+        • Onboarding:                          1
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 5
+        • Novos Parceiros:                     18
+    - Volume Total de Demanda:                 2,325 pacotes
+    - % de Attainment:                         32.4%
 ================================================================================
 BASE: DSP5
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   10,872 pacotes
-  - Quantidade Total de Parceiros esperados:   131
+  - Quantidade Total de Parceiros esperados:   170
   - Quantidade Total de Parceiros Ativos:      58
-  - % de Attainment:                           44.3%
+  - % de Attainment:                           34.1%
   - Total de Pacotes Atendidos (Ativos):       1,950 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           66
-        • Ativos:                              35
+    - Quantidade Total de Parceiros:           86
+        • Ativos:                              39
         • Onboarding:                          2
         • Prospects a Aprovar:                 2
         • Inativos a Reativar:                 2
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 3,299 pacotes
-    - % de Attainment:                         53.0%
+        • Novos Parceiros:                     41
+    - Volume Total de Demanda:                 4,421 pacotes
+    - % de Attainment:                         45.3%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           67
-        • Ativos:                              23
+    - Quantidade Total de Parceiros:           86
+        • Ativos:                              19
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     42
-    - Volume Total de Demanda:                 3,662 pacotes
-    - % de Attainment:                         34.3%
+        • Novos Parceiros:                     65
+    - Volume Total de Demanda:                 5,202 pacotes
+    - % de Attainment:                         22.1%
 ================================================================================
 BASE: DFR2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   6,280 pacotes
-  - Quantidade Total de Parceiros esperados:   51
+  - Quantidade Total de Parceiros esperados:   67
   - Quantidade Total de Parceiros Ativos:      0
   - % de Attainment:                           0.0%
   - Total de Pacotes Atendidos (Ativos):       0 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           26
+    - Quantidade Total de Parceiros:           34
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     26
-    - Volume Total de Demanda:                 1,802 pacotes
+        • Novos Parceiros:                     34
+    - Volume Total de Demanda:                 2,368 pacotes
     - % de Attainment:                         0.0%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           25
+    - Quantidade Total de Parceiros:           33
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 1,724 pacotes
+        • Novos Parceiros:                     33
+    - Volume Total de Demanda:                 2,240 pacotes
     - % de Attainment:                         0.0%
 ================================================================================
 BASE: DBH5
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   22,331 pacotes
-  - Quantidade Total de Parceiros esperados:   282
+  - Quantidade Total de Parceiros esperados:   298
   - Quantidade Total de Parceiros Ativos:      19
-  - % de Attainment:                           6.7%
+  - % de Attainment:                           6.4%
   - Total de Pacotes Atendidos (Ativos):       1,288 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           141
-        • Ativos:                              5
+    - Quantidade Total de Parceiros:           149
+        • Ativos:                              8
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     135
-    - Volume Total de Demanda:                 9,842 pacotes
-    - % de Attainment:                         3.5%
+        • Novos Parceiros:                     140
+    - Volume Total de Demanda:                 10,420 pacotes
+    - % de Attainment:                         5.4%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           141
-        • Ativos:                              14
+    - Quantidade Total de Parceiros:           149
+        • Ativos:                              11
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     125
-    - Volume Total de Demanda:                 9,771 pacotes
-    - % de Attainment:                         9.9%
+        • Novos Parceiros:                     136
+    - Volume Total de Demanda:                 10,340 pacotes
+    - % de Attainment:                         7.4%
 ================================================================================
 BASE: DMG2
 --------------------------------------------------------------------------------
@@ -552,9 +552,9 @@ DETALHAMENTO POR CLUSTER:
         • Ativos:                              20
         • Onboarding:                          3
         • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     2
-    - Volume Total de Demanda:                 823 pacotes
+        • Inativos a Reativar:                 3
+        • Novos Parceiros:                     1
+    - Volume Total de Demanda:                 831 pacotes
     - % de Attainment:                         74.1%
   Careira ADE: bucket-2
     - Quantidade Total de Parceiros:           27
@@ -563,187 +563,187 @@ DETALHAMENTO POR CLUSTER:
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
         • Novos Parceiros:                     1
-    - Volume Total de Demanda:                 320 pacotes
+    - Volume Total de Demanda:                 322 pacotes
     - % de Attainment:                         74.1%
 ================================================================================
 BASE: DES2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    1
   - Volume Total de Pacotes:                   9,897 pacotes
-  - Quantidade Total de Parceiros esperados:   122
+  - Quantidade Total de Parceiros esperados:   136
   - Quantidade Total de Parceiros Ativos:      33
-  - % de Attainment:                           27.0%
+  - % de Attainment:                           24.3%
   - Total de Pacotes Atendidos (Ativos):       1,863 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           122
+    - Quantidade Total de Parceiros:           136
         • Ativos:                              33
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 5
-        • Novos Parceiros:                     82
-    - Volume Total de Demanda:                 7,923 pacotes
-    - % de Attainment:                         27.0%
+        • Novos Parceiros:                     96
+    - Volume Total de Demanda:                 8,877 pacotes
+    - % de Attainment:                         24.3%
 ================================================================================
 BASE: DRJ3
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    6
   - Volume Total de Pacotes:                   32,231 pacotes
-  - Quantidade Total de Parceiros esperados:   420
+  - Quantidade Total de Parceiros esperados:   450
   - Quantidade Total de Parceiros Ativos:      55
-  - % de Attainment:                           13.1%
+  - % de Attainment:                           12.2%
   - Total de Pacotes Atendidos (Ativos):       3,461 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           71
+    - Quantidade Total de Parceiros:           75
+        • Ativos:                              1
+        • Onboarding:                          0
+        • Prospects a Aprovar:                 1
+        • Inativos a Reativar:                 1
+        • Novos Parceiros:                     72
+    - Volume Total de Demanda:                 5,219 pacotes
+    - % de Attainment:                         1.3%
+  Careira ADE: bucket-2
+    - Quantidade Total de Parceiros:           76
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     71
-    - Volume Total de Demanda:                 4,967 pacotes
+        • Novos Parceiros:                     76
+    - Volume Total de Demanda:                 5,320 pacotes
     - % de Attainment:                         0.0%
-  Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           70
-        • Ativos:                              1
-        • Onboarding:                          0
-        • Prospects a Aprovar:                 0
-        • Inativos a Reativar:                 1
-        • Novos Parceiros:                     68
-    - Volume Total de Demanda:                 4,895 pacotes
-    - % de Attainment:                         1.4%
   Careira ADE: bucket-3
-    - Quantidade Total de Parceiros:           70
-        • Ativos:                              35
+    - Quantidade Total de Parceiros:           75
+        • Ativos:                              32
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 13
-        • Novos Parceiros:                     22
-    - Volume Total de Demanda:                 4,522 pacotes
-    - % de Attainment:                         50.0%
+        • Novos Parceiros:                     30
+    - Volume Total de Demanda:                 4,925 pacotes
+    - % de Attainment:                         42.7%
   Careira ADE: bucket-4
-    - Quantidade Total de Parceiros:           70
+    - Quantidade Total de Parceiros:           75
         • Ativos:                              0
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     70
-    - Volume Total de Demanda:                 4,877 pacotes
+        • Novos Parceiros:                     75
+    - Volume Total de Demanda:                 5,250 pacotes
     - % de Attainment:                         0.0%
   Careira ADE: bucket-5
-    - Quantidade Total de Parceiros:           70
-        • Ativos:                              5
-        • Onboarding:                          2
-        • Prospects a Aprovar:                 1
-        • Inativos a Reativar:                 2
-        • Novos Parceiros:                     58
-    - Volume Total de Demanda:                 4,874 pacotes
-    - % de Attainment:                         7.1%
-  Careira ADE: bucket-6
-    - Quantidade Total de Parceiros:           70
-        • Ativos:                              14
+    - Quantidade Total de Parceiros:           75
+        • Ativos:                              15
         • Onboarding:                          1
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 6
-        • Novos Parceiros:                     49
-    - Volume Total de Demanda:                 4,655 pacotes
+        • Novos Parceiros:                     53
+    - Volume Total de Demanda:                 5,018 pacotes
     - % de Attainment:                         20.0%
+  Careira ADE: bucket-6
+    - Quantidade Total de Parceiros:           75
+        • Ativos:                              7
+        • Onboarding:                          2
+        • Prospects a Aprovar:                 0
+        • Inativos a Reativar:                 2
+        • Novos Parceiros:                     62
+    - Volume Total de Demanda:                 5,197 pacotes
+    - % de Attainment:                         9.3%
 ================================================================================
 BASE: DGO2
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   12,334 pacotes
-  - Quantidade Total de Parceiros esperados:   125
+  - Quantidade Total de Parceiros esperados:   164
   - Quantidade Total de Parceiros Ativos:      44
-  - % de Attainment:                           35.2%
+  - % de Attainment:                           26.8%
   - Total de Pacotes Atendidos (Ativos):       2,633 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           63
-        • Ativos:                              16
+    - Quantidade Total de Parceiros:           82
+        • Ativos:                              14
         • Onboarding:                          2
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 4
-        • Novos Parceiros:                     41
-    - Volume Total de Demanda:                 4,290 pacotes
-    - % de Attainment:                         25.4%
+        • Novos Parceiros:                     62
+    - Volume Total de Demanda:                 5,608 pacotes
+    - % de Attainment:                         17.1%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           62
-        • Ativos:                              28
+    - Quantidade Total de Parceiros:           82
+        • Ativos:                              30
         • Onboarding:                          6
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 3
-        • Novos Parceiros:                     25
-    - Volume Total de Demanda:                 3,865 pacotes
-    - % de Attainment:                         45.2%
+        • Novos Parceiros:                     43
+    - Volume Total de Demanda:                 5,218 pacotes
+    - % de Attainment:                         36.6%
 ================================================================================
 BASE: DBS5
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    2
   - Volume Total de Pacotes:                   32,029 pacotes
-  - Quantidade Total de Parceiros esperados:   338
+  - Quantidade Total de Parceiros esperados:   426
   - Quantidade Total de Parceiros Ativos:      69
-  - % de Attainment:                           20.4%
+  - % de Attainment:                           16.2%
   - Total de Pacotes Atendidos (Ativos):       4,368 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           169
+    - Quantidade Total de Parceiros:           213
         • Ativos:                              57
         • Onboarding:                          17
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 3
-        • Novos Parceiros:                     92
-    - Volume Total de Demanda:                 11,037 pacotes
-    - % de Attainment:                         33.7%
+        • Novos Parceiros:                     136
+    - Volume Total de Demanda:                 14,004 pacotes
+    - % de Attainment:                         26.8%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           169
+    - Quantidade Total de Parceiros:           213
         • Ativos:                              12
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 1
-        • Novos Parceiros:                     156
-    - Volume Total de Demanda:                 11,773 pacotes
-    - % de Attainment:                         7.1%
+        • Novos Parceiros:                     200
+    - Volume Total de Demanda:                 14,757 pacotes
+    - % de Attainment:                         5.6%
 ================================================================================
 BASE: DRS5
 --------------------------------------------------------------------------------
   - Quantidade de Clusters:                    3
   - Volume Total de Pacotes:                   19,034 pacotes
-  - Quantidade Total de Parceiros esperados:   209
+  - Quantidade Total de Parceiros esperados:   218
   - Quantidade Total de Parceiros Ativos:      33
-  - % de Attainment:                           15.8%
+  - % de Attainment:                           15.1%
   - Total de Pacotes Atendidos (Ativos):       1,960 pacotes
 --------------------------------------------------------------------------------
 DETALHAMENTO POR CLUSTER:
   Careira ADE: bucket-1
-    - Quantidade Total de Parceiros:           72
+    - Quantidade Total de Parceiros:           75
         • Ativos:                              10
         • Onboarding:                          4
-        • Prospects a Aprovar:                 1
+        • Prospects a Aprovar:                 2
         • Inativos a Reativar:                 7
-        • Novos Parceiros:                     50
-    - Volume Total de Demanda:                 4,843 pacotes
-    - % de Attainment:                         13.9%
+        • Novos Parceiros:                     52
+    - Volume Total de Demanda:                 5,060 pacotes
+    - % de Attainment:                         13.3%
   Careira ADE: bucket-2
-    - Quantidade Total de Parceiros:           71
-        • Ativos:                              19
-        • Onboarding:                          6
-        • Prospects a Aprovar:                 4
-        • Inativos a Reativar:                 6
-        • Novos Parceiros:                     34
-    - Volume Total de Demanda:                 4,579 pacotes
-    - % de Attainment:                         26.8%
-  Careira ADE: bucket-3
-    - Quantidade Total de Parceiros:           71
-        • Ativos:                              4
+    - Quantidade Total de Parceiros:           75
+        • Ativos:                              5
         • Onboarding:                          0
         • Prospects a Aprovar:                 0
         • Inativos a Reativar:                 0
-        • Novos Parceiros:                     67
-    - Volume Total de Demanda:                 4,924 pacotes
-    - % de Attainment:                         5.6%
+        • Novos Parceiros:                     70
+    - Volume Total de Demanda:                 5,183 pacotes
+    - % de Attainment:                         6.7%
+  Careira ADE: bucket-3
+    - Quantidade Total de Parceiros:           74
+        • Ativos:                              18
+        • Onboarding:                          6
+        • Prospects a Aprovar:                 4
+        • Inativos a Reativar:                 6
+        • Novos Parceiros:                     38
+    - Volume Total de Demanda:                 4,802 pacotes
+    - % de Attainment:                         24.3%
 ================================================================================

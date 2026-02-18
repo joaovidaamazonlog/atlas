@@ -309,6 +309,7 @@ class ReportGenerator:
                     for cluster_name, cluster_data in rep.cluster_metrics.items():
                         for p in cluster_data.partners:
                             if p.status in ["Active", "Onboarding"]:
+                                print(p)
                                 writer.writerow({
                                     "station_code": rep.station_code,
                                     "bucket": cluster_name,
@@ -327,66 +328,158 @@ class ReportGenerator:
 # =====================================================
 
 def solve_island_exhaustion_worker(payload: Dict) -> List[Dict]:
-    """Worker para encontrar novos parceiros em ilhas de demanda residual."""
+    """Worker para encontrar novos parceiros em ilhas de demanda residual de forma otimizada."""
     station_code = payload['station_code']
     island_hexes = payload['hexes']
+    # Trabalhamos com uma cópia local do mapa de demanda para ir decrementando
     demand_map = dict(payload['demand_map'])
     island_results = []
     
+    # Parâmetros locais para evitar chamadas repetitivas
+    min_cap = Config.MIN_CAP
+    max_cap = Config.MAX_CAP
+    radii_config = Config.RADII
+
     while True:
-        # Encontrar hexágono com maior demanda para ser a semente
+        # 1. Encontrar semente (hexágono com maior demanda residual)
         seeds = sorted([h for h in island_hexes if demand_map.get(h, 0) > 0], 
                     key=lambda x: demand_map[x], reverse=True)
-        if not seeds: break
+        if not seeds: 
+            break
         
         best_seed = seeds[0]
-        # Verificação rápida de potencial volumétrico num raio de 9 hexágonos
-        potential_vol = sum(demand_map[h] for h in island_hexes if h3.grid_distance(h, best_seed) <= 9)
-        if potential_vol < Config.MIN_CAP: break
+        
+        # Verificação rápida de potencial volumétrico no maior raio possível
+        # Se nem no raio máximo temos o mínimo de capacidade, abortamos a semente
+        max_dist = radii_config[-1]['hex_distance']
+        potential_vol = sum(demand_map[h] for h in island_hexes if h3.grid_distance(h, best_seed) <= max_dist)
+        
+        if potential_vol < min_cap:
+            # Se a semente não gera volume nem no raio máximo, removemos ela da lista de "tentativas" temporariamente
+            # (Na prática, zeramos a demanda dela localmente apenas para este loop não travar, ou paramos)
+            # Mas como o loop pega sempre o maior, vamos dar um break se o maior não tiver potencial.
+            break
 
+        # 2. Configurar Modelo CP-SAT
         model = cp_model.CpModel()
-        x, y = {}, {}
-        # Decidir Raio e Capacidade (Simp. Min/Max)
-        for r in Config.RADII:
-            for k in [Config.MIN_CAP, Config.MAX_CAP]:
-                idx = (best_seed, r['radius_s'], k)
-                x[idx] = model.NewBoolVar(f'x_{idx}')
-                potential_h = [h for h in island_hexes if h3.grid_distance(h, best_seed) <= r['hex_distance']]
-                for h in potential_h:
-                    y[(h, *idx)] = model.NewIntVar(0, int(demand_map[h]), f'y_{h}_{idx}')
-
-        model.Add(sum(x.values()) <= 1)
-        for idx_x, var_x in x.items():
-            rel_y = [v for ky, v in y.items() if ky[1:] == idx_x]
-            model.Add(sum(rel_y) <= idx_x[2] * var_x)
-            model.Add(sum(rel_y) >= Config.MIN_CAP * var_x)
-
-        obj_terms = [v_y * 10 for v_y in y.values()]
-        for idx_x, v_x in x.items():
-            penalty = next(rad['penalty'] for rad in Config.RADII if rad['radius_s'] == idx_x[1])
-            obj_terms.append(-penalty * v_x)
         
-        model.Maximize(sum(obj_terms))
+        # Variáveis de Decisão
+        # r_active[i]: Booleano que indica se o raio de índice i foi escolhido
+        r_active = {} 
+        
+        # allocations[(r_idx, h_idx)]: Quantidade de pacotes retirados do hexágono h SE o raio r for escolhido
+        allocations = {} 
+        
+        # Armazena variáveis de carga por raio para somatório
+        load_vars_per_radius = {i: [] for i in range(len(radii_config))}
+
+        # Criação das variáveis e restrições por Raio
+        for i, r_conf in enumerate(radii_config):
+            r_active[i] = model.NewBoolVar(f'radius_active_{i}')
+            dist = r_conf['hex_distance']
+            
+            # Identificar hexágonos dentro deste raio específico
+            potential_h = [h for h in island_hexes if h3.grid_distance(h, best_seed) <= dist]
+            
+            current_radius_load = []
+            
+            for h in potential_h:
+                if demand_map[h] > 0:
+                    # Variável: quanto pegar deste hexágono neste cenário de raio
+                    # Limite superior é a demanda disponível no hexágono
+                    var = model.NewIntVar(0, int(demand_map[h]), f'load_{i}_{h}')
+                    allocations[(i, h)] = var
+                    current_radius_load.append(var)
+            
+            # Restrição de Capacidade Vinculada à Ativação do Raio
+            # Se r_active[i] for TRUE: soma deve estar entre MIN e MAX
+            # Se r_active[i] for FALSE: soma deve ser 0
+            if current_radius_load:
+                total_load_r = sum(current_radius_load)
+                model.Add(total_load_r >= min_cap).OnlyEnforceIf(r_active[i])
+                model.Add(total_load_r <= max_cap).OnlyEnforceIf(r_active[i])
+                model.Add(total_load_r == 0).OnlyEnforceIf(r_active[i].Not())
+            else:
+                # Se não há hexágonos com demanda neste raio, ele não pode ser ativado
+                model.Add(r_active[i] == 0)
+
+        # Restrição: Apenas 1 configuração de raio pode ser escolhida
+        model.Add(sum(r_active.values()) <= 1)
+
+        # 3. Função Objetivo
+        # Maximizar: (Total de Pacotes * Peso) - Penalidade do Raio
+        # Peso 100 garante que pegar +1 pacote vale mais que a maioria das penalidades de raio pequeno/médio
+        objective_terms = []
+        
+        # Somar carga de todas as alocações possíveis (apenas uma configuração será > 0)
+        total_global_load = sum(allocations.values())
+        objective_terms.append(total_global_load * 100)
+        
+        # Subtrair penalidade do raio escolhido
+        for i, r_conf in enumerate(radii_config):
+            objective_terms.append(r_active[i] * -r_conf['penalty'])
+
+        model.Maximize(sum(objective_terms))
+
+        # 4. Solver
         solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = 2
-        
-        if solver.Solve(model) in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        solver.parameters.max_time_in_seconds = 2 # Rápido pois é por parceiro
+        status = solver.Solve(model)
+
+        if status in (cp_model.OPTIMAL, cp_model.FEASIBLE):
             found_any = False
-            for idx_x, var_x in x.items():
-                if solver.Value(var_x):
-                    allocs = [{"hex_id": ky[0], "packages_assigned": int(solver.Value(vy))} 
-                            for ky, vy in y.items() if ky[1:] == idx_x and solver.Value(vy) > 0]
-                    if allocs:
-                        island_results.append({
-                            "origin_hex": idx_x[0], "station_code": station_code,
-                            "radius_s": idx_x[1], "capacity_s": idx_x[2], 
-                            "entity_type": "NEW PARTNER", "allocations": allocs
-                        })
-                        for a in allocs:
-                            demand_map[a['hex_id']] = max(0, demand_map[a['hex_id']] - a['packages_assigned'])
-                        found_any = True
-            if not found_any: break
-        else: break
+            chosen_radius_idx = -1
+            
+            # Descobrir qual raio foi escolhido
+            for i in r_active:
+                if solver.Value(r_active[i]):
+                    chosen_radius_idx = i
+                    found_any = True
+                    break
+            
+            if found_any:
+                r_conf = radii_config[chosen_radius_idx]
+                
+                # Extrair alocações reais
+                final_allocs = []
+                total_assigned = 0
+                
+                # Iterar apenas sobre as variáveis do raio escolhido
+                # (As outras chaves em allocations terão valor 0 garantido pelo modelo, mas filtramos por eficiência)
+                potential_h = [h for h in island_hexes if h3.grid_distance(h, best_seed) <= r_conf['hex_distance']]
+                
+                for h in potential_h:
+                    key = (chosen_radius_idx, h)
+                    if key in allocations:
+                        val = solver.Value(allocations[key])
+                        if val > 0:
+                            final_allocs.append({"hex_id": h, "packages_assigned": int(val)})
+                            total_assigned += int(val)
+
+                if final_allocs:
+                    # Adicionar novo parceiro encontrado
+                    island_results.append({
+                        "origin_hex": best_seed,
+                        "station_code": station_code,
+                        "radius_s": r_conf['radius_s'],
+                        "capacity_s": total_assigned, # Capacidade exata otimizada
+                        "entity_type": "NEW PARTNER",
+                        "allocations": final_allocs
+                    })
+                    
+                    # Atualizar mapa de demanda residual para a próxima iteração do loop while
+                    for a in final_allocs:
+                        demand_map[a['hex_id']] = max(0, demand_map[a['hex_id']] - a['packages_assigned'])
+                else:
+                    # Se o solver disse que achou solução mas não alocou nada (borda rara), paramos
+                    break
+            else:
+                # Solver não conseguiu ativar nenhum raio (inviável com min_cap)
+                break
+        else:
+            # Não encontrou solução viável
+            break
+            
     return island_results
 
 # =====================================================
@@ -529,8 +622,8 @@ class OptimizationService:
         results = []
         MIN_LIMIT = 40
         MAX_LIMIT = 70
-        subset = self.partners_df[(self.partners_df.status == target_status) & (self.partners_df.station_code == base)]
-        
+        subset = self.partners_df[(self.partners_df.status == target_status) & (self.partners_df.station_code == base)].copy()
+        subset['identified_base'] = subset.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
         for _, p in subset.iterrows():
             best_allocs = []
             chosen_cap = 0
@@ -571,7 +664,7 @@ class OptimizationService:
                     break
             results.append(PartnerMetrics(
                 origin_hex=p.origin_hex, 
-                station_code=base, 
+                station_code=base if p.status != "BG Checks" else p.identified_base, 
                 radius_s=chosen_rad, 
                 capacity_s=chosen_cap, 
                 decision=decision_str, 
@@ -579,6 +672,7 @@ class OptimizationService:
                 status=target_status, 
                 partner_name=str(p.partner_name), 
                 salesforce_id=str(p.salesforce_id),
+                store_id=str(p.store_id),
                 lat=float(p.lat), 
                 lon=float(p.lon), 
                 allocations=best_allocs
@@ -592,32 +686,33 @@ class OptimizationService:
     def _evaluate_inactive_exited(self, base, res_dem):
         results = []
         cutoff = pd.to_datetime("2026-01-01")
-        subset = self.partners_df[((self.partners_df.status == "Inactive") | ((self.partners_df.status == "Exited") & (self.partners_df.decision_status == "Exited - Regretted"))) & (self.partners_df.station_code == base)]
+        subset = self.partners_df[((self.partners_df.status == "Inactive") | ((self.partners_df.status == "Exited") & (self.partners_df.decision_status == "Exited - Regretted"))) & (self.partners_df.station_code == base)].copy()
+        subset['identified_base'] = subset.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
         for _, p in subset.iterrows():
             decision, sug_rad, sug_cap, allocs = "", 0, 0, []
             for r in Config.RADII:
                 in_r = [h for h in h3.grid_disk(p.origin_hex, r["hex_distance"]) if res_dem.get(h, 0) > 0]
-                temp_total = sum(res_dem[h] for h in in_r)
-                if temp_total >= Config.MIN_CAP:
+                temp_allocs, total = [], 0
+                for h in sorted(in_r, key=lambda x: h3.grid_distance(x, p.origin_hex)):
+                    take = min(res_dem[h], Config.MAX_CAP - total)
+                    if take > 0: temp_allocs.append(Allocation(hex_id=h, packages_assigned=take))
+                    total += take
+                if total >= Config.MIN_CAP:
                     decision, sug_rad = "Reativar cadastro", r["radius_s"]
-                    sug_cap = Config.MAX_CAP if temp_total >= Config.MAX_CAP else Config.MIN_CAP
-                    curr = 0
-                    for h in sorted(in_r, key=lambda x: h3.grid_distance(x, p.origin_hex)):
-                        take = min(res_dem[h], sug_cap - curr)
-                        if take > 0: allocs.append(Allocation(h, take)); curr += take
+                    sug_cap = Config.MAX_CAP if total >= Config.MAX_CAP else total
+                    allocs = temp_allocs
                     for a in allocs: res_dem[a.hex_id] -= a.packages_assigned
                     break
             if not decision: decision = "Fora da área de atuacao"
             results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="INACTIVE_EXITED", 
-                                          status=str(p.status), partner_name=str(p.partner_name),salesforce_id=str(p.salesforce_id), decision=decision, 
+                                          status=str(p.status), partner_name=str(p.partner_name),salesforce_id=str(p.salesforce_id),store_id=str(p.store_id), decision=decision, 
                                           lat=float(p.lat), lon=float(p.lon), allocations=allocs))
         return results
 
-    def _evaluate_prospects(self, base: str, res_dem: Dict[str, int]) -> List[PartnerMetrics]:
+    def _evaluate_prospects(self, res_dem: Dict[str, int]) -> List[PartnerMetrics]:
         results = []
         subset = self.partners_df[self.partners_df.status == "Prospect"].copy()
         subset['identified_base'] = subset.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
-        subset = subset[subset['identified_base'] == base]
         for _, p in subset.iterrows():
             decision, sug_rad, sug_cap, allocs = "", 0, 0, []
             for r in Config.RADII:
@@ -629,12 +724,12 @@ class OptimizationService:
                     total += take
                 if total >= Config.MIN_CAP:
                     decision, sug_rad = "Seguir cadastro", r["radius_s"]
-                    sug_cap = Config.MAX_CAP if total >= Config.MAX_CAP else Config.MIN_CAP
+                    sug_cap = Config.MAX_CAP if total >= Config.MAX_CAP else total
                     allocs = temp_allocs
                     for a in allocs: res_dem[a.hex_id] -= a.packages_assigned
                     break
             if not decision: decision = "Pouca volumetria na area de atuacao"
-            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="PROSPECT", 
+            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=p.identified_base, radius_s=sug_rad, capacity_s=sug_cap, entity_type="PROSPECT", 
                                           status="Prospect", partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), decision=decision, 
                                           lat=float(p.lat), lon=float(p.lon), allocations=allocs))
         return results
@@ -684,7 +779,7 @@ class OptimizationService:
             p_onboarding = self._allocate_existing_by_status(base, res_dem, "Onboarding")
             p_bg = self._allocate_existing_by_status(base, res_dem, "BG Checks")
             p_inactives = self._evaluate_inactive_exited(base, res_dem)
-            p_prospects = self._evaluate_prospects(base, res_dem)
+            p_prospects = self._evaluate_prospects(res_dem)
             islands, _ = self._find_neighborhood_clusters(res_dem, base)
             p_new = []
             if islands:
@@ -694,7 +789,10 @@ class OptimizationService:
                     for f in as_completed(futures):
                         for p_data in f.result():
                             lat, lon = h3.cell_to_latlng(p_data['origin_hex'])
-                            p_obj = PartnerMetrics(**{**p_data, "lat": lat, "lon": lon, "decision": "Prospect a new partner", "status": "New", "entity_type": "NEW PARTNER", "allocations": [Allocation(**a) for a in p_data['allocations']]})
+                            p_obj = PartnerMetrics(**{**p_data, 
+                                                      "lat": lat, "lon": lon, "decision": "Prospect a new partner", 
+                                                      "status": "New", "entity_type": "NEW PARTNER", 
+                                                      "allocations": [Allocation(**a) for a in p_data['allocations']]})
                             p_new.append(p_obj)
                             for a in p_obj.allocations: res_dem[a.hex_id] -= a.packages_assigned
             

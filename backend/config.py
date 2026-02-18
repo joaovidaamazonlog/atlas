@@ -27,8 +27,8 @@ RADII_M = [
         {"radius_s": 1100, "hex_distance": 7, "penalty": 1000},
         {"radius_s": 1500, "hex_distance": 9, "penalty": 5000}
     ]
-CAPACITIES = [45, 55, 70]
-MIN_CAPACITY = 45
+CAPACITIES = [40, 55, 70]
+MIN_CAPACITY = 40
 MAX_CAPACITY = 70
 CLUSTER_PER_STATION = {
     "DBR9": 14,

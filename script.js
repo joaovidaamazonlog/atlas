@@ -106,7 +106,9 @@ const DataManager = {
             const DS = {
                 ...p.properties,
                 delivery_station: p.properties.station_code,
-                radius: p.properties.radius_suggestion
+                radius: p.properties.radius_suggestion,
+                lat: p.geometry.coordinates[0],
+                lon: p.geometry.coordinates[1]
             };
             delete DS.station_code;
             delete DS.radius_suggestion;

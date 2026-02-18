@@ -219,7 +219,7 @@ class ReportGenerator:
                         "geometry": {"type": "Polygon", "coordinates": [coords]},
                         "properties": {
                             "type": "TERRITORY_HEX",
-                            "station": rep.station_code,
+                            "delivery_station": rep.station_code,
                             "bucket": bucket_name,
                             "ctl": ts.ctl_name if ts else "N/A",
                             "bdm": rep.bdm_cluster,
@@ -241,7 +241,7 @@ class ReportGenerator:
                         "name": p.partner_name,
                         "status": p.status,
                         "entity": p.entity_type,
-                        "station": p.station_code,
+                        "station_code": p.station_code,
                         "cluster_bdm": p.bdm_cluster,
                         "ctl": p.ctl_name,
                         "decision": p.decision,
@@ -306,7 +306,7 @@ class ReportGenerator:
                     # Iteramos pelos clusters (buckets) definidos no relatório da base
                     for cluster_name, cluster_data in rep.cluster_metrics.items():
                         for p in cluster_data.partners:
-                            if p.status in ["Active", "Onboarding", "BG Checks"]:
+                            if p.status in ["Active", "Onboarding"]:
                                 writer.writerow({
                                     "station_code": rep.station_code,
                                     "bucket": cluster_name,

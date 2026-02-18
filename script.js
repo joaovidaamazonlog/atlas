@@ -108,7 +108,7 @@ const DataManager = {
                 delivery_station: p.properties.station_code,
                 radius: p.properties.radius_suggestion
             };
-            delete DS.station_code;
+            delete DS.station_code; radius_suggestion
             delete DS.radius_suggestion
             AppState.allMarkersData.push(DS);
         })
@@ -803,6 +803,7 @@ const UIManager = {
         const bucketsFilter = document.getElementById('bucket_ade');
         const stationFilter = document.getElementById('stationFilter');
         const initiativesFilter = document.getElementById('initiativesFilter');
+        const statusFilter = document.getElementById('statusFilter');
 
         stationFilter.innerHTML = '';
         bucketsFilter.innerHTML = '';
@@ -833,23 +834,27 @@ const UIManager = {
         // Função para atualizar buckets dinamicamente
         function updateBucketsOptions() {
             const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-            let filteredbuckets;
-            if (selectedStations.includes('all')) {
-                filteredbuckets = [...new Set(AppState.allMarkersData.map(m => m.bucket_ade).filter(Boolean))];
-            } else {
-                filteredbuckets = [...new Set(
-                    AppState.allMarkersData
-                        .filter(m => selectedStations.includes(m.delivery_station))
-                        .map(m => m.bucket_ade)
-                        .filter(Boolean)
-                )];
+            const selectedStatus = Array.from(statusFilter.selectedOptions).map(opt => opt.value);
+            let filteredData = AppState.allMarkersData;
+            if (!selectedStations.includes('all')) {
+                filteredData = filteredData.filter(m => selectedStations.includes(m.delivery_station));
             }
+
+            // Filtrar por Status
+            if (!selectedStatus.includes('all')) {
+                filteredData = filteredData.filter(m => selectedStatus.includes(m.status));
+            }
+
+            // Extrair buckets únicos dos dados filtrados
+            const filteredbuckets = [...new Set(filteredData.map(m => m.bucket_ade).filter(Boolean))].sort();
+            
             bucketsFilter.innerHTML = `<option value="all">Todos</option>`;
             filteredbuckets.forEach(s => bucketsFilter.innerHTML += `<option value="${s}">${s}</option>`);
         }
 
         // Atualiza os Buckets ao mudar a seleção de Delivery Station
         stationFilter.addEventListener('change', updateBucketsOptions);
+        statusFilter.addEventListener('change', updateBucketsOptions);
 
         updateBucketsOptions();
     },

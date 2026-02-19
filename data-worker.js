@@ -19,7 +19,7 @@ self.onmessage = function(e) {
         // Processamento pesado de filtragem em thread separada
         const filtered = allMarkersData.filter(marker => {
             const statusMatch = statusAllSelected || selectedStatuses.includes(marker.status);
-            const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station);
+            const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station || marker.station);
             
             let initiativesMatch = true;
             if (initiativesFilter !== 'all') {

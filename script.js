@@ -941,22 +941,11 @@ const UIManager = {
 
         const searchTerm = partnerId || document.getElementById('search-input').value.toLowerCase();
         if (!searchTerm) return;
+        
         const foundData = AppState.allMarkersData.find(data => 
             (data.salesforce_id && data.salesforce_id.toLowerCase() === searchTerm) ||
             (data.name && data.name.toLowerCase().includes(searchTerm))
         );
-
-        if (!foundData) {
-            const ds = AppState.deliveryStations.find(ds =>
-                ds.nome.toLowerCase() === searchTerm);
-            if (ds) {
-                AppState.map.setView([ds.lat, ds.lon], 13);
-                return;
-            }else {
-                alert("Parceiro ou Delivery Station não encontrado.");
-                return;
-                }
-        } 
 
         if (foundData) {
             const markerOnMap = AppState.markerObjects.find(m => m.markerData.salesforce_id === foundData.salesforce_id);

@@ -212,7 +212,7 @@ class ReportGenerator:
             # 1. Polígonos das Carteiras
             for h, bucket_name in rep.hex_to_cluster.items():
                 demand_info = rep.demand_summary.get(h)
-                if demand_info and demand_info["residual"] >= 0:
+                if demand_info and demand_info["total"] >= 0:
                     boundary = h3.cell_to_boundary(h)
                     coords = [[c[1], c[0]] for c in boundary]; coords.append(coords[0])
                     ts = rep.cluster_metrics.get(bucket_name)
@@ -225,7 +225,7 @@ class ReportGenerator:
                             "bucket": bucket_name,
                             "ctl": ts.ctl_name if ts else "N/A",
                             "bdm": rep.bdm_cluster,
-                            "demand": demand_info["residual"]
+                            "demand": demand_info["total"]
                         }
                     })
 
@@ -297,7 +297,7 @@ class ReportGenerator:
         filename = self.dest / "PARTNERS_PER_DS_BUCKET.csv"
         
         # Cabeçalhos solicitados
-        fieldnames = ["station_code", "bucket", "status", "salesforce_id", "partner_name"]
+        fieldnames = ["station_code", "bucket", "status", "salesforce_id", "partner_name", "store_id"]
         
         try:
             with open(filename, "w", encoding="utf-8", newline="") as f:
@@ -309,7 +309,6 @@ class ReportGenerator:
                     for cluster_name, cluster_data in rep.cluster_metrics.items():
                         for p in cluster_data.partners:
                             if p.status in ["Active", "Onboarding"]:
-                                print(p)
                                 writer.writerow({
                                     "station_code": rep.station_code,
                                     "bucket": cluster_name,
@@ -326,7 +325,6 @@ class ReportGenerator:
 # =====================================================
 # WORKER DO SOLVER (PARALELISMO)
 # =====================================================
-
 def solve_island_exhaustion_worker(payload: Dict) -> List[Dict]:
     """Worker para encontrar novos parceiros em ilhas de demanda residual de forma otimizada."""
     station_code = payload['station_code']
@@ -500,42 +498,44 @@ class OptimizationService:
         
         # 1. Carregar Demandas (Pacotes)
         df = pd.read_csv(Config.BASE_PACKAGES)
-        df['cep'] = df['cep'].astype(str).str.replace(r'\D', '', regex=True).str.zfill(8)
-        df["hex"] = [h3.latlng_to_cell(la, lo, Config.H3_RES) for la, lo in zip(df.latitude, df.longitude)]
+        if 'cep' in df.columns:
+            df['cep'] = df['cep'].astype(str).str.replace(r'\D', '', regex=True).str.zfill(8)
+            
+        if 'hex' not in df.columns:
+            df["hex"] = [h3.latlng_to_cell(la, lo, Config.H3_RES) for la, lo in zip(df.latitude, df.longitude)]
+            
+        days = pd.to_datetime(df.plan_date).nunique() or 1
         
         # Tratamento de duplicidade geográfica entre DSs
         # Se um hexágono aparece em DSs diferentes, somamos a demanda
-        # e atribuímos à DS que tem mais hexágonos próximos (vizinhança dominante)
-        print("   - Resolvendo duplicidades de hexágonos entre bases...")
+        # e atribuímos à DS que tem mais hexágonos próximos (vizinhança dominante) 
+        # Agrupa por Estação e Hexágono inicialmente
+        raw_grouped = df.groupby(["station_code", "hex"]).size().reset_index(name="qty")
+        raw_grouped["avg_demand"] = (raw_grouped["qty"] / days).round(0).astype(int)
         
-        self.hex_to_ceps = df.groupby('hex')['cep'].apply(set).to_dict()
-        days = pd.to_datetime(df.plan_date).nunique() or 1
-        self.demand_df = df.groupby(["station_code", "hex"]).size().reset_index(name="avg_demand")
-        self.demand_df["avg_demand"] = (self.demand_df["avg_demand"] / days).round(0).astype(int)
+        # --- PASSO 2: Tratamento de Duplicidade (Winner Takes All) ---
+        print("   - Resolvendo duplicidades: Hexágonos em múltiplas bases serão unificados na base de maior volume...")
+
+        # A. Calcular a demanda TOTAL do hexágono (soma de todas as bases onde ele aparece)
+        hex_totals = raw_grouped.groupby("hex")["avg_demand"].sum().reset_index(name="total_demand")
+        
+        # B. Descobrir qual base tem a MAIOR demanda para cada hexágono
+        # Ordenamos por demanda decrescente e pegamos o primeiro registro de cada hex
+        # Isso garante que a base com maior volume seja a "station_code" escolhida
+        hex_winners = raw_grouped.sort_values(by="avg_demand", ascending=False).drop_duplicates(subset=["hex"], keep="first")[["hex", "station_code"]]
+        
+        # C. Merge para ter: Hex | Base Vencedora | Demanda Total Somada
+        self.demand_df = pd.merge(hex_winners, hex_totals, on="hex")
+        
+        # Renomeia para manter compatibilidade com o resto do código
+        self.demand_df.rename(columns={"total_demand": "avg_demand"}, inplace=True)
+        
+        # Cria dicionário auxiliar Hex -> Base Vencedora
         self.hex_to_base = dict(zip(self.demand_df.hex, self.demand_df.station_code))
-        
-        # Primeiro, somar demandas por hexágono
-        def get_most_frequent(x):
-            counts = x.value_counts()
-            return counts.index[0] if not counts.empty else "UNKNOWN"
 
-        agg_dem = self.demand_df.groupby('hex').agg({
-            'avg_demand': 'sum',
-            'station_code': get_most_frequent
-        }).reset_index()
-        
-        # Para cada hexágono duplicado, decidir a DS correta baseada na vizinhança
-        # (Simplificado: usamos a DS que mais aparece na vizinhança imediata se houver conflito)
-        self.demand_df = agg_dem
-
-        # Mapear Hex -> CEPs (para o relatório estratégico)
-        # Assumindo que o arquivo de pacotes tem coluna 'cep'
+        print(f"   - Hexágonos únicos após unificação: {len(self.demand_df)}")
         if 'cep' in df.columns:
-            for _, row in df.iterrows():
-                h = str(row['hex'])
-                c = str(row['cep'])
-                if h not in self.hex_to_ceps: self.hex_to_ceps[h] = set()
-                self.hex_to_ceps[h].add(c)
+            self.hex_to_ceps = df.groupby('hex')['cep'].apply(set).to_dict()
                 
 
         # 2. Carregar Parceiros
@@ -543,8 +543,12 @@ class OptimizationService:
             p_data = json.load(f)["allMarkerData"]
         self.partners_df = pd.DataFrame(p_data)
         self.partners_df['exitedDate'] = pd.to_datetime(self.partners_df.get('exitedDate'), errors='coerce')
-        self.partners_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
-        self.partners_df.rename(columns={"name": "partner_name"}, inplace=True)
+        if "delivery_station" in self.partners_df.columns:
+            self.partners_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
+        if "name" in self.partners_df.columns:
+            self.partners_df.rename(columns={"name": "partner_name"}, inplace=True)
+        self.partners_df['lat'] = self.partners_df['lat'].astype(float)
+        self.partners_df['lon'] = self.partners_df['lon'].astype(float)
         self.partners_df["origin_hex"] = [h3.latlng_to_cell(float(la), float(lo), Config.H3_RES) for la, lo in zip(self.partners_df.lat, self.partners_df.lon)]
         
         # 3. Carregar Jurisdições (GeoJSON)
@@ -778,8 +782,8 @@ class OptimizationService:
             p_active = self._allocate_existing_by_status(base, res_dem, "Active")
             p_onboarding = self._allocate_existing_by_status(base, res_dem, "Onboarding")
             p_bg = self._allocate_existing_by_status(base, res_dem, "BG Checks")
-            p_inactives = self._evaluate_inactive_exited(base, res_dem)
             p_prospects = self._evaluate_prospects(res_dem)
+            p_inactives = self._evaluate_inactive_exited(base, res_dem)
             islands, _ = self._find_neighborhood_clusters(res_dem, base)
             p_new = []
             if islands:
@@ -789,62 +793,83 @@ class OptimizationService:
                     for f in as_completed(futures):
                         for p_data in f.result():
                             lat, lon = h3.cell_to_latlng(p_data['origin_hex'])
-                            p_obj = PartnerMetrics(**{**p_data, 
-                                                      "lat": lat, "lon": lon, "decision": "Prospect a new partner", 
-                                                      "status": "New", "entity_type": "NEW PARTNER", 
-                                                      "allocations": [Allocation(**a) for a in p_data['allocations']]})
+                            p_obj = PartnerMetrics(
+                                origin_hex=p_data['origin_hex'], station_code=base,
+                                radius_s=p_data['radius_s'], capacity_s=p_data['capacity_s'],
+                                entity_type="NEW PARTNER", status="New", decision="Prospect a new partner",
+                                lat=lat, lon=lon, 
+                                allocations=[Allocation(**a) for a in p_data['allocations']]
+                            )
                             p_new.append(p_obj)
-                            for a in p_obj.allocations: res_dem[a.hex_id] -= a.packages_assigned
+                            for a in p_obj.allocations: 
+                                if a.hex_id in res_dem: res_dem[a.hex_id] -= a.packages_assigned
+
+            # Consolidação            
+            valid_active = [p for p in p_active if p.total_load > 0]
+            valid_onb = [p for p in p_onboarding if p.total_load > 0]
+            valid_bg = [p for p in p_bg if p.total_load > 0]
+            valid_inact = [p for p in p_inactives if p.total_load > 0]
+            valid_prosp = [p for p in p_prospects if p.total_load > 0]
+            valid_new = p_new
             
-            all_final = p_active + p_onboarding + p_bg + [p for p in p_inactives if p.decision == "Reativar cadastro"] + [p for p in p_prospects if p.decision == "Seguir cadastro"] + p_new
+            all_final = valid_active + valid_onb + valid_bg + valid_inact + valid_prosp + valid_new
+            
             n_buckets = Config.CLUSTER_PER_STATION.get(base, 5)
             cluster_metrics, hex_to_bucket = self._generate_operational_clusters_balanced(base, all_final, n_buckets)
             
             final_hex_map = {}
+
             if all_final:
                 bucket_centroids = {}
                 for p in all_final:
                     if p.cluster_name not in bucket_centroids: bucket_centroids[p.cluster_name] = []
                     bucket_centroids[p.cluster_name].append((p.lat, p.lon))
-                centers = {n: (np.mean([c[0] for c in co]), np.mean([c[1] for c in co])) for n, co in bucket_centroids.items()}
+                
+                centers = {}
+                for n, co in bucket_centroids.items():
+                     if co: centers[n] = (np.mean([c[0] for c in co]), np.mean([c[1] for c in co]))
+                
                 for h in orig_dem.keys():
-                    if h in hex_to_bucket: final_hex_map[h] = hex_to_bucket[h]
-                    else:
+                    if h in hex_to_bucket: 
+                        final_hex_map[h] = hex_to_bucket[h]
+                    elif centers:
                         h_lat, h_lon = h3.cell_to_latlng(h)
                         final_hex_map[h] = min(centers.keys(), key=lambda b: (h_lat-centers[b][0])**2 + (h_lon-centers[b][1])**2)
-            else:
-                for h in orig_dem.keys(): final_hex_map[h] = "UNASSIGNED"
 
             m = BaseMetrics(
-                total_demand=sum(orig_dem.values()), 
-                existing_absorbed=sum(p.total_load for p in p_active), 
-                prospect_reserved=sum(p.total_load for p in p_prospects if p.decision == "Seguir cadastro"), 
-                inactive_reserved=sum(p.total_load for p in p_inactives if p.decision == "Reativar cadastro"), 
-                new_allocated=sum(p.total_load for p in p_new), 
-                residual=sum(res_dem.values()), 
-                active_partners_count=len(p_active), 
-                onboarding_partners_count=len(p_onboarding), 
-                inactive_partners_count=len([p for p in p_inactives if p.decision == "Reativar cadastro"]), 
-                vetting_partners_count=len(p_bg), new_partners_count=len(p_new), 
-                avg_load=(sum(p.total_load for p in p_new)/len(p_new)) if p_new else 0, 
-                avg_radius=(sum(p.radius_s for p in p_new)/len(p_new)) if p_new else 0, 
-                cluster_count=len(cluster_metrics), 
+                total_demand=sum(orig_dem.values()),
+                existing_absorbed=sum(p.total_load for p in p_active + p_onboarding + p_bg),
+                prospect_reserved=sum(p.total_load for p in valid_prosp),
+                inactive_reserved=sum(p.total_load for p in valid_inact),
+                new_allocated=sum(p.total_load for p in valid_new),
+                residual=sum(res_dem.values()),
+                active_partners_count=len(valid_active),
+                onboarding_partners_count=len(valid_onb),
+                vetting_partners_count=len(valid_bg),
+                inactive_partners_count=len(valid_inact),
+                new_partners_count=len(valid_new),
+                avg_load=(sum(p.total_load for p in all_final)/len(all_final)) if all_final else 0,
+                avg_radius=(sum(p.radius_s for p in all_final)/len(all_final)) if all_final else 0,
+                cluster_count=len(cluster_metrics),
                 avg_partners_per_cluster=len(all_final)/len(cluster_metrics) if cluster_metrics else 0
             )
             
             self.reports.append(OptimizationReport(
-                station_code=base, 
-                bdm_cluster=Config.get_bdm_cluster(base), 
-                existing_partners=p_active+p_onboarding+p_bg, 
-                inactive_partners=p_inactives, 
-                prospect_partners=p_prospects + prospects_outside, 
-                new_partners=p_new, 
-                hex_to_cluster=final_hex_map, 
-                demand_summary={h: {"total": orig_dem[h], "residual": res_dem.get(h, 0)} for h in orig_dem}, 
-                base_metrics=m, 
-                cluster_metrics=cluster_metrics))
-            print(f"   ✅ Base {base} concluída.")
+                station_code=base,
+                bdm_cluster=Config.get_bdm_cluster(base),
+                existing_partners=p_active + p_onboarding + p_bg,
+                inactive_partners=p_inactives,
+                prospect_partners=p_prospects,
+                new_partners=p_new,
+                hex_to_cluster=final_hex_map,
+                demand_summary={h: {"total": orig_dem[h], "residual": res_dem.get(h, 0)} for h in orig_dem},
+                base_metrics=m,
+                cluster_metrics=cluster_metrics
+            ))
+            
+            print(f"   ✅ Base {base} concluída. (Ativos: {len(valid_active)}, Prospects: {len(valid_prosp)}, Novos: {len(valid_new)})")
 
+        # Geração dos arquivos finais (GeoJSON, TXT, CSV...)
         rg = ReportGenerator(Config.DEST_FOLDER)
         rg.generate_strategic_txt(self.reports, self.hex_to_ceps)
         rg.generate_geojson(self.reports, self.hex_to_ceps)

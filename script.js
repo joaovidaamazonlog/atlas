@@ -878,7 +878,7 @@ const UIManager = {
                     ...AppState.allMarkersData.map(p => ({
                         type: 'partner',
                         name: p.name,
-                        store_id: p.store_id,
+                        salesforce_id: p.salesforce_id,
                         lat: p.lat,
                         lon: p.lon
                     })),
@@ -892,7 +892,7 @@ const UIManager = {
                 ];
                 const filtered = allOptions.filter(opt =>
                     (opt.name && opt.name.toLowerCase().includes(query)) ||
-                    (opt.store_id && opt.store_id.toLowerCase().includes(query))
+                    (opt.salesforce_id && opt.salesforce_id.toLowerCase().includes(query))
                 ).slice(0, 5);
                 resultsContainer.innerHTML = '';
                 if (filtered.length > 0) {
@@ -902,7 +902,7 @@ const UIManager = {
                         item.className = 'list-group-item list-group-item-action py-1';
                         item.innerHTML = opt.type === 'station'
                             ? `<i class="fas fa-home mr-1"></i> ${opt.name} (Delivery Station)`
-                            : `${opt.name} (${opt.store_id})`;
+                            : `${opt.name} (${opt.salesforce_id})`;
                         item.onclick = e => { e.preventDefault(); onSelect(opt); resultsContainer.style.display = 'none'; };
                         resultsContainer.appendChild(item);
                     });
@@ -919,15 +919,15 @@ const UIManager = {
 
         createAutocomplete(searchInput, partner => {
             searchInput.value = partner.name;
-            this.searchPartner(partner.store_id);
+            this.searchPartner(partner.salesforce_id);
         });
         createAutocomplete(fromInput, partner => {
             fromInput.value = partner.name;
-            document.getElementById('routeFromId').value = partner.store_id;
+            document.getElementById('routeFromId').value = partner.salesforce_id;
         });
         createAutocomplete(toInput, partner => {
             toInput.value = partner.name;
-            document.getElementById('routeToId').value = partner.store_id;
+            document.getElementById('routeToId').value = partner.salesforce_id;
         });
 
         document.addEventListener('click', e => {
@@ -942,7 +942,7 @@ const UIManager = {
         const searchTerm = partnerId || document.getElementById('search-input').value.toLowerCase();
         if (!searchTerm) return;
         const foundData = AppState.allMarkersData.find(data => 
-            (data.store_id && data.store_id.toLowerCase() === searchTerm) ||
+            (data.salesforce_id && data.salesforce_id.toLowerCase() === searchTerm) ||
             (data.name && data.name.toLowerCase().includes(searchTerm))
         );
 
@@ -959,7 +959,7 @@ const UIManager = {
         } 
 
         if (foundData) {
-            const markerOnMap = AppState.markerObjects.find(m => m.markerData.store_id === foundData.store_id);
+            const markerOnMap = AppState.markerObjects.find(m => m.markerData.salesforce_id === foundData.salesforce_id);
             if (markerOnMap) {
                 MapManager.onMarkerClick({ target: markerOnMap });
             } else {

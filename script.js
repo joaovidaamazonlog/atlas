@@ -942,7 +942,7 @@ const UIManager = {
         const searchTerm = partnerId || document.getElementById('search-input').value.toLowerCase();
         if (!searchTerm) return;
         
-        const foundData = AppState.allMarkersData.find(data => 
+        const foundData = AppState.allMarkersData.find(data =>
             (data.salesforce_id && data.salesforce_id.toLowerCase() === searchTerm) ||
             (data.name && data.name.toLowerCase().includes(searchTerm))
         );
@@ -954,9 +954,11 @@ const UIManager = {
             } else {
                 AppState.map.setView([foundData.lat, foundData.lon], 15);
                 alert("Parceiro encontrado, mas não está visível com os filtros atuais.");
+                document.getElementById('search-input').value = '';
             }
         } else {
             alert("Parceiro não encontrado.");
+            document.getElementById('search-input').value = '';
         }
 
         if(!partnerId) document.getElementById('search-input').value = '';

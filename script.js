@@ -56,7 +56,7 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/dados_mapa.json').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output_filled.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data.geojson').then(res => res.json()).catch(() => null)
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data_v3.geojson').then(res => res.json()).catch(() => null)
         ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
             AppState.allMarkersData = partnerData.allMarkerData;
             AppState.period = partnerData.period;

@@ -1344,7 +1344,7 @@ const UIManager = {
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Raio Sugerido:</b></td>
-                                <td style="width:60%">${data.radius_suggestion} m</td>
+                                <td style="width:60%">${data.radius} m</td>
                             </tr>
                         </tbody>
                     </table>

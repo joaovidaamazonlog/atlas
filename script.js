@@ -67,6 +67,8 @@ const DataManager = {
 
             UIManager.updatePeriodInfo(AppState.period);
             this.associatePartnersToPolygons();
+            this.opportunities();
+            this.optimizationDataAggregate();
             UIManager.populateFilters();
             UIManager.setupAutocomplete();
             
@@ -87,8 +89,6 @@ const DataManager = {
             };
 
             this.applyFilters();
-            this.opportunities();
-            this.optimizationDataAggregate();
 
             console.log("Todos os dados foram carregados e inicializados.");
         }).catch(error => {

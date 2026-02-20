@@ -227,7 +227,7 @@ const DataManager = {
 
         if (filters.selectedStatuses.includes('all')) filters.selectedStatuses = 'all';
         if (filters.selectedStations.includes('all')) filters.selectedStations = 'all';
-        if (filters.selectedBuckets.includes('all')) filters.selectedStations = 'all';
+        if (filters.selectedBuckets.includes('all')) filters.selectedBuckets = 'all';
 
         // Envia os dados para o Worker. A UI continua livre para interação!
         dataWorker.postMessage({ action: 'filter', filters });

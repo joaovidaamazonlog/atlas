@@ -1340,11 +1340,11 @@ const UIManager = {
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Capacidade Sugerida:</b></td>
-                                <td style="width:60%">${data.optimization.cap_suggestion} pkgs</td>
+                                <td style="width:60%">${data.cap_suggestion} pkgs</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Raio Sugerido:</b></td>
-                                <td style="width:60%">${data.optimization.radius_suggestion} m</td>
+                                <td style="width:60%">${data.radius_suggestion} m</td>
                             </tr>
                         </tbody>
                     </table>

@@ -13,13 +13,13 @@
     "atingimento_metas_gerais": {
         "contatos": {
             "meta": 12750.0,
-            "atingido": 6212,
-            "percentual": 48.72156862745098
+            "atingido": 6214,
+            "percentual": 48.73725490196079
         },
         "cadastros": {
             "meta": 290.0,
-            "atingido": 211,
-            "percentual": 72.75862068965517
+            "atingido": 216,
+            "percentual": 74.48275862068967
         },
         "conversoes": {
             "meta": 290.0,
@@ -30,13 +30,13 @@
             {
                 "origem": "Cold Call",
                 "contatos": 4439,
-                "cadastros": 76,
+                "cadastros": 78,
                 "conversoes": 54,
-                "taxa_conversao": 71.05,
-                "taxa_cadastro": 1.71,
+                "taxa_conversao": 69.23,
+                "taxa_cadastro": 1.76,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.58,
+                "velocidade_score": 0.57,
                 "consistencia": 0.32,
                 "distribuicao_canais": 0.59,
                 "score_final": 0.72
@@ -57,14 +57,14 @@
             },
             {
                 "origem": "Referral",
-                "contatos": 407,
-                "cadastros": 104,
+                "contatos": 409,
+                "cadastros": 106,
                 "conversoes": 77,
-                "taxa_conversao": 74.04,
-                "taxa_cadastro": 25.55,
+                "taxa_conversao": 72.64,
+                "taxa_cadastro": 25.92,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.42,
+                "velocidade_score": 0.41,
                 "consistencia": 0.32,
                 "distribuicao_canais": 0.02,
                 "score_final": 0.67
@@ -72,19 +72,19 @@
             {
                 "origem": "Website Pardot Form",
                 "contatos": 311,
-                "cadastros": 11,
+                "cadastros": 12,
                 "conversoes": 11,
-                "taxa_conversao": 100.0,
-                "taxa_cadastro": 3.54,
+                "taxa_conversao": 91.67,
+                "taxa_cadastro": 3.86,
                 "volume_score_contatos": 0.0,
                 "volume_score_cadastros": 1,
-                "velocidade_score": 0.66,
+                "velocidade_score": 0.62,
                 "consistencia": 0,
                 "distribuicao_canais": 0.04,
-                "score_final": 0.67
+                "score_final": 0.66
             }
         ],
-        "scorecard_geral": 0.6875
+        "scorecard_geral": 0.685
     },
     "per_responsavel": [
         {
@@ -266,24 +266,24 @@
         {
             "responsavel": "Eric Souza",
             "contatos": 83,
-            "cadastros": 5,
+            "cadastros": 7,
             "conversoes": 4,
-            "taxa_conversao": 80.0,
-            "taxa_cadastro": 6.02,
+            "taxa_conversao": 57.14,
+            "taxa_cadastro": 8.43,
             "contatos_origem_Website Pardot Form": 6,
-            "cadastros_origem_Website Pardot Form": 0,
+            "cadastros_origem_Website Pardot Form": 1,
             "contatos_origem_In-Person Visit": 0,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 70,
             "cadastros_origem_Cold Call": 1,
             "contatos_origem_Referral": 7,
-            "cadastros_origem_Referral": 4,
+            "cadastros_origem_Referral": 5,
             "volume_score_contatos": 0.25,
-            "volume_score_cadastros": 0.5,
-            "velocidade_score": 0.1,
+            "volume_score_cadastros": 0.7,
+            "velocidade_score": 0.09,
             "consistencia": 0,
             "distribuicao_canais": 0.65,
-            "score_final": 0.38
+            "score_final": 0.5
         },
         {
             "responsavel": "Everton Martins",
@@ -397,18 +397,18 @@
         },
         {
             "responsavel": "Josimar Junior",
-            "contatos": 326,
+            "contatos": 327,
             "cadastros": 15,
             "conversoes": 13,
             "taxa_conversao": 86.67,
-            "taxa_cadastro": 4.6,
+            "taxa_cadastro": 4.59,
             "contatos_origem_Website Pardot Form": 6,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 96,
             "cadastros_origem_In-Person Visit": 5,
             "contatos_origem_Cold Call": 187,
             "cadastros_origem_Cold Call": 0,
-            "contatos_origem_Referral": 37,
+            "contatos_origem_Referral": 38,
             "cadastros_origem_Referral": 10,
             "volume_score_contatos": 0.62,
             "volume_score_cadastros": 1,
@@ -463,23 +463,23 @@
         },
         {
             "responsavel": "Lilian Mata",
-            "contatos": 120,
+            "contatos": 121,
             "cadastros": 17,
             "conversoes": 17,
             "taxa_conversao": 100.0,
-            "taxa_cadastro": 14.17,
+            "taxa_cadastro": 14.05,
             "contatos_origem_Website Pardot Form": 12,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 0,
             "cadastros_origem_In-Person Visit": 0,
             "contatos_origem_Cold Call": 90,
             "cadastros_origem_Cold Call": 15,
-            "contatos_origem_Referral": 18,
+            "contatos_origem_Referral": 19,
             "cadastros_origem_Referral": 2,
             "volume_score_contatos": 0.38,
             "volume_score_cadastros": 1,
             "velocidade_score": 0.7,
-            "consistencia": 0.18,
+            "consistencia": 0.21,
             "distribuicao_canais": 0.65,
             "score_final": 0.78
         },
@@ -596,10 +596,10 @@
         {
             "responsavel": "Wagner Silva",
             "contatos": 324,
-            "cadastros": 1,
+            "cadastros": 2,
             "conversoes": 1,
-            "taxa_conversao": 100.0,
-            "taxa_cadastro": 0.31,
+            "taxa_conversao": 50.0,
+            "taxa_cadastro": 0.62,
             "contatos_origem_Website Pardot Form": 16,
             "cadastros_origem_Website Pardot Form": 0,
             "contatos_origem_In-Person Visit": 40,
@@ -607,13 +607,13 @@
             "contatos_origem_Cold Call": 250,
             "cadastros_origem_Cold Call": 0,
             "contatos_origem_Referral": 18,
-            "cadastros_origem_Referral": 0,
+            "cadastros_origem_Referral": 1,
             "volume_score_contatos": 0.66,
-            "volume_score_cadastros": 0.1,
-            "velocidade_score": 0.04,
+            "volume_score_cadastros": 0.2,
+            "velocidade_score": 0.02,
             "consistencia": 0.13,
             "distribuicao_canais": 0.77,
-            "score_final": 0.21
+            "score_final": 0.27
         }
     ],
     "summary": [
@@ -825,7 +825,7 @@
             "data_contato": "2026-02-04",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Hold"
         },
         {
             "id": 21,
@@ -29095,7 +29095,7 @@
             "data_contato": "2026-02-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 2848,
@@ -30763,9 +30763,9 @@
             "responsavel": "Eric Souza",
             "origem": "Website Pardot Form",
             "data_contato": "2026-02-04",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-20",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 3015,
@@ -35345,7 +35345,7 @@
             "data_contato": "2026-02-03",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 3473,
@@ -41293,9 +41293,9 @@
             "responsavel": "Desligado",
             "origem": "Cold Call",
             "data_contato": "2026-02-05",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-20",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 4068,
@@ -52533,9 +52533,9 @@
             "responsavel": "Eric Souza",
             "origem": "Referral",
             "data_contato": "2026-02-10",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-20",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 5192,
@@ -52575,7 +52575,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 5196,
@@ -52595,7 +52595,7 @@
             "data_contato": "2026-02-10",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5198,
@@ -52645,7 +52645,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5203,
@@ -52735,7 +52735,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5212,
@@ -52745,7 +52745,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5213,
@@ -52755,7 +52755,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5214,
@@ -52795,7 +52795,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5218,
@@ -53195,7 +53195,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5258,
@@ -53265,7 +53265,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Working"
+            "status": "Not Interested"
         },
         {
             "id": 5265,
@@ -53965,7 +53965,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Hold"
+            "status": "Prospect"
         },
         {
             "id": 5335,
@@ -54055,7 +54055,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5344,
@@ -54065,7 +54065,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5345,
@@ -54075,7 +54075,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Prospect"
         },
         {
             "id": 5346,
@@ -54085,7 +54085,7 @@
             "data_contato": "2026-02-11",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "New"
+            "status": "Not Interested"
         },
         {
             "id": 5347,
@@ -54763,9 +54763,9 @@
             "responsavel": "Desligado",
             "origem": "Cold Call",
             "data_contato": "2026-02-12",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-20",
             "data_conversao": null,
-            "status": "Hold"
+            "status": "BG Checks"
         },
         {
             "id": 5415,
@@ -58335,7 +58335,7 @@
             "data_contato": "2026-02-12",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Hold"
+            "status": "Prospect"
         },
         {
             "id": 5772,
@@ -58479,7 +58479,7 @@
         },
         {
             "id": 5786,
-            "lead": "Silva .",
+            "lead": "UILIAM ALVES DA SILVA .PAIVA",
             "responsavel": "Felipe Duarte",
             "origem": "Referral",
             "data_contato": "2026-02-13",
@@ -59119,13 +59119,13 @@
         },
         {
             "id": 5850,
-            "lead": "Karine Souza amorim",
+            "lead": "KARINE AMORIM",
             "responsavel": "Wagner Silva",
             "origem": "Referral",
             "data_contato": "2026-02-16",
-            "data_cadastro": null,
+            "data_cadastro": "2026-02-20",
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "BG Checks"
         },
         {
             "id": 5851,
@@ -60055,7 +60055,7 @@
             "data_contato": "2026-02-16",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Hold"
+            "status": "Working"
         },
         {
             "id": 5944,
@@ -62305,7 +62305,7 @@
             "data_contato": "2026-02-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6169,
@@ -62445,7 +62445,7 @@
             "data_contato": "2026-02-18",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Working"
         },
         {
             "id": 6183,
@@ -62525,7 +62525,7 @@
             "data_contato": "2026-02-19",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Hold"
         },
         {
             "id": 6191,
@@ -62575,7 +62575,7 @@
             "data_contato": "2026-02-19",
             "data_cadastro": null,
             "data_conversao": null,
-            "status": "Prospect"
+            "status": "Working"
         },
         {
             "id": 6196,
@@ -62719,6 +62719,16 @@
         },
         {
             "id": 6210,
+            "lead": "Vinicius de Oliveira Roeder",
+            "responsavel": "Lilian Mata",
+            "origem": "Referral",
+            "data_contato": "2026-02-19",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "Prospect"
+        },
+        {
+            "id": 6211,
             "lead": "Sport sucos",
             "responsavel": "Desligado",
             "origem": "Cold Call",
@@ -62728,7 +62738,17 @@
             "status": "New"
         },
         {
-            "id": 6211,
+            "id": 6212,
+            "lead": "JOSE LEONARDO MACHADO PINTO",
+            "responsavel": "Josimar Junior",
+            "origem": "Referral",
+            "data_contato": "2026-02-03",
+            "data_cadastro": null,
+            "data_conversao": null,
+            "status": "New"
+        },
+        {
+            "id": 6213,
             "lead": "CLEIDIANE DO CARMO SANTOS DUARTE",
             "responsavel": "Desligado",
             "origem": "Website Pardot Form",
@@ -62801,20 +62821,20 @@
         },
         {
             "data_contato": "2026-02-03",
-            "contatos": 417,
+            "contatos": 418,
             "cadastros": 12,
             "conversoes": 11
         },
         {
             "data_contato": "2026-02-04",
             "contatos": 424,
-            "cadastros": 14,
+            "cadastros": 15,
             "conversoes": 10
         },
         {
             "data_contato": "2026-02-05",
             "contatos": 415,
-            "cadastros": 14,
+            "cadastros": 15,
             "conversoes": 13
         },
         {
@@ -62832,7 +62852,7 @@
         {
             "data_contato": "2026-02-10",
             "contatos": 298,
-            "cadastros": 6,
+            "cadastros": 7,
             "conversoes": 3
         },
         {
@@ -62844,7 +62864,7 @@
         {
             "data_contato": "2026-02-12",
             "contatos": 389,
-            "cadastros": 8,
+            "cadastros": 9,
             "conversoes": 4
         },
         {
@@ -62856,7 +62876,7 @@
         {
             "data_contato": "2026-02-16",
             "contatos": 235,
-            "cadastros": 5,
+            "cadastros": 6,
             "conversoes": 3
         },
         {
@@ -62873,7 +62893,7 @@
         },
         {
             "data_contato": "2026-02-19",
-            "contatos": 37,
+            "contatos": 38,
             "cadastros": 0,
             "conversoes": 0
         }

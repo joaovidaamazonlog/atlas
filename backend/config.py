@@ -31,24 +31,24 @@ CAPACITIES = [40, 41, 42]
 MIN_CAPACITY = 40
 MAX_CAPACITY = 42
 CLUSTER_PER_STATION = {
-    "DBR9": 14,
-    "DSP2": 7,
-    "DSP4": 6,
-    "DSP5": 2,
+    "DBR9": 27,
+    "DSP2": 12,
+    "DSP4": 11,
+    "DSP5": 5,
     "DBH5": 2,
-    "DMG2": 2,
-    "DBS5": 2,
-    "DCE3": 3,
-    "DES2": 1,
+    "DMG2": 13,
+    "DBS5": 15,
+    "DCE3": 16,
+    "DES2": 3,
     "DFR2": 2,
-    "DGO2": 2,
-    "DPB3": 1,
-    "DPE4": 2,
-    "DPR2": 2,
-    "DRJ3": 6,
-    "DRS5": 3,
-    "DSA8": 2,
-    "DAM1": 2
+    "DGO2": 3,
+    "DPB3": 5,
+    "DPE4": 7,
+    "DPR2": 6,
+    "DRJ3": 22,
+    "DRS5": 10,
+    "DSA8": 4,
+    "DAM1": 5
 }
 
 # Arquivo JSON de saída

@@ -1335,16 +1335,16 @@ const UIManager = {
                     <table style="width:100%">
                         <tbody>
                             <tr>
-                                <td style="width:40%"><b>Ceps Alvo:</b></td>
-                                <td style="width:60%">${data.ceps}</td>
+                                <td style="width:50%"><b>Ceps Alvo:</b></td>
+                                <td style="width:50%">${data.ceps}</td>
                             </tr>
                             <tr>
-                                <td style="width:40%"><b>Capacidade Sugerida:</b></td>
-                                <td style="width:60%">${data.cap_suggestion} pkgs</td>
+                                <td style="width:50%"><b>Volume maximo:</b></td>
+                                <td style="width:50%">${data.cap_suggestion} pkgs</td>
                             </tr>
                             <tr>
-                                <td style="width:40%"><b>Raio Sugerido:</b></td>
-                                <td style="width:60%">${data.radius} m</td>
+                                <td style="width:50%"><b>Raio Sugerido:</b></td>
+                                <td style="width:50%">${data.radius} m</td>
                             </tr>
                         </tbody>
                     </table>

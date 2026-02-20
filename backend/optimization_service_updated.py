@@ -243,7 +243,7 @@ class ReportGenerator:
                         "name": p.partner_name,
                         "status": p.status,
                         "entity": p.entity_type,
-                        "station_code": p.station_code,
+                        "delivery_station": p.station_code,
                         "cluster_bdm": p.bdm_cluster,
                         "ctl": p.ctl_name,
                         "decision": p.decision,

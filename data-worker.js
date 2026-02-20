@@ -7,19 +7,21 @@ self.onmessage = function(e) {
         const { 
             allMarkersData, 
             selectedStatuses, 
-            selectedStations, 
+            selectedStations,
+            selectedBuckets, 
             initiativesFilter, 
-            jurisdictionFilter, 
-            bucketsFilter 
+            jurisdictionFilter
         } = filters;
         
         const statusAllSelected = selectedStatuses.includes('all');
         const stationAllSelected = selectedStations.includes('all');
+        const bucketsAllSelected = selectedBuckets.includes('all');
 
         // Processamento pesado de filtragem em thread separada
         const filtered = allMarkersData.filter(marker => {
             const statusMatch = statusAllSelected || selectedStatuses.includes(marker.status);
-            const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station || marker.station);
+            const stationMatch = stationAllSelected || selectedStations.includes(marker.delivery_station);
+            const bucketMatch = bucketsAllSelected || selectedBuckets.includes(marker.bucket_ade)
             
             let initiativesMatch = true;
             if (initiativesFilter !== 'all') {
@@ -36,9 +38,8 @@ self.onmessage = function(e) {
             }
 
             const jurisdictionMatch = jurisdictionFilter === 'all' || marker.jurisdiction_type === jurisdictionFilter;
-            const bucketsMatch = bucketsFilter === 'all' || marker.bucket_ade === bucketsFilter;
 
-            return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && bucketsMatch;
+            return statusMatch && stationMatch && initiativesMatch && jurisdictionMatch && bucketMatch;
         });
 
         // Retorna o resultado para a Main Thread

@@ -220,13 +220,14 @@ const DataManager = {
             allMarkersData: AppState.allMarkersData,
             selectedStatuses: Array.from(document.getElementById('statusFilter').selectedOptions).map(opt => opt.value),
             selectedStations: Array.from(document.getElementById('stationFilter').selectedOptions).map(opt => opt.value),
+            selectedBuckets:  Array.from(document.getElementById('bucket_ade').selectedOptions).map(opt => opt.value),
             initiativesFilter: document.getElementById('initiativesFilter').value,
-            bucketsFilter: document.getElementById('bucket_ade').value,
             jurisdictionFilter: document.getElementById('jurisdictionFilter').value
         };
 
         if (filters.selectedStatuses.includes('all')) filters.selectedStatuses = 'all';
         if (filters.selectedStations.includes('all')) filters.selectedStations = 'all';
+        if (filters.selectedBuckets.includes('all')) filters.selectedStations = 'all';
 
         // Envia os dados para o Worker. A UI continua livre para interação!
         dataWorker.postMessage({ action: 'filter', filters });
@@ -319,7 +320,8 @@ const MapManager = {
             ['Onboarding', UIManager.getMarkerPopupContentOnboarding],
             ['BG Checks', UIManager.getMarkerPopupContentVetting],
             ['Prospect', UIManager.getMarkerPopupContentProspect],
-            ['Active', UIManager.getMarkerPopupContentActive]
+            ['Active', UIManager.getMarkerPopupContentActive],
+            ['New', UIManager.getMarkerPopupContentNewPartner]
         ]);
 
         // Busca handler pelo status
@@ -352,15 +354,15 @@ const MapManager = {
     },
 
     restyleMarkers: function() {
-        const primary = document.getElementById('primaryStyle').value;
-        const secondary = document.getElementById('secondaryStyle').value;
+        const primary = document.getElementById('primaryStyle').selectedOptions[0].innerText;
+        const secondary = document.getElementById('secondaryStyle').selectedOptions[0].innerText;
 
         // Gera mapa de cores para o parâmetro da borda
         const borderColorMap = this.generateColorMap(AppState.currentFilteredData, primary, null, true);
 
         // Gera mapa de cores para o parâmetro do preenchimento
         let fillColorMap = {};
-        if (secondary && secondary !== primary) {
+        if (secondary !== primary) {
             fillColorMap = this.generateColorMap(AppState.currentFilteredData, secondary);
         }
 
@@ -370,7 +372,7 @@ const MapManager = {
             let borderWeight = 3;
 
             let fillColor = '#fff';
-            if (secondary && secondary !== primary) {
+            if (secondary !== primary) {
                 const fillKey = marker.markerData[secondary] || 'N/A';
                 fillColor = fillColorMap[fillKey] || '#808080';
             }
@@ -382,7 +384,7 @@ const MapManager = {
                 fillOpacity: 0.9
             });
 
-            const circle = AppState.circleObjects.find(c => c.markerData.store_id === marker.markerData.store_id);
+            const circle = AppState.circleObjects.find(c => c.markerData.salesforce_id === marker.markerData.salesforce_id);
             if (circle) circle.setStyle({ color: borderColor });
         });
 
@@ -1285,6 +1287,52 @@ const UIManager = {
                             <tr>
                                 <td style="width:40%"><b>Decisão:</b></td>
                                 <td style="width:60%">${data.decision}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Capacidade Sugerida:</b></td>
+                                <td style="width:60%">${data.optimization.cap_suggestion} pkgs</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Raio Sugerido:</b></td>
+                                <td style="width:60%">${data.optimization.radius_suggestion} m</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    },
+
+    getMarkerPopupContentNewPartner: function(data) {
+        return `
+            <div style="width: 300px; max-height: auto; font-size: 12px;">
+                <!-- Div para o Nome do Parceiro -->
+                <div class="partner-header">
+                    <h5 style="font-weight: bold;">${data.entity}</h5>
+                </div>
+                <div class="partner-info" id="partnerInfo">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Delivery Station:</b></td>
+                                <td style="width:60%">${data.delivery_station}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Bucket:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <hr class="my-2">
+
+                <!-- Div para sugestões de cap, raio e decisão -->
+                <div class="partner-actions">
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:40%"><b>Ceps Alvo:</b></td>
+                                <td style="width:60%">${data.ceps}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Capacidade Sugerida:</b></td>

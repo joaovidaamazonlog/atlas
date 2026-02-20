@@ -354,8 +354,10 @@ const MapManager = {
     },
 
     restyleMarkers: function() {
-        const primary = document.getElementById('primaryStyle').selectedOptions[0].innerText;
-        const secondary = document.getElementById('secondaryStyle').selectedOptions[0].innerText;
+        const primary = document.getElementById('primaryStyle').value;
+        const secondary = document.getElementById('secondaryStyle').value;
+        const primaryStyle = document.getElementById('primaryStyle').selectedOptions[0].innerText;
+        const secondaryStyle = document.getElementById('secondaryStyle').selectedOptions[0].innerText;
 
         // Gera mapa de cores para o parâmetro da borda
         const borderColorMap = this.generateColorMap(AppState.currentFilteredData, primary, null, true);
@@ -388,7 +390,7 @@ const MapManager = {
             if (circle) circle.setStyle({ color: borderColor });
         });
 
-        this.createLegend(fillColorMap, borderColorMap, primary, secondary);
+        this.createLegend(fillColorMap, borderColorMap, primaryStyle, secondaryStyle);
     },
 
     generateColorMap: function(data, field, _unused = null, isBorder = false) {
@@ -816,7 +818,7 @@ const UIManager = {
         stationFilter.innerHTML += `<option value="all" selected>Todos</option>`;
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
         bucketsFilter.innerHTML += `<option value="all">Todos</option>`;
-        buckets.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
+        buckets.forEach(b => stationFilter.innerHTML += `<option value="${b}">${b}</option>`);
 
         // Preencher iniciativas dinamicamente
         const initiativesRaw = AppState.allMarkersData.map(m => m.hub_delivey_initiatives);
@@ -853,7 +855,7 @@ const UIManager = {
             // Extrair buckets únicos dos dados filtrados
             const filteredbuckets = [...new Set(filteredData.map(m => m.bucket_ade).filter(Boolean))].sort();
             
-            bucketsFilter.innerHTML = `<option value="all">Todos</option>`;
+            bucketsFilter.innerHTML = `<option value="all" selected>Todos</option>`;
             filteredbuckets.forEach(s => bucketsFilter.innerHTML += `<option value="${s}">${s}</option>`);
         }
 

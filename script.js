@@ -944,8 +944,8 @@ const UIManager = {
         if (!searchTerm) return;
         
         const foundData = AppState.allMarkersData.find(data =>
-            (data.salesforce_id && data.salesforce_id.toLowerCase() === searchTerm) ||
-            (data.name && data.name.toLowerCase().includes(searchTerm))
+            (data.salesforce_id === searchTerm) ||
+            (data.name.includes(searchTerm))
         );
 
         if (foundData) {

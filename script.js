@@ -803,10 +803,11 @@ const UIManager = {
 
     populateFilters: function() {
         const stations = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
-        const bucketsFilter = document.getElementById('bucket_ade');
+        const buckets = [...new Set(AppState.allMarkersData.map(m => m.delivery_station).filter(Boolean))].sort();
         const stationFilter = document.getElementById('stationFilter');
         const initiativesFilter = document.getElementById('initiativesFilter');
         const statusFilter = document.getElementById('statusFilter');
+        const bucketsFilter = document.getElementById('bucket_ade');
 
         stationFilter.innerHTML = '';
         bucketsFilter.innerHTML = '';
@@ -815,6 +816,7 @@ const UIManager = {
         stationFilter.innerHTML += `<option value="all" selected>Todos</option>`;
         stations.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
         bucketsFilter.innerHTML += `<option value="all">Todos</option>`;
+        buckets.forEach(s => stationFilter.innerHTML += `<option value="${s}">${s}</option>`);
 
         // Preencher iniciativas dinamicamente
         const initiativesRaw = AppState.allMarkersData.map(m => m.hub_delivey_initiatives);

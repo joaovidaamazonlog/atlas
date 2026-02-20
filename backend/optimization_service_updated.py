@@ -164,7 +164,7 @@ class ReportGenerator:
         self.dest.mkdir(exist_ok=True)
         
     def generate_strategic_txt(self, reports: List[OptimizationReport], hex_to_ceps: Dict[str, Set[str]]):
-        filename = self.dest / "OPORTUNIDADES_ESTRATEGICAS_V2.txt"
+        filename = self.dest / "OPORTUNIDADES_ESTRATEGICAS_V3.txt"
         with open(filename, "w", encoding="utf-8") as f:
             f.write(f"RELATÓRIO ESTRATÉGICO - HIERARQUIA COMPLETA - {datetime.now()}\n")
             f.write("="*90 + "\n")
@@ -254,12 +254,12 @@ class ReportGenerator:
                     }
                 })
 
-        filename = self.dest / "optimization_data.geojson"
+        filename = self.dest / "optimization_data_v3.geojson"
         with open(filename, "w", encoding="utf-8") as f:
             json.dump({"type": "FeatureCollection", "features": features}, f, ensure_ascii=False, indent=2)
         print(f"✅ GeoJSON salvo em {filename}")
         
-    def executive_report(self, reports: List[OptimizationReport], filename="RELATORIO_EXECUTIVO.txt"):
+    def executive_report(self, reports: List[OptimizationReport], filename="RELATORIO_EXECUTIVO_v3.txt"):
         path = self.dest / filename
         with open(path, "w", encoding="utf-8") as f:
             f.write(f"RELATÓRIO EXECUTIVO DE OTIMIZAÇÃO - GERADO EM {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
@@ -625,7 +625,7 @@ class OptimizationService:
     def _allocate_existing_by_status(self, base: str, res_dem: Dict[str, int], target_status: str) -> List[PartnerMetrics]:
         results = []
         MIN_LIMIT = 40
-        MAX_LIMIT = 70
+        MAX_LIMIT = 42
         subset = self.partners_df[(self.partners_df.status == target_status) & (self.partners_df.station_code == base)].copy()
         subset['identified_base'] = subset.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
         for _, p in subset.iterrows():

@@ -105,12 +105,11 @@ const DataManager = {
         newPartners.forEach(p => {
             const DS = {
                 ...p.properties,
-                delivery_station: p.properties.station_code,
+                delivery_station: p.properties.delivery_station,
                 radius: p.properties.radius_suggestion,
                 lat: p.geometry.coordinates[1],
                 lon: p.geometry.coordinates[0]
             };
-            delete DS.station_code;
             delete DS.radius_suggestion;
             AppState.allMarkersData.push(DS);
         })
@@ -181,7 +180,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.delivery_station = optimizationInfo.properties.station_code
+                partner.delivery_station = optimizationInfo.properties.delivery_station
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {

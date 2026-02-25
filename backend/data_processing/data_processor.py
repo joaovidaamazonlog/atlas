@@ -38,6 +38,7 @@ class DataProcessor:
         active_df = dfs.get("Active", pd.DataFrame()).copy()
         launches_df = dfs.get("Launches", pd.DataFrame()).copy()
         stations_df = dfs.get("Delivery Stations", pd.DataFrame()).copy()
+        jurisdictions_df = dfs.get("Jurisdictions", pd.DataFrame()).copy()
 
         if active_df.empty and launches_df.empty:
             raise ValueError("DataFrames 'Active' e 'Launches' estão vazios.")
@@ -66,6 +67,10 @@ class DataProcessor:
         if not stations_df.empty and 'Id' in stations_df.columns and 'Name' in stations_df.columns:
             station_map = dict(zip(stations_df['Id'].astype(str), stations_df['Name']))
             consolidated['Delivery Station'] = consolidated['Delivery Station'].astype(str).map(station_map)
+            
+        if not jurisdictions_df.empty and "Id" in jurisdictions_df.columns and 'Name' in jurisdictions_df.columns:
+            jurisdictions_map = dict(zip(jurisdictions_df['Id'].astype(str), jurisdictions_df['Name'].str[5:]))
+            consolidated['Bucket'] = consolidated['Jurisdiction'].astype(str).map(jurisdictions_map)
 
         print("Limpando e convertendo colunas de coordenadas (Latitude, Longitude)...")
         for coord_col in ['Latitude', 'Longitude']:

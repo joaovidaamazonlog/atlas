@@ -43,7 +43,7 @@ CLUSTER_PER_STATION = {
     "DFR2": 2,
     "DGO2": 3,
     "DPB3": 5,
-    "DPE4": 7,
+    "DPE4": 16,
     "DPR2": 6,
     "DRJ3": 22,
     "DRS5": 10,
@@ -69,7 +69,8 @@ SHEETS_TO_LOAD = [
     "Delivery Stations",
     "ADV - Coverage raw data",
     "Lead",
-    "PerfectMile"
+    "PerfectMile",
+    "Jurisdictions"
 ]
 
 # --- Nomes de Colunas (para garantir consistência) ---

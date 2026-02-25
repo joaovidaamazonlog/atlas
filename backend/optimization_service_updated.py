@@ -114,6 +114,7 @@ class PartnerMetrics:
     store_id: Optional[str] = None
     radius_a: Optional[int] = None
     capacity_a: Optional[int] = None
+    bucket: Optional[str] = None
     allocations: List[Allocation] = field(default_factory=list)
 
     @property
@@ -174,7 +175,8 @@ class ReportGenerator:
                 f.write("-" * 90 + "\n")
                 
                 # Agrupar por CTL para exibição organizada
-                sorted_stats = sorted(rep.cluster_metrics.values(), key=lambda x: (x.ctl_name, x.cluster_name.split('-')[1]))
+
+                sorted_stats = sorted(rep.cluster_metrics.values(), key=lambda x: (x.ctl_name, x.cluster_name))
                 
                 current_ctl = None
                 for stat in sorted_stats:
@@ -557,47 +559,99 @@ class OptimizationService:
 
     def _generate_operational_clusters_balanced(self, station_code: str, partners: List[PartnerMetrics], n_clusters: int) -> Tuple[Dict[str, ClusterMetrics], Dict[str, str]]:
         if not partners or n_clusters <= 0: return {}, {}
-        n_partners = len(partners)
-        bdm_cluster = Config.get_bdm_cluster(station_code)
-        coords = np.array([[p.lat, p.lon] for p in partners])
-        actual_n_clusters = min(n_clusters, n_partners)
-        kmeans = KMeans(n_clusters=actual_n_clusters, random_state=42, n_init=10).fit(coords)
-        initial_centroids = kmeans.cluster_centers_
-
-        model = cp_model.CpModel()
-        x = {(i, j): model.NewBoolVar(f'x_{i}_{j}') for i in range(n_partners) for j in range(actual_n_clusters)}
-        for i in range(n_partners): model.Add(sum(x[i, j] for j in range(actual_n_clusters)) == 1)
-        min_p, max_p = n_partners // actual_n_clusters, math.ceil(n_partners / actual_n_clusters)
-        for j in range(actual_n_clusters):
-            model.Add(sum(x[i, j] for i in range(n_partners)) >= min_p)
-            model.Add(sum(x[i, j] for i in range(n_partners)) <= max_p)
-
-        obj_terms = [int(((coords[i][0]-initial_centroids[j][0])**2 + (coords[i][1]-initial_centroids[j][1])**2)*10**8) * x[i, j] 
-                    for i in range(n_partners) for j in range(actual_n_clusters)]
-        model.Minimize(sum(obj_terms))
-        solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = 10
         
-        clusters_partners = {j: [] for j in range(actual_n_clusters)}
-        if solver.Solve(model) in (cp_model.OPTIMAL, cp_model.FEASIBLE):
-            for i in range(n_partners):
-                for j in range(actual_n_clusters):
-                    if solver.Value(x[i, j]): clusters_partners[j].append(partners[i])
-        else:
-            for i, label in enumerate(kmeans.labels_): clusters_partners[label].append(partners[i])
+        bdm_cluster = Config.get_bdm_cluster(station_code)
+        
+        # Separar parceiros com bucket já atribuído vs sem bucket
+        # bucket pode ser None, "null" (string), ou uma string com valor
+        partners_with_bucket = [p for p in partners if p.bucket is not None]
+        print(f"   - {len(partners_with_bucket)} parceiros já possuem bucket atribuído")
+        partners_without_bucket = [p for p in partners if p.bucket is None]
+        print(f"   - {len(partners_without_bucket)} parceiros não possuem bucket atribuído e serão alocados por proximidade/clustering.")
+        
+        # Dicionário para armazenar parceiros por bucket
+        bucket_partners_dict = {}
+        
+        # Agrupar parceiros que já têm bucket (mantêm seu bucket original)
+        for p in partners_with_bucket:
+            bucket_name = p.bucket
+            if bucket_name not in bucket_partners_dict:
+                bucket_partners_dict[bucket_name] = []
+            bucket_partners_dict[bucket_name].append(p)
+        
+        # Se há parceiros sem bucket
+        if partners_without_bucket:
+            # Se há parceiros com bucket pré-definido, alocar parceiros sem bucket ao bucket mais próximo
+            if partners_with_bucket:
+                for p_unassigned in partners_without_bucket:
+                    # Encontrar o parceiro com bucket mais próximo
+                    closest_assigned = min(
+                        partners_with_bucket,
+                        key=lambda p_assigned: (p_unassigned.lat - p_assigned.lat)**2 + (p_unassigned.lon - p_assigned.lon)**2
+                    )
+                    # Alocar ao bucket do parceiro mais próximo
+                    closest_bucket = closest_assigned.bucket
+                    bucket_partners_dict[closest_bucket].append(p_unassigned)
+            else:
+                # Se não há parceiros com bucket, aplicar clustering normal apenas para os sem bucket
+                n_partners_unassigned = len(partners_without_bucket)
+                coords = np.array([[p.lat, p.lon] for p in partners_without_bucket])
+                actual_n_clusters = min(n_clusters, n_partners_unassigned)
+                
+                kmeans = KMeans(n_clusters=actual_n_clusters, random_state=42, n_init=10).fit(coords)
+                initial_centroids = kmeans.cluster_centers_
 
+                model = cp_model.CpModel()
+                x = {(i, j): model.NewBoolVar(f'x_{i}_{j}') for i in range(n_partners_unassigned) for j in range(actual_n_clusters)}
+                for i in range(n_partners_unassigned): 
+                    model.Add(sum(x[i, j] for j in range(actual_n_clusters)) == 1)
+                
+                min_p, max_p = n_partners_unassigned // actual_n_clusters, math.ceil(n_partners_unassigned / actual_n_clusters)
+                for j in range(actual_n_clusters):
+                    model.Add(sum(x[i, j] for i in range(n_partners_unassigned)) >= min_p)
+                    model.Add(sum(x[i, j] for i in range(n_partners_unassigned)) <= max_p)
+
+                obj_terms = [int(((coords[i][0]-initial_centroids[j][0])**2 + (coords[i][1]-initial_centroids[j][1])**2)*10**8) * x[i, j] 
+                            for i in range(n_partners_unassigned) for j in range(actual_n_clusters)]
+                model.Minimize(sum(obj_terms))
+                
+                solver = cp_model.CpSolver()
+                solver.parameters.max_time_in_seconds = 10
+                
+                clusters_partners = {j: [] for j in range(actual_n_clusters)}
+                if solver.Solve(model) in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+                    for i in range(n_partners_unassigned):
+                        for j in range(actual_n_clusters):
+                            if solver.Value(x[i, j]): 
+                                clusters_partners[j].append(partners_without_bucket[i])
+                else:
+                    for i, label in enumerate(kmeans.labels_): 
+                        clusters_partners[label].append(partners_without_bucket[i])
+                
+                # Determinar nomes dos novos buckets
+                existing_bucket_numbers = [int(name.replace('bucket-', '')) for name in bucket_partners_dict.keys() if name.startswith('bucket-')]
+                next_bucket_id = max(existing_bucket_numbers) + 1 if existing_bucket_numbers else 1
+                
+                # Adicionar parceiros sem bucket aos novos buckets
+                for j, new_partners in clusters_partners.items():
+                    bucket_id = next_bucket_id + j
+                    bucket_name = f"bucket-{bucket_id}"
+                    bucket_partners_dict[bucket_name] = new_partners
+        
+        # Construir cluster_metrics e hex_to_cluster
         cluster_metrics, hex_to_cluster = {}, {}
-        for j, bucket_partners in clusters_partners.items():
-            bucket_id = j + 1
-            ctl_name = f"CTL-{chr(65 + (j // 5))}"
-            cluster_name = f"bucket-{bucket_id}"
+        
+        for bucket_idx, (bucket_name, bucket_partners) in enumerate(bucket_partners_dict.items()):
+            ctl_name = f"CTL-{chr(65 + (bucket_idx // 5))}"
+            
             for p in bucket_partners:
-                p.cluster_name, p.ctl_name, p.bdm_cluster = cluster_name, ctl_name, bdm_cluster
-                for alloc in p.allocations: hex_to_cluster[alloc.hex_id] = cluster_name
+                p.cluster_name, p.ctl_name, p.bdm_cluster = bucket_name, ctl_name, bdm_cluster
+                for alloc in p.allocations: 
+                    hex_to_cluster[alloc.hex_id] = bucket_name
 
             active = sum(1 for p in bucket_partners if p.status == "Active")
-            cluster_metrics[cluster_name] = ClusterMetrics(
-                base=station_code, bdm_cluster=bdm_cluster, ctl_name=ctl_name, cluster_name=cluster_name,
+            cluster_metrics[bucket_name] = ClusterMetrics(
+                base=station_code, bdm_cluster=bdm_cluster, ctl_name=ctl_name, cluster_name=bucket_name,
                 total_demand=sum(p.total_load for p in bucket_partners), total_expected_partners=len(bucket_partners),
                 active_partners=active, onboarding_partners=sum(1 for p in bucket_partners if p.status == "Onboarding"), 
                 bg_chacks_partners=sum(1 for p in bucket_partners if p.status == "BG_Checks"),
@@ -607,6 +661,7 @@ class OptimizationService:
                 attainment_percentage=(active / len(bucket_partners) * 100) if bucket_partners else 0,
                 partners=bucket_partners
             )
+        
         return cluster_metrics, hex_to_cluster
 
     def _find_neighborhood_clusters(self, res_dem: Dict[str, int], base: str) -> Tuple[List[List[str]], Dict[str, str]]:
@@ -628,6 +683,7 @@ class OptimizationService:
         MAX_LIMIT = 42
         subset = self.partners_df[(self.partners_df.status == target_status) & (self.partners_df.station_code == base)].copy()
         subset['identified_base'] = subset.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
+        
         for _, p in subset.iterrows():
             best_allocs = []
             chosen_cap = 0
@@ -673,11 +729,12 @@ class OptimizationService:
                 capacity_s=chosen_cap, 
                 decision=decision_str, 
                 entity_type="EXISTING", 
-                status=target_status, 
+                status=target_status,
+                bucket=p.bucket, 
                 partner_name=str(p.partner_name), 
                 salesforce_id=str(p.salesforce_id),
                 store_id=str(p.store_id),
-                lat=float(p.lat), 
+                lat=float(p.lat),
                 lon=float(p.lon), 
                 allocations=best_allocs
             ))
@@ -763,7 +820,7 @@ class OptimizationService:
             if not inside_jurisdiction:
                 results.append(
                     PartnerMetrics(
-                        origin_hex=p.origin_hex, station_code="", radius_s=0, capacity_s=0, entity_type="INACTIVE_EXITED",
+                        origin_hex=p.origin_hex, station_code="", radius_s=0, capacity_s=0, entity_type="PROSPECT",
                         status=str(p.status), partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), 
                         decision="Fora da area de atuacao", lat=float(p.lat), lon=float(p.lon), 
                         allocations=[]
@@ -775,16 +832,18 @@ class OptimizationService:
         self._load_data()
         prospects_outside = self._get_prospects_outside_jurisdiction()
         print(f" ⚠️  {len(prospects_outside)} prospects fora de jurisdição identificados")
+        for p in prospects_outside:
+            print(p.partner_name, p.station_code)
         for base in self.demand_df.station_code.unique():
             print(f"\n--- 🚀 INICIANDO OTIMIZAÇÃO: {base} ---")
             orig_dem = self.demand_df[self.demand_df.station_code == base].set_index("hex")["avg_demand"].to_dict()
             res_dem = dict(orig_dem)
-            p_active = self._allocate_existing_by_status(base, res_dem, "Active")
-            p_onboarding = self._allocate_existing_by_status(base, res_dem, "Onboarding")
-            p_bg = self._allocate_existing_by_status(base, res_dem, "BG Checks")
-            p_prospects = self._evaluate_prospects(res_dem)
-            p_inactives = self._evaluate_inactive_exited(base, res_dem)
-            islands, _ = self._find_neighborhood_clusters(res_dem, base)
+            p_active = self._allocate_existing_by_status(base=base, res_dem=res_dem, target_status="Active")
+            p_onboarding = self._allocate_existing_by_status(base=base, res_dem=res_dem, target_status="Onboarding")
+            p_bg = self._allocate_existing_by_status(base=base, res_dem=res_dem, target_status="BG Checks")
+            p_prospects = self._evaluate_prospects(res_dem=res_dem)
+            p_inactives = self._evaluate_inactive_exited(base=base, res_dem=res_dem)
+            islands, _ = self._find_neighborhood_clusters(res_dem=res_dem, base=base)
             p_new = []
             if islands:
                 payloads = [{"station_code": base, "hexes": isl, "demand_map": res_dem} for isl in islands]
@@ -803,16 +862,8 @@ class OptimizationService:
                             p_new.append(p_obj)
                             for a in p_obj.allocations: 
                                 if a.hex_id in res_dem: res_dem[a.hex_id] -= a.packages_assigned
-
-            # Consolidação            
-            valid_active = [p for p in p_active if p.total_load > 0]
-            valid_onb = [p for p in p_onboarding if p.total_load > 0]
-            valid_bg = [p for p in p_bg if p.total_load > 0]
-            valid_inact = [p for p in p_inactives if p.total_load > 0]
-            valid_prosp = [p for p in p_prospects if p.total_load > 0]
-            valid_new = p_new
             
-            all_final = valid_active + valid_onb + valid_bg + valid_inact + valid_prosp + valid_new
+            all_final = p_active + p_onboarding + p_bg + p_prospects + p_inactives + p_new + prospects_outside
             
             n_buckets = Config.CLUSTER_PER_STATION.get(base, 5)
             cluster_metrics, hex_to_bucket = self._generate_operational_clusters_balanced(base, all_final, n_buckets)
@@ -839,15 +890,15 @@ class OptimizationService:
             m = BaseMetrics(
                 total_demand=sum(orig_dem.values()),
                 existing_absorbed=sum(p.total_load for p in p_active + p_onboarding + p_bg),
-                prospect_reserved=sum(p.total_load for p in valid_prosp),
-                inactive_reserved=sum(p.total_load for p in valid_inact),
-                new_allocated=sum(p.total_load for p in valid_new),
+                prospect_reserved=sum(p.total_load for p in p_prospects),
+                inactive_reserved=sum(p.total_load for p in p_inactives),
+                new_allocated=sum(p.total_load for p in p_new),
                 residual=sum(res_dem.values()),
-                active_partners_count=len(valid_active),
-                onboarding_partners_count=len(valid_onb),
-                vetting_partners_count=len(valid_bg),
-                inactive_partners_count=len(valid_inact),
-                new_partners_count=len(valid_new),
+                active_partners_count=len(p_active),
+                onboarding_partners_count=len(p_onboarding),
+                vetting_partners_count=len(p_bg),
+                inactive_partners_count=len(p_inactives),
+                new_partners_count=len(p_new),
                 avg_load=(sum(p.total_load for p in all_final)/len(all_final)) if all_final else 0,
                 avg_radius=(sum(p.radius_s for p in all_final)/len(all_final)) if all_final else 0,
                 cluster_count=len(cluster_metrics),
@@ -867,7 +918,7 @@ class OptimizationService:
                 cluster_metrics=cluster_metrics
             ))
             
-            print(f"   ✅ Base {base} concluída. (Ativos: {len(valid_active)}, Prospects: {len(valid_prosp)}, Novos: {len(valid_new)})")
+            print(f"   ✅ Base {base} concluída. (Ativos: {len(p_active)}, Prospects: {len(p_prospects)}, Novos: {len(p_new)})")
 
         # Geração dos arquivos finais (GeoJSON, TXT, CSV...)
         rg = ReportGenerator(Config.DEST_FOLDER)

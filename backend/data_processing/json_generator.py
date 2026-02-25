@@ -118,6 +118,7 @@ class JsonGenerator:
                 "partner_capacity": row.get("Partner Capacity"),
                 "ADV": row.get("Actual ADV"),
                 "optimization": row.get("optimization_data"),
+                "bucket": row.get("Bucket")
             }
             
             top_level_data = {k: JsonGenerator._clean_value(v) for k, v in top_level_data.items()}

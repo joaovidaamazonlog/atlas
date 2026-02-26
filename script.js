@@ -166,7 +166,7 @@ const DataManager = {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.bucket_ade = optimizationInfo.properties.bucket_ade;
-                pertner.delivery_station = optimizationInfo.properties.delivery_station
+                partner.delivery_station = optimizationInfo.properties.delivery_station
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,

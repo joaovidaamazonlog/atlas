@@ -59,7 +59,7 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data_v3.geojson').then(res => res.json()).catch(() => null)
         ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
             AppState.allMarkersData = partnerData.allMarkerData.filter(p => {
-                if (p.lat !== undefined && p.lon !== undefined) {
+                if (p.lat !== null || p.lon !== null) {
                     return true;
                 } else {
                     console.warn(`Parceiro ${p.salesforce_id} ignorado por falta de coordenadas.`);

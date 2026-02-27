@@ -989,6 +989,10 @@ const UIManager = {
                                 <td style="width:60%">${data.status}</td>
                             </tr>
                             <tr>
+                                <td style="width:40%"><b>Carteira:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>
                                 <td style="width:60%">${data.delivery_station}</td>
                             </tr>
@@ -1069,6 +1073,10 @@ const UIManager = {
                                 <td style="width:60%">${data.status}</td>
                             </tr>
                             <tr>
+                                <td style="width:40%"><b>Carteira:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>
                                 <td style="width:60%">${data.delivery_station}</td>
                             </tr>
@@ -1128,6 +1136,10 @@ const UIManager = {
                             <tr>
                                 <td style="width:40%"><b>Status:</b></td>
                                 <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Carteira:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>
@@ -1210,6 +1222,10 @@ const UIManager = {
                                 <td style="width:60%">${data.status}</td>
                             </tr>
                             <tr>
+                                <td style="width:40%"><b>Carteira:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
+                            </tr>
+                            <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>
                                 <td style="width:60%">${data.delivery_station}</td>
                             </tr>
@@ -1269,6 +1285,10 @@ const UIManager = {
                             <tr>
                                 <td style="width:40%"><b>Status:</b></td>
                                 <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Carteira:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>
@@ -1371,6 +1391,10 @@ const UIManager = {
                             <tr>
                                 <td style="width:40%"><b>Status:</b></td>
                                 <td style="width:60%">${data.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%"><b>Carteira:</b></td>
+                                <td style="width:60%">${data.bucket_ade}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%"><b>Delivery Station:</b></td>

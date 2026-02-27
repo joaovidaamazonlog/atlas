@@ -58,7 +58,14 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data_v3.geojson').then(res => res.json()).catch(() => null)
         ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
-            AppState.allMarkersData = partnerData.allMarkerData;
+            AppState.allMarkersData = partnerData.allMarkerData.filter(p => {
+                if (p.lat !== undefined && p.lon !== undefined) {
+                    return true;
+                } else {
+                    console.warn(`Parceiro ${p.salesforce_id} ignorado por falta de coordenadas.`);
+                    return false;
+                }
+            });
             AppState.period = partnerData.period;
             AppState.deliveryStations = partnerData.deliveryStations;
             AppState.polygonsData = polygonData;

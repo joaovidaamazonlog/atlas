@@ -70,7 +70,8 @@ SHEETS_TO_LOAD = [
     "ADV - Coverage raw data",
     "Lead",
     "PerfectMile",
-    "Jurisdictions"
+    "Jurisdictions",
+    "WebLeads"
 ]
 
 # --- Nomes de Colunas (para garantir consistência) ---
@@ -115,6 +116,289 @@ SCORECARD_CONFIG = {
         "conversoes": 58
     },
 }
+
+ADES_ACCOUNT_MANAGERS = [
+  {
+    "salesforce_id": "0055G00000B9BgLQAV",
+    "alias": "alinmelu",
+    "buckets": ["DSP2_bucket-1"]
+  },
+  {
+    "salesforce_id": "0055G00000B9BgVQAV",
+    "alias": "oliveiya",
+    "buckets": ["DSP2_bucket-3"]
+  },
+  {
+    "salesforce_id": "0055G00000BA5UXQA1",
+    "alias": "hhelenam",
+    "buckets": ["DSP2_bucket-8"]
+  },
+  {
+    "salesforce_id": "005at00000Bn1KrAAJ",
+    "alias": "vferrema",
+    "buckets": ["DSP2_bucket-12"]
+  },
+  {
+    "salesforce_id": "005at00000AwtxgAAB",
+    "alias": "henrenat",
+    "buckets": ["DSP2_bucket-7"]
+  },
+  {
+    "salesforce_id": "005at00000CmvWyAAJ",
+    "alias": "jdgouvei",
+    "buckets": ["DSP2_bucket-6", "DSP2_bucket-2", "DSP2_bucket-9"]
+  },
+  {
+    "salesforce_id": "005at00000CnOjpAAF",
+    "alias": "cavadnat",
+    "buckets": ["DSP2_bucket-5", "DSP2_bucket-11"]
+  },
+  {
+    "salesforce_id": "005at00000AwtxhAAB",
+    "alias": "spinobar",
+    "buckets": ["DSP2_bucket-10", "DSP2_bucket-4"]
+  },
+  {
+    "salesforce_id": "005at000002NE7ZAAW",
+    "alias": "natagovr",
+    "buckets": ["DSP4_bucket-8", "DSP4_bucket-11"]
+  },
+  {
+    "salesforce_id": "005at00000AwtxdAAB",
+    "alias": "almecris",
+    "buckets": ["DSP4_bucket-9", "DSP4_bucket-3"]
+  },
+  {
+    "salesforce_id": "005at00000Bn2aGAAR",
+    "alias": "nsantvan",
+    "buckets": ["DSP4_bucket-4", "DSP4_bucket-10"]
+  },
+  {
+    "salesforce_id": "005at00000Bn7A7AAJ",
+    "alias": "sidaline",
+    "buckets": ["DSP4_bucket-2", "DSP4_bucket-1"]
+  },
+  {
+    "salesforce_id": "005at00000BnBQcAAN",
+    "alias": "fsandian",
+    "buckets": ["DSP4_bucket-5", "DSP4_bucket-6", "DSP4_bucket-7"]
+  },
+  {
+    "salesforce_id": "005at00000ADsT6AAL",
+    "alias": "andrfec",
+    "buckets": ["DSP5_bucket-1", "DSP5_bucket-4", "DSP5_bucket-5"]
+  },
+  {
+    "salesforce_id": "005at000001qfXyAAI",
+    "alias": "olfelipy",
+    "buckets": ["DSP5_bucket-2", "DSP5_bucket-3"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QkQAL",
+    "alias": "psoubren",
+    "buckets": ["DRS5_bucket-1", "DRS5_bucket-5", "DRS5_bucket-9"]
+  },
+  {
+    "salesforce_id": "0055G00000BA5USQA1",
+    "alias": "jkowalsq",
+    "buckets": ["DRS5_bucket-3", "DRS5_bucket-8"]
+  },
+  {
+    "salesforce_id": "005at00000ADsT7AAL",
+    "alias": "julilsil",
+    "buckets": ["DRS5_bucket-2", "DRS5_bucket-4", "DRS5_bucket-6", "DRS5_bucket-7", "DRS5_bucket-10"]
+  },
+  {
+    "salesforce_id": "005at000001qfY0AAI",
+    "alias": "kelvinbf",
+    "buckets": ["DPR2_bucket-1", "DPR2_bucket-3", "DPR2_bucket-5"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QuQAL",
+    "alias": "qlilimat",
+    "buckets": ["DPR2_bucket-2", "DPR2_bucket-4", "DPR2_bucket-6"]
+  },
+  {
+    "salesforce_id": "005at000002zVKJAA2",
+    "alias": "lopefjen",
+    "buckets": ["DBR9_bucket-1"]
+  },
+  {
+    "salesforce_id": "005at000005PufHAAS",
+    "alias": "zcarlalo",
+    "buckets": ["DBR9_bucket-11", "DBR9_bucket-3"]
+  },
+  {
+    "salesforce_id": "005at000002kSTCAA2",
+    "alias": "tlimaca",
+    "buckets": ["DBR9_bucket-14", "DBR9_bucket-13"]
+  },
+  {
+    "salesforce_id": "005at00000AwtxfAAB",
+    "alias": "wsibruno",
+    "buckets": ["DBR9_bucket-6", "DBR9_bucket-26"]
+  },
+  {
+    "salesforce_id": "005at000003bF9eAAE",
+    "alias": "suelezsa",
+    "buckets": ["DBR9_bucket-15", "DBR9_bucket-7"]
+  },
+  {
+    "salesforce_id": "005at00000AuQv0AAF",
+    "alias": "hugomorb",
+    "buckets": ["DBR9_bucket-2", "DBR9_bucket-8"]
+  },
+  {
+    "salesforce_id": "005at00000BeXJwAAN",
+    "alias": "ltvallim",
+    "buckets": ["DBR9_bucket-4", "DBR9_bucket-9"]
+  },
+  {
+    "salesforce_id": "005at00000BeXJvAAN",
+    "alias": "angbasto",
+    "buckets": ["DBR9_bucket-16", "DBR9_bucket-12"]
+  },
+  {
+    "salesforce_id": "0055G00000B9BgkQAF",
+    "alias": "elisidos",
+    "buckets": ["DBR9_bucket-21", "DBR9_bucket-19"]
+  },
+  {
+    "salesforce_id": "005at00000AuQuzAAF",
+    "alias": "cgbarbos",
+    "buckets": ["DBR9_bucket-10", "DBR9_bucket-27"]
+  },
+  {
+    "salesforce_id": "005at00000AwtxeAAB",
+    "alias": "vivianpg",
+    "buckets": ["DBR9_bucket-18"]
+  },
+  {
+    "salesforce_id": "005at000004rgN0AAI",
+    "alias": "lidkarol",
+    "buckets": ["DBR9_bucket-20", "DBR9_bucket-17"]
+  },
+  {
+    "salesforce_id": "005at00000CVob9AAD",
+    "alias": "anaraujj",
+    "buckets": ["DBR9_bucket-22"]
+  },
+  {
+    "salesforce_id": "0055G00000B9Bg6QAF",
+    "alias": "wherlecr",
+    "buckets": ["DBR9_bucket-25", "DBR9_bucket-23"]
+  },
+  {
+    "salesforce_id": "0055G00000BA5UhQAL",
+    "alias": "deoraque",
+    "buckets": ["DBR9_bucket-5", "DBR9_bucket-24"]
+  },
+  {
+    "salesforce_id": "005at000003bF9fAAE",
+    "alias": "pbefelip",
+    "buckets": ["DRJ3_bucket-6"]
+  },
+  {
+    "salesforce_id": "005at000004WxNdAAK",
+    "alias": "eazcinti",
+    "buckets": ["DRJ3_bucket-1", "DRJ3_bucket-3", "DRJ3_bucket-4", "DRJ3_bucket-7", "DRJ3_bucket-8", "DRJ3_bucket-9", "DRJ3_bucket-13", "DRJ3_bucket-14", "DRJ3_bucket-16", "DRJ3_bucket-17", "DRJ3_bucket-18", "DRJ3_bucket-20", "DRJ3_bucket-22"]
+  },
+  {
+    "salesforce_id": "005at000005PufGAAS",
+    "alias": "thalessd",
+    "buckets": ["DRJ3_bucket-12", "DRJ3_bucket-19", "DRJ3_bucket-5", "DRJ3_bucket-21"]
+  },
+  {
+    "salesforce_id": "005at000002kSTDAA2",
+    "alias": "bruzsilv",
+    "buckets": ["DRJ3_bucket-11"]
+  },
+  {
+    "salesforce_id": "005at00000ADsT4AAL",
+    "alias": "marthgab",
+    "buckets": ["DRJ3_bucket-15"]
+  },
+  {
+    "salesforce_id": "005at0000086YH0AAM",
+    "alias": "fenatalh",
+    "buckets": ["DRJ3_bucket-2", "DRJ3_bucket-10"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QGQA1",
+    "alias": "erihsouz",
+    "buckets": ["DBS5_bucket-1", "DBS5_bucket-2", "DBS5_bucket-3", "DBS5_bucket-6", "DBS5_bucket-9", "DBS5_bucket-12", "DBS5_bucket-13", "DBS5_bucket-14"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QLQA1",
+    "alias": "josimaju",
+    "buckets": ["DBS5_bucket-4", "DBS5_bucket-5", "DBS5_bucket-7", "DBS5_bucket-8", "DBS5_bucket-10", "DBS5_bucket-11", "DBS5_bucket-15"]
+  },
+  {
+    "salesforce_id": "005at000004rgMzAAI",
+    "alias": "wcaralla",
+    "buckets": ["DGO2_bucket-3"]
+  },
+  {
+    "salesforce_id": "005at000003DxQMAA0",
+    "alias": "krampeaf",
+    "buckets": ["DGO2_bucket-1", "DGO2_bucket-2"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QBQA1",
+    "alias": "mbrenosa",
+    "buckets": ["DBH5_bucket-1", "DBH5_bucket-2"]
+  },
+  {
+    "salesforce_id": "005at000002kSTEAA2",
+    "alias": "crafaeln",
+    "buckets": ["DMG2_bucket-1", "DMG2_bucket-2", "DMG2_bucket-3", "DMG2_bucket-4", "DMG2_bucket-5", "DMG2_bucket-6", "DMG2_bucket-7", "DMG2_bucket-8", "DMG2_bucket-9", "DMG2_bucket-10", "DMG2_bucket-11", "DMG2_bucket-12", "DMG2_bucket-13"]
+  },
+  {
+    "salesforce_id": "005at00000534NZAAY",
+    "alias": "cicealme",
+    "buckets": ["DPE4_bucket-6", "DPE4_bucket-2", "DPE4_bucket-7"]
+  },
+  {
+    "salesforce_id": "005at000001ntHJAAY",
+    "alias": "silvmac",
+    "buckets": ["DPE4_bucket-5", "DPE4_bucket-3", "DPE4_bucket-4", "DPE4_bucket-1"]
+  },
+  {
+    "salesforce_id": "005at000002zVKHAA2",
+    "alias": "eveomart",
+    "buckets": ["DPB3_bucket-1", "DPB3_bucket-2", "DPB3_bucket-3", "DPB3_bucket-4", "DPB3_bucket-5"]
+  },
+  {
+    "salesforce_id": "005at00000ADsT8AAL",
+    "alias": "paualane",
+    "buckets": ["DCE3_bucket-16", "DCE3_bucket-1", "DCE3_bucket-12", "DCE3_bucket-15", "DCE3_bucket-14"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QpQAL",
+    "alias": "pedtneto",
+    "buckets": ["DCE3_bucket-11", "DCE3_bucket-6", "DCE3_bucket-4", "DCE3_bucket-13", "DCE3_bucket-2"]
+  },
+  {
+    "salesforce_id": "005at000002GuY9AAK",
+    "alias": "qsidneyl",
+    "buckets": ["DCE3_bucket-8", "DCE3_bucket-7", "DCE3_bucket-9", "DCE3_bucket-5", "DCE3_bucket-10", "DCE3_bucket-3"]
+  },
+  {
+    "salesforce_id": "005at000004Oo6DAAS",
+    "alias": "cryconce",
+    "buckets": ["DSA8_bucket-1", "DSA8_bucket-2"]
+  },
+  {
+    "salesforce_id": "0055G00000BA0QQQA1",
+    "alias": "dcfelipe",
+    "buckets": ["DSA8_bucket-3", "DSA8_bucket-4"]
+  },
+  {
+    "salesforce_id": "0055G00000BA5UIQA1",
+    "alias": "swagnerq",
+    "buckets": ["DES2_bucket-1", "DES2_bucket-2", "DES2_bucket-3"]
+  }
+]
 
 ADES_SCOUTING = {
     "mbrenosa": "Breno Santos", 

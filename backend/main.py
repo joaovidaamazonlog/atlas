@@ -55,13 +55,13 @@ def run_pipeline():
         print("Dados consolidados e enriquecidos com sucesso.")
 
         #Filtrar lojas sem coordenadas válidas
-        initial_rows = len(final_df)
+        """initial_rows = len(final_df)
         final_df.dropna(subset=['Latitude', 'Longitude'], inplace=True)
         filtered_rows = len(final_df)
         
         if initial_rows > filtered_rows:
             print(f"AVISO: {initial_rows - filtered_rows} lojas foram removidas por não terem coordenadas válidas.")
-
+        """
         #Gerar os arquivos JSON para mapa e Scorecard
         period = datetime.today().strftime("%Y-%m-%d : %Hh:%Mm")
 

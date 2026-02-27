@@ -30,6 +30,7 @@ class Config:
     MAX_CAP = configuration.MAX_CAPACITY
     CAPACITIES = configuration.CAPACITIES
     RADII = configuration.RADII_M
+    ADES_ACCOUNT_MANAGERS = configuration.ADES_ACCOUNT_MANAGERS
     BONUS_PER_OPEN = 1500
     # Carregando o dicionário de carteiras por base
     CLUSTER_PER_STATION = getattr(configuration, 'CLUSTER_PER_STATION', {})
@@ -111,6 +112,7 @@ class PartnerMetrics:
     HCP_host_partner: str = ""
     zip_code: str = ""
     city: str = ""
+    owner_id: Optional[str] = None
     store_id: Optional[str] = None
     radius_a: Optional[int] = None
     capacity_a: Optional[int] = None
@@ -227,7 +229,8 @@ class ReportGenerator:
                             "bucket": bucket_name,
                             "ctl": ts.ctl_name if ts else "N/A",
                             "bdm": rep.bdm_cluster,
-                            "demand": demand_info["total"]
+                            "demand": demand_info["total"],
+                            "CEPs": list(hex_to_ceps.get(h, []))[:5]
                         }
                     })
 
@@ -323,6 +326,32 @@ class ReportGenerator:
             print(f"✅ CSV de parceiros por bucket salvo em {filename}")
         except Exception as e:
             print(f"❌ Erro ao gerar CSV de parceiros: {e}")
+    
+    def generate_webleads_csv(self, webleads: List[PartnerMetrics]):
+        """Gera um CSV de webleads avaliados e alocados em buckets."""
+        filename = self.dest / "webleads_evaluated.csv"
+        
+        # Cabeçalhos solicitados
+        fieldnames = ["Id", "Delivery Station", "Jurisdiction", "Name", "OwnerId"]
+        
+        try:
+            with open(filename, "w", encoding="utf-8", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for l in webleads:
+                    if l.decision== "Qualificar lead":
+                        writer.writerow({
+                            "Id": l.salesforce_id,
+                            "Delivery Station": l.station_code,
+                            "Jurisdiction": l.bucket,
+                            "Name": l.partner_name,
+                            "OwnerId": l.owner_id
+                        })
+                            
+            print(f"✅ CSV de web leads salvo em {filename}")
+        except Exception as e:
+            print(f"❌ Erro ao gerar CSV de web leads: {e}")
 
 # =====================================================
 # WORKER DO SOLVER (PARALELISMO)
@@ -544,6 +573,13 @@ class OptimizationService:
         with open(Config.BASE_PARTNERS, "r", encoding="utf-8") as f:
             p_data = json.load(f)["allMarkerData"]
         self.partners_df = pd.DataFrame(p_data)
+        self.web_leads_df = self.partners_df[self.partners_df['leadSource'] == "Website Pardot Form"].copy()
+        if "delivery_station" in self.web_leads_df.columns:
+            self.web_leads_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
+        if "name" in self.web_leads_df.columns:
+            self.web_leads_df.rename(columns={"name": "partner_name"}, inplace=True)
+        
+        self.partners_df.dropna(subset=['lat', 'lon'], inplace=True)
         self.partners_df['exitedDate'] = pd.to_datetime(self.partners_df.get('exitedDate'), errors='coerce')
         if "delivery_station" in self.partners_df.columns:
             self.partners_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
@@ -795,6 +831,100 @@ class OptimizationService:
                                           lat=float(p.lat), lon=float(p.lon), allocations=allocs))
         return results
     
+    def _get_account_manager_by_bucket(self, base: str, bucket: str) -> Optional[str]:
+        if not bucket:
+            return None
+        for manager in Config.ADES_ACCOUNT_MANAGERS:
+            bucket_corrected = base+"_"+bucket
+            if bucket_corrected in manager.get('buckets', []):
+                return manager.get('salesforce_id')
+        return None
+
+    def _evaluate_webleads(self) -> List[PartnerMetrics]:
+        results = []
+        subset = self.web_leads_df.copy()
+        subset['zip_clean'] = subset['zip_code'].astype(str).str.replace(r'\D', '', regex=True).str.zfill(8)
+        subset['origin_hex'] = subset['zip_clean'].apply(lambda z: self._find_hex_by_cep(z) if z and z.isdigit() else None)
+        subset[['identified_base', 'bucket']] = subset.apply(lambda row: self._get_base_bucket_from_hex(row.origin_hex), axis=1, result_type='expand')
+        for _, p in subset.iterrows():
+            if not p.origin_hex:
+                results.append(PartnerMetrics(origin_hex=None, station_code=None, radius_s=0, capacity_s=0, entity_type="WEB_LEAD", bucket=p.bucket if pd.notna(p.bucket) else None,
+                                              status="New", partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), owner_id=None, 
+                                              decision="CEP inválido ou não mapeado", lat=float('nan'), lon=float('nan'), allocations=[]))
+                continue
+            # Buscar o account manager responsável pelo bucket
+            owner_id = self._get_account_manager_by_bucket(p.identified_base, p.bucket) if pd.notna(p.bucket) else None
+            lat, lon = (h3.cell_to_latlng(p.origin_hex) if p.origin_hex else (None, None))
+            results.append(PartnerMetrics(origin_hex=p.origin_hex, station_code=p.identified_base, radius_s=0, capacity_s=0, entity_type="WEB_LEAD", bucket=p.bucket if pd.notna(p.bucket) else None,
+                                          status="New", partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), owner_id=owner_id, decision="Qualificar lead", 
+                                          lat=float(lat) if not pd.isna(lat) else None, lon=float(lon) if not pd.isna(lon) else None, allocations=[]))
+        return results
+    
+    def _find_hex_by_cep(self, cep: str) -> Optional[str]:
+        """Localiza o hex mais apropriado para o CEP fornecido.
+
+        A busca é feita em duas etapas:
+        1. correspondência exata com a lista de CEPs de cada hex;
+        2. se não houver correspondência, considera apenas os cinco
+           primeiros dígitos e retorna o hex que tiver **mais** CEPs
+           iniciados por esse prefixo.
+
+        Retorna o hex (string) ou ``None`` se não for possível mapear.
+        """
+        if not cep or not cep.isdigit():
+            return None
+        if self.hex_to_ceps:
+            # etapa 1: busca exata
+            for h, ceps in self.hex_to_ceps.items():
+                if cep in ceps:
+                    return h
+            # etapa 2: prefixo de 5 caracteres
+            prefix = cep[:5]
+            best_hex = None
+            best_count = 0
+            for h, ceps in self.hex_to_ceps.items():
+                count = sum(1 for c in ceps if c.startswith(prefix))
+                if count > best_count:
+                    best_count = count
+                    best_hex = h
+            return best_hex
+        return None
+
+    def _get_base_bucket_from_hex(self, hex_id: str) -> Tuple[Optional[str], Optional[str]]:
+        """Retorna a base e o bucket para um hex H3.  
+        Se o valor recebido parecer ser um CEP (8 dígitos numéricos)
+        tenta primeiro localizar o hex correspondente antes de seguir
+        com a lógica normal.  
+
+        A resolução de CEP funciona em duas etapas:
+        1. procura exata dentro de ``self.hex_to_ceps``;
+        2. caso não encontre, utiliza os cinco primeiros caracteres
+           para eleger o hex que possuir MAIS CEPs com aquele prefixo.
+
+        Essa abordagem permite tratar parceiros que só têm o CEP
+        cadastrado em vez de coordenadas.
+        """
+        # se o parâmetro for um CEP válido, tentar achar o hex primeiro
+        hex_lookup = hex_id
+        if hex_id and hex_id.isdigit() and len(hex_id) == 8:
+            found = self._find_hex_by_cep(hex_id)
+            if found is None:
+                return None, None
+            hex_lookup = found
+        # segue a lógica original usando ``hex_lookup``
+        if hex_lookup in self.hex_to_base:
+            base = self.hex_to_base[hex_lookup]
+            bucket = None
+            for report in self.reports:
+                if report.station_code == base:
+                    for cluster_name, cluster_data in report.cluster_metrics.items():
+                        if hex_lookup in [alloc.hex_id for p in cluster_data.partners for alloc in p.allocations]:
+                            bucket = cluster_name
+                            break
+                    if bucket: break
+            return base, bucket
+        return None, None
+    
     def _get_base_from_jurisdiction(self, lat: float, lon: float) -> Optional[str]:
         pt = Point(float(lon), float(lat))
         for f in self.jurisdictions.get("features", []):
@@ -918,14 +1048,18 @@ class OptimizationService:
                 cluster_metrics=cluster_metrics
             ))
             
+            
             print(f"   ✅ Base {base} concluída. (Ativos: {len(p_active)}, Prospects: {len(p_prospects)}, Novos: {len(p_new)})")
 
+        webleads = self._evaluate_webleads()
+        print(webleads[0] if webleads else "No webleads found")
         # Geração dos arquivos finais (GeoJSON, TXT, CSV...)
         rg = ReportGenerator(Config.DEST_FOLDER)
         rg.generate_strategic_txt(self.reports, self.hex_to_ceps)
         rg.generate_geojson(self.reports, self.hex_to_ceps)
         rg.executive_report(self.reports)
         rg.generate_partners_csv(self.reports)
+        rg.generate_webleads_csv(webleads)
 
 if __name__ == "__main__":
     try: OptimizationService().run()

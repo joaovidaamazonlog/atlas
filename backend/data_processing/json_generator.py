@@ -113,12 +113,15 @@ class JsonGenerator:
                 "sorte_code": row.get("Sorte Code"),
                 "zip_code": row.get("CEP"),
                 "city": row.get("Cidade"),
+                "state": row.get("Estado"),
                 "radius": row.get("Radius"),
                 "eligible_packages": row.get("# Eligible Packages"),
                 "partner_capacity": row.get("Partner Capacity"),
                 "ADV": row.get("Actual ADV"),
                 "optimization": row.get("optimization_data"),
-                "bucket": row.get("Bucket")
+                "bucket": row.get("Bucket"),
+                "owner_id": row.get("OwnerId"),
+                "leadSource": row.get("LeadSource"),
             }
             
             top_level_data = {k: JsonGenerator._clean_value(v) for k, v in top_level_data.items()}

@@ -39,6 +39,7 @@ class DataProcessor:
         launches_df = dfs.get("Launches", pd.DataFrame()).copy()
         stations_df = dfs.get("Delivery Stations", pd.DataFrame()).copy()
         jurisdictions_df = dfs.get("Jurisdictions", pd.DataFrame()).copy()
+        webleads_df = dfs.get("WebLeads", pd.DataFrame()).copy()
 
         if active_df.empty and launches_df.empty:
             raise ValueError("DataFrames 'Active' e 'Launches' estão vazios.")
@@ -62,7 +63,7 @@ class DataProcessor:
             map_host_partner = dict(zip(active_df['Id'].astype(str), active_df['Name']))
             active_df['HCP Host Partner'] = active_df['HCP Host Partner'].astype(str).map(map_host_partner)
 
-        consolidated = pd.concat([active_df, launches_df], ignore_index=True, sort=False)
+        consolidated = pd.concat([active_df, launches_df, webleads_df], ignore_index=True, sort=False)
 
         if not stations_df.empty and 'Id' in stations_df.columns and 'Name' in stations_df.columns:
             station_map = dict(zip(stations_df['Id'].astype(str), stations_df['Name']))

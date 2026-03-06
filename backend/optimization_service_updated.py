@@ -332,7 +332,7 @@ class ReportGenerator:
         filename = self.dest / "webleads_evaluated.csv"
         
         # Cabeçalhos solicitados
-        fieldnames = ["Id", "Delivery Station", "Jurisdiction", "Name", "OwnerId"]
+        fieldnames = ["Id", "Delivery Station", "Jurisdiction", "Name", "OwnerId", "decision"]
         
         try:
             with open(filename, "w", encoding="utf-8", newline="") as f:
@@ -340,14 +340,14 @@ class ReportGenerator:
                 writer.writeheader()
                 
                 for l in webleads:
-                    if l.decision== "Qualificar lead":
-                        writer.writerow({
-                            "Id": l.salesforce_id,
-                            "Delivery Station": l.station_code,
-                            "Jurisdiction": l.bucket,
-                            "Name": l.partner_name,
-                            "OwnerId": l.owner_id
-                        })
+                    writer.writerow({
+                        "Id": l.salesforce_id,
+                        "Delivery Station": l.station_code,
+                        "Jurisdiction": l.bucket,
+                        "Name": l.partner_name,
+                        "OwnerId": l.owner_id,
+                        "decision": l.decision
+                    })
                             
             print(f"✅ CSV de web leads salvo em {filename}")
         except Exception as e:
@@ -844,13 +844,14 @@ class OptimizationService:
         results = []
         subset = self.web_leads_df.copy()
         subset['zip_clean'] = subset['zip_code'].astype(str).str.replace(r'\D', '', regex=True).str.zfill(8)
-        subset['origin_hex'] = subset['zip_clean'].apply(lambda z: self._find_hex_by_cep(z) if z and z.isdigit() else None)
+        subset['zip_prefix'] = subset['zip_clean'].str[:5]
+        subset['origin_hex'] = subset['zip_prefix'].apply(lambda z: self._find_hex_by_cep(z) if z and z.isdigit() else None)
         subset[['identified_base', 'bucket']] = subset.apply(lambda row: self._get_base_bucket_from_hex(row.origin_hex), axis=1, result_type='expand')
         for _, p in subset.iterrows():
             if not p.origin_hex:
                 results.append(PartnerMetrics(origin_hex=None, station_code=None, radius_s=0, capacity_s=0, entity_type="WEB_LEAD", bucket=p.bucket if pd.notna(p.bucket) else None,
                                               status="New", partner_name=str(p.partner_name), salesforce_id=str(p.salesforce_id), owner_id=None, 
-                                              decision="CEP inválido ou não mapeado", lat=float('nan'), lon=float('nan'), allocations=[]))
+                                              decision="CEP invalido ou nao mapeado", lat=float('nan'), lon=float('nan'), allocations=[]))
                 continue
             # Buscar o account manager responsável pelo bucket
             owner_id = self._get_account_manager_by_bucket(p.identified_base, p.bucket) if pd.notna(p.bucket) else None
@@ -904,24 +905,18 @@ class OptimizationService:
         Essa abordagem permite tratar parceiros que só têm o CEP
         cadastrado em vez de coordenadas.
         """
-        # se o parâmetro for um CEP válido, tentar achar o hex primeiro
         hex_lookup = hex_id
-        if hex_id and hex_id.isdigit() and len(hex_id) == 8:
-            found = self._find_hex_by_cep(hex_id)
-            if found is None:
-                return None, None
-            hex_lookup = found
         # segue a lógica original usando ``hex_lookup``
         if hex_lookup in self.hex_to_base:
             base = self.hex_to_base[hex_lookup]
             bucket = None
             for report in self.reports:
                 if report.station_code == base:
-                    for cluster_name, cluster_data in report.cluster_metrics.items():
-                        if hex_lookup in [alloc.hex_id for p in cluster_data.partners for alloc in p.allocations]:
-                            bucket = cluster_name
-                            break
-                    if bucket: break
+                    # Consulta diretamente hex_to_cluster em vez de procurar em alocações
+                    # Isso garante que todos os hexes mapeados sejam encontrados
+                    bucket = report.hex_to_cluster.get(hex_lookup)
+                    if bucket:
+                        break
             return base, bucket
         return None, None
     

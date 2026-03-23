@@ -59,9 +59,8 @@ const DataManager = {
             fetch('https://joaovidaamazonlog.github.io/atlas/data/territories.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data.geojson').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/ideal_supply.json').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/heatmap.geojson').then(res => res.json()).catch(() => null)
-        ]).then(([partnerData, polygonData, jurisdictionData, optData, idealSupplyData, heatmapData]) => {
+        ]).then(([partnerData, polygonData, jurisdictionData, optData, heatmapData]) => {
             AppState.allMarkersData = partnerData.allMarkerData.filter(p => {
                 if (p.lat !== null || p.lon !== null) {
                     return true;
@@ -75,7 +74,7 @@ const DataManager = {
             AppState.polygonsData = polygonData;
             AppState.jurisdictionData = jurisdictionData;
             AppState.optimizationData = optData;
-            AppState.idealSupplyData = idealSupplyData;
+            AppState.idealSupplyData = optData.feature.filter(p => p.properties.type === "IDEAL_SLOT");
             AppState.heatmapData = heatmapData;
 
             UIManager.updatePeriodInfo(AppState.period);
@@ -122,10 +121,12 @@ const DataManager = {
                         status: "New",
                         delivery_station: slot.station_code,
                         radius: slot.radius_s,
-                        capacity: slot.capacity_s,
-                        lat: slot.lat,
-                        lon: slot.lon,
+                        capacity: slot.capacity_day,
+                        lat: slot.geometry.coordenates[0],
+                        lon: slot.geometry.coordenates[1],
                         bucket_ade: slot.territory_id,
+                        ceps: slot.ceps
+
                     };
                     AppState.allMarkersData.push(NP);
                 });
@@ -1361,7 +1362,7 @@ const UIManager = {
             <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <!-- Div para o Nome do Parceiro -->
                 <div class="partner-header">
-                    <h5 style="font-weight: bold;">${data.entity}</h5>
+                    <h5 style="font-weight: bold;">New Partner</h5>
                 </div>
                 <div class="partner-info" id="partnerInfo">
                     <table style="width:100%">
@@ -1389,7 +1390,7 @@ const UIManager = {
                             </tr>
                             <tr>
                                 <td style="width:50%"><b>Volume maximo:</b></td>
-                                <td style="width:50%">${data.cap_suggestion} pkgs</td>
+                                <td style="width:50%">${data.capacity} pkgs</td>
                             </tr>
                             <tr>
                                 <td style="width:50%"><b>Raio Sugerido:</b></td>

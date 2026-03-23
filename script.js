@@ -1375,20 +1375,20 @@ const UIManager = {
                     <hr class="my-2">
 
                 <!-- Div para sugestões de cap, raio e decisão -->
-                <div class="partner-actions">
-                    <table style="width:100%">
+                <div class="partner-actions" style="max-height:220px; overflow-y:auto;">
+                    <table style="width:100%;table-layout:fixed;">
                         <tbody>
                             <tr>
-                                <td style="width:50%"><b>Ceps Alvo:</b></td>
-                                <td style="width:50%">${data.ceps}</td>
+                                <td style="width:50%; vertical-align: top;"><b>Ceps Alvo:</b></td>
+                                <td style="width:50%; max-width:160px; white-space: normal; word-break: break-word; overflow-wrap: anywhere;">${data.ceps}</td>
                             </tr>
                             <tr>
-                                <td style="width:50%"><b>Volume maximo:</b></td>
-                                <td style="width:50%">${data.capacity} pkgs</td>
+                                <td style="width:50%;"><b>Volume maximo:</b></td>
+                                <td style="width:50%;">${data.capacity} pkgs</td>
                             </tr>
                             <tr>
-                                <td style="width:50%"><b>Raio Sugerido:</b></td>
-                                <td style="width:50%">${data.radius} m</td>
+                                <td style="width:50%;"><b>Raio Sugerido:</b></td>
+                                <td style="width:50%;">${data.radius} m</td>
                             </tr>
                         </tbody>
                     </table>

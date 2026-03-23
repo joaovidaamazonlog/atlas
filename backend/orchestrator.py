@@ -44,6 +44,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
+from main import run_pipeline
 from load_packages import load_packages
 from load_partners import load_partners
 from models import Config
@@ -116,6 +117,8 @@ def run_daily(
     print(f"  Inicio: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print(f"{'#'*60}")
 
+    # Atualizar dados de parceiros
+    run_pipeline()
     # Carregar artefatos do setup (aborta se nao existirem)
     territories = load_territories(output_dir)
     supply      = load_ideal_supply(output_dir)

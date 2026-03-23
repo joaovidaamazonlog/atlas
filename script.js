@@ -124,10 +124,7 @@ const DataManager = {
                 bucket_ade: slot.properties.territory_id,
                 ceps: slot.properties.ceps
             };
-
-            if (lat !== null && lon !== null) {
-                AppState.allMarkersData.push(NP);
-            }
+            AppState.allMarkersData.push(NP);
         });
     },
 

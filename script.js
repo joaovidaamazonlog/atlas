@@ -469,7 +469,7 @@ const PolygonManager = {
         const selectedBuckets = Array.from(document.getElementById('bucket_ade').selectedOptions).map(opt => opt.value);
         const filteredFeatures = selectedStations.includes('all')
             ? AppState.polygonsData.features
-            : AppState.polygonsData.features.filter(f => selectedStations.includes(f.properties.delivery_station) && selectedBuckets.includes(f.properties.bucket_ade));
+            : AppState.polygonsData.features.filter(f => selectedStations.includes(f.properties.delivery_station) && selectedBuckets.includes(f.properties.territory_id));
 
         AppState.polygonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',

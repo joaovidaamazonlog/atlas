@@ -111,18 +111,24 @@ const DataManager = {
     },
 
     opportunities: function(){
-        if(!AppState.idealSupplyData) return null;
-        const newPartners = AppState.idealSupplyData.filter(s =>s.slots)
-        newPartners.forEach(p => {
-            const DS = {
-                delivery_station: p.delivery_station,
-                radius: p.radius_s,
-                capacity: p.capacity_s,
-                lat: p.lat,
-                lon: p.lon
-            };
-            AppState.allMarkersData.push(DS);
-        })
+        if(!AppState.idealSupplyData || !AppState.idealSupplyData.slots) return null;
+        
+        // Iterar sobre cada territory nos slots
+        for (const territory in AppState.idealSupplyData.slots) {
+            const slots = AppState.idealSupplyData.slots[territory];
+            if (Array.isArray(slots)) {
+                slots.forEach(slot => {
+                    const NP = {
+                        delivery_station: slot.delivery_station,
+                        radius: slot.radius_s,
+                        capacity: slot.capacity_s,
+                        lat: slot.lat,
+                        lon: slot.lon
+                    };
+                    AppState.allMarkersData.push(NP);
+                });
+            }
+        }
     },
 
     optimizationDataAggregate: function() {

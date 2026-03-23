@@ -22,6 +22,8 @@ const AppState = {
     jurisdictionData: null,
     jurisdictionLayer: null,
     optimizationData: null,
+    idealSupplyData: null,
+    heatmapData: null,
     optimizationLayer: null,
     sortPlanningData: null,
     highlightIcon: L.icon({
@@ -54,10 +56,12 @@ const DataManager = {
     loadAllDataAndInitialize: function() {
         Promise.all([
             fetch('https://joaovidaamazonlog.github.io/atlas/data/dados_mapa.json').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/clusters_output_filled.geojson').then(res => res.json()),
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/territories.geojson').then(res => res.json()),
             fetch('https://joaovidaamazonlog.github.io/atlas/data/jurisdiction.geojson').then(res => res.json()),
-            fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data_v3.geojson').then(res => res.json()).catch(() => null)
-        ]).then(([partnerData, polygonData, jurisdictionData, optData]) => {
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/optimization_data.geojson').then(res => res.json()),
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/ideal_supply.json').then(res => res.json()),
+            fetch('https://joaovidaamazonlog.github.io/atlas/data/heatmap.geojson').then(res => res.json()).catch(() => null)
+        ]).then(([partnerData, polygonData, jurisdictionData, optData, idealSupplyData, heatmapData]) => {
             AppState.allMarkersData = partnerData.allMarkerData.filter(p => {
                 if (p.lat !== null || p.lon !== null) {
                     return true;
@@ -71,6 +75,8 @@ const DataManager = {
             AppState.polygonsData = polygonData;
             AppState.jurisdictionData = jurisdictionData;
             AppState.optimizationData = optData;
+            AppState.idealSupplyData = idealSupplyData;
+            AppState.heatmapData = heatmapData;
 
             UIManager.updatePeriodInfo(AppState.period);
             this.associatePartnersToPolygons();
@@ -105,19 +111,16 @@ const DataManager = {
     },
 
     opportunities: function(){
-        if(!AppState.optimizationData) return null;
-        const newPartners = AppState.optimizationData.features.filter(f =>
-            (f.geometry.type === "Point") && (f.properties.status === "New")
-        )
+        if(!AppState.idealSupplyData) return null;
+        const newPartners = AppState.idealSupplyData.filter(s =>s.slots)
         newPartners.forEach(p => {
             const DS = {
-                ...p.properties,
-                delivery_station: p.properties.delivery_station,
-                radius: p.properties.radius_suggestion,
-                lat: p.geometry.coordinates[1],
-                lon: p.geometry.coordinates[0]
+                delivery_station: p.delivery_station,
+                radius: p.radius_s,
+                capacity: p.capacity_s,
+                lat: p.lat,
+                lon: p.lon
             };
-            delete DS.radius_suggestion;
             AppState.allMarkersData.push(DS);
         })
     },
@@ -127,7 +130,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Active").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
+                partner.bucket_ade = optimizationInfo.properties.territory_id;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -142,7 +145,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
+                partner.bucket_ade = optimizationInfo.properties.territory_id;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -157,7 +160,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
+                partner.bucket_ade = optimizationInfo.properties.territory_id;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -172,7 +175,7 @@ const DataManager = {
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
-                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
+                partner.bucket_ade = optimizationInfo.properties.territory_id;
                 partner.delivery_station = optimizationInfo.properties.delivery_station
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
@@ -189,7 +192,7 @@ const DataManager = {
             const optimizationInfo = AppState.optimizationData.features.find(f => f.properties.salesforce_id === partner.salesforce_id)
             if (optimizationInfo) {
                 partner.delivery_station = optimizationInfo.properties.delivery_station
-                partner.bucket_ade = optimizationInfo.properties.bucket_ade;
+                partner.bucket_ade = optimizationInfo.properties.territory_id;
                 partner.decision = optimizationInfo.properties.decision;
                 partner.optimization = {
                     "radius_suggestion": optimizationInfo.properties.radius_suggestion,
@@ -317,7 +320,7 @@ const MapManager = {
         AppState.map.setView(marker.getLatLng(), 15);
 
         // Caso especial para otimização
-        if (data.decision === "Optimization suggested" && data.status === "Active") {
+        if (data.optimization_decision === "Optimization suggested" && data.status === "Active") {
             marker.bindPopup(UIManager.getMarkerPopupContentOptimization(data)).openPopup();
             return;
         }
@@ -613,7 +616,7 @@ const PolygonManager = {
             let count = 0;
             AppState.optimizationLayer.eachLayer(layer => {
                 if (this.selectedPolygons.has(L.stamp(layer))) {
-                    soma += layer.feature.properties['demand'] || 0;
+                    soma += layer.feature.properties['demand_daily'] || 0;
                     count++;
                 }
             });
@@ -733,19 +736,20 @@ const PolygonManager = {
             AppState.optimizationLayer = null;
         }
 
-        if (!AppState.optimizationData) {
-            console.error("Dados de otimização não encontrados em AppState.");
+        if (!AppState.heatmapData) {
+            console.error("Dados de heatmap não encontrados em AppState.");
             return;
         }
 
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
+        const selectedBuckets = Array.from(document.getElementById('bucket_ade').selectedOptions).map(opt => opt.value);
 
         const filteredFeatures = selectedStations.includes('all')
-            ? AppState.optimizationData.features.filter(f => f.geometry.type === 'Polygon')
-            : AppState.optimizationData.features.filter(f => (selectedStations.includes(f.properties.delivery_station) && f.geometry.type === 'Polygon'));
+            ? AppState.heatmapData.features.filter(f => f.geometry.type === 'Polygon')
+            : AppState.heatmapData.features.filter(f => ((selectedStations.includes(f.properties.delivery_station)) && (selectedBuckets.includes(f.properties.bucket)) && (f.geometry.type === 'Polygon')));
 
-        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand'] || 0));
+        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_daily'] || 0));
         function getColor(demanda) {
             if (maxDemanda === 0) return '#e74c3c';
             const t = Math.max(0, Math.min(1, demanda / maxDemanda));
@@ -758,7 +762,7 @@ const PolygonManager = {
         AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
             style: f => ({
-                color: getColor(f.properties['demand']),
+                color: getColor(f.properties['demand_daily']),
                 weight: 1,
                 fillOpacity: 0.3
             }),
@@ -1048,7 +1052,7 @@ const UIManager = {
                     <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
                         <i class="fas fa-phone"></i> Solicitar Resgate
                     </button>
-                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.salesforce_id}', '${data.name.replace(/'/g, "\\'")}')">
                         <i class="fas fa-route"></i> Rota a Partir Daqui
                     </button>
                 </div>
@@ -1202,7 +1206,7 @@ const UIManager = {
 
                 <!-- Div para Botões de Ação -->
                 <div class="partner-actions">
-                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.salesforce_id}', '${data.name.replace(/'/g, "\\'")}')">
                         <i class="fas fa-route"></i> Rota a Partir Daqui
                     </button>
                 </div>
@@ -1479,7 +1483,7 @@ const UIManager = {
                     <button class="btn btn-info btn-sm btn-block" onclick="UIManager.requestAssistence(event, '${data.store_id}', radius=5)">
                         <i class="fas fa-phone"></i> Solicitar Resgate
                     </button>
-                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.store_id}', '${data.name.replace(/'/g, "\\'")}')">
+                    <button class="btn btn-primary btn-sm btn-block" onclick="RouteManager.startRouteFromHere(event, '${data.salesforce_id}', '${data.name.replace(/'/g, "\\'")}')">
                         <i class="fas fa-route"></i> Rota a Partir Daqui
                     </button>
                 </div>
@@ -1893,10 +1897,10 @@ const RouteManager = {
         const fromId = document.getElementById('routeFromId').value;
         const toId = document.getElementById('routeToId').value;
 
-        let fromData = AppState.allMarkersData.find(m => m.store_id === fromId);
+        let fromData = AppState.allMarkersData.find(m => m.salesforce_id === fromId);
         if (!fromData) fromData = AppState.deliveryStations.find(ds => ds.nome === fromId || ds.store_id === fromId);
 
-        let toData = AppState.allMarkersData.find(m => m.store_id === toId);
+        let toData = AppState.allMarkersData.find(m => m.salesforce_id === toId);
         if (!toData) toData = AppState.deliveryStations.find(ds => ds.nome === toId || ds.store_id === toId);
 
         if (!fromData || !toData) { alert("Parceiro ou Delivery Station inválido."); return; }

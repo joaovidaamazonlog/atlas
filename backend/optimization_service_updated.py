@@ -313,7 +313,7 @@ class ReportGenerator:
                     # Iteramos pelos clusters (buckets) definidos no relatório da base
                     for cluster_name, cluster_data in rep.cluster_metrics.items():
                         for p in cluster_data.partners:
-                            if p.status in ["Active", "Onboarding"]:
+                            if p.status in ["Active", "Onboarding", "Inactive", "Vetting"]:
                                 writer.writerow({
                                     "station_code": rep.station_code,
                                     "bucket": cluster_name,
@@ -573,7 +573,7 @@ class OptimizationService:
         with open(Config.BASE_PARTNERS, "r", encoding="utf-8") as f:
             p_data = json.load(f)["allMarkerData"]
         self.partners_df = pd.DataFrame(p_data)
-        self.web_leads_df = self.partners_df[self.partners_df['leadSource'] == "Website Pardot Form"].copy()
+        self.web_leads_df = self.partners_df[(self.partners_df['leadSource'] == "Website Pardot Form") & (self.partners_df['status'] == "New")].copy()
         if "delivery_station" in self.web_leads_df.columns:
             self.web_leads_df.rename(columns={"delivery_station": "station_code"}, inplace=True)
         if "name" in self.web_leads_df.columns:
@@ -593,112 +593,389 @@ class OptimizationService:
         with open(Config.BASE_JURISDICTION, 'r', encoding='utf-8') as f:
             self.jurisdictions = json.load(f)
 
-    def _generate_operational_clusters_balanced(self, station_code: str, partners: List[PartnerMetrics], n_clusters: int) -> Tuple[Dict[str, ClusterMetrics], Dict[str, str]]:
-        if not partners or n_clusters <= 0: return {}, {}
+    @staticmethod
+    def _is_connected(hex_set: set, hex_neighbors: dict) -> bool:
+        """Verifica se um conjunto de hexágonos forma um componente conexo via BFS."""
+        if not hex_set:
+            return True
+        
+        start = next(iter(hex_set))
+        visited = set()
+        queue = [start]
+        
+        while queue:
+            current = queue.pop(0)
+            if current in visited:
+                continue
+            visited.add(current)
+            
+            for neighbor in hex_neighbors.get(current, set()):
+                if neighbor in hex_set and neighbor not in visited:
+                    queue.append(neighbor)
+        
+        return len(visited) == len(hex_set)
+
+    def _generate_hex_based_clusters(
+        self, 
+        station_code: str, 
+        partners: List[PartnerMetrics], 
+        n_clusters: int,
+        demand_map: Dict[str, int]
+    ) -> Tuple[Dict[str, ClusterMetrics], Dict[str, str]]:
+        """
+        Forma carteiras operacionais agrupando hexágonos contíguos.
+        
+        VERSÃO 3 - CONTIGUIDADE GARANTIDA:
+        - Usa algoritmo de crescimento por semente (seed growing) para garantir
+        que cada cluster é um único componente conexo
+        - Balanceia demanda entre clusters vizinhos após formação inicial
+        - Distribui parceiros de forma balanceada entre carteiras
+        """
+        if not partners or n_clusters <= 0:
+            return {}, {}
         
         bdm_cluster = Config.get_bdm_cluster(station_code)
         
-        # Separar parceiros com bucket já atribuído vs sem bucket
-        # bucket pode ser None, "null" (string), ou uma string com valor
-        partners_with_bucket = [p for p in partners if p.bucket is not None]
-        print(f"   - {len(partners_with_bucket)} parceiros já possuem bucket atribuído")
-        partners_without_bucket = [p for p in partners if p.bucket is None]
-        print(f"   - {len(partners_without_bucket)} parceiros não possuem bucket atribuído e serão alocados por proximidade/clustering.")
+        print(f"   - Total de parceiros a distribuir: {len(partners)}")
+        print(f"   - Quantidade FIXA de carteiras: {n_clusters}")
         
-        # Dicionário para armazenar parceiros por bucket
-        bucket_partners_dict = {}
+        # Filtrar hexágonos desta base com demanda
+        base_hexes = [h for h, d in demand_map.items() if d > 0]
         
-        # Agrupar parceiros que já têm bucket (mantêm seu bucket original)
-        for p in partners_with_bucket:
-            bucket_name = p.bucket
-            if bucket_name not in bucket_partners_dict:
-                bucket_partners_dict[bucket_name] = []
-            bucket_partners_dict[bucket_name].append(p)
+        if not base_hexes:
+            print(f"   ⚠️ Nenhum hexágono com demanda para {station_code}")
+            return {}, {}
         
-        # Se há parceiros sem bucket
-        if partners_without_bucket:
-            # Se há parceiros com bucket pré-definido, alocar parceiros sem bucket ao bucket mais próximo
-            if partners_with_bucket:
-                for p_unassigned in partners_without_bucket:
-                    # Encontrar o parceiro com bucket mais próximo
-                    closest_assigned = min(
-                        partners_with_bucket,
-                        key=lambda p_assigned: (p_unassigned.lat - p_assigned.lat)**2 + (p_unassigned.lon - p_assigned.lon)**2
+        # Construir grafo de vizinhança entre hexágonos
+        hex_set = set(base_hexes)
+        hex_neighbors = {}
+        for h in base_hexes:
+            neighbors = set(h3.grid_ring(h, 1)) & hex_set
+            hex_neighbors[h] = neighbors
+        
+        print(f"   - Hexágonos com demanda: {len(base_hexes)}")
+        
+        # Calcular demanda total e alvo por carteira
+        total_demand = sum(demand_map.get(h, 0) for h in base_hexes)
+        target_demand = total_demand / n_clusters
+        
+        print(f"   - Demanda total: {total_demand} pacotes")
+        print(f"   - Demanda alvo por carteira: {target_demand:.0f} pacotes")
+        
+        # ===== FASE 1: SEED GROWING - Crescimento por Semente =====
+        # Garante contiguidade por construção
+        
+        # 1a. Selecionar seeds bem distribuídas usando K-Means nos centroides dos hexágonos
+        hex_coords = np.array([h3.cell_to_latlng(h) for h in base_hexes])
+        
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+        kmeans.fit(hex_coords)
+        
+        # Para cada centroide do KMeans, encontrar o hexágono mais próximo como seed
+        seeds = []
+        used_hexes = set()
+        
+        for center in kmeans.cluster_centers_:
+            distances = np.sum((hex_coords - center)**2, axis=1)
+            sorted_indices = np.argsort(distances)
+            
+            for idx in sorted_indices:
+                h = base_hexes[idx]
+                if h not in used_hexes:
+                    seeds.append(h)
+                    used_hexes.add(h)
+                    break
+        
+        print(f"   - Seeds selecionadas: {len(seeds)}")
+        
+        # 1b. Crescer clusters a partir das seeds usando BFS balanceado
+        # Cada cluster cresce alternadamente para manter equilíbrio
+        
+        cluster_hexes = {j: {seeds[j]} for j in range(n_clusters)}
+        cluster_demand = {j: demand_map.get(seeds[j], 0) for j in range(n_clusters)}
+        hex_to_cluster = {seeds[j]: j for j in range(n_clusters)}
+        
+        assigned = set(seeds)
+        unassigned = hex_set - assigned
+        
+        # Fronteira de cada cluster (hexágonos vizinhos não atribuídos)
+        frontiers = {}
+        for j in range(n_clusters):
+            frontier = set()
+            for h in cluster_hexes[j]:
+                frontier.update(hex_neighbors.get(h, set()) - assigned)
+            frontiers[j] = frontier
+        
+        # Crescimento alternado: cluster com menor demanda cresce primeiro
+        max_iterations = len(base_hexes) * 2
+        iteration = 0
+        
+        while unassigned and iteration < max_iterations:
+            iteration += 1
+            
+            # Ordenar clusters por demanda (menor primeiro)
+            sorted_clusters = sorted(range(n_clusters), key=lambda j: cluster_demand[j])
+            
+            grew = False
+            for j in sorted_clusters:
+                # Atualizar fronteira removendo hexágonos já atribuídos
+                frontiers[j] = frontiers[j] & unassigned
+                
+                if not frontiers[j]:
+                    # Tentar expandir fronteira buscando vizinhos dos hexágonos do cluster
+                    new_frontier = set()
+                    for h in cluster_hexes[j]:
+                        new_frontier.update(hex_neighbors.get(h, set()) & unassigned)
+                    frontiers[j] = new_frontier
+                
+                if not frontiers[j]:
+                    continue
+                
+                # Escolher hexágono da fronteira com maior demanda
+                best_hex = max(frontiers[j], key=lambda h: demand_map.get(h, 0))
+                
+                # Adicionar ao cluster
+                cluster_hexes[j].add(best_hex)
+                hex_to_cluster[best_hex] = j
+                cluster_demand[j] += demand_map.get(best_hex, 0)
+                assigned.add(best_hex)
+                unassigned.discard(best_hex)
+                
+                # Atualizar fronteira
+                frontiers[j].discard(best_hex)
+                frontiers[j].update(hex_neighbors.get(best_hex, set()) & unassigned)
+                
+                grew = True
+            
+            if not grew:
+                # Nenhum cluster conseguiu crescer - atribuir restantes ao mais próximo
+                for h in list(unassigned):
+                    h_coord = h3.cell_to_latlng(h)
+                    closest_cluster = min(
+                        range(n_clusters),
+                        key=lambda j: min(
+                            (h3.cell_to_latlng(ch)[0] - h_coord[0])**2 + 
+                            (h3.cell_to_latlng(ch)[1] - h_coord[1])**2
+                            for ch in cluster_hexes[j]
+                        ) if cluster_hexes[j] else float('inf')
                     )
-                    # Alocar ao bucket do parceiro mais próximo
-                    closest_bucket = closest_assigned.bucket
-                    bucket_partners_dict[closest_bucket].append(p_unassigned)
+                    cluster_hexes[closest_cluster].add(h)
+                    hex_to_cluster[h] = closest_cluster
+                    cluster_demand[closest_cluster] += demand_map.get(h, 0)
+                    assigned.add(h)
+                    unassigned.discard(h)
+                break
+        
+        # Verificar resultado da Fase 1
+        print(f"   - Resultado Seed Growing:")
+        for j in range(n_clusters):
+            print(f"      bucket-{j+1}: {len(cluster_hexes[j])} hexágonos, {cluster_demand[j]} pacotes")
+        
+        # ===== FASE 2: BALANCEAMENTO DE DEMANDA =====
+        # Trocar hexágonos de fronteira entre clusters vizinhos para equilibrar demanda
+        
+        print(f"   - Balanceando demanda entre carteiras...")
+        
+        balance_iterations = 500
+        for bi in range(balance_iterations):
+            # Encontrar cluster com maior e menor demanda
+            max_cluster = max(range(n_clusters), key=lambda j: cluster_demand[j])
+            min_cluster = min(range(n_clusters), key=lambda j: cluster_demand[j])
+            
+            demand_diff = cluster_demand[max_cluster] - cluster_demand[min_cluster]
+            
+            if demand_diff <= target_demand * 0.1:  # Diferença < 10% do alvo
+                break
+            
+            # Encontrar hexágonos de fronteira do cluster maior que são vizinhos do cluster menor
+            border_hexes = []
+            for h in cluster_hexes[max_cluster]:
+                neighbors = hex_neighbors.get(h, set())
+                if any(n in cluster_hexes[min_cluster] for n in neighbors):
+                    border_hexes.append(h)
+            
+            if not border_hexes:
+                continue
+            
+            # Escolher hexágono de fronteira que melhor equilibra a demanda
+            best_hex = None
+            best_improvement = 0
+            
+            for h in border_hexes:
+                h_demand = demand_map.get(h, 0)
+                new_diff = abs(
+                    (cluster_demand[max_cluster] - h_demand) - 
+                    (cluster_demand[min_cluster] + h_demand)
+                )
+                improvement = demand_diff - new_diff
+                
+                if improvement > best_improvement:
+                    # Verificar se remover h mantém contiguidade do cluster de origem
+                    remaining = cluster_hexes[max_cluster] - {h}
+                    if remaining and self._is_connected(remaining, hex_neighbors):
+                        best_hex = h
+                        best_improvement = improvement
+            
+            if best_hex:
+                # Mover hexágono
+                h_demand = demand_map.get(best_hex, 0)
+                cluster_hexes[max_cluster].remove(best_hex)
+                cluster_hexes[min_cluster].add(best_hex)
+                hex_to_cluster[best_hex] = min_cluster
+                cluster_demand[max_cluster] -= h_demand
+                cluster_demand[min_cluster] += h_demand
+        
+        # Resultado após balanceamento
+        print(f"   - Após balanceamento de demanda:")
+        for j in range(n_clusters):
+            connected = self._is_connected(cluster_hexes[j], hex_neighbors)
+            status = "✅" if connected else "⚠️ NÃO CONTÍGUO"
+            print(f"      bucket-{j+1}: {len(cluster_hexes[j])} hexágonos, {cluster_demand[j]} pacotes {status}")
+        
+        # ===== FASE 3: Converter para formato de saída =====
+        hex_to_bucket = {}
+        bucket_hexes_final = {}
+        
+        for j in range(n_clusters):
+            bucket_name = f"bucket-{j+1}"
+            bucket_hexes_final[bucket_name] = cluster_hexes[j]
+            for h in cluster_hexes[j]:
+                hex_to_bucket[h] = bucket_name
+        
+        # ===== FASE 4: Distribuir parceiros entre os buckets =====
+        
+        n_partners = len(partners)
+        base_partners_per_bucket = n_partners // n_clusters
+        extra_partners = n_partners % n_clusters
+        
+        print(f"   - Distribuição de parceiros:")
+        print(f"      Base: {base_partners_per_bucket} parceiros/carteira")
+        print(f"      Extra: {extra_partners} carteiras terão +1 parceiro")
+        
+        # Alocar cada parceiro ao bucket do hexágono de origem
+        partner_bucket_mapping = []
+        
+        for p in partners:
+            if p.origin_hex in hex_to_bucket:
+                bucket = hex_to_bucket[p.origin_hex]
             else:
-                # Se não há parceiros com bucket, aplicar clustering normal apenas para os sem bucket
-                n_partners_unassigned = len(partners_without_bucket)
-                coords = np.array([[p.lat, p.lon] for p in partners_without_bucket])
-                actual_n_clusters = min(n_clusters, n_partners_unassigned)
+                # Fallback: bucket geograficamente mais próximo
+                p_coords = (p.lat, p.lon)
+                closest_bucket = None
+                min_dist = float('inf')
                 
-                kmeans = KMeans(n_clusters=actual_n_clusters, random_state=42, n_init=10).fit(coords)
-                initial_centroids = kmeans.cluster_centers_
-
-                model = cp_model.CpModel()
-                x = {(i, j): model.NewBoolVar(f'x_{i}_{j}') for i in range(n_partners_unassigned) for j in range(actual_n_clusters)}
-                for i in range(n_partners_unassigned): 
-                    model.Add(sum(x[i, j] for j in range(actual_n_clusters)) == 1)
+                for bucket_name, hexes in bucket_hexes_final.items():
+                    for h in hexes:
+                        h_coords = h3.cell_to_latlng(h)
+                        dist = (p_coords[0] - h_coords[0])**2 + (p_coords[1] - h_coords[1])**2
+                        if dist < min_dist:
+                            min_dist = dist
+                            closest_bucket = bucket_name
                 
-                min_p, max_p = n_partners_unassigned // actual_n_clusters, math.ceil(n_partners_unassigned / actual_n_clusters)
-                for j in range(actual_n_clusters):
-                    model.Add(sum(x[i, j] for i in range(n_partners_unassigned)) >= min_p)
-                    model.Add(sum(x[i, j] for i in range(n_partners_unassigned)) <= max_p)
-
-                obj_terms = [int(((coords[i][0]-initial_centroids[j][0])**2 + (coords[i][1]-initial_centroids[j][1])**2)*10**8) * x[i, j] 
-                            for i in range(n_partners_unassigned) for j in range(actual_n_clusters)]
-                model.Minimize(sum(obj_terms))
-                
-                solver = cp_model.CpSolver()
-                solver.parameters.max_time_in_seconds = 10
-                
-                clusters_partners = {j: [] for j in range(actual_n_clusters)}
-                if solver.Solve(model) in (cp_model.OPTIMAL, cp_model.FEASIBLE):
-                    for i in range(n_partners_unassigned):
-                        for j in range(actual_n_clusters):
-                            if solver.Value(x[i, j]): 
-                                clusters_partners[j].append(partners_without_bucket[i])
-                else:
-                    for i, label in enumerate(kmeans.labels_): 
-                        clusters_partners[label].append(partners_without_bucket[i])
-                
-                # Determinar nomes dos novos buckets
-                existing_bucket_numbers = [int(name.replace('bucket-', '')) for name in bucket_partners_dict.keys() if name.startswith('bucket-')]
-                next_bucket_id = max(existing_bucket_numbers) + 1 if existing_bucket_numbers else 1
-                
-                # Adicionar parceiros sem bucket aos novos buckets
-                for j, new_partners in clusters_partners.items():
-                    bucket_id = next_bucket_id + j
-                    bucket_name = f"bucket-{bucket_id}"
-                    bucket_partners_dict[bucket_name] = new_partners
+                bucket = closest_bucket
+            
+            partner_bucket_mapping.append((p, bucket))
         
-        # Construir cluster_metrics e hex_to_cluster
-        cluster_metrics, hex_to_cluster = {}, {}
+        # Agrupar parceiros por bucket
+        bucket_partners = {b: [] for b in bucket_hexes_final.keys()}
+        for p, bucket in partner_bucket_mapping:
+            if bucket:
+                bucket_partners[bucket].append(p)
         
-        for bucket_idx, (bucket_name, bucket_partners) in enumerate(bucket_partners_dict.items()):
+        # ===== FASE 5: Balancear quantidade de parceiros =====
+        
+        def bucket_centroid(b):
+            pts = [(p.lat, p.lon) for p in bucket_partners[b]]
+            if not pts:
+                hex_coords_list = [h3.cell_to_latlng(h) for h in bucket_hexes_final[b]]
+                if hex_coords_list:
+                    return (
+                        np.mean([c[0] for c in hex_coords_list]), 
+                        np.mean([c[1] for c in hex_coords_list])
+                    )
+                return (0, 0)
+            return (np.mean([c[0] for c in pts]), np.mean([c[1] for c in pts]))
+        
+        max_balance_iterations = 1000
+        for bi in range(max_balance_iterations):
+            sizes = {b: len(bucket_partners[b]) for b in bucket_partners}
+            max_bucket = max(sizes, key=sizes.get)
+            min_bucket = min(sizes, key=sizes.get)
+            
+            if sizes[max_bucket] - sizes[min_bucket] <= 1:
+                break
+            
+            if bucket_partners[max_bucket]:
+                min_centroid = bucket_centroid(min_bucket)
+                candidate = min(
+                    bucket_partners[max_bucket],
+                    key=lambda p: (p.lat - min_centroid[0])**2 + (p.lon - min_centroid[1])**2
+                )
+                bucket_partners[max_bucket].remove(candidate)
+                bucket_partners[min_bucket].append(candidate)
+        
+        # Verificar balanceamento final
+        final_sizes = {b: len(bucket_partners[b]) for b in bucket_partners}
+        print(f"   - Balanceamento final de parceiros:")
+        for bucket_name in sorted(final_sizes.keys()):
+            print(f"      {bucket_name}: {final_sizes[bucket_name]} parceiros")
+        
+        diff = max(final_sizes.values()) - min(final_sizes.values())
+        if diff > 1:
+            print(f"   ⚠️ Diferença de {diff} parceiros entre carteiras")
+        else:
+            print(f"   ✅ Carteiras perfeitamente balanceadas!")
+        
+        # ===== FASE 6: Construir ClusterMetrics =====
+        cluster_metrics = {}
+        
+        for bucket_idx, (bucket_name, partners_list) in enumerate(bucket_partners.items()):
             ctl_name = f"CTL-{chr(65 + (bucket_idx // 5))}"
             
-            for p in bucket_partners:
-                p.cluster_name, p.ctl_name, p.bdm_cluster = bucket_name, ctl_name, bdm_cluster
-                for alloc in p.allocations: 
-                    hex_to_cluster[alloc.hex_id] = bucket_name
-
-            active = sum(1 for p in bucket_partners if p.status == "Active")
+            for p in partners_list:
+                p.cluster_name = bucket_name
+                p.ctl_name = ctl_name
+                p.bdm_cluster = bdm_cluster
+            
+            active = sum(1 for p in partners_list if p.status == "Active")
+            total_demand_bucket = sum(
+                demand_map.get(h, 0) for h in bucket_hexes_final.get(bucket_name, set())
+            )
+            
             cluster_metrics[bucket_name] = ClusterMetrics(
-                base=station_code, bdm_cluster=bdm_cluster, ctl_name=ctl_name, cluster_name=bucket_name,
-                total_demand=sum(p.total_load for p in bucket_partners), total_expected_partners=len(bucket_partners),
-                active_partners=active, onboarding_partners=sum(1 for p in bucket_partners if p.status == "Onboarding"), 
-                bg_chacks_partners=sum(1 for p in bucket_partners if p.status == "BG_Checks"),
-                prospects_to_approve=sum(1 for p in bucket_partners if p.entity_type == "PROSPECT" and p.decision == "Seguir cadastro"),
-                inactives_to_reactivate=sum(1 for p in bucket_partners if p.entity_type == "INACTIVE_EXITED" and p.decision == "Reativar cadastro"),
-                new_partners=sum(1 for p in bucket_partners if p.entity_type == "NEW PARTNER"),
-                attainment_percentage=(active / len(bucket_partners) * 100) if bucket_partners else 0,
-                partners=bucket_partners
+                base=station_code,
+                bdm_cluster=bdm_cluster,
+                ctl_name=ctl_name,
+                cluster_name=bucket_name,
+                total_demand=total_demand_bucket,
+                total_expected_partners=len(partners_list),
+                active_partners=active,
+                onboarding_partners=sum(
+                    1 for p in partners_list if p.status == "Onboarding"
+                ),
+                bg_chacks_partners=sum(
+                    1 for p in partners_list if p.status == "BG_Checks"
+                ),
+                prospects_to_approve=sum(
+                    1 for p in partners_list 
+                    if p.entity_type == "PROSPECT" and p.decision == "Seguir cadastro"
+                ),
+                inactives_to_reactivate=sum(
+                    1 for p in partners_list 
+                    if p.entity_type == "INACTIVE_EXITED" and p.decision == "Reativar cadastro"
+                ),
+                new_partners=sum(
+                    1 for p in partners_list if p.entity_type == "NEW PARTNER"
+                ),
+                attainment_percentage=(
+                    (active / len(partners_list) * 100) if partners_list else 0
+                ),
+                partners=partners_list
             )
         
-        return cluster_metrics, hex_to_cluster
+        print(f"   ✅ {len(cluster_metrics)} carteiras criadas com contiguidade garantida")
+        
+        return cluster_metrics, hex_to_bucket
 
     def _find_neighborhood_clusters(self, res_dem: Dict[str, int], base: str) -> Tuple[List[List[str]], Dict[str, str]]:
         active_hexes = [h for h, v in res_dem.items() if v > 0]
@@ -806,10 +1083,10 @@ class OptimizationService:
                                           lat=float(p.lat), lon=float(p.lon), allocations=allocs))
         return results
 
-    def _evaluate_prospects(self, res_dem: Dict[str, int]) -> List[PartnerMetrics]:
+    def _evaluate_prospects(self, prospects: pd.DataFrame, base: str, res_dem: Dict[str, int]) -> List[PartnerMetrics]:
         results = []
-        subset = self.partners_df[self.partners_df.status == "Prospect"].copy()
-        subset['identified_base'] = subset.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
+        subset = prospects.copy()
+        subset = subset[subset.identified_base == base].copy()
         for _, p in subset.iterrows():
             decision, sug_rad, sug_cap, allocs = "", 0, 0, []
             for r in Config.RADII:
@@ -959,6 +1236,10 @@ class OptimizationService:
         print(f" ⚠️  {len(prospects_outside)} prospects fora de jurisdição identificados")
         for p in prospects_outside:
             print(p.partner_name, p.station_code)
+            
+        prospects = self.partners_df[self.partners_df.status == "Prospect"].copy()
+        prospects['identified_base'] = prospects.apply(lambda row: self._get_base_from_jurisdiction(float(row.lat), float(row.lon)), axis=1)
+        
         for base in self.demand_df.station_code.unique():
             print(f"\n--- 🚀 INICIANDO OTIMIZAÇÃO: {base} ---")
             orig_dem = self.demand_df[self.demand_df.station_code == base].set_index("hex")["avg_demand"].to_dict()
@@ -966,7 +1247,7 @@ class OptimizationService:
             p_active = self._allocate_existing_by_status(base=base, res_dem=res_dem, target_status="Active")
             p_onboarding = self._allocate_existing_by_status(base=base, res_dem=res_dem, target_status="Onboarding")
             p_bg = self._allocate_existing_by_status(base=base, res_dem=res_dem, target_status="BG Checks")
-            p_prospects = self._evaluate_prospects(res_dem=res_dem)
+            p_prospects = self._evaluate_prospects(prospects=prospects, base=base, res_dem=res_dem)
             p_inactives = self._evaluate_inactive_exited(base=base, res_dem=res_dem)
             islands, _ = self._find_neighborhood_clusters(res_dem=res_dem, base=base)
             p_new = []
@@ -987,11 +1268,12 @@ class OptimizationService:
                             p_new.append(p_obj)
                             for a in p_obj.allocations: 
                                 if a.hex_id in res_dem: res_dem[a.hex_id] -= a.packages_assigned
-            
+                                
+            all_partners = p_active + p_onboarding + p_bg + p_prospects + p_inactives + p_new
             all_final = p_active + p_onboarding + p_bg + p_prospects + p_inactives + p_new + prospects_outside
             
             n_buckets = Config.CLUSTER_PER_STATION.get(base, 5)
-            cluster_metrics, hex_to_bucket = self._generate_operational_clusters_balanced(base, all_final, n_buckets)
+            cluster_metrics, hex_to_bucket = self._generate_hex_based_clusters(station_code=base, partners=all_partners, n_clusters=n_buckets, demand_map=orig_dem)
             
             final_hex_map = {}
 
@@ -1047,7 +1329,7 @@ class OptimizationService:
             print(f"   ✅ Base {base} concluída. (Ativos: {len(p_active)}, Prospects: {len(p_prospects)}, Novos: {len(p_new)})")
 
         webleads = self._evaluate_webleads()
-        print(webleads[0] if webleads else "No webleads found")
+        
         # Geração dos arquivos finais (GeoJSON, TXT, CSV...)
         rg = ReportGenerator(Config.DEST_FOLDER)
         rg.generate_strategic_txt(self.reports, self.hex_to_ceps)

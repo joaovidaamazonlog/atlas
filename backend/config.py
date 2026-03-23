@@ -35,7 +35,7 @@ CLUSTER_PER_STATION = {
     "DSP2": 12,
     "DSP4": 11,
     "DSP5": 5,
-    "DBH5": 2,
+    "DBH5": 4,
     "DMG2": 13,
     "DBS5": 15,
     "DCE3": 16,
@@ -121,282 +121,282 @@ ADES_ACCOUNT_MANAGERS = [
   {
     "salesforce_id": "0055G00000B9BgLQAV",
     "alias": "alinmelu",
-    "buckets": ["DSP2_bucket-1"]
+    "buckets": ["DSP2_T01"]
   },
   {
     "salesforce_id": "0055G00000B9BgVQAV",
     "alias": "oliveiya",
-    "buckets": ["DSP2_bucket-3"]
+    "buckets": ["DSP2_T03"]
   },
   {
     "salesforce_id": "0055G00000BA5UXQA1",
     "alias": "hhelenam",
-    "buckets": ["DSP2_bucket-8"]
+    "buckets": ["DSP2_T08"]
   },
   {
     "salesforce_id": "005at00000Bn1KrAAJ",
     "alias": "vferrema",
-    "buckets": ["DSP2_bucket-12"]
+    "buckets": ["DSP2_T12"]
   },
   {
     "salesforce_id": "005at00000AwtxgAAB",
     "alias": "henrenat",
-    "buckets": ["DSP2_bucket-7"]
+    "buckets": ["DSP2_T07"]
   },
   {
     "salesforce_id": "005at00000CmvWyAAJ",
     "alias": "jdgouvei",
-    "buckets": ["DSP2_bucket-6", "DSP2_bucket-2", "DSP2_bucket-9"]
+    "buckets": ["DSP2_T06", "DSP2_T02", "DSP2_T09"]
   },
   {
     "salesforce_id": "005at00000CnOjpAAF",
     "alias": "cavadnat",
-    "buckets": ["DSP2_bucket-5", "DSP2_bucket-11"]
+    "buckets": ["DSP2_T05", "DSP2_T11"]
   },
   {
     "salesforce_id": "005at00000AwtxhAAB",
     "alias": "spinobar",
-    "buckets": ["DSP2_bucket-10", "DSP2_bucket-4"]
+    "buckets": ["DSP2_T10", "DSP2_T04"]
   },
   {
     "salesforce_id": "005at000002NE7ZAAW",
     "alias": "natagovr",
-    "buckets": ["DSP4_bucket-8", "DSP4_bucket-11"]
+    "buckets": ["DSP4_T08", "DSP4_T11"]
   },
   {
     "salesforce_id": "005at00000AwtxdAAB",
     "alias": "almecris",
-    "buckets": ["DSP4_bucket-9", "DSP4_bucket-3"]
+    "buckets": ["DSP4_T09", "DSP4_T03"]
   },
   {
     "salesforce_id": "005at00000Bn2aGAAR",
     "alias": "nsantvan",
-    "buckets": ["DSP4_bucket-4", "DSP4_bucket-10"]
+    "buckets": ["DSP4_T04", "DSP4_T10"]
   },
   {
     "salesforce_id": "005at00000Bn7A7AAJ",
     "alias": "sidaline",
-    "buckets": ["DSP4_bucket-2", "DSP4_bucket-1"]
+    "buckets": ["DSP4_T02", "DSP4_T01"]
   },
   {
     "salesforce_id": "005at00000BnBQcAAN",
     "alias": "fsandian",
-    "buckets": ["DSP4_bucket-5", "DSP4_bucket-6", "DSP4_bucket-7"]
+    "buckets": ["DSP4_T05", "DSP4_T06", "DSP4_T07"]
   },
   {
     "salesforce_id": "005at00000ADsT6AAL",
     "alias": "andrfec",
-    "buckets": ["DSP5_bucket-1", "DSP5_bucket-4", "DSP5_bucket-5"]
+    "buckets": ["DSP5_T01", "DSP5_T04", "DSP5_T05"]
   },
   {
     "salesforce_id": "005at000001qfXyAAI",
     "alias": "olfelipy",
-    "buckets": ["DSP5_bucket-2", "DSP5_bucket-3"]
+    "buckets": ["DSP5_T02", "DSP5_T03"]
   },
   {
     "salesforce_id": "0055G00000BA0QkQAL",
     "alias": "psoubren",
-    "buckets": ["DRS5_bucket-1", "DRS5_bucket-5", "DRS5_bucket-9"]
+    "buckets": ["DRS5_T01", "DRS5_T05", "DRS5_T09"]
   },
   {
     "salesforce_id": "0055G00000BA5USQA1",
     "alias": "jkowalsq",
-    "buckets": ["DRS5_bucket-3", "DRS5_bucket-8"]
+    "buckets": ["DRS5_T03", "DRS5_T08"]
   },
   {
     "salesforce_id": "005at00000ADsT7AAL",
     "alias": "julilsil",
-    "buckets": ["DRS5_bucket-2", "DRS5_bucket-4", "DRS5_bucket-6", "DRS5_bucket-7", "DRS5_bucket-10"]
+    "buckets": ["DRS5_T02", "DRS5_T04", "DRS5_T06", "DRS5_T07", "DRS5_T10"]
   },
   {
     "salesforce_id": "005at000001qfY0AAI",
     "alias": "kelvinbf",
-    "buckets": ["DPR2_bucket-1", "DPR2_bucket-3", "DPR2_bucket-5"]
+    "buckets": ["DPR2_T01", "DPR2_T03", "DPR2_T05"]
   },
   {
     "salesforce_id": "0055G00000BA0QuQAL",
     "alias": "qlilimat",
-    "buckets": ["DPR2_bucket-2", "DPR2_bucket-4", "DPR2_bucket-6"]
+    "buckets": ["DPR2_T02", "DPR2_T04", "DPR2_T06"]
   },
   {
     "salesforce_id": "005at000002zVKJAA2",
     "alias": "lopefjen",
-    "buckets": ["DBR9_bucket-1"]
+    "buckets": ["DBR9_T01"]
   },
   {
     "salesforce_id": "005at000005PufHAAS",
     "alias": "zcarlalo",
-    "buckets": ["DBR9_bucket-11", "DBR9_bucket-3"]
+    "buckets": ["DBR9_T11", "DBR9_T03"]
   },
   {
     "salesforce_id": "005at000002kSTCAA2",
     "alias": "tlimaca",
-    "buckets": ["DBR9_bucket-14", "DBR9_bucket-13"]
+    "buckets": ["DBR9_T14", "DBR9_T13"]
   },
   {
     "salesforce_id": "005at00000AwtxfAAB",
     "alias": "wsibruno",
-    "buckets": ["DBR9_bucket-6", "DBR9_bucket-26"]
+    "buckets": ["DBR9_T06", "DBR9_T26"]
   },
   {
     "salesforce_id": "005at000003bF9eAAE",
     "alias": "suelezsa",
-    "buckets": ["DBR9_bucket-15", "DBR9_bucket-7"]
+    "buckets": ["DBR9_T15", "DBR9_T07"]
   },
   {
     "salesforce_id": "005at00000AuQv0AAF",
     "alias": "hugomorb",
-    "buckets": ["DBR9_bucket-2", "DBR9_bucket-8"]
+    "buckets": ["DBR9_T02", "DBR9_T08"]
   },
   {
     "salesforce_id": "005at00000BeXJwAAN",
     "alias": "ltvallim",
-    "buckets": ["DBR9_bucket-4", "DBR9_bucket-9"]
+    "buckets": ["DBR9_T04", "DBR9_T09"]
   },
   {
     "salesforce_id": "005at00000BeXJvAAN",
     "alias": "angbasto",
-    "buckets": ["DBR9_bucket-16", "DBR9_bucket-12"]
+    "buckets": ["DBR9_T16", "DBR9_T12"]
   },
   {
     "salesforce_id": "0055G00000B9BgkQAF",
     "alias": "elisidos",
-    "buckets": ["DBR9_bucket-21", "DBR9_bucket-19"]
+    "buckets": ["DBR9_T21", "DBR9_T19"]
   },
   {
     "salesforce_id": "005at00000AuQuzAAF",
     "alias": "cgbarbos",
-    "buckets": ["DBR9_bucket-10", "DBR9_bucket-27"]
+    "buckets": ["DBR9_T10", "DBR9_T27"]
   },
   {
     "salesforce_id": "005at00000AwtxeAAB",
     "alias": "vivianpg",
-    "buckets": ["DBR9_bucket-18"]
+    "buckets": ["DBR9_T18"]
   },
   {
     "salesforce_id": "005at000004rgN0AAI",
     "alias": "lidkarol",
-    "buckets": ["DBR9_bucket-20", "DBR9_bucket-17"]
+    "buckets": ["DBR9_T20", "DBR9_T17"]
   },
   {
     "salesforce_id": "005at00000CVob9AAD",
     "alias": "anaraujj",
-    "buckets": ["DBR9_bucket-22"]
+    "buckets": ["DBR9_T22"]
   },
   {
     "salesforce_id": "0055G00000B9Bg6QAF",
     "alias": "wherlecr",
-    "buckets": ["DBR9_bucket-25", "DBR9_bucket-23"]
+    "buckets": ["DBR9_T25", "DBR9_T23"]
   },
   {
     "salesforce_id": "0055G00000BA5UhQAL",
     "alias": "deoraque",
-    "buckets": ["DBR9_bucket-5", "DBR9_bucket-24"]
+    "buckets": ["DBR9_T05", "DBR9_T24"]
   },
   {
     "salesforce_id": "005at000003bF9fAAE",
     "alias": "pbefelip",
-    "buckets": ["DRJ3_bucket-6"]
+    "buckets": ["DRJ3_T06"]
   },
   {
     "salesforce_id": "005at000004WxNdAAK",
     "alias": "eazcinti",
-    "buckets": ["DRJ3_bucket-1", "DRJ3_bucket-3", "DRJ3_bucket-4", "DRJ3_bucket-7", "DRJ3_bucket-8", "DRJ3_bucket-9", "DRJ3_bucket-13", "DRJ3_bucket-14", "DRJ3_bucket-16", "DRJ3_bucket-17", "DRJ3_bucket-18", "DRJ3_bucket-20", "DRJ3_bucket-22"]
+    "buckets": ["DRJ3_T01", "DRJ3_T03", "DRJ3_T04", "DRJ3_T07", "DRJ3_T08", "DRJ3_T09", "DRJ3_T13", "DRJ3_T14", "DRJ3_T16", "DRJ3_T17", "DRJ3_T18", "DRJ3_T20", "DRJ3_T22"]
   },
   {
     "salesforce_id": "005at000005PufGAAS",
     "alias": "thalessd",
-    "buckets": ["DRJ3_bucket-12", "DRJ3_bucket-19", "DRJ3_bucket-5", "DRJ3_bucket-21"]
+    "buckets": ["DRJ3_T12", "DRJ3_T19", "DRJ3_T05", "DRJ3_T21"]
   },
   {
     "salesforce_id": "005at000002kSTDAA2",
     "alias": "bruzsilv",
-    "buckets": ["DRJ3_bucket-11"]
+    "buckets": ["DRJ3_T11"]
   },
   {
     "salesforce_id": "005at00000ADsT4AAL",
     "alias": "marthgab",
-    "buckets": ["DRJ3_bucket-15"]
+    "buckets": ["DRJ3_T15"]
   },
   {
     "salesforce_id": "005at0000086YH0AAM",
     "alias": "fenatalh",
-    "buckets": ["DRJ3_bucket-2", "DRJ3_bucket-10"]
+    "buckets": ["DRJ3_T02", "DRJ3_T10"]
   },
   {
     "salesforce_id": "0055G00000BA0QGQA1",
     "alias": "erihsouz",
-    "buckets": ["DBS5_bucket-1", "DBS5_bucket-2", "DBS5_bucket-3", "DBS5_bucket-6", "DBS5_bucket-9", "DBS5_bucket-12", "DBS5_bucket-13", "DBS5_bucket-14"]
+    "buckets": ["DBS5_T01", "DBS5_T02", "DBS5_T03", "DBS5_T06", "DBS5_T09", "DBS5_T12", "DBS5_T13", "DBS5_T14"]
   },
   {
     "salesforce_id": "0055G00000BA0QLQA1",
     "alias": "josimaju",
-    "buckets": ["DBS5_bucket-4", "DBS5_bucket-5", "DBS5_bucket-7", "DBS5_bucket-8", "DBS5_bucket-10", "DBS5_bucket-11", "DBS5_bucket-15"]
+    "buckets": ["DBS5_T04", "DBS5_T05", "DBS5_T07", "DBS5_T08", "DBS5_T10", "DBS5_T11", "DBS5_T15"]
   },
   {
     "salesforce_id": "005at000004rgMzAAI",
     "alias": "wcaralla",
-    "buckets": ["DGO2_bucket-3"]
+    "buckets": ["DGO2_T03"]
   },
   {
     "salesforce_id": "005at000003DxQMAA0",
     "alias": "krampeaf",
-    "buckets": ["DGO2_bucket-1", "DGO2_bucket-2"]
+    "buckets": ["DGO2_T01", "DGO2_T02"]
   },
   {
     "salesforce_id": "0055G00000BA0QBQA1",
     "alias": "mbrenosa",
-    "buckets": ["DBH5_bucket-1", "DBH5_bucket-2"]
+    "buckets": ["DBH5_T01", "DBH5_T02"]
   },
   {
     "salesforce_id": "005at000002kSTEAA2",
     "alias": "crafaeln",
-    "buckets": ["DMG2_bucket-1", "DMG2_bucket-2", "DMG2_bucket-3", "DMG2_bucket-4", "DMG2_bucket-5", "DMG2_bucket-6", "DMG2_bucket-7", "DMG2_bucket-8", "DMG2_bucket-9", "DMG2_bucket-10", "DMG2_bucket-11", "DMG2_bucket-12", "DMG2_bucket-13"]
+    "buckets": ["DMG2_T01", "DMG2_T02", "DMG2_T03", "DMG2_T04", "DMG2_T05", "DMG2_T06", "DMG2_T07", "DMG2_T08", "DMG2_T09", "DMG2_T10", "DMG2_T11", "DMG2_T12", "DMG2_T13"]
   },
   {
     "salesforce_id": "005at00000534NZAAY",
     "alias": "cicealme",
-    "buckets": ["DPE4_bucket-6", "DPE4_bucket-2", "DPE4_bucket-7"]
+    "buckets": ["DPE4_T06", "DPE4_T02", "DPE4_T07"]
   },
   {
     "salesforce_id": "005at000001ntHJAAY",
     "alias": "silvmac",
-    "buckets": ["DPE4_bucket-5", "DPE4_bucket-3", "DPE4_bucket-4", "DPE4_bucket-1"]
+    "buckets": ["DPE4_T05", "DPE4_T03", "DPE4_T04", "DPE4_T01"]
   },
   {
     "salesforce_id": "005at000002zVKHAA2",
     "alias": "eveomart",
-    "buckets": ["DPB3_bucket-1", "DPB3_bucket-2", "DPB3_bucket-3", "DPB3_bucket-4", "DPB3_bucket-5"]
+    "buckets": ["DPB3_T01", "DPB3_T02", "DPB3_T03", "DPB3_T04", "DPB3_T05"]
   },
   {
     "salesforce_id": "005at00000ADsT8AAL",
     "alias": "paualane",
-    "buckets": ["DCE3_bucket-16", "DCE3_bucket-1", "DCE3_bucket-12", "DCE3_bucket-15", "DCE3_bucket-14"]
+    "buckets": ["DCE3_T16", "DCE3_T01", "DCE3_T12", "DCE3_T15", "DCE3_T14"]
   },
   {
     "salesforce_id": "0055G00000BA0QpQAL",
     "alias": "pedtneto",
-    "buckets": ["DCE3_bucket-11", "DCE3_bucket-6", "DCE3_bucket-4", "DCE3_bucket-13", "DCE3_bucket-2"]
+    "buckets": ["DCE3_T11", "DCE3_T06", "DCE3_T04", "DCE3_T13", "DCE3_T02"]
   },
   {
     "salesforce_id": "005at000002GuY9AAK",
     "alias": "qsidneyl",
-    "buckets": ["DCE3_bucket-8", "DCE3_bucket-7", "DCE3_bucket-9", "DCE3_bucket-5", "DCE3_bucket-10", "DCE3_bucket-3"]
+    "buckets": ["DCE3_T08", "DCE3_T07", "DCE3_T09", "DCE3_T05", "DCE3_T10", "DCE3_T03"]
   },
   {
     "salesforce_id": "005at000004Oo6DAAS",
     "alias": "cryconce",
-    "buckets": ["DSA8_bucket-1", "DSA8_bucket-2"]
+    "buckets": ["DSA8_T01", "DSA8_T02"]
   },
   {
     "salesforce_id": "0055G00000BA0QQQA1",
     "alias": "dcfelipe",
-    "buckets": ["DSA8_bucket-3", "DSA8_bucket-4"]
+    "buckets": ["DSA8_T03", "DSA8_T04"]
   },
   {
     "salesforce_id": "0055G00000BA5UIQA1",
     "alias": "swagnerq",
-    "buckets": ["DES2_bucket-1", "DES2_bucket-2", "DES2_bucket-3"]
+    "buckets": ["DES2_T01", "DES2_T02", "DES2_T03"]
   }
 ]
 

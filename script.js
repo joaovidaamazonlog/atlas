@@ -465,11 +465,12 @@ const PolygonManager = {
         if (!AppState.polygonsData) return;
 
         const stationFilter = document.getElementById('stationFilter');
+        const bucketsFilter = document.getElementById('bucket_ade');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-        const selectedBuckets = Array.from(document.getElementById('bucket_ade').selectedOptions).map(opt => opt.value);
-        const filteredFeatures = selectedStations.includes('all')
+        const selectedBuckets = Array.from(bucketsFilter.selectedOptions).map(opt => opt.value);
+        const filteredFeatures = selectedStations.includes('all') && selectedBuckets.includes('all')
             ? AppState.polygonsData.features
-            : AppState.polygonsData.features.filter(f => selectedStations.includes(f.properties.delivery_station) && selectedBuckets.includes(f.properties.territory_id));
+            : AppState.polygonsData.features.filter(f => selectedStations.includes((f.properties.delivery_station) && selectedBuckets.includes(f.properties.territory_id)));
 
         AppState.polygonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',

@@ -145,7 +145,7 @@ const DataManager = {
             } else
                 partner.optimization = {
                     "radius_suggestion": 1500,
-                    "cap_suggestion": 45
+                    "cap_suggestion": 42
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "Inactive").forEach(partner => {
@@ -160,7 +160,7 @@ const DataManager = {
             } else
                 partner.optimization = {
                     "radius_suggestion": 1500,
-                    "cap_suggestion": 45
+                    "cap_suggestion": 42
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "Onboarding").forEach(partner => {
@@ -175,7 +175,7 @@ const DataManager = {
             } else
                 partner.optimization = {
                     "radius_suggestion": 1500,
-                    "cap_suggestion": 45
+                    "cap_suggestion": 42
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "BG Checks").forEach(partner => {
@@ -191,7 +191,7 @@ const DataManager = {
             } else
                 partner.optimization = {
                     "radius_suggestion": 1500,
-                    "cap_suggestion": 45
+                    "cap_suggestion": 42
                 };
         });
         AppState.allMarkersData.filter(p => p.status === "Prospect").forEach(partner => {

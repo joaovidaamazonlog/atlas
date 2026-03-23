@@ -757,7 +757,7 @@ const PolygonManager = {
 
         const filteredFeatures = selectedStations.includes('all')
             ? AppState.heatmapData.features.filter(f => f.geometry.type === 'Polygon')
-            : AppState.heatmapData.features.filter(f => ((selectedStations.includes(f.properties.delivery_station)) && (selectedBuckets.includes(f.properties.bucket)) && (f.geometry.type === 'Polygon')));
+            : AppState.heatmapData.features.filter(f => ((selectedStations.includes(f.properties.delivery_station)) && (selectedBuckets.includes(f.properties.territory_id)) && (f.geometry.type === 'Polygon')));
 
         const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_daily'] || 0));
         function getColor(demanda) {

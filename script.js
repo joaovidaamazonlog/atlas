@@ -465,9 +465,10 @@ const PolygonManager = {
 
         const stationFilter = document.getElementById('stationFilter');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
+        const selectedBuckets = Array.from(document.getElementById('bucket_ade').selectedOptions).map(opt => opt.value);
         const filteredFeatures = selectedStations.includes('all')
             ? AppState.polygonsData.features
-            : AppState.polygonsData.features.filter(f => selectedStations.includes(f.properties.delivery_station));
+            : AppState.polygonsData.features.filter(f => selectedStations.includes(f.properties.delivery_station) && selectedBuckets.includes(f.properties.bucket_ade));
 
         AppState.polygonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
@@ -675,11 +676,11 @@ const PolygonManager = {
         if (!AppState.polygonLayer || !AppState.allMarkersData) return;
         AppState.polygonLayer.eachLayer(layer => {
             const props = layer.feature.properties;
-            const regionname = props.cluster;
+            const regionname = props.territory_id;
             const partnersInRegion = AppState.allMarkersData.filter(p => p.regiao === regionname);
             const activePartners = partnersInRegion.filter(p => p.status === 'Active').length;
             const onboardingPartners = partnersInRegion.filter(p => p.status === 'Onboarding' || p.status === 'BG Checks').length;
-            const expected = props.num_points || 0;
+            const expected = props.n_slots || 0;
             const attainment = expected > 0 ? ((activePartners + onboardingPartners) / expected) * 100 : 0;
             const priority = this.calculatePriority(regionname, props.delivery_station);
             const avgADV = partnersInRegion.length > 0 ? (partnersInRegion.reduce((sum, p) => sum + (p.ADV || 0), 0) / partnersInRegion.length).toFixed(1) : 0;
@@ -701,13 +702,13 @@ const PolygonManager = {
     calculatePriority: function (regionName, deliveryStation) {
         const polygonsSameStation = AppState.polygonsData.features.filter(f => f.properties.delivery_station === deliveryStation);
         const sorted = polygonsSameStation.map(f => {
-            const region = f.properties.cluster;
-            const expected = f.properties.num_points || 0;
-            const active = AppState.allMarkersData.filter(p => p.regiao === region && p.status === 'Active').length;
-            const onboarding = AppState.allMarkersData.filter(p => p.regiao === region && (p.status === 'Onboarding' || p.status === 'BG Checks')).length;
+            const region = f.properties.territory_id;
+            const expected = f.properties.n_slots || 0;
+            const active = AppState.allMarkersData.filter(p => p.territory_id === region && p.status === 'Active').length;
+            const onboarding = AppState.allMarkersData.filter(p => p.territory_id === region && (p.status === 'Onboarding' || p.status === 'BG Checks')).length;
             const attainment = expected > 0 ? (active + onboarding) / expected : 0;
-            return { cluster: region, attainment, num_points: expected };
-        }).sort((a, b) => a.attainment - b.attainment || b.num_points - a.num_points);
+            return { cluster: region, attainment, n_slots: expected };
+        }).sort((a, b) => a.attainment - b.attainment || b.n_slots - a.n_slots);
 
         const idx = sorted.findIndex(f => f.cluster === regionName);
         return idx >= 0 ? idx + 1 : polygonsSameStation.length;

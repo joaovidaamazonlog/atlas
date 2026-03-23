@@ -755,7 +755,7 @@ const PolygonManager = {
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
         const selectedBuckets = Array.from(bucketsFilter.selectedOptions).map(opt => opt.value);
 
-        const filteredFeatures = AppState.polygonsData.features.filter(f => {
+        const filteredFeatures = AppState.optimizationData.features.filter(f => {
             const stationMatch = selectedStations.includes('all') || selectedStations.includes(f.properties.delivery_station);
             const bucketMatch = selectedBuckets.includes('all') || selectedBuckets.includes(f.properties.territory_id);
             return stationMatch && bucketMatch;

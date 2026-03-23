@@ -119,6 +119,7 @@ const DataManager = {
             if (Array.isArray(slots)) {
                 slots.forEach(slot => {
                     const NP = {
+                        status: "New",
                         delivery_station: slot.station_code,
                         radius: slot.radius_s,
                         capacity: slot.capacity_s,

@@ -626,7 +626,7 @@ const PolygonManager = {
             let count = 0;
             AppState.optimizationLayer.eachLayer(layer => {
                 if (this.selectedPolygons.has(L.stamp(layer))) {
-                    soma += layer.feature.properties['demand_daily'] || 0;
+                    soma += round(layer.feature.properties['demand_daily'], 1) || 0;
                     count++;
                 }
             });
@@ -752,10 +752,11 @@ const PolygonManager = {
         }
 
         const stationFilter = document.getElementById('stationFilter');
+        const bucketsFilter = document.getElementById('bucket_ade');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
-        const selectedBuckets = Array.from(document.getElementById('bucket_ade').selectedOptions).map(opt => opt.value);
+        const selectedBuckets = Array.from(bucketsFilter.selectedOptions).map(opt => opt.value);
 
-        const filteredFeatures = selectedStations.includes('all')
+        const filteredFeatures = selectedStations.includes('all') && selectedBuckets.includes('all')
             ? AppState.heatmapData.features.filter(f => f.geometry.type === 'Polygon')
             : AppState.heatmapData.features.filter(f => ((selectedStations.includes(f.properties.delivery_station)) && (selectedBuckets.includes(f.properties.territory_id)) && (f.geometry.type === 'Polygon')));
 

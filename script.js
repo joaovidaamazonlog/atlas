@@ -74,7 +74,7 @@ const DataManager = {
             AppState.polygonsData = polygonData;
             AppState.jurisdictionData = jurisdictionData;
             AppState.optimizationData = optData;
-            AppState.idealSupplyData = optData.feature.filter(p => p.properties.type === "IDEAL_SLOT");
+            AppState.idealSupplyData = optData.features.filter(p => p.properties.type === "IDEAL_SLOT");
             AppState.heatmapData = heatmapData;
 
             UIManager.updatePeriodInfo(AppState.period);
@@ -110,28 +110,25 @@ const DataManager = {
     },
 
     opportunities: function(){
-        if(!AppState.idealSupplyData || !AppState.idealSupplyData.slots) return null;
-        
-        // Iterar sobre cada territory nos slots
-        for (const territory in AppState.idealSupplyData.slots) {
-            const slots = AppState.idealSupplyData.slots[territory];
-            if (Array.isArray(slots)) {
-                slots.forEach(slot => {
-                    const NP = {
-                        status: "New",
-                        delivery_station: slot.station_code,
-                        radius: slot.radius_s,
-                        capacity: slot.capacity_day,
-                        lat: slot.geometry.coordenates[0],
-                        lon: slot.geometry.coordenates[1],
-                        bucket_ade: slot.territory_id,
-                        ceps: slot.ceps
+        if (!AppState.idealSupplyData || !Array.isArray(AppState.idealSupplyData)) return null;
 
-                    };
-                    AppState.allMarkersData.push(NP);
-                });
+        AppState.idealSupplyData.forEach(slotFeature => {
+            const slot = slotFeature;
+            const NP = {
+                status: "New",
+                delivery_station: slot.properties.delivery_station,
+                radius: slot.properties.radius_s,
+                capacity: slot.properties.capacity_day,
+                lat: slot.geometry.coordinates[1],
+                lon: slot.geometry.coordinates[0],
+                bucket_ade: slot.properties.territory_id,
+                ceps: slot.properties.ceps
+            };
+
+            if (lat !== null && lon !== null) {
+                AppState.allMarkersData.push(NP);
             }
-        }
+        });
     },
 
     optimizationDataAggregate: function() {

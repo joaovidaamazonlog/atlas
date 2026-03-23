@@ -468,9 +468,12 @@ const PolygonManager = {
         const bucketsFilter = document.getElementById('bucket_ade');
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
         const selectedBuckets = Array.from(bucketsFilter.selectedOptions).map(opt => opt.value);
-        const filteredFeatures = selectedStations.includes('all') || selectedBuckets.includes('all')
-            ? AppState.polygonsData.features
-            : AppState.polygonsData.features.filter(f => selectedStations.includes((f.properties.delivery_station) && selectedBuckets.includes(f.properties.territory_id)));
+
+        const filteredFeatures = AppState.polygonsData.features.filter(f => {
+            const stationMatch = selectedStations.includes('all') || selectedStations.includes(f.properties.delivery_station);
+            const bucketMatch = selectedBuckets.includes('all') || selectedBuckets.includes(f.properties.territory_id);
+            return stationMatch && bucketMatch;
+        });
 
         AppState.polygonLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
@@ -757,9 +760,11 @@ const PolygonManager = {
         const selectedStations = Array.from(stationFilter.selectedOptions).map(opt => opt.value);
         const selectedBuckets = Array.from(bucketsFilter.selectedOptions).map(opt => opt.value);
 
-        const filteredFeatures = selectedStations.includes('all') || selectedBuckets.includes('all')
-            ? AppState.heatmapData.features.filter(f => f.geometry.type === 'Polygon')
-            : AppState.heatmapData.features.filter(f => ((selectedStations.includes(f.properties.delivery_station)) && (selectedBuckets.includes(f.properties.territory_id)) && (f.geometry.type === 'Polygon')));
+        const filteredFeatures = AppState.polygonsData.features.filter(f => {
+            const stationMatch = selectedStations.includes('all') || selectedStations.includes(f.properties.delivery_station);
+            const bucketMatch = selectedBuckets.includes('all') || selectedBuckets.includes(f.properties.territory_id);
+            return stationMatch && bucketMatch;
+        });
 
         const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_daily'] || 0));
         function getColor(demanda) {

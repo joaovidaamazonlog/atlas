@@ -123,7 +123,8 @@ const DataManager = {
                         radius: slot.radius_s,
                         capacity: slot.capacity_s,
                         lat: slot.lat,
-                        lon: slot.lon
+                        lon: slot.lon,
+                        bucket_ade: slot.territory_id,
                     };
                     AppState.allMarkersData.push(NP);
                 });

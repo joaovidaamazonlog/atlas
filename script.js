@@ -119,7 +119,7 @@ const DataManager = {
             if (Array.isArray(slots)) {
                 slots.forEach(slot => {
                     const NP = {
-                        delivery_station: slot.delivery_station,
+                        delivery_station: slot.station_code,
                         radius: slot.radius_s,
                         capacity: slot.capacity_s,
                         lat: slot.lat,

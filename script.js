@@ -677,7 +677,7 @@ const PolygonManager = {
         AppState.polygonLayer.eachLayer(layer => {
             const props = layer.feature.properties;
             const regionname = props.territory_id;
-            const partnersInRegion = AppState.allMarkersData.filter(p => p.regiao === regionname);
+            const partnersInRegion = AppState.allMarkersData.filter(p => p.bucket_ade === regionname);
             const activePartners = partnersInRegion.filter(p => p.status === 'Active').length;
             const onboardingPartners = partnersInRegion.filter(p => p.status === 'Onboarding' || p.status === 'BG Checks').length;
             const expected = props.n_slots || 0;

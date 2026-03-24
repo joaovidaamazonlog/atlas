@@ -482,7 +482,7 @@ def _build_heatmap(
             "geometry": {"type": "Polygon", "coordinates": [coords]},
             "properties": {
                 "hex_id":           h,
-                "demand_daily":     demand,
+                "demand_total":     demand,
                 "ceps":             list(hex_to_ceps.get(h, set()))[:10],
                 "delivery_station": station_code,
                 "territory_id":     territory_id or "",
@@ -500,7 +500,7 @@ def run_setup(
     pkg: PackageData,
     output_dir: str = None,
     stations: Optional[List[str]] = None,
-    max_workers: int = 8,
+    max_workers: int = 4,
     jurisdiction_path: str = None,
 ) -> Tuple["TerritoriesResult", IdealSupplyResult]:
     """
@@ -513,6 +513,7 @@ def run_setup(
     heatmap.geojson      — hexes com delivery_station e territory_id
     territories_index.json — metadados para fases daily
     """
+
     out_dir    = Path(output_dir or Config.DEST_FOLDER)
     out_dir.mkdir(parents=True, exist_ok=True)
     j_path     = jurisdiction_path or Config.BASE_JURISDICTION
@@ -529,11 +530,35 @@ def run_setup(
 
     # ── Solver em paralelo ────────────────────────────────────────────────
     payloads: List[Dict] = []
+    dm_filtered_by_station: Dict[str, Dict] = {}  # Guardar demand_map filtrado por jurisdição
     for station in target_sta:
         dm = pkg.demand_map(station)
         if not dm:
             print(f"  WARN [{station}] Sem demanda.")
             continue
+
+        # Filtrar hexes cujo centróide está dentro do polígono de jurisdição
+        jur_poly = _load_jurisdiction_poly(station, jur_geojson)
+        if jur_poly is not None:
+            before = len(dm)
+            dm = {
+                h: v for h, v in dm.items()
+                if (lambda lat, lon: jur_poly.contains(Point(lon, lat)))
+                   (*h3.cell_to_latlng(h))
+            }
+            removed = before - len(dm)
+            if removed:
+                print(f"  [{station}] {removed} hexes fora da jurisdição removidos "
+                      f"({len(dm)} restantes).")
+        else:
+            print(f"  WARN [{station}] Jurisdição não encontrada — "
+                  f"usando todos os {len(dm)} hexes com demanda.")
+
+        if not dm:
+            print(f"  WARN [{station}] Sem hexes dentro da jurisdição — pulando.")
+            continue
+
+        dm_filtered_by_station[station] = dm  # Salvar demand_map filtrado
         daily = {h: max(1, round(v / pkg.days)) for h, v in dm.items() if v > 0}
         payloads.append({
             "station_code": station, "hex_ids": list(daily.keys()),
@@ -642,8 +667,6 @@ def run_setup(
         base_polys = _fill_jurisdiction(base_polys, jur_poly)
 
         # 5. Metadados e slots por território
-        dm_base = {h: round(v / pkg.days, 1 ) for h, v in pkg.demand_map(station).items()}
-
         for k, tid in k_to_tid.items():
             t_slots_raw = [slots[i] for i, ki in enumerate(cluster_idxs) if ki == k]
             t_cap_day   = sum(s["capacity_s"] for s in t_slots_raw)
@@ -672,7 +695,8 @@ def run_setup(
             print(f"    {tid}: {len(t_slots_raw)} slots | "
                   f"{t_cap_day:,.1f} pac/dia | geom={geom_type}")
 
-        # 6. Heatmap desta base
+        # 6. Heatmap desta base (usar demand_map filtrado pela jurisdição)
+        dm_base = dm_filtered_by_station.get(station, {})
         heatmap_features.extend(
             _build_heatmap(dm_base, base_polys, pkg.hex_to_ceps, station)
         )

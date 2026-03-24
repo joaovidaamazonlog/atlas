@@ -117,8 +117,6 @@ def run_daily(
     print(f"  Inicio: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print(f"{'#'*60}")
 
-    # Atualizar dados de parceiros
-    run_pipeline()
     # Carregar artefatos do setup (aborta se nao existirem)
     territories = load_territories(output_dir)
     supply      = load_ideal_supply(output_dir)

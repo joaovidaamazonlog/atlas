@@ -8,22 +8,41 @@
 
 ## Índice / Table of Contents
 
+- [Hub Delivery Optimization System](#hub-delivery-optimization-system)
+  - [Índice / Table of Contents](#índice--table-of-contents)
 - [Português](#português)
   - [Objetivo](#objetivo)
   - [Visão Geral da Arquitetura](#visão-geral-da-arquitetura)
   - [Estrutura de Arquivos](#estrutura-de-arquivos)
   - [Fluxo de Execução](#fluxo-de-execução)
+    - [Modo Setup — "Onde deveriam estar os parceiros?"](#modo-setup--onde-deveriam-estar-os-parceiros)
+    - [Modo Daily — "Como estamos hoje?"](#modo-daily--como-estamos-hoje)
   - [Artefatos Gerados](#artefatos-gerados)
+    - [Setup](#setup)
+    - [Daily](#daily)
   - [Como Usar](#como-usar)
+    - [Pré-requisitos](#pré-requisitos)
+    - [Primeira execução (Setup)](#primeira-execução-setup)
+    - [Execução diária (Daily)](#execução-diária-daily)
   - [Configuração](#configuração)
   - [Dependências](#dependências)
+  - [Notas de Implementação](#notas-de-implementação)
+    - [Consistência de Dados no Setup](#consistência-de-dados-no-setup)
+    - [K-means com Cotas Iguais](#k-means-com-cotas-iguais)
 - [English](#english)
   - [Objective](#objective)
   - [Architecture Overview](#architecture-overview)
   - [File Structure](#file-structure)
   - [Execution Flow](#execution-flow)
+    - [Setup Mode — "Where should partners be?"](#setup-mode--where-should-partners-be)
+    - [Daily Mode — "How are we doing today?"](#daily-mode--how-are-we-doing-today)
   - [Generated Artifacts](#generated-artifacts)
+    - [Setup](#setup-1)
+    - [Daily](#daily-1)
   - [How to Use](#how-to-use)
+    - [Prerequisites](#prerequisites)
+    - [First Run (Setup)](#first-run-setup)
+    - [Daily Run](#daily-run)
   - [Configuration](#configuration)
   - [Dependencies](#dependencies)
 
@@ -114,11 +133,14 @@ projeto/
    └─ Retorna demanda total bruta por hex
 
 2. Solver CP-SAT por base (paralelo)
+   └─ **IMPORTANTE:** Filtra demand_map por jurisdição antes do processamento
+   └─ Apenas hexes com centroide DENTRO do polígono de jurisdição são processados
    └─ Para cada hex ativo: encontra semente de maior demanda residual
    └─ CP-SAT escolhe raio mínimo que atinge MIN_CAP pacotes/dia
    └─ Maximiza pacotes alocados, penaliza raios maiores
    └─ Itera até não restar demanda ≥ MIN_CAP em nenhum hex
    └─ Resultado: N slots ideais por base com lat/lon, raio e capacidade
+   └─ demand_map filtrado é reutilizado para construir heatmap.geojson (garantia de consistência)
 
 3. K-means constrained (cotas iguais)
    └─ K-means++ geográfico encontra K centroides ótimos
@@ -132,6 +154,13 @@ projeto/
    └─ fill_jurisdiction: preenche gaps com o território mais próximo
    └─ Clip pelo polígono de jurisdição da base
    └─ Resultado: polígonos simples, sem gaps, dentro da jurisdição
+
+5. Construção de heatmap.geojson
+   └─ Utiliza o demand_map filtrado pela jurisdição (salvo na etapa 2)
+   └─ **CONSISTÊNCIA GARANTIDA:** apenas hexes processados pelo solver aparecem no heatmap
+   └─ Cada hex recebe: hex_id, demand_total, ceps, delivery_station, territory_id
+   └─ Spatial join via Point-in-Polygon: centroide → polígono de território
+   └─ Fallback para centroide mais próximo se fora de qualquer polígono
 ```
 
 ### Modo Daily — "Como estamos hoje?"
@@ -167,8 +196,10 @@ projeto/
 |---|---|
 | `territories.geojson` | Polígono único por território. Propriedades: `territory_id`, `delivery_station`, `bdm_cluster`, `n_slots`, `daily_demand`, `attainment` (atualizado pelo daily), `coverage` (atualizado pelo daily) |
 | `ideal_supply.json` | Slots ideais por território. Cada slot tem `slot_id`, `origin_hex`, `radius_s`, `capacity_s`, `lat`, `lon`, `allocations`, `matched_partner_id` |
-| `heatmap.geojson` | Hexágonos H3 com `hex_id`, `demand_total`, `ceps`, `delivery_station`, `territory_id` |
+| `heatmap.geojson` | Hexágonos H3 com `hex_id`, `demand_total`, `ceps`, `delivery_station`, `territory_id`. **Contém APENAS hexes com centroide dentro da jurisdição** (mesmo conjunto processado pelo solver CP-SAT) |
 | `territories_index.json` | Metadados dos territórios para consumo interno das fases daily |
+
+> **Nota Técnica:** A consistência entre solver, ideal_supply.json e heatmap.geojson é garantida reutilizando o demand_map filtrado pela jurisdição em todas as etapas. Dessa forma, nenhum hex "órfão" (fora da jurisdição) aparece no heatmap sem ter passado pelo solver.
 
 ### Daily
 
@@ -284,6 +315,29 @@ ADES_ACCOUNT_MANAGERS = [
 | `ortools` | 9.x | Solver CP-SAT para encontrar slots ideais |
 | `networkx` | 2.8+ | (presente no código legado) |
 | `scikit-learn` | 1.1+ | K-means para inicialização de centroides |
+
+---
+
+## Notas de Implementação
+
+### Consistência de Dados no Setup
+
+**Problema**: O heatmap.geojson deveria conter apenas os hexes que foram efetivamente processados pelo solver (dentro da jurisdição), para garantir consistência com ideal_supply.json.
+
+**Solução implementada** (2026-03-24):
+- O demand_map é filtrado pela jurisdição **antes** de ser enviado ao solver
+- O demand_map filtrado é armazenado em cache (`dm_filtered_by_station`)
+- O heatmap.geojson é construído usando esse demand_map filtrado, em vez de chamada nova a `pkg.demand_map(station)`
+- **Resultado**: Sincronismo garantido entre solver → ideal_supply.json → heatmap.geojson
+
+**Impacto**: Elimina hexes "órfãos" (fora da jurisdição) que poderiam aparecer no heatmap sem terem sido considerados no planejamento de slots.
+
+### K-means com Cotas Iguais
+
+O algoritmo de `_kmeans_constrained()` garante que:
+- Cada território de uma base terá ⌊N/K⌋ ou ⌈N/K⌉ slots (diferença máxima de 1)
+- A distribuição geográfica é otimizada via linear_sum_assignment
+- Nenhum slot fica isolado em um micro-cluster por razões numéricas
 
 ---
 

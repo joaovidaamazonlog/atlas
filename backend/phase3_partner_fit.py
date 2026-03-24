@@ -141,15 +141,20 @@ class FitResult:
     # territory_id -> TerritoryFit
     territories: Dict[str, TerritoryFit] = field(default_factory=dict)
 
-    # Parceiros fora de qualquer jurisdicao conhecida
+    # Parceiros fora de qualquer jurisdicao conhecida (territory_id = "Out of Jurisdiction")
     outside_jurisdiction: List[PartnerMetrics] = field(default_factory=list)
+    
+    # Parceiros dentro de jurisdicao mas sem match em vaga (alocados a territory_id)
+    unassigned_by_territory: Dict[str, List[PartnerMetrics]] = field(default_factory=dict)
 
     def fits_for_station(self, station_code: str) -> List[TerritoryFit]:
         return [f for f in self.territories.values()
                 if f.station_code == station_code]
 
     def all_partners(self) -> List[PartnerMetrics]:
+        """Retorna TODOS os parceiros: matched + unassigned + out of jurisdiction."""
         partners = [p for fit in self.territories.values() for p in fit.partners]
+        partners += [p for ps in self.unassigned_by_territory.values() for p in ps]
         partners += self.outside_jurisdiction
         return partners
 
@@ -206,13 +211,14 @@ def _match_station(
     supply: IdealSupplyResult,
     partner_data: PartnerData,
     pkg: PackageData,
-) -> Tuple[Dict[str, TerritoryFit], List[PartnerMetrics]]:
+) -> Tuple[Dict[str, TerritoryFit], List[PartnerMetrics], Dict[str, List[PartnerMetrics]]]:
     """
     Executa o matching completo para uma base.
 
     Retorna
     -------
-    (territory_fits, outside_jurisdiction_partners)
+    (territory_fits, outside_jurisdiction_partners, unassigned_by_territory)
+    onde unassigned_by_territory é {territory_id: [parceiros sem match]}
     """
     bdm_cluster = Config.get_bdm_cluster(station_code)
 
@@ -303,17 +309,20 @@ def _match_station(
         best = eligible[0]
         prio, origin_hex, sfid, row, entity_type, p_station = best
 
-        # Determinar decisao e station final
+        # Determinar decision baseado em status (parceiro MATCHED com vaga)
         status_str = str(row.get("status", ""))
         if entity_type == "INACTIVE_EXITED":
-            decision = "Reativar cadastro"
+            decision = f"Reavaliar possivel retorno - vaga {slot.slot_id}"
             optDecision = None
         elif entity_type == "PROSPECT":
-            decision = "Seguir cadastro"
+            decision = f"Seguir cadastro - vaga {slot.slot_id}"
             optDecision = None
         elif status_str == "Active":
             decision = f"Vinculado a vaga {slot.slot_id}"
             optDecision = "Optimization suggested"
+        elif status_str in ("Onboarding", "BG Checks"):
+            decision = f"Vinculado a vaga {slot.slot_id}"
+            optDecision = None
         else:
             decision = f"Vinculado a vaga {slot.slot_id}"
             optDecision = None
@@ -348,29 +357,26 @@ def _match_station(
         allocated_slots.add(slot.slot_id)
         slot.matched_partner_id = sfid
 
-    # ── Parceiros nao alocados ────────────────────────────────────────────
+    # ── Parceiros nao alocados (sem match em vaga) ────────────────────────
     for prio, origin_hex, sfid, row, entity_type, p_station in candidates:
         if sfid in allocated_sids:
             continue
 
         status_str = str(row.get("status", ""))
-
-        # Verificar se ha algum slot no territorio do parceiro (vizinhanca=1)
-        neighbor_slots = hex_to_slots.get(origin_hex, [])
-        all_filled = all(s.slot_id in allocated_slots for s in neighbor_slots)
-
-        if not neighbor_slots:
-            if entity_type == "PROSPECT":
-                decision = "Pouca volumetria na area de atuacao"
-            elif entity_type == "INACTIVE_EXITED":
-                decision = "Fora da area de atuacao"
-            else:
-                decision = "Sem vaga ideal na vizinhanca (grid_disk=1)"
-        elif all_filled:
-            decision = "Excedente no territorio — sem vaga disponivel"
+        
+        # Decision para parceiros NAO-MATCHED (baseado em status)
+        if status_str == "Active":
+            decision = "Nao esta em uma localizacao ideal"
+        elif status_str == "Onboarding":
+            decision = "Nao esta em uma localizacao ideal"
+        elif status_str == "BG Checks":
+            decision = "Nao esta em uma localizacao ideal"
+        elif entity_type == "PROSPECT":
+            decision = "Não Cadastar - Sem oportunidade proxima"
+        elif entity_type == "INACTIVE_EXITED":
+            decision = "Finalizar cadastro - Sem oportunidade proxima"
         else:
-            # Ha vagas mas nao foi selecionado (perdeu para candidato de maior prioridade)
-            decision = "Preterido por parceiro de maior prioridade"
+            decision = "Nao esta em uma localizacao ideal"
 
         pm = row_to_partner_metrics(
             row=row,
@@ -382,8 +388,8 @@ def _match_station(
         )
         pm.bdm_cluster = bdm_cluster
 
-        # Tentar associar ao territorio pelo hex de origem
-        territory_id = _find_territory_for_hex(origin_hex, territories_meta)
+        # Associar ao territorio pelo hex de origem (sempre dentro de jurisdicao neste ponto)
+        territory_id = _get_territory_for_partner(origin_hex, territories_meta)
         if territory_id:
             bucket_idx = int(territory_id.split("bucket-")[-1]) - 1
             pm.cluster_name = territory_id
@@ -391,25 +397,35 @@ def _match_station(
 
         partner_results.append(pm)
 
-    # ── Parceiros fora de jurisdicao (Prospects) ──────────────────────────
+    # ── Parceiros fora de jurisdicao ──────────────────────────────────────
     outside_list: List[PartnerMetrics] = []
     outside_df = partner_data.prospects_outside_jurisdiction()
     for _, row in outside_df.iterrows():
         pm = row_to_partner_metrics(
             row=row, entity_type="PROSPECT",
-            station_code="", decision="Fora da area de atuacao",
+            station_code="", decision="Fora de jurisdição",
         )
+        pm.cluster_name = "Out of Jurisdiction"  # Territory especial
         outside_list.append(pm)
 
     # ── Montar TerritoryFit por territorio ────────────────────────────────
     territory_fits: Dict[str, TerritoryFit] = {}
+    unassigned_by_tid: Dict[str, List[PartnerMetrics]] = defaultdict(list)
+    
     for meta in territories_meta:
         tid = meta["territory_id"]
         bucket_idx = int(tid.split("bucket-")[-1]) - 1
         ctl_name = f"CTL-{chr(65 + (bucket_idx // 5))}"
 
         t_slots = supply.slots_for(tid)
-        t_partners = [p for p in partner_results if p.cluster_name == tid]
+        # Apenas matched partners (têm matched_slot_id)
+        t_partners = [p for p in partner_results if p.cluster_name == tid and p.matched_slot_id]
+        
+        # Unmatched partners (sem matched_slot_id mas com cluster_name = tid)
+        t_unmatched = [p for p in partner_results if p.cluster_name == tid and not p.matched_slot_id]
+        
+        if t_unmatched:
+            unassigned_by_tid[tid] = t_unmatched
 
         territory_fits[tid] = TerritoryFit(
             territory_id=tid,
@@ -417,10 +433,10 @@ def _match_station(
             bdm_cluster=bdm_cluster,
             ctl_name=ctl_name,
             slots=t_slots,
-            partners=t_partners,
+            partners=t_partners,  # Apenas matched
         )
 
-    return territory_fits, outside_list
+    return territory_fits, outside_list, dict(unassigned_by_tid)
 
 
 def _find_territory_for_hex(
@@ -432,6 +448,51 @@ def _find_territory_for_hex(
         if origin_hex in meta.get("hex_ids", []):
             return meta["territory_id"]
     return None
+
+
+def _get_territory_for_partner(
+    origin_hex: str,
+    territories_meta: List[dict],
+) -> Optional[str]:
+    """
+    Encontra o territory_id mais apropriado para um parceiro (dentro de jurisdicao).
+    
+    Ordem:
+    1. Territory que contem o hex
+    2. Territory cujo slot esta em grid_disk=1
+    3. Territory mais proximo (menor distancia do centroide)
+    
+    Retorna None se nenhum territory encontrado.
+    """
+    if not territories_meta:
+        return None
+    
+    # 1. Busca exata: hex pertence ao territory
+    tid = _find_territory_for_hex(origin_hex, territories_meta)
+    if tid:
+        return tid
+    
+    # 2. Busca por grid_disk=1 (vizinhos)
+    partner_neighbors = set(h3.grid_disk(origin_hex, 1))
+    for meta in territories_meta:
+        for h in meta.get("hex_ids", []):
+            if h in partner_neighbors:
+                return meta["territory_id"]
+    
+    # 3. Territory mais proximo (centroide)
+    lat, lon = h3.cell_to_latlng(origin_hex)
+    min_tid = None
+    min_dist = float("inf")
+    
+    for meta in territories_meta:
+        cent_lat = meta.get("centroid_lat", 0)
+        cent_lon = meta.get("centroid_lon", 0)
+        dist = (lat - cent_lat) ** 2 + (lon - cent_lon) ** 2
+        if dist < min_dist:
+            min_dist = dist
+            min_tid = meta["territory_id"]
+    
+    return min_tid
 
 
 # ---------------------------------------------------------------------------
@@ -526,7 +587,7 @@ def run_phase3(
         print(f"\n  [{station}] {len(territories_meta)} territorios | "
               f"{n_slots_station} vagas ideais")
 
-        territory_fits, outside = _match_station(
+        territory_fits, outside, unassigned = _match_station(
             station_code=station,
             territories_meta=territories_meta,
             supply=supply,
@@ -536,6 +597,10 @@ def run_phase3(
 
         fit_result.territories.update(territory_fits)
         fit_result.outside_jurisdiction.extend(outside)
+        for tid, partners in unassigned.items():
+            if tid not in fit_result.unassigned_by_territory:
+                fit_result.unassigned_by_territory[tid] = []
+            fit_result.unassigned_by_territory[tid].extend(partners)
 
         # Sumario da base
         for fit in sorted(territory_fits.values(), key=lambda f: f.territory_id):

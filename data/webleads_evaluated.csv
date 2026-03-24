@@ -1,15 +1,11 @@
 Id,Delivery Station,Jurisdiction,Name,OwnerId,decision
 00Qat00000NuPUjEAN,,N/A,Rodrigo Teixeira,,CEP invalido ou nao mapeado
 00Qat00000NuRBZEA3,,N/A,Lucas Noronha,,CEP invalido ou nao mapeado
-00Qat00000NuobBEAR,,N/A,Luiza Fayad,,CEP invalido ou nao mapeado
-00Qat00000NvWabEAF,,N/A,Silmara Silva Araujo,,CEP invalido ou nao mapeado
-00Qat00000NvbwrEAB,,N/A,THAIS DIAS,,CEP invalido ou nao mapeado
 00Qat00000Nw0f8EAB,,N/A,Janice Cordeiro dos Santos,,Territorio nao identificado
 00Qat00000Nw1ePEAR,,N/A,ROSA ARES BONIFACIO,,CEP invalido ou nao mapeado
 00Qat00000NwFO1EAN,,N/A,Rodrigo Lima,,CEP invalido ou nao mapeado
 00Qat00000Nwn37EAB,,N/A,Regiane Gouveia,,CEP invalido ou nao mapeado
 00Qat00000NwoyUEAR,,N/A,Nathaly KERBER,,CEP invalido ou nao mapeado
-00Qat00000NwphdEAB,,N/A,Luanna Linard,,CEP invalido ou nao mapeado
 00Qat00000NwtenEAB,,N/A,Lucas Carvalho Feijó,,CEP invalido ou nao mapeado
 00Qat00000NwzlqEAB,,N/A,Diego Pereira,,CEP invalido ou nao mapeado
 00Qat00000Nx0MvEAJ,,N/A,KAIO FELIPE PEREIRA GONCALVES,,CEP invalido ou nao mapeado
@@ -18,7 +14,6 @@ Id,Delivery Station,Jurisdiction,Name,OwnerId,decision
 00Qat00000NxUrFEAV,,N/A,José Albuquerque,,CEP invalido ou nao mapeado
 00Qat00000NyKJaEAN,,N/A,Suellen Alexandra Sanches,,CEP invalido ou nao mapeado
 00Qat00000NyMbVEAV,,N/A,MARCIO RODRIGO ARAUJO FREIRES,,CEP invalido ou nao mapeado
-00Qat00000NyWUPEA3,,N/A,Eriane Soares de souza,,CEP invalido ou nao mapeado
 00Qat00000NyeVBEAZ,,N/A,Daniela Silva,,CEP invalido ou nao mapeado
 00Qat00000NysulEAB,,N/A,Rosana Pereira Santos,,Territorio nao identificado
 00Qat00000NyvJ7EAJ,,N/A,Marcelo Rodrigues Santos,,CEP invalido ou nao mapeado
@@ -1413,27 +1408,19 @@ Id,Delivery Station,Jurisdiction,Name,OwnerId,decision
 00Qat00000RArujEAD,,N/A,Jefferson de Souza,,CEP invalido ou nao mapeado
 00Qat00000RAsnZEAT,,N/A,Maria Lúcia Marques da silva,,CEP invalido ou nao mapeado
 00Qat00000RAvrtEAD,,N/A,Antônio Rodrigo fazio Fazio,,CEP invalido ou nao mapeado
-00Qat00000RBPOYEA5,,N/A,Daniela Pereira Azevedo,,Territorio nao identificado
-00Qat00000RBS4fEAH,,N/A,Vicente Pereira Cruz,,CEP invalido ou nao mapeado
-00Qat00000RBS9VEAX,,N/A,Vicente Pereira Cruz,,CEP invalido ou nao mapeado
-00Qat00000RBSW6EAP,,N/A,LUCAS GABRIEL DE PAULA SOUZA,,Territorio nao identificado
-00Qat00000RBShOEAX,,N/A,João Vitor Pereira Ramos,,CEP invalido ou nao mapeado
-00Qat00000RBV4BEAX,,N/A,carolina de mattos,,CEP invalido ou nao mapeado
-00Qat00000RBX4LEAX,,N/A,Renan Luduvice,,CEP invalido ou nao mapeado
-00Qat00000RBXQvEAP,,N/A,Henrique Azevedo,,CEP invalido ou nao mapeado
-00Qat00000RBXXNEA5,,N/A,Samuel Dieb,,Territorio nao identificado
-00Qat00000RBXfREAX,,N/A,RAMON CARVALHO ARAUJO,,CEP invalido ou nao mapeado
-00Qat00000RBaS1EAL,,N/A,Fernando Roberto,,Territorio nao identificado
-00Qat00000RBazuEAD,,N/A,FELIPE BATISTA,,Territorio nao identificado
-00Qat00000RBbmHEAT,,N/A,Jairo Nunes,,Territorio nao identificado
-00Qat00000RBcOzEAL,,N/A,Tarcísio Castro,,Territorio nao identificado
-00Qat00000RBcvHEAT,,N/A,RENAN RANGEL,,Territorio nao identificado
-00Qat00000RBeNZEA1,,N/A,Luis Felipe Pinheiro Gomes,,Territorio nao identificado
-00Qat00000RBex3EAD,,N/A,LUCAS Bitella,,CEP invalido ou nao mapeado
-00Qat00000RBeyfEAD,,N/A,Wolace Santos,,Territorio nao identificado
-00Qat00000RBf9xEAD,,N/A,Vagner Rodrigues,,Territorio nao identificado
-00Qat00000RBh6wEAD,,N/A,Johnantan Dos Santos,,Territorio nao identificado
-00Qat00000RBhIDEA1,,N/A,Ana Beatriz Maia da Mota,,Territorio nao identificado
-00Qat00000RBhtJEAT,,N/A,LISE PINHEIRO COUTINHO,,Territorio nao identificado
-00Qat00000RBiJ7EAL,,N/A,GEAN AGUIAR,,Territorio nao identificado
-00Qat00000RBiNyEAL,,N/A,Tatiane Vener,,Territorio nao identificado
+00Qat00000RBlaLEAT,,N/A,Rafael Guedes LOPES,,CEP invalido ou nao mapeado
+00Qat00000RBzrpEAD,,N/A,ovidio chaves dos Santos,,CEP invalido ou nao mapeado
+00Qat00000RC1ATEA1,,N/A,TCHARLES Farias SOUZA,,CEP invalido ou nao mapeado
+00Qat00000RD4hOEAT,,N/A,Thamires Rocha,,CEP invalido ou nao mapeado
+00Qat00000RDvDsEAL,,N/A,RAMON MOTA,,Territorio nao identificado
+00Qat00000RE3WLEA1,,N/A,Renan Barbosa,,CEP invalido ou nao mapeado
+00Qat00000REF73EAH,,N/A,PEDRO MAURICIO NUNES NUNES,,Territorio nao identificado
+00Qat00000REIdSEAX,,N/A,Leydh Oliveira Santos,,Territorio nao identificado
+00Qat00000REJ3FEAX,,N/A,Marcio Severino de Oliveira,,Territorio nao identificado
+00Qat00000REJfxEAH,,N/A,Gisele Silva Miglhorini,,Territorio nao identificado
+00Qat00000RENRqEAP,,N/A,Isadora de Sousa Garcia,,CEP invalido ou nao mapeado
+00Qat00000REOSkEAP,,N/A,Ranieri Sousa,,CEP invalido ou nao mapeado
+00Qat00000REQ6LEAX,,N/A,Tiago Gonçalves da Silva,,CEP invalido ou nao mapeado
+00Qat00000REQKrEAP,,N/A,Ramon Felipe Borges,,Territorio nao identificado
+00Qat00000REQW9EAP,,N/A,CARLOS ALBERTO DE CASTRO E SILVA,,Territorio nao identificado
+00Qat00000RERQbEAP,,N/A,Carlos Natividade rocha,,CEP invalido ou nao mapeado

@@ -3,11 +3,11 @@
     "territory_id": "DBS5_bucket-01",
     "station_code": "DBS5",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 49,
-    "daily_demand": 2058,
-    "centroid_lat": -15.72105,
-    "centroid_lon": -47.83201,
-    "created_at": "2026-03-23T18:58:29"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -15.722094,
+    "centroid_lon": -47.829975,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-02": {
     "territory_id": "DBS5_bucket-02",
@@ -15,9 +15,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.745962,
-    "centroid_lon": -47.891812,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.746298,
+    "centroid_lon": -47.890347,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-03": {
     "territory_id": "DBS5_bucket-03",
@@ -25,9 +25,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.752566,
-    "centroid_lon": -47.909584,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.750152,
+    "centroid_lon": -47.905641,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-04": {
     "territory_id": "DBS5_bucket-04",
@@ -35,9 +35,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.77488,
-    "centroid_lon": -47.899224,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.773749,
+    "centroid_lon": -47.901897,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-05": {
     "territory_id": "DBS5_bucket-05",
@@ -45,9 +45,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.791794,
-    "centroid_lon": -47.883176,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.79436,
+    "centroid_lon": -47.884479,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-06": {
     "territory_id": "DBS5_bucket-06",
@@ -55,9 +55,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.803931,
-    "centroid_lon": -47.951022,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.798079,
+    "centroid_lon": -47.93985,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-07": {
     "territory_id": "DBS5_bucket-07",
@@ -65,9 +65,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.807927,
-    "centroid_lon": -47.918621,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.810662,
+    "centroid_lon": -47.915442,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-08": {
     "territory_id": "DBS5_bucket-08",
@@ -75,9 +75,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.811543,
-    "centroid_lon": -48.094791,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.811909,
+    "centroid_lon": -48.094863,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-09": {
     "territory_id": "DBS5_bucket-09",
@@ -85,9 +85,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.830074,
-    "centroid_lon": -48.017358,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.827219,
+    "centroid_lon": -47.992262,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-10": {
     "territory_id": "DBS5_bucket-10",
@@ -95,9 +95,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.834539,
-    "centroid_lon": -47.950494,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.83497,
+    "centroid_lon": -48.06162,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-11": {
     "territory_id": "DBS5_bucket-11",
@@ -105,19 +105,19 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.834852,
-    "centroid_lon": -48.062722,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.836252,
+    "centroid_lon": -48.032286,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-12": {
     "territory_id": "DBS5_bucket-12",
     "station_code": "DBS5",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 49,
-    "daily_demand": 2058,
-    "centroid_lat": -15.837645,
-    "centroid_lon": -47.992318,
-    "created_at": "2026-03-23T18:58:29"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -15.837309,
+    "centroid_lon": -48.016035,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-13": {
     "territory_id": "DBS5_bucket-13",
@@ -125,9 +125,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.837719,
-    "centroid_lon": -48.032574,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.837768,
+    "centroid_lon": -47.963066,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-14": {
     "territory_id": "DBS5_bucket-14",
@@ -135,9 +135,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 48,
     "daily_demand": 2016,
-    "centroid_lat": -15.854336,
-    "centroid_lon": -47.848215,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.855574,
+    "centroid_lon": -47.854277,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DBS5_bucket-15": {
     "territory_id": "DBS5_bucket-15",
@@ -145,589 +145,589 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 49,
     "daily_demand": 2058,
-    "centroid_lat": -15.904441,
-    "centroid_lon": -48.039429,
-    "created_at": "2026-03-23T18:58:29"
+    "centroid_lat": -15.903917,
+    "centroid_lon": -48.041319,
+    "created_at": "2026-03-24T12:18:12"
   },
   "DPB3_bucket-01": {
     "territory_id": "DPB3_bucket-01",
     "station_code": "DPB3",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 90,
-    "daily_demand": 3780,
-    "centroid_lat": -7.066127,
-    "centroid_lon": -34.83979,
-    "created_at": "2026-03-23T18:58:32"
+    "n_slots": 87,
+    "daily_demand": 3654,
+    "centroid_lat": -7.067832,
+    "centroid_lon": -34.839451,
+    "created_at": "2026-03-24T12:18:14"
   },
   "DPB3_bucket-02": {
     "territory_id": "DPB3_bucket-02",
     "station_code": "DPB3",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 90,
-    "daily_demand": 3780,
-    "centroid_lat": -7.108999,
-    "centroid_lon": -34.840582,
-    "created_at": "2026-03-23T18:58:32"
+    "n_slots": 86,
+    "daily_demand": 3612,
+    "centroid_lat": -7.109925,
+    "centroid_lon": -34.839214,
+    "created_at": "2026-03-24T12:18:14"
   },
   "DPB3_bucket-03": {
     "territory_id": "DPB3_bucket-03",
     "station_code": "DPB3",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 91,
-    "daily_demand": 3822,
-    "centroid_lat": -7.132257,
-    "centroid_lon": -34.831343,
-    "created_at": "2026-03-23T18:58:32"
+    "n_slots": 86,
+    "daily_demand": 3612,
+    "centroid_lat": -7.134993,
+    "centroid_lon": -34.829269,
+    "created_at": "2026-03-24T12:18:14"
   },
   "DPB3_bucket-04": {
     "territory_id": "DPB3_bucket-04",
     "station_code": "DPB3",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 90,
-    "daily_demand": 3780,
-    "centroid_lat": -7.139974,
-    "centroid_lon": -34.889704,
-    "created_at": "2026-03-23T18:58:32"
+    "n_slots": 86,
+    "daily_demand": 3612,
+    "centroid_lat": -7.137041,
+    "centroid_lon": -34.886306,
+    "created_at": "2026-03-24T12:18:14"
   },
   "DPB3_bucket-05": {
     "territory_id": "DPB3_bucket-05",
     "station_code": "DPB3",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 91,
-    "daily_demand": 3822,
-    "centroid_lat": -7.180855,
-    "centroid_lon": -34.848304,
-    "created_at": "2026-03-23T18:58:32"
+    "n_slots": 87,
+    "daily_demand": 3654,
+    "centroid_lat": -7.179493,
+    "centroid_lon": -34.850517,
+    "created_at": "2026-03-24T12:18:14"
   },
   "DRJ3_bucket-01": {
     "territory_id": "DRJ3_bucket-01",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.850956,
-    "centroid_lon": -43.189372,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.893947,
+    "centroid_lon": -43.359586,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-02": {
     "territory_id": "DRJ3_bucket-02",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.87427,
-    "centroid_lon": -43.269418,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.906232,
+    "centroid_lon": -43.261628,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-03": {
     "territory_id": "DRJ3_bucket-03",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.879268,
-    "centroid_lon": -43.304184,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 33,
+    "daily_demand": 1386,
+    "centroid_lat": -22.918798,
+    "centroid_lon": -43.234604,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-04": {
     "territory_id": "DRJ3_bucket-04",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.894221,
-    "centroid_lon": -43.382914,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.921272,
+    "centroid_lon": -43.209544,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-05": {
     "territory_id": "DRJ3_bucket-05",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.906784,
-    "centroid_lon": -43.537713,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.925613,
+    "centroid_lon": -43.230396,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-06": {
     "territory_id": "DRJ3_bucket-06",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 45,
-    "daily_demand": 1889,
-    "centroid_lat": -22.912487,
-    "centroid_lon": -43.213701,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.92652,
+    "centroid_lon": -43.321186,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-07": {
     "territory_id": "DRJ3_bucket-07",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.918968,
-    "centroid_lon": -43.295778,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.926618,
+    "centroid_lon": -43.252704,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-08": {
     "territory_id": "DRJ3_bucket-08",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.922278,
-    "centroid_lon": -43.230193,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.929951,
+    "centroid_lon": -43.175364,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-09": {
     "territory_id": "DRJ3_bucket-09",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.928379,
-    "centroid_lon": -43.243053,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.932593,
+    "centroid_lon": -43.18436,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-10": {
     "territory_id": "DRJ3_bucket-10",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.932213,
-    "centroid_lon": -43.175103,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.938111,
+    "centroid_lon": -43.174597,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-11": {
     "territory_id": "DRJ3_bucket-11",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.936544,
-    "centroid_lon": -43.184079,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.939178,
+    "centroid_lon": -43.363463,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-12": {
     "territory_id": "DRJ3_bucket-12",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.940297,
-    "centroid_lon": -43.34945,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.947578,
+    "centroid_lon": -43.197973,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-13": {
     "territory_id": "DRJ3_bucket-13",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.946303,
-    "centroid_lon": -43.176906,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.948185,
+    "centroid_lon": -43.180889,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-14": {
     "territory_id": "DRJ3_bucket-14",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.948942,
-    "centroid_lon": -43.193177,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 33,
+    "daily_demand": 1386,
+    "centroid_lat": -22.955341,
+    "centroid_lon": -43.188905,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-15": {
     "territory_id": "DRJ3_bucket-15",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 45,
-    "daily_demand": 1890,
-    "centroid_lat": -22.961753,
-    "centroid_lon": -43.180178,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.962247,
+    "centroid_lon": -43.176422,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-16": {
     "territory_id": "DRJ3_bucket-16",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.972467,
-    "centroid_lon": -43.190804,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 33,
+    "daily_demand": 1386,
+    "centroid_lat": -22.965667,
+    "centroid_lon": -43.38485,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-17": {
     "territory_id": "DRJ3_bucket-17",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.978259,
-    "centroid_lon": -43.201841,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.971746,
+    "centroid_lon": -43.188368,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-18": {
     "territory_id": "DRJ3_bucket-18",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.978479,
-    "centroid_lon": -43.221827,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.977015,
+    "centroid_lon": -43.196851,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-19": {
     "territory_id": "DRJ3_bucket-19",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.984405,
-    "centroid_lon": -43.355124,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.977838,
+    "centroid_lon": -43.208879,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-20": {
     "territory_id": "DRJ3_bucket-20",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.984954,
-    "centroid_lon": -43.396144,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -22.980476,
+    "centroid_lon": -43.223927,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-21": {
     "territory_id": "DRJ3_bucket-21",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -22.996229,
-    "centroid_lon": -43.290579,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -23.001615,
+    "centroid_lon": -43.342493,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DRJ3_bucket-22": {
     "territory_id": "DRJ3_bucket-22",
     "station_code": "DRJ3",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 44,
-    "daily_demand": 1848,
-    "centroid_lat": -23.01566,
-    "centroid_lon": -43.467723,
-    "created_at": "2026-03-23T18:58:58"
+    "n_slots": 33,
+    "daily_demand": 1386,
+    "centroid_lat": -23.001667,
+    "centroid_lon": -43.293877,
+    "created_at": "2026-03-24T12:18:32"
   },
   "DSP2_bucket-01": {
     "territory_id": "DSP2_bucket-01",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.436418,
-    "centroid_lon": -46.569371,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.443193,
+    "centroid_lon": -46.444794,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-02": {
     "territory_id": "DSP2_bucket-02",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1972,
-    "centroid_lat": -23.454507,
-    "centroid_lon": -46.441009,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.454265,
+    "centroid_lon": -46.565412,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-03": {
     "territory_id": "DSP2_bucket-03",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1973,
-    "centroid_lat": -23.45991,
-    "centroid_lon": -46.510536,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.462667,
+    "centroid_lon": -46.532403,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-04": {
     "territory_id": "DSP2_bucket-04",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.481467,
-    "centroid_lon": -46.536371,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.484167,
+    "centroid_lon": -46.613523,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-05": {
     "territory_id": "DSP2_bucket-05",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 48,
-    "daily_demand": 2016,
-    "centroid_lat": -23.487691,
-    "centroid_lon": -46.586136,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.497954,
+    "centroid_lon": -46.580095,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-06": {
     "territory_id": "DSP2_bucket-06",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.498113,
-    "centroid_lon": -46.609799,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.498178,
+    "centroid_lon": -46.508705,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-07": {
     "territory_id": "DSP2_bucket-07",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.532106,
-    "centroid_lon": -46.521312,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 36,
+    "daily_demand": 1512,
+    "centroid_lat": -23.525116,
+    "centroid_lon": -46.589446,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-08": {
     "territory_id": "DSP2_bucket-08",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.539198,
-    "centroid_lon": -46.574928,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.538625,
+    "centroid_lon": -46.524203,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-09": {
     "territory_id": "DSP2_bucket-09",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.548191,
-    "centroid_lon": -46.550508,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.545249,
+    "centroid_lon": -46.552777,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-10": {
     "territory_id": "DSP2_bucket-10",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 47,
-    "daily_demand": 1974,
-    "centroid_lat": -23.550958,
-    "centroid_lon": -46.601976,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.554414,
+    "centroid_lon": -46.57828,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-11": {
     "territory_id": "DSP2_bucket-11",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 48,
-    "daily_demand": 2016,
-    "centroid_lat": -23.578996,
-    "centroid_lon": -46.578106,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.582171,
+    "centroid_lon": -46.572891,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DSP2_bucket-12": {
     "territory_id": "DSP2_bucket-12",
     "station_code": "DSP2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 48,
-    "daily_demand": 2016,
-    "centroid_lat": -23.586194,
-    "centroid_lon": -46.534055,
-    "created_at": "2026-03-23T18:59:03"
+    "n_slots": 37,
+    "daily_demand": 1554,
+    "centroid_lat": -23.584996,
+    "centroid_lon": -46.533837,
+    "created_at": "2026-03-24T12:18:38"
   },
   "DPE4_bucket-01": {
     "territory_id": "DPE4_bucket-01",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -7.983196,
-    "centroid_lon": -34.853399,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.024112,
+    "centroid_lon": -34.945586,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-02": {
     "territory_id": "DPE4_bucket-02",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.029417,
-    "centroid_lon": -34.94764,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.037336,
+    "centroid_lon": -34.92004,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-03": {
     "territory_id": "DPE4_bucket-03",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.034295,
-    "centroid_lon": -34.901256,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.041938,
+    "centroid_lon": -34.90363,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-04": {
     "territory_id": "DPE4_bucket-04",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.035742,
-    "centroid_lon": -34.890304,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.043743,
+    "centroid_lon": -34.942867,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-05": {
     "territory_id": "DPE4_bucket-05",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.036208,
-    "centroid_lon": -34.91184,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.047211,
+    "centroid_lon": -34.891404,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-06": {
     "territory_id": "DPE4_bucket-06",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.037286,
-    "centroid_lon": -34.925939,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.052633,
+    "centroid_lon": -34.906856,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-07": {
     "territory_id": "DPE4_bucket-07",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.051503,
-    "centroid_lon": -34.90526,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.061318,
+    "centroid_lon": -35.092859,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-08": {
     "territory_id": "DPE4_bucket-08",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 38,
-    "daily_demand": 1596,
-    "centroid_lat": -8.051567,
-    "centroid_lon": -34.891477,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.074465,
+    "centroid_lon": -34.888304,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-09": {
     "territory_id": "DPE4_bucket-09",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.055252,
-    "centroid_lon": -35.068611,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.077906,
+    "centroid_lon": -34.92123,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-10": {
     "territory_id": "DPE4_bucket-10",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.078835,
-    "centroid_lon": -34.935859,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.085915,
+    "centroid_lon": -34.94102,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-11": {
     "territory_id": "DPE4_bucket-11",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.091765,
-    "centroid_lon": -34.912284,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.110603,
+    "centroid_lon": -34.894982,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-12": {
     "territory_id": "DPE4_bucket-12",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.10414,
-    "centroid_lon": -34.889506,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.117985,
+    "centroid_lon": -34.899079,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-13": {
     "territory_id": "DPE4_bucket-13",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.120278,
-    "centroid_lon": -34.899023,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.126443,
+    "centroid_lon": -34.903507,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-14": {
     "territory_id": "DPE4_bucket-14",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.131958,
-    "centroid_lon": -34.905057,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.140051,
+    "centroid_lon": -34.907087,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-15": {
     "territory_id": "DPE4_bucket-15",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.164888,
-    "centroid_lon": -34.917697,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 29,
+    "daily_demand": 1218,
+    "centroid_lat": -8.180078,
+    "centroid_lon": -34.923012,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DPE4_bucket-16": {
     "territory_id": "DPE4_bucket-16",
     "station_code": "DPE4",
     "bdm_cluster": "RECIFE/JOAO PESSOA",
-    "n_slots": 37,
-    "daily_demand": 1554,
-    "centroid_lat": -8.21961,
-    "centroid_lon": -34.943041,
-    "created_at": "2026-03-23T18:59:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -8.225802,
+    "centroid_lon": -34.947996,
+    "created_at": "2026-03-24T12:18:44"
   },
   "DES2_bucket-01": {
     "territory_id": "DES2_bucket-01",
     "station_code": "DES2",
     "bdm_cluster": "ES/BA",
-    "n_slots": 85,
-    "daily_demand": 3570,
-    "centroid_lat": -20.224912,
-    "centroid_lon": -40.260991,
-    "created_at": "2026-03-23T18:59:13"
+    "n_slots": 83,
+    "daily_demand": 3486,
+    "centroid_lat": -20.224751,
+    "centroid_lon": -40.260887,
+    "created_at": "2026-03-24T12:18:45"
   },
   "DES2_bucket-02": {
     "territory_id": "DES2_bucket-02",
     "station_code": "DES2",
     "bdm_cluster": "ES/BA",
-    "n_slots": 84,
-    "daily_demand": 3528,
-    "centroid_lat": -20.30528,
-    "centroid_lon": -40.293277,
-    "created_at": "2026-03-23T18:59:13"
+    "n_slots": 83,
+    "daily_demand": 3486,
+    "centroid_lat": -20.303688,
+    "centroid_lon": -40.293715,
+    "created_at": "2026-03-24T12:18:45"
   },
   "DES2_bucket-03": {
     "territory_id": "DES2_bucket-03",
     "station_code": "DES2",
     "bdm_cluster": "ES/BA",
-    "n_slots": 84,
-    "daily_demand": 3528,
-    "centroid_lat": -20.359597,
-    "centroid_lon": -40.321461,
-    "created_at": "2026-03-23T18:59:13"
+    "n_slots": 83,
+    "daily_demand": 3486,
+    "centroid_lat": -20.358973,
+    "centroid_lon": -40.321508,
+    "created_at": "2026-03-24T12:18:45"
   },
   "DPR2_bucket-01": {
     "territory_id": "DPR2_bucket-01",
@@ -735,39 +735,39 @@
     "bdm_cluster": "SP/SUL",
     "n_slots": 90,
     "daily_demand": 3780,
-    "centroid_lat": -25.387314,
-    "centroid_lon": -49.235516,
-    "created_at": "2026-03-23T18:59:15"
+    "centroid_lat": -25.38607,
+    "centroid_lon": -49.233714,
+    "created_at": "2026-03-24T12:18:47"
   },
   "DPR2_bucket-02": {
     "territory_id": "DPR2_bucket-02",
     "station_code": "DPR2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 91,
-    "daily_demand": 3822,
-    "centroid_lat": -25.424825,
-    "centroid_lon": -49.268267,
-    "created_at": "2026-03-23T18:59:15"
+    "n_slots": 90,
+    "daily_demand": 3780,
+    "centroid_lat": -25.422335,
+    "centroid_lon": -49.268075,
+    "created_at": "2026-03-24T12:18:47"
   },
   "DPR2_bucket-03": {
     "territory_id": "DPR2_bucket-03",
     "station_code": "DPR2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 91,
-    "daily_demand": 3822,
-    "centroid_lat": -25.427595,
-    "centroid_lon": -49.317325,
-    "created_at": "2026-03-23T18:59:15"
+    "n_slots": 90,
+    "daily_demand": 3780,
+    "centroid_lat": -25.431759,
+    "centroid_lon": -49.324332,
+    "created_at": "2026-03-24T12:18:47"
   },
   "DPR2_bucket-04": {
     "territory_id": "DPR2_bucket-04",
     "station_code": "DPR2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 91,
-    "daily_demand": 3822,
-    "centroid_lat": -25.468236,
-    "centroid_lon": -49.274748,
-    "created_at": "2026-03-23T18:59:15"
+    "n_slots": 90,
+    "daily_demand": 3780,
+    "centroid_lat": -25.457456,
+    "centroid_lon": -49.283762,
+    "created_at": "2026-03-24T12:18:47"
   },
   "DPR2_bucket-05": {
     "territory_id": "DPR2_bucket-05",
@@ -775,559 +775,559 @@
     "bdm_cluster": "SP/SUL",
     "n_slots": 91,
     "daily_demand": 3822,
-    "centroid_lat": -25.476752,
-    "centroid_lon": -49.202945,
-    "created_at": "2026-03-23T18:59:15"
+    "centroid_lat": -25.477796,
+    "centroid_lon": -49.205056,
+    "created_at": "2026-03-24T12:18:47"
   },
   "DPR2_bucket-06": {
     "territory_id": "DPR2_bucket-06",
     "station_code": "DPR2",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 91,
-    "daily_demand": 3822,
-    "centroid_lat": -25.51755,
-    "centroid_lon": -49.305616,
-    "created_at": "2026-03-23T18:59:15"
+    "n_slots": 90,
+    "daily_demand": 3780,
+    "centroid_lat": -25.524301,
+    "centroid_lon": -49.290195,
+    "created_at": "2026-03-24T12:18:47"
   },
   "DSP5_bucket-01": {
     "territory_id": "DSP5_bucket-01",
     "station_code": "DSP5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 52,
-    "daily_demand": 2184,
-    "centroid_lat": -22.843175,
-    "centroid_lon": -47.055927,
-    "created_at": "2026-03-23T18:59:16"
+    "n_slots": 93,
+    "daily_demand": 3906,
+    "centroid_lat": -22.839574,
+    "centroid_lon": -47.0578,
+    "created_at": "2026-03-24T12:18:48"
   },
   "DSP5_bucket-02": {
     "territory_id": "DSP5_bucket-02",
     "station_code": "DSP5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 53,
-    "daily_demand": 2226,
-    "centroid_lat": -22.89494,
-    "centroid_lon": -47.05963,
-    "created_at": "2026-03-23T18:59:16"
+    "n_slots": 93,
+    "daily_demand": 3906,
+    "centroid_lat": -22.898075,
+    "centroid_lon": -47.060632,
+    "created_at": "2026-03-24T12:18:48"
   },
   "DSP5_bucket-03": {
     "territory_id": "DSP5_bucket-03",
     "station_code": "DSP5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 53,
-    "daily_demand": 2226,
-    "centroid_lat": -22.933696,
-    "centroid_lon": -47.026037,
-    "created_at": "2026-03-23T18:59:16"
+    "n_slots": 92,
+    "daily_demand": 3864,
+    "centroid_lat": -22.937512,
+    "centroid_lon": -47.014753,
+    "created_at": "2026-03-24T12:18:48"
   },
   "DSP5_bucket-04": {
     "territory_id": "DSP5_bucket-04",
     "station_code": "DSP5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 52,
-    "daily_demand": 2184,
-    "centroid_lat": -22.978164,
-    "centroid_lon": -47.117519,
-    "created_at": "2026-03-23T18:59:16"
+    "n_slots": 92,
+    "daily_demand": 3864,
+    "centroid_lat": -22.964698,
+    "centroid_lon": -47.110313,
+    "created_at": "2026-03-24T12:18:48"
   },
   "DSP5_bucket-05": {
     "territory_id": "DSP5_bucket-05",
     "station_code": "DSP5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 53,
-    "daily_demand": 2225,
-    "centroid_lat": -23.183109,
-    "centroid_lon": -47.262879,
-    "created_at": "2026-03-23T18:59:16"
+    "n_slots": 92,
+    "daily_demand": 3861,
+    "centroid_lat": -23.171264,
+    "centroid_lon": -47.256812,
+    "created_at": "2026-03-24T12:18:48"
   },
   "DRS5_bucket-01": {
     "territory_id": "DRS5_bucket-01",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -29.736389,
-    "centroid_lon": -51.13405,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 57,
+    "daily_demand": 2394,
+    "centroid_lat": -29.708138,
+    "centroid_lon": -51.131552,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-02": {
     "territory_id": "DRS5_bucket-02",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -29.902592,
-    "centroid_lon": -51.167101,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 56,
+    "daily_demand": 2352,
+    "centroid_lat": -29.8596,
+    "centroid_lon": -51.15404,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-03": {
     "territory_id": "DRS5_bucket-03",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -29.997629,
-    "centroid_lon": -51.167784,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 57,
+    "daily_demand": 2394,
+    "centroid_lat": -29.954073,
+    "centroid_lon": -51.173747,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-04": {
     "territory_id": "DRS5_bucket-04",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -30.018603,
-    "centroid_lon": -51.184021,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 57,
+    "daily_demand": 2394,
+    "centroid_lat": -30.014317,
+    "centroid_lon": -51.179653,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-05": {
     "territory_id": "DRS5_bucket-05",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -30.030973,
-    "centroid_lon": -51.204966,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 56,
+    "daily_demand": 2352,
+    "centroid_lat": -30.03056,
+    "centroid_lon": -51.178603,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-06": {
     "territory_id": "DRS5_bucket-06",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -30.035428,
-    "centroid_lon": -51.176175,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 57,
+    "daily_demand": 2394,
+    "centroid_lat": -30.031969,
+    "centroid_lon": -51.204227,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-07": {
     "territory_id": "DRS5_bucket-07",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2098,
-    "centroid_lat": -30.037946,
-    "centroid_lon": -51.225022,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 56,
+    "daily_demand": 2351,
+    "centroid_lat": -30.03855,
+    "centroid_lon": -51.2238,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-08": {
     "territory_id": "DRS5_bucket-08",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -30.046914,
-    "centroid_lon": -51.195025,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 56,
+    "daily_demand": 2352,
+    "centroid_lat": -30.049471,
+    "centroid_lon": -51.18578,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-09": {
     "territory_id": "DRS5_bucket-09",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -30.080659,
-    "centroid_lon": -51.234024,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 57,
+    "daily_demand": 2394,
+    "centroid_lat": -30.080679,
+    "centroid_lon": -51.232942,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DRS5_bucket-10": {
     "territory_id": "DRS5_bucket-10",
     "station_code": "DRS5",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -30.10529,
-    "centroid_lon": -51.19565,
-    "created_at": "2026-03-23T18:59:20"
+    "n_slots": 57,
+    "daily_demand": 2394,
+    "centroid_lat": -30.116529,
+    "centroid_lon": -51.199434,
+    "created_at": "2026-03-24T12:18:52"
   },
   "DSP4_bucket-01": {
     "territory_id": "DSP4_bucket-01",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.597392,
-    "centroid_lon": -46.617932,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 41,
+    "daily_demand": 1722,
+    "centroid_lat": -23.600893,
+    "centroid_lon": -46.624232,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-02": {
     "territory_id": "DSP4_bucket-02",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.613799,
-    "centroid_lon": -46.66961,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 41,
+    "daily_demand": 1722,
+    "centroid_lat": -23.601196,
+    "centroid_lon": -46.605501,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-03": {
     "territory_id": "DSP4_bucket-03",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -23.615446,
-    "centroid_lon": -46.637259,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 40,
+    "daily_demand": 1680,
+    "centroid_lat": -23.612812,
+    "centroid_lon": -46.664912,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-04": {
     "territory_id": "DSP4_bucket-04",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -23.615946,
-    "centroid_lon": -46.580519,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 40,
+    "daily_demand": 1680,
+    "centroid_lat": -23.61833,
+    "centroid_lon": -46.637757,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-05": {
     "territory_id": "DSP4_bucket-05",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.632843,
-    "centroid_lon": -46.704321,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 40,
+    "daily_demand": 1680,
+    "centroid_lat": -23.62984,
+    "centroid_lon": -46.676434,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-06": {
     "territory_id": "DSP4_bucket-06",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.636963,
-    "centroid_lon": -46.531275,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 41,
+    "daily_demand": 1722,
+    "centroid_lat": -23.631901,
+    "centroid_lon": -46.561156,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-07": {
     "territory_id": "DSP4_bucket-07",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.642096,
-    "centroid_lon": -46.672308,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 41,
+    "daily_demand": 1722,
+    "centroid_lat": -23.639028,
+    "centroid_lon": -46.52806,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-08": {
     "territory_id": "DSP4_bucket-08",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.653585,
-    "centroid_lon": -46.624931,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 40,
+    "daily_demand": 1680,
+    "centroid_lat": -23.656195,
+    "centroid_lon": -46.629844,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-09": {
     "territory_id": "DSP4_bucket-09",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -23.664757,
-    "centroid_lon": -46.69877,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 41,
+    "daily_demand": 1722,
+    "centroid_lat": -23.661527,
+    "centroid_lon": -46.684031,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-10": {
     "territory_id": "DSP4_bucket-10",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 51,
-    "daily_demand": 2142,
-    "centroid_lat": -23.668945,
-    "centroid_lon": -46.553287,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 41,
+    "daily_demand": 1722,
+    "centroid_lat": -23.672548,
+    "centroid_lon": -46.554137,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DSP4_bucket-11": {
     "territory_id": "DSP4_bucket-11",
     "station_code": "DSP4",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 50,
-    "daily_demand": 2100,
-    "centroid_lat": -23.710475,
-    "centroid_lon": -46.567014,
-    "created_at": "2026-03-23T18:59:26"
+    "n_slots": 40,
+    "daily_demand": 1680,
+    "centroid_lat": -23.709938,
+    "centroid_lon": -46.568207,
+    "created_at": "2026-03-24T12:18:54"
   },
   "DBR9_bucket-01": {
     "territory_id": "DBR9_bucket-01",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.481391,
-    "centroid_lon": -46.849827,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.480903,
+    "centroid_lon": -46.855691,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-02": {
     "territory_id": "DBR9_bucket-02",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 35,
-    "daily_demand": 1470,
-    "centroid_lat": -23.484504,
-    "centroid_lon": -46.633932,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.487682,
+    "centroid_lon": -46.647279,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-03": {
     "territory_id": "DBR9_bucket-03",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.511448,
-    "centroid_lon": -46.721427,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.500552,
+    "centroid_lon": -46.633545,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-04": {
     "territory_id": "DBR9_bucket-04",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.516045,
-    "centroid_lon": -46.647941,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.509854,
+    "centroid_lon": -46.731935,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-05": {
     "territory_id": "DBR9_bucket-05",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.516952,
-    "centroid_lon": -46.691621,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.513845,
+    "centroid_lon": -46.695335,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-06": {
     "territory_id": "DBR9_bucket-06",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.520309,
-    "centroid_lon": -46.670929,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.528468,
+    "centroid_lon": -46.672866,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-07": {
     "territory_id": "DBR9_bucket-07",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.526596,
-    "centroid_lon": -46.767137,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.528661,
+    "centroid_lon": -46.7943,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-08": {
     "territory_id": "DBR9_bucket-08",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.540614,
-    "centroid_lon": -46.68305,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.534305,
+    "centroid_lon": -46.711454,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-09": {
     "territory_id": "DBR9_bucket-09",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.54413,
-    "centroid_lon": -46.700614,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.535433,
+    "centroid_lon": -46.648753,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-10": {
     "territory_id": "DBR9_bucket-10",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 35,
-    "daily_demand": 1470,
-    "centroid_lat": -23.544398,
-    "centroid_lon": -46.657907,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.539364,
+    "centroid_lon": -46.687797,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-11": {
     "territory_id": "DBR9_bucket-11",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.546554,
-    "centroid_lon": -46.651451,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.54494,
+    "centroid_lon": -46.651278,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-12": {
     "territory_id": "DBR9_bucket-12",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.549661,
-    "centroid_lon": -46.640921,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.547808,
+    "centroid_lon": -46.67656,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-13": {
     "territory_id": "DBR9_bucket-13",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.553927,
-    "centroid_lon": -46.752652,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.549395,
+    "centroid_lon": -46.657836,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-14": {
     "territory_id": "DBR9_bucket-14",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.556628,
-    "centroid_lon": -46.674702,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.558586,
+    "centroid_lon": -46.641867,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-15": {
     "territory_id": "DBR9_bucket-15",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.566971,
-    "centroid_lon": -46.69301,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.56089,
+    "centroid_lon": -46.695614,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-16": {
     "territory_id": "DBR9_bucket-16",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.567053,
-    "centroid_lon": -46.659258,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.566287,
+    "centroid_lon": -46.649894,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-17": {
     "territory_id": "DBR9_bucket-17",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.567744,
-    "centroid_lon": -46.647306,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.566322,
+    "centroid_lon": -46.660853,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-18": {
     "territory_id": "DBR9_bucket-18",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.56903,
-    "centroid_lon": -46.624388,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.569364,
+    "centroid_lon": -46.677401,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-19": {
     "territory_id": "DBR9_bucket-19",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.5752,
-    "centroid_lon": -46.880514,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.577488,
+    "centroid_lon": -46.877335,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-20": {
     "territory_id": "DBR9_bucket-20",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 35,
-    "daily_demand": 1470,
-    "centroid_lat": -23.577632,
-    "centroid_lon": -46.6393,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.580247,
+    "centroid_lon": -46.64142,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-21": {
     "territory_id": "DBR9_bucket-21",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.587617,
-    "centroid_lon": -46.679128,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.584391,
+    "centroid_lon": -46.720383,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-22": {
     "territory_id": "DBR9_bucket-22",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.592993,
-    "centroid_lon": -46.632387,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.584467,
+    "centroid_lon": -46.743743,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-23": {
     "territory_id": "DBR9_bucket-23",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.595274,
-    "centroid_lon": -46.649379,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.588517,
+    "centroid_lon": -46.681847,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-24": {
     "territory_id": "DBR9_bucket-24",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.601417,
-    "centroid_lon": -46.671615,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.592156,
+    "centroid_lon": -46.632293,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-25": {
     "territory_id": "DBR9_bucket-25",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.609357,
-    "centroid_lon": -46.687152,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.597121,
+    "centroid_lon": -46.650113,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-26": {
     "territory_id": "DBR9_bucket-26",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 35,
-    "daily_demand": 1470,
-    "centroid_lat": -23.610912,
-    "centroid_lon": -46.724754,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.601668,
+    "centroid_lon": -46.671573,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DBR9_bucket-27": {
     "territory_id": "DBR9_bucket-27",
     "station_code": "DBR9",
     "bdm_cluster": "SP/SUL",
-    "n_slots": 34,
-    "daily_demand": 1428,
-    "centroid_lat": -23.61307,
-    "centroid_lon": -46.742708,
-    "created_at": "2026-03-23T19:00:11"
+    "n_slots": 30,
+    "daily_demand": 1260,
+    "centroid_lat": -23.608781,
+    "centroid_lon": -46.687748,
+    "created_at": "2026-03-24T12:19:16"
   },
   "DGO2_bucket-01": {
     "territory_id": "DGO2_bucket-01",
     "station_code": "DGO2",
     "bdm_cluster": "RJ/CW",
-    "n_slots": 127,
-    "daily_demand": 5334,
-    "centroid_lat": -16.665993,
-    "centroid_lon": -49.252184,
-    "created_at": "2026-03-23T19:00:16"
+    "n_slots": 125,
+    "daily_demand": 5250,
+    "centroid_lat": -16.665176,
+    "centroid_lon": -49.251965,
+    "created_at": "2026-03-24T12:19:17"
   },
   "DGO2_bucket-02": {
     "territory_id": "DGO2_bucket-02",
@@ -1335,9 +1335,9 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 126,
     "daily_demand": 5292,
-    "centroid_lat": -16.712095,
-    "centroid_lon": -49.31346,
-    "created_at": "2026-03-23T19:00:16"
+    "centroid_lat": -16.710152,
+    "centroid_lon": -49.311018,
+    "created_at": "2026-03-24T12:19:17"
   },
   "DGO2_bucket-03": {
     "territory_id": "DGO2_bucket-03",
@@ -1345,299 +1345,299 @@
     "bdm_cluster": "RJ/CW",
     "n_slots": 126,
     "daily_demand": 5292,
-    "centroid_lat": -16.721591,
-    "centroid_lon": -49.252598,
-    "created_at": "2026-03-23T19:00:16"
+    "centroid_lat": -16.722123,
+    "centroid_lon": -49.252591,
+    "created_at": "2026-03-24T12:19:17"
   },
   "DCE3_bucket-01": {
     "territory_id": "DCE3_bucket-01",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.727212,
-    "centroid_lon": -38.549969,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.728958,
+    "centroid_lon": -38.496175,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-02": {
     "territory_id": "DCE3_bucket-02",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -3.727638,
-    "centroid_lon": -38.505955,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.732124,
+    "centroid_lon": -38.506805,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-03": {
     "territory_id": "DCE3_bucket-03",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.731041,
-    "centroid_lon": -38.492149,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2014,
+    "centroid_lat": -3.735042,
+    "centroid_lon": -38.525408,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-04": {
     "territory_id": "DCE3_bucket-04",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.739555,
-    "centroid_lon": -38.5083,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -3.737898,
+    "centroid_lon": -38.47903,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-05": {
     "territory_id": "DCE3_bucket-05",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -3.740804,
-    "centroid_lon": -38.473655,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.740393,
+    "centroid_lon": -38.559405,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-06": {
     "territory_id": "DCE3_bucket-06",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.74345,
-    "centroid_lon": -38.532046,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.744318,
+    "centroid_lon": -38.489108,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-07": {
     "territory_id": "DCE3_bucket-07",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.743784,
-    "centroid_lon": -38.488644,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -3.750833,
+    "centroid_lon": -38.513968,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-08": {
     "territory_id": "DCE3_bucket-08",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -3.754458,
-    "centroid_lon": -38.579849,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.766177,
+    "centroid_lon": -38.535754,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-09": {
     "territory_id": "DCE3_bucket-09",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -3.758547,
-    "centroid_lon": -38.524135,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.77002,
+    "centroid_lon": -38.475471,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-10": {
     "territory_id": "DCE3_bucket-10",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.761111,
-    "centroid_lon": -38.487829,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -3.774545,
+    "centroid_lon": -38.575011,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-11": {
     "territory_id": "DCE3_bucket-11",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.784918,
-    "centroid_lon": -38.550803,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.782468,
+    "centroid_lon": -38.494029,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-12": {
     "territory_id": "DCE3_bucket-12",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.793599,
-    "centroid_lon": -38.496737,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -3.806767,
+    "centroid_lon": -38.538359,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-13": {
     "territory_id": "DCE3_bucket-13",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.809344,
-    "centroid_lon": -38.56506,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -3.813592,
+    "centroid_lon": -38.619468,
+    "created_at": "2026-03-24T12:19:24"
   },
   "DCE3_bucket-14": {
     "territory_id": "DCE3_bucket-14",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -3.830454,
-    "centroid_lon": -38.493925,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.819287,
+    "centroid_lon": -38.480551,
+    "created_at": "2026-03-24T12:19:25"
   },
   "DCE3_bucket-15": {
     "territory_id": "DCE3_bucket-15",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -3.850847,
-    "centroid_lon": -38.619441,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 47,
+    "daily_demand": 1974,
+    "centroid_lat": -3.860353,
+    "centroid_lon": -38.582889,
+    "created_at": "2026-03-24T12:19:25"
   },
   "DCE3_bucket-16": {
     "territory_id": "DCE3_bucket-16",
     "station_code": "DCE3",
     "bdm_cluster": "FORTALEZA",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -3.85758,
-    "centroid_lon": -38.458219,
-    "created_at": "2026-03-23T19:00:36"
+    "n_slots": 48,
+    "daily_demand": 2016,
+    "centroid_lat": -3.906687,
+    "centroid_lon": -38.475311,
+    "created_at": "2026-03-24T12:19:25"
   },
   "DMG2_bucket-01": {
     "territory_id": "DMG2_bucket-01",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.828752,
-    "centroid_lon": -43.976817,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.819111,
+    "centroid_lon": -43.95433,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-02": {
     "territory_id": "DMG2_bucket-02",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -19.852295,
-    "centroid_lon": -43.949335,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.820548,
+    "centroid_lon": -43.984935,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-03": {
     "territory_id": "DMG2_bucket-03",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -19.865858,
-    "centroid_lon": -43.91637,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.85493,
+    "centroid_lon": -43.951755,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-04": {
     "territory_id": "DMG2_bucket-04",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -19.87206,
-    "centroid_lon": -43.980385,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.855545,
+    "centroid_lon": -43.913839,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-05": {
     "territory_id": "DMG2_bucket-05",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -19.8758,
-    "centroid_lon": -44.005273,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.865674,
+    "centroid_lon": -44.020993,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-06": {
     "territory_id": "DMG2_bucket-06",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.88119,
-    "centroid_lon": -43.938017,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 33,
+    "daily_demand": 1386,
+    "centroid_lat": -19.870389,
+    "centroid_lon": -43.987385,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-07": {
     "territory_id": "DMG2_bucket-07",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -19.893778,
-    "centroid_lon": -43.910588,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 33,
+    "daily_demand": 1386,
+    "centroid_lat": -19.887093,
+    "centroid_lon": -43.935536,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-08": {
     "territory_id": "DMG2_bucket-08",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.900123,
-    "centroid_lon": -43.989646,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.891383,
+    "centroid_lon": -43.911932,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-09": {
     "territory_id": "DMG2_bucket-09",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -19.901301,
-    "centroid_lon": -43.930983,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.902107,
+    "centroid_lon": -43.987577,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-10": {
     "territory_id": "DMG2_bucket-10",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.913522,
-    "centroid_lon": -43.959878,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.903357,
+    "centroid_lon": -43.957606,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-11": {
     "territory_id": "DMG2_bucket-11",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.93008,
-    "centroid_lon": -44.038003,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1343,
+    "centroid_lat": -19.91167,
+    "centroid_lon": -44.01886,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-12": {
     "territory_id": "DMG2_bucket-12",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.930868,
-    "centroid_lon": -43.930364,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.950729,
+    "centroid_lon": -44.052102,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DMG2_bucket-13": {
     "territory_id": "DMG2_bucket-13",
     "station_code": "DMG2",
     "bdm_cluster": "BH",
-    "n_slots": 19,
-    "daily_demand": 798,
-    "centroid_lat": -19.950288,
-    "centroid_lon": -44.014678,
-    "created_at": "2026-03-23T19:00:41"
+    "n_slots": 32,
+    "daily_demand": 1344,
+    "centroid_lat": -19.969529,
+    "centroid_lon": -44.022462,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DBH5_bucket-01": {
     "territory_id": "DBH5_bucket-01",
@@ -1645,9 +1645,9 @@
     "bdm_cluster": "BH",
     "n_slots": 114,
     "daily_demand": 4788,
-    "centroid_lat": -19.924531,
-    "centroid_lon": -43.93402,
-    "created_at": "2026-03-23T19:00:42"
+    "centroid_lat": -19.926067,
+    "centroid_lon": -43.939314,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DBH5_bucket-02": {
     "territory_id": "DBH5_bucket-02",
@@ -1655,59 +1655,59 @@
     "bdm_cluster": "BH",
     "n_slots": 114,
     "daily_demand": 4788,
-    "centroid_lat": -19.938574,
-    "centroid_lon": -43.970166,
-    "created_at": "2026-03-23T19:00:42"
+    "centroid_lat": -19.939847,
+    "centroid_lon": -43.966871,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DBH5_bucket-03": {
     "territory_id": "DBH5_bucket-03",
     "station_code": "DBH5",
     "bdm_cluster": "BH",
-    "n_slots": 113,
-    "daily_demand": 4746,
-    "centroid_lat": -19.945249,
-    "centroid_lon": -43.932087,
-    "created_at": "2026-03-23T19:00:42"
+    "n_slots": 114,
+    "daily_demand": 4788,
+    "centroid_lat": -19.94463,
+    "centroid_lon": -43.921201,
+    "created_at": "2026-03-24T12:19:28"
   },
   "DBH5_bucket-04": {
     "territory_id": "DBH5_bucket-04",
     "station_code": "DBH5",
     "bdm_cluster": "BH",
-    "n_slots": 113,
-    "daily_demand": 4744,
-    "centroid_lat": -19.988712,
-    "centroid_lon": -43.95151,
-    "created_at": "2026-03-23T19:00:42"
+    "n_slots": 114,
+    "daily_demand": 4788,
+    "centroid_lat": -19.984466,
+    "centroid_lon": -43.95824,
+    "created_at": "2026-03-24T12:19:28"
   },
   "XRJ2_bucket-01": {
     "territory_id": "XRJ2_bucket-01",
     "station_code": "XRJ2",
     "bdm_cluster": "OUTROS",
-    "n_slots": 43,
-    "daily_demand": 1806,
-    "centroid_lat": -22.892195,
-    "centroid_lon": -43.08916,
-    "created_at": "2026-03-23T19:00:43"
+    "n_slots": 42,
+    "daily_demand": 1764,
+    "centroid_lat": -22.891979,
+    "centroid_lon": -43.089035,
+    "created_at": "2026-03-24T12:19:29"
   },
   "XRJ2_bucket-02": {
     "territory_id": "XRJ2_bucket-02",
     "station_code": "XRJ2",
     "bdm_cluster": "OUTROS",
-    "n_slots": 43,
-    "daily_demand": 1805,
-    "centroid_lat": -22.898143,
-    "centroid_lon": -43.123112,
-    "created_at": "2026-03-23T19:00:43"
+    "n_slots": 42,
+    "daily_demand": 1764,
+    "centroid_lat": -22.898153,
+    "centroid_lon": -43.123359,
+    "created_at": "2026-03-24T12:19:29"
   },
   "XRJ2_bucket-03": {
     "territory_id": "XRJ2_bucket-03",
     "station_code": "XRJ2",
     "bdm_cluster": "OUTROS",
-    "n_slots": 42,
-    "daily_demand": 1764,
-    "centroid_lat": -22.901004,
-    "centroid_lon": -43.109083,
-    "created_at": "2026-03-23T19:00:43"
+    "n_slots": 43,
+    "daily_demand": 1806,
+    "centroid_lat": -22.901071,
+    "centroid_lon": -43.109171,
+    "created_at": "2026-03-24T12:19:29"
   },
   "XRJ2_bucket-04": {
     "territory_id": "XRJ2_bucket-04",
@@ -1715,9 +1715,9 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 42,
     "daily_demand": 1764,
-    "centroid_lat": -22.907903,
-    "centroid_lon": -43.103172,
-    "created_at": "2026-03-23T19:00:43"
+    "centroid_lat": -22.907383,
+    "centroid_lon": -43.103306,
+    "created_at": "2026-03-24T12:19:29"
   },
   "XRJ2_bucket-05": {
     "territory_id": "XRJ2_bucket-05",
@@ -1725,49 +1725,49 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 43,
     "daily_demand": 1806,
-    "centroid_lat": -22.935294,
-    "centroid_lon": -43.054151,
-    "created_at": "2026-03-23T19:00:43"
+    "centroid_lat": -22.935579,
+    "centroid_lon": -43.0543,
+    "created_at": "2026-03-24T12:19:29"
   },
   "DSA8_bucket-01": {
     "territory_id": "DSA8_bucket-01",
     "station_code": "DSA8",
     "bdm_cluster": "ES/BA",
-    "n_slots": 93,
-    "daily_demand": 3906,
-    "centroid_lat": -12.868417,
-    "centroid_lon": -38.373777,
-    "created_at": "2026-03-23T19:00:44"
+    "n_slots": 97,
+    "daily_demand": 4074,
+    "centroid_lat": -12.868168,
+    "centroid_lon": -38.375902,
+    "created_at": "2026-03-24T12:19:30"
   },
   "DSA8_bucket-02": {
     "territory_id": "DSA8_bucket-02",
     "station_code": "DSA8",
     "bdm_cluster": "ES/BA",
-    "n_slots": 92,
-    "daily_demand": 3864,
-    "centroid_lat": -12.958722,
-    "centroid_lon": -38.409307,
-    "created_at": "2026-03-23T19:00:44"
+    "n_slots": 96,
+    "daily_demand": 4032,
+    "centroid_lat": -12.956162,
+    "centroid_lon": -38.406476,
+    "created_at": "2026-03-24T12:19:30"
   },
   "DSA8_bucket-03": {
     "territory_id": "DSA8_bucket-03",
     "station_code": "DSA8",
     "bdm_cluster": "ES/BA",
-    "n_slots": 92,
-    "daily_demand": 3864,
-    "centroid_lat": -12.989714,
-    "centroid_lon": -38.466885,
-    "created_at": "2026-03-23T19:00:44"
+    "n_slots": 97,
+    "daily_demand": 4074,
+    "centroid_lat": -12.988461,
+    "centroid_lon": -38.466173,
+    "created_at": "2026-03-24T12:19:30"
   },
   "DSA8_bucket-04": {
     "territory_id": "DSA8_bucket-04",
     "station_code": "DSA8",
     "bdm_cluster": "ES/BA",
-    "n_slots": 93,
-    "daily_demand": 3906,
-    "centroid_lat": -12.996134,
-    "centroid_lon": -38.505631,
-    "created_at": "2026-03-23T19:00:44"
+    "n_slots": 97,
+    "daily_demand": 4074,
+    "centroid_lat": -12.996194,
+    "centroid_lon": -38.504453,
+    "created_at": "2026-03-24T12:19:30"
   },
   "XSJ1_bucket-01": {
     "territory_id": "XSJ1_bucket-01",
@@ -1777,7 +1777,7 @@
     "daily_demand": 1302,
     "centroid_lat": -23.196236,
     "centroid_lon": -45.856693,
-    "created_at": "2026-03-23T19:00:45"
+    "created_at": "2026-03-24T12:19:30"
   },
   "XSJ1_bucket-02": {
     "territory_id": "XSJ1_bucket-02",
@@ -1787,7 +1787,7 @@
     "daily_demand": 1302,
     "centroid_lat": -23.20221,
     "centroid_lon": -45.896697,
-    "created_at": "2026-03-23T19:00:45"
+    "created_at": "2026-03-24T12:19:30"
   },
   "XSJ1_bucket-03": {
     "territory_id": "XSJ1_bucket-03",
@@ -1797,17 +1797,17 @@
     "daily_demand": 1260,
     "centroid_lat": -23.205192,
     "centroid_lon": -45.925401,
-    "created_at": "2026-03-23T19:00:45"
+    "created_at": "2026-03-24T12:19:30"
   },
   "XSJ1_bucket-04": {
     "territory_id": "XSJ1_bucket-04",
     "station_code": "XSJ1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 30,
-    "daily_demand": 1260,
-    "centroid_lat": -23.236992,
-    "centroid_lon": -45.897701,
-    "created_at": "2026-03-23T19:00:45"
+    "n_slots": 31,
+    "daily_demand": 1302,
+    "centroid_lat": -23.236954,
+    "centroid_lon": -45.897775,
+    "created_at": "2026-03-24T12:19:30"
   },
   "XSJ1_bucket-05": {
     "territory_id": "XSJ1_bucket-05",
@@ -1815,9 +1815,9 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 31,
     "daily_demand": 1302,
-    "centroid_lat": -23.276955,
-    "centroid_lon": -45.949021,
-    "created_at": "2026-03-23T19:00:45"
+    "centroid_lat": -23.274707,
+    "centroid_lon": -45.946882,
+    "created_at": "2026-03-24T12:19:30"
   },
   "XPB1_bucket-01": {
     "territory_id": "XPB1_bucket-01",
@@ -1827,7 +1827,7 @@
     "daily_demand": 1134,
     "centroid_lat": -7.216617,
     "centroid_lon": -35.875018,
-    "created_at": "2026-03-23T19:00:45"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XPB1_bucket-02": {
     "territory_id": "XPB1_bucket-02",
@@ -1835,9 +1835,9 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 27,
     "daily_demand": 1134,
-    "centroid_lat": -7.223807,
-    "centroid_lon": -35.92328,
-    "created_at": "2026-03-23T19:00:45"
+    "centroid_lat": -7.223683,
+    "centroid_lon": -35.922838,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XPB1_bucket-03": {
     "territory_id": "XPB1_bucket-03",
@@ -1845,29 +1845,29 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 26,
     "daily_demand": 1092,
-    "centroid_lat": -7.226768,
-    "centroid_lon": -35.893024,
-    "created_at": "2026-03-23T19:00:45"
+    "centroid_lat": -7.226829,
+    "centroid_lon": -35.893824,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XPB1_bucket-04": {
     "territory_id": "XPB1_bucket-04",
     "station_code": "XPB1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 26,
-    "daily_demand": 1092,
-    "centroid_lat": -7.243436,
-    "centroid_lon": -35.875154,
-    "created_at": "2026-03-23T19:00:45"
+    "n_slots": 27,
+    "daily_demand": 1134,
+    "centroid_lat": -7.243137,
+    "centroid_lon": -35.875414,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XPB1_bucket-05": {
     "territory_id": "XPB1_bucket-05",
     "station_code": "XPB1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 27,
-    "daily_demand": 1134,
-    "centroid_lat": -7.25204,
-    "centroid_lon": -35.912473,
-    "created_at": "2026-03-23T19:00:45"
+    "n_slots": 26,
+    "daily_demand": 1092,
+    "centroid_lat": -7.252755,
+    "centroid_lon": -35.912155,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XSP7_bucket-01": {
     "territory_id": "XSP7_bucket-01",
@@ -1877,17 +1877,17 @@
     "daily_demand": 336,
     "centroid_lat": -23.114171,
     "centroid_lon": -46.940051,
-    "created_at": "2026-03-23T19:00:46"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XSP7_bucket-02": {
     "territory_id": "XSP7_bucket-02",
     "station_code": "XSP7",
     "bdm_cluster": "OUTROS",
-    "n_slots": 8,
-    "daily_demand": 336,
-    "centroid_lat": -23.136086,
-    "centroid_lon": -46.876523,
-    "created_at": "2026-03-23T19:00:46"
+    "n_slots": 9,
+    "daily_demand": 378,
+    "centroid_lat": -23.139216,
+    "centroid_lon": -46.881031,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XSP7_bucket-03": {
     "territory_id": "XSP7_bucket-03",
@@ -1897,7 +1897,7 @@
     "daily_demand": 336,
     "centroid_lat": -23.178416,
     "centroid_lon": -46.98322,
-    "created_at": "2026-03-23T19:00:46"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XSP7_bucket-04": {
     "territory_id": "XSP7_bucket-04",
@@ -1907,7 +1907,7 @@
     "daily_demand": 336,
     "centroid_lat": -23.186321,
     "centroid_lon": -46.907052,
-    "created_at": "2026-03-23T19:00:46"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XSP7_bucket-05": {
     "territory_id": "XSP7_bucket-05",
@@ -1917,7 +1917,7 @@
     "daily_demand": 378,
     "centroid_lat": -23.204601,
     "centroid_lon": -46.879235,
-    "created_at": "2026-03-23T19:00:46"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCP1_bucket-01": {
     "territory_id": "XCP1_bucket-01",
@@ -1927,7 +1927,7 @@
     "daily_demand": 546,
     "centroid_lat": -22.747588,
     "centroid_lon": -47.338202,
-    "created_at": "2026-03-23T19:00:46"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCP1_bucket-02": {
     "territory_id": "XCP1_bucket-02",
@@ -1935,19 +1935,19 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 13,
     "daily_demand": 546,
-    "centroid_lat": -22.766237,
-    "centroid_lon": -47.173513,
-    "created_at": "2026-03-23T19:00:46"
+    "centroid_lat": -22.766107,
+    "centroid_lon": -47.173744,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCP1_bucket-03": {
     "territory_id": "XCP1_bucket-03",
     "station_code": "XCP1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 13,
-    "daily_demand": 546,
-    "centroid_lat": -22.77907,
-    "centroid_lon": -47.280008,
-    "created_at": "2026-03-23T19:00:46"
+    "n_slots": 12,
+    "daily_demand": 504,
+    "centroid_lat": -22.775556,
+    "centroid_lon": -47.283619,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCP1_bucket-04": {
     "territory_id": "XCP1_bucket-04",
@@ -1957,47 +1957,47 @@
     "daily_demand": 546,
     "centroid_lat": -22.785715,
     "centroid_lon": -47.130892,
-    "created_at": "2026-03-23T19:00:46"
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCP1_bucket-05": {
     "territory_id": "XCP1_bucket-05",
     "station_code": "XCP1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 12,
-    "daily_demand": 504,
-    "centroid_lat": -22.854757,
-    "centroid_lon": -47.220901,
-    "created_at": "2026-03-23T19:00:46"
+    "n_slots": 13,
+    "daily_demand": 546,
+    "centroid_lat": -22.852178,
+    "centroid_lon": -47.222115,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XRJ4_bucket-01": {
     "territory_id": "XRJ4_bucket-01",
     "station_code": "XRJ4",
     "bdm_cluster": "OUTROS",
-    "n_slots": 5,
-    "daily_demand": 210,
-    "centroid_lat": -22.397538,
-    "centroid_lon": -43.12794,
-    "created_at": "2026-03-23T19:00:47"
+    "n_slots": 6,
+    "daily_demand": 252,
+    "centroid_lat": -22.391397,
+    "centroid_lon": -43.12585,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XRJ4_bucket-02": {
     "territory_id": "XRJ4_bucket-02",
     "station_code": "XRJ4",
     "bdm_cluster": "OUTROS",
-    "n_slots": 4,
-    "daily_demand": 166,
-    "centroid_lat": -22.445696,
-    "centroid_lon": -43.149656,
-    "created_at": "2026-03-23T19:00:47"
+    "n_slots": 6,
+    "daily_demand": 250,
+    "centroid_lat": -22.451869,
+    "centroid_lon": -43.152362,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XRJ4_bucket-03": {
     "territory_id": "XRJ4_bucket-03",
     "station_code": "XRJ4",
     "bdm_cluster": "OUTROS",
-    "n_slots": 5,
-    "daily_demand": 210,
-    "centroid_lat": -22.502117,
-    "centroid_lon": -43.176486,
-    "created_at": "2026-03-23T19:00:47"
+    "n_slots": 6,
+    "daily_demand": 252,
+    "centroid_lat": -22.509724,
+    "centroid_lon": -43.177793,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XRJ4_bucket-04": {
     "territory_id": "XRJ4_bucket-04",
@@ -2005,19 +2005,19 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 5,
     "daily_demand": 210,
-    "centroid_lat": -22.522588,
-    "centroid_lon": -43.180658,
-    "created_at": "2026-03-23T19:00:47"
+    "centroid_lat": -22.50998,
+    "centroid_lon": -43.212305,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XRJ4_bucket-05": {
     "territory_id": "XRJ4_bucket-05",
     "station_code": "XRJ4",
     "bdm_cluster": "OUTROS",
-    "n_slots": 4,
-    "daily_demand": 168,
-    "centroid_lat": -22.524865,
-    "centroid_lon": -43.212198,
-    "created_at": "2026-03-23T19:00:47"
+    "n_slots": 6,
+    "daily_demand": 252,
+    "centroid_lat": -22.530835,
+    "centroid_lon": -43.185461,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCS1_bucket-01": {
     "territory_id": "XCS1_bucket-01",
@@ -2025,19 +2025,19 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 19,
     "daily_demand": 798,
-    "centroid_lat": -29.116077,
-    "centroid_lon": -51.178206,
-    "created_at": "2026-03-23T19:00:47"
+    "centroid_lat": -29.115379,
+    "centroid_lon": -51.179457,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCS1_bucket-02": {
     "territory_id": "XCS1_bucket-02",
     "station_code": "XCS1",
     "bdm_cluster": "OUTROS",
     "n_slots": 19,
-    "daily_demand": 797,
-    "centroid_lat": -29.162785,
-    "centroid_lon": -51.151608,
-    "created_at": "2026-03-23T19:00:47"
+    "daily_demand": 798,
+    "centroid_lat": -29.162389,
+    "centroid_lon": -51.150153,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCS1_bucket-03": {
     "territory_id": "XCS1_bucket-03",
@@ -2045,19 +2045,19 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 19,
     "daily_demand": 798,
-    "centroid_lat": -29.170379,
-    "centroid_lon": -51.189962,
-    "created_at": "2026-03-23T19:00:47"
+    "centroid_lat": -29.170385,
+    "centroid_lon": -51.190762,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCS1_bucket-04": {
     "territory_id": "XCS1_bucket-04",
     "station_code": "XCS1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 18,
-    "daily_demand": 756,
-    "centroid_lat": -29.173048,
-    "centroid_lon": -51.174561,
-    "created_at": "2026-03-23T19:00:47"
+    "n_slots": 20,
+    "daily_demand": 840,
+    "centroid_lat": -29.173621,
+    "centroid_lon": -51.175192,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XCS1_bucket-05": {
     "territory_id": "XCS1_bucket-05",
@@ -2065,9 +2065,9 @@
     "bdm_cluster": "OUTROS",
     "n_slots": 19,
     "daily_demand": 798,
-    "centroid_lat": -29.201822,
-    "centroid_lon": -51.275765,
-    "created_at": "2026-03-23T19:00:47"
+    "centroid_lat": -29.202204,
+    "centroid_lon": -51.275621,
+    "created_at": "2026-03-24T12:19:31"
   },
   "XSP9_bucket-01": {
     "territory_id": "XSP9_bucket-01",
@@ -2077,7 +2077,7 @@
     "daily_demand": 420,
     "centroid_lat": -22.566317,
     "centroid_lon": -47.588212,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XSP9_bucket-02": {
     "territory_id": "XSP9_bucket-02",
@@ -2087,7 +2087,7 @@
     "daily_demand": 420,
     "centroid_lat": -22.567131,
     "centroid_lon": -47.416306,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XSP9_bucket-03": {
     "territory_id": "XSP9_bucket-03",
@@ -2097,7 +2097,7 @@
     "daily_demand": 420,
     "centroid_lat": -22.725404,
     "centroid_lon": -47.657387,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XSP9_bucket-04": {
     "territory_id": "XSP9_bucket-04",
@@ -2107,7 +2107,7 @@
     "daily_demand": 420,
     "centroid_lat": -22.730052,
     "centroid_lon": -47.636501,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XSP9_bucket-05": {
     "territory_id": "XSP9_bucket-05",
@@ -2117,57 +2117,57 @@
     "daily_demand": 420,
     "centroid_lat": -22.748464,
     "centroid_lon": -47.594691,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XBA1_bucket-01": {
     "territory_id": "XBA1_bucket-01",
     "station_code": "XBA1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 10,
-    "daily_demand": 420,
-    "centroid_lat": -12.222214,
-    "centroid_lon": -38.934755,
-    "created_at": "2026-03-23T19:00:48"
+    "n_slots": 9,
+    "daily_demand": 378,
+    "centroid_lat": -12.214997,
+    "centroid_lon": -38.940878,
+    "created_at": "2026-03-24T12:19:32"
   },
   "XBA1_bucket-02": {
     "territory_id": "XBA1_bucket-02",
     "station_code": "XBA1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 11,
-    "daily_demand": 462,
-    "centroid_lat": -12.237204,
-    "centroid_lon": -38.967458,
-    "created_at": "2026-03-23T19:00:48"
+    "n_slots": 9,
+    "daily_demand": 378,
+    "centroid_lat": -12.245079,
+    "centroid_lon": -38.934639,
+    "created_at": "2026-03-24T12:19:32"
   },
   "XBA1_bucket-03": {
     "territory_id": "XBA1_bucket-03",
     "station_code": "XBA1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 11,
-    "daily_demand": 460,
-    "centroid_lat": -12.246639,
-    "centroid_lon": -38.896848,
-    "created_at": "2026-03-23T19:00:48"
+    "n_slots": 9,
+    "daily_demand": 375,
+    "centroid_lat": -12.247074,
+    "centroid_lon": -38.893442,
+    "created_at": "2026-03-24T12:19:32"
   },
   "XBA1_bucket-04": {
     "territory_id": "XBA1_bucket-04",
     "station_code": "XBA1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 11,
-    "daily_demand": 462,
-    "centroid_lat": -12.258475,
-    "centroid_lon": -38.936796,
-    "created_at": "2026-03-23T19:00:48"
+    "n_slots": 9,
+    "daily_demand": 378,
+    "centroid_lat": -12.262073,
+    "centroid_lon": -38.971104,
+    "created_at": "2026-03-24T12:19:32"
   },
   "XBA1_bucket-05": {
     "territory_id": "XBA1_bucket-05",
     "station_code": "XBA1",
     "bdm_cluster": "OUTROS",
-    "n_slots": 11,
-    "daily_demand": 462,
-    "centroid_lat": -12.273922,
-    "centroid_lon": -38.965558,
-    "created_at": "2026-03-23T19:00:48"
+    "n_slots": 9,
+    "daily_demand": 378,
+    "centroid_lat": -12.269617,
+    "centroid_lon": -38.941387,
+    "created_at": "2026-03-24T12:19:32"
   },
   "XGA2_bucket-01": {
     "territory_id": "XGA2_bucket-01",
@@ -2177,7 +2177,7 @@
     "daily_demand": 126,
     "centroid_lat": -16.274295,
     "centroid_lon": -48.945046,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XGA2_bucket-02": {
     "territory_id": "XGA2_bucket-02",
@@ -2187,7 +2187,7 @@
     "daily_demand": 126,
     "centroid_lat": -16.302375,
     "centroid_lon": -48.951908,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XGA2_bucket-03": {
     "territory_id": "XGA2_bucket-03",
@@ -2197,7 +2197,7 @@
     "daily_demand": 84,
     "centroid_lat": -16.325224,
     "centroid_lon": -48.932584,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XGA2_bucket-04": {
     "territory_id": "XGA2_bucket-04",
@@ -2207,7 +2207,7 @@
     "daily_demand": 126,
     "centroid_lat": -16.336532,
     "centroid_lon": -48.935932,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   },
   "XGA2_bucket-05": {
     "territory_id": "XGA2_bucket-05",
@@ -2217,6 +2217,6 @@
     "daily_demand": 126,
     "centroid_lat": -16.361701,
     "centroid_lon": -48.956721,
-    "created_at": "2026-03-23T19:00:48"
+    "created_at": "2026-03-24T12:19:32"
   }
 }

@@ -682,19 +682,19 @@ const PolygonManager = {
             const activePartners = partnersInRegion.filter(p => p.status === 'Active').length;
             const onboardingPartners = partnersInRegion.filter(p => p.status === 'Onboarding' || p.status === 'BG Checks').length;
             const expected = props.n_slots || 0;
-            const attainment = expected > 0 ? ((activePartners + onboardingPartners) / expected) * 100 : 0;
+            const attainment = props.attainment || 0;
+            const accuracy = props.accuracy || 0;
             const priority = this.calculatePriority(regionname, props.delivery_station);
-            const avgADV = partnersInRegion.length > 0 ? (partnersInRegion.reduce((sum, p) => sum + (p.ADV || 0), 0) / partnersInRegion.length).toFixed(1) : 0;
 
             const popupContent = `
                 <div style="min-width: 200px;">
-                    <h6><b>Região:</b> ${regionname}</h6>
+                    <h6><b>${regionname}</b></h6>
                     <p><b>Parceiros Esperados:</b> ${expected}</p>
                     <p><b>Parceiros Ativos:</b> ${activePartners}</p>
                     <p><b>Parceiros em Onboarding:</b> ${onboardingPartners}</p>
                     <p><b>Attainment:</b> ${attainment.toFixed(1)}%</p>
+                    <p><b>Acuracidade:</b> ${accuracy.toFixed(1)}%</p>
                     <p><b>Prioridade:</b> ${priority}</p>
-                    <p><b>ADV Médio:</b> ${avgADV}</p>
                 </div>`;
             layer.bindPopup(popupContent);
         });

@@ -220,6 +220,12 @@ class TerritoryMetrics:
         if self.ideal_slots == 0:
             return 0.0
         return self.active_partners / self.ideal_slots * 100
+    
+    @property
+    def accuracy(self) -> float:
+        if self.ideal_slots == 0:
+            return 0.0
+        return (self.ideal_slots - self.open_slots) / self.ideal_slots * 100
 
 
 # Mantido para compatibilidade com ReportGenerator existente durante migração

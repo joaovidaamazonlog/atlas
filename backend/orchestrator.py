@@ -149,10 +149,7 @@ def run_daily(
     territory_stats = {
         tid: {
             "attainment": round(t_fit.attainment, 1),
-            "coverage": round((t_fit.filled_slots / t_fit.total_slots * 100)
-                if t_fit.total_slots > 0 else 0.0,
-                1,
-            ),
+            "accuracy": round(t_fit.accuracy, 1),
         } for tid, t_fit in fit.territories.items()
     }
     

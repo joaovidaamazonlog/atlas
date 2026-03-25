@@ -31,16 +31,13 @@ em seguida para re-associar parceiros aos novos territorios.
 Artefatos gerados
 -----------------
 territories.geojson
-    FeatureCollection de poligonos H3. Cada feature tem:
-        territory_id    : str  "DSP2_T01"
-        station_code    : str  "DSP2"
-        bdm_cluster     : str  "SP/SUL"
-        total_demand    : int  pacotes no periodo
-        daily_demand    : float media diaria de pacotes
-        n_hexes         : int  numero de hexes no territorio
-        centroid_lat    : float
-        centroid_lon    : float
-        ceps            : list[str]  top-20 CEPs do territorio
+    FeatureCollection de poligonos. Cada feature tem:
+        territory_id        : str  "DSP2_T01"
+        delivery_station    : str  "DSP2"
+        bdm_cluster         : str  "SP/SUL"
+        daily_demand        : float media diaria de pacotes
+        attainment          : float attainment do territorio (para tooltip rapido, embora o valor real seja calculado na Fase 3)
+        coverage            : float cobertura das vagas (para tooltip rapido, embora o valor real seja calculado na Fase 3)
 
 territories_index.json
     Dict indexado por territory_id com os mesmos campos + hex_ids (lista completa).

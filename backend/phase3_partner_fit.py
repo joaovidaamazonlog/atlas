@@ -129,6 +129,10 @@ class TerritoryFit:
     def attainment(self) -> float:
         active = sum(1 for p in self.partners if p.status == "Active")
         return (active / self.total_slots * 100) if self.total_slots > 0 else 0.0
+    
+    @property
+    def accuracy(self) -> float:
+        return ((self.filled_slots / self.total_slots) * 100) if self.total_slots > 0 else 0.0
 
     def partners_by_status(self, status: str) -> List[PartnerMetrics]:
         return [p for p in self.partners if p.status == status]
@@ -616,6 +620,7 @@ def run_phase3(
                 f"Ativos={active} Onb={onboarding} BG={bg} "
                 f"Prosp={prospects} Inat={inactives} | "
                 f"Attainment={fit.attainment:.1f}%"
+                f"Accuracy={fit.accuracy:.1f}%"
             )
 
     # Atualizar ideal_supply.json com matched_partner_ids

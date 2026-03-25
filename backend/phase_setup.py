@@ -584,10 +584,10 @@ def run_setup(
                 base_slots[station] = []
 
     # ── Clustering + polígonos por base ───────────────────────────────────
-    territory_index:     Dict[str, Dict]           = {}
-    territory_polys_all: Dict[str, object]         = {}
+    territory_index:     Dict[str, Dict]            = {}
+    territory_polys_all: Dict[str, object]          = {}
     slots_by_territory:  Dict[str, List[IdealSlot]] = {}
-    heatmap_features:    List[Dict]                = []
+    heatmap_features:    List[Dict]                 = []
 
     for station in target_sta:
         slots      = base_slots.get(station, [])
@@ -672,8 +672,11 @@ def run_setup(
             t_cap_day   = sum(s["capacity_s"] for s in t_slots_raw)
 
             territory_index[tid] = {
-                "territory_id": tid, "station_code": station,
-                "bdm_cluster":  bdm, "n_slots": len(t_slots_raw),
+                "territory_id": tid, 
+                "station_code": station,
+                "bdm_cluster":  bdm, 
+                "n_slots": len(t_slots_raw),
+                "open_slots": len(t_slots_raw),
                 "daily_demand": round(t_cap_day, 2),
                 "centroid_lat": round(k_mean_lat.get(k, 0), 6),
                 "centroid_lon": round(k_mean_lon.get(k, 0), 6),
@@ -722,9 +725,10 @@ def run_setup(
                 "delivery_station": meta["station_code"],
                 "bdm_cluster":      meta["bdm_cluster"],
                 "n_slots":          meta["n_slots"],
+                "open_slots":       meta["open_slots"],
                 "daily_demand":     meta["daily_demand"],
                 "attainment":       None,
-                "coverage":         None,
+                "accuracy":         None,
             },
         })
 
@@ -796,10 +800,10 @@ def update_territories_geojson(
     territory_stats: Dict[str, Dict],
 ) -> None:
     """
-    Atualiza attainment e coverage no territories.geojson sem alterar geometrias.
+    Atualiza attainment e accuracy no territories.geojson sem alterar geometrias.
     Chamado pelo modo daily após a Fase 3.
 
-    territory_stats: {territory_id: {"attainment": 75.0, "coverage": 83.3}}
+    territory_stats: {territory_id: {"attainment": 75.0, "accuracy": 83.3}}
     """
     path = Path(output_dir) / "territories.geojson"
     if not path.exists():
@@ -810,7 +814,7 @@ def update_territories_geojson(
         tid = feat["properties"].get("territory_id")
         if tid and tid in territory_stats:
             feat["properties"]["attainment"] = territory_stats[tid].get("attainment")
-            feat["properties"]["coverage"]   = territory_stats[tid].get("coverage")
+            feat["properties"]["accuracy"]   = territory_stats[tid].get("accuracy")
     gj["metadata"]["last_daily_update"] = datetime.now().isoformat(timespec="seconds")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(gj, f, ensure_ascii=False, indent=2)

@@ -141,6 +141,7 @@ def _write_strategic(
                     f.write(f"          - Parceiros Onboarding:     {len(t_fit.partners_by_status('Onboarding'))}\n")
                     f.write(f"          - Parceiros Vetting:        {len(t_fit.partners_by_status('BG Checks'))}\n")
                     f.write(f"          - Attainment:               {t_fit.attainment:.1f}%\n")
+                    f.write(f"          - Acuracidade:              {t_fit.accuracy:.1f}%\n")
 
                 if not slots_open:
                     f.write(f"\n          ✅ Territorio Completo!\n")
@@ -239,19 +240,18 @@ def _write_executive(
                 t_inactives  = len([p for p in (t_fit.partners if t_fit else [])
                                     if p.entity_type == "INACTIVE_EXITED"])
                 t_attainment = t_fit.attainment if t_fit else 0.0
-                t_filled     = len(t_slots) - n_open
-                t_coverage   = (t_filled / len(t_slots) * 100) if t_slots else 0.0
+                t_accuracy   = t_fit.accuracy if t_fit else 0.0
 
                 f.write(f"  {tid} ({ctl})\n")
                 f.write(f"    Demanda diaria:     {meta['daily_demand']:>8,.1f} pacotes/dia\n")
                 f.write(f"    Vagas / Em aberto:  {len(t_slots):>3} / {n_open}\n")
-                f.write(f"    Cobertura:          {t_filled}/{len(t_slots)} = {t_coverage:.1f}%\n")
                 f.write(f"    Ativos:             {t_active:>3}\n")
                 f.write(f"    Onboarding:         {t_onboarding:>3}\n")
                 f.write(f"    BG:                 {t_bg:>3}\n")
                 f.write(f"    Prospects:          {t_prospects:>3}\n")
                 f.write(f"    Inativos:           {t_inactives:>3}\n")
-                f.write(f"    Attainment:         {t_attainment:>6.1f}%\n\n")
+                f.write(f"    Attainment:         {t_attainment:>6.1f}%\n")
+                f.write(f"    Acuracidade:        {t_accuracy:>6.1f}%\n\n")
 
         f.write(_line("=", 80))
 
@@ -462,7 +462,7 @@ def run_phase5(
     territories : TerritoriesResult   Fase 1
     supply      : IdealSupplyResult   Fase 2
     fit         : FitResult           Fase 3
-    webleads    : WebleadResult        Fase 4
+    webleads    : WebleadResult       Fase 4
     pkg         : PackageData         load_packages()
     output_dir  : str, opcional       Default: Config.DEST_FOLDER
 

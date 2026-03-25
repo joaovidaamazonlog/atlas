@@ -1,5 +1,5 @@
 RELATORIO ESTRATEGICO — OPORTUNIDADES EM ABERTO
-Gerado em: 25/03/2026 17:29
+Gerado em: 25/03/2026 18:24
 ==========================================================================================
 
 📍 BASE: DBH5 | BDM: BH
@@ -15,7 +15,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               0.9%
-          - Acuracidade:              1.8%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (111):
           • Oportunidade 1 [DBH5_bucket-01_S01]:
@@ -471,7 +471,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               3.5%
-          - Acuracidade:              5.3%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (107):
           • Oportunidade 1 [DBH5_bucket-02_S03]:
@@ -911,7 +911,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.5%
-          - Acuracidade:              3.5%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (109):
           • Oportunidade 1 [DBH5_bucket-03_S01]:
@@ -1828,7 +1828,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              6.7%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DBR9_bucket-01_S02]:
@@ -1952,7 +1952,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        1
           - Attainment:               10.0%
-          - Acuracidade:              30.0%
+          - Acuracidade:              33.3%
 
           🚀 Oportunidades (21):
           • Oportunidade 1 [DBR9_bucket-02_S02]:
@@ -2048,7 +2048,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              13.3%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DBR9_bucket-03_S01]:
@@ -2164,7 +2164,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               3.3%
-          - Acuracidade:              20.0%
+          - Acuracidade:              16.7%
 
           🚀 Oportunidades (24):
           • Oportunidade 1 [DBR9_bucket-04_S05]:
@@ -2272,7 +2272,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.0%
-          - Acuracidade:              33.3%
+          - Acuracidade:              30.0%
 
           🚀 Oportunidades (20):
           • Oportunidade 1 [DBR9_bucket-05_S04]:
@@ -2364,7 +2364,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.0%
-          - Acuracidade:              10.0%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (27):
           • Oportunidade 1 [DBR9_bucket-06_S03]:
@@ -2484,7 +2484,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              3.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DBR9_bucket-07_S01]:
@@ -2612,7 +2612,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.0%
-          - Acuracidade:              20.0%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (24):
           • Oportunidade 1 [DBR9_bucket-08_S02]:
@@ -2720,7 +2720,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              3.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DBR9_bucket-09_S01]:
@@ -2848,7 +2848,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              6.7%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DBR9_bucket-10_S02]:
@@ -2972,7 +2972,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              3.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DBR9_bucket-11_S02]:
@@ -3236,7 +3236,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               23.3%
-          - Acuracidade:              26.7%
+          - Acuracidade:              87.5%
 
           🚀 Oportunidades (22):
           • Oportunidade 1 [DBR9_bucket-13_S07]:
@@ -3336,7 +3336,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.7%
-          - Acuracidade:              6.7%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DBR9_bucket-14_S01]:
@@ -3856,7 +3856,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.3%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DBR9_bucket-18_S01]:
@@ -3984,7 +3984,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              3.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DBR9_bucket-19_S01]:
@@ -4244,7 +4244,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               10.0%
-          - Acuracidade:              13.3%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DBR9_bucket-21_S05]:
@@ -4756,7 +4756,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.0%
-          - Acuracidade:              13.3%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DBR9_bucket-25_S03]:
@@ -5141,7 +5141,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.1%
-          - Acuracidade:              8.2%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (45):
           • Oportunidade 1 [DBS5_bucket-01_S01]:
@@ -5749,7 +5749,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.1%
-          - Acuracidade:              6.1%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (46):
           • Oportunidade 1 [DBS5_bucket-04_S03]:
@@ -6149,7 +6149,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.1%
-          - Acuracidade:              6.1%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (46):
           • Oportunidade 1 [DBS5_bucket-06_S01]:
@@ -6345,7 +6345,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               2.0%
-          - Acuracidade:              2.0%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (48):
           • Oportunidade 1 [DBS5_bucket-07_S01]:
@@ -6549,7 +6549,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               34.7%
-          - Acuracidade:              34.7%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (32):
           • Oportunidade 1 [DBS5_bucket-08_S03]:
@@ -6689,7 +6689,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        2
           - Attainment:               10.2%
-          - Acuracidade:              16.3%
+          - Acuracidade:              62.5%
 
           🚀 Oportunidades (41):
           • Oportunidade 1 [DBS5_bucket-09_S03]:
@@ -6865,7 +6865,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.2%
-          - Acuracidade:              14.3%
+          - Acuracidade:              85.7%
 
           🚀 Oportunidades (42):
           • Oportunidade 1 [DBS5_bucket-10_S03]:
@@ -7045,7 +7045,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.2%
-          - Acuracidade:              14.3%
+          - Acuracidade:              85.7%
 
           🚀 Oportunidades (42):
           • Oportunidade 1 [DBS5_bucket-11_S04]:
@@ -7225,7 +7225,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.4%
-          - Acuracidade:              14.6%
+          - Acuracidade:              71.4%
 
           🚀 Oportunidades (41):
           • Oportunidade 1 [DBS5_bucket-12_S01]:
@@ -7401,7 +7401,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.1%
-          - Acuracidade:              6.1%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (46):
           • Oportunidade 1 [DBS5_bucket-13_S02]:
@@ -7597,7 +7597,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               16.3%
-          - Acuracidade:              18.4%
+          - Acuracidade:              88.9%
 
           🚀 Oportunidades (40):
           • Oportunidade 1 [DBS5_bucket-14_S01]:
@@ -7769,7 +7769,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.2%
-          - Acuracidade:              12.2%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (43):
           • Oportunidade 1 [DBS5_bucket-15_S02]:
@@ -7958,7 +7958,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        1
           - Attainment:               4.2%
-          - Acuracidade:              10.4%
+          - Acuracidade:              40.0%
 
           🚀 Oportunidades (43):
           • Oportunidade 1 [DCE3_bucket-01_S05]:
@@ -8142,7 +8142,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               4.2%
-          - Acuracidade:              6.2%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (45):
           • Oportunidade 1 [DCE3_bucket-02_S01]:
@@ -8334,7 +8334,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.2%
-          - Acuracidade:              14.6%
+          - Acuracidade:              42.9%
 
           🚀 Oportunidades (41):
           • Oportunidade 1 [DCE3_bucket-03_S01]:
@@ -8510,7 +8510,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               8.5%
-          - Acuracidade:              10.6%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (42):
           • Oportunidade 1 [DCE3_bucket-04_S02]:
@@ -8690,7 +8690,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               4.3%
-          - Acuracidade:              6.4%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (44):
           • Oportunidade 1 [DCE3_bucket-05_S01]:
@@ -8878,7 +8878,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               40.4%
-          - Acuracidade:              44.7%
+          - Acuracidade:              90.5%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DCE3_bucket-06_S14]:
@@ -8994,7 +8994,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.4%
-          - Acuracidade:              10.6%
+          - Acuracidade:              60.0%
 
           🚀 Oportunidades (42):
           • Oportunidade 1 [DCE3_bucket-07_S01]:
@@ -9174,7 +9174,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               4.2%
-          - Acuracidade:              6.2%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (45):
           • Oportunidade 1 [DCE3_bucket-08_S01]:
@@ -9366,7 +9366,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               14.9%
-          - Acuracidade:              21.3%
+          - Acuracidade:              70.0%
 
           🚀 Oportunidades (37):
           • Oportunidade 1 [DCE3_bucket-09_S02]:
@@ -9526,7 +9526,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               29.2%
-          - Acuracidade:              33.3%
+          - Acuracidade:              87.5%
 
           🚀 Oportunidades (32):
           • Oportunidade 1 [DCE3_bucket-10_S05]:
@@ -9666,7 +9666,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.4%
-          - Acuracidade:              10.4%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (43):
           • Oportunidade 1 [DCE3_bucket-11_S01]:
@@ -9850,7 +9850,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        1
           - Attainment:               23.4%
-          - Acuracidade:              36.2%
+          - Acuracidade:              64.7%
 
           🚀 Oportunidades (30):
           • Oportunidade 1 [DCE3_bucket-12_S05]:
@@ -9982,7 +9982,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               37.5%
-          - Acuracidade:              39.6%
+          - Acuracidade:              94.7%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DCE3_bucket-13_S01]:
@@ -10110,7 +10110,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               10.6%
-          - Acuracidade:              12.8%
+          - Acuracidade:              83.3%
 
           🚀 Oportunidades (41):
           • Oportunidade 1 [DCE3_bucket-14_S02]:
@@ -10286,7 +10286,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               25.5%
-          - Acuracidade:              31.9%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (32):
           • Oportunidade 1 [DCE3_bucket-15_S02]:
@@ -10426,7 +10426,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               6.4%
-          - Acuracidade:              10.6%
+          - Acuracidade:              60.0%
 
           🚀 Oportunidades (42):
           • Oportunidade 1 [DCE3_bucket-16_S02]:
@@ -10611,7 +10611,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               18.1%
-          - Acuracidade:              20.5%
+          - Acuracidade:              88.2%
 
           🚀 Oportunidades (66):
           • Oportunidade 1 [DES2_bucket-01_S04]:
@@ -10887,7 +10887,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               1.2%
-          - Acuracidade:              2.4%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (82):
           • Oportunidade 1 [DES2_bucket-02_S01]:
@@ -11227,7 +11227,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               13.3%
-          - Acuracidade:              13.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (72):
           • Oportunidade 1 [DES2_bucket-03_S02]:
@@ -11532,7 +11532,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     3
           - Parceiros Vetting:        0
           - Attainment:               6.4%
-          - Acuracidade:              8.8%
+          - Acuracidade:              72.7%
 
           🚀 Oportunidades (114):
           • Oportunidade 1 [DGO2_bucket-01_S02]:
@@ -12000,7 +12000,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.8%
-          - Acuracidade:              16.8%
+          - Acuracidade:              76.2%
 
           🚀 Oportunidades (104):
           • Oportunidade 1 [DGO2_bucket-02_S02]:
@@ -12428,7 +12428,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               7.1%
-          - Acuracidade:              8.7%
+          - Acuracidade:              81.8%
 
           🚀 Oportunidades (115):
           • Oportunidade 1 [DGO2_bucket-03_S02]:
@@ -12905,7 +12905,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.5%
-          - Acuracidade:              12.5%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DMG2_bucket-01_S02]:
@@ -13029,7 +13029,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.9%
-          - Acuracidade:              12.9%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (27):
           • Oportunidade 1 [DMG2_bucket-02_S02]:
@@ -13149,7 +13149,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               12.5%
-          - Acuracidade:              18.8%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DMG2_bucket-03_S07]:
@@ -13265,7 +13265,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               28.1%
-          - Acuracidade:              34.4%
+          - Acuracidade:              81.8%
 
           🚀 Oportunidades (21):
           • Oportunidade 1 [DMG2_bucket-04_S08]:
@@ -13361,7 +13361,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.1%
-          - Acuracidade:              6.2%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (30):
           • Oportunidade 1 [DMG2_bucket-05_S01]:
@@ -13493,7 +13493,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               12.9%
-          - Acuracidade:              19.4%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (25):
           • Oportunidade 1 [DMG2_bucket-06_S03]:
@@ -13605,7 +13605,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               18.8%
-          - Acuracidade:              28.1%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (23):
           • Oportunidade 1 [DMG2_bucket-07_S03]:
@@ -13709,7 +13709,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               31.2%
-          - Acuracidade:              31.2%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (22):
           • Oportunidade 1 [DMG2_bucket-08_S01]:
@@ -13809,7 +13809,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               28.1%
-          - Acuracidade:              31.2%
+          - Acuracidade:              90.0%
 
           🚀 Oportunidades (22):
           • Oportunidade 1 [DMG2_bucket-09_S01]:
@@ -13909,7 +13909,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.5%
-          - Acuracidade:              15.6%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (27):
           • Oportunidade 1 [DMG2_bucket-10_S05]:
@@ -14029,7 +14029,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               25.0%
-          - Acuracidade:              31.2%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (22):
           • Oportunidade 1 [DMG2_bucket-11_S07]:
@@ -14129,7 +14129,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.5%
-          - Acuracidade:              18.8%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DMG2_bucket-12_S03]:
@@ -14245,7 +14245,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.2%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (30):
           • Oportunidade 1 [DMG2_bucket-13_S02]:
@@ -14382,7 +14382,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.0%
-          - Acuracidade:              10.0%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (81):
           • Oportunidade 1 [DPB3_bucket-01_S02]:
@@ -14718,7 +14718,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               16.7%
-          - Acuracidade:              17.8%
+          - Acuracidade:              93.8%
 
           🚀 Oportunidades (74):
           • Oportunidade 1 [DPB3_bucket-02_S03]:
@@ -15026,7 +15026,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               13.3%
-          - Acuracidade:              13.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (78):
           • Oportunidade 1 [DPB3_bucket-03_S03]:
@@ -15350,7 +15350,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               23.3%
-          - Acuracidade:              24.4%
+          - Acuracidade:              95.5%
 
           🚀 Oportunidades (68):
           • Oportunidade 1 [DPB3_bucket-04_S03]:
@@ -15634,7 +15634,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               23.6%
-          - Acuracidade:              24.7%
+          - Acuracidade:              95.5%
 
           🚀 Oportunidades (67):
           • Oportunidade 1 [DPB3_bucket-05_S05]:
@@ -15919,7 +15919,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               13.3%
-          - Acuracidade:              13.3%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (26):
           • Oportunidade 1 [DPE4_bucket-01_S03]:
@@ -16035,7 +16035,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               16.7%
-          - Acuracidade:              16.7%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (25):
           • Oportunidade 1 [DPE4_bucket-02_S01]:
@@ -16147,7 +16147,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.3%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (29):
           • Oportunidade 1 [DPE4_bucket-03_S01]:
@@ -16275,7 +16275,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               17.2%
-          - Acuracidade:              17.2%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (24):
           • Oportunidade 1 [DPE4_bucket-04_S05]:
@@ -16511,7 +16511,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.9%
-          - Acuracidade:              6.9%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (27):
           • Oportunidade 1 [DPE4_bucket-06_S01]:
@@ -16631,7 +16631,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.7%
-          - Acuracidade:              6.7%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DPE4_bucket-07_S01]:
@@ -16755,7 +16755,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               20.0%
-          - Acuracidade:              26.7%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (22):
           • Oportunidade 1 [DPE4_bucket-08_S07]:
@@ -16855,7 +16855,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               33.3%
-          - Acuracidade:              40.0%
+          - Acuracidade:              83.3%
 
           🚀 Oportunidades (18):
           • Oportunidade 1 [DPE4_bucket-09_S03]:
@@ -16939,7 +16939,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               16.7%
-          - Acuracidade:              16.7%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (25):
           • Oportunidade 1 [DPE4_bucket-10_S01]:
@@ -17051,7 +17051,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.4%
-          - Acuracidade:              3.4%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DPE4_bucket-11_S01]:
@@ -17307,7 +17307,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.4%
-          - Acuracidade:              3.4%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DPE4_bucket-13_S01]:
@@ -17431,7 +17431,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               3.3%
-          - Acuracidade:              6.7%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (28):
           • Oportunidade 1 [DPE4_bucket-14_S01]:
@@ -17555,7 +17555,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               20.7%
-          - Acuracidade:              34.5%
+          - Acuracidade:              60.0%
 
           🚀 Oportunidades (19):
           • Oportunidade 1 [DPE4_bucket-15_S05]:
@@ -17643,7 +17643,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               17.2%
-          - Acuracidade:              17.2%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (24):
           • Oportunidade 1 [DPE4_bucket-16_S02]:
@@ -17756,7 +17756,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               12.1%
-          - Acuracidade:              15.4%
+          - Acuracidade:              78.6%
 
           🚀 Oportunidades (77):
           • Oportunidade 1 [DPR2_bucket-01_S04]:
@@ -18076,7 +18076,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               5.5%
-          - Acuracidade:              7.7%
+          - Acuracidade:              71.4%
 
           🚀 Oportunidades (84):
           • Oportunidade 1 [DPR2_bucket-02_S02]:
@@ -18424,7 +18424,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               13.2%
-          - Acuracidade:              17.6%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (75):
           • Oportunidade 1 [DPR2_bucket-03_S03]:
@@ -18736,7 +18736,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               11.0%
-          - Acuracidade:              12.1%
+          - Acuracidade:              90.9%
 
           🚀 Oportunidades (80):
           • Oportunidade 1 [DPR2_bucket-04_S03]:
@@ -19068,7 +19068,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               22.0%
-          - Acuracidade:              22.0%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (71):
           • Oportunidade 1 [DPR2_bucket-05_S03]:
@@ -19364,7 +19364,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               15.4%
-          - Acuracidade:              17.6%
+          - Acuracidade:              87.5%
 
           🚀 Oportunidades (75):
           • Oportunidade 1 [DPR2_bucket-06_S01]:
@@ -19681,7 +19681,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               21.9%
-          - Acuracidade:              25.0%
+          - Acuracidade:              87.5%
 
           🚀 Oportunidades (24):
           • Oportunidade 1 [DRJ3_bucket-01_S05]:
@@ -19789,7 +19789,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               15.6%
-          - Acuracidade:              15.6%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (27):
           • Oportunidade 1 [DRJ3_bucket-02_S01]:
@@ -19909,7 +19909,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               0.0%
-          - Acuracidade:              3.1%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DRJ3_bucket-03_S01]:
@@ -20045,7 +20045,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.1%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DRJ3_bucket-04_S01]:
@@ -20181,7 +20181,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.0%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (32):
           • Oportunidade 1 [DRJ3_bucket-05_S01]:
@@ -20605,7 +20605,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.1%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DRJ3_bucket-08_S01]:
@@ -21025,7 +21025,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               28.1%
-          - Acuracidade:              31.2%
+          - Acuracidade:              90.0%
 
           🚀 Oportunidades (22):
           • Oportunidade 1 [DRJ3_bucket-11_S04]:
@@ -21685,7 +21685,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.2%
-          - Acuracidade:              6.2%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (30):
           • Oportunidade 1 [DRJ3_bucket-16_S02]:
@@ -22097,7 +22097,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.1%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DRJ3_bucket-19_S01]:
@@ -22662,7 +22662,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               1.7%
-          - Acuracidade:              1.7%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (58):
           • Oportunidade 1 [DRS5_bucket-01_S01]:
@@ -22906,7 +22906,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               6.8%
-          - Acuracidade:              6.8%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (55):
           • Oportunidade 1 [DRS5_bucket-02_S02]:
@@ -23138,7 +23138,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               11.9%
-          - Acuracidade:              15.3%
+          - Acuracidade:              77.8%
 
           🚀 Oportunidades (50):
           • Oportunidade 1 [DRS5_bucket-03_S04]:
@@ -23350,7 +23350,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               13.6%
-          - Acuracidade:              15.3%
+          - Acuracidade:              88.9%
 
           🚀 Oportunidades (50):
           • Oportunidade 1 [DRS5_bucket-04_S02]:
@@ -24054,7 +24054,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               5.1%
-          - Acuracidade:              6.8%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (55):
           • Oportunidade 1 [DRS5_bucket-07_S03]:
@@ -24286,7 +24286,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              3.4%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (57):
           • Oportunidade 1 [DRS5_bucket-08_S01]:
@@ -24526,7 +24526,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               5.1%
-          - Acuracidade:              10.2%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (53):
           • Oportunidade 1 [DRS5_bucket-09_S01]:
@@ -24750,7 +24750,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               1.7%
-          - Acuracidade:              3.4%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (57):
           • Oportunidade 1 [DRS5_bucket-10_S02]:
@@ -24995,7 +24995,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        2
           - Attainment:               11.8%
-          - Acuracidade:              16.1%
+          - Acuracidade:              73.3%
 
           🚀 Oportunidades (78):
           • Oportunidade 1 [DSA8_bucket-01_S01]:
@@ -25319,7 +25319,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               7.6%
-          - Acuracidade:              7.6%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (85):
           • Oportunidade 1 [DSA8_bucket-02_S01]:
@@ -25671,7 +25671,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               2.2%
-          - Acuracidade:              3.2%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (90):
           • Oportunidade 1 [DSA8_bucket-03_S03]:
@@ -26043,7 +26043,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               2.2%
-          - Acuracidade:              3.3%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (89):
           • Oportunidade 1 [DSA8_bucket-04_S01]:
@@ -26416,7 +26416,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               30.8%
-          - Acuracidade:              38.5%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (24):
           • Oportunidade 1 [DSP2_bucket-01_S05]:
@@ -26524,7 +26524,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               33.3%
-          - Acuracidade:              35.9%
+          - Acuracidade:              92.9%
 
           🚀 Oportunidades (25):
           • Oportunidade 1 [DSP2_bucket-02_S03]:
@@ -26636,7 +26636,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        1
           - Attainment:               15.4%
-          - Acuracidade:              20.5%
+          - Acuracidade:              75.0%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DSP2_bucket-03_S02]:
@@ -26772,7 +26772,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               10.3%
-          - Acuracidade:              23.1%
+          - Acuracidade:              44.4%
 
           🚀 Oportunidades (30):
           • Oportunidade 1 [DSP2_bucket-04_S02]:
@@ -26904,7 +26904,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        2
           - Attainment:               12.8%
-          - Acuracidade:              23.1%
+          - Acuracidade:              55.6%
 
           🚀 Oportunidades (30):
           • Oportunidade 1 [DSP2_bucket-05_S02]:
@@ -27036,7 +27036,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               18.4%
-          - Acuracidade:              18.4%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DSP2_bucket-06_S02]:
@@ -27172,7 +27172,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               17.9%
-          - Acuracidade:              20.5%
+          - Acuracidade:              87.5%
 
           🚀 Oportunidades (31):
           • Oportunidade 1 [DSP2_bucket-07_S03]:
@@ -27308,7 +27308,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               10.5%
-          - Acuracidade:              13.2%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (33):
           • Oportunidade 1 [DSP2_bucket-08_S02]:
@@ -27452,7 +27452,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               7.9%
-          - Acuracidade:              15.8%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (32):
           • Oportunidade 1 [DSP2_bucket-09_S03]:
@@ -27592,7 +27592,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               5.3%
-          - Acuracidade:              7.9%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (35):
           • Oportunidade 1 [DSP2_bucket-10_S02]:
@@ -27744,7 +27744,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               7.7%
-          - Acuracidade:              15.4%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (33):
           • Oportunidade 1 [DSP2_bucket-11_S02]:
@@ -27888,7 +27888,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               38.5%
-          - Acuracidade:              48.7%
+          - Acuracidade:              78.9%
 
           🚀 Oportunidades (20):
           • Oportunidade 1 [DSP2_bucket-12_S04]:
@@ -27985,7 +27985,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               9.8%
-          - Acuracidade:              19.5%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (33):
           • Oportunidade 1 [DSP4_bucket-01_S04]:
@@ -28129,7 +28129,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              10.0%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (36):
           • Oportunidade 1 [DSP4_bucket-02_S02]:
@@ -28285,7 +28285,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               0.0%
-          - Acuracidade:              7.5%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (37):
           • Oportunidade 1 [DSP4_bucket-03_S01]:
@@ -28445,7 +28445,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              5.0%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (38):
           • Oportunidade 1 [DSP4_bucket-04_S01]:
@@ -28609,7 +28609,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               4.9%
-          - Acuracidade:              7.3%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (38):
           • Oportunidade 1 [DSP4_bucket-05_S03]:
@@ -28773,7 +28773,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               2.5%
-          - Acuracidade:              5.0%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (38):
           • Oportunidade 1 [DSP4_bucket-06_S01]:
@@ -28937,7 +28937,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               2.5%
-          - Acuracidade:              10.0%
+          - Acuracidade:              25.0%
 
           🚀 Oportunidades (36):
           • Oportunidade 1 [DSP4_bucket-07_S01]:
@@ -29093,7 +29093,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               4.9%
-          - Acuracidade:              7.3%
+          - Acuracidade:              66.7%
 
           🚀 Oportunidades (38):
           • Oportunidade 1 [DSP4_bucket-08_S02]:
@@ -29257,7 +29257,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               9.8%
-          - Acuracidade:              19.5%
+          - Acuracidade:              50.0%
 
           🚀 Oportunidades (33):
           • Oportunidade 1 [DSP4_bucket-09_S06]:
@@ -29401,7 +29401,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
-          - Acuracidade:              9.8%
+          - Acuracidade:              0.0%
 
           🚀 Oportunidades (37):
           • Oportunidade 1 [DSP4_bucket-10_S01]:
@@ -29561,7 +29561,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               2.4%
-          - Acuracidade:              14.6%
+          - Acuracidade:              16.7%
 
           🚀 Oportunidades (35):
           • Oportunidade 1 [DSP4_bucket-11_S01]:
@@ -29718,7 +29718,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               4.1%
-          - Acuracidade:              4.1%
+          - Acuracidade:              100.0%
 
           🚀 Oportunidades (71):
           • Oportunidade 1 [DSP5_bucket-01_S02]:
@@ -30326,7 +30326,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               5.3%
-          - Acuracidade:              6.7%
+          - Acuracidade:              80.0%
 
           🚀 Oportunidades (70):
           • Oportunidade 1 [DSP5_bucket-03_S02]:
@@ -30618,7 +30618,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        2
           - Attainment:               6.7%
-          - Acuracidade:              9.3%
+          - Acuracidade:              71.4%
 
           🚀 Oportunidades (68):
           • Oportunidade 1 [DSP5_bucket-04_S04]:
@@ -30902,7 +30902,7 @@ Gerado em: 25/03/2026 17:29
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        2
           - Attainment:               14.7%
-          - Acuracidade:              21.3%
+          - Acuracidade:              68.8%
 
           🚀 Oportunidades (59):
           • Oportunidade 1 [DSP5_bucket-05_S04]:

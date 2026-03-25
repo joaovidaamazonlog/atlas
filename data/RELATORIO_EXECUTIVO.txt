@@ -1,5 +1,5 @@
 RELATORIO EXECUTIVO DE OTIMIZACAO
-Gerado em: 25/03/2026 17:29
+Gerado em: 25/03/2026 18:24
 ================================================================================
 
 BASE: DBH5 | BDM: BH
@@ -29,7 +29,7 @@ BASE: DBH5 | BDM: BH
     Prospects:            0
     Inativos:             0
     Attainment:            0.9%
-    Acuracidade:           1.8%
+    Acuracidade:          50.0%
 
   DBH5_bucket-02 (CTL-A)
     Demanda diaria:      4,746.0 pacotes/dia
@@ -40,7 +40,7 @@ BASE: DBH5 | BDM: BH
     Prospects:            0
     Inativos:             1
     Attainment:            3.5%
-    Acuracidade:           5.3%
+    Acuracidade:          66.7%
 
   DBH5_bucket-03 (CTL-A)
     Demanda diaria:      4,746.0 pacotes/dia
@@ -51,7 +51,7 @@ BASE: DBH5 | BDM: BH
     Prospects:            0
     Inativos:             0
     Attainment:            3.5%
-    Acuracidade:           3.5%
+    Acuracidade:         100.0%
 
   DBH5_bucket-04 (CTL-A)
     Demanda diaria:      4,744.0 pacotes/dia
@@ -92,7 +92,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            1
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           6.7%
+    Acuracidade:          50.0%
 
   DBR9_bucket-02 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -103,7 +103,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             4
     Attainment:           10.0%
-    Acuracidade:          30.0%
+    Acuracidade:          33.3%
 
   DBR9_bucket-03 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -114,7 +114,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             4
     Attainment:            0.0%
-    Acuracidade:          13.3%
+    Acuracidade:           0.0%
 
   DBR9_bucket-04 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -125,7 +125,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            1
     Inativos:             3
     Attainment:            3.3%
-    Acuracidade:          20.0%
+    Acuracidade:          16.7%
 
   DBR9_bucket-05 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -136,7 +136,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            4
     Inativos:             3
     Attainment:           10.0%
-    Acuracidade:          33.3%
+    Acuracidade:          30.0%
 
   DBR9_bucket-06 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -147,7 +147,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:           10.0%
-    Acuracidade:          10.0%
+    Acuracidade:         100.0%
 
   DBR9_bucket-07 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -158,7 +158,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           3.3%
+    Acuracidade:         100.0%
 
   DBR9_bucket-08 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -169,7 +169,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            3
     Inativos:             0
     Attainment:           10.0%
-    Acuracidade:          20.0%
+    Acuracidade:          50.0%
 
   DBR9_bucket-09 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -180,7 +180,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           3.3%
+    Acuracidade:         100.0%
 
   DBR9_bucket-10 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -191,7 +191,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            1
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           6.7%
+    Acuracidade:          50.0%
 
   DBR9_bucket-11 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -202,7 +202,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           3.3%
+    Acuracidade:         100.0%
 
   DBR9_bucket-12 (CTL-A)
     Demanda diaria:      1,302.0 pacotes/dia
@@ -224,7 +224,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:           23.3%
-    Acuracidade:          26.7%
+    Acuracidade:          87.5%
 
   DBR9_bucket-14 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -235,7 +235,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            6.7%
-    Acuracidade:           6.7%
+    Acuracidade:         100.0%
 
   DBR9_bucket-15 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -279,7 +279,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:            0.0%
-    Acuracidade:           3.3%
+    Acuracidade:           0.0%
 
   DBR9_bucket-19 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -290,7 +290,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           3.3%
+    Acuracidade:         100.0%
 
   DBR9_bucket-20 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -312,7 +312,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:           10.0%
-    Acuracidade:          13.3%
+    Acuracidade:          75.0%
 
   DBR9_bucket-22 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -356,7 +356,7 @@ BASE: DBR9 | BDM: SP/SUL
     Prospects:            1
     Inativos:             0
     Attainment:           10.0%
-    Acuracidade:          13.3%
+    Acuracidade:          75.0%
 
   DBR9_bucket-26 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -408,7 +408,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             1
     Attainment:            6.1%
-    Acuracidade:           8.2%
+    Acuracidade:          75.0%
 
   DBS5_bucket-02 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -441,7 +441,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            6.1%
-    Acuracidade:           6.1%
+    Acuracidade:         100.0%
 
   DBS5_bucket-05 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -463,7 +463,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            6.1%
-    Acuracidade:           6.1%
+    Acuracidade:         100.0%
 
   DBS5_bucket-07 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -474,7 +474,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            2.0%
-    Acuracidade:           2.0%
+    Acuracidade:         100.0%
 
   DBS5_bucket-08 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -485,7 +485,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:           34.7%
-    Acuracidade:          34.7%
+    Acuracidade:         100.0%
 
   DBS5_bucket-09 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -496,7 +496,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             1
     Attainment:           10.2%
-    Acuracidade:          16.3%
+    Acuracidade:          62.5%
 
   DBS5_bucket-10 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -507,7 +507,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            1
     Inativos:             0
     Attainment:           12.2%
-    Acuracidade:          14.3%
+    Acuracidade:          85.7%
 
   DBS5_bucket-11 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -518,7 +518,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            1
     Inativos:             0
     Attainment:           12.2%
-    Acuracidade:          14.3%
+    Acuracidade:          85.7%
 
   DBS5_bucket-12 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -529,7 +529,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            2
     Inativos:             0
     Attainment:           10.4%
-    Acuracidade:          14.6%
+    Acuracidade:          71.4%
 
   DBS5_bucket-13 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -540,7 +540,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            6.1%
-    Acuracidade:           6.1%
+    Acuracidade:         100.0%
 
   DBS5_bucket-14 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -551,7 +551,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             1
     Attainment:           16.3%
-    Acuracidade:          18.4%
+    Acuracidade:          88.9%
 
   DBS5_bucket-15 (CTL-A)
     Demanda diaria:      2,058.0 pacotes/dia
@@ -562,7 +562,7 @@ BASE: DBS5 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:           12.2%
-    Acuracidade:          12.2%
+    Acuracidade:         100.0%
 
 
 BASE: DCE3 | BDM: FORTALEZA
@@ -592,7 +592,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            0
     Inativos:             1
     Attainment:            4.2%
-    Acuracidade:          10.4%
+    Acuracidade:          40.0%
 
   DCE3_bucket-02 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -603,7 +603,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            1
     Inativos:             0
     Attainment:            4.2%
-    Acuracidade:           6.2%
+    Acuracidade:          66.7%
 
   DCE3_bucket-03 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -614,7 +614,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            1
     Inativos:             3
     Attainment:            6.2%
-    Acuracidade:          14.6%
+    Acuracidade:          42.9%
 
   DCE3_bucket-04 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -625,7 +625,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            0
     Inativos:             0
     Attainment:            8.5%
-    Acuracidade:          10.6%
+    Acuracidade:          80.0%
 
   DCE3_bucket-05 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -636,7 +636,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            1
     Inativos:             0
     Attainment:            4.3%
-    Acuracidade:           6.4%
+    Acuracidade:          66.7%
 
   DCE3_bucket-06 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -647,7 +647,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            2
     Inativos:             0
     Attainment:           40.4%
-    Acuracidade:          44.7%
+    Acuracidade:          90.5%
 
   DCE3_bucket-07 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -658,7 +658,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            2
     Inativos:             0
     Attainment:            6.4%
-    Acuracidade:          10.6%
+    Acuracidade:          60.0%
 
   DCE3_bucket-08 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -669,7 +669,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            0
     Inativos:             0
     Attainment:            4.2%
-    Acuracidade:           6.2%
+    Acuracidade:          66.7%
 
   DCE3_bucket-09 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -680,7 +680,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            1
     Inativos:             1
     Attainment:           14.9%
-    Acuracidade:          21.3%
+    Acuracidade:          70.0%
 
   DCE3_bucket-10 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -691,7 +691,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            1
     Inativos:             0
     Attainment:           29.2%
-    Acuracidade:          33.3%
+    Acuracidade:          87.5%
 
   DCE3_bucket-11 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -702,7 +702,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            0
     Inativos:             0
     Attainment:           10.4%
-    Acuracidade:          10.4%
+    Acuracidade:         100.0%
 
   DCE3_bucket-12 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -713,7 +713,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            3
     Inativos:             1
     Attainment:           23.4%
-    Acuracidade:          36.2%
+    Acuracidade:          64.7%
 
   DCE3_bucket-13 (CTL-A)
     Demanda diaria:      2,016.0 pacotes/dia
@@ -724,7 +724,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            0
     Inativos:             1
     Attainment:           37.5%
-    Acuracidade:          39.6%
+    Acuracidade:          94.7%
 
   DCE3_bucket-14 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -735,7 +735,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            0
     Inativos:             0
     Attainment:           10.6%
-    Acuracidade:          12.8%
+    Acuracidade:          83.3%
 
   DCE3_bucket-15 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -746,7 +746,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            2
     Inativos:             0
     Attainment:           25.5%
-    Acuracidade:          31.9%
+    Acuracidade:          80.0%
 
   DCE3_bucket-16 (CTL-A)
     Demanda diaria:      1,974.0 pacotes/dia
@@ -757,7 +757,7 @@ BASE: DCE3 | BDM: FORTALEZA
     Prospects:            1
     Inativos:             0
     Attainment:            6.4%
-    Acuracidade:          10.6%
+    Acuracidade:          60.0%
 
 
 BASE: DES2 | BDM: ES/BA
@@ -787,7 +787,7 @@ BASE: DES2 | BDM: ES/BA
     Prospects:            1
     Inativos:             0
     Attainment:           18.1%
-    Acuracidade:          20.5%
+    Acuracidade:          88.2%
 
   DES2_bucket-02 (CTL-A)
     Demanda diaria:      3,528.0 pacotes/dia
@@ -798,7 +798,7 @@ BASE: DES2 | BDM: ES/BA
     Prospects:            0
     Inativos:             1
     Attainment:            1.2%
-    Acuracidade:           2.4%
+    Acuracidade:          50.0%
 
   DES2_bucket-03 (CTL-A)
     Demanda diaria:      3,486.0 pacotes/dia
@@ -809,7 +809,7 @@ BASE: DES2 | BDM: ES/BA
     Prospects:            0
     Inativos:             0
     Attainment:           13.3%
-    Acuracidade:          13.3%
+    Acuracidade:         100.0%
 
 
 BASE: DGO2 | BDM: RJ/CW
@@ -839,7 +839,7 @@ BASE: DGO2 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            6.4%
-    Acuracidade:           8.8%
+    Acuracidade:          72.7%
 
   DGO2_bucket-02 (CTL-A)
     Demanda diaria:      5,250.0 pacotes/dia
@@ -850,7 +850,7 @@ BASE: DGO2 | BDM: RJ/CW
     Prospects:            2
     Inativos:             3
     Attainment:           12.8%
-    Acuracidade:          16.8%
+    Acuracidade:          76.2%
 
   DGO2_bucket-03 (CTL-A)
     Demanda diaria:      5,292.0 pacotes/dia
@@ -861,7 +861,7 @@ BASE: DGO2 | BDM: RJ/CW
     Prospects:            1
     Inativos:             1
     Attainment:            7.1%
-    Acuracidade:           8.7%
+    Acuracidade:          81.8%
 
 
 BASE: DMG2 | BDM: BH
@@ -891,7 +891,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             0
     Attainment:           12.5%
-    Acuracidade:          12.5%
+    Acuracidade:         100.0%
 
   DMG2_bucket-02 (CTL-A)
     Demanda diaria:      1,302.0 pacotes/dia
@@ -902,7 +902,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             0
     Attainment:           12.9%
-    Acuracidade:          12.9%
+    Acuracidade:         100.0%
 
   DMG2_bucket-03 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -913,7 +913,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             1
     Attainment:           12.5%
-    Acuracidade:          18.8%
+    Acuracidade:          66.7%
 
   DMG2_bucket-04 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -924,7 +924,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            1
     Inativos:             1
     Attainment:           28.1%
-    Acuracidade:          34.4%
+    Acuracidade:          81.8%
 
   DMG2_bucket-05 (CTL-A)
     Demanda diaria:      1,343.0 pacotes/dia
@@ -935,7 +935,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             1
     Attainment:            3.1%
-    Acuracidade:           6.2%
+    Acuracidade:          50.0%
 
   DMG2_bucket-06 (CTL-A)
     Demanda diaria:      1,302.0 pacotes/dia
@@ -946,7 +946,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             1
     Attainment:           12.9%
-    Acuracidade:          19.4%
+    Acuracidade:          66.7%
 
   DMG2_bucket-07 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -957,7 +957,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            1
     Inativos:             1
     Attainment:           18.8%
-    Acuracidade:          28.1%
+    Acuracidade:          66.7%
 
   DMG2_bucket-08 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -968,7 +968,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             0
     Attainment:           31.2%
-    Acuracidade:          31.2%
+    Acuracidade:         100.0%
 
   DMG2_bucket-09 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -979,7 +979,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             1
     Attainment:           28.1%
-    Acuracidade:          31.2%
+    Acuracidade:          90.0%
 
   DMG2_bucket-10 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -990,7 +990,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            1
     Inativos:             0
     Attainment:           12.5%
-    Acuracidade:          15.6%
+    Acuracidade:          80.0%
 
   DMG2_bucket-11 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1001,7 +1001,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            1
     Inativos:             1
     Attainment:           25.0%
-    Acuracidade:          31.2%
+    Acuracidade:          80.0%
 
   DMG2_bucket-12 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1012,7 +1012,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             2
     Attainment:           12.5%
-    Acuracidade:          18.8%
+    Acuracidade:          66.7%
 
   DMG2_bucket-13 (CTL-A)
     Demanda diaria:      1,302.0 pacotes/dia
@@ -1023,7 +1023,7 @@ BASE: DMG2 | BDM: BH
     Prospects:            0
     Inativos:             1
     Attainment:            0.0%
-    Acuracidade:           3.2%
+    Acuracidade:           0.0%
 
 
 BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
@@ -1053,7 +1053,7 @@ BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           10.0%
-    Acuracidade:          10.0%
+    Acuracidade:         100.0%
 
   DPB3_bucket-02 (CTL-A)
     Demanda diaria:      3,780.0 pacotes/dia
@@ -1064,7 +1064,7 @@ BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
     Prospects:            1
     Inativos:             0
     Attainment:           16.7%
-    Acuracidade:          17.8%
+    Acuracidade:          93.8%
 
   DPB3_bucket-03 (CTL-A)
     Demanda diaria:      3,780.0 pacotes/dia
@@ -1075,7 +1075,7 @@ BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           13.3%
-    Acuracidade:          13.3%
+    Acuracidade:         100.0%
 
   DPB3_bucket-04 (CTL-A)
     Demanda diaria:      3,780.0 pacotes/dia
@@ -1086,7 +1086,7 @@ BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             1
     Attainment:           23.3%
-    Acuracidade:          24.4%
+    Acuracidade:          95.5%
 
   DPB3_bucket-05 (CTL-A)
     Demanda diaria:      3,738.0 pacotes/dia
@@ -1097,7 +1097,7 @@ BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             1
     Attainment:           23.6%
-    Acuracidade:          24.7%
+    Acuracidade:          95.5%
 
 
 BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
@@ -1127,7 +1127,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           13.3%
-    Acuracidade:          13.3%
+    Acuracidade:         100.0%
 
   DPE4_bucket-02 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1138,7 +1138,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           16.7%
-    Acuracidade:          16.7%
+    Acuracidade:         100.0%
 
   DPE4_bucket-03 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1149,7 +1149,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             1
     Attainment:            0.0%
-    Acuracidade:           3.3%
+    Acuracidade:           0.0%
 
   DPE4_bucket-04 (CTL-A)
     Demanda diaria:      1,218.0 pacotes/dia
@@ -1160,7 +1160,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           17.2%
-    Acuracidade:          17.2%
+    Acuracidade:         100.0%
 
   DPE4_bucket-05 (CTL-A)
     Demanda diaria:      1,218.0 pacotes/dia
@@ -1182,7 +1182,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:            6.9%
-    Acuracidade:           6.9%
+    Acuracidade:         100.0%
 
   DPE4_bucket-07 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1193,7 +1193,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:            6.7%
-    Acuracidade:           6.7%
+    Acuracidade:         100.0%
 
   DPE4_bucket-08 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1204,7 +1204,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            1
     Inativos:             0
     Attainment:           20.0%
-    Acuracidade:          26.7%
+    Acuracidade:          75.0%
 
   DPE4_bucket-09 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1215,7 +1215,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            1
     Inativos:             0
     Attainment:           33.3%
-    Acuracidade:          40.0%
+    Acuracidade:          83.3%
 
   DPE4_bucket-10 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1226,7 +1226,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           16.7%
-    Acuracidade:          16.7%
+    Acuracidade:         100.0%
 
   DPE4_bucket-11 (CTL-A)
     Demanda diaria:      1,218.0 pacotes/dia
@@ -1237,7 +1237,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:            3.4%
-    Acuracidade:           3.4%
+    Acuracidade:         100.0%
 
   DPE4_bucket-12 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1259,7 +1259,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:            3.4%
-    Acuracidade:           3.4%
+    Acuracidade:         100.0%
 
   DPE4_bucket-14 (CTL-A)
     Demanda diaria:      1,260.0 pacotes/dia
@@ -1270,7 +1270,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            1
     Inativos:             0
     Attainment:            3.3%
-    Acuracidade:           6.7%
+    Acuracidade:          50.0%
 
   DPE4_bucket-15 (CTL-A)
     Demanda diaria:      1,218.0 pacotes/dia
@@ -1281,7 +1281,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            2
     Inativos:             2
     Attainment:           20.7%
-    Acuracidade:          34.5%
+    Acuracidade:          60.0%
 
   DPE4_bucket-16 (CTL-A)
     Demanda diaria:      1,218.0 pacotes/dia
@@ -1292,7 +1292,7 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
     Prospects:            0
     Inativos:             0
     Attainment:           17.2%
-    Acuracidade:          17.2%
+    Acuracidade:         100.0%
 
 
 BASE: DPR2 | BDM: SP/SUL
@@ -1322,7 +1322,7 @@ BASE: DPR2 | BDM: SP/SUL
     Prospects:            2
     Inativos:             1
     Attainment:           12.1%
-    Acuracidade:          15.4%
+    Acuracidade:          78.6%
 
   DPR2_bucket-02 (CTL-A)
     Demanda diaria:      3,822.0 pacotes/dia
@@ -1333,7 +1333,7 @@ BASE: DPR2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:            5.5%
-    Acuracidade:           7.7%
+    Acuracidade:          71.4%
 
   DPR2_bucket-03 (CTL-A)
     Demanda diaria:      3,822.0 pacotes/dia
@@ -1344,7 +1344,7 @@ BASE: DPR2 | BDM: SP/SUL
     Prospects:            1
     Inativos:             2
     Attainment:           13.2%
-    Acuracidade:          17.6%
+    Acuracidade:          75.0%
 
   DPR2_bucket-04 (CTL-A)
     Demanda diaria:      3,822.0 pacotes/dia
@@ -1355,7 +1355,7 @@ BASE: DPR2 | BDM: SP/SUL
     Prospects:            1
     Inativos:             0
     Attainment:           11.0%
-    Acuracidade:          12.1%
+    Acuracidade:          90.9%
 
   DPR2_bucket-05 (CTL-A)
     Demanda diaria:      3,822.0 pacotes/dia
@@ -1366,7 +1366,7 @@ BASE: DPR2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:           22.0%
-    Acuracidade:          22.0%
+    Acuracidade:         100.0%
 
   DPR2_bucket-06 (CTL-A)
     Demanda diaria:      3,822.0 pacotes/dia
@@ -1377,7 +1377,7 @@ BASE: DPR2 | BDM: SP/SUL
     Prospects:            1
     Inativos:             1
     Attainment:           15.4%
-    Acuracidade:          17.6%
+    Acuracidade:          87.5%
 
 
 BASE: DRJ3 | BDM: RJ/CW
@@ -1407,7 +1407,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:           21.9%
-    Acuracidade:          25.0%
+    Acuracidade:          87.5%
 
   DRJ3_bucket-02 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1418,7 +1418,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:           15.6%
-    Acuracidade:          15.6%
+    Acuracidade:         100.0%
 
   DRJ3_bucket-03 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1429,7 +1429,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            0.0%
-    Acuracidade:           3.1%
+    Acuracidade:           0.0%
 
   DRJ3_bucket-04 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1440,7 +1440,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             1
     Attainment:            0.0%
-    Acuracidade:           3.1%
+    Acuracidade:           0.0%
 
   DRJ3_bucket-05 (CTL-A)
     Demanda diaria:      1,386.0 pacotes/dia
@@ -1451,7 +1451,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             1
     Attainment:            0.0%
-    Acuracidade:           3.0%
+    Acuracidade:           0.0%
 
   DRJ3_bucket-06 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1484,7 +1484,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            0.0%
-    Acuracidade:           3.1%
+    Acuracidade:           0.0%
 
   DRJ3_bucket-09 (CTL-A)
     Demanda diaria:      1,386.0 pacotes/dia
@@ -1517,7 +1517,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             1
     Attainment:           28.1%
-    Acuracidade:          31.2%
+    Acuracidade:          90.0%
 
   DRJ3_bucket-12 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1572,7 +1572,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            0
     Inativos:             0
     Attainment:            6.2%
-    Acuracidade:           6.2%
+    Acuracidade:         100.0%
 
   DRJ3_bucket-17 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1605,7 +1605,7 @@ BASE: DRJ3 | BDM: RJ/CW
     Prospects:            1
     Inativos:             0
     Attainment:            0.0%
-    Acuracidade:           3.1%
+    Acuracidade:           0.0%
 
   DRJ3_bucket-20 (CTL-A)
     Demanda diaria:      1,344.0 pacotes/dia
@@ -1668,7 +1668,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            1.7%
-    Acuracidade:           1.7%
+    Acuracidade:         100.0%
 
   DRS5_bucket-02 (CTL-A)
     Demanda diaria:      2,477.0 pacotes/dia
@@ -1679,7 +1679,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            6.8%
-    Acuracidade:           6.8%
+    Acuracidade:         100.0%
 
   DRS5_bucket-03 (CTL-A)
     Demanda diaria:      2,478.0 pacotes/dia
@@ -1690,7 +1690,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:           11.9%
-    Acuracidade:          15.3%
+    Acuracidade:          77.8%
 
   DRS5_bucket-04 (CTL-A)
     Demanda diaria:      2,478.0 pacotes/dia
@@ -1701,7 +1701,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:           13.6%
-    Acuracidade:          15.3%
+    Acuracidade:          88.9%
 
   DRS5_bucket-05 (CTL-A)
     Demanda diaria:      2,478.0 pacotes/dia
@@ -1734,7 +1734,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:            5.1%
-    Acuracidade:           6.8%
+    Acuracidade:          75.0%
 
   DRS5_bucket-08 (CTL-A)
     Demanda diaria:      2,478.0 pacotes/dia
@@ -1745,7 +1745,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:            0.0%
-    Acuracidade:           3.4%
+    Acuracidade:           0.0%
 
   DRS5_bucket-09 (CTL-A)
     Demanda diaria:      2,476.0 pacotes/dia
@@ -1756,7 +1756,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:            5.1%
-    Acuracidade:          10.2%
+    Acuracidade:          50.0%
 
   DRS5_bucket-10 (CTL-A)
     Demanda diaria:      2,477.0 pacotes/dia
@@ -1767,7 +1767,7 @@ BASE: DRS5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:            1.7%
-    Acuracidade:           3.4%
+    Acuracidade:          50.0%
 
 
 BASE: DSA8 | BDM: ES/BA
@@ -1797,7 +1797,7 @@ BASE: DSA8 | BDM: ES/BA
     Prospects:            1
     Inativos:             0
     Attainment:           11.8%
-    Acuracidade:          16.1%
+    Acuracidade:          73.3%
 
   DSA8_bucket-02 (CTL-A)
     Demanda diaria:      3,864.0 pacotes/dia
@@ -1808,7 +1808,7 @@ BASE: DSA8 | BDM: ES/BA
     Prospects:            0
     Inativos:             0
     Attainment:            7.6%
-    Acuracidade:           7.6%
+    Acuracidade:         100.0%
 
   DSA8_bucket-03 (CTL-A)
     Demanda diaria:      3,906.0 pacotes/dia
@@ -1819,7 +1819,7 @@ BASE: DSA8 | BDM: ES/BA
     Prospects:            0
     Inativos:             0
     Attainment:            2.2%
-    Acuracidade:           3.2%
+    Acuracidade:          66.7%
 
   DSA8_bucket-04 (CTL-A)
     Demanda diaria:      3,864.0 pacotes/dia
@@ -1830,7 +1830,7 @@ BASE: DSA8 | BDM: ES/BA
     Prospects:            0
     Inativos:             1
     Attainment:            2.2%
-    Acuracidade:           3.3%
+    Acuracidade:          66.7%
 
 
 BASE: DSP2 | BDM: SP/SUL
@@ -1860,7 +1860,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:           30.8%
-    Acuracidade:          38.5%
+    Acuracidade:          80.0%
 
   DSP2_bucket-02 (CTL-A)
     Demanda diaria:      1,638.0 pacotes/dia
@@ -1871,7 +1871,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:           33.3%
-    Acuracidade:          35.9%
+    Acuracidade:          92.9%
 
   DSP2_bucket-03 (CTL-A)
     Demanda diaria:      1,638.0 pacotes/dia
@@ -1882,7 +1882,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:           15.4%
-    Acuracidade:          20.5%
+    Acuracidade:          75.0%
 
   DSP2_bucket-04 (CTL-A)
     Demanda diaria:      1,638.0 pacotes/dia
@@ -1893,7 +1893,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            1
     Inativos:             3
     Attainment:           10.3%
-    Acuracidade:          23.1%
+    Acuracidade:          44.4%
 
   DSP2_bucket-05 (CTL-A)
     Demanda diaria:      1,638.0 pacotes/dia
@@ -1904,7 +1904,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:           12.8%
-    Acuracidade:          23.1%
+    Acuracidade:          55.6%
 
   DSP2_bucket-06 (CTL-A)
     Demanda diaria:      1,596.0 pacotes/dia
@@ -1915,7 +1915,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:           18.4%
-    Acuracidade:          18.4%
+    Acuracidade:         100.0%
 
   DSP2_bucket-07 (CTL-A)
     Demanda diaria:      1,638.0 pacotes/dia
@@ -1926,7 +1926,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:           17.9%
-    Acuracidade:          20.5%
+    Acuracidade:          87.5%
 
   DSP2_bucket-08 (CTL-A)
     Demanda diaria:      1,594.0 pacotes/dia
@@ -1937,7 +1937,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:           10.5%
-    Acuracidade:          13.2%
+    Acuracidade:          80.0%
 
   DSP2_bucket-09 (CTL-A)
     Demanda diaria:      1,596.0 pacotes/dia
@@ -1948,7 +1948,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:            7.9%
-    Acuracidade:          15.8%
+    Acuracidade:          50.0%
 
   DSP2_bucket-10 (CTL-A)
     Demanda diaria:      1,596.0 pacotes/dia
@@ -1959,7 +1959,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            5.3%
-    Acuracidade:           7.9%
+    Acuracidade:          66.7%
 
   DSP2_bucket-11 (CTL-A)
     Demanda diaria:      1,636.0 pacotes/dia
@@ -1970,7 +1970,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            0
     Inativos:             3
     Attainment:            7.7%
-    Acuracidade:          15.4%
+    Acuracidade:          50.0%
 
   DSP2_bucket-12 (CTL-A)
     Demanda diaria:      1,638.0 pacotes/dia
@@ -1981,7 +1981,7 @@ BASE: DSP2 | BDM: SP/SUL
     Prospects:            1
     Inativos:             2
     Attainment:           38.5%
-    Acuracidade:          48.7%
+    Acuracidade:          78.9%
 
 
 BASE: DSP4 | BDM: SP/SUL
@@ -2011,7 +2011,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            3
     Inativos:             0
     Attainment:            9.8%
-    Acuracidade:          19.5%
+    Acuracidade:          50.0%
 
   DSP4_bucket-02 (CTL-A)
     Demanda diaria:      1,680.0 pacotes/dia
@@ -2022,7 +2022,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            2
     Inativos:             2
     Attainment:            0.0%
-    Acuracidade:          10.0%
+    Acuracidade:           0.0%
 
   DSP4_bucket-03 (CTL-A)
     Demanda diaria:      1,680.0 pacotes/dia
@@ -2033,7 +2033,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            2
     Inativos:             0
     Attainment:            0.0%
-    Acuracidade:           7.5%
+    Acuracidade:           0.0%
 
   DSP4_bucket-04 (CTL-A)
     Demanda diaria:      1,680.0 pacotes/dia
@@ -2044,7 +2044,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            1
     Inativos:             1
     Attainment:            0.0%
-    Acuracidade:           5.0%
+    Acuracidade:           0.0%
 
   DSP4_bucket-05 (CTL-A)
     Demanda diaria:      1,722.0 pacotes/dia
@@ -2055,7 +2055,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            1
     Inativos:             0
     Attainment:            4.9%
-    Acuracidade:           7.3%
+    Acuracidade:          66.7%
 
   DSP4_bucket-06 (CTL-A)
     Demanda diaria:      1,680.0 pacotes/dia
@@ -2066,7 +2066,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            0
     Inativos:             1
     Attainment:            2.5%
-    Acuracidade:           5.0%
+    Acuracidade:          50.0%
 
   DSP4_bucket-07 (CTL-A)
     Demanda diaria:      1,680.0 pacotes/dia
@@ -2077,7 +2077,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            1
     Inativos:             2
     Attainment:            2.5%
-    Acuracidade:          10.0%
+    Acuracidade:          25.0%
 
   DSP4_bucket-08 (CTL-A)
     Demanda diaria:      1,722.0 pacotes/dia
@@ -2088,7 +2088,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            1
     Inativos:             0
     Attainment:            4.9%
-    Acuracidade:           7.3%
+    Acuracidade:          66.7%
 
   DSP4_bucket-09 (CTL-A)
     Demanda diaria:      1,722.0 pacotes/dia
@@ -2099,7 +2099,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            4
     Inativos:             0
     Attainment:            9.8%
-    Acuracidade:          19.5%
+    Acuracidade:          50.0%
 
   DSP4_bucket-10 (CTL-A)
     Demanda diaria:      1,722.0 pacotes/dia
@@ -2110,7 +2110,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            4
     Inativos:             0
     Attainment:            0.0%
-    Acuracidade:           9.8%
+    Acuracidade:           0.0%
 
   DSP4_bucket-11 (CTL-A)
     Demanda diaria:      1,722.0 pacotes/dia
@@ -2121,7 +2121,7 @@ BASE: DSP4 | BDM: SP/SUL
     Prospects:            4
     Inativos:             0
     Attainment:            2.4%
-    Acuracidade:          14.6%
+    Acuracidade:          16.7%
 
 
 BASE: DSP5 | BDM: SP/SUL
@@ -2151,7 +2151,7 @@ BASE: DSP5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            4.1%
-    Acuracidade:           4.1%
+    Acuracidade:         100.0%
 
   DSP5_bucket-02 (CTL-A)
     Demanda diaria:      3,150.0 pacotes/dia
@@ -2173,7 +2173,7 @@ BASE: DSP5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            5.3%
-    Acuracidade:           6.7%
+    Acuracidade:          80.0%
 
   DSP5_bucket-04 (CTL-A)
     Demanda diaria:      3,150.0 pacotes/dia
@@ -2184,7 +2184,7 @@ BASE: DSP5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             0
     Attainment:            6.7%
-    Acuracidade:           9.3%
+    Acuracidade:          71.4%
 
   DSP5_bucket-05 (CTL-A)
     Demanda diaria:      3,150.0 pacotes/dia
@@ -2195,7 +2195,7 @@ BASE: DSP5 | BDM: SP/SUL
     Prospects:            0
     Inativos:             2
     Attainment:           14.7%
-    Acuracidade:          21.3%
+    Acuracidade:          68.8%
 
 
 BASE: XBA1 | BDM: OUTROS

@@ -132,7 +132,8 @@ class TerritoryFit:
     
     @property
     def accuracy(self) -> float:
-        return ((self.filled_slots / self.total_slots) * 100) if self.total_slots > 0 else 0.0
+        active = sum(1 for p in self.partners if p.status == "Active")
+        return ((active / self.filled_slots) * 100) if self.filled_slots > 0 else 0.0
 
     def partners_by_status(self, status: str) -> List[PartnerMetrics]:
         return [p for p in self.partners if p.status == status]

@@ -48,12 +48,13 @@ from main import run_pipeline
 from load_packages import load_packages
 from load_partners import load_partners
 from models import Config
-from phase_setup import run_setup as _run_setup_new, update_territories_geojson
-from phase1_territories import TerritoriesResult, load_territories
+from phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons
+from models import Config, TerritoriesResult, load_territories
 from phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 from phase3_partner_fit import FitResult, run_phase3
 from phase4_webleads import WebleadResult, run_phase4
 from phase5_reports import run_phase5
+from cnpj_lookup import run_cnpj_lookup, CnpjLookupResult
 
 
 # ---------------------------------------------------------------------------
@@ -155,6 +156,9 @@ def run_daily(
     
     update_territories_geojson(output_dir=output_dir, territory_stats=territory_stats)
 
+    # Reconstruir polígonos a partir dos hexágonos H3 reais (pós-matching)
+    rebuild_territory_polygons(output_dir=output_dir, stations=stations)
+
     # Fase 4: webleads
     webleads = run_phase4(
         partner_data=partner_data,
@@ -162,6 +166,20 @@ def run_daily(
         pkg=pkg,
         legacy_bucket_names=legacy_bucket_names,
     )
+
+    # Fase 6: busca CNPJ para slots em aberto (roda antes da Fase 5 para enriquecer relatórios)
+    cnpj_result = None
+    if Config.CNPJ_DB_PATH:
+        try:
+            cnpj_result = run_cnpj_lookup(
+                supply=supply,
+                pkg=pkg,
+                stations=stations,
+            )
+            if cnpj_result.total_candidates > 0:
+                print(f"\n  CNPJ LOOKUP: {cnpj_result.total_candidates} candidatos encontrados.")
+        except FileNotFoundError as e:
+            print(f"\n  WARN CNPJ LOOKUP: {e}")
 
     # Fase 5: relatorios
     paths = run_phase5(
@@ -171,6 +189,8 @@ def run_daily(
         webleads=webleads,
         pkg=pkg,
         output_dir=output_dir,
+        stations=stations,
+        cnpj_result=cnpj_result,
     )
 
     # Sumario de attainment por base

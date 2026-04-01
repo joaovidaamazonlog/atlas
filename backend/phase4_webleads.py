@@ -36,9 +36,10 @@ config ainda usa o formato antigo, atualize os nomes para o novo padrao
 
 Decisions possiveis
 -------------------
-    "Qualificar lead"              hex resolvido, territorio identificado
-    "CEP invalido ou nao mapeado"  CEP ausente, vazio ou sem hex no indice
-    "Territorio nao identificado"  hex resolvido mas fora de qualquer territorio
+    "Qualificar lead"                      CEP valido, hex e territorio encontrados
+    "CEP invalido"                         CEP nao tem exatamente 8 digitos
+    "CEP nao mapeado - analisar manualmente"  CEP valido mas nao existe no indice
+    "Territorio nao identificado"          Hex encontrado mas fora de qualquer territorio
 """
 
 from __future__ import annotations
@@ -51,8 +52,7 @@ import pandas as pd
 
 from load_packages import PackageData
 from load_partners import PartnerData
-from models import Config, PartnerMetrics
-from phase1_territories import TerritoriesResult
+from models import Config, PartnerMetrics, TerritoriesResult
 
 
 # ---------------------------------------------------------------------------
@@ -84,33 +84,45 @@ class WebleadResult:
 # HELPERS
 # ---------------------------------------------------------------------------
 
-def _find_hex_by_cep(cep: str, hex_to_ceps: Dict[str, Set[str]]) -> Optional[str]:
+def _find_hex_by_cep(
+    cep: str,
+    hex_to_ceps: Dict[str, Set[str]],
+    demand_map_all: Optional[Dict[str, int]] = None,
+) -> Tuple[Optional[str], str]:
     """
     Localiza o hex mais apropriado para o CEP fornecido.
 
-    Passo 1: correspondencia exata (8 digitos).
-    Passo 2: prefixo de 5 digitos — elege o hex com mais CEPs no prefixo.
+    Retorna (hex_id, status) onde status é:
+        "ok"          — hex encontrado
+        "invalid"     — CEP não tem exatamente 8 dígitos
+        "not_mapped"  — CEP válido mas não existe no índice
+
+    Busca: encontra todos os hexes que contêm o CEP e retorna o de maior
+    demanda (ou o primeiro, se demand_map_all não disponível).
+    Isso corresponde ao hex onde o CEP "se repete mais vezes" na grade.
     """
-    if not cep or not str(cep).strip().isdigit():
-        return None
+    # Limpar e validar: remover não-dígitos
+    cep_clean = "".join(c for c in str(cep or "") if c.isdigit())
 
-    cep = str(cep).zfill(8)
+    if len(cep_clean) != 8:
+        return None, "invalid"
 
-    # Passo 1 — exato
-    for h, ceps in hex_to_ceps.items():
-        if cep in ceps:
-            return h
+    # Buscar todos os hexes que contêm este CEP
+    matching = [h for h, ceps in hex_to_ceps.items() if cep_clean in ceps]
 
-    # Passo 2 — prefixo
-    prefix = cep[:5]
-    best_hex, best_count = None, 0
-    for h, ceps in hex_to_ceps.items():
-        count = sum(1 for c in ceps if c.startswith(prefix))
-        if count > best_count:
-            best_count = count
-            best_hex = h
+    if not matching:
+        return None, "not_mapped"
 
-    return best_hex
+    # Se múltiplos hexes contêm o CEP, escolher o de maior demanda
+    if len(matching) == 1:
+        return matching[0], "ok"
+
+    if demand_map_all:
+        best = max(matching, key=lambda h: demand_map_all.get(h, 0))
+    else:
+        best = matching[0]
+
+    return best, "ok"
 
 
 def _get_account_manager(
@@ -121,12 +133,10 @@ def _get_account_manager(
     """
     Retorna o salesforce_id do ADE responsavel pelo territorio.
 
-    Tenta dois formatos de chave no config:
-        Novo:   "DSP2_T01"         (padrao desta arquitetura)
-        Legado: "DSP2_bucket-1"    (formato do optimization_hub.py original)
-
-    O parametro legacy_bucket_names=True ativa a tentativa do formato legado
-    como fallback, util durante periodo de transicao do config.
+    Suporta os formatos de territory_id:
+        Novo setup:   "DSP2_bucket-01"
+        Phase1:       "DSP2_T01"
+        Legado:       "DSP2_bucket-1"  (sem zero-padding)
     """
     managers = Config.ADES_ACCOUNT_MANAGERS
     if not managers:
@@ -134,13 +144,16 @@ def _get_account_manager(
 
     keys_to_try = [territory_id]
     if legacy_bucket_names:
-        # Converte "DSP2_T01" -> "DSP2_bucket-1" para compatibilidade
-        try:
-            seq = int(territory_id.split("_T")[-1])
-            legacy_key = f"{station_code}_bucket-{seq}"
-            keys_to_try.append(legacy_key)
-        except (ValueError, IndexError):
-            pass
+        # Tentar extrair sequência e gerar chaves alternativas
+        for sep in ("_bucket-", "_T"):
+            if sep in territory_id:
+                try:
+                    seq = int(territory_id.split(sep)[-1])
+                    keys_to_try.append(f"{station_code}_bucket-{seq}")
+                    keys_to_try.append(f"{station_code}_T{seq:02d}")
+                except (ValueError, IndexError):
+                    pass
+                break
 
     for manager in managers:
         buckets = manager.get("buckets", [])
@@ -152,12 +165,21 @@ def _get_account_manager(
 
 
 def _ctl_name_for_territory(territory_id: str) -> str:
-    """Retorna o nome do CTL a partir do numero do territorio."""
-    try:
-        seq = int(territory_id.split("_T")[-1]) - 1
-        return f"CTL-{chr(65 + (seq // 5))}"
-    except (ValueError, IndexError):
-        return "CTL-A"
+    """
+    Retorna o nome do CTL a partir do territory_id.
+
+    Suporta formatos:
+        "DSP2_T01"       → sequência = 1
+        "DSP2_bucket-01" → sequência = 1
+    """
+    for sep in ("_bucket-", "_T"):
+        if sep in territory_id:
+            try:
+                seq = int(territory_id.split(sep)[-1]) - 1
+                return f"CTL-{chr(65 + (seq // 5))}"
+            except (ValueError, IndexError):
+                break
+    return "CTL-A"
 
 
 # ---------------------------------------------------------------------------
@@ -173,19 +195,14 @@ def run_phase4(
     """
     Executa a Fase 4: qualificacao e roteamento de web leads.
 
-    Parametros
-    ----------
-    partner_data        : PartnerData       Output de load_partners().
-    territories         : TerritoriesResult Output da Fase 1.
-    pkg                 : PackageData       Output de load_packages()
-                                            (usado para hex_to_ceps).
-    legacy_bucket_names : bool              Se True, tenta o formato antigo
-                                            de nomes de bucket no config de
-                                            account managers (compatibilidade).
+    Decisoes
+    --------
+    CEP sem 8 digitos                  → "CEP invalido"
+    CEP com 8 digitos, nao encontrado  → "CEP nao mapeado - analisar manualmente"
+    Hex encontrado, sem territorio     → "Territorio nao identificado"
+    Hex + territorio encontrados       → "Qualificar lead"
 
-    Retorna
-    -------
-    WebleadResult com lista de PartnerMetrics (entity_type="WEB_LEAD").
+    O CSV de saida contem TODOS os webleads carregados, independente da decisao.
     """
     print(f"\n{'='*60}")
     print(f"  FASE 4 — QUALIFICACAO DE WEB LEADS")
@@ -199,33 +216,32 @@ def run_phase4(
 
     print(f"  {len(df):,} web leads para processar...")
 
-    # Normalizar CEP
-    zip_col = "zip_clean" if "zip_clean" in df.columns else "zip_code"
-    if zip_col not in df.columns:
-        df["zip_clean"] = ""
-    else:
-        df["zip_clean"] = (
-            df[zip_col]
-            .astype(str)
-            .str.replace(r"\D", "", regex=True)
-            .str.zfill(8)
-        )
+    # Mapa de demanda global para desempate de hex quando CEP aparece em múltiplos hexes
+    demand_map_all: Dict[str, int] = {}
+    for station in territories.stations:
+        demand_map_all.update(pkg.demand_map(station))
 
     results: List[PartnerMetrics] = []
-    n_qualified = 0
-    n_no_cep    = 0
-    n_no_terr   = 0
+    n_qualified   = 0
+    n_invalid_cep = 0
+    n_not_mapped  = 0
+    n_no_terr     = 0
 
     for _, row in df.iterrows():
         sfid         = str(row.get("salesforce_id", ""))
         partner_name = str(row.get("partner_name", ""))
-        cep          = str(row.get("zip_clean", "")).strip()
+
+        # Normalizar CEP da linha (remover não-dígitos, sem zfill aqui — validação é em _find_hex)
+        raw_cep = str(row.get("zip_code", "") or row.get("zip_clean", "") or "")
 
         # ── 1. Resolver CEP → hex ─────────────────────────────────────────
-        origin_hex = _find_hex_by_cep(cep, pkg.hex_to_ceps)
+        origin_hex, cep_status = _find_hex_by_cep(
+            raw_cep, pkg.hex_to_ceps, demand_map_all
+        )
+        cep_clean = "".join(c for c in raw_cep if c.isdigit())
 
-        if not origin_hex:
-            n_no_cep += 1
+        if cep_status == "invalid":
+            n_invalid_cep += 1
             results.append(PartnerMetrics(
                 origin_hex    = None,
                 station_code  = None,
@@ -235,8 +251,26 @@ def run_phase4(
                 status        = "New",
                 partner_name  = partner_name,
                 salesforce_id = sfid,
-                zip_code      = cep,
-                decision      = "CEP invalido ou nao mapeado",
+                zip_code      = cep_clean or raw_cep,
+                decision      = "CEP invalido",
+                lat           = float("nan"),
+                lon           = float("nan"),
+            ))
+            continue
+
+        if cep_status == "not_mapped":
+            n_not_mapped += 1
+            results.append(PartnerMetrics(
+                origin_hex    = None,
+                station_code  = None,
+                radius_s      = 0,
+                capacity_s    = 0,
+                entity_type   = "WEB_LEAD",
+                status        = "New",
+                partner_name  = partner_name,
+                salesforce_id = sfid,
+                zip_code      = cep_clean,
+                decision      = "CEP nao mapeado - analisar manualmente",
                 lat           = float("nan"),
                 lon           = float("nan"),
             ))
@@ -257,8 +291,8 @@ def run_phase4(
                 status        = "New",
                 partner_name  = partner_name,
                 salesforce_id = sfid,
-                zip_code      = cep,
-                decision      = "Territorio nao identificado",
+                zip_code      = cep_clean,
+                decision      = "Out of jurisdiction - analisar manualmente",
                 lat           = lat,
                 lon           = lon,
             ))
@@ -287,7 +321,7 @@ def run_phase4(
             status        = "New",
             partner_name  = partner_name,
             salesforce_id = sfid,
-            zip_code      = cep,
+            zip_code      = cep_clean,
             cluster_name  = territory_id,
             ctl_name      = ctl_name,
             bdm_cluster   = bdm_cluster,
@@ -298,9 +332,10 @@ def run_phase4(
             bucket        = territory_id,
         ))
 
-    print(f"  Qualificados:            {n_qualified:>4}")
-    print(f"  CEP invalido/nao mapeado:{n_no_cep:>4}")
-    print(f"  Territorio nao encontrado:{n_no_terr:>3}")
+    print(f"  Qualificados:                       {n_qualified:>4}")
+    print(f"  CEP invalido (< ou > 8 digitos):    {n_invalid_cep:>4}")
+    print(f"  CEP nao mapeado:                    {n_not_mapped:>4}")
+    print(f"  Territorio nao identificado:        {n_no_terr:>4}")
     print(f"\n{'='*60}")
     print(f"  FASE 4 CONCLUIDA — {len(results)} leads processados")
     print(f"{'='*60}\n")

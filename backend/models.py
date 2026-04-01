@@ -9,7 +9,9 @@ Todos os demais módulos importam daqui — nunca de optimization_hub.py diretam
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 import config as configuration
@@ -26,6 +28,7 @@ class Config:
     BASE_PARTNERS        = configuration.BASE_PARTNERS
     BASE_JURISDICTION    = configuration.BASE_JURISDICTION
     DEST_FOLDER          = configuration.DEST_FOLDER
+    CNPJ_DB_PATH         = getattr(configuration, "DB_EMPRESAS", None)
     H3_RES               = configuration.H3_RESOLUTION
     # Resolucao H3 por base — permite usar res 8 em bases grandes (menos hexes
     # perifericos, poligonos mais limpos) e res 9 em bases menores (granularidade).
@@ -281,3 +284,129 @@ class OptimizationReport:
     hex_to_cluster: Dict[str, str]
     base_metrics: BaseMetrics
     cluster_metrics: Dict[str, ClusterMetrics] = field(default_factory=dict)
+
+
+# ---------------------------------------------------------------------------
+# TERRITORIES RESULT  (movido de phase1_territories.py)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class TerritoriesResult:
+    """Resultado do setup de territórios — carregado pelo modo daily."""
+
+    # Indice principal: territory_id -> metadados
+    territory_index: Dict[str, dict] = field(default_factory=dict)
+
+    # Lookup rapido: hex_id -> territory_id  (usado pelas fases seguintes)
+    hex_to_territory: Dict[str, str] = field(default_factory=dict)
+
+    # Caminhos dos artefatos persistidos
+    geojson_path: Optional[Path] = None
+    index_path: Optional[Path] = None
+
+    @property
+    def stations(self) -> List[str]:
+        seen = []
+        for meta in self.territory_index.values():
+            s = meta["station_code"]
+            if s not in seen:
+                seen.append(s)
+        return seen
+
+    def territories_for(self, station_code: str) -> List[dict]:
+        return [m for m in self.territory_index.values()
+                if m["station_code"] == station_code]
+
+    def territory_demand_map(self, station_code: str) -> Dict[str, int]:
+        """Retorna {territory_id: total_demand} para uma base."""
+        return {
+            tid: meta["total_demand"]
+            for tid, meta in self.territory_index.items()
+            if meta["station_code"] == station_code
+        }
+
+
+def load_territories(output_dir: str = None) -> "TerritoriesResult":
+    """
+    Carrega territories_index.json sem re-rodar o setup.
+    Usado pelo modo daily do orquestrador.
+    Levanta FileNotFoundError se o setup ainda não foi executado.
+    """
+    out_dir    = Path(output_dir or Config.DEST_FOLDER)
+    index_path = out_dir / "territories_index.json"
+    geojson_path = out_dir / "territories.geojson"
+
+    if not index_path.exists():
+        raise FileNotFoundError(
+            f"territories_index.json nao encontrado em {out_dir}.\n"
+            "Execute o modo 'setup' do orquestrador para gerar os territorios."
+        )
+
+    print(f"[load_territories] Carregando {index_path} ...")
+    with open(index_path, "r", encoding="utf-8") as f:
+        territory_index = json.load(f)
+
+    hex_to_territory: Dict[str, str] = {}
+    for territory_id, meta in territory_index.items():
+        for hex_id in meta.get("hex_ids", []):
+            hex_to_territory[hex_id] = territory_id
+
+    result = TerritoriesResult(
+        territory_index=territory_index,
+        hex_to_territory=hex_to_territory,
+        geojson_path=geojson_path if geojson_path.exists() else None,
+        index_path=index_path,
+    )
+
+    print(f"  {len(territory_index)} territorios | "
+          f"{len(hex_to_territory):,} hexes carregados.")
+    return result
+
+
+# ---------------------------------------------------------------------------
+# PROSPECT CANDIDATE  (output do cnpj_lookup.py)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class ProspectCandidate:
+    """
+    Empresa encontrada no banco CNPJ da Receita Federal como candidata
+    a parceiro logístico para um slot ideal sem match.
+    """
+    cnpj:              str
+    razao_social:      str
+    porte_empresa:     str          # "01"=N/I, "03"=ME, "05"=EPP
+    tipo_logradouro:   str
+    logradouro:        str
+    numero:            str
+    complemento:       str
+    bairro:            str
+    cep:               str
+    uf:                str
+    municipio:         str
+    telefone_1:        str
+    telefone_2:        str
+    email:             str
+    responsavel:       str          # nome do sócio/responsável principal
+    cnae_principal:    str
+    slot_id:           str          # slot ideal que originou a busca
+    territory_id:      str
+    station_code:      str
+
+    @property
+    def porte_descricao(self) -> str:
+        return {"01": "Não informado", "03": "ME", "05": "EPP"}.get(
+            self.porte_empresa, self.porte_empresa
+        )
+
+    @property
+    def endereco_completo(self) -> str:
+        parts = [
+            f"{self.tipo_logradouro} {self.logradouro}".strip(),
+            self.numero,
+            self.complemento,
+            self.bairro,
+            f"{self.municipio}/{self.uf}",
+            f"CEP {self.cep}",
+        ]
+        return ", ".join(p for p in parts if p)

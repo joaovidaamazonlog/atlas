@@ -84,8 +84,7 @@ from typing import Dict, List, Optional, Tuple
 import h3
 from ortools.sat.python import cp_model
 
-from models import Allocation, Config, IdealSlot
-from phase1_territories import TerritoriesResult, load_territories
+from models import Allocation, Config, IdealSlot, TerritoriesResult
 from load_packages import PackageData
 
 

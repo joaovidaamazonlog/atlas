@@ -49,8 +49,7 @@ from typing import Dict, List, Optional, Set
 import h3
 
 from load_packages import PackageData
-from models import Config, IdealSlot, PartnerMetrics
-from phase1_territories import TerritoriesResult
+from models import Config, IdealSlot, PartnerMetrics, TerritoriesResult
 from phase2_ideal_supply import IdealSupplyResult
 from phase3_partner_fit import FitResult, TerritoryFit
 from phase4_webleads import WebleadResult
@@ -95,10 +94,12 @@ def _write_strategic(
     supply: IdealSupplyResult,
     fit: FitResult,
     pkg: PackageData,
+    cnpj_result=None,
 ) -> None:
     """
     Lista apenas as vagas ideais sem parceiro vinculado (is_open=True),
     agrupadas por base → CTL → territorio.
+    Quando cnpj_result é fornecido, lista as empresas candidatas por slot.
     """
     with open(path, "w", encoding="utf-8") as f:
         f.write(f"RELATORIO ESTRATEGICO — OPORTUNIDADES EM ABERTO\n")
@@ -110,7 +111,6 @@ def _write_strategic(
             f.write(f"\n📍 BASE: {station} | BDM: {bdm}\n")
             f.write(_line())
 
-            # Agrupar territorios por CTL
             t_metas = sorted(
                 territories.territories_for(station),
                 key=lambda m: (_ctl_for_territory(m["territory_id"]),
@@ -157,6 +157,28 @@ def _write_strategic(
                         f.write(f"              CEPs-alvo (top 10): {', '.join(ceps) or 'N/D'}\n")
                         f.write(f"              Localizacao: https://maps.google.com/maps"
                                 f"?q={slot.lat:.6f},{slot.lon:.6f}\n")
+
+                        # Empresas candidatas (CNPJ lookup)
+                        if cnpj_result:
+                            candidates = cnpj_result.candidates_by_slot.get(slot.slot_id, [])
+                            if candidates:
+                                f.write(f"\n              🏢 Empresas candidatas ({len(candidates)}):\n")
+                                for c in candidates:
+                                    f.write(f"              ┌─ {c.razao_social} ({c.porte_descricao})\n")
+                                    f.write(f"              │  CNPJ:       {c.cnpj}\n")
+                                    f.write(f"              │  Endereço:   {c.endereco_completo}\n")
+                                    if c.telefone_1:
+                                        f.write(f"              │  Telefone 1: {c.telefone_1}\n")
+                                    if c.telefone_2:
+                                        f.write(f"              │  Telefone 2: {c.telefone_2}\n")
+                                    if c.email:
+                                        f.write(f"              │  Email:      {c.email}\n")
+                                    if c.responsavel:
+                                        f.write(f"              └─ Responsável: {c.responsavel}\n")
+                                    else:
+                                        f.write(f"              └─\n")
+                            else:
+                                f.write(f"\n              ℹ️  Nenhuma empresa candidata encontrada nos CEPs desta vaga.\n")
 
         f.write(_line("="))
 
@@ -265,22 +287,53 @@ def _write_executive(
 def _write_partners_csv(
     path: Path,
     fit: FitResult,
+    stations: Optional[List[str]] = None,
 ) -> None:
+    """
+    Gera CSV com todos os parceiros dos tipos EXISTING, PROSPECT e INACTIVE_EXITED.
+    Inclui parceiros com e sem slot matched.
+    Quando stations é fornecido, faz merge com o arquivo existente preservando
+    as demais stations.
+    """
+    INCLUDED_TYPES = {"EXISTING", "PROSPECT", "INACTIVE_EXITED"}
+
     fieldnames = [
-        "station_code", "territory_id", "status",
+        "station_code", "territory_id", "status", "entity_type",
         "salesforce_id", "partner_name", "store_id",
         "decision", "matched_slot_id",
     ]
+
+    # Linhas existentes de outras stations (merge parcial)
+    existing_rows: List[dict] = []
+    if stations and path.exists():
+        try:
+            with open(path, "r", encoding="utf-8", newline="") as f:
+                reader = csv.DictReader(f)
+                existing_rows = [
+                    row for row in reader
+                    if row.get("station_code") not in stations
+                ]
+            print(f"  Merge {path.name}: mantendo {len(existing_rows)} linhas de outras stations.")
+        except Exception as e:
+            print(f"  WARN merge {path.name} falhou ({e}) — sobrescrevendo.")
+
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
+        # Escrever linhas preservadas
+        for row in existing_rows:
+            writer.writerow({k: row.get(k, "") for k in fieldnames})
+        # Escrever novas linhas
         for t_fit in sorted(fit.territories.values(),
                             key=lambda t: (t.station_code, t.territory_id)):
             for p in t_fit.partners:
+                if p.entity_type not in INCLUDED_TYPES:
+                    continue
                 writer.writerow({
                     "station_code":    p.station_code or "",
                     "territory_id":    t_fit.territory_id,
                     "status":          p.status,
+                    "entity_type":     p.entity_type,
                     "salesforce_id":   p.salesforce_id,
                     "partner_name":    p.partner_name,
                     "store_id":        p.store_id or "",
@@ -297,15 +350,33 @@ def _write_partners_csv(
 def _write_webleads_csv(
     path: Path,
     webleads: WebleadResult,
+    stations: Optional[List[str]] = None,
 ) -> None:
-    fieldnames = ["Id", "Delivery Station", "Jurisdiction", "Name", "OwnerId", "decision"]
+    fieldnames = ["Id", "Delivery Station", "Cep", "Jurisdiction", "Name", "OwnerId", "decision"]
+
+    existing_rows: List[dict] = []
+    if stations and path.exists():
+        try:
+            with open(path, "r", encoding="utf-8", newline="") as f:
+                reader = csv.DictReader(f)
+                existing_rows = [
+                    row for row in reader
+                    if row.get("Delivery Station") not in stations
+                ]
+            print(f"  Merge {path.name}: mantendo {len(existing_rows)} linhas de outras stations.")
+        except Exception as e:
+            print(f"  WARN merge {path.name} falhou ({e}) — sobrescrevendo.")
+
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
+        for row in existing_rows:
+            writer.writerow({k: row.get(k, "") for k in fieldnames})
         for lead in webleads.leads:
             writer.writerow({
                 "Id":               lead.salesforce_id,
                 "Delivery Station": lead.station_code or "",
+                "Cep":              lead.zip_code or "",
                 "Jurisdiction":     lead.cluster_name or lead.bucket or "",
                 "Name":             lead.partner_name,
                 "OwnerId":          lead.owner_id or "",
@@ -324,6 +395,8 @@ def _write_geojson(
     supply: IdealSupplyResult,
     fit: FitResult,
     pkg: PackageData,
+    stations: Optional[List[str]] = None,
+    cnpj_result=None,
 ) -> None:
     """
     FeatureCollection com tres camadas:
@@ -331,8 +404,25 @@ def _write_geojson(
     TERRITORY_HEX  — poligono de cada hex com metadados do territorio
     PARTNER_POINT  — ponto de cada parceiro (matched ou excedente)
     IDEAL_SLOT     — ponto de cada vaga ideal ainda em aberto
+
+    Quando stations é fornecido, faz merge com o arquivo existente
+    preservando as features das demais stations.
     """
-    features = []
+    # Carregar features existentes de outras stations (merge parcial)
+    existing_features: List[dict] = []
+    if stations and path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+            existing_features = [
+                ft for ft in existing.get("features", [])
+                if ft.get("properties", {}).get("delivery_station") not in stations
+            ]
+            print(f"  Merge {path.name}: mantendo {len(existing_features)} features de outras stations.")
+        except Exception as e:
+            print(f"  WARN merge {path.name} falhou ({e}) — sobrescrevendo.")
+
+    features: List[dict] = []
 
     # ── Camada 1: hexagonos por territorio ───────────────────────────────
     for territory_id, hex_id in territories.hex_to_territory.items():
@@ -406,6 +496,23 @@ def _write_geojson(
             continue
         ceps = _ceps_for_slot(slot, pkg.hex_to_ceps)
 
+        # Empresas candidatas do CNPJ lookup
+        opportunities = []
+        if cnpj_result:
+            for c in cnpj_result.candidates_by_slot.get(slot.slot_id, []):
+                opportunities.append({
+                    "cnpj":          c.cnpj,
+                    "razao_social":  c.razao_social,
+                    "porte":         c.porte_descricao,
+                    "endereco":      c.endereco_completo,
+                    "cep":           c.cep,
+                    "telefone_1":    c.telefone_1,
+                    "telefone_2":    c.telefone_2,
+                    "email":         c.email,
+                    "responsavel":   c.responsavel,
+                    "cnae_principal": c.cnae_principal,
+                })
+
         features.append({
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [slot.lon, slot.lat]},
@@ -417,17 +524,20 @@ def _write_geojson(
                 "radius_s":         slot.radius_s,
                 "capacity_day":     round(slot.capacity_s, 1),
                 "ceps":             ceps,
+                "opportunities":    opportunities,
+                "n_opportunities":  len(opportunities),
             },
         })
 
     geojson = {
         "type": "FeatureCollection",
-        "features": features,
+        "features": existing_features + features,
         "metadata": {
-            "generated_at":   datetime.now().isoformat(timespec="seconds"),
-            "n_hex_features": sum(1 for ft in features if ft["properties"]["type"] == "TERRITORY_HEX"),
-            "n_partners":     sum(1 for ft in features if ft["properties"]["type"] == "PARTNER_POINT"),
-            "n_open_slots":   sum(1 for ft in features if ft["properties"]["type"] == "IDEAL_SLOT"),
+            "generated_at":    datetime.now().isoformat(timespec="seconds"),
+            "n_hex_features":  sum(1 for ft in existing_features + features if ft["properties"]["type"] == "TERRITORY_HEX"),
+            "n_partners":      sum(1 for ft in existing_features + features if ft["properties"]["type"] == "PARTNER_POINT"),
+            "n_open_slots":    sum(1 for ft in existing_features + features if ft["properties"]["type"] == "IDEAL_SLOT"),
+            "n_opportunities": sum(ft["properties"].get("n_opportunities", 0) for ft in existing_features + features if ft["properties"]["type"] == "IDEAL_SLOT"),
         },
     }
 
@@ -439,6 +549,7 @@ def _write_geojson(
           f"({geojson['metadata']['n_hex_features']:,} hexes | "
           f"{geojson['metadata']['n_partners']:,} parceiros | "
           f"{geojson['metadata']['n_open_slots']:,} vagas abertas | "
+          f"{geojson['metadata']['n_opportunities']:,} candidatos CNPJ | "
           f"{size_mb:.1f} MB)")
 
 
@@ -453,6 +564,8 @@ def run_phase5(
     webleads: WebleadResult,
     pkg: PackageData,
     output_dir: str = None,
+    stations: Optional[List[str]] = None,
+    cnpj_result=None,
 ) -> Dict[str, Path]:
     """
     Executa a Fase 5: geracao de todos os artefatos de saida.
@@ -484,7 +597,7 @@ def run_phase5(
 
     # 1. Oportunidades estrategicas
     p = out_dir / "OPORTUNIDADES_ESTRATEGICAS.txt"
-    _write_strategic(p, territories, supply, fit, pkg)
+    _write_strategic(p, territories, supply, fit, pkg, cnpj_result=cnpj_result)
     paths["strategic"] = p
 
     # 2. Relatorio executivo
@@ -494,17 +607,17 @@ def run_phase5(
 
     # 3. Partners CSV
     p = out_dir / "PARTNERS_PER_DS_BUCKET.csv"
-    _write_partners_csv(p, fit)
+    _write_partners_csv(p, fit, stations=stations)
     paths["partners_csv"] = p
 
     # 4. Webleads CSV
     p = out_dir / "webleads_evaluated.csv"
-    _write_webleads_csv(p, webleads)
+    _write_webleads_csv(p, webleads, stations=stations)
     paths["webleads_csv"] = p
 
     # 5. GeoJSON final
     p = out_dir / "optimization_data.geojson"
-    _write_geojson(p, territories, supply, fit, pkg)
+    _write_geojson(p, territories, supply, fit, pkg, stations=stations, cnpj_result=cnpj_result)
     paths["geojson"] = p
 
     print(f"\n{'='*60}")

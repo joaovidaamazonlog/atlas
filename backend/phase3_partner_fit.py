@@ -69,8 +69,7 @@ import h3
 
 from load_packages import PackageData
 from load_partners import PartnerData, row_to_partner_metrics
-from models import Allocation, Config, IdealSlot, PartnerMetrics
-from phase1_territories import TerritoriesResult
+from models import Allocation, Config, IdealSlot, PartnerMetrics, TerritoriesResult
 from phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 
 
@@ -216,6 +215,7 @@ def _match_station(
     supply: IdealSupplyResult,
     partner_data: PartnerData,
     pkg: PackageData,
+    territory_polys: Dict[str, object] = None,
 ) -> Tuple[Dict[str, TerritoryFit], List[PartnerMetrics], Dict[str, List[PartnerMetrics]]]:
     """
     Executa o matching completo para uma base.
@@ -280,6 +280,22 @@ def _match_station(
                            str(row.get("salesforce_id", "")),
                            row, "INACTIVE_EXITED", station_code))
 
+    # ── Pré-computar território de cada candidato ─────────────────────────
+    # Feito ANTES do matching para que o territory_id do parceiro reflita
+    # sua localização geográfica real, não o território do slot que ele cobre.
+    candidate_territory: Dict[str, str] = {}  # sfid -> territory_id
+    for prio, origin_hex, sfid, row, entity_type, p_station in candidates:
+        p_lat = float(row.get("lat", 0) or 0)
+        p_lon = float(row.get("lon", 0) or 0)
+        tid = _get_territory_for_partner(
+            origin_hex, territories_meta,
+            lat=p_lat or None, lon=p_lon or None,
+            territory_polys=territory_polys,
+            partner_id=sfid,
+        )
+        if tid:
+            candidate_territory[sfid] = tid
+
     # ── Matching greedy ───────────────────────────────────────────────────
     # slot_id -> IdealSlot (modificavel)
     slot_map: Dict[str, IdealSlot] = {s.slot_id: s for s in all_slots}
@@ -294,12 +310,15 @@ def _match_station(
         if slot.slot_id in allocated_slots:
             continue
 
-        # Candidatos elegiveis: origin_hex em grid_disk(slot.origin_hex, 1)
+        # Candidatos elegiveis:
+        # - origin_hex em grid_disk(slot.origin_hex, 1) — proximidade física
+        # - território pré-computado == território do slot — sem vazamento entre territórios
         slot_neighbors = set(h3.grid_disk(slot.origin_hex, 1))
         eligible = [
             c for c in candidates
-            if c[2] not in allocated_sids        # nao alocado
-            and c[1] in slot_neighbors            # dentro da vizinhanca
+            if c[2] not in allocated_sids
+            and c[1] in slot_neighbors
+            and candidate_territory.get(c[2]) == slot.bucket_id
         ]
 
         if not eligible:
@@ -348,10 +367,8 @@ def _match_station(
         )
         pm.matched_slot_id = slot.slot_id
 
-        # Territorio deste slot
-        territory_id = slot.bucket_id
-        t_meta = next((m for m in territories_meta
-                       if m["territory_id"] == territory_id), {})
+        # Território do parceiro (pré-computado pela sua localização geográfica)
+        territory_id = candidate_territory.get(sfid, slot.bucket_id)
         bucket_idx = int(territory_id.split("bucket-")[-1]) - 1
         pm.cluster_name = territory_id
         pm.bdm_cluster = bdm_cluster
@@ -368,7 +385,7 @@ def _match_station(
             continue
 
         status_str = str(row.get("status", ""))
-        
+
         # Decision para parceiros NAO-MATCHED (baseado em status)
         if status_str == "Active":
             decision = "Nao esta em uma localizacao ideal"
@@ -393,8 +410,8 @@ def _match_station(
         )
         pm.bdm_cluster = bdm_cluster
 
-        # Associar ao territorio pelo hex de origem (sempre dentro de jurisdicao neste ponto)
-        territory_id = _get_territory_for_partner(origin_hex, territories_meta)
+        # Território já pré-computado
+        territory_id = candidate_territory.get(sfid)
         if territory_id:
             bucket_idx = int(territory_id.split("bucket-")[-1]) - 1
             pm.cluster_name = territory_id
@@ -455,40 +472,112 @@ def _find_territory_for_hex(
     return None
 
 
+def _load_territory_polygons(output_dir: Path) -> Dict[str, object]:
+    """
+    Carrega os polígonos de território do territories.geojson como objetos Shapely.
+    Retorna {territory_id: shapely_geometry} para uso nos fallbacks de point-in-polygon.
+    """
+    try:
+        from shapely.geometry import shape
+        geojson_path = output_dir / "territories.geojson"
+        if not geojson_path.exists():
+            return {}
+        with open(geojson_path, "r", encoding="utf-8") as f:
+            gj = json.load(f)
+        polys: Dict[str, object] = {}
+        for ft in gj.get("features", []):
+            tid = ft.get("properties", {}).get("territory_id")
+            if tid:
+                try:
+                    polys[tid] = shape(ft["geometry"])
+                except Exception:
+                    pass
+        return polys
+    except Exception:
+        return {}
+
+
 def _get_territory_for_partner(
     origin_hex: str,
     territories_meta: List[dict],
+    lat: float = None,
+    lon: float = None,
+    territory_polys: Dict[str, object] = None,
+    partner_id: str = "",
 ) -> Optional[str]:
     """
-    Encontra o territory_id mais apropriado para um parceiro (dentro de jurisdicao).
-    
-    Ordem:
-    1. Territory que contem o hex
-    2. Territory cujo slot esta em grid_disk=1
-    3. Territory mais proximo (menor distancia do centroide)
-    
-    Retorna None se nenhum territory encontrado.
+    Encontra o territory_id mais apropriado para um parceiro.
+
+    Hierarquia de fallbacks
+    -----------------------
+    1. Busca exata: hex_id do parceiro está em hex_ids do território
+    2. Point-in-polygon: lat/lon do parceiro dentro do polígono do território
+       (usa territories.geojson via Shapely — preciso na fronteira)
+    3. Proximidade do centroide geométrico do polígono
+       (usa centroide real do polígono Shapely)
+    4. Proximidade do centroide calculado pelos slots
+       (último recurso absoluto)
     """
     if not territories_meta:
         return None
-    
-    # 1. Busca exata: hex pertence ao territory
+
+    def _log(step: str, tid: str) -> str:
+        if partner_id:
+            print(f"  [territory_lookup] {partner_id} | hex={origin_hex} "
+                  f"| step={step} → {tid}")
+        return tid
+
+    # 1. Busca exata por hex_id
     tid = _find_territory_for_hex(origin_hex, territories_meta)
     if tid:
-        return tid
-    
-    # 2. Busca por grid_disk=1 (vizinhos)
-    partner_neighbors = set(h3.grid_disk(origin_hex, 1))
-    for meta in territories_meta:
-        for h in meta.get("hex_ids", []):
-            if h in partner_neighbors:
-                return meta["territory_id"]
-    
-    # 3. Territory mais proximo (centroide)
-    lat, lon = h3.cell_to_latlng(origin_hex)
+        return _log("1-hex_exact", tid)
+
+    # Resolver lat/lon se não fornecidos
+    if lat is None or lon is None:
+        try:
+            lat, lon = h3.cell_to_latlng(origin_hex)
+        except Exception:
+            lat, lon = 0.0, 0.0
+
+    # 2. Point-in-polygon usando polígonos reais do territories.geojson
+    if territory_polys:
+        try:
+            from shapely.geometry import Point
+            pt = Point(lon, lat)
+            for meta in territories_meta:
+                tid = meta["territory_id"]
+                poly = territory_polys.get(tid)
+                if poly is not None:
+                    try:
+                        if poly.contains(pt):
+                            return _log("2-point_in_polygon", tid)
+                    except Exception:
+                        pass
+        except ImportError:
+            pass
+
+    # 3. Proximidade do centroide geométrico do polígono
+    if territory_polys:
+        min_tid = None
+        min_dist = float("inf")
+        for meta in territories_meta:
+            tid = meta["territory_id"]
+            poly = territory_polys.get(tid)
+            if poly is not None:
+                try:
+                    c = poly.centroid
+                    dist = (lat - c.y) ** 2 + (lon - c.x) ** 2
+                    if dist < min_dist:
+                        min_dist = dist
+                        min_tid = tid
+                except Exception:
+                    pass
+        if min_tid:
+            return _log("3-poly_centroid", min_tid)
+
+    # 4. Fallback final: centroide calculado pelos slots (campo do territory_index)
     min_tid = None
     min_dist = float("inf")
-    
     for meta in territories_meta:
         cent_lat = meta.get("centroid_lat", 0)
         cent_lon = meta.get("centroid_lon", 0)
@@ -496,8 +585,8 @@ def _get_territory_for_partner(
         if dist < min_dist:
             min_dist = dist
             min_tid = meta["territory_id"]
-    
-    return min_tid
+    return _log("4-slot_centroid", min_tid) if min_tid else None
+
 
 
 # ---------------------------------------------------------------------------
@@ -578,6 +667,11 @@ def run_phase3(
     print(f"  Bases: {target_stations}")
     print(f"{'='*60}")
 
+    # Carregar polígonos de território para fallbacks point-in-polygon
+    territory_polys = _load_territory_polygons(out_dir)
+    if territory_polys:
+        print(f"  Polígonos carregados: {len(territory_polys)} territórios")
+
     fit_result = FitResult()
 
     for station in target_stations:
@@ -598,6 +692,7 @@ def run_phase3(
             supply=supply,
             partner_data=partner_data,
             pkg=pkg,
+            territory_polys=territory_polys,
         )
 
         fit_result.territories.update(territory_fits)

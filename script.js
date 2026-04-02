@@ -624,14 +624,14 @@ const PolygonManager = {
             let count = 0;
             AppState.optimizationLayer.eachLayer(layer => {
                 if (this.selectedPolygons.has(L.stamp(layer))) {
-                    const demanda = Number(layer.feature.properties['demand_daily']) || 0;
+                    const demanda = Number(layer.feature.properties['demand_total']) || 0;
                     soma += Math.round(demanda * 10) / 10;
                     count++;
                 }
             });
             // Atualiza conteúdo, mantendo o botão de fechar
             this.tooltipDiv.innerHTML = `<button style="position:absolute;top:2px;right:6px;background:none;border:none;font-size:1.2em;cursor:pointer;" aria-label="Fechar tooltip" onclick="PolygonManager.optimizationSelection.clearSelection(event)">&times;</button>
-                <b>Selecionados:</b> ${count}<br><b>Soma demanda total:</b> ${soma}`;
+                <b>Selecionados:</b> ${count}<br><b>Soma demanda total diária:</b> ${soma}`;
             this.tooltipDiv.style.display = 'block';
             if (mouseEvent) {
                 this.tooltipDiv.style.left = (mouseEvent.clientX + 16) + 'px';
@@ -761,7 +761,7 @@ const PolygonManager = {
             return stationMatch && bucketMatch;
         });
 
-        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_daily'] || 0));
+        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_total'] || 0));
         function getColor(demanda) {
             if (maxDemanda === 0) return '#e74c3c';
             const t = Math.max(0, Math.min(1, demanda / maxDemanda));
@@ -774,7 +774,7 @@ const PolygonManager = {
         AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
             style: f => ({
-                color: getColor(f.properties['demand_daily']),
+                color: getColor(f.properties['demand_total']),
                 weight: 1,
                 fillOpacity: 0.3
             }),

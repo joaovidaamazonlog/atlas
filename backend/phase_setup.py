@@ -875,6 +875,7 @@ def _build_heatmap(
     territory_polys: Dict[str, object],   # tid → shapely polygon WGS84
     hex_to_ceps: Dict[str, Set[str]],
     station_code: str,
+    days: int = 1,
 ) -> List[Dict]:
     tid_list = [(tid, poly) for tid, poly in territory_polys.items()
                 if poly is not None and not poly.is_empty]
@@ -907,6 +908,7 @@ def _build_heatmap(
             "properties": {
                 "hex_id":           h,
                 "demand_total":     demand,
+                "demand_daily":     round(demand / days, 2) if days > 0 else demand,
                 "ceps":             list(hex_to_ceps.get(h, set()))[:10],
                 "delivery_station": station_code,
                 "territory_id":     territory_id or "",
@@ -1125,7 +1127,7 @@ def run_setup(
 
         # 5. Heatmap desta base
         dm_base = dm_filtered.get(station, {})
-        base_heatmap = _build_heatmap(dm_base, base_polys, pkg.hex_to_ceps, station)
+        base_heatmap = _build_heatmap(dm_base, base_polys, pkg.hex_to_ceps, station, days=pkg.days)
         heatmap_features.extend(base_heatmap)
 
         # Popular hex_ids no territory_index a partir do spatial join do heatmap

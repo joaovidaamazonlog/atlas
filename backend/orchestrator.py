@@ -48,7 +48,7 @@ from main import run_pipeline
 from load_packages import load_packages
 from load_partners import load_partners
 from models import Config
-from phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons
+from phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons, run_update_heatmap
 from models import Config, TerritoriesResult, load_territories
 from phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 from phase3_partner_fit import FitResult, run_phase3
@@ -230,7 +230,7 @@ Exemplos:
     parser.add_argument(
         "--mode",
         choices=["setup", "daily"],
-        required=True,
+        required=False,
         help="setup: Fases 1+2 (territorios e vagas ideais). "
              "daily: Fases 3+4+5 (matching e relatorios).",
     )
@@ -252,6 +252,13 @@ Exemplos:
         help="Numero de workers paralelos para o solver (modo setup). Default: 4.",
     )
     parser.add_argument(
+        "--update-heatmap",
+        action="store_true",
+        default=False,
+        help="Regenera heatmap.geojson com a base de pacotes atual "
+             "sem refazer o setup completo.",
+    )
+    parser.add_argument(
         "--legacy-buckets",
         action="store_true",
         default=False,
@@ -266,18 +273,25 @@ def main() -> None:
     out_dir = args.output or Config.DEST_FOLDER
 
     try:
-        if args.mode == "setup":
+        if args.update_heatmap:
+            run_update_heatmap(
+                output_dir=out_dir,
+                stations=args.stations,
+            )
+        elif args.mode == "setup":
             run_setup(
                 output_dir=out_dir,
                 stations=args.stations,
                 max_workers=args.workers,
             )
-        else:
+        elif args.mode == "daily":
             run_daily(
                 output_dir=out_dir,
                 stations=args.stations,
                 legacy_bucket_names=args.legacy_buckets,
             )
+        else:
+            print("  Especifique --mode setup, --mode daily ou --update-heatmap.")
     except FileNotFoundError as e:
         print(f"\n  ERRO: {e}\n", file=sys.stderr)
         sys.exit(1)
@@ -291,3 +305,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

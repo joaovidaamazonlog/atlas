@@ -1507,3 +1507,117 @@ def rebuild_territory_polygons(
     size_kb = t_path.stat().st_size / 1024
     print(f"  ✅ territories.geojson reconstruído: "
           f"{rebuilt} territórios | {skipped} pulados | {size_kb:.1f} KB")
+
+
+def run_update_heatmap(
+    output_dir: str,
+    stations: Optional[List[str]] = None,
+) -> None:
+    """
+    Atualiza heatmap.geojson com a base de pacotes atual sem refazer o setup.
+
+    Útil quando a base de dados de pacotes é atualizada mas os territórios
+    e slots ideais permanecem os mesmos.
+
+    Requer que territories_index.json e territories.geojson já existam
+    (gerados pelo --mode setup).
+
+    Parâmetros
+    ----------
+    output_dir : str   Pasta onde estão os artefatos do setup e onde o
+                       heatmap.geojson será salvo.
+    stations   : list  Filtrar bases. Se None, processa todas do índice.
+    """
+    from load_packages import load_packages
+
+    out_dir  = Path(output_dir or Config.DEST_FOLDER)
+    idx_path = out_dir / "territories_index.json"
+    t_path   = out_dir / "territories.geojson"
+    h_path   = out_dir / "heatmap.geojson"
+
+    if not idx_path.exists():
+        raise FileNotFoundError(
+            f"territories_index.json não encontrado em {out_dir}.\n"
+            "Execute --mode setup antes de usar --update-heatmap."
+        )
+
+    print(f"\n{'='*60}")
+    print(f"  UPDATE HEATMAP")
+    print(f"  Output: {out_dir}")
+    if stations:
+        print(f"  Bases filtradas: {stations}")
+    print(f"{'='*60}")
+
+    # Carregar índice de territórios
+    with open(idx_path, "r", encoding="utf-8") as f:
+        territory_index = json.load(f)
+
+    # Carregar polígonos de território para spatial join
+    territory_polys: Dict[str, object] = {}
+    if t_path.exists():
+        with open(t_path, "r", encoding="utf-8") as f:
+            t_gj = json.load(f)
+        for ft in t_gj.get("features", []):
+            tid = ft.get("properties", {}).get("territory_id")
+            if tid:
+                try:
+                    territory_polys[tid] = shape(ft["geometry"])
+                except Exception:
+                    pass
+
+    # Carregar nova base de pacotes
+    pkg = load_packages()
+
+    # Filtrar stations
+    target_stations = stations or list({
+        meta["station_code"] for meta in territory_index.values()
+    })
+
+    # Merge com heatmap existente se --stations foi usado
+    existing_features: List[Dict] = []
+    if stations and h_path.exists():
+        try:
+            with open(h_path, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+            existing_features = [
+                ft for ft in existing.get("features", [])
+                if ft.get("properties", {}).get("delivery_station") not in stations
+            ]
+            print(f"  Merge: mantendo {len(existing_features)} hexes de outras stations.")
+        except Exception as e:
+            print(f"  WARN merge heatmap falhou ({e}) — sobrescrevendo.")
+
+    # Construir polígonos por base (apenas os necessários para o spatial join)
+    new_features: List[Dict] = []
+    for station in sorted(target_stations):
+        dm = pkg.demand_map(station)
+        if not dm:
+            print(f"  WARN [{station}] Sem demanda — pulando.")
+            continue
+
+        # Polígonos desta base
+        base_polys = {
+            tid: poly for tid, poly in territory_polys.items()
+            if territory_index.get(tid, {}).get("station_code") == station
+        }
+
+        base_features = _build_heatmap(dm, base_polys, pkg.hex_to_ceps, station, days=pkg.days)
+        new_features.extend(base_features)
+        print(f"  [{station}] {len(base_features)} hexes | {pkg.days} dias")
+
+    all_features = existing_features + new_features
+    heatmap_gj = {
+        "type": "FeatureCollection",
+        "features": all_features,
+        "metadata": {
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "n_hexes":      len(all_features),
+        },
+    }
+
+    with open(h_path, "w", encoding="utf-8") as f:
+        json.dump(heatmap_gj, f, ensure_ascii=False, indent=2)
+
+    size_kb = h_path.stat().st_size / 1024
+    print(f"\n  ✅ heatmap.geojson — {len(all_features)} hexes | {size_kb:.1f} KB")
+    print(f"{'='*60}\n")

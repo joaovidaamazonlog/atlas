@@ -624,7 +624,7 @@ const PolygonManager = {
             let count = 0;
             AppState.optimizationLayer.eachLayer(layer => {
                 if (this.selectedPolygons.has(L.stamp(layer))) {
-                    const demanda = Number(layer.feature.properties['demand_total']) || 0;
+                    const demanda = Number(layer.feature.properties['demand_daily']) || 0;
                     soma += Math.round(demanda * 10) / 10;
                     count++;
                 }
@@ -761,7 +761,7 @@ const PolygonManager = {
             return stationMatch && bucketMatch;
         });
 
-        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_total'] || 0));
+        const maxDemanda = Math.max(...filteredFeatures.map(f => f.properties['demand_daily'] || 0));
         function getColor(demanda) {
             if (maxDemanda === 0) return '#e74c3c';
             const t = Math.max(0, Math.min(1, demanda / maxDemanda));
@@ -774,7 +774,7 @@ const PolygonManager = {
         AppState.optimizationLayer = L.geoJSON({ type: "FeatureCollection", features: filteredFeatures }, {
             pane: 'polygonsPane',
             style: f => ({
-                color: getColor(f.properties['demand_total']),
+                color: getColor(f.properties['demand_daily']),
                 weight: 1,
                 fillOpacity: 0.3
             }),

@@ -625,7 +625,7 @@ const PolygonManager = {
             AppState.optimizationLayer.eachLayer(layer => {
                 if (this.selectedPolygons.has(L.stamp(layer))) {
                     const demanda = Number(layer.feature.properties['demand_daily']) || 0;
-                    soma += Math.round(demanda * 10) / 10;
+                    soma += Math.round(demanda)
                     count++;
                 }
             });

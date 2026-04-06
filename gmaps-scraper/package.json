@@ -1,0 +1,12 @@
+{
+  "name": "gmaps-scraper",
+  "version": "1.0.0",
+  "description": "Google Maps scraper",
+  "main": "run_batch.js",
+  "scripts": {
+    "start": "node run_batch.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.0.0"
+  }
+}

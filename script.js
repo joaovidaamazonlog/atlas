@@ -1352,6 +1352,8 @@ const UIManager = {
     },
 
     getMarkerPopupContentNewPartner: function(data) {
+        const cepsArray = Array.isArray(data.ceps) ? data.ceps : [];
+        const cepsJson = JSON.stringify(cepsArray).replace(/'/g, "\\'");
         return `
             <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <div class="partner-header">
@@ -1370,33 +1372,34 @@ const UIManager = {
                             </tr>
                         </tbody>
                     </table>
-                    
+
                     <hr class="my-2">
 
-                <div class="partner-actions" style="max-height:220px; overflow-y:auto;">
-                    <table style="width:100%;table-layout:fixed;">
-                        <tbody>
-                            <tr>
-                                <td style="width:50%; vertical-align: top;"><b>Ceps Alvo:</b></td>
-                                <td style="width:50%; max-width:160px; white-space: normal; word-break: break-word; overflow-wrap: anywhere;">${data.ceps}</td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%;"><b>Volume maximo:</b></td>
-                                <td style="width:50%;">${data.capacity} pkgs</td>
-                            </tr>
-                            <tr>
-                                <td style="width:50%;"><b>Raio Sugerido:</b></td>
-                                <td style="width:50%;">${data.radius} m</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="partner-actions" style="max-height:220px; overflow-y:auto;">
+                        <table style="width:100%;table-layout:fixed;">
+                            <tbody>
+                                <tr>
+                                    <td style="width:50%; vertical-align: top;"><b>Ceps Alvo:</b></td>
+                                    <td style="width:50%; max-width:160px; white-space: normal; word-break: break-word; overflow-wrap: anywhere;">${data.ceps}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50%;"><b>Volume maximo:</b></td>
+                                    <td style="width:50%;">${data.capacity} pkgs</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50%;"><b>Raio Sugerido:</b></td>
+                                    <td style="width:50%;">${data.radius} m</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <hr class="my-2">
 
                 <div class="partner-actions">
                     <button class="btn btn-success btn-sm btn-block"
-                        onclick="GmapsScraper.searchNearby(event, '${data.bucket_ade}', ${JSON.stringify(Array.isArray(data.ceps) ? data.ceps : [])})">
+                        onclick="GmapsScraper.searchNearby(event, '${data.bucket_ade}', ${cepsJson})">
                         🏪 Ver Empresas Candidatas
                     </button>
                 </div>

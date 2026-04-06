@@ -1352,8 +1352,11 @@ const UIManager = {
     },
 
     getMarkerPopupContentNewPartner: function(data) {
-        const cepsArray = Array.isArray(data.ceps) ? data.ceps : [];
-        const cepsJson = JSON.stringify(cepsArray).replace(/'/g, "\\'");
+        // Armazena os CEPs no AppState para evitar serialização no onclick
+        if (!AppState._slotPopupData) AppState._slotPopupData = {};
+        const slotKey = ('slot_' + data.bucket_ade + '_' + (data.lat || '') + '_' + (data.lon || '')).replace(/[^a-zA-Z0-9_]/g, '_');
+        AppState._slotPopupData[slotKey] = Array.isArray(data.ceps) ? data.ceps : [];
+
         return `
             <div style="width: 300px; max-height: auto; font-size: 12px;">
                 <div class="partner-header">
@@ -1380,7 +1383,7 @@ const UIManager = {
                             <tbody>
                                 <tr>
                                     <td style="width:50%; vertical-align: top;"><b>Ceps Alvo:</b></td>
-                                    <td style="width:50%; max-width:160px; white-space: normal; word-break: break-word; overflow-wrap: anywhere;">${data.ceps}</td>
+                                    <td style="width:50%; max-width:160px; white-space: normal; word-break: break-word; overflow-wrap: anywhere;">${Array.isArray(data.ceps) ? data.ceps.join(', ') : data.ceps}</td>
                                 </tr>
                                 <tr>
                                     <td style="width:50%;"><b>Volume maximo:</b></td>
@@ -1399,7 +1402,7 @@ const UIManager = {
 
                 <div class="partner-actions">
                     <button class="btn btn-success btn-sm btn-block"
-                        onclick="GmapsScraper.searchNearby(event, '${data.bucket_ade}', '${cepsJson}')">
+                        onclick="GmapsScraper.searchNearbyFromState(event, '${data.bucket_ade}', '${slotKey}')">
                         🏪 Ver Empresas Candidatas
                     </button>
                 </div>
@@ -2969,6 +2972,11 @@ const GmapsScraper = {
      * Chamado pelo botão no popup do slot.
      * Faz as duas buscas em paralelo e combina os resultados.
      */
+    searchNearbyFromState: async function(event, territoryId, slotKey) {
+        const ceps = (AppState._slotPopupData && AppState._slotPopupData[slotKey]) || [];
+        return this.searchNearby(event, territoryId, ceps);
+    },
+
     searchNearby: async function(event, territoryId, slotCeps) {
         event.stopPropagation();
 

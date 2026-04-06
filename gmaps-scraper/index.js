@@ -5,7 +5,24 @@ const { scrapeGmaps } = require('./scraper');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Libera CORS para o GitHub Pages e localhost (desenvolvimento)
+const allowedOrigins = [
+    'https://joaovidaamazonlog.github.io',
+    'http://localhost',
+    'http://127.0.0.1'
+];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        // Permite requisições sem origin (ex: curl, Postman) e origens permitidas
+        if (!origin || allowedOrigins.some(o => origin.startsWith(o))) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS bloqueado para origem: ${origin}`));
+        }
+    }
+}));
+
 app.use(express.json());
 
 // Endpoint principal da API

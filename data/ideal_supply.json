@@ -3,7 +3,7 @@
     "generated_at": "2026-03-31T15:23:14",
     "n_territories": 198,
     "n_slots": 6502,
-    "last_fit_at": "2026-04-06T00:17:24"
+    "last_fit_at": "2026-04-06T10:08:42"
   },
   "slots": {
     "DBS5_bucket-01": [
@@ -42688,7 +42688,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000RYx2vEAD"
       },
       {
         "slot_id": "DPE4_bucket-08_S16",
@@ -43047,7 +43047,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "00Qat00000J1QaEEAV"
+        "matched_partner_id": "001at00000an2NOAAY"
       },
       {
         "slot_id": "DPE4_bucket-09_S03",
@@ -46330,7 +46330,7 @@
             "packages_assigned": 13
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000R6b0YEAR"
       },
       {
         "slot_id": "DPE4_bucket-12_S14",
@@ -123448,7 +123448,7 @@
             "packages_assigned": 6
           }
         ],
-        "matched_partner_id": "00Qat00000QrJAPEA3"
+        "matched_partner_id": "001at00000amuUiAAI"
       },
       {
         "slot_id": "DGO2_bucket-03_S61",
@@ -153444,7 +153444,7 @@
             "packages_assigned": 5
           }
         ],
-        "matched_partner_id": "00Qat00000RnJZpEAN"
+        "matched_partner_id": null
       },
       {
         "slot_id": "DSA8_bucket-03_S29",
@@ -180539,7 +180539,7 @@
             "packages_assigned": 11
           }
         ],
-        "matched_partner_id": "00Qat00000QNCr7EAH"
+        "matched_partner_id": "001at00000amvFXAAY"
       },
       {
         "slot_id": "DCE3_bucket-01_S28",
@@ -188467,7 +188467,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": "00Qat00000OrWf3EAF"
+        "matched_partner_id": "001at00000an3bAAAQ"
       },
       {
         "slot_id": "DCE3_bucket-02_S126",

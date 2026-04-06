@@ -2909,6 +2909,7 @@ const RouteManager = {
 // --- MODULE: GmapsScraper ---
 const GmapsScraper = {
     RESULTS_URL: 'https://joaovidaamazonlog.github.io/atlas/data/gmaps_results.json',
+    API_URL: 'https://api-cnpj-br.vercel.app/api/buscar', // API Empresas listadas pela Receita Federal
     _cache: null,
 
     /**
@@ -2923,8 +2924,38 @@ const GmapsScraper = {
     },
 
     /**
+     * Busca empresas na API da Receita Federal por lista de CEPs.
+     * Retorna array normalizado com fonte marcada.
+     */
+    loadFromApi: async function(ceps) {
+        if (!ceps || ceps.length === 0) return [];
+        try {
+            const res = await fetch(this.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ceps })
+            });
+            if (!res.ok) return [];
+            const data = await res.json();
+            return (data.empresas || []).map(e => ({
+                nome:     e.razao_social || e.nome_fantasia || 'N/A',
+                endereco: [e.endereco, e.bairro, e.cep, e.uf].filter(Boolean).join(', '),
+                telefone: e.telefone_1 || e.telefone_2 || 'N/A',
+                site:     'N/A',
+                google_maps_link: 'N/A',
+                cep:      e.cep,
+                tipo:     'Receita Federal',
+                _fonte:   'Receita Federal 🏛️',
+            }));
+        } catch (err) {
+            console.warn('API Receita Federal indisponível:', err);
+            return [];
+        }
+    },
+
+    /**
      * Chamado pelo botão no popup do slot.
-     * Filtra empresas do território do slot cujo CEP está na lista de CEPs do slot.
+     * Faz as duas buscas em paralelo e combina os resultados.
      */
     searchNearby: async function(event, territoryId, slotCeps) {
         event.stopPropagation();
@@ -2936,25 +2967,30 @@ const GmapsScraper = {
         document.body.appendChild(loading);
 
         try {
-            const data = await this.loadResults();
-            const allForTerritory = data.results?.[territoryId] || [];
+            const cepList = (Array.isArray(slotCeps) ? slotCeps : String(slotCeps).split(','))
+                .map(c => c.trim().replace(/\D/g, ''))
+                .filter(c => c.length === 8);
 
-            // Filtrar por CEP do slot (se disponível)
-            const cepSet = new Set(
-                (Array.isArray(slotCeps) ? slotCeps : String(slotCeps).split(','))
-                    .map(c => c.trim().replace(/\D/g, ''))
-                    .filter(c => c.length === 8)
-            );
+            const cepSet = new Set(cepList);
 
-            const filtered = cepSet.size > 0
+            // Busca paralela: gmaps_results.json + API Receita Federal
+            const [gmapsData, apiResults] = await Promise.all([
+                this.loadResults(),
+                this.loadFromApi(cepList)
+            ]);
+
+            // Resultados do Google Maps
+            const allForTerritory = gmapsData.results?.[territoryId] || [];
+            const gmapsFiltered = cepSet.size > 0
                 ? allForTerritory.filter(e => e.cep && cepSet.has(e.cep))
                 : allForTerritory;
+            const gmapsResults = (gmapsFiltered.length > 0 ? gmapsFiltered : allForTerritory)
+                .map(r => ({ ...r, _fonte: 'Google Maps 🗺️' }));
 
-            // Se filtro por CEP não retornou nada, mostrar todos do território
-            const results = filtered.length > 0 ? filtered : allForTerritory;
-            const usedCepFilter = filtered.length > 0 && cepSet.size > 0;
+            const results = [...gmapsResults, ...apiResults];
+            const usedCepFilter = cepSet.size > 0;
 
-            this.showResults(results, territoryId, usedCepFilter, data.generated_at);
+            this.showResults(results, territoryId, usedCepFilter, gmapsData.generated_at);
 
         } catch (err) {
             alert(`Erro: ${err.message}`);
@@ -2976,6 +3012,8 @@ const GmapsScraper = {
         });
 
         const dateStr = generatedAt ? new Date(generatedAt).toLocaleDateString('pt-BR') : 'N/A';
+        const apiCount = results.filter(r => r._fonte?.includes('Receita')).length;
+        const gmapsCount = results.length - apiCount;
 
         let html = `
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -2984,9 +3022,8 @@ const GmapsScraper = {
                     style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
             </div>
             <div style="font-size:11px;color:#666;margin-bottom:8px;">
-                ${results.length} empresa(s) | 
-                ${usedCepFilter ? '📍 filtrado por CEPs do slot' : '📍 todos do território'} | 
-                atualizado em ${dateStr}
+                ${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal<br>
+                ${usedCepFilter ? '📍 filtrado por CEPs do slot' : '📍 todos do território'} · atualizado em ${dateStr}
             </div>
             <div style="max-height:600px;overflow-y:auto;">
         `;
@@ -2996,14 +3033,15 @@ const GmapsScraper = {
         } else {
             for (const [tipo, empresas] of Object.entries(byType)) {
                 html += `<h6 style="margin:10px 0 4px;text-transform:capitalize;color:#333;">📂 ${tipo} (${empresas.length})</h6>`;
-                empresas.forEach((r, idx) => {
+                empresas.forEach(r => {
                     html += `
                         <div style="border-bottom:1px solid #eee;padding:6px 0;font-size:12px;">
-                            <b>${r.nome}</b><br>
+                            <b>${r.nome}</b>
+                            <span style="float:right;font-size:10px;color:#888;">${r._fonte || ''}</span><br>
                             <span style="color:#555;">📍 ${r.endereco}</span><br>
-                            ${r.telefone !== 'N/A' ? `<span>📞 ${r.telefone}</span><br>` : ''}
-                            ${r.site !== 'N/A' ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
-                            ${r.google_maps_link !== 'N/A' ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
+                            ${r.telefone && r.telefone !== 'N/A' ? `<span>📞 ${r.telefone}</span><br>` : ''}
+                            ${r.site && r.site !== 'N/A' ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
+                            ${r.google_maps_link && r.google_maps_link !== 'N/A' ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
                         </div>
                     `;
                 });

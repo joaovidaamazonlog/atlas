@@ -3,7 +3,7 @@ name: Google Maps Scraper
 on:
   # Roda todo dia às 6h (horário de Brasília = 9h UTC)
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 4 * * *'
   # Permite rodar manualmente pelo GitHub Actions UI
   workflow_dispatch:
     inputs:

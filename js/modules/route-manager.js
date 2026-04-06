@@ -65,6 +65,66 @@ export function renderStopsList() {
     });
 }
 
+/**
+ * Adiciona uma parada intermediária via autocomplete.
+ * Cria um input temporário na lista de paradas e aguarda o usuário selecionar.
+ */
+export function addStop() {
+    const list = document.getElementById('stops-list');
+    if (!list) return;
+
+    const input = document.createElement('input');
+    input.id          = 'inputNewStop';
+    input.type        = 'text';
+    input.className   = 'form-control form-control-sm mb-1';
+    input.placeholder = 'Pesquisar parada...';
+    list.appendChild(input);
+
+    const resultsContainer = document.getElementById('autocomplete-results');
+
+    input.addEventListener('input', () => {
+        const query = input.value.toLowerCase();
+        if (query.length < 2) { if (resultsContainer) resultsContainer.style.display = 'none'; return; }
+
+        const options = [
+            ...state.allMarkersData.map(p => ({ name: p.name, store_id: p.store_id, lat: p.lat, lon: p.lon })),
+            ...state.deliveryStations.map(ds => ({ name: ds.nome, store_id: ds.nome, lat: ds.lat, lon: ds.lon })),
+        ].filter(o =>
+            (o.name  && o.name.toLowerCase().includes(query)) ||
+            (o.store_id && o.store_id.toLowerCase().includes(query))
+        ).slice(0, 5);
+
+        if (!resultsContainer) return;
+        resultsContainer.innerHTML = '';
+
+        if (options.length > 0) {
+            options.forEach(opt => {
+                const item = document.createElement('a');
+                item.href      = '#';
+                item.className = 'list-group-item list-group-item-action py-1';
+                item.textContent = `${opt.name} (${opt.store_id})`;
+                item.onclick = e => {
+                    e.preventDefault();
+                    _stops.push(new RouteStop(opt.store_id, opt.name, opt.lat, opt.lon));
+                    renderStopsList();
+                    input.remove();
+                    resultsContainer.style.display = 'none';
+                };
+                resultsContainer.appendChild(item);
+            });
+            const rect = input.getBoundingClientRect();
+            resultsContainer.style.top   = `${rect.bottom + window.scrollY}px`;
+            resultsContainer.style.left  = `${rect.left   + window.scrollX}px`;
+            resultsContainer.style.width = `${rect.width}px`;
+            resultsContainer.style.display = 'block';
+        } else {
+            resultsContainer.style.display = 'none';
+        }
+    });
+
+    input.focus();
+}
+
 export function moveStopUp(idx)   { if (idx > 0) { [_stops[idx-1], _stops[idx]] = [_stops[idx], _stops[idx-1]]; renderStopsList(); } }
 export function moveStopDown(idx) { if (idx < _stops.length-1) { [_stops[idx], _stops[idx+1]] = [_stops[idx+1], _stops[idx]]; renderStopsList(); } }
 export function removeStop(idx)   { _stops.splice(idx, 1); renderStopsList(); }

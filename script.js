@@ -2955,7 +2955,8 @@ const GmapsScraper = {
             return (data.empresas || []).map(e => ({
                 nome:     e.razao_social || e.nome_fantasia || 'N/A',
                 endereco: [e.endereco, e.bairro, e.cep, e.uf].filter(Boolean).join(', '),
-                telefone: e.telefone_1 || e.telefone_2 || 'N/A',
+                telefone_1: e.telefone_1 || null,
+                telefone_2: e.telefone_2 || null,
                 site:     'N/A',
                 google_maps_link: 'N/A',
                 cep:      e.cep,
@@ -3054,12 +3055,18 @@ const GmapsScraper = {
             for (const [tipo, empresas] of Object.entries(byType)) {
                 html += `<h6 style="margin:10px 0 4px;text-transform:capitalize;color:#333;">📂 ${tipo} (${empresas.length})</h6>`;
                 empresas.forEach(r => {
+                    const tel1 = r.telefone_1 && r.telefone_1 !== 'N/A' ? r.telefone_1 : null;
+                    const tel2 = r.telefone_2 && r.telefone_2 !== 'N/A' ? r.telefone_2 : null;
+                    // compatibilidade com resultados do Google Maps que usam campo 'telefone'
+                    const telLegacy = r.telefone && r.telefone !== 'N/A' ? r.telefone : null;
                     html += `
                         <div style="border-bottom:1px solid #eee;padding:6px 0;font-size:12px;">
                             <b>${r.nome}</b>
                             <span style="float:right;font-size:10px;color:#888;">${r._fonte || ''}</span><br>
                             <span style="color:#555;">📍 ${r.endereco}</span><br>
-                            ${r.telefone && r.telefone !== 'N/A' ? `<span>📞 ${r.telefone}</span><br>` : ''}
+                            ${tel1 ? `<span>📞 ${tel1}</span><br>` : ''}
+                            ${tel2 ? `<span>📞 ${tel2}</span><br>` : ''}
+                            ${!tel1 && !tel2 && telLegacy ? `<span>📞 ${telLegacy}</span><br>` : ''}
                             ${r.site && r.site !== 'N/A' ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
                             ${r.google_maps_link && r.google_maps_link !== 'N/A' ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
                         </div>

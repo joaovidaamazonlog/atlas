@@ -29,6 +29,9 @@ jobs:
       - name: Instalar dependências
         working-directory: gmaps-scraper
         run: npm install
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
 
       - name: Instalar Chromium para Puppeteer
         run: npx puppeteer browsers install chrome

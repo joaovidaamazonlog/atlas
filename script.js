@@ -2920,9 +2920,18 @@ const GmapsScraper = {
      */
     loadResults: async function() {
         if (this._cache) return this._cache;
-        const res = await fetch(this.RESULTS_URL);
-        if (!res.ok) throw new Error(`gmaps_results.json não encontrado (${res.status}). Execute o workflow no GitHub Actions primeiro.`);
-        this._cache = await res.json();
+        try {
+            const res = await fetch(this.RESULTS_URL);
+            if (!res.ok) {
+                console.warn(`gmaps_results.json não encontrado (${res.status}) — usando apenas API.`);
+                this._cache = { results: {}, generated_at: null };
+                return this._cache;
+            }
+            this._cache = await res.json();
+        } catch (err) {
+            console.warn('gmaps_results.json indisponível — usando apenas API.', err);
+            this._cache = { results: {}, generated_at: null };
+        }
         return this._cache;
     },
 

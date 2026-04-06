@@ -1399,7 +1399,7 @@ const UIManager = {
 
                 <div class="partner-actions">
                     <button class="btn btn-success btn-sm btn-block"
-                        onclick="GmapsScraper.searchNearby(event, '${data.bucket_ade}', ${cepsJson})">
+                        onclick="GmapsScraper.searchNearby(event, '${data.bucket_ade}', '${cepsJson}')">
                         🏪 Ver Empresas Candidatas
                     </button>
                 </div>

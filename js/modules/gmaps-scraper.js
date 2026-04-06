@@ -1,0 +1,217 @@
+/**
+ * gmaps-scraper.js
+ * ================
+ * Busca empresas candidatas a parceiro logístico.
+ *
+ * Fontes de dados
+ * ---------------
+ * 1. gmaps_results.json — gerado pelo GitHub Actions (Google Maps scraping)
+ * 2. API Receita Federal — busca em tempo real por CEP
+ *
+ * Filtro
+ * ------
+ * Quando o usuário clica em "Ver Empresas Candidatas" num slot,
+ * os resultados são filtrados pelos CEPs do slot.
+ * Se nenhum resultado for encontrado pelos CEPs, exibe todos do território.
+ */
+
+import { state }       from '../state.js';
+import { DATA_URLS, CNPJ_API_URL } from '../config.js';
+import { ProspectCompany } from '../models.js';
+
+/** @type {Object|null} Cache em memória do gmaps_results.json */
+let _cache = null;
+
+// ---------------------------------------------------------------------------
+// CARREGAMENTO
+// ---------------------------------------------------------------------------
+
+/**
+ * Carrega gmaps_results.json com cache em memória.
+ * Se indisponível, retorna estrutura vazia sem lançar erro.
+ * @returns {Promise<Object>}
+ */
+export async function loadResults() {
+    if (_cache) return _cache;
+    try {
+        const res = await fetch(DATA_URLS.gmapsResults);
+        if (!res.ok) {
+            console.warn(`[GmapsScraper] gmaps_results.json nao encontrado (${res.status}) — usando apenas API.`);
+            _cache = { results: {}, generated_at: null };
+            return _cache;
+        }
+        _cache = await res.json();
+    } catch (err) {
+        console.warn('[GmapsScraper] gmaps_results.json indisponivel — usando apenas API.', err);
+        _cache = { results: {}, generated_at: null };
+    }
+    return _cache;
+}
+
+/**
+ * Busca empresas na API da Receita Federal por lista de CEPs.
+ * @param {string[]} ceps
+ * @returns {Promise<ProspectCompany[]>}
+ */
+export async function loadFromApi(ceps) {
+    if (!ceps || ceps.length === 0) return [];
+    try {
+        const res = await fetch(CNPJ_API_URL, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ ceps }),
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return (data.empresas || []).map(e => new ProspectCompany({
+            nome:             e.razao_social || e.nome_fantasia || 'N/A',
+            endereco:         [e.endereco, e.bairro, e.cep, e.uf].filter(Boolean).join(', '),
+            telefone_1:       e.telefone_1 || null,
+            telefone_2:       e.telefone_2 || null,
+            site:             'N/A',
+            google_maps_link: 'N/A',
+            cep:              e.cep,
+            tipo:             'Receita Federal',
+            _fonte:           'Receita Federal 🏛️',
+        }));
+    } catch (err) {
+        console.warn('[GmapsScraper] API Receita Federal indisponivel:', err);
+        return [];
+    }
+}
+
+// ---------------------------------------------------------------------------
+// BUSCA PRINCIPAL
+// ---------------------------------------------------------------------------
+
+/**
+ * Chamado pelo botão no popup do slot via chave de estado.
+ * Recupera os CEPs do AppState e delega para searchNearby.
+ *
+ * @param {Event}  event
+ * @param {string} territoryId
+ * @param {string} slotKey     - Chave em state._slotPopupData
+ */
+export async function searchNearbyFromState(event, territoryId, slotKey) {
+    const ceps = (state._slotPopupData && state._slotPopupData[slotKey]) || [];
+    return searchNearby(event, territoryId, ceps);
+}
+
+/**
+ * Busca empresas candidatas para um slot/território.
+ * Combina resultados do Google Maps e da Receita Federal.
+ *
+ * @param {Event}    event
+ * @param {string}   territoryId
+ * @param {string[]} slotCeps
+ */
+export async function searchNearby(event, territoryId, slotCeps) {
+    event.stopPropagation();
+
+    const loading = document.createElement('div');
+    loading.id = 'gmaps-scraper-loading';
+    loading.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:99999;display:flex;align-items:center;justify-content:center;';
+    loading.innerHTML = '<div style="background:#fff;padding:28px;border-radius:8px;"><i class="fas fa-spinner fa-spin mr-2"></i> Carregando empresas...</div>';
+    document.body.appendChild(loading);
+
+    try {
+        const cepList = (Array.isArray(slotCeps) ? slotCeps : String(slotCeps).split(','))
+            .map(c => c.trim().replace(/\D/g, ''))
+            .filter(c => c.length === 8);
+
+        const cepSet = new Set(cepList);
+
+        const [gmapsData, apiResults] = await Promise.all([
+            loadResults(),
+            loadFromApi(cepList),
+        ]);
+
+        // Resultados do Google Maps
+        const allForTerritory = gmapsData.results?.[territoryId] || [];
+        const gmapsFiltered   = cepSet.size > 0
+            ? allForTerritory.filter(e => e.cep && cepSet.has(e.cep))
+            : allForTerritory;
+        const gmapsResults = (gmapsFiltered.length > 0 ? gmapsFiltered : allForTerritory)
+            .map(r => new ProspectCompany({ ...r, _fonte: 'Google Maps 🗺️' }));
+
+        const results = [...gmapsResults, ...apiResults];
+        showResults(results, territoryId, cepSet.size > 0, gmapsData.generated_at);
+
+    } catch (err) {
+        alert(`Erro: ${err.message}`);
+        console.error('[GmapsScraper]', err);
+    } finally {
+        document.getElementById('gmaps-scraper-loading')?.remove();
+    }
+}
+
+// ---------------------------------------------------------------------------
+// EXIBIÇÃO DE RESULTADOS
+// ---------------------------------------------------------------------------
+
+/**
+ * Exibe os resultados num popup lateral agrupados por tipo de negócio.
+ *
+ * @param {ProspectCompany[]} results
+ * @param {string}            territoryId
+ * @param {boolean}           usedCepFilter
+ * @param {string|null}       generatedAt
+ */
+export function showResults(results, territoryId, usedCepFilter, generatedAt) {
+    document.getElementById('gmaps-scraper-popup')?.remove();
+
+    // Agrupar por tipo
+    /** @type {Object.<string, ProspectCompany[]>} */
+    const byType = {};
+    results.forEach(r => {
+        const t = r.tipo || 'outros';
+        if (!byType[t]) byType[t] = [];
+        byType[t].push(r);
+    });
+
+    const dateStr    = generatedAt ? new Date(generatedAt).toLocaleDateString('pt-BR') : 'N/A';
+    const apiCount   = results.filter(r => r._fonte?.includes('Receita')).length;
+    const gmapsCount = results.length - apiCount;
+
+    let html = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <b>🏪 Empresas Candidatas — ${territoryId}</b>
+            <button onclick="document.getElementById('gmaps-scraper-popup').remove()"
+                style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
+        </div>
+        <div style="font-size:11px;color:#666;margin-bottom:8px;">
+            ${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal<br>
+            ${usedCepFilter ? '📍 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}
+        </div>
+        <div style="max-height:600px;overflow-y:auto;">
+    `;
+
+    if (results.length === 0) {
+        html += '<div style="color:#888;padding:12px 0;">Nenhuma empresa encontrada.<br>Execute o workflow no GitHub Actions para atualizar os dados.</div>';
+    } else {
+        for (const [tipo, empresas] of Object.entries(byType)) {
+            html += `<h6 style="margin:10px 0 4px;text-transform:capitalize;color:#333;">📂 ${tipo} (${empresas.length})</h6>`;
+            empresas.forEach(r => {
+                html += `
+                    <div style="border-bottom:1px solid #eee;padding:6px 0;font-size:12px;">
+                        <b>${r.nome}</b>
+                        <span style="float:right;font-size:10px;color:#888;">${r._fonte || ''}</span><br>
+                        <span style="color:#555;">📍 ${r.endereco}</span><br>
+                        ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
+                        ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
+                        ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
+                        ${r.hasMapsLink ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
+                    </div>
+                `;
+            });
+        }
+    }
+
+    html += '</div>';
+
+    const popup = document.createElement('div');
+    popup.id = 'gmaps-scraper-popup';
+    popup.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;width:420px;max-width:95vw;box-shadow:0 2px 12px #0004;';
+    popup.innerHTML = html;
+    document.body.appendChild(popup);
+}

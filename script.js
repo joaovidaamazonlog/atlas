@@ -1354,7 +1354,6 @@ const UIManager = {
     getMarkerPopupContentNewPartner: function(data) {
         return `
             <div style="width: 300px; max-height: auto; font-size: 12px;">
-                <!-- Div para o Nome do Parceiro -->
                 <div class="partner-header">
                     <h5 style="font-weight: bold;">New Partner</h5>
                 </div>
@@ -1374,7 +1373,6 @@ const UIManager = {
                     
                     <hr class="my-2">
 
-                <!-- Div para sugestões de cap, raio e decisão -->
                 <div class="partner-actions" style="max-height:220px; overflow-y:auto;">
                     <table style="width:100%;table-layout:fixed;">
                         <tbody>
@@ -1392,6 +1390,15 @@ const UIManager = {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <hr class="my-2">
+
+                <div class="partner-actions">
+                    <button class="btn btn-success btn-sm btn-block"
+                        onclick="GmapsScraper.searchNearby(event, '${data.bucket_ade}', ${JSON.stringify(Array.isArray(data.ceps) ? data.ceps : [])})">
+                        🏪 Ver Empresas Candidatas
+                    </button>
                 </div>
             </div>
         `;
@@ -2896,6 +2903,120 @@ const RouteManager = {
 
         // reconstrói marcadores padrão (reaplica filtros)
         DataManager.applyFilters();
+    }
+};
+
+// --- MODULE: GmapsScraper ---
+const GmapsScraper = {
+    RESULTS_URL: 'https://joaovidaamazonlog.github.io/atlas/data/gmaps_results.json',
+    _cache: null,
+
+    /**
+     * Carrega gmaps_results.json (com cache em memória).
+     */
+    loadResults: async function() {
+        if (this._cache) return this._cache;
+        const res = await fetch(this.RESULTS_URL);
+        if (!res.ok) throw new Error(`gmaps_results.json não encontrado (${res.status}). Execute o workflow no GitHub Actions primeiro.`);
+        this._cache = await res.json();
+        return this._cache;
+    },
+
+    /**
+     * Chamado pelo botão no popup do slot.
+     * Filtra empresas do território do slot cujo CEP está na lista de CEPs do slot.
+     */
+    searchNearby: async function(event, territoryId, slotCeps) {
+        event.stopPropagation();
+
+        const loading = document.createElement('div');
+        loading.id = 'gmaps-scraper-loading';
+        loading.style = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:99999;display:flex;align-items:center;justify-content:center;';
+        loading.innerHTML = `<div style="background:#fff;padding:28px;border-radius:8px;"><i class="fas fa-spinner fa-spin mr-2"></i> Carregando empresas...</div>`;
+        document.body.appendChild(loading);
+
+        try {
+            const data = await this.loadResults();
+            const allForTerritory = data.results?.[territoryId] || [];
+
+            // Filtrar por CEP do slot (se disponível)
+            const cepSet = new Set(
+                (Array.isArray(slotCeps) ? slotCeps : String(slotCeps).split(','))
+                    .map(c => c.trim().replace(/\D/g, ''))
+                    .filter(c => c.length === 8)
+            );
+
+            const filtered = cepSet.size > 0
+                ? allForTerritory.filter(e => e.cep && cepSet.has(e.cep))
+                : allForTerritory;
+
+            // Se filtro por CEP não retornou nada, mostrar todos do território
+            const results = filtered.length > 0 ? filtered : allForTerritory;
+            const usedCepFilter = filtered.length > 0 && cepSet.size > 0;
+
+            this.showResults(results, territoryId, usedCepFilter, data.generated_at);
+
+        } catch (err) {
+            alert(`Erro: ${err.message}`);
+            console.error('GmapsScraper error:', err);
+        } finally {
+            document.getElementById('gmaps-scraper-loading')?.remove();
+        }
+    },
+
+    showResults: function(results, territoryId, usedCepFilter, generatedAt) {
+        document.getElementById('gmaps-scraper-popup')?.remove();
+
+        // Agrupar por tipo de negócio
+        const byType = {};
+        results.forEach(r => {
+            const t = r.tipo || 'outros';
+            if (!byType[t]) byType[t] = [];
+            byType[t].push(r);
+        });
+
+        const dateStr = generatedAt ? new Date(generatedAt).toLocaleDateString('pt-BR') : 'N/A';
+
+        let html = `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <b>🏪 Empresas Candidatas — ${territoryId}</b>
+                <button onclick="document.getElementById('gmaps-scraper-popup').remove()"
+                    style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
+            </div>
+            <div style="font-size:11px;color:#666;margin-bottom:8px;">
+                ${results.length} empresa(s) | 
+                ${usedCepFilter ? '📍 filtrado por CEPs do slot' : '📍 todos do território'} | 
+                atualizado em ${dateStr}
+            </div>
+            <div style="max-height:600px;overflow-y:auto;">
+        `;
+
+        if (results.length === 0) {
+            html += `<div style="color:#888;padding:12px 0;">Nenhuma empresa encontrada para este slot.<br>Execute o workflow no GitHub Actions para atualizar os dados.</div>`;
+        } else {
+            for (const [tipo, empresas] of Object.entries(byType)) {
+                html += `<h6 style="margin:10px 0 4px;text-transform:capitalize;color:#333;">📂 ${tipo} (${empresas.length})</h6>`;
+                empresas.forEach((r, idx) => {
+                    html += `
+                        <div style="border-bottom:1px solid #eee;padding:6px 0;font-size:12px;">
+                            <b>${r.nome}</b><br>
+                            <span style="color:#555;">📍 ${r.endereco}</span><br>
+                            ${r.telefone !== 'N/A' ? `<span>📞 ${r.telefone}</span><br>` : ''}
+                            ${r.site !== 'N/A' ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
+                            ${r.google_maps_link !== 'N/A' ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        html += `</div>`;
+
+        const popup = document.createElement('div');
+        popup.id = 'gmaps-scraper-popup';
+        popup.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;width:420px;max-width:95vw;box-shadow:0 2px 12px #0004;';
+        popup.innerHTML = html;
+        document.body.appendChild(popup);
     }
 };
 

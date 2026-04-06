@@ -47,10 +47,31 @@ async function scrapeGmaps(query, lat, long) {
                         document.querySelector(selector)?.innerText?.trim() || null;
 
                     const name = getText('h1');
-                    const addressRaw = getText('[data-item-id="address"]');
-                    const phoneRaw = getText('[data-item-id="phone"]');
+
+                    // Endereço — múltiplos seletores por ordem de confiabilidade
+                    const addressRaw =
+                        getText('[data-item-id="address"]') ||
+                        getText('button[data-item-id="address"]') ||
+                        getText('[aria-label*="Endereço"]') ||
+                        getText('[aria-label*="Address"]') ||
+                        (() => {
+                            // Fallback: procurar elemento que contenha padrão de endereço
+                            const all = Array.from(document.querySelectorAll('button, div[role="button"]'));
+                            const found = all.find(el => /(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça)\s+/i.test(el.innerText));
+                            return found?.innerText?.trim() || null;
+                        })();
+
+                    // Telefone — múltiplos seletores
+                    const phoneRaw =
+                        getText('[data-item-id="phone"]') ||
+                        getText('button[data-item-id="phone"]') ||
+                        getText('[aria-label*="Telefone"]') ||
+                        getText('[aria-label*="Phone"]');
+
                     const website =
-                        document.querySelector('a[data-item-id="authority"]')?.href || null;
+                        document.querySelector('a[data-item-id="authority"]')?.href ||
+                        document.querySelector('a[aria-label*="Site"]')?.href ||
+                        null;
 
                     return { name, addressRaw, phoneRaw, website };
                 });
@@ -59,21 +80,32 @@ async function scrapeGmaps(query, lat, long) {
 
                 // ===== CEP =====
                 let cep = null;
-                const cepMatch = (data.addressRaw || bodyText).match(/\b\d{5}-?\d{3}\b/);
+                // Buscar CEP no endereço primeiro, depois no texto completo da página
+                const cepSource = data.addressRaw || bodyText;
+                const cepMatch = cepSource.match(/\b(\d{5})-?(\d{3})\b/);
                 if (cepMatch) {
-                    cep = cepMatch[0].replace('-', '');
+                    cep = cepMatch[1] + cepMatch[2]; // sem hífen, 8 dígitos
                 }
 
-                // ===== ENDEREÇO LIMPO (sem CEP) =====
-                let address = data.addressRaw;
-                if (address && cep) {
-                    address = address.replace(cepMatch[0], '').replace(/\s{2,}/g, ' ').trim();
-                }
+                // ===== ENDEREÇO LIMPO =====
+                let address = data.addressRaw
+                    ? data.addressRaw
+                        .replace(/^[·•\-–—\s]+/, '')  // remover · do início
+                        .replace(cepMatch ? cepMatch[0] : '', '')
+                        .replace(/\s{2,}/g, ' ')
+                        .trim()
+                    : null;
 
-                // fallback endereço
+                // fallback endereço via regex no bodyText
                 if (!address) {
-                    const match = bodyText.match(/(?:Rua|Av\.|Avenida|R\.)\s+[^\n,]+,\s*\d+/i);
-                    address = match ? match[0] : null;
+                    const match = bodyText.match(/(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça)\s+[^\n,]+,\s*\d+/i);
+                    address = match ? match[0].trim() : null;
+                }
+
+                // Se ainda não tem CEP, tentar extrair do bodyText
+                if (!cep) {
+                    const cepFallback = bodyText.match(/\b(\d{5})-?(\d{3})\b/);
+                    if (cepFallback) cep = cepFallback[1] + cepFallback[2];
                 }
 
                 // ===== TELEFONE NORMALIZADO =====
@@ -105,13 +137,33 @@ async function scrapeGmaps(query, lat, long) {
                     phone = normalizePhone(match ? match[0] : null);
                 }
 
+                // ===== COORDENADAS =====
+                // Prioridade 1: extrair do link original (!3d<lat>!4d<lon> no data= da URL)
+                // Prioridade 2: extrair da URL atual da página (@lat,lon)
+                let coordLat = null, coordLon = null;
+
+                const dataCoord = link.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+                if (dataCoord) {
+                    coordLat = parseFloat(dataCoord[1]);
+                    coordLon = parseFloat(dataCoord[2]);
+                } else {
+                    const currentUrl = page.url();
+                    const urlCoord = currentUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+                    if (urlCoord) {
+                        coordLat = parseFloat(urlCoord[1]);
+                        coordLon = parseFloat(urlCoord[2]);
+                    }
+                }
+
                 results.push({
                     name: data.name || null,
                     address,
                     cep,
                     phone,
                     website: data.website || null,
-                    link
+                    link,
+                    lat: coordLat,
+                    lon: coordLon,
                 });
 
             } catch (err) {

@@ -245,6 +245,8 @@ export class ProspectCompany {
         /** @type {string}      */ this.cep              = raw.cep              ?? '';
         /** @type {string}      */ this.tipo             = raw.tipo             ?? 'outros';
         /** @type {string}      */ this._fonte           = raw._fonte           ?? '';
+        /** @type {number|null} */ this.lat              = raw.lat              ?? null;
+        /** @type {number|null} */ this.lon              = raw.lon              ?? null;
     }
 
     /** @returns {string|null} Primeiro telefone disponível */
@@ -265,6 +267,11 @@ export class ProspectCompany {
     /** @returns {boolean} */
     get hasMapsLink() {
         return this.google_maps_link !== 'N/A' && !!this.google_maps_link;
+    }
+
+    /** @returns {boolean} Empresa tem coordenadas geográficas */
+    get isGeolocated() {
+        return this.lat !== null && this.lon !== null;
     }
 }
 

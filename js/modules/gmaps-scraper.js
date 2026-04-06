@@ -94,7 +94,16 @@ export async function loadFromApi(ceps) {
  */
 export async function searchNearbyFromState(event, territoryId, slotKey) {
     const ceps = (state._slotPopupData && state._slotPopupData[slotKey]) || [];
-    return searchNearby(event, territoryId, ceps);
+    // Recuperar dados do slot (lat, lon, radius_s) para match geográfico
+    const slotFeature = state.idealSupplyData?.find(
+        f => f.properties.territory_id === territoryId
+    );
+    const slotGeo = slotFeature ? {
+        lat:      slotFeature.geometry.coordinates[1],
+        lon:      slotFeature.geometry.coordinates[0],
+        radius_s: slotFeature.properties.radius_s,
+    } : null;
+    return searchNearby(event, territoryId, ceps, slotGeo);
 }
 
 /**
@@ -104,8 +113,9 @@ export async function searchNearbyFromState(event, territoryId, slotKey) {
  * @param {Event}    event
  * @param {string}   territoryId
  * @param {string[]} slotCeps
+ * @param {{lat:number,lon:number,radius_s:number}|null} slotGeo - Para match geográfico
  */
-export async function searchNearby(event, territoryId, slotCeps) {
+export async function searchNearby(event, territoryId, slotCeps, slotGeo = null) {
     event.stopPropagation();
 
     const loading = document.createElement('div');
@@ -126,17 +136,42 @@ export async function searchNearby(event, territoryId, slotCeps) {
             loadFromApi(cepList),
         ]);
 
-        // Resultados do Google Maps
+        // Resultados do Google Maps — com match geográfico quando lat/lon disponível
         const allForTerritory = gmapsData.results?.[territoryId] || [];
         const gmapsFiltered   = cepSet.size > 0
             ? allForTerritory.filter(e => e.cep && cepSet.has(e.cep))
             : allForTerritory;
         const gmapsResults = (gmapsFiltered.length > 0 ? gmapsFiltered : allForTerritory)
-            .map(r => new ProspectCompany({ ...r, _fonte: 'Google Maps 🗺️' }));
+            .map(r => {
+                const company = new ProspectCompany({ ...r, _fonte: 'Google Maps 🗺️' });
+                // Match geográfico: empresa dentro do raio do slot
+                if (slotGeo && company.isGeolocated) {
+                    const slotPt    = turf.point([slotGeo.lon, slotGeo.lat]);
+                    const companyPt = turf.point([company.lon, company.lat]);
+                    const distM     = turf.distance(slotPt, companyPt, { units: 'meters' });
+                    company.isMatch = distM <= slotGeo.radius_s;
+                    company.distanceM = Math.round(distM);
+                } else {
+                    company.isMatch   = null; // sem coordenadas, não é possível validar
+                    company.distanceM = null;
+                }
+                return company;
+            });
 
-        const results = [...gmapsResults, ...apiResults];
+        // Resultados da Receita Federal — match por CEP (sem lat/lon disponível)
+        const apiResultsMapped = apiResults.map(r => {
+            r.isMatch   = cepSet.size > 0 ? cepSet.has(r.cep) : null;
+            r.distanceM = null;
+            return r;
+        });
+
+        const results = [...gmapsResults, ...apiResultsMapped];
+        // Ordenar: ✅ dentro do raio primeiro, depois ⚠️ fora, depois sem validação
+        results.sort((a, b) => {
+            const score = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
+            return score(a) - score(b);
+        });
         showResults(results, territoryId, cepSet.size > 0, gmapsData.generated_at);
-
     } catch (err) {
         alert(`Erro: ${err.message}`);
         console.error('[GmapsScraper]', err);
@@ -181,7 +216,7 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
         </div>
         <div style="font-size:11px;color:#666;margin-bottom:8px;">
             ${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal<br>
-            ${usedCepFilter ? '📍 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}
+            ${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}
         </div>
         <div style="max-height:600px;overflow-y:auto;">
     `;
@@ -192,10 +227,21 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
         for (const [tipo, empresas] of Object.entries(byType)) {
             html += `<h6 style="margin:10px 0 4px;text-transform:capitalize;color:#333;">📂 ${tipo} (${empresas.length})</h6>`;
             empresas.forEach(r => {
+                // Badge de validação geográfica
+                let matchBadge = '';
+                if (r.isMatch === true) {
+                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
+                    matchBadge = `<div style="margin:2px 0;"><span style="color:#16a34a;font-weight:bold;">✅ Dentro do raio do slot</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
+                } else if (r.isMatch === false) {
+                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
+                    matchBadge = `<div style="margin:2px 0;"><span style="color:#d97706;">⚠️ Fora do raio</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
+                }
+
                 html += `
                     <div style="border-bottom:1px solid #eee;padding:6px 0;font-size:12px;">
                         <b>${r.nome}</b>
                         <span style="float:right;font-size:10px;color:#888;">${r._fonte || ''}</span><br>
+                        ${matchBadge}
                         <span style="color:#555;">📍 ${r.endereco}</span><br>
                         ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
                         ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}

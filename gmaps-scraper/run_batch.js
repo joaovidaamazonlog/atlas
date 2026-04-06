@@ -127,15 +127,17 @@ async function main() {
             try {
                 const items = await scrapeGmaps(type, String(lat), String(lon));
                 const formatted = items.map(item => ({
-                    nome:              item.name    || 'N/A',
-                    endereco:          item.address || 'N/A',
-                    telefone:          item.phone   || 'N/A',
-                    site:              item.website || 'N/A',
-                    google_maps_link:  item.link    || 'N/A',
-                    tipo:              type,
-                    territory_id:      tid,
-                    station_code:      meta.station_code,
-                    cep:               extractCep(item.address || ''),
+                    nome:             item.name    || 'N/A',
+                    endereco:         item.address || 'N/A',
+                    telefone:         item.phone   || 'N/A',
+                    site:             item.website || 'N/A',
+                    google_maps_link: item.link    || 'N/A',
+                    lat:              item.lat     ?? null,
+                    lon:              item.lon     ?? null,
+                    tipo:             type,
+                    territory_id:     tid,
+                    station_code:     meta.station_code,
+                    cep:              item.cep || extractCep(item.address || ''),
                 }));
 
                 // Merge: evitar duplicatas pelo nome + endereço

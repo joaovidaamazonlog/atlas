@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-07T18:35:45.287Z",
+  "generated_at": "2026-04-07T20:24:25.271Z",
   "n_territories": 4,
-  "n_companies": 397,
+  "n_companies": 400,
   "business_types": [
     "lanchonete",
     "açaí e sorveteria",
@@ -853,14 +853,16 @@
       },
       {
         "nome": "Assistência técnica AdegasBH conserto de Microondas e Air Fryer",
-        "endereco": "N/A",
-        "telefone": "31 99781-2651",
+        "endereco": "R. Bonfim, 702 - Bonfim, Belo Horizonte - MG",
+        "telefone": "31997812651",
         "site": "http://www.adegasbh.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Assist%C3%AAncia+t%C3%A9cnica+AdegasBH+conserto+de+Microondas+e+Air+Fryer/data=!4m7!3m6!1s0xa697583a0f90a9:0xee08c3daaa40d53a!8m2!3d-19.9105231!4d-43.9481497!16s%2Fg%2F1tjfch6y!19sChIJqZAPOliXpgAROtVAqtrDCO4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9105231,
+        "lon": -43.9481497,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "31210150"
       },
       {
         "nome": "Soluções Integradas Com Serv Informática - Trabalhamos APENAS por agendamento.",
@@ -1259,6 +1261,19 @@
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
         "cep": "30160030"
+      },
+      {
+        "nome": "LotCell Assistência técnica especializada",
+        "endereco": "R. Grão Mogol, 13 - Carmo, Belo Horizonte - MG",
+        "telefone": "31992607655",
+        "site": "https://instagram.com/lotcell.assistencia?utm_medium=copy_link",
+        "google_maps_link": "https://www.google.com/maps/place/LotCell+Assist%C3%AAncia+t%C3%A9cnica+especializada/data=!4m7!3m6!1s0xa6998bb3db5cf5:0xdee1241455660261!8m2!3d-19.9401085!4d-43.9318369!16s%2Fg%2F11qmn1z59t!19sChIJ9Vzbs4uZpgARYQJmVRQk4d4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9401085,
+        "lon": -43.9318369,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30310010"
       }
     ],
     "DBH5_bucket-02": [
@@ -2428,6 +2443,19 @@
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
         "cep": "30421565"
+      },
+      {
+        "nome": "Central Beer Lanches",
+        "endereco": "São Jorge 3ª Seção, Belo Horizonte - MG",
+        "telefone": "N/A",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Central+Beer+Lanches/data=!4m7!3m6!1s0xa697a298a6b517:0xa9d2319d989e047e!8m2!3d-19.9488278!4d-43.9631026!16s%2Fg%2F11j1346m00!19sChIJF7WmmKKXpgARfgSemJ0x0qk?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9488278,
+        "lon": -43.9631026,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30451496"
       }
     ],
     "DBH5_bucket-03": [
@@ -3508,6 +3536,19 @@
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
         "cep": "30220332"
+      },
+      {
+        "nome": "Biscoitim - Biscoiteria & Lanchonete - Av. Afonso Pena",
+        "endereco": "Av. Afonso Pena, 3900 - Centro, Belo Horizonte - MG",
+        "telefone": "3138791982",
+        "site": "https://www.instagram.com/biscoitimbh",
+        "google_maps_link": "https://www.google.com/maps/place/Biscoitim+-+Biscoiteria+%26+Lanchonete+-+Av.+Afonso+Pena/data=!4m7!3m6!1s0xa699422af29f51:0xfa9b344005f3aff5!8m2!3d-19.9447951!4d-43.92286!16s%2Fg%2F11lfzstc7j!19sChIJUZ_yKkKZpgAR9a_zBUA0m_o?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9447951,
+        "lon": -43.92286,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30130009"
       }
     ],
     "DBH5_bucket-04": [

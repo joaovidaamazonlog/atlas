@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-06T22:26:19.070Z",
+  "generated_at": "2026-04-07T15:51:29.724Z",
   "n_territories": 4,
-  "n_companies": 677,
+  "n_companies": 698,
   "business_types": [
     "lanchonete",
     "açaí e sorveteria",
@@ -1964,6 +1964,97 @@
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
         "cep": "30240340"
+      },
+      {
+        "nome": "Biscoitim - Biscoiteria & Lanchonete - Av. do Contorno",
+        "endereco": "\nAv. do Contorno, 4808 - Funcionários, Belo Horizonte - MG, , Brasil",
+        "telefone": "31972074679",
+        "site": "https://www.instagram.com/biscoitimbh/",
+        "google_maps_link": "https://www.google.com/maps/place/Biscoitim+-+Biscoiteria+%26+Lanchonete+-+Av.+do+Contorno/data=!4m7!3m6!1s0xa6995595bfdd99:0xd6ae528ea9bdf5c8!8m2!3d-19.9364408!4d-43.9256396!16s%2Fg%2F11spwfgzby!19sChIJmd2_lVWZpgARyPW9qY5SrtY?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9364408,
+        "lon": -43.9256396,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30110027"
+      },
+      {
+        "nome": "Free Lanches e Restaurante",
+        "endereco": "\nR. Rio de Janeiro, 1267 - Lourdes, Belo Horizonte - MG, , Brasil",
+        "telefone": "3136534962",
+        "site": "https://webapp.ifood.com.br/delivery/belo-horizonte-mg/free-lanches-lourdes/5a100d53-f23b-4cb9-af4c-3bd6eb32c235",
+        "google_maps_link": "https://www.google.com/maps/place/Free+Lanches+e+Restaurante/data=!4m7!3m6!1s0xa699e11505756b:0x81cde51e4e2cb928!8m2!3d-19.9254748!4d-43.9402184!16s%2Fg%2F11g887hdcp!19sChIJa3UFFeGZpgARKLksTh7lzYE?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9254748,
+        "lon": -43.9402184,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30160042"
+      },
+      {
+        "nome": "Chaveiro São Lucas",
+        "endereco": "\nRua :Tenente Anastácio de moura 759 São Lucas - Santa Efigênia, Belo Horizonte - MG, , Brasil",
+        "telefone": "3130224444",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Chaveiro+S%C3%A3o+Lucas/data=!4m7!3m6!1s0xa69991f321d211:0xdb83b05deaa72575!8m2!3d-19.9263483!4d-43.9169732!16s%2Fg%2F1q5brw6d3!19sChIJEdIh85GZpgARdSWn6l2wg9s?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9263483,
+        "lon": -43.9169732,
+        "tipo": "chaveiro",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30240390"
+      },
+      {
+        "nome": "S&G Eletrônica - Philco Assistência Técnica Autorizada",
+        "endereco": "\nR. Aquiles Lobo, 469 - Floresta, Belo Horizonte - MG, , Brasil",
+        "telefone": "3132246144",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/S%26G+Eletr%C3%B4nica+-+Philco+Assist%C3%AAncia+T%C3%A9cnica+Autorizada/data=!4m7!3m6!1s0xa699f17248798f:0xd285589f02e9044!8m2!3d-19.9198342!4d-43.9303874!16s%2Fg%2F1ptzwljxx!19sChIJj3lIcvGZpgARRJAu8IlVKA0?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9198342,
+        "lon": -43.9303874,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30150160"
+      },
+      {
+        "nome": "LUCASCELLBH – Assistência Técnica no Centro de BH",
+        "endereco": "\nloja com balcão verde - Av. Oiapoque, 221 - Loja 894 - Centro, Belo Horizonte - MG, , Brasil",
+        "telefone": "31971211701",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/LUCASCELLBH+%E2%80%93+Assist%C3%AAncia+T%C3%A9cnica+no+Centro+de+BH/data=!4m7!3m6!1s0xa6990076a793bd:0xe77425e24348862!8m2!3d-19.9137896!4d-43.9397239!16s%2Fg%2F11fjzwln1f!19sChIJvZOndgCZpgARYog0JF5Cdw4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9137896,
+        "lon": -43.9397239,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30111070"
+      },
+      {
+        "nome": "LF - ASSISTENCIA TÉCNICA MULTIMARCAS",
+        "endereco": "\nR. Espírito Santo, 1025 - loja 1 - Centro, Belo Horizonte - MG, , Brasil",
+        "telefone": "3136579069",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/LF+-+ASSISTENCIA+T%C3%89CNICA+MULTIMARCAS/data=!4m7!3m6!1s0xa699f8e3c7e357:0xbd45e716a9c1dc61!8m2!3d-19.9235676!4d-43.9382767!16s%2Fg%2F11jmcyjfy2!19sChIJV-PH4_iZpgARYdzBqRbnRb0?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9235676,
+        "lon": -43.9382767,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30160031"
+      },
+      {
+        "nome": "Eletrônica Luxemburgo Assistência Técnica TV LG Samsung Micro-ondas Conserto BH Contagem Nova Lima",
+        "endereco": "\nR. Conde de Linhares, 624 - Cidade Jardim, Belo Horizonte - MG, , Brasil",
+        "telefone": "3133422911",
+        "site": "https://assistencialuxemburgo.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/Eletr%C3%B4nica+Luxemburgo+Assist%C3%AAncia+T%C3%A9cnica+TV+LG+Samsung+Micro-ondas+Conserto+BH+Contagem+Nova+Lima/data=!4m7!3m6!1s0xa697796bd73b4f:0x785df7c5fb02b9e4!8m2!3d-19.9413521!4d-43.9499016!16s%2Fg%2F1tg7t7g4!19sChIJTzvXa3mXpgAR5LkC-8X3XXg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9413521,
+        "lon": -43.9499016,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30380030"
       }
     ],
     "DBH5_bucket-02": [
@@ -3908,6 +3999,71 @@
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
         "cep": "30411174"
+      },
+      {
+        "nome": "Beggiato Restaurante",
+        "endereco": "\nRua Cura D'Ars, 722 - Prado, Belo Horizonte - MG, , Brasil",
+        "telefone": "3125550722",
+        "site": "https://beggiatorestaurante.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/Beggiato+Restaurante/data=!4m7!3m6!1s0xa69712de00b083:0xc48df9f0ae302d87!8m2!3d-19.9289055!4d-43.9639283!16s%2Fg%2F11b75dt0d1!19sChIJg7AA3hKXpgARhy0wrvD5jcQ?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9289055,
+        "lon": -43.9639283,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30411197"
+      },
+      {
+        "nome": "Quero Sorvetinho",
+        "endereco": "\nAv. Raja Gabáglia, 1055 - Cidade Jardim, Belo Horizonte - MG, , Brasil",
+        "telefone": "N/A",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Quero+Sorvetinho/data=!4m7!3m6!1s0xa697eef31389fb:0xb559cafccfda3e53!8m2!3d-19.9445562!4d-43.9565563!16s%2Fg%2F11mr_0tgsb!19sChIJ-4kT8-6XpgARUz7az_zKWbU?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9445562,
+        "lon": -43.9565563,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30380403"
+      },
+      {
+        "nome": "Chaveco Max Prado - Ekipar Acessórios",
+        "endereco": "\nAv. Francisco Sá, 654 - Prado, Belo Horizonte - MG, , Brasil",
+        "telefone": "31998384044",
+        "site": "https://chaveiro24hbh.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/Chaveco+Max+Prado+-+Ekipar+Acess%C3%B3rios/data=!4m7!3m6!1s0xa6976c70adda6b:0xa1fc2e68fe0fa1f8!8m2!3d-19.9278778!4d-43.9598352!16s%2Fg%2F1pv19jq_f!19sChIJa9qtcGyXpgAR-KEP_mgu_KE?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9278778,
+        "lon": -43.9598352,
+        "tipo": "chaveiro",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30411174"
+      },
+      {
+        "nome": "Eletrônica Barroca",
+        "endereco": "\nR. Campos Elíseos, 300 - Barroca, Belo Horizonte - MG, , Brasil",
+        "telefone": "3136567204",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Eletr%C3%B4nica+Barroca/data=!4m7!3m6!1s0xa6970db1788e0f:0xc639142c090a27eb!8m2!3d-19.9323584!4d-43.9660818!16s%2Fg%2F1ptxxfc9m!19sChIJD454sQ2XpgAR6ycKCSwUOcY?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9323584,
+        "lon": -43.9660818,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30430510"
+      },
+      {
+        "nome": "Conserto de Air Fryer | Eletro Orion",
+        "endereco": "\nRua José Furletti, 23 - Betânia, Belo Horizonte - MG, , Brasil",
+        "telefone": "31997797080",
+        "site": "https://www.eletroorion.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/Conserto+de+Air+Fryer+%7C+Eletro+Orion/data=!4m7!3m6!1s0xa6964bb0965555:0xaf95cf49b30ddc5f!8m2!3d-19.9497543!4d-43.9849957!16s%2Fg%2F11kbwmglvp!19sChIJVVWWsEuWpgARX9wNs0nPla8?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9497543,
+        "lon": -43.9849957,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30516560"
       }
     ],
     "DBH5_bucket-03": [
@@ -5713,6 +5869,58 @@
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
         "cep": "30310230"
+      },
+      {
+        "nome": "Veraldina's Restaurante, doceria e lanchonete",
+        "endereco": "\nR. Grão Mogol, 299 - Sion, Belo Horizonte - MG, , Brasil",
+        "telefone": "31972451887",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Veraldina%27s+Restaurante,+doceria+e+lanchonete/data=!4m7!3m6!1s0xa699c3896121a7:0x273ff5a34792ebfa!8m2!3d-19.9425343!4d-43.9324848!16s%2Fg%2F11vc6bw67l!19sChIJpyFhicOZpgAR-uuSR6P1Pyc?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9425343,
+        "lon": -43.9324848,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30315600"
+      },
+      {
+        "nome": "Sorveteria e açaí Fino Sabor",
+        "endereco": "\nR. Gastão da Cunha, 213 - Grajaú, Belo Horizonte - MG, , Brasil",
+        "telefone": "3133099509",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Sorveteria+e+a%C3%A7a%C3%AD+Fino+Sabor/data=!4m7!3m6!1s0xa69760a86f3289:0x383287e67b43146e!8m2!3d-19.9416556!4d-43.9615336!16s%2Fg%2F11j92clwnb!19sChIJiTJvqGCXpgARbhRDe-aHMjg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9416556,
+        "lon": -43.9615336,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30431173"
+      },
+      {
+        "nome": "Chaveiro Savassi",
+        "endereco": "\nR. Antônio de Albuquerque, 642-B - Funcionários, Belo Horizonte - MG, , Brasil",
+        "telefone": "31999250034",
+        "site": "https://www.chaveirosavassi.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Savassi/data=!4m7!3m6!1s0xa699abd91fe169:0xcad38e76359b08e8!8m2!3d-19.937823!4d-43.9365356!16s%2Fg%2F11x93xq27g!19sChIJaeEf2auZpgAR6AibNXaO08o?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.937823,
+        "lon": -43.9365356,
+        "tipo": "chaveiro",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30112011"
+      },
+      {
+        "nome": "BH Cell",
+        "endereco": "\nAv. do Contorno, 6040 - Loja 15 - Funcionários, Belo Horizonte - MG, , Brasil",
+        "telefone": "3132814555",
+        "site": "https://bhcell.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/BH+Cell/data=!4m7!3m6!1s0xa699d00a91f32f:0x22f83f0d2a8f0bd5!8m2!3d-19.9399483!4d-43.9352284!16s%2Fg%2F11_sqctzm!19sChIJL_ORCtCZpgAR1QuPKg0_-CI?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9399483,
+        "lon": -43.9352284,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30110042"
       }
     ],
     "DBH5_bucket-04": [
@@ -7540,6 +7748,71 @@
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
         "cep": "30580353"
+      },
+      {
+        "nome": "Sorveteria Easyice Buritis",
+        "endereco": "\nR. Henrique Badaró Portugal, 411 - Buritis, Belo Horizonte - MG, , Brasil",
+        "telefone": "31992554111",
+        "site": "https://www.instagram.com/easyice.buritis/",
+        "google_maps_link": "https://www.google.com/maps/place/Sorveteria+Easyice+Buritis/data=!4m7!3m6!1s0xa6978106f01611:0x311ec6a9a8ea305f!8m2!3d-19.9728631!4d-43.9759788!16s%2Fg%2F11w8qpy82s!19sChIJERbwBoGXpgARXzDqqKnGHjE?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9728631,
+        "lon": -43.9759788,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30575831"
+      },
+      {
+        "nome": "Delicias No Copo",
+        "endereco": "\nR. Mario Coutinho, 657 - Estoril, Belo Horizonte - MG, , Brasil",
+        "telefone": "31975729856",
+        "site": "https://linktr.ee/delicasnocopo?utm_source=linktree_profile_share&ltsid=ed04fe2f-27aa-474c-a577-d2b9171e39c4",
+        "google_maps_link": "https://www.google.com/maps/place/Delicias+No+Copo/data=!4m7!3m6!1s0xa69795bb6a1f1d:0x3662f896cd1e33ff!8m2!3d-19.9606591!4d-43.9658813!16s%2Fg%2F11tsn8v08w!19sChIJHR9qu5WXpgAR_zMezZb4YjY?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9606591,
+        "lon": -43.9658813,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30494059"
+      },
+      {
+        "nome": "Chaveiro super chaves Barão",
+        "endereco": "\nAv. Barão Homem de Melo, n 1763 - Jardim America, Belo Horizonte - MG, , Brasil",
+        "telefone": "31999985897",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Chaveiro+super+chaves+Bar%C3%A3o/data=!4m7!3m6!1s0xa69776ab523957:0x15d85311707aa872!8m2!3d-19.9511751!4d-43.9677686!16s%2Fg%2F11fmlgt6c2!19sChIJVzlSq3aXpgARcqh6cBFT2BU?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9511751,
+        "lon": -43.9677686,
+        "tipo": "chaveiro",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30460090"
+      },
+      {
+        "nome": "Assistência Técnica e Conserto de Geladeira e Freezers Buritis",
+        "endereco": "\nRua Maria Heilbuth Surette, 199 - Buritis, Belo Horizonte - MG, , Brasil",
+        "telefone": "31971432061",
+        "site": "https://wtecbh.com.br/",
+        "google_maps_link": "https://www.google.com/maps/place/Assist%C3%AAncia+T%C3%A9cnica+e+Conserto+de+Geladeira+e+Freezers+Buritis/data=!4m7!3m6!1s0xa697d0a04d307d:0x57d9518881efbb45!8m2!3d-19.9747616!4d-43.9730193!16s%2Fg%2F11w2nlr3m_!19sChIJfTBNoNCXpgARRbvvgYhR2Vc?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9747616,
+        "lon": -43.9730193,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30575100"
+      },
+      {
+        "nome": "Belo Tech Assistencia Tecnica",
+        "endereco": "\nRua gentios 1275, Av. Ac. Bloco 4, 121 - Luxemburgo, Belo Horizonte - MG, , Brasil",
+        "telefone": "31996621106",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Belo+Tech+Assistencia+Tecnica/data=!4m7!3m6!1s0xa697fe42cbe12f:0x12ccd01771b9ceb6!8m2!3d-19.9517894!4d-43.9565005!16s%2Fg%2F11rbvm1xg1!19sChIJL-HLQv6XpgARts65cRfQzBI?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9517894,
+        "lon": -43.9565005,
+        "tipo": "assistência técnica",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30380474"
       }
     ]
   }

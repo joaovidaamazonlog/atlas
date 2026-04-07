@@ -140,12 +140,31 @@ async function main() {
                     cep:              item.cep || extractCep(item.address || ''),
                 }));
 
-                // Merge: evitar duplicatas pelo nome + endereço
+                // Merge: chave primária = google_maps_link (único por estabelecimento)
+                // Fallback = nome (para entradas antigas sem link)
+                // Sempre prefere a versão com endereço completo
                 for (const item of formatted) {
-                    const isDuplicate = results[tid].some(
-                        e => e.nome === item.nome && e.endereco === item.endereco
-                    );
-                    if (!isDuplicate) results[tid].push(item);
+                    const newHasAddress = item.endereco && item.endereco !== 'N/A';
+
+                    // Tentar match pelo link primeiro
+                    let existingIdx = item.google_maps_link && item.google_maps_link !== 'N/A'
+                        ? results[tid].findIndex(e => e.google_maps_link === item.google_maps_link)
+                        : -1;
+
+                    // Fallback: match pelo nome
+                    if (existingIdx === -1) {
+                        existingIdx = results[tid].findIndex(e => e.nome === item.nome);
+                    }
+
+                    if (existingIdx === -1) {
+                        results[tid].push(item);
+                    } else {
+                        const prev = results[tid][existingIdx];
+                        const prevHasAddress = prev.endereco && prev.endereco !== 'N/A';
+                        if (!prevHasAddress && newHasAddress) {
+                            results[tid][existingIdx] = item;
+                        }
+                    }
                 }
 
                 console.log(`    → ${formatted.length} empresas encontradas`);

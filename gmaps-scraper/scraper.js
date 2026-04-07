@@ -133,8 +133,17 @@ async function _scrapeDetail(browser, link) {
     try {
         await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
 
-        // Delay humano aleatório (800ms – 2s) para evitar detecção
-        await delay(800 + Math.random() * 1200);
+        // Aguardar o painel de detalhes carregar — o endereço completo (com CEP)
+        // é renderizado num segundo request após o carregamento inicial da página.
+        // Esperamos pelo elemento de endereço ou pelo h1, o que vier primeiro.
+        await Promise.race([
+            page.waitForSelector('[data-item-id="address"]', { timeout: 8000 }),
+            page.waitForSelector('button[data-item-id="address"]', { timeout: 8000 }),
+        ]).catch(() => null); // se não aparecer, continua mesmo assim
+
+        // Delay humano aleatório (400ms – 900ms) — só para evitar detecção,
+        // não mais responsável por esperar o DOM
+        await delay(400 + Math.random() * 500);
 
         // ── Extração de dados via evaluate ────────────────────────────────
         const data = await page.evaluate(() => {
@@ -143,19 +152,33 @@ async function _scrapeDetail(browser, link) {
 
             const name = getText('h1');
 
-            // Endereço — múltiplos seletores em cascata
-            const addressRaw =
-                getText('[data-item-id="address"]') ||
-                getText('button[data-item-id="address"]') ||
-                getText('[aria-label*="Endereço"]') ||
-                getText('[aria-label*="Address"]') ||
-                (() => {
-                    const all = Array.from(document.querySelectorAll('button, div[role="button"]'));
-                    const found = all.find(el =>
-                        /(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça)\s+/i.test(el.innerText)
-                    );
-                    return found?.innerText?.trim() || null;
-                })();
+            // Endereço — o aria-label do botão contém o endereço completo com CEP
+            // Ex: aria-label="Endereço: Rua X, 123 - Bairro, Cidade - MG, 30000-000, Brasil"
+            const addressRaw = (() => {
+                const btn =
+                    document.querySelector('[data-item-id="address"]') ||
+                    document.querySelector('button[data-item-id="address"]');
+                if (btn) {
+                    // aria-label tem o endereço completo incluindo CEP
+                    const label = btn.getAttribute('aria-label') || '';
+                    const fromLabel = label.replace(/^Endere[çc]o:\s*/i, '').trim();
+                    if (fromLabel) return fromLabel;
+                    return btn.innerText?.trim() || null;
+                }
+                // Fallbacks
+                const byAriaLabel =
+                    document.querySelector('[aria-label*="Endereço"]') ||
+                    document.querySelector('[aria-label*="Address"]');
+                if (byAriaLabel) {
+                    return (byAriaLabel.getAttribute('aria-label') || byAriaLabel.innerText || '').trim() || null;
+                }
+                // Último recurso: buscar botão com texto de logradouro
+                const all = Array.from(document.querySelectorAll('button, div[role="button"]'));
+                const found = all.find(el =>
+                    /(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça)\s+/i.test(el.innerText)
+                );
+                return found?.innerText?.trim() || null;
+            })();
 
             // Telefone — múltiplos seletores
             const phoneRaw =
@@ -181,17 +204,12 @@ async function _scrapeDetail(browser, link) {
         if (cepMatch) cep = cepMatch[1] + cepMatch[2];
 
         // ── Endereço limpo ────────────────────────────────────────────────
-        let address = data.addressRaw
-            ? data.addressRaw
-                .replace(/^[·•\-–—\s]+/, '')
-                .replace(cepMatch ? cepMatch[0] : '', '')
-                .replace(/\s{2,}/g, ' ')
-                .trim()
-            : null;
+        const parsedAddr = parseAddressField(data.addressRaw, cepMatch);
+        let address = parsedAddr.address;
 
         if (!address) {
             const m = bodyText.match(/(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça)\s+[^\n,]+,\s*\d+/i);
-            address = m ? m[0].trim() : null;
+            address = m ? parseAddressField(m[0], cepMatch).address : null;
         }
 
         if (!cep) {
@@ -207,10 +225,20 @@ async function _scrapeDetail(browser, link) {
             return (d.length === 10 || d.length === 11) ? d : null;
         };
 
+        // Telefone: campo dedicado > campo endereço > bodyText
         let phone = normalizePhone(data.phoneRaw);
+        if (!phone && parsedAddr.phone) phone = parsedAddr.phone;
         if (!phone) {
             const m = bodyText.match(/(?:\+55\s?)?(?:\(?\d{2}\)?\s?)?(?:9\d{4}|\d{4})-?\d{4}/);
             phone = normalizePhone(m ? m[0] : null);
+        }
+
+        // Site: campo dedicado > campo endereço
+        const website = data.website || parsedAddr.website || null;
+
+        // ── CEP via ViaCEP (fallback quando não encontrado na página) ─────
+        if (!cep && address) {
+            cep = await lookupCep(address);
         }
 
         // ── Coordenadas ───────────────────────────────────────────────────
@@ -229,22 +257,12 @@ async function _scrapeDetail(browser, link) {
             }
         }
 
-        // ── Filtro de qualidade: só salvar com endereço completo E CEP ───────
-        // Endereço completo = tem logradouro + número (ex: "Rua X, 123")
-        const hasFullAddress = address && /\d+/.test(address) &&
-            /(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça|Estrada|Rod\.)/i.test(address);
-        const hasCep = !!cep;
-
-        if (!hasFullAddress || !hasCep) {
-            return null; // descartado — dados incompletos
-        }
-
         return {
             name:    data.name || null,
             address,
             cep,
             phone,
-            website: data.website || null,
+            website: website,
             link,
             lat:     coordLat,
             lon:     coordLon,
@@ -260,6 +278,98 @@ async function _scrapeDetail(browser, link) {
 // ---------------------------------------------------------------------------
 // HELPERS
 // ---------------------------------------------------------------------------
+
+/**
+ * Consulta o CEP via ViaCEP a partir de um endereço normalizado.
+ * Extrai logradouro e tenta inferir a cidade do endereço ou usa "Belo Horizonte" como padrão.
+ * Retorna o CEP como string de 8 dígitos ou null.
+ *
+ * @param {string} address
+ * @returns {Promise<string|null>}
+ */
+async function lookupCep(address) {
+    try {
+        // Extrair logradouro (tudo antes do primeiro " - " ou da vírgula após o número)
+        const streetMatch = address.match(/^(.+?,\s*\d+[^,\-]*)/);
+        const street = streetMatch ? streetMatch[1].trim() : address.split(' - ')[0].trim();
+
+        // Tentar extrair cidade do endereço (ex: "... - Bairro, Cidade")
+        const cityMatch = address.match(/,\s*([^,\-]+)\s*$/);
+        const city = cityMatch ? cityMatch[1].trim() : 'Belo Horizonte';
+
+        const encoded = encodeURIComponent(street);
+        const encodedCity = encodeURIComponent(city);
+        const url = `https://viacep.com.br/ws/MG/${encodedCity}/${encoded}/json/`;
+
+        const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+        if (!res.ok) return null;
+
+        const json = await res.json();
+        if (Array.isArray(json) && json.length > 0 && json[0].cep) {
+            return json[0].cep.replace('-', '');
+        }
+    } catch (_) {
+        // ViaCEP indisponível ou timeout — não bloquear o scraping
+    }
+    return null;
+}
+
+
+ * Retorna { address, phone, website } — o campo pode conter qualquer um desses.
+ *
+ * @param {string|null} raw
+ * @param {RegExpMatchArray|null} cepMatch
+ * @returns {{ address: string|null, phone: string|null, website: string|null }}
+ */
+function parseAddressField(raw, cepMatch) {
+    const result = { address: null, phone: null, website: null };
+    if (!raw) return result;
+
+    // Limpar prefixos visuais antes de classificar
+    let clean = raw
+        .replace(/[\uE000-\uF8FF]/g, '')
+        .replace(/[\n\r\t]+/g, ' ')
+        .replace(/^[\s·•\-–—]+/, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+
+    // Detectar se é telefone (ex: "+55 31 99266-6109" ou "31 99266-6109")
+    const phonePattern = /^\+?(?:55\s?)?(?:\(?\d{2}\)?\s?)[\d\s\-().]{7,}$/;
+    if (phonePattern.test(clean)) {
+        const digits = clean.replace(/\D/g, '');
+        const normalized = digits.startsWith('55') ? digits.slice(2) : digits;
+        if (normalized.length === 10 || normalized.length === 11) {
+            result.phone = normalized;
+        }
+        return result;
+    }
+
+    // Detectar se é URL/site
+    if (/^https?:\/\//i.test(clean) || /^www\./i.test(clean)) {
+        result.website = clean;
+        return result;
+    }
+
+    // É endereço — normalizar
+    let addr = clean;
+    addr = addr.replace(cepMatch ? cepMatch[0] : /(?!x)x/, '');
+    addr = addr.replace(/,?\s*,\s*Brasil\s*$/i, '');
+    addr = addr.replace(/\s*-\s*[A-Z]{2}\s*,.*$/i, '');
+    addr = addr.replace(/,\s*,/g, ',');
+    addr = addr.replace(/\s{2,}/g, ' ').trim();
+
+    // Extrair logradouro se houver prefixo descritivo
+    const streetRe = /(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça|Estrada|Rod\.|Beco|Largo)\s+.+/i;
+    const startsWithStreet = /^(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça|Estrada|Rod\.|Beco|Largo)/i;
+    if (!startsWithStreet.test(addr)) {
+        const m = addr.match(streetRe);
+        if (m) addr = m[0].trim();
+    }
+
+    addr = addr.replace(/[\s,\-–—]+$/, '').trim();
+    result.address = addr || null;
+    return result;
+}
 
 /**
  * Scroll automático robusto — para quando a altura para de crescer.

@@ -247,6 +247,16 @@ export class ProspectCompany {
         /** @type {string}      */ this._fonte           = raw._fonte           ?? '';
         /** @type {number|null} */ this.lat              = raw.lat              ?? null;
         /** @type {number|null} */ this.lon              = raw.lon              ?? null;
+
+        // Se lat/lon não vieram no JSON, extrair do google_maps_link
+        // O link sempre contém !3d<lat>!4d<lon> quando é um lugar específico
+        if ((this.lat === null || this.lon === null) && this.google_maps_link !== 'N/A') {
+            const m = this.google_maps_link.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+            if (m) {
+                this.lat = parseFloat(m[1]);
+                this.lon = parseFloat(m[2]);
+            }
+        }
     }
 
     /** @returns {string|null} Primeiro telefone disponível */

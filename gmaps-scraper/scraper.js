@@ -314,7 +314,8 @@ async function lookupCep(address) {
     return null;
 }
 
-
+/**
+ * Analisa o campo de endereço bruto do Google Maps.
  * Retorna { address, phone, website } — o campo pode conter qualquer um desses.
  *
  * @param {string|null} raw

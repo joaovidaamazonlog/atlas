@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-07T15:51:29.724Z",
+  "generated_at": "2026-04-07T18:35:45.287Z",
   "n_territories": 4,
-  "n_companies": 384,
+  "n_companies": 397,
   "business_types": [
     "lanchonete",
     "açaí e sorveteria",
@@ -474,14 +474,16 @@
       },
       {
         "nome": "Chaveiro Savassi",
-        "endereco": "N/A",
-        "telefone": "31 99925-0034",
+        "endereco": "R. Antônio de Albuquerque, 642-B - Funcionários, Belo Horizonte - MG",
+        "telefone": "31999250034",
         "site": "https://www.chaveirosavassi.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Savassi/data=!4m7!3m6!1s0xa699abd91fe169:0xcad38e76359b08e8!8m2!3d-19.937823!4d-43.9365356!16s%2Fg%2F11x93xq27g!19sChIJaeEf2auZpgAR6AibNXaO08o?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.937823,
+        "lon": -43.9365356,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30112011"
       },
       {
         "nome": "Chaveiro Central Barro Preto - Chaves codificadas e Atendimento em Domícilio Marido de aluguel.",
@@ -584,58 +586,68 @@
       },
       {
         "nome": "Chaveiro Santa Efigênia",
-        "endereco": "N/A",
-        "telefone": "31 99861-2971",
+        "endereco": "R. Pirapora - Santa Efigênia, Belo Horizonte - MG",
+        "telefone": "31998612971",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Santa+Efig%C3%AAnia/data=!4m7!3m6!1s0xa69985c885544b:0xc7bbc4d3643b08b!8m2!3d-19.9239227!4d-43.9142947!16s%2Fg%2F1ptxd4f3t!19sChIJS1SFyIWZpgARi7BDNk28eww?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9239227,
+        "lon": -43.9142947,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30260230"
       },
       {
         "nome": "Raí Chaves",
-        "endereco": "N/A",
-        "telefone": "31 99976-1719",
+        "endereco": "R. Alagoas, 750 - Loja 7 - Funcionários, Belo Horizonte - MG",
+        "telefone": "31999761719",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Ra%C3%AD+Chaves/data=!4m7!3m6!1s0xa699dc769fbff7:0x96a514727809c7d3!8m2!3d-19.9336218!4d-43.9359087!16s%2Fg%2F1tfl1g0_!19sChIJ97-fdtyZpgAR08cJeHIUpZY?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9336218,
+        "lon": -43.9359087,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30140111"
       },
       {
         "nome": "Chaveiro BH Alexandre | 24 Horas | Residencial e Automotivo",
-        "endereco": "N/A",
-        "telefone": "31 99229-0023",
+        "endereco": "R. Rio de Janeiro, 105 - Centro, Belo Horizonte - MG",
+        "telefone": "31992290023",
         "site": "https://chaveiro-bh-alexandre.webnode.page/",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+BH+Alexandre+%7C+24+Horas+%7C+Residencial+e+Automotivo/data=!4m7!3m6!1s0xa699794de3ddfd:0x19d942e9c7dd2f18!8m2!3d-19.915354!4d-43.937437!16s%2Fg%2F11tmrd6s5f!19sChIJ_d3jTXmZpgARGC_dx-lC2Rk?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.915354,
+        "lon": -43.937437,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30160040"
       },
       {
         "nome": "Chaveiro CCR Auto chaves",
-        "endereco": "N/A",
-        "telefone": "31 99985-7750",
+        "endereco": "R. dos Aimorés, 331 - Funcionários, Belo Horizonte - MG",
+        "telefone": "31999857750",
         "site": "https://ccrautochaves.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+CCR+Auto+chaves/data=!4m7!3m6!1s0xa6991ba33a42eb:0x4d8c508425cb9571!8m2!3d-19.9311911!4d-43.9275637!16s%2Fg%2F11fks8lrhq!19sChIJ60I6oxuZpgARcZXLJYRQjE0?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9311911,
+        "lon": -43.9275637,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30140070"
       },
       {
         "nome": "Chaveiro Halley",
-        "endereco": "N/A",
-        "telefone": "31 98866-7746",
+        "endereco": "R. Paraíba, 1361 - Savassi, Belo Horizonte - MG",
+        "telefone": "31988667746",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Halley/data=!4m7!3m6!1s0xa699dad2b1f215:0xb7fe1a19215f1a4!8m2!3d-19.9383619!4d-43.9340849!16s%2Fg%2F1thsblfl!19sChIJFfKx0tqZpgARpPEVkqHhfws?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9383619,
+        "lon": -43.9340849,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30130141"
       },
       {
         "nome": "Chaveiro Itajubá",
@@ -661,14 +673,16 @@
       },
       {
         "nome": "Chaveiro/ Camoutech Tamoios.",
-        "endereco": "N/A",
-        "telefone": "31 99644-7704",
+        "endereco": "R. Rio Grande do Sul, 307 - Centro, Belo Horizonte - MG",
+        "telefone": "31996447704",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro%2F+Camoutech+Tamoios./data=!4m7!3m6!1s0xa6975813f7a771:0x27586dac0f6b3295!8m2!3d-19.9185128!4d-43.9451317!16s%2Fg%2F1ptx_6s71!19sChIJcaf3E1iXpgARlTJrD6xtWCc?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9185128,
+        "lon": -43.9451317,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30170111"
       },
       {
         "nome": "ManutenCel - Assistência Técnica Especializada Apple",
@@ -738,14 +752,16 @@
       },
       {
         "nome": "Tales Tech - Assistencia Técnica HTV e BTV",
-        "endereco": "N/A",
-        "telefone": "31 99327-4567",
+        "endereco": "R. Curitiba, 149 - Loja 333 - Centro, Belo Horizonte - MG",
+        "telefone": "31993274567",
         "site": "https://wa.me/talestechbr",
         "google_maps_link": "https://www.google.com/maps/place/Tales+Tech+-+Assistencia+T%C3%A9cnica+HTV+e+BTV/data=!4m7!3m6!1s0x267a8aacfbd7871b:0x52b79530ace46bd8!8m2!3d-19.914022!4d-43.9394695!16s%2Fg%2F11y9ycb3x7!19sChIJG4fX-6yKeiYR2GvkrDCVt1I?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.914022,
+        "lon": -43.9394695,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30170120"
       },
       {
         "nome": "Maq Serviços - Autorizada Brastemp Consul e KitchenAid",
@@ -874,14 +890,16 @@
       },
       {
         "nome": "ConDex Assistência Técnica",
-        "endereco": "N/A",
-        "telefone": "31 98601-1101",
+        "endereco": "R. Saturnino de Brito, 17 - Box 218 - Centro, Belo Horizonte - MG",
+        "telefone": "31986011101",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/ConDex+Assist%C3%AAncia+T%C3%A9cnica/data=!4m7!3m6!1s0xa699fec426dbd9:0x6c6f697315c36904!8m2!3d-19.9142846!4d-43.9406239!16s%2Fg%2F11b76ndrl4!19sChIJ2dsmxP6ZpgARBGnDFXNpb2w?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9142846,
+        "lon": -43.9406239,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30110002"
       },
       {
         "nome": "S&G Eletrônica - Philco Assistência Técnica Autorizada",
@@ -1215,6 +1233,32 @@
         "territory_id": "DBH5_bucket-01",
         "station_code": "DBH5",
         "cep": "30160031"
+      },
+      {
+        "nome": "Tunay Lanches",
+        "endereco": "Av. Getúlio Vargas, 1303 - Savassi, Belo Horizonte - MG",
+        "telefone": "N/A",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Tunay+Lanches/data=!4m7!3m6!1s0xa6994369454f9d:0x1f27cb02414d388f!8m2!3d-19.9381211!4d-43.9350857!16s%2Fg%2F11vctd6672!19sChIJnU9FaUOZpgARjzhNQQLLJx8?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9381211,
+        "lon": -43.9350857,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30112024"
+      },
+      {
+        "nome": "Janaina",
+        "endereco": "R. Espírito Santo, 273 - 7339 - Centro, Belo Horizonte - MG",
+        "telefone": "3132244503",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Janaina/data=!4m7!3m6!1s0xa699fbb569a12b:0x9d62858e7397371!8m2!3d-19.9171167!4d-43.9366051!16s%2Fg%2F1yg4d0q9b!19sChIJK6FptfuZpgARcXM551go1gk?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9171167,
+        "lon": -43.9366051,
+        "tipo": "lanchonete",
+        "territory_id": "DBH5_bucket-01",
+        "station_code": "DBH5",
+        "cep": "30160030"
       }
     ],
     "DBH5_bucket-02": [
@@ -1675,25 +1719,29 @@
       },
       {
         "nome": "Chaveiro Cuíca",
-        "endereco": "N/A",
-        "telefone": "31 99725-8709",
+        "endereco": "R. Oscar Trompowsky, 1381 - Grajaú, Belo Horizonte - MG",
+        "telefone": "31997258709",
         "site": "https://www.chaveirocuica.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Cu%C3%ADca/data=!4m7!3m6!1s0xa697da29e3f7d5:0x447219086dc60242!8m2!3d-19.942809!4d-43.962902!16s%2Fg%2F11svhs1wk4!19sChIJ1ffjKdqXpgARQgLGbQgZckQ?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.942809,
+        "lon": -43.962902,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30431177"
       },
       {
         "nome": "Chaveiro Aquino",
-        "endereco": "N/A",
-        "telefone": "31 98725-2891",
+        "endereco": "R. Corcovado, 1148 - Jardim America, Belo Horizonte - MG",
+        "telefone": "31987252891",
         "site": "https://aquinochaveiro.com/",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Aquino/data=!4m7!3m6!1s0xa697f2914e3e1b:0xaaab78fb778f128a!8m2!3d-19.9478771!4d-43.9733491!16s%2Fg%2F11smvmcdt0!19sChIJGz5OkfKXpgARihKPd_t4q6o?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9478771,
+        "lon": -43.9733491,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30421415"
       },
       {
         "nome": "Chaveiro Barão",
@@ -1708,14 +1756,16 @@
       },
       {
         "nome": "Chaveiro do Robinho",
-        "endereco": "N/A",
-        "telefone": "31 97515-3806",
+        "endereco": "R. Aguanil, 438 - Vista Alegre, Belo Horizonte - MG",
+        "telefone": "31975153806",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+do+Robinho/data=!4m7!3m6!1s0xa6963d04c0797d:0x7a08a7a1298f97f2!8m2!3d-19.9540061!4d-43.9961818!16s%2Fg%2F11dzs_w5h4!19sChIJfXnABD2WpgAR8pePKaGnCHo?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9540061,
+        "lon": -43.9961818,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30518000"
       },
       {
         "nome": "Chaveiro Raja Plantão 24 horas",
@@ -1730,14 +1780,16 @@
       },
       {
         "nome": "CHAVEIRO CHAVEMIX",
-        "endereco": "N/A",
-        "telefone": "31 99898-9908",
+        "endereco": "R. Turquesa, 687 - Prado, Belo Horizonte - MG",
+        "telefone": "31998989908",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/CHAVEIRO+CHAVEMIX/data=!4m7!3m6!1s0xa69731f831a4d9:0xa467be858476a6bb!8m2!3d-19.9270391!4d-43.96463!16s%2Fg%2F11l7n_9hrk!19sChIJ2aQx-DGXpgARu6Z2hIW-Z6Q?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9270391,
+        "lon": -43.96463,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30411203"
       },
       {
         "nome": "Chaveiro Gutierrez",
@@ -1785,14 +1837,16 @@
       },
       {
         "nome": "Chaveiro Marttins",
-        "endereco": "N/A",
-        "telefone": "31 97167-1334",
+        "endereco": "R. Platina, 1380 - Calafate, Belo Horizonte - MG",
+        "telefone": "31971671334",
         "site": "https://bit.ly/WhatsAppChaveiroFlapel",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Marttins/data=!4m7!3m6!1s0xa69717279878c5:0x7813e4943a832fb0!8m2!3d-19.9235994!4d-43.9698786!16s%2Fg%2F11b7hlwrg0!19sChIJxXiYJxeXpgARsC-DOpTkE3g?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9235994,
+        "lon": -43.9698786,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30411330"
       },
       {
         "nome": "Chaveiro 24 horas Medeiros Filho",
@@ -1807,14 +1861,16 @@
       },
       {
         "nome": "Chaveiro 24 horas Líder (Ronaldo)",
-        "endereco": "N/A",
-        "telefone": "31 98621-9833",
+        "endereco": "R. Rio Negro, 597 - Prado, Belo Horizonte - MG",
+        "telefone": "31986219833",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+24+horas+L%C3%ADder+%28Ronaldo%29/data=!4m7!3m6!1s0xa697a74368af53:0x7404ff8ee653aa83!8m2!3d-19.9302715!4d-43.96573!16s%2Fg%2F11mpcjv9qn!19sChIJU69oQ6eXpgARg6pT5o7_BHQ?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9302715,
+        "lon": -43.96573,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30431061"
       },
       {
         "nome": "CHAVEIRO 24 HORAS GUARÁ",
@@ -1906,25 +1962,29 @@
       },
       {
         "nome": "Assistência Técnica de Informática em Belo Horizonte - Marcelo",
-        "endereco": "N/A",
-        "telefone": "31 99251-7989",
+        "endereco": "R. Boturobi, 331 - Jardim America, Belo Horizonte - MG",
+        "telefone": "31992517989",
         "site": "http://www.mjsinfo.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Assist%C3%AAncia+T%C3%A9cnica+de+Inform%C3%A1tica+em+Belo+Horizonte+-+Marcelo/data=!4m7!3m6!1s0xa697a46fe952e3:0x82cbdb9957c69ae6!8m2!3d-19.9388009!4d-43.97409!16s%2Fg%2F11gvw_33_l!19sChIJ41Lpb6SXpgAR5prGV5nby4I?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9388009,
+        "lon": -43.97409,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30421345"
       },
       {
         "nome": "Exitus Informática",
-        "endereco": "N/A",
-        "telefone": "31 97144-5818",
+        "endereco": "R. Conselheiro Andrade Figueira, 71 - Gutierrez, Belo Horizonte - MG",
+        "telefone": "31971445818",
         "site": "http://www.exitusinformatica.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Exitus+Inform%C3%A1tica/data=!4m7!3m6!1s0xa6977689190a75:0xb187ce5be5d8d57e!8m2!3d-19.9397289!4d-43.9571004!16s%2Fg%2F11byl71jrx!19sChIJdQoZiXaXpgARftXY5VvOh7E?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9397289,
+        "lon": -43.9571004,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30441153"
       },
       {
         "nome": "Belo Tech Assistencia Tecnica",
@@ -1972,14 +2032,16 @@
       },
       {
         "nome": "Assistência Técnica Lava e Seca , Máquina de Lavar e Lava Louças | Reis Maq",
-        "endereco": "N/A",
-        "telefone": "31 99290-8760",
+        "endereco": "R. Ac. Bloco 11, Apto 101 - Conj. Santa Maria, Belo Horizonte - MG",
+        "telefone": "31992908760",
         "site": "http://www.instagram.com/reis_maq",
         "google_maps_link": "https://www.google.com/maps/place/Assist%C3%AAncia+T%C3%A9cnica+Lava+e+Seca+,+M%C3%A1quina+de+Lavar+e+Lava+Lou%C3%A7as+%7C+Reis+Maq/data=!4m7!3m6!1s0xa6975f686b07fb:0xee8a0af70f99e061!8m2!3d-19.9507464!4d-43.959849!16s%2Fg%2F11p9wjk5ss!19sChIJ-wdraF-XpgARYeCZD_cKiu4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9507464,
+        "lon": -43.959849,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30380490"
       },
       {
         "nome": "Eletrônica Gontijo",
@@ -1994,36 +2056,42 @@
       },
       {
         "nome": "Joinfor Assistência Técnica",
-        "endereco": "N/A",
-        "telefone": "31 98425-9747",
+        "endereco": "R. Macedo, 25 - Nova Cintra, Belo Horizonte - MG",
+        "telefone": "31984259747",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Joinfor+Assist%C3%AAncia+T%C3%A9cnica/data=!4m7!3m6!1s0xa697cff5839569:0xa57a296f3b00ed5c!8m2!3d-19.9463638!4d-43.9906614!16s%2Fg%2F11h30v5qhh!19sChIJaZWD9c-XpgARXO0AO28peqU?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9463638,
+        "lon": -43.9906614,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30516470"
       },
       {
         "nome": "BRASTANQUE ASSISTÊNCIA TÉCNICA",
-        "endereco": "N/A",
-        "telefone": "31 99912-5397",
+        "endereco": "Beco Rosana - Ventosa, Belo Horizonte - MG",
+        "telefone": "31999125397",
         "site": "http://brastanquebrasil.web.app/",
         "google_maps_link": "https://www.google.com/maps/place/BRASTANQUE+ASSIST%C3%8ANCIA+T%C3%89CNICA/data=!4m7!3m6!1s0xa69758ec8d65c7:0xa315ea8d4d5248d4!8m2!3d-19.9531715!4d-43.9724011!16s%2Fg%2F11kpt8f69p!19sChIJx2WN7FiXpgAR1EhSTY3qFaM?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9531715,
+        "lon": -43.9724011,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30421602"
       },
       {
         "nome": "Help Phone Assistência Técnica",
-        "endereco": "N/A",
-        "telefone": "31 98762-4993",
+        "endereco": "R. Duque de Caxias - Nova Suíça, Belo Horizonte - MG",
+        "telefone": "31987624993",
         "site": "https://instagram.com/helpphoneassistenciatecnica?utm_medium=copy_link",
         "google_maps_link": "https://www.google.com/maps/place/Help+Phone+Assist%C3%AAncia+T%C3%A9cnica/data=!4m7!3m6!1s0xa6964844289a49:0x4ee314cba0bb14d!8m2!3d-19.9277992!4d-43.9781417!16s%2Fg%2F11c37z674d!19sChIJSZooREiWpgARTbELukwx7gQ?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9277992,
+        "lon": -43.9781417,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30421040"
       },
       {
         "nome": "Refribell - Assistência Técnica",
@@ -2321,6 +2389,45 @@
         "territory_id": "DBH5_bucket-02",
         "station_code": "DBH5",
         "cep": "30516560"
+      },
+      {
+        "nome": "Sorveteria e açaí Fino Sabor",
+        "endereco": "R. Gastão da Cunha, 213 - Grajaú, Belo Horizonte - MG",
+        "telefone": "3133099509",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Sorveteria+e+a%C3%A7a%C3%AD+Fino+Sabor/data=!4m7!3m6!1s0xa69760a86f3289:0x383287e67b43146e!8m2!3d-19.9416556!4d-43.9615336!16s%2Fg%2F11j92clwnb!19sChIJiTJvqGCXpgARbhRDe-aHMjg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9416556,
+        "lon": -43.9615336,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30431173"
+      },
+      {
+        "nome": "La Barca Açaí",
+        "endereco": "R. Padre Manoel Bernardes, 81 - João Pinheiro, Belo Horizonte - MG",
+        "telefone": "31971203529",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/La+Barca+A%C3%A7a%C3%AD/data=!4m7!3m6!1s0xa697567612ace7:0x7cec0a16b2c8be7b!8m2!3d-19.9326943!4d-43.9974844!16s%2Fg%2F11rq9q8hg0!19sChIJ56wSdlaXpgARe77IshYK7Hw?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9326943,
+        "lon": -43.9974844,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30530470"
+      },
+      {
+        "nome": "Sorveteria Shek Nah",
+        "endereco": "r. do Cercadinho, 2089 - Ventosa, Belo Horizonte - MG",
+        "telefone": "31975297107",
+        "site": "https://www.instagram.com/gelateriasheknah?igsh=YXJlYTZmbzNjNzk1",
+        "google_maps_link": "https://www.google.com/maps/place/Sorveteria+Shek+Nah/data=!4m7!3m6!1s0xa697b0b4477dc7:0x3873372d3c40c9e7!8m2!3d-19.9513483!4d-43.9732817!16s%2Fg%2F11d_795d55!19sChIJx31HtLCXpgAR58lAPC03czg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9513483,
+        "lon": -43.9732817,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-02",
+        "station_code": "DBH5",
+        "cep": "30421565"
       }
     ],
     "DBH5_bucket-03": [
@@ -2810,25 +2917,29 @@
       },
       {
         "nome": "Chaveiro s.o.s BH",
-        "endereco": "N/A",
-        "telefone": "31 99730-7868",
+        "endereco": "R. H, 235 - Santa Lúcia, Belo Horizonte - MG",
+        "telefone": "31997307868",
         "site": "https://instagram.com/chaveiro_s.o.s_bh?igshid=MzRlODBiNWFlZA==",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+s.o.s+BH/data=!4m7!3m6!1s0x6652d488537b1ca3:0xbac6ec485c9ca45b!8m2!3d-19.9505427!4d-43.9416248!16s%2Fg%2F11vfb6bf_x!19sChIJoxx7U4jUUmYRW6ScXEjsxro?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9505427,
+        "lon": -43.9416248,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30335996"
       },
       {
         "nome": "Chaveiro uruguai",
-        "endereco": "N/A",
-        "telefone": "31 99996-7593",
+        "endereco": "R. do Uruguai, 713 - Sion, Belo Horizonte - MG",
+        "telefone": "31999967593",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+uruguai/data=!4m7!3m6!1s0xa699f65879180b:0x96087c603e16cf09!8m2!3d-19.9522367!4d-43.931153!16s%2Fg%2F11w9yt97w3!19sChIJCxh5WPaZpgARCc8WPmB8CJY?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9522367,
+        "lon": -43.931153,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30310300"
       },
       {
         "nome": "Chaveiro Hjc",
@@ -2876,25 +2987,29 @@
       },
       {
         "nome": "Wellington Chaveiro",
-        "endereco": "N/A",
-        "telefone": "31 99953-6746",
+        "endereco": "R. Grão Mogol, 863 - Carmo, Belo Horizonte - MG",
+        "telefone": "31999536746",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Wellington+Chaveiro/data=!4m7!3m6!1s0xa699cd625c4541:0x16e3785e0c2a099f!8m2!3d-19.9480054!4d-43.9339924!16s%2Fg%2F11j7x9k0ny!19sChIJQUVcYs2ZpgARnwkqDF544xY?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9480054,
+        "lon": -43.9339924,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30310010"
       },
       {
         "nome": "silva chaves",
-        "endereco": "N/A",
-        "telefone": "31 99539-0739",
+        "endereco": "Alameda Oscar Niemeyer, 400 - loja 2 - Vale do Sereno, Nova Lima - MG",
+        "telefone": "31995390739",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/silva+chaves/data=!4m7!3m6!1s0xa6976630508e59:0x380496421c681246!8m2!3d-19.981565!4d-43.944063!16s%2Fg%2F11rsr9smkc!19sChIJWY5QMGaXpgARRhJoHEKWBDg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.981565,
+        "lon": -43.944063,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "34006049"
       },
       {
         "nome": "Chaveiro serra BH 99937-6102",
@@ -2942,14 +3057,16 @@
       },
       {
         "nome": "Chaveiro Savassi",
-        "endereco": "N/A",
-        "telefone": "31 99925-0034",
+        "endereco": "R. Antônio de Albuquerque, 642-B - Funcionários, Belo Horizonte - MG",
+        "telefone": "31999250034",
         "site": "https://www.chaveirosavassi.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Savassi/data=!4m7!3m6!1s0xa699abd91fe169:0xcad38e76359b08e8!8m2!3d-19.937823!4d-43.9365356!16s%2Fg%2F11x93xq27g!19sChIJaeEf2auZpgAR6AibNXaO08o?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.937823,
+        "lon": -43.9365356,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30112011"
       },
       {
         "nome": "Chaveiro Chavassicar - Chaveiro 24 Horas",
@@ -2975,25 +3092,29 @@
       },
       {
         "nome": "AGR ASSISTÊNCIA TÉCNICA DE INFORMÁTICA CONSERTO NOTEBOOKS",
-        "endereco": "N/A",
-        "telefone": "31 99409-4706",
+        "endereco": "R. Patagônia, 66 - 702, Belo Horizonte - MG",
+        "telefone": "31994094706",
         "site": "https://agr-assistencia-tecnica.localo.site/?utm_source=google_profile&utm_campaign=localo&utm_medium=mainlink",
         "google_maps_link": "https://www.google.com/maps/place/AGR+ASSIST%C3%8ANCIA+T%C3%89CNICA+DE+INFORM%C3%81TICA+CONSERTO+NOTEBOOKS/data=!4m7!3m6!1s0xac5a08a72507f231:0x3981814f4415869c!8m2!3d-19.9570663!4d-43.9406053!16s%2Fg%2F11s7_9y6h1!19sChIJMfIHJacIWqwRnIYVRE-BgTk?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9570663,
+        "lon": -43.9406053,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30320080"
       },
       {
         "nome": "Frigelando assistência técnica",
-        "endereco": "N/A",
-        "telefone": "31 99574-0735",
+        "endereco": "R. Colômbia, 160 - sala 201 - Sion, Belo Horizonte - MG",
+        "telefone": "31995740735",
         "site": "https://anunciarservicos.com.br/belo-horizonte/frigelando-refrigeracao/",
         "google_maps_link": "https://www.google.com/maps/place/Frigelando+assist%C3%AAncia+t%C3%A9cnica/data=!4m7!3m6!1s0xa68f2c742634ed:0x87a37a65b6c1d84!8m2!3d-19.9543234!4d-43.9388187!16s%2Fg%2F11w3nxwt0t!19sChIJ7TQmdCyPpgARhB1sW6Y3egg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9543234,
+        "lon": -43.9388187,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30320010"
       },
       {
         "nome": "Master Refrigeração BH",
@@ -3107,14 +3228,16 @@
       },
       {
         "nome": "Dr.Smart Conserta",
-        "endereco": "N/A",
-        "telefone": "31 99247-6207",
+        "endereco": "Alameda Oscar Niemeyer, 940-992 - Vila da Serra, Nova Lima - MG",
+        "telefone": "31992476207",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Dr.Smart+Conserta/data=!4m7!3m6!1s0xa697366c88b58f:0xb0896952d8864f04!8m2!3d-19.9773181!4d-43.940877!16s%2Fg%2F11hdfj267h!19sChIJj7WIbDaXpgARBE-G2FJpibA?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9773181,
+        "lon": -43.940877,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "34000000"
       },
       {
         "nome": "Case Informatica",
@@ -3129,25 +3252,29 @@
       },
       {
         "nome": "Mr.fogoes",
-        "endereco": "N/A",
-        "telefone": "31 99756-3999",
+        "endereco": "R. Desengano, 84 - Sion, Belo Horizonte - MG",
+        "telefone": "31997563999",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Mr.fogoes/data=!4m7!3m6!1s0xa69b414a90095f:0xc1bbdeb94ba23e6a!8m2!3d-19.9595879!4d-43.9287704!16s%2Fg%2F11fcqlt84r!19sChIJXwmQSkGbpgARaj6iS7neu8E?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9595879,
+        "lon": -43.9287704,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30315280"
       },
       {
         "nome": "FixTools Notebooks",
-        "endereco": "N/A",
-        "telefone": "31 99233-7889",
+        "endereco": "R. Alfenas, 470 - 04 - Cruzeiro, Belo Horizonte - MG",
+        "telefone": "31992337889",
         "site": "https://fixtools.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/FixTools+Notebooks/data=!4m7!3m6!1s0xa699cf6041a65b:0x2975694e368fbbb!8m2!3d-19.9455222!4d-43.9268339!16s%2Fg%2F11c59_qr2s!19sChIJW6ZBYM-ZpgARu_to45RWlwI?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9455222,
+        "lon": -43.9268339,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30310230"
       },
       {
         "nome": "MUD. Refomas Práticas TH Assistência Técnica",
@@ -3162,14 +3289,16 @@
       },
       {
         "nome": "BcMcR Consertos",
-        "endereco": "N/A",
-        "telefone": "31 99991-1598",
+        "endereco": "R. Califórnia, 321 - Sion, Belo Horizonte - MG",
+        "telefone": "31999911598",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/BcMcR+Consertos/data=!4m7!3m6!1s0xa69955e2e8d967:0x8e15bc0089322d42!8m2!3d-19.9521217!4d-43.9337171!16s%2Fg%2F11smtnnd3l!19sChIJZ9no4lWZpgARQi0yiQC8FY4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9521217,
+        "lon": -43.9337171,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30315500"
       },
       {
         "nome": "Mocco Celulares (Anchieta Garden Shopping)",
@@ -3314,6 +3443,71 @@
         "territory_id": "DBH5_bucket-03",
         "station_code": "DBH5",
         "cep": "30431173"
+      },
+      {
+        "nome": "Top Shake Food Truck Açaí",
+        "endereco": "Av. Agulhas Negras - Mangabeiras, Belo Horizonte - MG",
+        "telefone": "31988355001",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Top+Shake+Food+Truck+A%C3%A7a%C3%AD/data=!4m7!3m6!1s0xa6994d0af0d4ed:0x5e7ca288da082096!8m2!3d-19.9575215!4d-43.914501!16s%2Fg%2F11mvmfckx8!19sChIJ7dTwCk2ZpgARliAI2oiifF4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9575215,
+        "lon": -43.914501,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30210060"
+      },
+      {
+        "nome": "Açaí",
+        "endereco": "R. Principal, 1041 - Santa Rita de Cassia, Belo Horizonte - MG",
+        "telefone": "N/A",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/A%C3%A7a%C3%AD/data=!4m7!3m6!1s0xa699006f99d26b:0xba13e5c50af87f51!8m2!3d-19.956727!4d-43.9418585!16s%2Fg%2F11y4b_7tzd!19sChIJa9KZbwCZpgARUX_4CsXlE7o?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.956727,
+        "lon": -43.9418585,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30335050"
+      },
+      {
+        "nome": "Point Açaí e Sorveteria",
+        "endereco": "Rua Luiz Cosme, 510 - Estrela Dalva, Belo Horizonte - MG",
+        "telefone": "31991225800",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Point+A%C3%A7a%C3%AD+e+Sorveteria/data=!4m7!3m6!1s0xa69725ac1e95b9:0x3436921270805461!8m2!3d-19.9632291!4d-43.9725064!16s%2Fg%2F11lq0cgdz_!19sChIJuZUerCWXpgARYVSAcBKSNjQ?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9632291,
+        "lon": -43.9725064,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30570720"
+      },
+      {
+        "nome": "Açaíew - Sorveteria e Lanchonete",
+        "endereco": "Av. Arthur Bernardes, 3099 - Santa Lúcia, Belo Horizonte - MG",
+        "telefone": "31999206374",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/A%C3%A7a%C3%ADew+-+Sorveteria+e+Lanchonete/data=!4m7!3m6!1s0xa69702b626fd05:0x7e7b80d64ce0d10f!8m2!3d-19.9528903!4d-43.9453981!16s%2Fg%2F11j6ghm08n!19sChIJBf0mtgKXpgARD9HgTNaAe34?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9528903,
+        "lon": -43.9453981,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30335790"
+      },
+      {
+        "nome": "Assis Açaiteria",
+        "endereco": "Rua Dr. Alípio Goulart, 121 - Marçola, Belo Horizonte - MG",
+        "telefone": "3135669240",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Assis+A%C3%A7aiteria/data=!4m7!3m6!1s0xa699a2ff655555:0x55c2dedae41f41a6!8m2!3d-19.9395418!4d-43.9127107!16s%2Fg%2F11fzffm51b!19sChIJVVVl_6KZpgARpkEf5NrewlU?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9395418,
+        "lon": -43.9127107,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-03",
+        "station_code": "DBH5",
+        "cep": "30220332"
       }
     ],
     "DBH5_bucket-04": [
@@ -3772,14 +3966,16 @@
       },
       {
         "nome": "Chaveiro Estoril",
-        "endereco": "N/A",
-        "telefone": "31 99658-8941",
+        "endereco": "R. Paulo Piedade Campos, 405 - loja 5 - de Campos, Belo Horizonte - MG",
+        "telefone": "31996588941",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+Estoril/data=!4m7!3m6!1s0xa697002ba064cf:0x85ad8663c6e2cffb!8m2!3d-19.9612384!4d-43.9656191!16s%2Fg%2F11wpztv8r4!19sChIJz2SgKwCXpgAR-8_ixmOGrYU?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9612384,
+        "lon": -43.9656191,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30494060"
       },
       {
         "nome": "Mega Chaves Buritis",
@@ -3904,25 +4100,29 @@
       },
       {
         "nome": "CHAVEIRO JUNINHO",
-        "endereco": "N/A",
-        "telefone": "31 99157-6665",
+        "endereco": "R. Júlio de Castilho, 630 - Cinquentenario, Belo Horizonte - MG",
+        "telefone": "31991576665",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/CHAVEIRO+JUNINHO/data=!4m7!3m6!1s0xa697ccd1db9fd9:0xdc5e67581ee35f7c!8m2!3d-19.9602407!4d-43.9814169!16s%2Fg%2F11vzv1v3lb!19sChIJ2Z_b0cyXpgARfF_jHlhnXtw?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9602407,
+        "lon": -43.9814169,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30570080"
       },
       {
         "nome": "silva chaves",
-        "endereco": "N/A",
-        "telefone": "31 99539-0739",
+        "endereco": "Alameda Oscar Niemeyer, 400 - loja 2 - Vale do Sereno, Nova Lima - MG",
+        "telefone": "31995390739",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/silva+chaves/data=!4m7!3m6!1s0xa6976630508e59:0x380496421c681246!8m2!3d-19.981565!4d-43.944063!16s%2Fg%2F11rsr9smkc!19sChIJWY5QMGaXpgARRhJoHEKWBDg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.981565,
+        "lon": -43.944063,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "34006049"
       },
       {
         "nome": "Chaveiro São Bento",
@@ -3937,14 +4137,16 @@
       },
       {
         "nome": "Chaveiro JC - Belo Horizonte",
-        "endereco": "N/A",
-        "telefone": "31 99247-3566",
+        "endereco": "R. Úrsula Paulino, 1804 - Betânia, Belo Horizonte - MG",
+        "telefone": "31992473566",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Chaveiro+JC+-+Belo+Horizonte/data=!4m7!3m6!1s0xa697c53215a0dd:0x99d872db88af9db9!8m2!3d-19.963457!4d-43.991128!16s%2Fg%2F11gsn045zm!19sChIJ3aAVMsWXpgARuZ2viNty2Jk?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.963457,
+        "lon": -43.991128,
         "tipo": "chaveiro",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30580002"
       },
       {
         "nome": "Chaveiro super chaves Barão",
@@ -3981,14 +4183,16 @@
       },
       {
         "nome": "Manutenção Smart",
-        "endereco": "N/A",
-        "telefone": "31 99605-4042",
+        "endereco": "R. Eli Seabra Filho, 510 - Loja 14 - Buritis, Belo Horizonte - MG",
+        "telefone": "31996054042",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Manuten%C3%A7%C3%A3o+Smart/data=!4m7!3m6!1s0xa697d94dbbffff:0xbfa543adf7c7980a!8m2!3d-19.9753926!4d-43.9766452!16s%2Fg%2F11c6fc5smm!19sChIJ__-7TdmXpgARCpjH961Dpb8?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9753926,
+        "lon": -43.9766452,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30575740"
       },
       {
         "nome": "Buritis Assistência Técnica",
@@ -4025,14 +4229,16 @@
       },
       {
         "nome": "Gigajunior Informática",
-        "endereco": "N/A",
-        "telefone": "31 97179-0760",
+        "endereco": "R. Ver. Nelson Cunha, 474 - Estoril, Belo Horizonte - MG",
+        "telefone": "31971790760",
         "site": "N/A",
         "google_maps_link": "https://www.google.com/maps/place/Gigajunior+Inform%C3%A1tica/data=!4m7!3m6!1s0xa69338914409bf:0xa9703f0932bc9696!8m2!3d-19.9562972!4d-43.9678507!16s%2Fg%2F11q1vbpcyj!19sChIJvwlEkTiTpgARlpa8Mgk_cKk?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9562972,
+        "lon": -43.9678507,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30494015"
       },
       {
         "nome": "TCA GARANTIAS",
@@ -4058,14 +4264,16 @@
       },
       {
         "nome": "Tech Planet BH",
-        "endereco": "N/A",
-        "telefone": "31 97508-2004",
+        "endereco": "R. Padre Francisco Scrizzi, 60 - Palmeiras, Belo Horizonte - MG",
+        "telefone": "31975082004",
         "site": "https://www.techplanetbh.com.br/",
         "google_maps_link": "https://www.google.com/maps/place/Tech+Planet+BH/data=!4m7!3m6!1s0xa697cd098b0f5d:0xce60ff9587ccd2bb!8m2!3d-19.9623329!4d-43.9796407!16s%2Fg%2F11b7tvflh6!19sChIJXQ-LCc2XpgARu9LMh5X_YM4?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9623329,
+        "lon": -43.9796407,
         "tipo": "assistência técnica",
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
-        "cep": null
+        "cep": "30570525"
       },
       {
         "nome": "Informática TI Flávio Valadares",
@@ -4329,6 +4537,45 @@
         "territory_id": "DBH5_bucket-04",
         "station_code": "DBH5",
         "cep": "30380474"
+      },
+      {
+        "nome": "Sorveteria Shek Nah",
+        "endereco": "r. do Cercadinho, 2089 - Ventosa, Belo Horizonte - MG",
+        "telefone": "31975297107",
+        "site": "https://www.instagram.com/gelateriasheknah?igsh=YXJlYTZmbzNjNzk1",
+        "google_maps_link": "https://www.google.com/maps/place/Sorveteria+Shek+Nah/data=!4m7!3m6!1s0xa697b0b4477dc7:0x3873372d3c40c9e7!8m2!3d-19.9513483!4d-43.9732817!16s%2Fg%2F11d_795d55!19sChIJx31HtLCXpgAR58lAPC03czg?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9513483,
+        "lon": -43.9732817,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30421565"
+      },
+      {
+        "nome": "Trail do Açaí",
+        "endereco": "R. Bolívia, 818 - São Pedro, Belo Horizonte - MG",
+        "telefone": "31973111033",
+        "site": "https://www.instagram.com/trail_do_acai/",
+        "google_maps_link": "https://www.google.com/maps/place/Trail+do+A%C3%A7a%C3%AD/data=!4m7!3m6!1s0xa699cddcaac65d:0x3cf3c318308ed845!8m2!3d-19.9522567!4d-43.9401209!16s%2Fg%2F11lgrrgcnk!19sChIJXcaq3M2ZpgARRdiOMBjD8zw?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9522567,
+        "lon": -43.9401209,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30330360"
+      },
+      {
+        "nome": "Sorveteria e Açaí Fino Sabor",
+        "endereco": "R. Corcovado, 233 - Loja B - Jardim America, Belo Horizonte - MG",
+        "telefone": "3138791088",
+        "site": "N/A",
+        "google_maps_link": "https://www.google.com/maps/place/Sorveteria+e+A%C3%A7a%C3%AD+Fino+Sabor/data=!4m7!3m6!1s0xa697abf07f5fbb:0x6d97c4ab6d79565d!8m2!3d-19.9403698!4d-43.977645!16s%2Fg%2F11gbxdc4sx!19sChIJu19_8KuXpgARXVZ5bavEl20?authuser=0&hl=pt-BR&rclk=1",
+        "lat": -19.9403698,
+        "lon": -43.977645,
+        "tipo": "açaí e sorveteria",
+        "territory_id": "DBH5_bucket-04",
+        "station_code": "DBH5",
+        "cep": "30421389"
       }
     ]
   }

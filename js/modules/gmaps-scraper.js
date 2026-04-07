@@ -136,41 +136,80 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
             loadFromApi(cepList),
         ]);
 
-        // Resultados do Google Maps — com match geográfico quando lat/lon disponível
+        // ── Google Maps: filtrar ≤1000m e calcular distância ─────────────
+        const GMAPS_MAX_DISTANCE_M = 1000;
         const allForTerritory = gmapsData.results?.[territoryId] || [];
-        const gmapsFiltered   = cepSet.size > 0
-            ? allForTerritory.filter(e => e.cep && cepSet.has(e.cep))
-            : allForTerritory;
-        const gmapsResults = (gmapsFiltered.length > 0 ? gmapsFiltered : allForTerritory)
+        const gmapsResults = allForTerritory
             .map(r => {
                 const company = new ProspectCompany({ ...r, _fonte: 'Google Maps 🗺️' });
-                // Match geográfico: empresa dentro do raio do slot
                 if (slotGeo && company.isGeolocated) {
                     const slotPt    = turf.point([slotGeo.lon, slotGeo.lat]);
                     const companyPt = turf.point([company.lon, company.lat]);
-                    const distM     = turf.distance(slotPt, companyPt, { units: 'meters' });
-                    company.isMatch = distM <= slotGeo.radius_s;
-                    company.distanceM = Math.round(distM);
+                    const distM     = Math.round(turf.distance(slotPt, companyPt, { units: 'meters' }));
+                    company.isMatch   = distM <= slotGeo.radius_s;
+                    company.distanceM = distM;
                 } else {
-                    company.isMatch   = null; // sem coordenadas, não é possível validar
+                    company.isMatch   = null;
                     company.distanceM = null;
                 }
                 return company;
-            });
+            })
+            // Mostrar apenas empresas a até 1km do slot (quando temos coordenadas)
+            .filter(c => c.distanceM === null || c.distanceM <= GMAPS_MAX_DISTANCE_M);
 
-        // Resultados da Receita Federal — match por CEP (sem lat/lon disponível)
+        // ── Receita Federal: match via H3 grid_disk usando heatmap.geojson ─
+        // Constrói índice CEP → hex_id a partir do heatmap carregado no estado
         const apiResultsMapped = apiResults.map(r => {
-            r.isMatch   = cepSet.size > 0 ? cepSet.has(r.cep) : null;
-            r.distanceM = null;
+            if (!r.cep) {
+                r.isMatch = null; r.distanceM = null; return r;
+            }
+
+            // Buscar o hex que contém este CEP no heatmap
+            const hexFeature = state.heatmapData?.features?.find(
+                f => Array.isArray(f.properties.ceps) && f.properties.ceps.includes(r.cep)
+            );
+
+            if (hexFeature && slotGeo) {
+                // Calcular distância H3 entre o hex da empresa e o origin_hex do slot
+                // Usamos o slotFeature para pegar o origin_hex
+                const slotFeature = state.idealSupplyData?.find(
+                    f => f.properties.territory_id === (r.territory_id || '')
+                );
+                const slotOriginHex = slotFeature?.properties?.origin_hex;
+                const companyHex    = hexFeature.properties.hex_id;
+
+                if (slotOriginHex && companyHex && window.h3) {
+                    try {
+                        const gridDist = h3.gridDistance(companyHex, slotOriginHex);
+                        r.isMatch   = gridDist <= 1; // grid_disk=1 ≈ 900m
+                        r.gridDist  = gridDist;
+                        r.distanceM = null; // não temos distância métrica exata
+                    } catch {
+                        // hexes em resoluções diferentes — fallback por CEP
+                        r.isMatch   = cepSet.has(r.cep);
+                        r.distanceM = null;
+                    }
+                } else {
+                    // Sem origin_hex disponível — fallback por CEP
+                    r.isMatch   = cepSet.has(r.cep);
+                    r.distanceM = null;
+                }
+            } else {
+                // Sem heatmap ou sem slotGeo — fallback por CEP
+                r.isMatch   = cepSet.size > 0 ? cepSet.has(r.cep) : null;
+                r.distanceM = null;
+            }
             return r;
         });
 
         const results = [...gmapsResults, ...apiResultsMapped];
-        // Ordenar: ✅ dentro do raio primeiro, depois ⚠️ fora, depois sem validação
+
+        // Ordenar: ✅ dentro do raio/grid primeiro, depois ⚠️ fora, depois sem validação
         results.sort((a, b) => {
             const score = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
             return score(a) - score(b);
         });
+
         showResults(results, territoryId, cepSet.size > 0, gmapsData.generated_at);
     } catch (err) {
         alert(`Erro: ${err.message}`);
@@ -230,10 +269,10 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
                 // Badge de validação geográfica
                 let matchBadge = '';
                 if (r.isMatch === true) {
-                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
+                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : r.gridDist !== undefined ? ` (grid_disk=${r.gridDist})` : '';
                     matchBadge = `<div style="margin:2px 0;"><span style="color:#16a34a;font-weight:bold;">✅ Dentro do raio do slot</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
                 } else if (r.isMatch === false) {
-                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
+                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : r.gridDist !== undefined ? ` (grid_disk=${r.gridDist})` : '';
                     matchBadge = `<div style="margin:2px 0;"><span style="color:#d97706;">⚠️ Fora do raio</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
                 }
 

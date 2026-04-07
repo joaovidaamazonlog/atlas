@@ -72,14 +72,85 @@ O ATLAS é um sistema completo de gestão e otimização de rede de parceiros lo
 - Atribui o Account Developer Executive (ADE) responsável pelo território
 
 ### Geração de Leads — Receita Federal
-- Busca empresas com CNPJ ativo e CNAE 5320 (atividades de entrega/correio) no banco de dados público da Receita Federal brasileira
-- Filtra por CEPs dos slots em aberto
-- Exibe CNPJ, razão social, endereço, telefones e responsável
+
+O sistema consulta o banco de dados público da Receita Federal brasileira (SQLite local) para encontrar empresas que possam se tornar parceiros logísticos.
+
+**Critérios de busca:**
+- CNPJ ativo (situação cadastral = 02)
+- CNAE principal ou secundário iniciado com `5320` (atividades de entrega/correio)
+- Data de início de atividade anterior a 01/01/2024 (empresa com histórico mínimo)
+- CEP presente na lista de CEPs dos slots em aberto
+
+**Dados retornados por empresa:**
+- CNPJ, razão social, porte (ME/EPP)
+- Endereço completo (logradouro, número, bairro, CEP, UF, município)
+- Telefone 1 e Telefone 2
+- E-mail
+- Responsável (primeiro sócio cadastrado)
+- CNAE principal
+
+**Validação geográfica (H3 grid_disk):**
+O frontend valida a proximidade do lead ao slot usando a grade H3. O CEP da empresa é convertido em hex H3 via o `heatmap.geojson` (índice CEP → hex_id). A distância é calculada como `h3.gridDistance(empresa_hex, slot_origin_hex)`:
+- `grid_disk = 0` → empresa no mesmo hexágono do slot ✅
+- `grid_disk = 1` → empresa no hexágono vizinho (~900m) ✅
+- `grid_disk > 1` → empresa fora do raio ⚠️
+
+**Integração:**
+- Backend: `cnpj_lookup.py` — roda na Fase 6 do modo daily
+- Frontend: `js/modules/gmaps-scraper.js` — exibe no popup do slot com badge de validação
+
+---
 
 ### Geração de Leads — Google Maps
-- Scraping automatizado via GitHub Actions (roda diariamente)
-- Busca por tipo de negócio (lanchonete, açaí, chaveiro, assistência técnica) próximo aos territórios com vagas
-- Resultado salvo como JSON estático e consumido pelo frontend
+
+O sistema faz scraping automatizado do Google Maps para encontrar estabelecimentos comerciais próximos aos slots em aberto que possam se tornar parceiros.
+
+**Tipos de negócio buscados:**
+- Lanchonete
+- Açaí e sorveteria
+- Chaveiro
+- Assistência técnica
+
+**Pipeline de scraping:**
+1. GitHub Actions roda `run_batch.js` diariamente às 6h (horário de Brasília)
+2. Para cada território com slots em aberto, busca os 4 tipos de negócio
+3. Coleta até 20 links de resultados por busca via scroll automático
+4. Visita cada página de detalhes com **3 abas em paralelo** (concorrência controlada)
+5. Extrai: nome, endereço, CEP, telefone, site, link do Maps e **coordenadas geográficas**
+6. **Filtro de qualidade**: só salva empresas com endereço completo (logradouro + número) E CEP de 8 dígitos
+7. Merge incremental: evita duplicatas por nome + endereço
+8. Salva resultado em `data/gmaps_results.json` e faz commit automático
+
+**Extração de coordenadas:**
+As coordenadas lat/lon são extraídas diretamente do link do Google Maps via regex `!3d<lat>!4d<lon>`, que é mais estável que a URL da página. Isso garante coordenadas precisas sem chamadas extras de API.
+
+**Validação geográfica (distância métrica):**
+No frontend, a distância entre a empresa e o slot é calculada via Turf.js em metros:
+- Distância ≤ raio do slot → ✅ Dentro do raio (exibe distância em metros)
+- Distância > raio do slot → ⚠️ Fora do raio
+
+**Filtro de exibição:**
+Apenas empresas a **≤1000m** do slot são exibidas no popup. Empresas mais distantes são descartadas na exibição, mesmo que estejam no território.
+
+**Resultado no popup do slot:**
+```
+🏪 Empresas Candidatas — DBH5_bucket-02
+
+📂 lanchonete (2)
+  ✅ Bar do João (180m)
+     📍 Rua das Flores, 123 - Bela Vista, 30130-000
+     📞 31 99999-9999
+     Ver no Google Maps ↗
+
+  ✅ Lanchonete Central (420m)
+     📍 Av. Principal, 456 - Centro, 30140-000
+     📞 31 98888-8888
+
+📂 Receita Federal (3)
+  ✅ TRANSPORTES RAPIDOS LTDA (grid_disk=0)
+     📍 Rua X, 100 - Bairro Y, 30130-000
+     📞 31 3299-1234
+```
 
 ### Otimização de Network — HCP Suggestion
 - Sistema em 3 fases para sugestão de clusters HCP (Host/Pickup):
@@ -455,14 +526,81 @@ ATLAS is a complete management and optimization system for last-mile logistics p
 - Assigns the responsible Account Manager (ADE) for the territory
 
 ### Lead Generation — Brazilian Tax Authority (Receita Federal)
-- Searches companies with active CNPJ and CNAE 5320 (delivery/courier activities) in the public Brazilian tax authority database
-- Filters by ZIP codes of open slots
-- Displays CNPJ, company name, address, phones and responsible person
+
+The system queries the public Brazilian Tax Authority (Receita Federal) database (local SQLite) to find companies that could become logistics partners.
+
+**Search criteria:**
+- Active CNPJ (registration status = 02)
+- Primary or secondary CNAE starting with `5320` (delivery/courier activities)
+- Business start date before 01/01/2024 (minimum track record)
+- ZIP code present in the open slot's ZIP code list
+
+**Data returned per company:**
+- CNPJ, company name, size (ME/EPP)
+- Full address (street, number, neighborhood, ZIP, state, city)
+- Phone 1 and Phone 2
+- Email
+- Responsible person (first registered partner)
+- Primary CNAE
+
+**Geographic validation (H3 grid_disk):**
+The frontend validates proximity to the slot using the H3 grid. The company's ZIP code is converted to an H3 hex via `heatmap.geojson` (ZIP → hex_id index). Distance is calculated as `h3.gridDistance(company_hex, slot_origin_hex)`:
+- `grid_disk = 0` → company in the same hexagon as the slot ✅
+- `grid_disk = 1` → company in a neighboring hexagon (~900m) ✅
+- `grid_disk > 1` → company outside the radius ⚠️
+
+**Integration:**
+- Backend: `cnpj_lookup.py` — runs in Phase 6 of daily mode
+- Frontend: `js/modules/gmaps-scraper.js` — displayed in slot popup with validation badge
+
+---
 
 ### Lead Generation — Google Maps
-- Automated scraping via GitHub Actions (runs daily)
-- Searches by business type (snack bar, acai shop, locksmith, tech support) near territories with open slots
-- Results saved as static JSON and consumed by the frontend
+
+The system performs automated Google Maps scraping to find commercial establishments near open slots that could become partners.
+
+**Business types searched:**
+- Snack bar (lanchonete)
+- Acai and ice cream shop
+- Locksmith (chaveiro)
+- Tech support (assistência técnica)
+
+**Scraping pipeline:**
+1. GitHub Actions runs `run_batch.js` daily at 6am (Brasília time)
+2. For each territory with open slots, searches all 4 business types
+3. Collects up to 20 result links per search via automatic scroll
+4. Visits each detail page with **3 parallel tabs** (controlled concurrency)
+5. Extracts: name, address, ZIP, phone, website, Maps link and **geographic coordinates**
+6. **Quality filter**: only saves companies with complete address (street + number) AND 8-digit ZIP code
+7. Incremental merge: avoids duplicates by name + address
+8. Saves result to `data/gmaps_results.json` and auto-commits
+
+**Coordinate extraction:**
+Lat/lon coordinates are extracted directly from the Google Maps link via regex `!3d<lat>!4d<lon>`, which is more stable than the page URL. This ensures precise coordinates without extra API calls.
+
+**Geographic validation (metric distance):**
+In the frontend, the distance between the company and the slot is calculated via Turf.js in meters:
+- Distance ≤ slot radius → ✅ Within radius (shows distance in meters)
+- Distance > slot radius → ⚠️ Outside radius
+
+**Display filter:**
+Only companies within **≤1000m** of the slot are shown in the popup. More distant companies are discarded from display even if they are in the territory.
+
+**Result in slot popup:**
+```
+🏪 Candidate Companies — DBH5_bucket-02
+
+📂 snack bar (2)
+  ✅ Bar do João (180m)
+     📍 Rua das Flores, 123 - Bela Vista, 30130-000
+     📞 31 99999-9999
+     View on Google Maps ↗
+
+📂 Receita Federal (3)
+  ✅ TRANSPORTES RAPIDOS LTDA (grid_disk=0)
+     📍 Rua X, 100 - Bairro Y, 30130-000
+     📞 31 3299-1234
+```
 
 ### Network Optimization — HCP Suggestion
 - 3-phase system for HCP (Host/Pickup) cluster suggestions:

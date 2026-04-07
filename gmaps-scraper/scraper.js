@@ -229,6 +229,16 @@ async function _scrapeDetail(browser, link) {
             }
         }
 
+        // ── Filtro de qualidade: só salvar com endereço completo E CEP ───────
+        // Endereço completo = tem logradouro + número (ex: "Rua X, 123")
+        const hasFullAddress = address && /\d+/.test(address) &&
+            /(?:Rua|Av\.|Avenida|R\.|Alameda|Travessa|Praça|Estrada|Rod\.)/i.test(address);
+        const hasCep = !!cep;
+
+        if (!hasFullAddress || !hasCep) {
+            return null; // descartado — dados incompletos
+        }
+
         return {
             name:    data.name || null,
             address,

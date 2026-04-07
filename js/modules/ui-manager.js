@@ -283,7 +283,8 @@ function _popupProspect(data) {
 
 function _popupNewPartner(data) {
     if (!state._slotPopupData) state._slotPopupData = {};
-    const slotKey = ('slot_'+data.bucket_ade+'_'+(data.lat||'')+'_'+(data.lon||'')).replace(/[^a-zA-Z0-9_]/g,'_');
+    // Usar slot_id como chave — garante que searchNearbyFromState encontra o slot correto
+    const slotKey = (data.slot_id || ('slot_'+data.bucket_ade+'_'+(data.lat||'')+'_'+(data.lon||''))).replace(/[^a-zA-Z0-9_]/g,'_');
     state._slotPopupData[slotKey] = Array.isArray(data.ceps) ? data.ceps : [];
     const cepsDisplay = Array.isArray(data.ceps) ? data.ceps.join(', ') : data.ceps;
     return `<div style="width:300px;font-size:12px;">

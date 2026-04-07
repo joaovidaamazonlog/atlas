@@ -87,6 +87,7 @@ export class Partner {
         /** @type {Object|null}      */ this.main_store_data        = raw.main_store_data        ?? null;
         /** @type {Object|null}      */ this.overlap_data           = raw.overlap_data           ?? null;
         /** @type {number}           */ this.ADV                    = raw.ADV                    ?? 0;
+        /** @type {string}           */ this.slot_id                = raw.slot_id                ?? '';
     }
 
     /** @returns {boolean} */
@@ -112,6 +113,7 @@ export class Partner {
             lon:              slotFeature.geometry.coordinates[0],
             bucket_ade:       p.territory_id,
             ceps:             p.ceps ?? [],
+            slot_id:          p.slot_id,
         });
     }
 }

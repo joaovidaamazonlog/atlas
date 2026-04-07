@@ -94,15 +94,27 @@ export async function loadFromApi(ceps) {
  */
 export async function searchNearbyFromState(event, territoryId, slotKey) {
     const ceps = (state._slotPopupData && state._slotPopupData[slotKey]) || [];
-    // Recuperar dados do slot (lat, lon, radius_s) para match geográfico
-    const slotFeature = state.idealSupplyData?.find(
-        f => f.properties.territory_id === territoryId
+
+    // slotKey é o slot_id sanitizado (ex: "DBH5_bucket_01_S09")
+    // Reverter a sanitização para encontrar o slot correto no geojson
+    // O slot_id original usa hífens: "DBH5_bucket-01_S09"
+    // A sanitização troca "-" por "_", então tentamos ambos os formatos
+    const slotFeature = state.idealSupplyData?.find(f => {
+        const sid = f.properties.slot_id || '';
+        const sidSanitized = sid.replace(/[^a-zA-Z0-9_]/g, '_');
+        return sidSanitized === slotKey || sid === slotKey;
+    }) || state.idealSupplyData?.find(
+        // Fallback: primeiro slot aberto do território
+        f => f.properties.territory_id === territoryId && f.properties.type === 'IDEAL_SLOT'
     );
+
     const slotGeo = slotFeature ? {
         lat:      slotFeature.geometry.coordinates[1],
         lon:      slotFeature.geometry.coordinates[0],
         radius_s: slotFeature.properties.radius_s,
+        slot_id:  slotFeature.properties.slot_id,
     } : null;
+
     return searchNearby(event, territoryId, ceps, slotGeo);
 }
 

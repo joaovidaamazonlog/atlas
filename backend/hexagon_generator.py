@@ -109,18 +109,19 @@ class HexagonGenerator:
     def get_hex_centroids_from_jurisdiction(self):
         """
         Cobre os polígonos de jurisdiction.geojson com círculos cujos centroids
-        estão DENTRO da área do polígono.
+        estão DENTRO da área do polígono, sem overlap excessivo.
 
-        Estratégia:
-        - Preenche cada polígono com hexágonos H3 res7 via polyfill
-        - Filtra apenas hexágonos cujo centroid está contido no polígono (contains)
-        - Raio: 2 milhas para polígonos grandes (área >= 0.05 graus²), 1 milha para pequenos
-        - Sem grid_disk de borda para não vazar pontos para fora da área
+        Estratégia de resolução H3 por raio:
+        - 2 milhas (~3.2km) → res 8 (centroids ~3.8km apart, overlap mínimo)
+        - 1 milha (~1.6km) → res 9 (centroids ~1.4km apart, cobertura densa)
+
+        Raio: 2 milhas para polígonos grandes (área >= 0.05°²), 1 milha para pequenos.
 
         Retorna DataFrame com: delivery_station, hex, latitude, longitude, radius_miles
         """
-        # Threshold de área em graus² para decidir raio (aprox. ~600km²)
-        LARGE_POLYGON_AREA_THRESHOLD = 0.05
+        LARGE_POLYGON_AREA_THRESHOLD = 0.05  # graus² (~600km²)
+        # Resolução H3 alinhada ao diâmetro do círculo para minimizar overlap
+        RADIUS_TO_H3_RES = {2.0: 8, 1.0: 9}
 
         print(f"[{datetime.now()}] Cobrindo polígonos de jurisdiction.geojson com círculos...")
 
@@ -145,8 +146,9 @@ class HexagonGenerator:
 
                 geometry = shape(feature['geometry'])
 
-                # Raio baseado na área total da geometria
+                # Raio e resolução H3 baseados na área total da geometria
                 radius_miles = 2.0 if geometry.area >= LARGE_POLYGON_AREA_THRESHOLD else 1.0
+                h3_res = RADIUS_TO_H3_RES[radius_miles]
 
                 # Coletar todos os sub-polígonos (suporte a MultiPolygon e Polygon)
                 if geometry.geom_type == 'MultiPolygon':
@@ -163,7 +165,7 @@ class HexagonGenerator:
                     exterior_coords = [[c[1], c[0]] for c in poly.exterior.coords]
                     holes = [[[c[1], c[0]] for c in ring.coords] for ring in poly.interiors]
                     h3_poly = h3.LatLngPoly(exterior_coords, *holes)
-                    filled = h3.h3shape_to_cells(h3_poly, 7)
+                    filled = h3.h3shape_to_cells(h3_poly, h3_res)
                     station_hexes.update(filled)
 
                 # Filtrar: manter apenas hexágonos cujo centroid está dentro do polígono
@@ -182,7 +184,7 @@ class HexagonGenerator:
                     })
                     valid_count += 1
 
-                print(f"   ✓ {delivery_station}: {valid_count} círculos (raio: {radius_miles} milhas, área: {geometry.area:.4f}°²)")
+                print(f"   ✓ {delivery_station}: {valid_count} círculos (raio: {radius_miles} mi, res H3: {h3_res}, área: {geometry.area:.4f}°²)")
 
             except Exception as e:
                 delivery_station = feature.get('properties', {}).get('delivery_station', 'UNKNOWN')

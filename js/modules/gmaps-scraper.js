@@ -405,26 +405,21 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
                         <span style="font-size:10px;color:#888;white-space:nowrap;">${r._fonte || ''}</span>
                     </div>
                     ${matchBadge}
-                    <div style="color:#555;">📍 ${r.endereco}</div>
+                    <div style="display:flex;align-items:baseline;gap:4px;color:#555;">
+                        <span>📍 ${r.endereco}</span>
+                        ${hasCoords ? `<button class="lead-pin-btn" title="Fixar no mapa" style="border:none;background:none;font-size:18px;cursor:pointer;opacity:0;transition:opacity .15s;padding:0;line-height:1;flex-shrink:0;">📌</button>` : ''}
+                    </div>
                     ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
                     ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
                     ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
                     ${r.hasMapsLink ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
                 `;
 
-                // Botão de pin — só para leads com coordenadas
                 if (hasCoords) {
-                    const pinBtn = document.createElement('button');
-                    pinBtn.title = 'Fixar no mapa';
-                    pinBtn.style = 'position:absolute;top:6px;right:0;border:none;background:none;font-size:18px;cursor:pointer;opacity:0;transition:opacity .15s;padding:0;line-height:1;';
-                    pinBtn.innerHTML = '📌';
+                    const pinBtn = card.querySelector('.lead-pin-btn');
                     pinBtn.onclick = () => _togglePin(r, pinBtn);
-
-                    // Mostrar pin ao passar o mouse no card
                     card.addEventListener('mouseenter', () => { pinBtn.style.opacity = _pinnedLeadMarkers.has(_leadKey(r)) ? '1' : '0.35'; });
                     card.addEventListener('mouseleave', () => { if (!_pinnedLeadMarkers.has(_leadKey(r))) pinBtn.style.opacity = '0'; });
-
-                    card.appendChild(pinBtn);
                 }
 
                 list.appendChild(card);

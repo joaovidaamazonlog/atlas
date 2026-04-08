@@ -10,7 +10,7 @@ import { state, subscribe }          from './state.js';
 import { loadAll, applyFilters, resetFilters } from './modules/data-manager.js';
 import { initialize, createMarkers, createMarkersDeliveryStations, restyleMarkers, toggleRadii, toggleOptimizationBtn } from './modules/map-manager.js';
 import { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection } from './modules/polygon-manager.js';
-import { updatePeriodInfo, populateFilters, setupAutocomplete, searchPartner, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence } from './modules/ui-manager.js';
+import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence } from './modules/ui-manager.js';
 import { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions } from './modules/route-manager.js';
 import { searchNearbyFromState, searchNearby } from './modules/gmaps-scraper.js';
 
@@ -43,7 +43,7 @@ subscribe('allMarkersData', () => {
 
 window.MapManager = { initialize, createMarkers, restyleMarkers, toggleRadii, toggleOptimizationBtn };
 window.PolygonManager = { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection };
-window.UIManager = { searchPartner, updateStats, togglePanelContent, requestAssistence };
+window.UIManager = { searchLocation, updateStats, togglePanelContent, requestAssistence };
 window.RouteManager = { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions };
 window.GmapsScraper = { searchNearbyFromState, searchNearby };
 window.DataManager  = { applyFilters, resetFilters };
@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Controles principais
-    document.getElementById('search-btn')?.addEventListener('click', () => searchPartner());
-    document.querySelector('.form-search')?.addEventListener('submit', e => { e.preventDefault(); searchPartner(); });
+    document.getElementById('search-btn')?.addEventListener('click', () => searchLocation());
+    document.querySelector('.form-search')?.addEventListener('submit', e => { e.preventDefault(); searchLocation(); });
     document.querySelectorAll('input[name="categoryStyle"]').forEach(r => r.addEventListener('change', () => restyleMarkers()));
     document.getElementById('showRadii')?.addEventListener('change', () => toggleRadii());
     document.getElementById('showPolygons')?.addEventListener('change', () => togglePolygons());

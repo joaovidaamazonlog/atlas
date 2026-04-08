@@ -2,7 +2,7 @@
  * ui-manager.js
  * =============
  * Gerencia toda a interface do usuario:
- * filtros, autocomplete, popups de marcadores e painel de estatisticas.
+ * buscas, filtros, autocomplete, popups de marcadores e painel de estatisticas.
  */
 
 import { state }         from '../state.js';
@@ -80,10 +80,28 @@ export function setupAutocomplete() {
     const toInput          = document.getElementById('routeToInput');
     const resultsContainer = document.getElementById('autocomplete-results');
 
-    function createAutocomplete(inputEl, onSelect) {
+    function _showResults(inputEl, items) {
+        resultsContainer.innerHTML = '';
+        const rect = inputEl.getBoundingClientRect();
+        resultsContainer.style.top   = `${rect.bottom + window.scrollY}px`;
+        resultsContainer.style.left  = `${rect.left   + window.scrollX}px`;
+        resultsContainer.style.width = `${rect.width}px`;
+        items.forEach(({ html, onClick }) => {
+            const item = document.createElement('a');
+            item.href = '#';
+            item.className = 'list-group-item list-group-item-action py-1';
+            item.innerHTML = html;
+            item.onclick = e => { e.preventDefault(); onClick(); resultsContainer.style.display = 'none'; };
+            resultsContainer.appendChild(item);
+        });
+        resultsContainer.style.display = items.length ? 'block' : 'none';
+    }
+
+    function createAutocomplete(inputEl, onSelect, { allowAddressSearch = false } = {}) {
         inputEl.addEventListener('input', () => {
-            const query = inputEl.value.toLowerCase();
+            const query = inputEl.value.trim();
             if (query.length < 2) { resultsContainer.style.display = 'none'; return; }
+            const q = query.toLowerCase();
             const options = [
                 ...state.allMarkersData.map(p => ({
                     type: 'partner', name: p.name, salesforce_id: p.salesforce_id, lat: p.lat, lon: p.lon,
@@ -93,34 +111,45 @@ export function setupAutocomplete() {
                 })),
             ];
             const filtered = options.filter(o =>
-                (o.name && o.name.toLowerCase().includes(query)) ||
-                (o.salesforce_id && o.salesforce_id.toLowerCase().includes(query))
+                (o.name && o.name.toLowerCase().includes(q)) ||
+                (o.salesforce_id && o.salesforce_id.toLowerCase().includes(q))
             ).slice(0, 5);
 
-            resultsContainer.innerHTML = '';
-            if (filtered.length > 0) {
-                filtered.forEach(opt => {
-                    const item = document.createElement('a');
-                    item.href = '#';
-                    item.className = 'list-group-item list-group-item-action py-1';
-                    item.innerHTML = opt.type === 'station'
-                        ? `<i class="fas fa-home mr-1"></i> ${opt.name} (Delivery Station)`
-                        : `${opt.name} (${opt.salesforce_id})`;
-                    item.onclick = e => { e.preventDefault(); onSelect(opt); resultsContainer.style.display = 'none'; };
-                    resultsContainer.appendChild(item);
+            const items = filtered.map(opt => ({
+                html: opt.type === 'station'
+                    ? `<i class="fas fa-home mr-1"></i> ${opt.name} (Delivery Station)`
+                    : `${opt.name} (${opt.salesforce_id})`,
+                onClick: () => onSelect(opt),
+            }));
+
+            // Quando não há match de parceiro e o input é o de busca geral,
+            // oferece a opção de geocodificar o texto como endereço
+            if (allowAddressSearch && filtered.length === 0) {
+                items.push({
+                    html: `<i class="fas fa-map-marker-alt mr-1"></i> Buscar endereço: <em>${query}</em>`,
+                    onClick: () => { inputEl.value = query; searchLocation(query); },
                 });
-                const rect = inputEl.getBoundingClientRect();
-                resultsContainer.style.top   = `${rect.bottom + window.scrollY}px`;
-                resultsContainer.style.left  = `${rect.left   + window.scrollX}px`;
-                resultsContainer.style.width = `${rect.width}px`;
-                resultsContainer.style.display = 'block';
-            } else {
-                resultsContainer.style.display = 'none';
             }
+
+            _showResults(inputEl, items);
         });
+
+        // Enter no campo de busca geral aciona searchLocation diretamente
+        if (allowAddressSearch) {
+            inputEl.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    resultsContainer.style.display = 'none';
+                    searchLocation(inputEl.value.trim());
+                }
+            });
+        }
     }
 
-    createAutocomplete(searchInput, p => { searchInput.value = p.name; searchPartner(p.salesforce_id); });
+    createAutocomplete(searchInput, p => {
+        searchInput.value = p.name;
+        searchLocation(p.salesforce_id);
+    }, { allowAddressSearch: true });
+
     createAutocomplete(fromInput, p => {
         fromInput.value = p.name;
         document.getElementById('routeFromId').value = p.salesforce_id;
@@ -139,15 +168,106 @@ export function setupAutocomplete() {
 }
 
 // ---------------------------------------------------------------------------
-// BUSCA DE PARCEIRO
+// BUSCA GERAL: PARCEIROS E ENDERECOS
 // ---------------------------------------------------------------------------
 
-export function searchPartner(partnerId) {
-    const term = partnerId || document.getElementById('search-input')?.value?.toLowerCase();
-    if (!term) return;
-    const found = state.allMarkersData.find(d =>
-        d.salesforce_id === term || d.name?.includes(term)
+/**
+ * @typedef {Object} GeocodeResult
+ * @property {string} address - Endereço original passado como input
+ * @property {number|null} lat - Latitude, ou null em caso de erro
+ * @property {number|null} lng - Longitude, ou null em caso de erro
+ * @property {string} [error] - Mensagem de erro (presente apenas em caso de falha)
+ */
+
+/**
+ * Busca as coordenadas de um único endereço numa aba do browser.
+ * @param {import('puppeteer').Browser} browser - Instância do browser compartilhada
+ * @param {string} address - Endereço completo incluindo CEP
+ * @returns {Promise<GeocodeResult>}
+ */
+async function geocodeAddress(browser, address) {
+  const page = await browser.newPage();
+
+  await page.setRequestInterception(true);
+  page.on("request", (req) => {
+    const blocked = ["image", "stylesheet", "font", "media"];
+    blocked.includes(req.resourceType()) ? req.abort() : req.continue();
+  });
+
+  try {
+    const query = encodeURIComponent(address);
+    await page.goto(`https://www.google.com/maps/search/${query}`, {
+      waitUntil: "networkidle2",
+      timeout: 15_000,
+    });
+
+    await page.waitForFunction(
+      () => window.location.href.includes("@"),
+      { timeout: 10_000 }
     );
+
+    const url = page.url();
+    const match = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+
+    if (!match) throw new Error(`Coordenadas não encontradas na URL: ${url}`);
+
+    return {
+      address,
+      lat: parseFloat(match[1]),
+      lng: parseFloat(match[2]),
+    };
+  } finally {
+    await page.close();
+  }
+}
+
+/**
+ * Geocodifica uma lista de endereços em paralelo usando uma única instância do browser.
+ * Endereços que falharem retornam lat/lng como null sem interromper os demais.
+ * @param {string[]} addresses - Lista de 1 a 10 endereços completos
+ * @returns {Promise<GeocodeResult[]>}
+ */
+export async function geocodeBatch(addresses) {
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  try {
+    const results = await Promise.allSettled(
+      addresses.map((address) => geocodeAddress(browser, address))
+    );
+
+    return results.map((result, i) => {
+      if (result.status === "fulfilled") return result.value;
+      return {
+        address: addresses[i],
+        lat: null,
+        lng: null,
+        error: result.reason?.message ?? "Erro desconhecido",
+      };
+    });
+  } finally {
+    await browser.close();
+  }
+}
+
+/**
+ * Busca geral: tenta encontrar um parceiro pelo ID/nome; se não achar,
+ * trata o termo como endereço e faz geocodificação para navegar no mapa.
+ * @param {string} [partnerId] - salesforce_id ou termo de busca livre
+ */
+export async function searchLocation(partnerId) {
+    const inputEl = document.getElementById('search-input');
+    const term = partnerId || inputEl?.value?.trim();
+    if (!term) return;
+
+    // 1. Tenta encontrar parceiro
+    const found = state.allMarkersData.find(d =>
+        d.salesforce_id === term ||
+        d.name?.toLowerCase().includes(term.toLowerCase())
+    );
+
     if (found) {
         const marker = state.markerObjects.find(m => m.markerData?.salesforce_id === found.salesforce_id);
         if (marker) {
@@ -157,14 +277,21 @@ export function searchPartner(partnerId) {
             state.map.setView([found.lat, found.lon], 15);
             alert('Parceiro encontrado, mas nao esta visivel com os filtros atuais.');
         }
+        if (!partnerId && inputEl) inputEl.value = '';
+        return;
+    }
+
+    // 2. Trata como endereço e geocodifica via geocodeBatch
+    const [result] = await geocodeBatch([term]);
+    if (result?.lat && result?.lng) {
+        state.map.setView([result.lat, result.lng], 16);
     } else {
-        alert('Parceiro nao encontrado.');
+        alert('Nenhum parceiro ou endereco encontrado para: ' + term);
     }
-    if (!partnerId) {
-        const el = document.getElementById('search-input');
-        if (el) el.value = '';
-    }
+    if (!partnerId && inputEl) inputEl.value = '';
 }
+
+
 
 // ---------------------------------------------------------------------------
 // POPUPS DE MARCADORES

@@ -1,5 +1,5 @@
 RELATORIO ESTRATEGICO — OPORTUNIDADES EM ABERTO
-Gerado em: 07/04/2026 17:31
+Gerado em: 08/04/2026 08:01
 ==========================================================================================
 
 📍 BASE: DBH5 | BDM: BH
@@ -1931,14 +1931,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DBR9_bucket-10
           - Demanda diaria:          1,554.0 pacotes/dia
           - Vagas ideais:             22
-          - Vagas em aberto:          19
+          - Vagas em aberto:          18
           - Parceiros Ativos:         3
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               13.6%
-          - Acuracidade:              100.0%
+          - Acuracidade:              75.0%
 
-          🚀 Oportunidades (19):
+          🚀 Oportunidades (18):
           • Oportunidade 1 [DBR9_bucket-10_S04]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01150011, 01201030, 01211000, 01211002, 01211100, 01211101, 01216000, 01216001, 01221010, 01225010
@@ -1975,43 +1975,39 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01150010, 01150011, 01151000, 01152000, 01153000, 01201010, 01201020, 01201030, 01201040, 01201050
               Localizacao: https://maps.google.com/maps?q=-23.533711,-46.652783
-          • Oportunidade 10 [DBR9_bucket-10_S10]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 01223000, 01223001, 01227000, 01227100, 01228000, 01228100, 01238000, 01238001, 01238902, 01238904
-              Localizacao: https://maps.google.com/maps?q=-23.544304,-46.656156
-          • Oportunidade 11 [DBR9_bucket-10_S11]:
+          • Oportunidade 10 [DBR9_bucket-10_S11]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01229000, 01229001, 01229901, 01229902, 01230000, 01230001, 01230010, 01230020, 01230903, 01231000
               Localizacao: https://maps.google.com/maps?q=-23.536495,-46.658986
-          • Oportunidade 12 [DBR9_bucket-10_S15]:
+          • Oportunidade 11 [DBR9_bucket-10_S15]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01035000, 01035100, 01035903, 01036100, 01201060, 01211000, 01211100, 01211101, 01214000, 01214100
               Localizacao: https://maps.google.com/maps?q=-23.538454,-46.649862
-          • Oportunidade 13 [DBR9_bucket-10_S16]:
+          • Oportunidade 12 [DBR9_bucket-10_S16]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01152000, 01152010, 01153000, 01153030, 01202000, 01202001, 01202002, 01202003, 01202010, 01202020
               Localizacao: https://maps.google.com/maps?q=-23.532319,-46.649681
-          • Oportunidade 14 [DBR9_bucket-10_S17]:
+          • Oportunidade 13 [DBR9_bucket-10_S17]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01035000, 01153000, 01201000, 01201001, 01201010, 01201020, 01201030, 01201060, 01202030, 01211000
               Localizacao: https://maps.google.com/maps?q=-23.535387,-46.649772
-          • Oportunidade 15 [DBR9_bucket-10_S18]:
+          • Oportunidade 14 [DBR9_bucket-10_S18]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01152000, 01152010, 01153000, 01153010, 01153020, 01153030, 01154000, 01154001, 01156010, 01202000
               Localizacao: https://maps.google.com/maps?q=-23.530644,-46.652692
-          • Oportunidade 16 [DBR9_bucket-10_S19]:
+          • Oportunidade 15 [DBR9_bucket-10_S19]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01035000, 01036000, 01153000, 01201000, 01201001, 01201010, 01201020, 01201030, 01201060, 01202000
               Localizacao: https://maps.google.com/maps?q=-23.537062,-46.646761
-          • Oportunidade 17 [DBR9_bucket-10_S20]:
+          • Oportunidade 16 [DBR9_bucket-10_S20]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 01127000, 01136000, 01136001, 01136010, 01139000, 01139001, 01139002, 01139010, 01150000, 01150001
               Localizacao: https://maps.google.com/maps?q=-23.530360,-46.658805
-          • Oportunidade 18 [DBR9_bucket-10_S21]:
+          • Oportunidade 17 [DBR9_bucket-10_S21]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01202000, 01202001, 01202002, 01202003, 01202030, 01203000, 01203001, 01203002, 01203003, 01204000
               Localizacao: https://maps.google.com/maps?q=-23.533995,-46.646670
-          • Oportunidade 19 [DBR9_bucket-10_S22]:
+          • Oportunidade 18 [DBR9_bucket-10_S22]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 01127010, 01128000, 01129000, 01130000, 01130010, 01130970, 01131000, 01131010, 01131020, 01132000
               Localizacao: https://maps.google.com/maps?q=-23.524792,-46.646399
@@ -4735,7 +4731,7 @@ Gerado em: 07/04/2026 17:31
           - Vagas em aberto:          78
           - Parceiros Ativos:         12
           - Parceiros Onboarding:     0
-          - Parceiros Vetting:        0
+          - Parceiros Vetting:        1
           - Attainment:               12.9%
           - Acuracidade:              80.0%
 
@@ -5333,14 +5329,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DCE3_bucket-01
           - Demanda diaria:          16,422.0 pacotes/dia
           - Vagas ideais:             236
-          - Vagas em aberto:          178
+          - Vagas em aberto:          177
           - Parceiros Ativos:         34
           - Parceiros Onboarding:     7
-          - Parceiros Vetting:        2
+          - Parceiros Vetting:        5
           - Attainment:               14.4%
-          - Acuracidade:              58.6%
+          - Acuracidade:              57.6%
 
-          🚀 Oportunidades (178):
+          🚀 Oportunidades (177):
           • Oportunidade 1 [DCE3_bucket-01_S13]:
               Capacidade sugerida: 210.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60110000, 60175742, 60175782, 60176032, 60190090, 60191340, 60191355, 60192010, 60192030, 60192050
@@ -6029,27 +6025,23 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60030030, 60030040, 60030050, 60030090, 60030100, 60030905, 60030970, 60050130, 60055050, 60055070
               Localizacao: https://maps.google.com/maps?q=-3.724049,-38.515879
-          • Oportunidade 173 [DCE3_bucket-01_S231]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
-              CEPs-alvo (top 10): 60175000, 60177010, 60177020, 60177030, 60177040, 60177120, 60177130, 60177305, 60177385, 60177420
-              Localizacao: https://maps.google.com/maps?q=-3.738705,-38.456516
-          • Oportunidade 174 [DCE3_bucket-01_S232]:
+          • Oportunidade 173 [DCE3_bucket-01_S232]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60810018, 60810050, 60810060, 60810080, 60810100, 60810140, 60810145, 60810160, 60810200, 60810210
               Localizacao: https://maps.google.com/maps?q=-3.757114,-38.489545
-          • Oportunidade 175 [DCE3_bucket-01_S233]:
+          • Oportunidade 174 [DCE3_bucket-01_S233]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60040530, 60040531, 60110480, 60110535, 60110560, 60120110, 60120140, 60130210, 60410234, 60410298
               Localizacao: https://maps.google.com/maps?q=-3.749604,-38.531142
-          • Oportunidade 176 [DCE3_bucket-01_S234]:
+          • Oportunidade 175 [DCE3_bucket-01_S234]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60010010, 60010020, 60010040, 60010090, 60010100, 60010110, 60010120, 60010130, 60010150, 60010170
               Localizacao: https://maps.google.com/maps?q=-3.720338,-38.533698
-          • Oportunidade 177 [DCE3_bucket-01_S235]:
+          • Oportunidade 176 [DCE3_bucket-01_S235]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60320000, 60320040, 60320105, 60320240, 60320275, 60320280, 60320285, 60320295, 60320504, 60320640
               Localizacao: https://maps.google.com/maps?q=-3.728340,-38.572542
-          • Oportunidade 178 [DCE3_bucket-01_S236]:
+          • Oportunidade 177 [DCE3_bucket-01_S236]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60177335, 60177340, 60177395, 60177410, 60177420, 60177485, 60177490, 60177495, 60182332, 60182342
               Localizacao: https://maps.google.com/maps?q=-3.754219,-38.453760
@@ -6057,14 +6049,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DCE3_bucket-02
           - Demanda diaria:          12,474.0 pacotes/dia
           - Vagas ideais:             235
-          - Vagas em aberto:          166
+          - Vagas em aberto:          163
           - Parceiros Ativos:         51
           - Parceiros Onboarding:     3
           - Parceiros Vetting:        1
           - Attainment:               21.7%
-          - Acuracidade:              73.9%
+          - Acuracidade:              70.8%
 
-          🚀 Oportunidades (166):
+          🚀 Oportunidades (163):
           • Oportunidade 1 [DCE3_bucket-02_S06]:
               Capacidade sugerida: 252.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60821555, 60821562, 60821572, 60821585, 60821630, 60821632, 60821655, 60821660, 60821700, 60821705
@@ -6133,599 +6125,587 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60160150, 60743690, 60743700, 60743710, 60743750, 60743760, 60743780, 60743790, 60743847, 60744290
               Localizacao: https://maps.google.com/maps?q=-3.802844,-38.534889
-          • Oportunidade 18 [DCE3_bucket-02_S29]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 60762455
-              Localizacao: https://maps.google.com/maps?q=-3.828221,-38.562070
-          • Oportunidade 19 [DCE3_bucket-02_S35]:
+          • Oportunidade 18 [DCE3_bucket-02_S35]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822315, 60824170, 60824180, 60824190, 60824200, 60824245, 60841455, 60841470, 60841535, 60841545
               Localizacao: https://maps.google.com/maps?q=-3.812026,-38.496292
-          • Oportunidade 20 [DCE3_bucket-02_S38]:
+          • Oportunidade 19 [DCE3_bucket-02_S38]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822155, 60822305, 60822325
               Localizacao: https://maps.google.com/maps?q=-3.808769,-38.484329
-          • Oportunidade 21 [DCE3_bucket-02_S39]:
+          • Oportunidade 20 [DCE3_bucket-02_S39]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61775190, 61775193, 61775199, 61775202, 61775208, 61775214, 61775217, 61775223, 61775226
               Localizacao: https://maps.google.com/maps?q=-3.883351,-38.440714
-          • Oportunidade 22 [DCE3_bucket-02_S41]:
+          • Oportunidade 21 [DCE3_bucket-02_S41]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60811650, 60811655, 60811670, 60811680, 60811695, 60811700, 60811710, 60811730, 60811740, 60811750
               Localizacao: https://maps.google.com/maps?q=-3.774483,-38.477879
-          • Oportunidade 23 [DCE3_bucket-02_S48]:
+          • Oportunidade 22 [DCE3_bucket-02_S48]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714222, 60743235, 60743245, 60743250, 60743374, 60745540, 60745550, 60761245, 60761255, 60761260
               Localizacao: https://maps.google.com/maps?q=-3.811212,-38.549906
-          • Oportunidade 24 [DCE3_bucket-02_S49]:
+          • Oportunidade 23 [DCE3_bucket-02_S49]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61771428, 61771540, 61771550, 61771570, 61771580, 61771590, 61771907, 61772060
               Localizacao: https://maps.google.com/maps?q=-3.858930,-38.464196
-          • Oportunidade 25 [DCE3_bucket-02_S50]:
+          • Oportunidade 24 [DCE3_bucket-02_S50]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61765820, 61765836, 61765845, 61765848, 61765850, 61765851, 61765852, 61765853, 61765854
               Localizacao: https://maps.google.com/maps?q=-3.880961,-38.485366
-          • Oportunidade 26 [DCE3_bucket-02_S51]:
+          • Oportunidade 25 [DCE3_bucket-02_S51]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61763850, 61765820, 61765886, 61765910, 61765914, 61766315, 61766320, 61766330, 61766335
               Localizacao: https://maps.google.com/maps?q=-3.894712,-38.485564
-          • Oportunidade 27 [DCE3_bucket-02_S60]:
+          • Oportunidade 26 [DCE3_bucket-02_S60]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60040531, 60150060, 60811020, 60811030, 60811040, 60811050, 60811060, 60811100, 60811110, 60811130
               Localizacao: https://maps.google.com/maps?q=-3.774392,-38.483836
-          • Oportunidade 28 [DCE3_bucket-02_S61]:
+          • Oportunidade 27 [DCE3_bucket-02_S61]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760400, 61760430, 61760435, 61760450, 61760455, 61760460, 61760500, 61761210, 61761360
               Localizacao: https://maps.google.com/maps?q=-3.896923,-38.452824
-          • Oportunidade 29 [DCE3_bucket-02_S62]:
+          • Oportunidade 28 [DCE3_bucket-02_S62]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714222, 60743235, 60743245, 60743250, 60743374, 60745540, 60745550, 60761135, 60761210, 60761245
               Localizacao: https://maps.google.com/maps?q=-3.812886,-38.552910
-          • Oportunidade 30 [DCE3_bucket-02_S63]:
+          • Oportunidade 29 [DCE3_bucket-02_S63]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61803000, 61814004, 61814016, 61814020, 61814024, 61814028, 61814032, 61814036, 61814040, 61814052
               Localizacao: https://maps.google.com/maps?q=-3.898023,-38.607780
-          • Oportunidade 31 [DCE3_bucket-02_S64]:
+          • Oportunidade 30 [DCE3_bucket-02_S64]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60811170, 60813530, 60813540, 60813550, 60813575, 60813580, 60813590, 60813600, 60813610, 60813620
               Localizacao: https://maps.google.com/maps?q=-3.781268,-38.483934
-          • Oportunidade 32 [DCE3_bucket-02_S65]:
+          • Oportunidade 31 [DCE3_bucket-02_S65]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60711442, 60711445, 60711446, 60711455, 60711520, 60711530, 60711532, 60711540, 60711555, 60711590
               Localizacao: https://maps.google.com/maps?q=-3.805829,-38.564726
-          • Oportunidade 33 [DCE3_bucket-02_S66]:
+          • Oportunidade 32 [DCE3_bucket-02_S66]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822366, 60830245, 60830345, 60830355, 60841080, 60841090, 60841110, 60841130, 60841140, 60841150
               Localizacao: https://maps.google.com/maps?q=-3.822519,-38.484527
-          • Oportunidade 34 [DCE3_bucket-02_S67]:
+          • Oportunidade 33 [DCE3_bucket-02_S67]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822142, 60822210, 60830005, 60830015, 60830025, 60830035, 60830045, 60830055, 60830065, 60830132
               Localizacao: https://maps.google.com/maps?q=-3.803748,-38.475320
-          • Oportunidade 35 [DCE3_bucket-02_S68]:
+          • Oportunidade 34 [DCE3_bucket-02_S68]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760051, 61765070, 61765140, 61765970, 61769070, 61769180, 61769460, 61769500, 61769510, 61769520
               Localizacao: https://maps.google.com/maps?q=-3.877882,-38.461489
-          • Oportunidade 36 [DCE3_bucket-02_S69]:
+          • Oportunidade 35 [DCE3_bucket-02_S69]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760430, 61760435, 61760450, 61760455, 61760460, 61760500, 61761360, 61761390, 61762360
               Localizacao: https://maps.google.com/maps?q=-3.898597,-38.455827
-          • Oportunidade 37 [DCE3_bucket-02_S71]:
+          • Oportunidade 36 [DCE3_bucket-02_S71]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61762470, 61762500, 61762740, 61762780, 61762790, 61762890, 61763080, 61763110, 61763120
               Localizacao: https://maps.google.com/maps?q=-3.905473,-38.455926
-          • Oportunidade 38 [DCE3_bucket-02_S72]:
+          • Oportunidade 37 [DCE3_bucket-02_S72]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822155, 60822165, 60822168, 60822178, 60822182, 60822185, 60822195, 60822285, 60822305, 60830355
               Localizacao: https://maps.google.com/maps?q=-3.807095,-38.481326
-          • Oportunidade 39 [DCE3_bucket-02_S73]:
+          • Oportunidade 38 [DCE3_bucket-02_S73]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61771000, 61771780, 61771800, 61771830, 61771860, 61771870, 61771880, 61771890, 61771908
               Localizacao: https://maps.google.com/maps?q=-3.860514,-38.473156
-          • Oportunidade 40 [DCE3_bucket-02_S74]:
+          • Oportunidade 39 [DCE3_bucket-02_S74]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760051, 61760600, 61765060, 61765070, 61765090, 61765140
               Localizacao: https://maps.google.com/maps?q=-3.884757,-38.461587
-          • Oportunidade 41 [DCE3_bucket-02_S75]:
+          • Oportunidade 40 [DCE3_bucket-02_S75]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60810300, 60810350, 60811020, 60811030, 60811040, 60811100, 60811130, 60811150, 60811160, 60811170
               Localizacao: https://maps.google.com/maps?q=-3.772628,-38.486789
-          • Oportunidade 42 [DCE3_bucket-02_S76]:
+          • Oportunidade 41 [DCE3_bucket-02_S76]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61942030, 61948260, 61948360, 61948830, 61949030, 61949040, 61949050, 61949060, 61949070, 61949150
               Localizacao: https://maps.google.com/maps?q=-3.914036,-38.685503
-          • Oportunidade 43 [DCE3_bucket-02_S78]:
+          • Oportunidade 42 [DCE3_bucket-02_S78]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60711442, 60712003, 60714220, 60745712, 60761135, 60761220, 60761250, 60761260, 60761270, 60761280
               Localizacao: https://maps.google.com/maps?q=-3.811122,-38.555864
-          • Oportunidade 44 [DCE3_bucket-02_S79]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 60711520, 60711530, 60711532, 60711540, 60711555, 60711590, 60711610, 60711620, 60712025, 60712085
-              Localizacao: https://maps.google.com/maps?q=-3.802391,-38.564676
-          • Oportunidade 45 [DCE3_bucket-02_S80]:
+          • Oportunidade 43 [DCE3_bucket-02_S80]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60710095, 60714010, 60714030, 60714040, 60714060, 60714070, 60714130, 60714140, 60714150, 60714152
               Localizacao: https://maps.google.com/maps?q=-3.781854,-38.558420
-          • Oportunidade 46 [DCE3_bucket-02_S81]:
+          • Oportunidade 44 [DCE3_bucket-02_S81]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714273, 60714275, 60714285, 60714305, 60714312, 60714320, 60714330, 60714331, 60714340, 60714350
               Localizacao: https://maps.google.com/maps?q=-3.787238,-38.543601
-          • Oportunidade 47 [DCE3_bucket-02_S84]:
+          • Oportunidade 45 [DCE3_bucket-02_S84]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61814004, 61814108, 61814116, 61814312, 61814332, 61814336, 61814340, 61814344, 61814348, 61814352
               Localizacao: https://maps.google.com/maps?q=-3.894494,-38.613689
-          • Oportunidade 48 [DCE3_bucket-02_S85]:
+          • Oportunidade 46 [DCE3_bucket-02_S85]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60744050, 60744055, 60744060, 60861105, 60861333, 60861340, 60861500, 60861634, 60861635, 60861670
               Localizacao: https://maps.google.com/maps?q=-3.808137,-38.526028
-          • Oportunidade 49 [DCE3_bucket-02_S87]:
+          • Oportunidade 47 [DCE3_bucket-02_S87]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60420000, 60744310, 60749050, 60750030, 60751510, 60861430, 60861432, 60861442, 60861445, 60861530
               Localizacao: https://maps.google.com/maps?q=-3.828583,-38.538240
-          • Oportunidade 50 [DCE3_bucket-02_S88]:
+          • Oportunidade 48 [DCE3_bucket-02_S88]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714210, 60714215, 60714220, 60714225, 60714240, 60714252, 60714270, 60714273, 60714280, 60714310
               Localizacao: https://maps.google.com/maps?q=-3.790585,-38.549608
-          • Oportunidade 51 [DCE3_bucket-02_S90]:
+          • Oportunidade 49 [DCE3_bucket-02_S90]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60810450, 60810455, 60810475, 60810480, 60810490, 60810500, 60810520, 60810550, 60810560, 60810580
               Localizacao: https://maps.google.com/maps?q=-3.770774,-38.495699
-          • Oportunidade 52 [DCE3_bucket-02_S92]:
+          • Oportunidade 50 [DCE3_bucket-02_S92]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714273, 60714275, 60714285, 60714305, 60714312, 60714320, 60714330, 60714331, 60714340, 60714350
               Localizacao: https://maps.google.com/maps?q=-3.792440,-38.540697
-          • Oportunidade 53 [DCE3_bucket-02_S93]:
+          • Oportunidade 51 [DCE3_bucket-02_S93]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61765640, 61765820, 61765858, 61765886, 61765889, 61765890, 61765891, 61765892, 61765893
               Localizacao: https://maps.google.com/maps?q=-3.886073,-38.488419
-          • Oportunidade 54 [DCE3_bucket-02_S94]:
+          • Oportunidade 52 [DCE3_bucket-02_S94]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60824190, 60824245, 60840285, 60841465, 60841470, 60841475, 60841477, 60841535, 60841545, 60841555
               Localizacao: https://maps.google.com/maps?q=-3.813700,-38.499295
-          • Oportunidade 55 [DCE3_bucket-02_S95]:
+          • Oportunidade 53 [DCE3_bucket-02_S95]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822095, 60822155, 60822180, 60822220, 60822240, 60822250, 60822260, 60822270, 60822290, 60822307
               Localizacao: https://maps.google.com/maps?q=-3.803477,-38.493190
-          • Oportunidade 56 [DCE3_bucket-02_S96]:
+          • Oportunidade 54 [DCE3_bucket-02_S96]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60830035, 60830055, 60830276, 60830285, 60830295, 60830305, 60830325, 60830335, 60830345, 60830355
               Localizacao: https://maps.google.com/maps?q=-3.817498,-38.475518
-          • Oportunidade 57 [DCE3_bucket-02_S99]:
+          • Oportunidade 55 [DCE3_bucket-02_S99]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60840285, 60841220, 60841230, 60841240, 60841250, 60841270, 60841280, 60841300, 60841370, 60841380
               Localizacao: https://maps.google.com/maps?q=-3.824103,-38.493487
-          • Oportunidade 58 [DCE3_bucket-02_S100]:
+          • Oportunidade 56 [DCE3_bucket-02_S100]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760046, 61760051, 61760095, 61760105, 61760435, 61760520, 61760590, 61760600, 61765000
               Localizacao: https://maps.google.com/maps?q=-3.888284,-38.455680
-          • Oportunidade 59 [DCE3_bucket-02_S104]:
+          • Oportunidade 57 [DCE3_bucket-02_S104]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60410224, 60421100, 60421102, 60421105, 60421106, 60421108, 60421170, 60421185, 60421205, 60421240
               Localizacao: https://maps.google.com/maps?q=-3.771541,-38.558271
-          • Oportunidade 60 [DCE3_bucket-02_S105]:
+          • Oportunidade 58 [DCE3_bucket-02_S105]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61762290, 61768600, 61768610, 61768640, 61768650, 61768670, 61768690, 61768710, 61768750
               Localizacao: https://maps.google.com/maps?q=-3.869153,-38.470301
-          • Oportunidade 61 [DCE3_bucket-02_S106]:
+          • Oportunidade 59 [DCE3_bucket-02_S106]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60840280, 60840285, 60841000, 60841420, 60841430, 60841440, 60841460, 60841465, 60841475, 60841477
               Localizacao: https://maps.google.com/maps?q=-3.818902,-38.496391
-          • Oportunidade 62 [DCE3_bucket-02_S107]:
+          • Oportunidade 60 [DCE3_bucket-02_S107]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60742764, 60831402, 60831404, 60831405, 60831406, 60831408, 60831409, 60831410, 60831411, 60831413
               Localizacao: https://maps.google.com/maps?q=-3.831428,-38.463802
-          • Oportunidade 63 [DCE3_bucket-02_S109]:
+          • Oportunidade 61 [DCE3_bucket-02_S109]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60040531, 60175400, 60823105, 60850010, 60850012, 60850015, 60850100, 60850120, 60850130, 60850200
               Localizacao: https://maps.google.com/maps?q=-3.773940,-38.513618
-          • Oportunidade 64 [DCE3_bucket-02_S110]:
+          • Oportunidade 62 [DCE3_bucket-02_S110]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822142, 60822415, 60830005, 60830035, 60830245, 60830246, 60830255, 60830265, 60830275, 60830276
               Localizacao: https://maps.google.com/maps?q=-3.817408,-38.481474
-          • Oportunidade 65 [DCE3_bucket-02_S111]:
+          • Oportunidade 63 [DCE3_bucket-02_S111]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60711442, 60711445, 60711455, 60711465, 60711475, 60711485, 60712003, 60712025, 60712045, 60712055
               Localizacao: https://maps.google.com/maps?q=-3.804065,-38.567680
-          • Oportunidade 66 [DCE3_bucket-02_S112]:
+          • Oportunidade 64 [DCE3_bucket-02_S112]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60842120, 60842160, 60842170, 60842220, 60842230, 60842250, 60862595, 60862715, 60862720, 60862730
               Localizacao: https://maps.google.com/maps?q=-3.822249,-38.502397
-          • Oportunidade 67 [DCE3_bucket-02_S113]:
+          • Oportunidade 65 [DCE3_bucket-02_S113]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60743680, 60743710, 60743720, 60743730, 60743732, 60743740, 60743750, 60743755, 60743760, 60743765
               Localizacao: https://maps.google.com/maps?q=-3.802754,-38.540846
-          • Oportunidade 68 [DCE3_bucket-02_S114]:
+          • Oportunidade 66 [DCE3_bucket-02_S114]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61940005, 61940065, 61940090, 61940095, 61940100, 61940105, 61940110, 61940115, 61940125, 61940135
               Localizacao: https://maps.google.com/maps?q=-3.895079,-38.688206
-          • Oportunidade 69 [DCE3_bucket-02_S115]:
+          • Oportunidade 67 [DCE3_bucket-02_S115]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822360, 60822785, 60822815, 60823035, 60823038, 60823110, 60823175, 60824020, 60824035, 60824038
               Localizacao: https://maps.google.com/maps?q=-3.803387,-38.499147
-          • Oportunidade 70 [DCE3_bucket-02_S116]:
+          • Oportunidade 68 [DCE3_bucket-02_S116]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60710680, 60714075, 60714080, 60714090, 60714100, 60714110, 60714115, 60714130, 60714140, 60714145
               Localizacao: https://maps.google.com/maps?q=-3.783619,-38.555466
-          • Oportunidade 71 [DCE3_bucket-02_S118]:
+          • Oportunidade 69 [DCE3_bucket-02_S118]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60821562, 60821565, 60821575, 60821700, 60821705, 60821802, 60822040, 60822080, 60822095, 60822108
               Localizacao: https://maps.google.com/maps?q=-3.798366,-38.490138
-          • Oportunidade 72 [DCE3_bucket-02_S121]:
+          • Oportunidade 70 [DCE3_bucket-02_S121]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760105, 61760120, 61763010, 61765010, 61770030, 61770040, 61770120, 61770180, 61770200
               Localizacao: https://maps.google.com/maps?q=-3.878061,-38.449575
-          • Oportunidade 73 [DCE3_bucket-02_S122]:
+          • Oportunidade 71 [DCE3_bucket-02_S122]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60830132, 60834005, 60834075, 60834195, 60834425, 60834435, 60834452, 60834455, 60834460, 60834462
               Localizacao: https://maps.google.com/maps?q=-3.791941,-38.460257
-          • Oportunidade 74 [DCE3_bucket-02_S124]:
+          • Oportunidade 72 [DCE3_bucket-02_S124]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822182, 60822210, 60830025, 60830035, 60830045, 60830055, 60830095, 60830105, 60830115, 60830125
               Localizacao: https://maps.google.com/maps?q=-3.808949,-38.472416
-          • Oportunidade 75 [DCE3_bucket-02_S126]:
+          • Oportunidade 73 [DCE3_bucket-02_S126]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60744040, 60861318, 60861330, 60861333, 60861500, 60861634, 60861635, 60861680, 60862020, 60862040
               Localizacao: https://maps.google.com/maps?q=-3.813248,-38.529081
-          • Oportunidade 76 [DCE3_bucket-02_S127]:
+          • Oportunidade 74 [DCE3_bucket-02_S127]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760001, 61765000, 61765610, 61765640, 61765655, 61765820, 61765836, 61765840, 61765845, 61765848
               Localizacao: https://maps.google.com/maps?q=-3.879197,-38.488320
-          • Oportunidade 77 [DCE3_bucket-02_S128]:
+          • Oportunidade 75 [DCE3_bucket-02_S128]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60840000, 60842020, 60842021, 60842050, 60871015, 60871025, 60871030, 60871040, 60871041, 60871055
               Localizacao: https://maps.google.com/maps?q=-3.836090,-38.496638
-          • Oportunidade 78 [DCE3_bucket-02_S129]:
+          • Oportunidade 76 [DCE3_bucket-02_S129]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60714242, 60714320, 60714330, 60714340, 60714370, 60714380, 60714390, 60714430, 60714440, 60714500
               Localizacao: https://maps.google.com/maps?q=-3.792531,-38.534740
-          • Oportunidade 79 [DCE3_bucket-02_S130]:
+          • Oportunidade 77 [DCE3_bucket-02_S130]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60131000, 60850015, 60850680, 60850685, 60850810, 60851000, 60851010, 60851030, 60851100, 60851120
               Localizacao: https://maps.google.com/maps?q=-3.767065,-38.513519
-          • Oportunidade 80 [DCE3_bucket-02_S131]:
+          • Oportunidade 78 [DCE3_bucket-02_S131]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60810670, 60864240, 60864257, 60864260, 60864290, 60864300, 60864310, 60864311, 60864313, 60864320
               Localizacao: https://maps.google.com/maps?q=-3.803206,-38.511061
-          • Oportunidade 81 [DCE3_bucket-02_S132]:
+          • Oportunidade 79 [DCE3_bucket-02_S132]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760006, 61760046, 61760051, 61765070, 61765140, 61770010, 61770040, 61770909
               Localizacao: https://maps.google.com/maps?q=-3.879645,-38.458535
-          • Oportunidade 82 [DCE3_bucket-02_S133]:
+          • Oportunidade 80 [DCE3_bucket-02_S133]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60822142, 60822145, 60822155, 60822178, 60822182, 60822185, 60822195, 60822205, 60822305, 60822322
               Localizacao: https://maps.google.com/maps?q=-3.805421,-38.478323
-          • Oportunidade 83 [DCE3_bucket-02_S134]:
+          • Oportunidade 81 [DCE3_bucket-02_S134]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760046, 61765000, 61765070, 61765220, 61765270, 61765290, 61768430, 61768680, 61768690, 61769070
               Localizacao: https://maps.google.com/maps?q=-3.876118,-38.464443
-          • Oportunidade 84 [DCE3_bucket-02_S135]:
+          • Oportunidade 82 [DCE3_bucket-02_S135]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760260, 61760660, 61760670, 61760680, 61760690, 61760740, 61760760, 61760850, 61760860, 61760880
               Localizacao: https://maps.google.com/maps?q=-3.897102,-38.440910
-          • Oportunidade 85 [DCE3_bucket-02_S136]:
+          • Oportunidade 83 [DCE3_bucket-02_S136]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60862027, 60862580, 60862610, 60862618, 60862620, 60862628, 60862630, 60862632, 60862638, 60862640
               Localizacao: https://maps.google.com/maps?q=-3.811846,-38.508206
-          • Oportunidade 86 [DCE3_bucket-02_S137]:
+          • Oportunidade 84 [DCE3_bucket-02_S137]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60831600, 60832380, 60832390, 60832402, 60832410, 60832420, 60832440, 60832650, 61885518
               Localizacao: https://maps.google.com/maps?q=-3.807545,-38.451544
-          • Oportunidade 87 [DCE3_bucket-02_S138]:
+          • Oportunidade 85 [DCE3_bucket-02_S138]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60834045, 60834065, 60834075, 60834085, 60834095, 60834105, 60834115, 60834135, 60834145, 60834155
               Localizacao: https://maps.google.com/maps?q=-3.785066,-38.460159
-          • Oportunidade 88 [DCE3_bucket-02_S139]:
+          • Oportunidade 86 [DCE3_bucket-02_S139]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60711005, 60711445, 60711446, 60711455, 60711465, 60711475, 60711515, 60712130, 60712165, 60712175
               Localizacao: https://maps.google.com/maps?q=-3.809267,-38.564775
-          • Oportunidade 89 [DCE3_bucket-02_S140]:
+          • Oportunidade 87 [DCE3_bucket-02_S140]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714152, 60714370, 60714445, 60714455, 60714500, 60714502, 60741005, 60741380, 60741450, 60741525
               Localizacao: https://maps.google.com/maps?q=-3.789002,-38.540648
-          • Oportunidade 90 [DCE3_bucket-02_S141]:
+          • Oportunidade 88 [DCE3_bucket-02_S141]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 61760001, 61760600, 61763810, 61763820, 61763830, 61763840, 61763850, 61763870, 61765010, 61765030
               Localizacao: https://maps.google.com/maps?q=-3.891364,-38.479557
-          • Oportunidade 91 [DCE3_bucket-02_S142]:
+          • Oportunidade 89 [DCE3_bucket-02_S142]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60822142, 60822150, 60822160, 60822210, 60822245, 60822255, 60822265, 60822275, 60822295, 60822305
               Localizacao: https://maps.google.com/maps?q=-3.802074,-38.472318
-          • Oportunidade 92 [DCE3_bucket-02_S143]:
+          • Oportunidade 90 [DCE3_bucket-02_S143]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60743770, 60743780, 60744040, 60810670, 60861310, 60861350, 60861360, 60861370, 60861380, 60861405
               Localizacao: https://maps.google.com/maps?q=-3.814831,-38.538041
-          • Oportunidade 93 [DCE3_bucket-02_S144]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 60410225, 60421035, 60421070, 60421072, 60421076, 60421090, 60421100, 60421107, 60421180, 60421240
-              Localizacao: https://maps.google.com/maps?q=-3.775069,-38.552363
-          • Oportunidade 94 [DCE3_bucket-02_S146]:
+          • Oportunidade 91 [DCE3_bucket-02_S146]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714210, 60714215, 60714220, 60714225, 60714230, 60714240, 60714242, 60714248, 60714252, 60714280
               Localizacao: https://maps.google.com/maps?q=-3.785474,-38.546555
-          • Oportunidade 95 [DCE3_bucket-02_S147]:
+          • Oportunidade 92 [DCE3_bucket-02_S147]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60410100, 60410162, 60410222, 60410224, 60410225, 60410306, 60420314, 60420432, 60420720, 60420750
               Localizacao: https://maps.google.com/maps?q=-3.769867,-38.555267
-          • Oportunidade 96 [DCE3_bucket-02_S151]:
+          • Oportunidade 93 [DCE3_bucket-02_S151]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760046, 61760051, 61760220, 61760225, 61760235, 61760245, 61760265, 61760660, 61760680
               Localizacao: https://maps.google.com/maps?q=-3.890226,-38.440812
-          • Oportunidade 97 [DCE3_bucket-02_S152]:
+          • Oportunidade 94 [DCE3_bucket-02_S152]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60830055, 60830305, 60830495, 60830496, 60830505, 60830516, 60831154, 60831160, 60831180, 60831190
               Localizacao: https://maps.google.com/maps?q=-3.819262,-38.472564
-          • Oportunidade 98 [DCE3_bucket-02_S154]:
+          • Oportunidade 95 [DCE3_bucket-02_S154]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61940005, 61940010, 61940020, 61940050, 61940055, 61940065, 61940075, 61940080, 61940085, 61940090
               Localizacao: https://maps.google.com/maps?q=-3.896843,-38.685252
-          • Oportunidade 99 [DCE3_bucket-02_S156]:
+          • Oportunidade 96 [DCE3_bucket-02_S156]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60714220, 60714252, 60714735, 60741600, 60743212, 60743218, 60743225, 60743226, 60743228, 60743235
               Localizacao: https://maps.google.com/maps?q=-3.797461,-38.549708
-          • Oportunidade 100 [DCE3_bucket-02_S157]:
+          • Oportunidade 97 [DCE3_bucket-02_S157]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61814236, 61900225, 61900240, 61900250, 61900260, 61900270, 61900280, 61900290, 61900300, 61900310
               Localizacao: https://maps.google.com/maps?q=-3.873865,-38.613389
-          • Oportunidade 101 [DCE3_bucket-02_S158]:
+          • Oportunidade 98 [DCE3_bucket-02_S158]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61946005, 61946030, 61946040, 61946050, 61946060, 61946120, 61946140, 61946150, 61946160, 61946170
               Localizacao: https://maps.google.com/maps?q=-3.902138,-38.676388
-          • Oportunidade 102 [DCE3_bucket-02_S159]:
+          • Oportunidade 99 [DCE3_bucket-02_S159]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61779360, 61779370, 61779650, 61779680, 61779690, 61779693, 61779714, 61779717, 61779726, 61779729
               Localizacao: https://maps.google.com/maps?q=-3.830293,-38.425061
-          • Oportunidade 103 [DCE3_bucket-02_S160]:
+          • Oportunidade 100 [DCE3_bucket-02_S160]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60743770, 60743780, 60743785, 60743790, 60743796, 60743820, 60743830, 60743840, 60744000, 60744012
               Localizacao: https://maps.google.com/maps?q=-3.806192,-38.540896
-          • Oportunidade 104 [DCE3_bucket-02_S161]:
+          • Oportunidade 101 [DCE3_bucket-02_S161]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61760001, 61760105, 61760240, 61762360, 61770030, 61770210, 61770220, 61770240, 61770250, 61770570
               Localizacao: https://maps.google.com/maps?q=-3.871185,-38.449477
-          • Oportunidade 105 [DCE3_bucket-02_S162]:
+          • Oportunidade 102 [DCE3_bucket-02_S162]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60710095, 60710680, 60710685, 60710695, 60710700, 60710705, 60710710, 60710715, 60710760, 60710780
               Localizacao: https://maps.google.com/maps?q=-3.793842,-38.561573
-          • Oportunidade 106 [DCE3_bucket-02_S163]:
+          • Oportunidade 103 [DCE3_bucket-02_S163]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60830535, 60830545, 60830552, 60830555, 60830575, 60831271, 60831295, 60831360, 60832402, 60832480
               Localizacao: https://maps.google.com/maps?q=-3.810803,-38.463506
-          • Oportunidade 107 [DCE3_bucket-02_S164]:
+          • Oportunidade 104 [DCE3_bucket-02_S164]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760600, 61763840, 61765030, 61765060, 61765080, 61765090, 61765140, 61765220, 61765300, 61765310
               Localizacao: https://maps.google.com/maps?q=-3.881140,-38.473452
-          • Oportunidade 108 [DCE3_bucket-02_S165]:
+          • Oportunidade 105 [DCE3_bucket-02_S165]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60120085, 60120095, 60120170, 60120220, 60120340, 60130460, 60130490, 60130501, 60130530, 60130550
               Localizacao: https://maps.google.com/maps?q=-3.768829,-38.510566
-          • Oportunidade 109 [DCE3_bucket-02_S166]:
+          • Oportunidade 106 [DCE3_bucket-02_S166]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60822210, 60822415, 60830025, 60830035, 60830045, 60830055, 60830095, 60830105, 60830185, 60830245
               Localizacao: https://maps.google.com/maps?q=-3.814150,-38.469512
-          • Oportunidade 110 [DCE3_bucket-02_S167]:
+          • Oportunidade 107 [DCE3_bucket-02_S167]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61779650, 61779690, 61779693, 61779696, 61779699, 61779702, 61779708, 61779711, 61779714, 61779717
               Localizacao: https://maps.google.com/maps?q=-3.823418,-38.424963
-          • Oportunidade 111 [DCE3_bucket-02_S168]:
+          • Oportunidade 108 [DCE3_bucket-02_S168]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61925180, 61925185, 61925190, 61925210, 61925220, 61925230, 61925240, 61925250, 61925260, 61925270
               Localizacao: https://maps.google.com/maps?q=-3.839755,-38.595014
-          • Oportunidade 112 [DCE3_bucket-02_S169]:
+          • Oportunidade 109 [DCE3_bucket-02_S169]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60861710, 60861720, 60861760, 60861770, 60861780, 60861790, 60861795, 60861810, 60861820, 60861830
               Localizacao: https://maps.google.com/maps?q=-3.815103,-38.520170
-          • Oportunidade 113 [DCE3_bucket-02_S170]:
+          • Oportunidade 110 [DCE3_bucket-02_S170]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60860012, 60860100, 60860110, 60860120, 60860140, 60860150, 60860220, 60860270, 60860280, 60860320
               Localizacao: https://maps.google.com/maps?q=-3.785836,-38.522727
-          • Oportunidade 114 [DCE3_bucket-02_S171]:
+          • Oportunidade 111 [DCE3_bucket-02_S171]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60170000, 60410162, 60410222, 60410224, 60410225, 60410306, 60410423, 60416388, 60416420, 60416480
               Localizacao: https://maps.google.com/maps?q=-3.764756,-38.552214
-          • Oportunidade 115 [DCE3_bucket-02_S173]:
+          • Oportunidade 112 [DCE3_bucket-02_S173]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60810350, 60811760, 60811770, 60811780, 60811830, 60812010, 60812260, 60812280, 60812290, 60812300
               Localizacao: https://maps.google.com/maps?q=-3.776247,-38.474926
-          • Oportunidade 116 [DCE3_bucket-02_S176]:
+          • Oportunidade 113 [DCE3_bucket-02_S176]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60710000, 60710001, 60710683, 60710684, 60710902, 60711020, 60711025, 60711040, 60711055, 60711155
               Localizacao: https://maps.google.com/maps?q=-3.798862,-38.570584
-          • Oportunidade 117 [DCE3_bucket-02_S177]:
+          • Oportunidade 114 [DCE3_bucket-02_S177]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60710685, 60710708, 60714100, 60714220, 60714230, 60714252, 60714260, 60714320, 60714330, 60714340
               Localizacao: https://maps.google.com/maps?q=-3.795697,-38.552661
-          • Oportunidade 118 [DCE3_bucket-02_S178]:
+          • Oportunidade 115 [DCE3_bucket-02_S178]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60811120, 60811220, 60811227, 60811253, 60811265, 60811275, 60811285, 60811290, 60811295, 60811296
               Localizacao: https://maps.google.com/maps?q=-3.775976,-38.492795
-          • Oportunidade 119 [DCE3_bucket-02_S179]:
+          • Oportunidade 116 [DCE3_bucket-02_S179]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 60741000, 60741025, 60741040, 60741050, 60741090, 60741110, 60741145, 60741200, 60741205, 60741225
               Localizacao: https://maps.google.com/maps?q=-3.780272,-38.549459
-          • Oportunidade 120 [DCE3_bucket-02_S180]:
+          • Oportunidade 117 [DCE3_bucket-02_S180]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60831156, 60831160, 60831161, 60831165, 60831260, 60831370, 60831401, 60831403, 60831413, 60831415
               Localizacao: https://maps.google.com/maps?q=-3.826137,-38.472663
-          • Oportunidade 121 [DCE3_bucket-02_S181]:
+          • Oportunidade 118 [DCE3_bucket-02_S181]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60744055, 60861135, 60861138, 60861211, 60861212, 60861500, 60861635, 60861680, 60861710, 60861720
               Localizacao: https://maps.google.com/maps?q=-3.809901,-38.523074
-          • Oportunidade 122 [DCE3_bucket-02_S182]:
+          • Oportunidade 119 [DCE3_bucket-02_S182]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60742764, 60831370, 60831403, 60831410, 60831420, 60831430, 60831435, 60831480, 60831481, 60831482
               Localizacao: https://maps.google.com/maps?q=-3.833192,-38.460848
-          • Oportunidade 123 [DCE3_bucket-02_S183]:
+          • Oportunidade 120 [DCE3_bucket-02_S183]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60421102, 60421108, 60421410, 60421415, 60421420, 60710020, 60710093, 60710250, 60714010, 60714100
               Localizacao: https://maps.google.com/maps?q=-3.778416,-38.558370
-          • Oportunidade 124 [DCE3_bucket-02_S184]:
+          • Oportunidade 121 [DCE3_bucket-02_S184]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60764425, 60764485, 60764505, 60764515, 60764520, 60764565, 60764575, 60764600, 60764605, 60764667
               Localizacao: https://maps.google.com/maps?q=-3.834644,-38.591960
-          • Oportunidade 125 [DCE3_bucket-02_S185]:
+          • Oportunidade 122 [DCE3_bucket-02_S185]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760220, 61760400, 61760405, 61760410, 61760412, 61760415, 61760420, 61760435, 61760450, 61760460
               Localizacao: https://maps.google.com/maps?q=-3.895159,-38.455778
-          • Oportunidade 126 [DCE3_bucket-02_S187]:
+          • Oportunidade 123 [DCE3_bucket-02_S187]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60170002, 60714220, 60749020, 60750012, 60750015, 60750020, 60750030, 60750060, 60750070, 60750080
               Localizacao: https://maps.google.com/maps?q=-3.838535,-38.562220
-          • Oportunidade 127 [DCE3_bucket-02_S188]:
+          • Oportunidade 124 [DCE3_bucket-02_S188]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60821562, 60821565, 60821575, 60821700, 60821705, 60821780, 60821785, 60821790, 60821795, 60821800
               Localizacao: https://maps.google.com/maps?q=-3.801893,-38.484231
-          • Oportunidade 128 [DCE3_bucket-02_S189]:
+          • Oportunidade 125 [DCE3_bucket-02_S189]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61942010, 61943005, 61943010, 61943015, 61943020, 61943040, 61943060, 61943120, 61943150, 61943160
               Localizacao: https://maps.google.com/maps?q=-3.871283,-38.669975
-          • Oportunidade 129 [DCE3_bucket-02_S190]:
+          • Oportunidade 126 [DCE3_bucket-02_S190]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60823105, 60842395, 60861025, 60861030, 60861045, 60861070, 60861090, 60861110, 60861130, 60861140
               Localizacao: https://maps.google.com/maps?q=-3.796240,-38.516919
-          • Oportunidade 130 [DCE3_bucket-02_S191]:
+          • Oportunidade 127 [DCE3_bucket-02_S191]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61765890, 61771160, 61771170, 61771180, 61771183, 61771190, 61771210, 61771240, 61771250, 61771260
               Localizacao: https://maps.google.com/maps?q=-3.850380,-38.461095
-          • Oportunidade 131 [DCE3_bucket-02_S192]:
+          • Oportunidade 128 [DCE3_bucket-02_S192]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760001, 61765290, 61770150, 61770470, 61770480, 61770490, 61770500, 61770510, 61770520, 61770560
               Localizacao: https://maps.google.com/maps?q=-3.857435,-38.449280
-          • Oportunidade 132 [DCE3_bucket-02_S193]:
+          • Oportunidade 129 [DCE3_bucket-02_S193]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 62880001, 62880025, 62880208, 62880210, 62880216, 62880222, 62880231, 62880240, 62880243, 62880246
               Localizacao: https://maps.google.com/maps?q=-4.094023,-38.494388
-          • Oportunidade 133 [DCE3_bucket-02_S194]:
+          • Oportunidade 130 [DCE3_bucket-02_S194]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 61761070, 61768680, 61768690, 61769180, 61769200, 61769210, 61769220, 61769240, 61769260, 61769270
               Localizacao: https://maps.google.com/maps?q=-3.871006,-38.461390
-          • Oportunidade 134 [DCE3_bucket-02_S195]:
+          • Oportunidade 131 [DCE3_bucket-02_S195]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760001, 61760790, 61770460, 61775870, 61776220, 61776240, 61776255, 61776430, 61776440, 61776450
               Localizacao: https://maps.google.com/maps?q=-3.868016,-38.431558
-          • Oportunidade 135 [DCE3_bucket-02_S197]:
+          • Oportunidade 132 [DCE3_bucket-02_S197]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60714210, 60714215, 60714220, 60714230, 60714240, 60714242, 60714248, 60714270, 60714273, 60714275
               Localizacao: https://maps.google.com/maps?q=-3.792349,-38.546654
-          • Oportunidade 136 [DCE3_bucket-02_S199]:
+          • Oportunidade 133 [DCE3_bucket-02_S199]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61805000, 61925660, 61930220, 61930305, 61930340, 61932005, 61932080, 61932120, 61932130, 61932180
               Localizacao: https://maps.google.com/maps?q=-3.851925,-38.586251
-          • Oportunidade 137 [DCE3_bucket-02_S200]:
+          • Oportunidade 134 [DCE3_bucket-02_S200]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61940005, 61940300, 61940335, 61940410, 61940970, 61946010, 61946210, 61946215, 61946345, 61946350
               Localizacao: https://maps.google.com/maps?q=-3.905485,-38.682398
-          • Oportunidade 138 [DCE3_bucket-02_S202]:
+          • Oportunidade 135 [DCE3_bucket-02_S202]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60824000, 60824115, 60824190, 60824200, 60824215, 60824220, 60840285, 60842450, 60862585, 60862605
               Localizacao: https://maps.google.com/maps?q=-3.806734,-38.505153
-          • Oportunidade 139 [DCE3_bucket-02_S203]:
+          • Oportunidade 136 [DCE3_bucket-02_S203]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61943005, 61943060, 61943230, 61943250, 61943300, 61943310, 61943390, 61943400, 61943410, 61943420
               Localizacao: https://maps.google.com/maps?q=-3.871374,-38.664016
-          • Oportunidade 140 [DCE3_bucket-02_S204]:
+          • Oportunidade 137 [DCE3_bucket-02_S204]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60822142, 60822145, 60822195, 60822205, 60822215, 60822225, 60822235, 60822355, 60822366, 60822375
               Localizacao: https://maps.google.com/maps?q=-3.814060,-38.475468
-          • Oportunidade 141 [DCE3_bucket-02_S205]:
+          • Oportunidade 138 [DCE3_bucket-02_S205]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60711515, 60712120, 60712130, 60714742, 60745190, 60745200, 60749050, 60750080, 60750100, 60750120
               Localizacao: https://maps.google.com/maps?q=-3.821436,-38.556013
-          • Oportunidade 142 [DCE3_bucket-02_S206]:
+          • Oportunidade 139 [DCE3_bucket-02_S206]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60714502, 60741575, 60742762, 60743065, 60743680, 60743700, 60743710, 60743720, 60743760, 60743762
               Localizacao: https://maps.google.com/maps?q=-3.801171,-38.531886
-          • Oportunidade 143 [DCE3_bucket-02_S207]:
+          • Oportunidade 140 [DCE3_bucket-02_S207]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60712190, 60714225, 60714230, 60714612, 60714625, 60714660, 60714665, 60714670, 60714680, 60714695
               Localizacao: https://maps.google.com/maps?q=-3.806101,-38.546853
-          • Oportunidade 144 [DCE3_bucket-02_S208]:
+          • Oportunidade 141 [DCE3_bucket-02_S208]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60710001, 60710683, 60710684, 60710902, 60711005, 60711020, 60711025, 60711035, 60711040, 60711055
               Localizacao: https://maps.google.com/maps?q=-3.803974,-38.573637
-          • Oportunidade 145 [DCE3_bucket-02_S210]:
+          • Oportunidade 142 [DCE3_bucket-02_S210]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60840015, 60840045, 60840115, 60840120, 60840280, 60840282, 60840290, 60840310, 60840350, 60840375
               Localizacao: https://maps.google.com/maps?q=-3.824193,-38.487530
-          • Oportunidade 146 [DCE3_bucket-02_S212]:
+          • Oportunidade 143 [DCE3_bucket-02_S212]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760415, 61771800, 61773450, 61773550, 61773590, 61773630, 61773730, 61773740, 61773760, 61773780
               Localizacao: https://maps.google.com/maps?q=-3.816364,-38.436777
-          • Oportunidade 147 [DCE3_bucket-02_S213]:
+          • Oportunidade 144 [DCE3_bucket-02_S213]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60813695, 60821562, 60821565, 60821575, 60821585, 60821700, 60821705, 60821716, 60821720, 60821725
               Localizacao: https://maps.google.com/maps?q=-3.788143,-38.484033
-          • Oportunidade 148 [DCE3_bucket-02_S215]:
+          • Oportunidade 145 [DCE3_bucket-02_S215]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60410622, 60410642, 60410672, 60410700, 60410760, 60410772, 60410802, 60410804, 60410808, 60410810
               Localizacao: https://maps.google.com/maps?q=-3.783891,-38.537595
-          • Oportunidade 149 [DCE3_bucket-02_S216]:
+          • Oportunidade 146 [DCE3_bucket-02_S216]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 62880001, 62880210, 62880423, 62882000, 62882020, 62882025, 62882030, 62882035, 62882040, 62882070
               Localizacao: https://maps.google.com/maps?q=-4.109627,-38.485672
-          • Oportunidade 150 [DCE3_bucket-02_S217]:
+          • Oportunidade 147 [DCE3_bucket-02_S217]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60840015, 60840045, 60840115, 60840145, 60840200, 60840205, 60840285, 60840350, 60840375, 60840380
               Localizacao: https://maps.google.com/maps?q=-3.827631,-38.487579
-          • Oportunidade 151 [DCE3_bucket-02_S218]:
+          • Oportunidade 148 [DCE3_bucket-02_S218]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60810475, 60810650, 60810700, 60810780, 60810792, 60810815, 60810820, 60811000, 60811225, 60811235
               Localizacao: https://maps.google.com/maps?q=-3.777649,-38.495798
-          • Oportunidade 152 [DCE3_bucket-02_S219]:
+          • Oportunidade 149 [DCE3_bucket-02_S219]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61940005, 61940008, 61940020, 61940025, 61940035, 61940040, 61940065, 61940070, 61940090, 61940095
               Localizacao: https://maps.google.com/maps?q=-3.891640,-38.688156
-          • Oportunidade 153 [DCE3_bucket-02_S220]:
+          • Oportunidade 150 [DCE3_bucket-02_S220]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60823020, 60823105, 60850010, 60850012, 60850015, 60850020, 60850050, 60850070, 60850080, 60850100
               Localizacao: https://maps.google.com/maps?q=-3.777378,-38.513668
-          • Oportunidade 154 [DCE3_bucket-02_S221]:
+          • Oportunidade 151 [DCE3_bucket-02_S221]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760001, 61760435, 61761460, 61761640, 61761660, 61761680, 61761700, 61761710, 61761890, 61762020
               Localizacao: https://maps.google.com/maps?q=-3.912348,-38.456024
-          • Oportunidade 155 [DCE3_bucket-02_S222]:
+          • Oportunidade 152 [DCE3_bucket-02_S222]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 61810395, 61913160, 61915000, 61915085, 61915303, 61915310, 61915330, 61915345, 61915350, 61915380
               Localizacao: https://maps.google.com/maps?q=-3.825457,-38.630564
-          • Oportunidade 156 [DCE3_bucket-02_S223]:
+          • Oportunidade 153 [DCE3_bucket-02_S223]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760046, 61765080, 61765090, 61765110, 61765130, 61765140, 61765150, 61765160, 61765220, 61765230
               Localizacao: https://maps.google.com/maps?q=-3.879466,-38.470449
-          • Oportunidade 157 [DCE3_bucket-02_S225]:
+          • Oportunidade 154 [DCE3_bucket-02_S225]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60711442, 60711446, 60711520, 60711525, 60711530, 60711540, 60711545, 60712165, 60714230, 60714612
               Localizacao: https://maps.google.com/maps?q=-3.817998,-38.555963
-          • Oportunidade 158 [DCE3_bucket-02_S226]:
+          • Oportunidade 155 [DCE3_bucket-02_S226]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61700000, 61760001, 61760046, 61760051, 61760090, 61760095, 61760110, 61760140, 61760320, 61760330
               Localizacao: https://maps.google.com/maps?q=-3.891811,-38.449772
-          • Oportunidade 159 [DCE3_bucket-02_S227]:
+          • Oportunidade 156 [DCE3_bucket-02_S227]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61900130, 61925660, 61932470, 61932472, 61932482, 61932495, 61932500, 61932518, 61932520, 61932525
               Localizacao: https://maps.google.com/maps?q=-3.875901,-38.592559
-          • Oportunidade 160 [DCE3_bucket-02_S228]:
+          • Oportunidade 157 [DCE3_bucket-02_S228]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 62880001, 62880007, 62880010, 62880016, 62880019, 62880022, 62880025, 62880031, 62880060, 62880063
               Localizacao: https://maps.google.com/maps?q=-4.095786,-38.491433
-          • Oportunidade 161 [DCE3_bucket-02_S229]:
+          • Oportunidade 158 [DCE3_bucket-02_S229]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60135280, 60750030, 60861310, 60861330, 60861350, 60861352, 60861360, 60861370, 60861375, 60861380
               Localizacao: https://maps.google.com/maps?q=-3.818269,-38.538091
-          • Oportunidade 162 [DCE3_bucket-02_S230]:
+          • Oportunidade 159 [DCE3_bucket-02_S230]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 61760001, 61760016, 61760021, 61760026, 61760031, 61760036, 61760051, 61760090, 61760095, 61760105
               Localizacao: https://maps.google.com/maps?q=-3.877971,-38.455532
-          • Oportunidade 163 [DCE3_bucket-02_S231]:
+          • Oportunidade 160 [DCE3_bucket-02_S231]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 61940025, 61940090, 61940110, 61940115, 61940117, 61940130, 61940140, 61940145, 61940150, 61940540
               Localizacao: https://maps.google.com/maps?q=-3.907159,-38.685403
-          • Oportunidade 164 [DCE3_bucket-02_S233]:
+          • Oportunidade 161 [DCE3_bucket-02_S233]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60831370, 60831371, 60831372, 60831373, 60831374, 60831540, 60831600, 60831601, 60831610, 60831620
               Localizacao: https://maps.google.com/maps?q=-3.821295,-38.451741
-          • Oportunidade 165 [DCE3_bucket-02_S234]:
+          • Oportunidade 162 [DCE3_bucket-02_S234]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 60830155, 61905292, 61910000, 61910005, 61910010, 61910012, 61910020, 61910025, 61910030, 61910040
               Localizacao: https://maps.google.com/maps?q=-3.857802,-38.651897
-          • Oportunidade 166 [DCE3_bucket-02_S235]:
+          • Oportunidade 163 [DCE3_bucket-02_S235]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 60810350, 60811341, 60821740, 60821750, 60821760, 60821765, 60821770, 60821775, 60821802, 60821805
               Localizacao: https://maps.google.com/maps?q=-3.800400,-38.469315
@@ -10894,14 +10874,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DPE4_bucket-08
           - Demanda diaria:          3,192.0 pacotes/dia
           - Vagas ideais:             30
-          - Vagas em aberto:          27
+          - Vagas em aberto:          28
           - Parceiros Ativos:         0
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               0.0%
           - Acuracidade:              0.0%
 
-          🚀 Oportunidades (27):
+          🚀 Oportunidades (28):
           • Oportunidade 1 [DPE4_bucket-08_S09]:
               Capacidade sugerida: 294.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50800230, 50980580, 52020220, 52041015, 52041017, 52041020, 52041042, 52041045, 52041050, 52041065
@@ -10918,95 +10898,99 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 252.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52011030, 52011040, 52011050, 52011060, 52011070, 52011080, 52011090, 52011100, 52011110, 52011130
               Localizacao: https://maps.google.com/maps?q=-8.044471,-34.899671
-          • Oportunidade 5 [DPE4_bucket-08_S03]:
+          • Oportunidade 5 [DPE4_bucket-08_S15]:
+              Capacidade sugerida: 252.0 pacotes/dia | Raio: 200m
+              CEPs-alvo (top 10): 50610000, 50610030, 50610050, 50610060, 50610070, 50610080, 50610090, 50610100, 50610120, 50610130
+              Localizacao: https://maps.google.com/maps?q=-8.051272,-34.905658
+          • Oportunidade 6 [DPE4_bucket-08_S03]:
               Capacidade sugerida: 210.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52020220, 52021195, 52041015, 52041017, 52041045, 52041065, 52041070, 52041080, 52041095, 52050020
               Localizacao: https://maps.google.com/maps?q=-8.037658,-34.899607
-          • Oportunidade 6 [DPE4_bucket-08_S11]:
+          • Oportunidade 7 [DPE4_bucket-08_S11]:
               Capacidade sugerida: 210.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610000, 50610020, 50610040, 50610050, 50610100, 50610110, 50710001, 50710025, 50710100, 50710110
               Localizacao: https://maps.google.com/maps?q=-8.047866,-34.905626
-          • Oportunidade 7 [DPE4_bucket-08_S12]:
+          • Oportunidade 8 [DPE4_bucket-08_S12]:
               Capacidade sugerida: 126.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610000, 50610020, 50610040, 50610050, 50610060, 50610100, 50610110, 50610220, 50610320, 50610330
               Localizacao: https://maps.google.com/maps?q=-8.049564,-34.908604
-          • Oportunidade 8 [DPE4_bucket-08_S21]:
+          • Oportunidade 9 [DPE4_bucket-08_S21]:
               Capacidade sugerida: 126.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50710030, 50710050, 50710230, 50980580, 52020220, 52041065, 52041800, 52050000, 52050002, 52050005
               Localizacao: https://maps.google.com/maps?q=-8.039356,-34.902585
-          • Oportunidade 9 [DPE4_bucket-08_S20]:
+          • Oportunidade 10 [DPE4_bucket-08_S20]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50050290, 52010150, 52010300, 52011005, 52011010, 52011040, 52011060, 52011230, 52011240, 52011260
               Localizacao: https://maps.google.com/maps?q=-8.051283,-34.899735
-          • Oportunidade 10 [DPE4_bucket-08_S22]:
+          • Oportunidade 11 [DPE4_bucket-08_S22]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50710001, 50710010, 50710020, 50710030, 50710050, 50710090, 50710300, 52050174, 52060000, 52060010
               Localizacao: https://maps.google.com/maps?q=-8.035939,-34.908476
-          • Oportunidade 11 [DPE4_bucket-08_S23]:
+          • Oportunidade 12 [DPE4_bucket-08_S23]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610090, 50610120, 50610130, 50720001, 50720525, 50720575, 50720585, 50720595, 50720605, 50720705
               Localizacao: https://maps.google.com/maps?q=-8.056387,-34.902745
-          • Oportunidade 12 [DPE4_bucket-08_S26]:
+          • Oportunidade 13 [DPE4_bucket-08_S26]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50720001, 50720525, 50720585, 50720595, 50720605, 52010150, 52010170, 52010180, 52010190, 52010200
               Localizacao: https://maps.google.com/maps?q=-8.052981,-34.902713
-          • Oportunidade 13 [DPE4_bucket-08_S01]:
+          • Oportunidade 14 [DPE4_bucket-08_S01]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52031410, 52041005, 52041020, 52041030, 52041050, 52041055, 52041080, 52041085, 52041090, 52041095
               Localizacao: https://maps.google.com/maps?q=-8.032554,-34.896597
-          • Oportunidade 14 [DPE4_bucket-08_S05]:
+          • Oportunidade 15 [DPE4_bucket-08_S05]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52011030, 52011040, 52011060, 52011070, 52011080, 52011090, 52011110, 52011130, 52011200, 52011240
               Localizacao: https://maps.google.com/maps?q=-8.047877,-34.899703
-          • Oportunidade 15 [DPE4_bucket-08_S06]:
+          • Oportunidade 16 [DPE4_bucket-08_S06]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52020220, 52050000, 52050005, 52050020, 52050050, 52050225, 52050240, 52050250, 52050251, 52050300
               Localizacao: https://maps.google.com/maps?q=-8.041065,-34.899639
-          • Oportunidade 16 [DPE4_bucket-08_S07]:
+          • Oportunidade 17 [DPE4_bucket-08_S07]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610000, 50710001, 50710025, 50710100, 50710140, 50710150, 50710165, 50710310, 50710345, 50710375
               Localizacao: https://maps.google.com/maps?q=-8.046157,-34.908572
-          • Oportunidade 17 [DPE4_bucket-08_S10]:
+          • Oportunidade 18 [DPE4_bucket-08_S10]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50710120, 52010210, 52010290, 52011010, 52011020, 52011055, 52011060, 52011150, 52011160, 52011170
               Localizacao: https://maps.google.com/maps?q=-8.049575,-34.902681
-          • Oportunidade 18 [DPE4_bucket-08_S13]:
+          • Oportunidade 19 [DPE4_bucket-08_S13]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610100, 50710001, 50710110, 50710140, 50710150, 50710160, 50710170, 50710310, 50800105
               Localizacao: https://maps.google.com/maps?q=-8.044460,-34.905594
-          • Oportunidade 19 [DPE4_bucket-08_S14]:
+          • Oportunidade 20 [DPE4_bucket-08_S14]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610090, 50610100, 50610120, 50610130, 50610140, 50610150, 50610170, 50610180, 50610190, 50610280
               Localizacao: https://maps.google.com/maps?q=-8.054678,-34.905691
-          • Oportunidade 20 [DPE4_bucket-08_S16]:
+          • Oportunidade 21 [DPE4_bucket-08_S16]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52050033, 52050038, 52050042, 52050052, 52050370, 52050375, 52050387, 52050400, 52050405, 52050505
               Localizacao: https://maps.google.com/maps?q=-8.039367,-34.896661
-          • Oportunidade 21 [DPE4_bucket-08_S18]:
+          • Oportunidade 22 [DPE4_bucket-08_S18]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610090, 50610120, 50610130, 50720001, 50720575, 50720585, 50720595, 50720705, 50750390
               Localizacao: https://maps.google.com/maps?q=-8.058085,-34.905723
-          • Oportunidade 22 [DPE4_bucket-08_S24]:
+          • Oportunidade 23 [DPE4_bucket-08_S24]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610000, 50610090, 50610100, 50610160, 50610170, 50610230, 50610240, 50610250, 50720090, 50720100
               Localizacao: https://maps.google.com/maps?q=-8.056376,-34.908668
-          • Oportunidade 23 [DPE4_bucket-08_S25]:
+          • Oportunidade 24 [DPE4_bucket-08_S25]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610100, 50710110, 50710310, 52010290, 52011040, 52011050, 52011120, 52011130, 52011140, 52011200
               Localizacao: https://maps.google.com/maps?q=-8.046168,-34.902649
-          • Oportunidade 24 [DPE4_bucket-08_S27]:
+          • Oportunidade 25 [DPE4_bucket-08_S27]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50610000, 50610070, 50610190, 50610210, 50610220, 50610230, 50610240, 50610250, 50610260, 50610280
               Localizacao: https://maps.google.com/maps?q=-8.052970,-34.908636
-          • Oportunidade 25 [DPE4_bucket-08_S28]:
+          • Oportunidade 26 [DPE4_bucket-08_S28]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50710030, 50710050, 50710230, 52050000, 52050002, 52050480
               Localizacao: https://maps.google.com/maps?q=-8.041054,-34.905562
-          • Oportunidade 26 [DPE4_bucket-08_S29]:
+          • Oportunidade 27 [DPE4_bucket-08_S29]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 52010100, 52010110, 52010120, 52010140, 52010150, 52010160, 52010190, 52010200, 52010210, 52010220
               Localizacao: https://maps.google.com/maps?q=-8.054689,-34.899767
-          • Oportunidade 27 [DPE4_bucket-08_S30]:
+          • Oportunidade 28 [DPE4_bucket-08_S30]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 50610100, 50620550, 50620560, 50620705, 50710025, 50710090, 50710100, 50710110, 50710310, 52010290
               Localizacao: https://maps.google.com/maps?q=-8.041042,-34.911486
@@ -11322,14 +11306,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DPE4_bucket-12
           - Demanda diaria:          1,806.0 pacotes/dia
           - Vagas ideais:             30
-          - Vagas em aberto:          23
+          - Vagas em aberto:          21
           - Parceiros Ativos:         3
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               10.0%
-          - Acuracidade:              42.9%
+          - Acuracidade:              33.3%
 
-          🚀 Oportunidades (23):
+          🚀 Oportunidades (21):
           • Oportunidade 1 [DPE4_bucket-12_S03]:
               Capacidade sugerida: 210.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 51011000, 51020041, 51020050, 51020060, 51020070, 51020080, 51020090, 51020100, 51020110, 51020120
@@ -11390,35 +11374,27 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 51150000, 51150120, 51170000, 51170040, 51170050, 51170060, 51170070, 51170080, 51170090, 51170100
               Localizacao: https://maps.google.com/maps?q=-8.088729,-34.911935
-          • Oportunidade 16 [DPE4_bucket-12_S19]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 50720020, 50720030, 50720040, 50720050, 50720060, 50720070, 50720080, 50720090, 50720100, 50720110
-              Localizacao: https://maps.google.com/maps?q=-8.063188,-34.908732
-          • Oportunidade 17 [DPE4_bucket-12_S20]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 50751200, 50751615, 50751625, 50760002, 50760008, 50760012, 50760014, 50760016, 50760090, 50760110
-              Localizacao: https://maps.google.com/maps?q=-8.071688,-34.917698
-          • Oportunidade 18 [DPE4_bucket-12_S21]:
+          • Oportunidade 16 [DPE4_bucket-12_S21]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 51190040, 51190060, 51190070, 51190080, 51190090, 51190100, 51190110, 51190120, 51190130, 51190140
               Localizacao: https://maps.google.com/maps?q=-8.117663,-34.921094
-          • Oportunidade 19 [DPE4_bucket-12_S23]:
+          • Oportunidade 17 [DPE4_bucket-12_S23]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 50720110, 50720230, 50750145, 50751000, 50751020, 50751030, 50751040, 50751050, 50751060, 50751070
               Localizacao: https://maps.google.com/maps?q=-8.066584,-34.914688
-          • Oportunidade 20 [DPE4_bucket-12_S24]:
+          • Oportunidade 18 [DPE4_bucket-12_S24]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 50771060, 50771070, 50771101, 50771170, 50771530, 50771670, 50860015, 50860030, 50860240, 50860270
               Localizacao: https://maps.google.com/maps?q=-8.095530,-34.917923
-          • Oportunidade 21 [DPE4_bucket-12_S26]:
+          • Oportunidade 19 [DPE4_bucket-12_S26]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 50781000, 51010620, 51030171, 51030190, 51030205, 51030215, 51030715, 51030720, 51030730, 51030735
               Localizacao: https://maps.google.com/maps?q=-8.122777,-34.918180
-          • Oportunidade 22 [DPE4_bucket-12_S28]:
+          • Oportunidade 20 [DPE4_bucket-12_S28]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 50760025, 50760030, 50760080, 50760081, 50760100, 50760310, 50760335, 50760340, 50760360, 50760490
               Localizacao: https://maps.google.com/maps?q=-8.080197,-34.920741
-          • Oportunidade 23 [DPE4_bucket-12_S29]:
+          • Oportunidade 21 [DPE4_bucket-12_S29]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 50770250, 50770320, 50770380, 50770470, 50770560, 50770580, 50770590, 50770600, 50770765, 50770766
               Localizacao: https://maps.google.com/maps?q=-8.093843,-34.909021
@@ -11763,14 +11739,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DPR2_bucket-01
           - Demanda diaria:          3,234.0 pacotes/dia
           - Vagas ideais:             54
-          - Vagas em aberto:          41
+          - Vagas em aberto:          40
           - Parceiros Ativos:         10
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               18.5%
-          - Acuracidade:              76.9%
+          - Acuracidade:              71.4%
 
-          🚀 Oportunidades (41):
+          🚀 Oportunidades (40):
           • Oportunidade 1 [DPR2_bucket-01_S08]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 82510000, 82510280, 82510290, 82510360, 82510420, 82540090, 82540110, 82540115, 82560430, 82560435
@@ -11923,15 +11899,11 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 80035050, 80035230, 80035232, 80040180, 80540000, 80540160, 80540180, 80540210, 80540400, 82200060
               Localizacao: https://maps.google.com/maps?q=-25.397345,-49.252469
-          • Oportunidade 39 [DPR2_bucket-01_S51]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
-              CEPs-alvo (top 10): 82820020, 82820030, 82820060, 82820070, 82820080, 82820090, 82820100, 82820110, 82820120, 82820130
-              Localizacao: https://maps.google.com/maps?q=-25.409462,-49.204179
-          • Oportunidade 40 [DPR2_bucket-01_S52]:
+          • Oportunidade 39 [DPR2_bucket-01_S52]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 82515010, 82515020, 82515090, 82515095, 82515100, 82520040, 82520570, 82520580, 82520590, 82520600
               Localizacao: https://maps.google.com/maps?q=-25.403604,-49.225288
-          • Oportunidade 41 [DPR2_bucket-01_S54]:
+          • Oportunidade 40 [DPR2_bucket-01_S54]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 82130510, 82130560, 82130570, 82130580, 82130600, 82130620, 82130670, 82130680, 82130690, 82130692
               Localizacao: https://maps.google.com/maps?q=-25.364652,-49.272648
@@ -12840,14 +12812,14 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 21610710, 21610720, 21615000, 21615010, 21615040, 21615045, 21615050, 21615060, 21615070, 21615080
               Localizacao: https://maps.google.com/maps?q=-22.861382,-43.391550
-          • Oportunidade 3 [DRJ3_bucket-01_S12]:
+          • Oportunidade 3 [DRJ3_bucket-01_S11]:
+              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
+              CEPs-alvo (top 10): 20770001, 20770004, 20770005, 20770110, 20770130, 20770150, 20770210, 20770240, 20770250, 20770270
+              Localizacao: https://maps.google.com/maps?q=-22.893543,-43.284759
+          • Oportunidade 4 [DRJ3_bucket-01_S12]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 20755080, 20755120, 20755130, 20755170, 20755250, 20755260, 20755280, 20755290, 20755300, 20755310
               Localizacao: https://maps.google.com/maps?q=-22.891764,-43.293937
-          • Oportunidade 4 [DRJ3_bucket-01_S13]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
-              CEPs-alvo (top 10): 20745110, 20755080, 20755120, 20755130, 20755170, 20756115, 20756116, 20770006, 20770010, 20770060
-              Localizacao: https://maps.google.com/maps?q=-22.887340,-43.284611
           • Oportunidade 5 [DRJ3_bucket-01_S15]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 20720011, 20720013, 20730000, 20730010, 20730030, 20730040, 20730050, 20730060, 20730070, 20730090
@@ -14473,194 +14445,202 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DRS5_bucket-01
           - Demanda diaria:          2,058.0 pacotes/dia
           - Vagas ideais:             49
-          - Vagas em aberto:          45
+          - Vagas em aberto:          47
           - Parceiros Ativos:         1
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               2.0%
-          - Acuracidade:              25.0%
+          - Acuracidade:              50.0%
 
-          🚀 Oportunidades (45):
+          🚀 Oportunidades (47):
           • Oportunidade 1 [DRS5_bucket-01_S01]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310002, 93510040, 93510310, 93510320, 93510330, 93510340
               Localizacao: https://maps.google.com/maps?q=-29.683750,-51.125077
-          • Oportunidade 2 [DRS5_bucket-01_S03]:
+          • Oportunidade 2 [DRS5_bucket-01_S02]:
+              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
+              CEPs-alvo (top 10): 93310002, 93510040, 93510270, 93510290, 93510300, 93510310, 93510320, 93510330, 93510335, 93510340
+              Localizacao: https://maps.google.com/maps?q=-29.682615,-51.121990
+          • Oportunidade 3 [DRS5_bucket-01_S03]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310002, 93410210, 93410285, 93510223, 93510270, 93510290, 93510300, 93510310, 93510314, 93510330
               Localizacao: https://maps.google.com/maps?q=-29.685397,-51.122101
-          • Oportunidade 3 [DRS5_bucket-01_S05]:
+          • Oportunidade 4 [DRS5_bucket-01_S05]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93410310, 93410324, 93410380, 93548100, 93548110, 93548120, 93548130, 93548150, 93548190, 93548200
               Localizacao: https://maps.google.com/maps?q=-29.691471,-51.116262
-          • Oportunidade 4 [DRS5_bucket-01_S06]:
+          • Oportunidade 5 [DRS5_bucket-01_S06]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90620130, 93010001, 93010010, 93010030, 93010040, 93010110, 93010160, 93010170, 93010180, 93010190
               Localizacao: https://maps.google.com/maps?q=-29.761706,-51.143417
-          • Oportunidade 5 [DRS5_bucket-01_S07]:
+          • Oportunidade 6 [DRS5_bucket-01_S07]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310001, 93310002, 93510100, 93510130, 93510223, 93510235, 93510260, 93510263, 93510270, 93510290
               Localizacao: https://maps.google.com/maps?q=-29.681479,-51.118903
-          • Oportunidade 6 [DRS5_bucket-01_S08]:
+          • Oportunidade 7 [DRS5_bucket-01_S08]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310001, 93310002, 93510050, 93510080, 93510100, 93510110, 93510120, 93510130, 93510138, 93510300
               Localizacao: https://maps.google.com/maps?q=-29.682104,-51.128052
-          • Oportunidade 7 [DRS5_bucket-01_S09]:
+          • Oportunidade 8 [DRS5_bucket-01_S09]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93301970, 93310001, 93310002, 93410172, 93410175, 93410177, 93410180, 93410183, 93410186, 93410200
               Localizacao: https://maps.google.com/maps?q=-29.687668,-51.128275
-          • Oportunidade 8 [DRS5_bucket-01_S10]:
+          • Oportunidade 9 [DRS5_bucket-01_S10]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93347060, 93347090, 93347155, 93347200, 93347213, 93347215, 93347335, 93610560, 93611160, 93611250
               Localizacao: https://maps.google.com/maps?q=-29.668014,-51.179181
-          • Oportunidade 9 [DRS5_bucket-01_S11]:
+          • Oportunidade 10 [DRS5_bucket-01_S11]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310120, 93310205, 93334290, 93336001, 93336002, 93336010, 93336020, 93336030, 93336170, 93336180
               Localizacao: https://maps.google.com/maps?q=-29.692209,-51.140623
-          • Oportunidade 10 [DRS5_bucket-01_S12]:
+          • Oportunidade 11 [DRS5_bucket-01_S12]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310065, 93320040, 93320043, 93320047, 93320050, 93320052, 93320060, 93320102, 93320105, 93320124
               Localizacao: https://maps.google.com/maps?q=-29.690450,-51.128387
-          • Oportunidade 11 [DRS5_bucket-01_S13]:
+          • Oportunidade 12 [DRS5_bucket-01_S13]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93113014, 93115000, 93115014, 93115050, 93115210, 93115250, 93115270, 93115340, 93115437, 93115448
               Localizacao: https://maps.google.com/maps?q=-29.730625,-51.148249
-          • Oportunidade 12 [DRS5_bucket-01_S14]:
+          • Oportunidade 13 [DRS5_bucket-01_S14]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310001, 93310002, 93310020, 93310330, 93315010, 93315030, 93315040, 93315042, 93315086, 93320030
               Localizacao: https://maps.google.com/maps?q=-29.683239,-51.131139
-          • Oportunidade 13 [DRS5_bucket-01_S15]:
+          • Oportunidade 14 [DRS5_bucket-01_S15]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93310430, 93310460, 93315130, 93315132, 93315240, 93315245, 93315260, 93315270, 93315310, 93315330
               Localizacao: https://maps.google.com/maps?q=-29.666034,-51.136531
-          • Oportunidade 14 [DRS5_bucket-01_S16]:
+          • Oportunidade 15 [DRS5_bucket-01_S16]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93320124, 93320175, 93336130, 93410030, 93410035, 93410038, 93410040, 93410044, 93410050, 93410060
               Localizacao: https://maps.google.com/maps?q=-29.701575,-51.128834
-          • Oportunidade 15 [DRS5_bucket-01_S17]:
+          • Oportunidade 16 [DRS5_bucket-01_S17]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93010001, 93032295, 93042010, 93042015, 93042032, 93042080, 93042082, 93042100, 93042110, 93042114
               Localizacao: https://maps.google.com/maps?q=-29.764887,-51.122252
-          • Oportunidade 16 [DRS5_bucket-01_S18]:
+          • Oportunidade 17 [DRS5_bucket-01_S18]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93330410, 93410210, 93410240, 93410270, 93410285, 93410290, 93410310, 93410320, 93410330, 93510100
               Localizacao: https://maps.google.com/maps?q=-29.686532,-51.125188
-          • Oportunidade 17 [DRS5_bucket-01_S19]:
+          • Oportunidade 18 [DRS5_bucket-01_S19]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93320220, 93320244, 93320260, 93320360, 93320370, 93320380, 93320457, 93320490, 93320500, 93330370
               Localizacao: https://maps.google.com/maps?q=-29.711053,-51.132256
-          • Oportunidade 18 [DRS5_bucket-01_S20]:
+          • Oportunidade 19 [DRS5_bucket-01_S20]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310250, 93310251, 93310330, 93310340, 93310350, 93310360, 93310432, 93315010, 93315052, 93315070
               Localizacao: https://maps.google.com/maps?q=-29.677164,-51.136978
-          • Oportunidade 19 [DRS5_bucket-01_S21]:
+          • Oportunidade 20 [DRS5_bucket-01_S21]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93540050, 93540090, 93540190, 93540200, 93542000, 93542010, 93542030, 93542080, 93546000, 93546050
               Localizacao: https://maps.google.com/maps?q=-29.695274,-51.104248
-          • Oportunidade 20 [DRS5_bucket-01_S22]:
+          • Oportunidade 21 [DRS5_bucket-01_S22]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93315010, 93315180, 93315184, 93315544, 93320030, 93410650, 93510010, 93510015, 93510022, 93510030
               Localizacao: https://maps.google.com/maps?q=-29.677675,-51.130916
-          • Oportunidade 21 [DRS5_bucket-01_S23]:
+          • Oportunidade 22 [DRS5_bucket-01_S23]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 93310001, 93310002, 93310050, 93310060, 93310065, 93310066, 93310085, 93310100, 93310135, 93310164
               Localizacao: https://maps.google.com/maps?q=-29.687157,-51.134338
-          • Oportunidade 22 [DRS5_bucket-01_S24]:
+          • Oportunidade 23 [DRS5_bucket-01_S24]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 92310150, 93310001, 93310002, 93310050, 93310060, 93310065, 93310240, 93320060, 93320070, 93320080
               Localizacao: https://maps.google.com/maps?q=-29.689314,-51.125300
-          • Oportunidade 23 [DRS5_bucket-01_S25]:
+          • Oportunidade 24 [DRS5_bucket-01_S25]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93310120, 93320084, 93320127, 93320140, 93320160, 93320175, 93334290, 93336001, 93336002, 93336010
               Localizacao: https://maps.google.com/maps?q=-29.697148,-51.131697
-          • Oportunidade 24 [DRS5_bucket-01_S26]:
+          • Oportunidade 25 [DRS5_bucket-01_S26]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93510190, 93510205, 93510210, 93510220, 93510223, 93510235, 93510310, 93510335, 93520270, 93520273
               Localizacao: https://maps.google.com/maps?q=-29.673132,-51.118568
-          • Oportunidade 25 [DRS5_bucket-01_S27]:
+          • Oportunidade 26 [DRS5_bucket-01_S27]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93310066, 93310200, 93310210, 93310230, 93310240, 93310250, 93310251, 93310270, 93310280, 93310290
               Localizacao: https://maps.google.com/maps?q=-29.681593,-51.134114
-          • Oportunidade 26 [DRS5_bucket-01_S28]:
+          • Oportunidade 27 [DRS5_bucket-01_S28]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93115000, 93115420, 93115430, 93115433, 93115440, 93115444, 93115448, 93320295, 93320544, 93320650
               Localizacao: https://maps.google.com/maps?q=-29.730003,-51.139100
-          • Oportunidade 27 [DRS5_bucket-01_S29]:
+          • Oportunidade 28 [DRS5_bucket-01_S29]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93320360, 93320370, 93320380, 93320410, 93320450, 93320454, 93320457, 93320492, 93320544, 93415190
               Localizacao: https://maps.google.com/maps?q=-29.717637,-51.120354
-          • Oportunidade 28 [DRS5_bucket-01_S30]:
+          • Oportunidade 29 [DRS5_bucket-01_S30]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93310066, 93310120, 93310135, 93310140, 93310150, 93310160, 93310164, 93310170, 93310200, 93310205
               Localizacao: https://maps.google.com/maps?q=-29.687780,-51.143486
-          • Oportunidade 29 [DRS5_bucket-01_S31]:
+          • Oportunidade 30 [DRS5_bucket-01_S31]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93510150, 93510180, 93510205, 93510207, 93510260, 93510263, 93510265, 93510270, 93520240, 93520250
               Localizacao: https://maps.google.com/maps?q=-29.675914,-51.118679
-          • Oportunidade 30 [DRS5_bucket-01_S32]:
+          • Oportunidade 31 [DRS5_bucket-01_S32]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93052040, 93052080, 93052100, 93052105, 93052110, 93052120, 93052130, 93052154, 93052155, 93052160
               Localizacao: https://maps.google.com/maps?q=-29.756326,-51.091487
-          • Oportunidade 31 [DRS5_bucket-01_S34]:
+          • Oportunidade 32 [DRS5_bucket-01_S34]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 93315510, 93315640, 93510105, 93510150, 93510180, 93510205, 93520040, 93520054, 93520060, 93520105
               Localizacao: https://maps.google.com/maps?q=-29.663137,-51.121208
-          • Oportunidade 32 [DRS5_bucket-01_S35]:
+          • Oportunidade 33 [DRS5_bucket-01_S35]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93534280, 93534284, 93534334, 93534410, 93534430, 93534540, 93534600, 93534620, 93537010, 93537030
               Localizacao: https://maps.google.com/maps?q=-29.674662,-51.100380
-          • Oportunidade 33 [DRS5_bucket-01_S36]:
+          • Oportunidade 34 [DRS5_bucket-01_S36]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93010010, 93010020, 93010030, 93010040, 93010050, 93010056, 93010070, 93010100, 93010150, 93010160
               Localizacao: https://maps.google.com/maps?q=-29.758928,-51.143305
-          • Oportunidade 34 [DRS5_bucket-01_S37]:
+          • Oportunidade 35 [DRS5_bucket-01_S37]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93600010, 93600020, 93600030, 93600060, 93600070, 93600080, 93600090, 93600230, 93600240, 93600260
               Localizacao: https://maps.google.com/maps?q=-29.650695,-51.169364
-          • Oportunidade 35 [DRS5_bucket-01_S38]:
+          • Oportunidade 36 [DRS5_bucket-01_S38]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93113005, 93113051, 93113070, 93113090, 93113100, 93115000, 93115014, 93115030, 93115055, 93115070
               Localizacao: https://maps.google.com/maps?q=-29.736184,-51.148473
-          • Oportunidade 36 [DRS5_bucket-01_S39]:
+          • Oportunidade 37 [DRS5_bucket-01_S39]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 92440328, 93320060, 93320105, 93320110, 93320140, 93320144, 93320150, 93320172, 93320175, 93320500
               Localizacao: https://maps.google.com/maps?q=-29.697659,-51.125635
-          • Oportunidade 37 [DRS5_bucket-01_S40]:
+          • Oportunidade 38 [DRS5_bucket-01_S40]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93320162, 93320200, 93320212, 93320220, 93320227, 93334000, 93334080, 93334090, 93334100, 93334110
               Localizacao: https://maps.google.com/maps?q=-29.700553,-51.140958
-          • Oportunidade 38 [DRS5_bucket-01_S41]:
+          • Oportunidade 39 [DRS5_bucket-01_S41]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 93351010, 93351030, 93351080, 93351100, 93351110, 93351120, 93351150, 93351155, 93351160, 93351200
               Localizacao: https://maps.google.com/maps?q=-29.642121,-51.138612
-          • Oportunidade 39 [DRS5_bucket-01_S42]:
+          • Oportunidade 40 [DRS5_bucket-01_S42]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93410490, 93410500, 93410510, 93415000, 93415210, 93415220, 93540020, 93540090, 93540120, 93540256
               Localizacao: https://maps.google.com/maps?q=-29.688689,-51.116151
-          • Oportunidade 40 [DRS5_bucket-01_S43]:
+          • Oportunidade 41 [DRS5_bucket-01_S43]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93332105, 93540460, 93542130, 93542150, 93542160, 93542170, 93542180, 93542210, 93542288, 93542295
               Localizacao: https://maps.google.com/maps?q=-29.687320,-51.082636
-          • Oportunidade 41 [DRS5_bucket-01_S44]:
+          • Oportunidade 42 [DRS5_bucket-01_S44]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93120050, 93120530, 93120540, 93120550, 93120560, 93120562, 93120570, 93120580, 93120600, 93120616
               Localizacao: https://maps.google.com/maps?q=-29.725687,-51.157175
-          • Oportunidade 42 [DRS5_bucket-01_S45]:
+          • Oportunidade 43 [DRS5_bucket-01_S45]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93346310, 93346320, 93346340, 93346390, 93348320, 93348460, 93348470, 93348480, 93348490, 93348534
               Localizacao: https://maps.google.com/maps?q=-29.662228,-51.148542
-          • Oportunidade 43 [DRS5_bucket-01_S46]:
+          • Oportunidade 44 [DRS5_bucket-01_S46]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93310210, 93542010, 93542090, 93542110, 93542130, 93542210, 93542387, 93542470, 93542610, 93544010
               Localizacao: https://maps.google.com/maps?q=-29.696293,-51.092121
-          • Oportunidade 44 [DRS5_bucket-01_S47]:
+          • Oportunidade 45 [DRS5_bucket-01_S47]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93320212, 93320220, 93320224, 93320227, 93320230, 93320240, 93320244, 93320250, 93320395, 93320420
               Localizacao: https://maps.google.com/maps?q=-29.709407,-51.135231
-          • Oportunidade 45 [DRS5_bucket-01_S48]:
+          • Oportunidade 46 [DRS5_bucket-01_S48]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 93600010, 93600020, 93600070, 93600100, 93600110, 93600130, 93600140, 93600160, 93600180, 93600200
               Localizacao: https://maps.google.com/maps?q=-29.648535,-51.178398
+          • Oportunidade 47 [DRS5_bucket-01_S49]:
+              Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
+              CEPs-alvo (top 10): 93120280, 93120290, 93120300, 93120310, 93120320, 93120330, 93120370, 93120400, 93120680, 93130000
+              Localizacao: https://maps.google.com/maps?q=-29.743497,-51.160932
 ------------------------------------------------------------------------------------------
       📦 Territorio: DRS5_bucket-02
           - Demanda diaria:          2,058.0 pacotes/dia
@@ -15410,11 +15390,11 @@ Gerado em: 07/04/2026 17:31
           - Demanda diaria:          2,604.0 pacotes/dia
           - Vagas ideais:             49
           - Vagas em aberto:          45
-          - Parceiros Ativos:         2
+          - Parceiros Ativos:         1
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
-          - Attainment:               4.1%
-          - Acuracidade:              50.0%
+          - Attainment:               2.0%
+          - Acuracidade:              25.0%
 
           🚀 Oportunidades (45):
           • Oportunidade 1 [DRS5_bucket-06_S11]:
@@ -15997,14 +15977,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DRS5_bucket-09
           - Demanda diaria:          2,142.0 pacotes/dia
           - Vagas ideais:             48
-          - Vagas em aberto:          42
+          - Vagas em aberto:          41
           - Parceiros Ativos:         2
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               4.2%
-          - Acuracidade:              33.3%
+          - Acuracidade:              28.6%
 
-          🚀 Oportunidades (42):
+          🚀 Oportunidades (41):
           • Oportunidade 1 [DRS5_bucket-09_S04]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90110270, 90110290, 90150090, 90850120, 90850130, 90850150, 90880480, 90880481
@@ -16069,107 +16049,103 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 91910250, 91910251, 91910350, 91910400, 91910410, 91910420, 91910530, 91910565, 91910680
               Localizacao: https://maps.google.com/maps?q=-30.101265,-51.236233
-          • Oportunidade 17 [DRS5_bucket-09_S22]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 90820000, 90820001, 90820050, 90820060, 90830180, 90830240, 90830280, 90830290, 90830410, 90830430
-              Localizacao: https://maps.google.com/maps?q=-30.093498,-51.229833
-          • Oportunidade 18 [DRS5_bucket-09_S23]:
+          • Oportunidade 17 [DRS5_bucket-09_S23]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90810190, 90810210, 90810230, 90810240, 90840060, 90840110, 90840150, 90840190, 90850000, 90850050
               Localizacao: https://maps.google.com/maps?q=-30.066991,-51.231799
-          • Oportunidade 19 [DRS5_bucket-09_S24]:
+          • Oportunidade 18 [DRS5_bucket-09_S24]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90830060, 90840270, 90840290, 90840310, 90840330, 90840344, 90840350, 90840440, 90840740, 90840750
               Localizacao: https://maps.google.com/maps?q=-30.082362,-51.214170
-          • Oportunidade 20 [DRS5_bucket-09_S25]:
+          • Oportunidade 19 [DRS5_bucket-09_S25]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90810000, 90810070, 90810120, 90810150, 90810160, 90810170, 90810180, 90810200, 90810240, 90820090
               Localizacao: https://maps.google.com/maps?q=-30.078647,-51.241398
-          • Oportunidade 21 [DRS5_bucket-09_S26]:
+          • Oportunidade 20 [DRS5_bucket-09_S26]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 91900499, 91920000, 91920040, 91920130, 91920134, 91920150, 91920430, 91920450, 91920455, 91920470
               Localizacao: https://maps.google.com/maps?q=-30.115155,-51.252007
-          • Oportunidade 22 [DRS5_bucket-09_S27]:
+          • Oportunidade 21 [DRS5_bucket-09_S27]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 91900020, 91900040, 91900050, 91900120, 91900121, 91900499, 91900590, 91910250, 91910251, 91910270
               Localizacao: https://maps.google.com/maps?q=-30.102988,-51.248471
-          • Oportunidade 23 [DRS5_bucket-09_S28]:
+          • Oportunidade 22 [DRS5_bucket-09_S28]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 91900190, 91900225, 91900230, 91900250, 91900590, 91910000, 91910001, 91910030, 91910150, 91910154
               Localizacao: https://maps.google.com/maps?q=-30.109632,-51.251783
-          • Oportunidade 24 [DRS5_bucket-09_S29]:
+          • Oportunidade 23 [DRS5_bucket-09_S29]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 91900010, 91900050, 91900120, 91900121, 91900180, 91900225, 91900250, 91900270, 91900590, 91910001
               Localizacao: https://maps.google.com/maps?q=-30.105230,-51.254646
-          • Oportunidade 25 [DRS5_bucket-09_S30]:
+          • Oportunidade 24 [DRS5_bucket-09_S30]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90010310, 90680610, 90870000, 90870001, 90870010, 90870011, 90870012, 90870014, 90870016, 90870040
               Localizacao: https://maps.google.com/maps?q=-30.074590,-51.207770
-          • Oportunidade 26 [DRS5_bucket-09_S31]:
+          • Oportunidade 25 [DRS5_bucket-09_S31]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90810000, 90810080, 90810240, 90820090, 90820120, 90820140, 90820160, 90820170, 90820190
               Localizacao: https://maps.google.com/maps?q=-30.086416,-51.247797
-          • Oportunidade 27 [DRS5_bucket-09_S33]:
+          • Oportunidade 26 [DRS5_bucket-09_S33]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 90830000, 90830130, 90830580, 90830585, 90840050, 90840310, 90840344, 90840350, 90840390, 90840440
               Localizacao: https://maps.google.com/maps?q=-30.081844,-51.220233
-          • Oportunidade 28 [DRS5_bucket-09_S34]:
+          • Oportunidade 27 [DRS5_bucket-09_S34]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 91900010, 91900030, 91900050, 91900070, 91900120, 91900121, 91900140, 91900180, 91900240, 91900250
               Localizacao: https://maps.google.com/maps?q=-30.103590,-51.257621
-          • Oportunidade 29 [DRS5_bucket-09_S35]:
+          • Oportunidade 28 [DRS5_bucket-09_S35]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 91900590, 91910001, 91910050, 91910080, 91910250, 91910251, 91910270, 91910290, 91910295, 91910530
               Localizacao: https://maps.google.com/maps?q=-30.099106,-51.245271
-          • Oportunidade 30 [DRS5_bucket-09_S36]:
+          • Oportunidade 29 [DRS5_bucket-09_S36]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90110000, 90110001, 90110310, 90110330, 90130060, 90130061, 90150000, 90150001, 90150002, 90150004
               Localizacao: https://maps.google.com/maps?q=-30.060341,-51.228487
-          • Oportunidade 31 [DRS5_bucket-09_S37]:
+          • Oportunidade 30 [DRS5_bucket-09_S37]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 91900200, 91900499, 91910000, 91920000, 91920010, 91920020, 91920030, 91920080, 91920130, 91920134
               Localizacao: https://maps.google.com/maps?q=-30.114034,-51.248920
-          • Oportunidade 32 [DRS5_bucket-09_S38]:
+          • Oportunidade 31 [DRS5_bucket-09_S38]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90810080, 91900098, 91900420, 91900499, 91900540, 91900548, 91900600, 91900605, 91900620, 91900630
               Localizacao: https://maps.google.com/maps?q=-30.100746,-51.242296
-          • Oportunidade 33 [DRS5_bucket-09_S39]:
+          • Oportunidade 32 [DRS5_bucket-09_S39]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90810000, 90810180, 91900140, 91900170, 91900180, 91900240, 91900370, 91900400, 91900410, 91900420
               Localizacao: https://maps.google.com/maps?q=-30.099707,-51.254421
-          • Oportunidade 34 [DRS5_bucket-09_S40]:
+          • Oportunidade 33 [DRS5_bucket-09_S40]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90130050, 90130051, 90130100, 90130101, 90160002, 90160003, 90160006, 90160007, 90160010, 90160030
               Localizacao: https://maps.google.com/maps?q=-30.058613,-51.216248
-          • Oportunidade 35 [DRS5_bucket-09_S41]:
+          • Oportunidade 34 [DRS5_bucket-09_S41]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90810000, 90820000, 90820001, 90820070, 90820100, 90820140, 90820180, 90820200, 90830010, 90830040
               Localizacao: https://maps.google.com/maps?q=-30.091857,-51.232808
-          • Oportunidade 36 [DRS5_bucket-09_S42]:
+          • Oportunidade 35 [DRS5_bucket-09_S42]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90810130, 90840000, 90840030, 90840050, 90840060, 90840070, 90840110, 90840130, 90840460, 90840570
               Localizacao: https://maps.google.com/maps?q=-30.070273,-51.225848
-          • Oportunidade 37 [DRS5_bucket-09_S43]:
+          • Oportunidade 36 [DRS5_bucket-09_S43]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90660030, 90660110, 90660120, 90660160, 90660170, 90660300, 90680595, 90840300, 90840322, 90840327
               Localizacao: https://maps.google.com/maps?q=-30.067423,-51.210521
-          • Oportunidade 38 [DRS5_bucket-09_S44]:
+          • Oportunidade 37 [DRS5_bucket-09_S44]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90830000, 90830010, 90830020, 90830040, 90830060, 90830070, 90830090, 90830110, 90830230, 90830250
               Localizacao: https://maps.google.com/maps?q=-30.086247,-51.217370
-          • Oportunidade 39 [DRS5_bucket-09_S45]:
+          • Oportunidade 38 [DRS5_bucket-09_S45]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90810000, 90810070, 90810090, 90810120, 90810150, 90810160, 90810180, 90810240, 90810450, 90820090
               Localizacao: https://maps.google.com/maps?q=-30.081929,-51.235447
-          • Oportunidade 40 [DRS5_bucket-09_S46]:
+          • Oportunidade 39 [DRS5_bucket-09_S46]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 1100m
               CEPs-alvo (top 10): 90110000, 90110150, 90119900, 90640000, 90640070, 90650020, 90650030, 90650040, 90650070, 90810220
               Localizacao: https://maps.google.com/maps?q=-30.055936,-51.231350
-          • Oportunidade 41 [DRS5_bucket-09_S47]:
+          • Oportunidade 40 [DRS5_bucket-09_S47]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 90160080, 91760000, 91900030, 91900050, 91900121, 91900130, 91900160, 91900200, 91900220, 91900225
               Localizacao: https://maps.google.com/maps?q=-30.114635,-51.258070
-          • Oportunidade 42 [DRS5_bucket-09_S48]:
+          • Oportunidade 41 [DRS5_bucket-09_S48]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 90640000, 90640040, 90640200, 90660000, 90660001, 90660070, 90660090, 90660110, 90660140, 90660190
               Localizacao: https://maps.google.com/maps?q=-30.068457,-51.198394
@@ -16378,14 +16354,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DSA8_bucket-01
           - Demanda diaria:          3,192.0 pacotes/dia
           - Vagas ideais:             70
-          - Vagas em aberto:          60
+          - Vagas em aberto:          61
           - Parceiros Ativos:         6
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        0
           - Attainment:               8.6%
-          - Acuracidade:              60.0%
+          - Acuracidade:              66.7%
 
-          🚀 Oportunidades (60):
+          🚀 Oportunidades (61):
           • Oportunidade 1 [DSA8_bucket-01_S04]:
               Capacidade sugerida: 84.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41701010, 41701015, 41701020, 41701025, 41701030, 41701035, 41701045, 41701050, 41701055, 41701060
@@ -16622,7 +16598,11 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41480010, 41480015, 41480025, 41480035, 41480040, 41480050, 41480060, 41480075, 41480140, 41480145
               Localizacao: https://maps.google.com/maps?q=-12.915641,-38.373295
-          • Oportunidade 60 [DSA8_bucket-01_S70]:
+          • Oportunidade 60 [DSA8_bucket-01_S69]:
+              Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
+              CEPs-alvo (top 10): 42700170, 42701260, 42701270, 42701290, 42701330, 42701340, 42701350, 42701450, 42701650, 42707650
+              Localizacao: https://maps.google.com/maps?q=-12.878898,-38.312441
+          • Oportunidade 61 [DSA8_bucket-01_S70]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41480210, 41480225, 41480300, 41490000, 41500153, 41500190, 41500206, 41500210, 41500260, 41500275
               Localizacao: https://maps.google.com/maps?q=-12.908967,-38.361133
@@ -16630,14 +16610,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DSA8_bucket-02
           - Demanda diaria:          3,360.0 pacotes/dia
           - Vagas ideais:             70
-          - Vagas em aberto:          60
+          - Vagas em aberto:          59
           - Parceiros Ativos:         6
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        1
           - Attainment:               8.6%
-          - Acuracidade:              60.0%
+          - Acuracidade:              54.5%
 
-          🚀 Oportunidades (60):
+          🚀 Oportunidades (59):
           • Oportunidade 1 [DSA8_bucket-02_S01]:
               Capacidade sugerida: 168.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41680040, 41680050, 41680111, 41680113, 41740090
@@ -16686,195 +16666,191 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41740000, 41740170, 41740370, 41740380, 41740390, 41741550, 41741560
               Localizacao: https://maps.google.com/maps?q=-12.969309,-38.410281
-          • Oportunidade 13 [DSA8_bucket-02_S15]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
-              CEPs-alvo (top 10): 41760035, 41770035, 41770055, 41770160, 41770170, 41770315, 41770355, 41770360, 41770390, 41770400
-              Localizacao: https://maps.google.com/maps?q=-12.984288,-38.443686
-          • Oportunidade 14 [DSA8_bucket-02_S16]:
+          • Oportunidade 13 [DSA8_bucket-02_S16]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41706050, 41760000, 41760035, 41760110, 41760150, 41760160, 41770170, 41770590, 41770600, 41770610
               Localizacao: https://maps.google.com/maps?q=-12.989320,-38.446778
-          • Oportunidade 15 [DSA8_bucket-02_S17]:
+          • Oportunidade 14 [DSA8_bucket-02_S17]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41680024, 41680048, 41680050, 41680320, 41740090
               Localizacao: https://maps.google.com/maps?q=-12.959244,-38.404100
-          • Oportunidade 16 [DSA8_bucket-02_S18]:
+          • Oportunidade 15 [DSA8_bucket-02_S18]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41710045, 41720010, 41720030, 41720070, 41720075, 41720420, 41830255
               Localizacao: https://maps.google.com/maps?q=-12.970889,-38.431421
-          • Oportunidade 17 [DSA8_bucket-02_S20]:
+          • Oportunidade 16 [DSA8_bucket-02_S20]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41150000, 41150115, 41150240, 41150450, 41150465, 41150480, 41150500, 41150520, 41150570, 41150590
               Localizacao: https://maps.google.com/maps?q=-12.955584,-38.464379
-          • Oportunidade 18 [DSA8_bucket-02_S21]:
+          • Oportunidade 17 [DSA8_bucket-02_S21]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41706030, 41706090, 41710000, 41710045, 41710090, 41710610, 41720010, 41720075
               Localizacao: https://maps.google.com/maps?q=-12.972586,-38.428429
-          • Oportunidade 19 [DSA8_bucket-02_S22]:
+          • Oportunidade 18 [DSA8_bucket-02_S22]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41720000, 41720003, 41720010, 41720013, 41720040, 41720050, 41720130, 41720160, 41720200, 41720340
               Localizacao: https://maps.google.com/maps?q=-12.965828,-38.434363
-          • Oportunidade 20 [DSA8_bucket-02_S23]:
+          • Oportunidade 19 [DSA8_bucket-02_S23]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41705000, 41705715, 41706030, 41706090, 41710000, 41710045, 41710090, 41710610, 41720010, 41720020
               Localizacao: https://maps.google.com/maps?q=-12.969222,-38.428379
-          • Oportunidade 21 [DSA8_bucket-02_S24]:
+          • Oportunidade 20 [DSA8_bucket-02_S24]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41710750, 41720051, 41720052, 41720060, 41720090, 41720100
               Localizacao: https://maps.google.com/maps?q=-12.975892,-38.440545
-          • Oportunidade 22 [DSA8_bucket-02_S25]:
+          • Oportunidade 21 [DSA8_bucket-02_S25]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41720000, 41720010, 41720013, 41720025, 41720040, 41720050, 41720051, 41720120, 41720130, 41720160
               Localizacao: https://maps.google.com/maps?q=-12.967525,-38.431371
-          • Oportunidade 23 [DSA8_bucket-02_S26]:
+          • Oportunidade 22 [DSA8_bucket-02_S26]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41706050, 41750000, 41750030, 41750090, 41750100, 41750103, 41750110, 41750200, 41760000, 41760035
               Localizacao: https://maps.google.com/maps?q=-12.987653,-38.443736
-          • Oportunidade 24 [DSA8_bucket-02_S27]:
+          • Oportunidade 23 [DSA8_bucket-02_S27]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41720000, 41720010, 41720020, 41720025, 41720040, 41720050, 41720051, 41720075, 41720120, 41720160
               Localizacao: https://maps.google.com/maps?q=-12.969192,-38.434412
-          • Oportunidade 25 [DSA8_bucket-02_S28]:
+          • Oportunidade 24 [DSA8_bucket-02_S28]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40301155, 41820020, 41820021, 41820022, 41820420, 41820450, 41820460, 41820470, 41820480, 41820560
               Localizacao: https://maps.google.com/maps?q=-12.980865,-38.455703
-          • Oportunidade 26 [DSA8_bucket-02_S29]:
+          • Oportunidade 25 [DSA8_bucket-02_S29]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41180005, 41270640, 41275124, 41275182, 41275730, 41280000, 41280020, 41280040, 41280050, 41280070
               Localizacao: https://maps.google.com/maps?q=-12.913503,-38.466771
-          • Oportunidade 27 [DSA8_bucket-02_S32]:
+          • Oportunidade 26 [DSA8_bucket-02_S32]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41235110, 41705320, 41750090, 41750100, 41750103, 41750160, 41750200, 41750340, 41750780, 41770030
               Localizacao: https://maps.google.com/maps?q=-12.985985,-38.440694
-          • Oportunidade 28 [DSA8_bucket-02_S33]:
+          • Oportunidade 27 [DSA8_bucket-02_S33]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41705000, 41705710, 41705715, 41705730, 41705770, 41706190, 41706670, 41710630, 41710790, 41720040
               Localizacao: https://maps.google.com/maps?q=-12.970919,-38.425388
-          • Oportunidade 29 [DSA8_bucket-02_S35]:
+          • Oportunidade 28 [DSA8_bucket-02_S35]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41680008, 41680048, 41681045, 41740030, 41740035, 41740085, 41740090, 41740160, 41740380, 41740870
               Localizacao: https://maps.google.com/maps?q=-12.964276,-38.407190
-          • Oportunidade 30 [DSA8_bucket-02_S36]:
+          • Oportunidade 29 [DSA8_bucket-02_S36]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41100110, 41150000, 41150020, 41150030, 41150120, 41150140, 41150230, 41150340, 41150530, 41150535
               Localizacao: https://maps.google.com/maps?q=-12.962284,-38.470512
-          • Oportunidade 31 [DSA8_bucket-02_S37]:
+          • Oportunidade 30 [DSA8_bucket-02_S37]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41720010, 41720014, 41720015, 41720025, 41720040, 41720050, 41720200, 41720340, 41720350, 41720360
               Localizacao: https://maps.google.com/maps?q=-12.960795,-38.431272
-          • Oportunidade 32 [DSA8_bucket-02_S38]:
+          • Oportunidade 31 [DSA8_bucket-02_S38]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41613034, 41680058, 41680066, 41680072, 41680074, 41680400, 41730140, 41740090, 41745010, 41745130
               Localizacao: https://maps.google.com/maps?q=-12.940694,-38.412875
-          • Oportunidade 33 [DSA8_bucket-02_S39]:
+          • Oportunidade 32 [DSA8_bucket-02_S39]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40110160, 41705010, 41705100, 41705200, 41705230, 41705280, 41705320, 41705330, 41705380, 41705460
               Localizacao: https://maps.google.com/maps?q=-12.975921,-38.434512
-          • Oportunidade 34 [DSA8_bucket-02_S40]:
+          • Oportunidade 33 [DSA8_bucket-02_S40]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40150010, 40170110, 40420000, 40420080, 40420110, 40420120, 40420130, 40420180, 40420190, 40420200
               Localizacao: https://maps.google.com/maps?q=-12.915047,-38.493945
-          • Oportunidade 35 [DSA8_bucket-02_S42]:
+          • Oportunidade 34 [DSA8_bucket-02_S42]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41100000, 41100060, 41100070, 41100077, 41100110, 41100183, 41100730, 41100900, 41110000, 41110010
               Localizacao: https://maps.google.com/maps?q=-12.962314,-38.464479
-          • Oportunidade 36 [DSA8_bucket-02_S43]:
+          • Oportunidade 35 [DSA8_bucket-02_S43]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41250390, 41250480, 41253190, 41253290, 41680010, 41680058, 41680072, 41680074, 41680090, 41680100
               Localizacao: https://maps.google.com/maps?q=-12.942361,-38.415916
-          • Oportunidade 37 [DSA8_bucket-02_S44]:
+          • Oportunidade 36 [DSA8_bucket-02_S44]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41213000, 41213008, 41213012, 41213030, 41213050, 41213060, 41213080, 41213100, 41213110, 41213120
               Localizacao: https://maps.google.com/maps?q=-12.932118,-38.445931
-          • Oportunidade 38 [DSA8_bucket-02_S45]:
+          • Oportunidade 37 [DSA8_bucket-02_S45]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41750160, 41770010, 41770015, 41770020, 41770030, 41770035, 41770040, 41770055, 41770090, 41770095
               Localizacao: https://maps.google.com/maps?q=-12.979227,-38.446628
-          • Oportunidade 39 [DSA8_bucket-02_S46]:
+          • Oportunidade 38 [DSA8_bucket-02_S46]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41680000, 41680008, 41680048, 41680050, 41681045, 41740000, 41740085, 41740090, 41740170, 41740220
               Localizacao: https://maps.google.com/maps?q=-12.960912,-38.407141
-          • Oportunidade 40 [DSA8_bucket-02_S47]:
+          • Oportunidade 39 [DSA8_bucket-02_S47]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41705000, 41705001, 41705710, 41705730, 41705770, 41706670, 41706840, 41710630, 41720040, 41740000
               Localizacao: https://maps.google.com/maps?q=-12.970977,-38.413322
-          • Oportunidade 41 [DSA8_bucket-02_S49]:
+          • Oportunidade 40 [DSA8_bucket-02_S49]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41100800, 41820000, 41820020, 41820021, 41820022, 41820180, 41820340, 41820360, 41820370, 41820440
               Localizacao: https://maps.google.com/maps?q=-12.979168,-38.458695
-          • Oportunidade 42 [DSA8_bucket-02_S50]:
+          • Oportunidade 41 [DSA8_bucket-02_S50]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41225080, 41225100, 41225110, 41230020, 41230205, 41231010, 41231017, 41231020, 41231023, 41231025
               Localizacao: https://maps.google.com/maps?q=-12.925267,-38.469963
-          • Oportunidade 43 [DSA8_bucket-02_S51]:
+          • Oportunidade 42 [DSA8_bucket-02_S51]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40323275, 40330200, 40330410, 40330475, 40335000, 40340400, 40340410, 40340420, 40340430, 40340580
               Localizacao: https://maps.google.com/maps?q=-12.952128,-38.482429
-          • Oportunidade 44 [DSA8_bucket-02_S52]:
+          • Oportunidade 43 [DSA8_bucket-02_S52]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41150000, 41150050, 41150115, 41150190, 41150240, 41150480, 41150485, 41150500, 41150520, 41150565
               Localizacao: https://maps.google.com/maps?q=-12.953917,-38.461337
-          • Oportunidade 45 [DSA8_bucket-02_S53]:
+          • Oportunidade 44 [DSA8_bucket-02_S53]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41760000, 41770010, 41770015, 41770020, 41770040, 41770090, 41770095, 41770100, 41770120, 41770130
               Localizacao: https://maps.google.com/maps?q=-12.985926,-38.452761
-          • Oportunidade 46 [DSA8_bucket-02_S54]:
+          • Oportunidade 45 [DSA8_bucket-02_S54]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41219040, 41219055, 41219065, 41219070, 41219075, 41219080, 41219263, 41219272, 41219323, 41219457
               Localizacao: https://maps.google.com/maps?q=-12.937091,-38.461088
-          • Oportunidade 47 [DSA8_bucket-02_S55]:
+          • Oportunidade 46 [DSA8_bucket-02_S55]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 41315000, 41315010, 41315015, 41315022, 41315024, 41315031, 41315032, 41315040, 41315060, 41315065
               Localizacao: https://maps.google.com/maps?q=-12.903526,-38.442491
-          • Oportunidade 48 [DSA8_bucket-02_S57]:
+          • Oportunidade 47 [DSA8_bucket-02_S57]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40310000, 40310010, 40310610, 40313120, 40313140, 40313170, 40313360, 40313630, 40313700, 40314550
               Localizacao: https://maps.google.com/maps?q=-12.957191,-38.479487
-          • Oportunidade 49 [DSA8_bucket-02_S59]:
+          • Oportunidade 48 [DSA8_bucket-02_S59]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40243010, 41213000, 41213005, 41213035, 41213640, 41213780, 41215110, 41215340, 41215755, 41215770
               Localizacao: https://maps.google.com/maps?q=-12.938908,-38.433965
-          • Oportunidade 50 [DSA8_bucket-02_S60]:
+          • Oportunidade 49 [DSA8_bucket-02_S60]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41213000, 41213733, 41214820, 41214822, 41214824, 41214842, 41214844, 41219005, 41219015, 41219457
               Localizacao: https://maps.google.com/maps?q=-12.937121,-38.455055
-          • Oportunidade 51 [DSA8_bucket-02_S61]:
+          • Oportunidade 50 [DSA8_bucket-02_S61]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41235110, 41705010, 41705100, 41705600, 41706690, 41706770, 41706790, 41706800, 41706810, 41706820
               Localizacao: https://maps.google.com/maps?q=-12.980953,-38.437603
-          • Oportunidade 52 [DSA8_bucket-02_S62]:
+          • Oportunidade 51 [DSA8_bucket-02_S62]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41181010, 41181025, 41181045, 41181057, 41181060, 41181062, 41181090, 41181100, 41181250, 41181280
               Localizacao: https://maps.google.com/maps?q=-12.954036,-38.437205
-          • Oportunidade 53 [DSA8_bucket-02_S63]:
+          • Oportunidade 52 [DSA8_bucket-02_S63]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41213148, 41213210, 41213230, 41213430, 41213470, 41213510, 41213560, 41213610, 41213630, 41213690
               Localizacao: https://maps.google.com/maps?q=-12.925418,-38.439798
-          • Oportunidade 54 [DSA8_bucket-02_S64]:
+          • Oportunidade 53 [DSA8_bucket-02_S64]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41100000, 41100010, 41100020, 41100035, 41100060, 41100065, 41100070, 41100073, 41100077, 41100080
               Localizacao: https://maps.google.com/maps?q=-12.969044,-38.464578
-          • Oportunidade 55 [DSA8_bucket-02_S65]:
+          • Oportunidade 54 [DSA8_bucket-02_S65]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41230300, 41230302, 41230326, 41230330, 41230350, 41230360, 41230540, 41233005, 41233010, 41245020
               Localizacao: https://maps.google.com/maps?q=-12.903496,-38.448523
-          • Oportunidade 56 [DSA8_bucket-02_S66]:
+          • Oportunidade 55 [DSA8_bucket-02_S66]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41150000, 41150902, 41180000, 41180005, 41180210, 41180220, 41180320, 41180345, 41180385, 41180390
               Localizacao: https://maps.google.com/maps?q=-12.967466,-38.443437
-          • Oportunidade 57 [DSA8_bucket-02_S67]:
+          • Oportunidade 56 [DSA8_bucket-02_S67]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40150010, 40415015, 40415055, 40415095, 40415115, 40415135, 40415145, 40415155, 40415185, 40415215
               Localizacao: https://maps.google.com/maps?q=-12.921747,-38.500079
-          • Oportunidade 58 [DSA8_bucket-02_S68]:
+          • Oportunidade 57 [DSA8_bucket-02_S68]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41705000, 41705001, 41705290, 41705650, 41705670, 41706670, 41706690, 41706730, 41706840, 41720040
               Localizacao: https://maps.google.com/maps?q=-12.969280,-38.416314
-          • Oportunidade 59 [DSA8_bucket-02_S69]:
+          • Oportunidade 58 [DSA8_bucket-02_S69]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 41320010, 41320058, 41320100, 41320157, 41320165, 41320170, 41320172, 41320175, 41320180, 41320185
               Localizacao: https://maps.google.com/maps?q=-12.903586,-38.430426
-          • Oportunidade 60 [DSA8_bucket-02_S70]:
+          • Oportunidade 59 [DSA8_bucket-02_S70]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 1100m
               CEPs-alvo (top 10): 41651005, 41651105, 41680006, 41680010, 41680014, 41680018, 41680020, 41680024, 41680034, 41680048
               Localizacao: https://maps.google.com/maps?q=-12.960940,-38.401108
@@ -16882,14 +16858,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DSA8_bucket-03
           - Demanda diaria:          3,234.0 pacotes/dia
           - Vagas ideais:             69
-          - Vagas em aberto:          64
+          - Vagas em aberto:          65
           - Parceiros Ativos:         2
           - Parceiros Onboarding:     0
           - Parceiros Vetting:        0
           - Attainment:               2.9%
-          - Acuracidade:              40.0%
+          - Acuracidade:              50.0%
 
-          🚀 Oportunidades (64):
+          🚀 Oportunidades (65):
           • Oportunidade 1 [DSA8_bucket-03_S07]:
               Capacidade sugerida: 126.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40130010, 40130020, 40130030, 40130040, 40140000, 40140020, 40140070, 40140240, 40140241, 40140320
@@ -17106,43 +17082,47 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40020455, 40020460, 40020465, 40020585, 40020590, 40020600, 40020610, 40020635, 40020640, 40020670
               Localizacao: https://maps.google.com/maps?q=-12.987289,-38.516141
-          • Oportunidade 55 [DSA8_bucket-03_S60]:
+          • Oportunidade 55 [DSA8_bucket-03_S59]:
+              Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
+              CEPs-alvo (top 10): 40415006, 40415020, 40415050, 40415055, 40415070, 40415080, 40415090, 40415095, 40415110, 40415115
+              Localizacao: https://maps.google.com/maps?q=-12.925081,-38.506162
+          • Oportunidade 56 [DSA8_bucket-03_S60]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40170010, 40170130, 40170720, 40210750, 40210755, 40210760, 40230102, 40230103, 40230106, 40230107
               Localizacao: https://maps.google.com/maps?q=-13.002506,-38.501281
-          • Oportunidade 56 [DSA8_bucket-03_S61]:
+          • Oportunidade 57 [DSA8_bucket-03_S61]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40240010, 40240030, 40240055, 40240070, 40240090, 40240112, 40240120, 40240150, 40240220, 40240380
               Localizacao: https://maps.google.com/maps?q=-12.987351,-38.504073
-          • Oportunidade 57 [DSA8_bucket-03_S62]:
+          • Oportunidade 58 [DSA8_bucket-03_S62]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40040570, 40040580, 40040590, 40045020, 40045030, 40045040, 40045060, 40045100, 40050405, 40050410
               Localizacao: https://maps.google.com/maps?q=-12.975621,-38.494846
-          • Oportunidade 58 [DSA8_bucket-03_S63]:
+          • Oportunidade 59 [DSA8_bucket-03_S63]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40140130, 40140440, 40155700, 40170010, 40170040, 40170110, 40170160, 40210630, 40210650, 40210700
               Localizacao: https://maps.google.com/maps?q=-13.009173,-38.513450
-          • Oportunidade 59 [DSA8_bucket-03_S64]:
+          • Oportunidade 60 [DSA8_bucket-03_S64]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40010000, 40010010, 40010020, 40010030, 40015000, 40015001, 40015010, 40015020, 40015030, 40015040
               Localizacao: https://maps.google.com/maps?q=-12.972163,-38.512898
-          • Oportunidade 60 [DSA8_bucket-03_S65]:
+          • Oportunidade 61 [DSA8_bucket-03_S65]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40050050, 40050300, 40050320, 40050330, 40100055, 40100180, 40100190, 40100200, 40100210, 40100220
               Localizacao: https://maps.google.com/maps?q=-12.990685,-38.510157
-          • Oportunidade 61 [DSA8_bucket-03_S66]:
+          • Oportunidade 62 [DSA8_bucket-03_S66]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 800m
               CEPs-alvo (top 10): 40170130, 40170700, 40170708, 40170712, 40210750, 40215820, 40230040, 40230055, 40230110, 40230226
               Localizacao: https://maps.google.com/maps?q=-13.005871,-38.501331
-          • Oportunidade 62 [DSA8_bucket-03_S67]:
+          • Oportunidade 63 [DSA8_bucket-03_S67]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 40050410, 40050520, 40050530, 40050540, 40050565, 40055000, 40055010, 40055055, 40055080, 40055095
               Localizacao: https://maps.google.com/maps?q=-12.972226,-38.500830
-          • Oportunidade 63 [DSA8_bucket-03_S68]:
+          • Oportunidade 64 [DSA8_bucket-03_S68]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40301110, 40410500, 40410510, 40411001, 40411010, 40411140, 40411190, 40411366, 40411370, 40411380
               Localizacao: https://maps.google.com/maps?q=-12.936876,-38.503321
-          • Oportunidade 64 [DSA8_bucket-03_S69]:
+          • Oportunidade 65 [DSA8_bucket-03_S69]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 40010020, 40010040, 40015010, 40015035, 40015070, 40015080, 40015090, 40015110, 40015340, 40015590
               Localizacao: https://maps.google.com/maps?q=-12.968830,-38.506814
@@ -17491,14 +17471,14 @@ Gerado em: 07/04/2026 17:31
       📦 Territorio: DSP2_bucket-02
           - Demanda diaria:          1,596.0 pacotes/dia
           - Vagas ideais:             25
-          - Vagas em aberto:          13
+          - Vagas em aberto:          12
           - Parceiros Ativos:         7
           - Parceiros Onboarding:     1
           - Parceiros Vetting:        1
           - Attainment:               28.0%
-          - Acuracidade:              58.3%
+          - Acuracidade:              53.8%
 
-          🚀 Oportunidades (13):
+          🚀 Oportunidades (12):
           • Oportunidade 1 [DSP2_bucket-02_S06]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 07080111, 07080120, 07097200, 07097220, 07097260, 07097380, 07097390, 07097391, 07097400, 07097410
@@ -17515,39 +17495,35 @@ Gerado em: 07/04/2026 17:31
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 02251002, 02252000, 02252020, 02252030, 02252120, 02252130, 02252160, 02255000, 02255010, 02255020
               Localizacao: https://maps.google.com/maps?q=-23.475164,-46.589849
-          • Oportunidade 5 [DSP2_bucket-02_S13]:
-              Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
-              CEPs-alvo (top 10): 02041020, 02075030, 02201000, 02201001, 02201002, 02201020, 02201060, 02205010, 02205020, 02205160
-              Localizacao: https://maps.google.com/maps?q=-23.477953,-46.596052
-          • Oportunidade 6 [DSP2_bucket-02_S14]:
+          • Oportunidade 5 [DSP2_bucket-02_S14]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 07024170, 07025000, 07025070, 07025200, 07025210, 07025220, 07025230, 07030010, 07030050, 07030140
               Localizacao: https://maps.google.com/maps?q=-23.484659,-46.550338
-          • Oportunidade 7 [DSP2_bucket-02_S16]:
+          • Oportunidade 6 [DSP2_bucket-02_S16]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 02260000, 02263000, 02271000, 02271040, 02272020, 02272030, 02272070, 02272080, 02272090, 02273000
               Localizacao: https://maps.google.com/maps?q=-23.464560,-46.586477
-          • Oportunidade 8 [DSP2_bucket-02_S17]:
+          • Oportunidade 7 [DSP2_bucket-02_S17]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 07051090, 07060000, 07060080, 07060090, 07060091, 07060154, 07060156, 07060161, 07060162, 07060171
               Localizacao: https://maps.google.com/maps?q=-23.453958,-46.549438
-          • Oportunidade 9 [DSP2_bucket-02_S18]:
+          • Oportunidade 8 [DSP2_bucket-02_S18]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 200m
               CEPs-alvo (top 10): 07040000, 07050030, 07060000, 07060010, 07060020, 07060021, 07060023, 07060030, 07060031, 07060041
               Localizacao: https://maps.google.com/maps?q=-23.461774,-46.546606
-          • Oportunidade 10 [DSP2_bucket-02_S21]:
+          • Oportunidade 9 [DSP2_bucket-02_S21]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 07050000, 07050020, 07050060, 07050090, 07050120, 07050140, 07050200, 07060032, 07060033, 07060040
               Localizacao: https://maps.google.com/maps?q=-23.457308,-46.543414
-          • Oportunidade 11 [DSP2_bucket-02_S23]:
+          • Oportunidade 10 [DSP2_bucket-02_S23]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 02161020, 02161030, 02161130, 02161140, 02161160, 02222001, 02229070, 02229110, 02230015, 02230020
               Localizacao: https://maps.google.com/maps?q=-23.484379,-46.556451
-          • Oportunidade 12 [DSP2_bucket-02_S24]:
+          • Oportunidade 11 [DSP2_bucket-02_S24]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 02240000, 02251002, 02257000, 02259000, 02259001, 02259010, 02259020, 02259030, 02259060, 02259070
               Localizacao: https://maps.google.com/maps?q=-23.469025,-46.589669
-          • Oportunidade 13 [DSP2_bucket-02_S25]:
+          • Oportunidade 12 [DSP2_bucket-02_S25]:
               Capacidade sugerida: 42.0 pacotes/dia | Raio: 500m
               CEPs-alvo (top 10): 07051000, 07051001, 07056020, 07061001, 07061002, 07061003, 07062141, 07062152, 07062161, 07062171
               Localizacao: https://maps.google.com/maps?q=-23.453679,-46.555551

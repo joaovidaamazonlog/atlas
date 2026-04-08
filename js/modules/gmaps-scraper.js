@@ -18,6 +18,7 @@
 import { state }       from '../state.js';
 import { DATA_URLS, CNPJ_API_URL } from '../config.js';
 import { ProspectCompany } from '../models.js';
+import { geocodeBatch } from './ui-manager.js';
 
 /** @type {Object|null} Cache em memória do gmaps_results.json */
 let _cache = null;
@@ -169,50 +170,63 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
             // Mostrar apenas empresas a até 1km do slot (quando temos coordenadas)
             .filter(c => c.distanceM === null || c.distanceM <= GMAPS_MAX_DISTANCE_M);
 
-        // ── Receita Federal: match via H3 grid_disk usando heatmap.geojson ─
-        // Constrói índice CEP → hex_id a partir do heatmap carregado no estado
-        const apiResultsMapped = apiResults.map(r => {
-            if (!r.cep) {
-                r.isMatch = null; r.distanceM = null; return r;
-            }
+        // ── Receita Federal: pré-filtro por hex via CEP → geocode → distância ─
+        const MAX_DISTANCE_M = 1000;
 
-            // Buscar o hex que contém este CEP no heatmap
-            const hexFeature = state.heatmapData?.features?.find(
-                f => Array.isArray(f.properties.ceps) && f.properties.ceps.includes(r.cep)
-            );
+        // 1. Identificar quais hexes cobrem os CEPs do slot
+        const slotHexIds = new Set(
+            state.heatmapData?.features
+                ?.filter(f => Array.isArray(f.properties.ceps) &&
+                              f.properties.ceps.some(c => cepSet.has(c)))
+                ?.map(f => f.properties.hex_id) ?? []
+        );
 
-            if (hexFeature && slotGeo) {
-                // Calcular distância H3 entre o hex da empresa e o origin_hex do slot
-                // Usamos o slotFeature para pegar o origin_hex
-                const slotFeature = state.idealSupplyData?.find(
-                    f => f.properties.territory_id === (r.territory_id || '')
+        // 2. Pré-filtrar: manter apenas empresas cujo CEP pertence a um hex do slot
+        const preFiltered = slotHexIds.size > 0
+            ? apiResults.filter(r => {
+                if (!r.cep) return false;
+                const hex = state.heatmapData?.features?.find(
+                    f => Array.isArray(f.properties.ceps) && f.properties.ceps.includes(r.cep)
                 );
-                const slotOriginHex = slotFeature?.properties?.origin_hex;
-                const companyHex    = hexFeature.properties.hex_id;
+                return hex ? slotHexIds.has(hex.properties.hex_id) : false;
+            })
+            : apiResults; // sem heatmap, não filtra
 
-                if (slotOriginHex && companyHex && window.h3) {
-                    try {
-                        const gridDist = h3.gridDistance(companyHex, slotOriginHex);
-                        r.isMatch   = gridDist <= 1; // grid_disk=1 ≈ 900m
-                        r.gridDist  = gridDist;
-                        r.distanceM = null; // não temos distância métrica exata
-                    } catch {
-                        // hexes em resoluções diferentes — fallback por CEP
-                        r.isMatch   = cepSet.has(r.cep);
-                        r.distanceM = null;
-                    }
+        // 3. Geocodificar apenas as empresas pré-filtradas
+        const addressesToGeocode = preFiltered
+            .map((r, i) => ({ i, address: r.endereco }))
+            .filter(({ address }) => !!address);
+
+        const geocoded = addressesToGeocode.length > 0
+            ? await geocodeBatch(addressesToGeocode.map(x => x.address))
+            : [];
+
+        addressesToGeocode.forEach(({ i }, gi) => {
+            const g = geocoded[gi];
+            if (g?.lat && g?.lng) {
+                preFiltered[i].lat = g.lat;
+                preFiltered[i].lon = g.lng;
+            }
+        });
+
+        // 4. Calcular distância métrica e filtrar ≤1km (igual ao fluxo Maps)
+        const apiResultsMapped = preFiltered
+            .map(r => {
+                if (slotGeo && r.lat != null && r.lon != null) {
+                    const distM = Math.round(turf.distance(
+                        turf.point([slotGeo.lon, slotGeo.lat]),
+                        turf.point([r.lon, r.lat]),
+                        { units: 'meters' }
+                    ));
+                    r.isMatch   = distM <= slotGeo.radius_s;
+                    r.distanceM = distM;
                 } else {
-                    // Sem origin_hex disponível — fallback por CEP
-                    r.isMatch   = cepSet.has(r.cep);
+                    r.isMatch   = cepSet.size > 0 ? cepSet.has(r.cep) : null;
                     r.distanceM = null;
                 }
-            } else {
-                // Sem heatmap ou sem slotGeo — fallback por CEP
-                r.isMatch   = cepSet.size > 0 ? cepSet.has(r.cep) : null;
-                r.distanceM = null;
-            }
-            return r;
-        });
+                return r;
+            })
+            .filter(r => r.distanceM === null || r.distanceM <= MAX_DISTANCE_M);
 
         const results = [...gmapsResults, ...apiResultsMapped];
 
@@ -232,6 +246,45 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 }
 
 // ---------------------------------------------------------------------------
+// MARCADORES DE LEAD NO MAPA
+// ---------------------------------------------------------------------------
+
+/** @type {Map<string, L.Marker>} Marcadores de lead fixados no mapa */
+const _pinnedLeadMarkers = new Map();
+
+const _pinIcon = L.divIcon({
+    className: '',
+    html: `<div style="font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px #0006);">📍</div>`,
+    iconAnchor: [11, 22],
+});
+
+function _leadKey(r) {
+    return `${r.nome}|${r.lat}|${r.lon}`;
+}
+
+function _togglePin(r, btnEl) {
+    const key = _leadKey(r);
+    if (_pinnedLeadMarkers.has(key)) {
+        _pinnedLeadMarkers.get(key).remove();
+        _pinnedLeadMarkers.delete(key);
+        btnEl.title = 'Fixar no mapa';
+        btnEl.style.opacity = '0.35';
+    } else {
+        const marker = L.marker([r.lat, r.lon], { icon: _pinIcon })
+            .addTo(state.map)
+            .bindPopup(`<b>${r.nome}</b><br><span style="font-size:11px;">${r.endereco}</span>`);
+        _pinnedLeadMarkers.set(key, marker);
+        btnEl.title = 'Remover do mapa';
+        btnEl.style.opacity = '1';
+    }
+}
+
+function _clearAllPins() {
+    _pinnedLeadMarkers.forEach(m => m.remove());
+    _pinnedLeadMarkers.clear();
+}
+
+// ---------------------------------------------------------------------------
 // EXIBIÇÃO DE RESULTADOS
 // ---------------------------------------------------------------------------
 
@@ -246,8 +299,6 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 export function showResults(results, territoryId, usedCepFilter, generatedAt) {
     document.getElementById('gmaps-scraper-popup')?.remove();
 
-    // Agrupar por tipo
-    /** @type {Object.<string, ProspectCompany[]>} */
     const byType = {};
     results.forEach(r => {
         const t = r.tipo || 'outros';
@@ -259,56 +310,90 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
     const apiCount   = results.filter(r => r._fonte?.includes('Receita')).length;
     const gmapsCount = results.length - apiCount;
 
-    let html = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <b>🏪 Empresas Candidatas — ${territoryId}</b>
-            <button onclick="document.getElementById('gmaps-scraper-popup').remove()"
-                style="border:none;background:none;font-size:1.3em;line-height:1;">&times;</button>
-        </div>
-        <div style="font-size:11px;color:#666;margin-bottom:8px;">
-            ${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal<br>
-            ${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}
-        </div>
-        <div style="max-height:600px;overflow-y:auto;">
-    `;
+    const popup = document.createElement('div');
+    popup.id = 'gmaps-scraper-popup';
+    popup.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;width:420px;max-width:95vw;box-shadow:0 2px 12px #0004;';
+
+    // Header
+    const header = document.createElement('div');
+    header.style = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;';
+    header.innerHTML = `<b>🏪 Empresas Candidatas — ${territoryId}</b>`;
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.style = 'border:none;background:none;font-size:1.3em;line-height:1;cursor:pointer;';
+    closeBtn.onclick = () => { _clearAllPins(); popup.remove(); };
+    header.appendChild(closeBtn);
+    popup.appendChild(header);
+
+    // Subtítulo
+    const sub = document.createElement('div');
+    sub.style = 'font-size:11px;color:#666;margin-bottom:8px;';
+    sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal<br>
+        ${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}`;
+    popup.appendChild(sub);
+
+    // Lista
+    const list = document.createElement('div');
+    list.style = 'max-height:600px;overflow-y:auto;';
 
     if (results.length === 0) {
-        html += '<div style="color:#888;padding:12px 0;">Nenhuma empresa encontrada.<br>Execute o workflow no GitHub Actions para atualizar os dados.</div>';
+        list.innerHTML = '<div style="color:#888;padding:12px 0;">Nenhuma empresa encontrada.<br>Execute o workflow no GitHub Actions para atualizar os dados.</div>';
     } else {
         for (const [tipo, empresas] of Object.entries(byType)) {
-            html += `<h6 style="margin:10px 0 4px;text-transform:capitalize;color:#333;">📂 ${tipo} (${empresas.length})</h6>`;
+            const groupTitle = document.createElement('h6');
+            groupTitle.style = 'margin:10px 0 4px;text-transform:capitalize;color:#333;';
+            groupTitle.textContent = `📂 ${tipo} (${empresas.length})`;
+            list.appendChild(groupTitle);
+
             empresas.forEach(r => {
-                // Badge de validação geográfica
+                const card = document.createElement('div');
+                card.style = 'border-bottom:1px solid #eee;padding:6px 0;font-size:12px;position:relative;';
+
+                // Badge de distância
                 let matchBadge = '';
                 if (r.isMatch === true) {
-                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : r.gridDist !== undefined ? ` (grid_disk=${r.gridDist})` : '';
+                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
                     matchBadge = `<div style="margin:2px 0;"><span style="color:#16a34a;font-weight:bold;">✅ Dentro do raio do slot</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
                 } else if (r.isMatch === false) {
-                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : r.gridDist !== undefined ? ` (grid_disk=${r.gridDist})` : '';
+                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
                     matchBadge = `<div style="margin:2px 0;"><span style="color:#d97706;">⚠️ Fora do raio</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
                 }
 
-                html += `
-                    <div style="border-bottom:1px solid #eee;padding:6px 0;font-size:12px;">
-                        <b>${r.nome}</b>
-                        <span style="float:right;font-size:10px;color:#888;">${r._fonte || ''}</span><br>
-                        ${matchBadge}
-                        <span style="color:#555;">📍 ${r.endereco}</span><br>
-                        ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
-                        ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
-                        ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
-                        ${r.hasMapsLink ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
+                const hasCoords = r.lat != null && r.lon != null;
+
+                card.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                        <b style="flex:1;margin-right:4px;">${r.nome}</b>
+                        <span style="font-size:10px;color:#888;white-space:nowrap;">${r._fonte || ''}</span>
                     </div>
+                    ${matchBadge}
+                    <span style="color:#555;">📍 ${r.endereco}</span><br>
+                    ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
+                    ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
+                    ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
+                    ${r.hasMapsLink ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
                 `;
+
+                // Botão de pin — só para leads com coordenadas
+                if (hasCoords) {
+                    const pinBtn = document.createElement('button');
+                    pinBtn.title = 'Fixar no mapa';
+                    pinBtn.style = 'position:absolute;top:6px;right:0;border:none;background:none;font-size:18px;cursor:pointer;opacity:0;transition:opacity .15s;padding:0;line-height:1;';
+                    pinBtn.innerHTML = '📌';
+                    pinBtn.onclick = () => _togglePin(r, pinBtn);
+
+                    // Mostrar pin ao passar o mouse no card
+                    card.addEventListener('mouseenter', () => { pinBtn.style.opacity = _pinnedLeadMarkers.has(_leadKey(r)) ? '1' : '0.35'; });
+                    card.addEventListener('mouseleave', () => { if (!_pinnedLeadMarkers.has(_leadKey(r))) pinBtn.style.opacity = '0'; });
+
+                    card.appendChild(pinBtn);
+                }
+
+                list.appendChild(card);
             });
         }
     }
 
-    html += '</div>';
-
-    const popup = document.createElement('div');
-    popup.id = 'gmaps-scraper-popup';
-    popup.style = 'position:fixed;top:80px;right:20px;background:#fff;padding:20px;border-radius:8px;z-index:9999;width:420px;max-width:95vw;box-shadow:0 2px 12px #0004;';
-    popup.innerHTML = html;
+    popup.appendChild(list);
     document.body.appendChild(popup);
 }

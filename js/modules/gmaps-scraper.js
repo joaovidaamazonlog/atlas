@@ -405,9 +405,9 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
                         <span style="font-size:10px;color:#888;white-space:nowrap;">${r._fonte || ''}</span>
                     </div>
                     ${matchBadge}
-                    <div style="display:flex;align-items:baseline;gap:4px;color:#555;">
-                        <span>📍 ${r.endereco}</span>
-                        ${hasCoords ? `<button class="lead-pin-btn" title="Fixar no mapa" style="border:none;background:none;font-size:18px;cursor:pointer;opacity:0;transition:opacity .15s;padding:0;line-height:1;flex-shrink:0;">📌</button>` : ''}
+                    <div style="display:flex;align-items:baseline;justify-content:space-between;color:#555;">
+                        <span style="flex:1;">📍 ${r.endereco}</span>
+                        ${hasCoords ? `<button class="lead-pin-btn" title="Fixar no mapa" style="border:none;background:none;font-size:18px;cursor:pointer;opacity:0;transition:opacity .15s;padding:0;line-height:1;flex-shrink:0;margin-left:4px;">📌</button>` : ''}
                     </div>
                     ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
                     ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}

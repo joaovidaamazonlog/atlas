@@ -108,18 +108,22 @@ class HexagonGenerator:
 
     def get_hex_centroids_from_jurisdiction(self):
         """
-        Extrai centroids de hexágonos que cobrem os polígonos de jurisdiction.geojson.
-        
-        Para cada polígono de jurisdição:
-        - Calcula o centroid
-        - Usa grid_disk com k=1 para expandir o coverage
-        - Define raio de 2 milhas se houver mais de 1 hexágono (grid_disk retorna múltiplos)
-        - Define raio de 1 milha se houver apenas o centroid
-        
+        Cobre os polígonos de jurisdiction.geojson com círculos cujos centroids
+        estão DENTRO da área do polígono.
+
+        Estratégia:
+        - Preenche cada polígono com hexágonos H3 res7 via polyfill
+        - Filtra apenas hexágonos cujo centroid está contido no polígono (contains)
+        - Raio: 2 milhas para polígonos grandes (área >= 0.05 graus²), 1 milha para pequenos
+        - Sem grid_disk de borda para não vazar pontos para fora da área
+
         Retorna DataFrame com: delivery_station, hex, latitude, longitude, radius_miles
         """
-        print(f"[{datetime.now()}] Extraindo centroids de hexágonos de jurisdiction.geojson...")
-        
+        # Threshold de área em graus² para decidir raio (aprox. ~600km²)
+        LARGE_POLYGON_AREA_THRESHOLD = 0.05
+
+        print(f"[{datetime.now()}] Cobrindo polígonos de jurisdiction.geojson com círculos...")
+
         try:
             jurisdiction_path = Path(configuration.BASE_JURISDICTION)
             with open(jurisdiction_path, 'r', encoding='utf-8') as f:
@@ -130,61 +134,65 @@ class HexagonGenerator:
         except json.JSONDecodeError:
             print(f"❌ Erro ao decodificar JSON: {jurisdiction_path}")
             return pd.DataFrame()
-        
+
         centroid_data = []
-        
+
         for feature in jurisdiction_geojson.get('features', []):
             try:
                 delivery_station = feature.get('properties', {}).get('delivery_station')
                 if not delivery_station:
                     continue
-                
-                # Converter geometria GeoJSON para Shapely
+
                 geometry = shape(feature['geometry'])
-                
-                # Calcular centroid do polígono
-                centroid = geometry.centroid
-                lat = centroid.y
-                lon = centroid.x
-                
-                # Obter hexágono do centroid (resolução 7)
-                center_hex = h3.latlng_to_cell(lat, lon, 7)
-                
-                # Obter hexágonos vizinhos com grid_disk k=1
-                hex_neighbors = h3.grid_disk(center_hex, 1)
-                
-                # Determinar raio baseado no número de hexágonos
-                # Se grid_disk retorna mais de 1 hex (incluindo o centroid), raio é 2 milhas
-                # Se retorna apenas o centroid (1 hex), raio é 1 milha
-                if len(hex_neighbors) > 1:
-                    radius_miles = 2.0
+
+                # Raio baseado na área total da geometria
+                radius_miles = 2.0 if geometry.area >= LARGE_POLYGON_AREA_THRESHOLD else 1.0
+
+                # Coletar todos os sub-polígonos (suporte a MultiPolygon e Polygon)
+                if geometry.geom_type == 'MultiPolygon':
+                    polygons = list(geometry.geoms)
+                elif geometry.geom_type == 'Polygon':
+                    polygons = [geometry]
                 else:
-                    radius_miles = 1.0
-                
-                # Mapear cada hexágono com seu raio
-                for hex_id in hex_neighbors:
-                    self.hex_radius_map[hex_id] = radius_miles
+                    print(f"   ⚠ {delivery_station}: tipo de geometria não suportado ({geometry.geom_type})")
+                    continue
+
+                station_hexes: set = set()
+
+                for poly in polygons:
+                    exterior_coords = [[c[1], c[0]] for c in poly.exterior.coords]
+                    holes = [[[c[1], c[0]] for c in ring.coords] for ring in poly.interiors]
+                    h3_poly = h3.LatLngPoly(exterior_coords, *holes)
+                    filled = h3.h3shape_to_cells(h3_poly, 7)
+                    station_hexes.update(filled)
+
+                # Filtrar: manter apenas hexágonos cujo centroid está dentro do polígono
+                valid_count = 0
+                for hex_id in station_hexes:
                     hex_lat, hex_lon = h3.cell_to_latlng(hex_id)
-                    
+                    if not geometry.contains(Point(hex_lon, hex_lat)):
+                        continue
+                    self.hex_radius_map[hex_id] = radius_miles
                     centroid_data.append({
                         'delivery_station': delivery_station,
                         'hex': hex_id,
                         'latitude': hex_lat,
                         'longitude': hex_lon,
                         'radius_miles': radius_miles,
-                        'is_center': hex_id == center_hex  # Marcar o hexágono central
                     })
-                
-                print(f"   ✓ {delivery_station}: {len(hex_neighbors)} hexágonos encontrados (raio: {radius_miles} milhas)")
-                
+                    valid_count += 1
+
+                print(f"   ✓ {delivery_station}: {valid_count} círculos (raio: {radius_miles} milhas, área: {geometry.area:.4f}°²)")
+
             except Exception as e:
                 delivery_station = feature.get('properties', {}).get('delivery_station', 'UNKNOWN')
                 print(f"   ⚠ Erro ao processar {delivery_station}: {e}")
+                import traceback; traceback.print_exc()
                 continue
-        
+
         centroid_df = pd.DataFrame(centroid_data)
-        print(f"\n✅ Total de hexágonos extraídos: {len(centroid_df)}")
-        
+        print(f"\n✅ Total de círculos gerados: {len(centroid_df)}")
+
         return centroid_df
 
     def export_csv(self, output_filename="hexagons_res7.csv"):
@@ -193,7 +201,6 @@ class HexagonGenerator:
         dest.mkdir(exist_ok=True)
         output_path = dest / output_filename
 
-        # use csv module to avoid pandas heavy import
         import csv
         with open(output_path, "w", encoding="utf-8", newline="") as f:
             writer = csv.writer(f)
@@ -203,24 +210,53 @@ class HexagonGenerator:
                 station_code = row['station_code']
                 total_packages = int(row['avg_demand'])
                 lat, lon = h3.cell_to_latlng(hex_id)
-                
-                # Obter raio do mapa de hexágonos ou usar padrão de 1 milha
                 radius_miles = self.hex_radius_map.get(hex_id, 1.0)
-                
                 writer.writerow([station_code, total_packages, lat, lon, radius_miles])
 
         print(f"✅ CSV salvo em {output_path}")
         print(f"   - Total de hexágonos escritos: {len(self.demand_df)}")
 
+    def export_circles_csv(self, centroid_df: pd.DataFrame, output_filename="marketing_circles.csv"):
+        """
+        Exporta CSV com os círculos de cobertura de marketing gerados a partir da jurisdição.
+        Colunas: delivery_station, latitude, longitude, radius_meters
+        Raio convertido de milhas para metros (1 milha = 1609.344 m).
+        """
+        MILES_TO_METERS = 1609.344
+
+        if centroid_df.empty:
+            print("⚠ Nenhum dado de círculos para exportar.")
+            return
+
+        dest = Path(Config.DEST_FOLDER)
+        dest.mkdir(exist_ok=True)
+        output_path = dest / output_filename
+
+        import csv
+        with open(output_path, "w", encoding="utf-8", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["delivery_station", "latitude", "longitude", "radius_meters"])
+            for _, row in centroid_df.iterrows():
+                writer.writerow([
+                    row['delivery_station'],
+                    row['latitude'],
+                    row['longitude'],
+                    round(row['radius_miles'] * MILES_TO_METERS),
+                ])
+
+        print(f"✅ CSV de círculos salvo em {output_path}")
+        print(f"   - Total de círculos: {len(centroid_df)}")
+
 if __name__ == "__main__":
     try:
         generator = HexagonGenerator()
         generator.load_packages_data()
-        
-        # Extrair centroids de hexágonos da jurisdição
+
+        # Cobrir polígonos de jurisdição com círculos e exportar CSV
         centroid_df = generator.get_hex_centroids_from_jurisdiction()
-        
-        # Gerar GeoJSON e exportar CSV
+        generator.export_circles_csv(centroid_df)
+
+        # Gerar GeoJSON e exportar CSV de demanda
         generator.generate_hex_geojson()
         generator.export_csv()
     except Exception as e:

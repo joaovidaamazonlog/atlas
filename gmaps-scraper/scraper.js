@@ -22,11 +22,40 @@ const USER_AGENT =
     '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
 // ---------------------------------------------------------------------------
+// BROWSER COMPARTILHADO
+// ---------------------------------------------------------------------------
+
+let _sharedBrowser = null;
+
+/**
+ * Retorna (ou cria) o browser compartilhado para todo o batch.
+ * Elimina o overhead de launch/close por chamada (~2-3s cada).
+ * @returns {Promise<import('puppeteer').Browser>}
+ */
+async function getSharedBrowser() {
+    if (!_sharedBrowser || !_sharedBrowser.connected) {
+        _sharedBrowser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
+        });
+    }
+    return _sharedBrowser;
+}
+
+async function closeSharedBrowser() {
+    if (_sharedBrowser) {
+        await _sharedBrowser.close().catch(() => {});
+        _sharedBrowser = null;
+    }
+}
+
+// ---------------------------------------------------------------------------
 // FUNÇÃO PRINCIPAL
 // ---------------------------------------------------------------------------
 
 /**
  * Busca estabelecimentos no Google Maps para uma query e localização.
+ * Reutiliza o browser compartilhado — não abre/fecha browser por chamada.
  *
  * @param {string} query  - Tipo de negócio (ex: "lanchonete")
  * @param {string} lat    - Latitude do centroide do território
@@ -34,18 +63,21 @@ const USER_AGENT =
  * @returns {Promise<Object[]>}
  */
 async function scrapeGmaps(query, lat, long) {
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
-    });
+    const browser = await getSharedBrowser();
 
     try {
         // ── 1. Coletar links da página de resultados ──────────────────────
         const searchPage = await browser.newPage();
         await searchPage.setUserAgent(USER_AGENT);
+        // Bloquear imagens/fontes/mídia na página de busca — não são necessários
+        await searchPage.setRequestInterception(true);
+        searchPage.on('request', req => {
+            if (['image', 'font', 'media'].includes(req.resourceType())) req.abort();
+            else req.continue();
+        });
 
         const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${long},15z?hl=pt-BR`;
-        await searchPage.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        await searchPage.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await searchPage.waitForSelector('a[href*="/maps/place/"]', { timeout: 15000 }).catch(() => null);
         await autoScroll(searchPage, 'div[role="feed"]');
 
@@ -66,9 +98,8 @@ async function scrapeGmaps(query, lat, long) {
     } catch (error) {
         console.error('[scraper] Erro:', error.message);
         return [];
-    } finally {
-        await browser.close();
     }
+    // Não fecha o browser — é compartilhado pelo batch inteiro
 }
 
 // ---------------------------------------------------------------------------
@@ -129,9 +160,15 @@ async function _processWithConcurrency(browser, links, concurrency) {
 async function _scrapeDetail(browser, link) {
     const page = await browser.newPage();
     await page.setUserAgent(USER_AGENT);
+    // Bloquear imagens/fontes/mídia — reduz tempo de carregamento significativamente
+    await page.setRequestInterception(true);
+    page.on('request', req => {
+        if (['image', 'font', 'media'].includes(req.resourceType())) req.abort();
+        else req.continue();
+    });
 
     try {
-        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
+        await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
 
         // Aguardar o painel de detalhes carregar — o endereço completo (com CEP)
         // é renderizado num segundo request após o carregamento inicial da página.
@@ -398,4 +435,4 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-module.exports = { scrapeGmaps };
+module.exports = { scrapeGmaps, closeSharedBrowser };

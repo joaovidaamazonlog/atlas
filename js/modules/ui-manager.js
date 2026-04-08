@@ -180,76 +180,36 @@ export function setupAutocomplete() {
  */
 
 /**
- * Busca as coordenadas de um único endereço numa aba do browser.
- * @param {import('puppeteer').Browser} browser - Instância do browser compartilhada
- * @param {string} address - Endereço completo incluindo CEP
+ * Busca as coordenadas de um único endereço via Nominatim (OpenStreetMap).
+ * @param {string} address
  * @returns {Promise<GeocodeResult>}
  */
-async function geocodeAddress(browser, address) {
-  const page = await browser.newPage();
-
-  await page.setRequestInterception(true);
-  page.on("request", (req) => {
-    const blocked = ["image", "stylesheet", "font", "media"];
-    blocked.includes(req.resourceType()) ? req.abort() : req.continue();
-  });
-
-  try {
-    const query = encodeURIComponent(address);
-    await page.goto(`https://www.google.com/maps/search/${query}`, {
-      waitUntil: "networkidle2",
-      timeout: 15_000,
-    });
-
-    await page.waitForFunction(
-      () => window.location.href.includes("@"),
-      { timeout: 10_000 }
-    );
-
-    const url = page.url();
-    const match = url.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-
-    if (!match) throw new Error(`Coordenadas não encontradas na URL: ${url}`);
-
-    return {
-      address,
-      lat: parseFloat(match[1]),
-      lng: parseFloat(match[2]),
-    };
-  } finally {
-    await page.close();
-  }
+async function geocodeAddress(address) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+    const res  = await fetch(url, { headers: { 'Accept-Language': 'pt-BR', 'User-Agent': 'ATLAS/1.0' } });
+    const data = await res.json();
+    if (!data.length) throw new Error('Endereço não encontrado');
+    return { address, lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
 }
 
 /**
- * Geocodifica uma lista de endereços em paralelo usando uma única instância do browser.
+ * Geocodifica uma lista de endereços via Nominatim respeitando o rate limit de 1 req/s.
  * Endereços que falharem retornam lat/lng como null sem interromper os demais.
- * @param {string[]} addresses - Lista de 1 a 10 endereços completos
+ * @param {string[]} addresses
  * @returns {Promise<GeocodeResult[]>}
  */
 export async function geocodeBatch(addresses) {
-  const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-
-  try {
-    const results = await Promise.allSettled(
-      addresses.map((address) => geocodeAddress(browser, address))
-    );
-
-    return results.map((result, i) => {
-      if (result.status === "fulfilled") return result.value;
-      return {
-        address: addresses[i],
-        lat: null,
-        lng: null,
-        error: result.reason?.message ?? "Erro desconhecido",
-      };
-    });
-  } finally {
-    await browser.close();
-  }
+    const results = [];
+    for (const address of addresses) {
+        try {
+            results.push(await geocodeAddress(address));
+        } catch (err) {
+            results.push({ address, lat: null, lng: null, error: err.message ?? 'Erro desconhecido' });
+        }
+        // Nominatim exige no máximo 1 req/s
+        await new Promise(r => setTimeout(r, 1100));
+    }
+    return results;
 }
 
 /**

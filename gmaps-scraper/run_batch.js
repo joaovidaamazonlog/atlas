@@ -17,7 +17,7 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { scrapeGmaps } = require('./scraper');
+const { scrapeGmaps, closeSharedBrowser } = require('./scraper');
 
 // ---------------------------------------------------------------------------
 // CONFIGURAÇÃO
@@ -35,8 +35,11 @@ const IDEAL_SUPPLY_PATH = path.join(DATA_DIR, 'ideal_supply.json');
 const TERRITORIES_PATH  = path.join(DATA_DIR, 'territories_index.json');
 const OUTPUT_PATH       = path.join(DATA_DIR, 'gmaps_results.json');
 
-// Delay entre buscas para evitar bloqueio (ms)
-const DELAY_MS = 3000;
+// Número de buscas (território × tipo) rodando em paralelo
+const BATCH_CONCURRENCY = 5;
+
+// Delay entre buscas dentro do mesmo worker (ms) — reduzido pois o browser é compartilhado
+const DELAY_MS = 1000;
 
 // ---------------------------------------------------------------------------
 // HELPERS
@@ -113,68 +116,68 @@ async function main() {
     let done = 0;
     const total = openTerritories.size * BUSINESS_TYPES.length;
 
+    // Montar fila de todas as tarefas
+    const tasks = [];
     for (const tid of openTerritories) {
         const meta = territoriesIndex[tid];
-        const lat  = meta.centroid_lat;
-        const lon  = meta.centroid_lon;
-
-        if (!results[tid]) results[tid] = [];
-
         for (const type of BUSINESS_TYPES) {
-            done++;
-            console.log(`  [${done}/${total}] ${tid} | "${type}" @ ${lat},${lon}`);
-
-            try {
-                const items = await scrapeGmaps(type, String(lat), String(lon));
-                const formatted = items.map(item => ({
-                    nome:             item.name    || 'N/A',
-                    endereco:         item.address || 'N/A',
-                    telefone:         item.phone   || 'N/A',
-                    site:             item.website || 'N/A',
-                    google_maps_link: item.link    || 'N/A',
-                    lat:              item.lat     ?? null,
-                    lon:              item.lon     ?? null,
-                    tipo:             type,
-                    territory_id:     tid,
-                    station_code:     meta.station_code,
-                    cep:              item.cep || extractCep(item.address || ''),
-                }));
-
-                // Merge: chave primária = google_maps_link (único por estabelecimento)
-                // Fallback = nome (para entradas antigas sem link)
-                // Sempre prefere a versão com endereço completo
-                for (const item of formatted) {
-                    const newHasAddress = item.endereco && item.endereco !== 'N/A';
-
-                    // Tentar match pelo link primeiro
-                    let existingIdx = item.google_maps_link && item.google_maps_link !== 'N/A'
-                        ? results[tid].findIndex(e => e.google_maps_link === item.google_maps_link)
-                        : -1;
-
-                    // Fallback: match pelo nome
-                    if (existingIdx === -1) {
-                        existingIdx = results[tid].findIndex(e => e.nome === item.nome);
-                    }
-
-                    if (existingIdx === -1) {
-                        results[tid].push(item);
-                    } else {
-                        const prev = results[tid][existingIdx];
-                        const prevHasAddress = prev.endereco && prev.endereco !== 'N/A';
-                        if (!prevHasAddress && newHasAddress) {
-                            results[tid][existingIdx] = item;
-                        }
-                    }
-                }
-
-                console.log(`    → ${formatted.length} empresas encontradas`);
-            } catch (err) {
-                console.error(`    ERR: ${err.message}`);
-            }
-
-            await sleep(DELAY_MS);
+            tasks.push({ tid, meta, type });
         }
     }
+
+    // Inicializar entradas existentes
+    for (const { tid } of tasks) {
+        if (!results[tid]) results[tid] = [];
+    }
+
+    // Processar em paralelo com concorrência limitada
+    await _runWithConcurrency(tasks, BATCH_CONCURRENCY, async ({ tid, meta, type }) => {
+        const seq = ++done;
+        const lat = meta.centroid_lat;
+        const lon = meta.centroid_lon;
+        console.log(`  [${seq}/${total}] ${tid} | "${type}" @ ${lat},${lon}`);
+
+        try {
+            const items = await scrapeGmaps(type, String(lat), String(lon));
+            const formatted = items.map(item => ({
+                nome:             item.name    || 'N/A',
+                endereco:         item.address || 'N/A',
+                telefone:         item.phone   || 'N/A',
+                site:             item.website || 'N/A',
+                google_maps_link: item.link    || 'N/A',
+                lat:              item.lat     ?? null,
+                lon:              item.lon     ?? null,
+                tipo:             type,
+                territory_id:     tid,
+                station_code:     meta.station_code,
+                cep:              item.cep || extractCep(item.address || ''),
+            }));
+
+            for (const item of formatted) {
+                const newHasAddress = item.endereco && item.endereco !== 'N/A';
+                let existingIdx = item.google_maps_link && item.google_maps_link !== 'N/A'
+                    ? results[tid].findIndex(e => e.google_maps_link === item.google_maps_link)
+                    : -1;
+                if (existingIdx === -1) {
+                    existingIdx = results[tid].findIndex(e => e.nome === item.nome);
+                }
+                if (existingIdx === -1) {
+                    results[tid].push(item);
+                } else {
+                    const prev = results[tid][existingIdx];
+                    if (!(prev.endereco && prev.endereco !== 'N/A') && newHasAddress) {
+                        results[tid][existingIdx] = item;
+                    }
+                }
+            }
+
+            console.log(`    → ${formatted.length} empresas encontradas`);
+        } catch (err) {
+            console.error(`    ERR: ${err.message}`);
+        }
+
+        await sleep(DELAY_MS);
+    });
 
     // Salvar resultado
     const output = {
@@ -186,6 +189,8 @@ async function main() {
     };
 
     fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2), 'utf8');
+
+    await closeSharedBrowser();
 
     console.log(`\n${'='.repeat(60)}`);
     console.log(`  CONCLUÍDO`);
@@ -200,6 +205,24 @@ async function main() {
 function extractCep(address) {
     const match = address.match(/\b(\d{5})-?(\d{3})\b/);
     return match ? match[1] + match[2] : null;
+}
+
+/**
+ * Executa uma lista de tarefas com no máximo `concurrency` rodando ao mesmo tempo.
+ * @template T
+ * @param {T[]} tasks
+ * @param {number} concurrency
+ * @param {(task: T) => Promise<void>} fn
+ */
+async function _runWithConcurrency(tasks, concurrency, fn) {
+    const queue = [...tasks];
+    const workers = Array.from({ length: Math.min(concurrency, tasks.length) }, async () => {
+        while (queue.length > 0) {
+            const task = queue.shift();
+            if (task) await fn(task);
+        }
+    });
+    await Promise.all(workers);
 }
 
 main().catch(err => {

@@ -405,7 +405,7 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
                         <span style="font-size:10px;color:#888;white-space:nowrap;">${r._fonte || ''}</span>
                     </div>
                     ${matchBadge}
-                    <span style="color:#555;">📍 ${r.endereco}</span><br>
+                    <div style="color:#555;">📍 ${r.endereco}</div>
                     ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
                     ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
                     ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}

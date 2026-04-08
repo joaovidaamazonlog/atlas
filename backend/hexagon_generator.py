@@ -108,22 +108,37 @@ class HexagonGenerator:
 
     def get_hex_centroids_from_jurisdiction(self):
         """
-        Cobre os polígonos de jurisdiction.geojson com círculos cujos centroids
-        estão DENTRO da área do polígono, sem overlap excessivo.
+        Maximum-coverage circle packing sobre os polígonos de jurisdiction.geojson.
 
-        Estratégia de resolução H3 por raio:
-        - 2 milhas (~3.2km) → res 8 (centroids ~3.8km apart, overlap mínimo)
-        - 1 milha (~1.6km) → res 9 (centroids ~1.4km apart, cobertura densa)
+        Estratégia:
+        - Raio de cada candidato = distância do ponto à borda (maior círculo que cabe).
+        - Grade hexagonal com espaçamento ~500m para cobertura densa.
+        - Greedy por área coberta: escolhe o círculo com maior área nova a cada passo.
+          Otimização: pré-filtra candidatos cujo centro já está coberto antes do max().
+        - Para quando o ganho incremental cai abaixo de MIN_COVERAGE_GAIN_M2.
+        - Geometrias inválidas são sanitizadas com buffer(0).
 
-        Raio: 2 milhas para polígonos grandes (área >= 0.05°²), 1 milha para pequenos.
-
-        Retorna DataFrame com: delivery_station, hex, latitude, longitude, radius_miles
+        Retorna DataFrame com: delivery_station, latitude, longitude, radius_miles
         """
-        LARGE_POLYGON_AREA_THRESHOLD = 0.05  # graus² (~600km²)
-        # Resolução H3 alinhada ao diâmetro do círculo para minimizar overlap
-        RADIUS_TO_H3_RES = {2.0: 8, 1.0: 9}
+        import math
+        from shapely.geometry import Point
+        from shapely.validation import make_valid
 
-        print(f"[{datetime.now()}] Cobrindo polígonos de jurisdiction.geojson com círculos...")
+        GRID_STEP_DEG = 500 / 111_000        # ~0.0045° (~500m)
+        MIN_RADIUS_MILES = 1                 # descarta candidatos com raio < 1 milha inteira
+        MIN_GAIN_M2   = 50_000               # para quando ganho < 0.05 km²
+        DEG_TO_M      = 111_000
+        MILES_TO_M    = 1609.344
+
+        def miles_floor(dist_m):
+            """Maior número inteiro de milhas que cabe na distância dada."""
+            return int(dist_m / MILES_TO_M)
+
+        def circle_shape(lat, lon, r_miles):
+            r_deg = (r_miles * MILES_TO_M) / DEG_TO_M
+            return Point(lon, lat).buffer(r_deg)
+
+        print(f"[{datetime.now()}] Maximum-coverage circle packing em jurisdiction.geojson...")
 
         try:
             jurisdiction_path = Path(configuration.BASE_JURISDICTION)
@@ -145,46 +160,93 @@ class HexagonGenerator:
                     continue
 
                 geometry = shape(feature['geometry'])
+                # Sanitizar geometria inválida
+                if not geometry.is_valid:
+                    geometry = make_valid(geometry)
 
-                # Raio e resolução H3 baseados na área total da geometria
-                radius_miles = 2.0 if geometry.area >= LARGE_POLYGON_AREA_THRESHOLD else 1.0
-                h3_res = RADIUS_TO_H3_RES[radius_miles]
+                minx, miny, maxx, maxy = geometry.bounds
 
-                # Coletar todos os sub-polígonos (suporte a MultiPolygon e Polygon)
-                if geometry.geom_type == 'MultiPolygon':
-                    polygons = list(geometry.geoms)
-                elif geometry.geom_type == 'Polygon':
-                    polygons = [geometry]
-                else:
-                    print(f"   ⚠ {delivery_station}: tipo de geometria não suportado ({geometry.geom_type})")
-                    continue
+                # --- Grade hexagonal sobre o bounding box ---
+                candidates = []  # [lat, lon, r_miles_int, r_m, circle_shape]
+                row = 0
+                lat = miny
+                while lat <= maxy + GRID_STEP_DEG:
+                    offset = (GRID_STEP_DEG / 2) if (row % 2 == 1) else 0.0
+                    lon = minx + offset
+                    while lon <= maxx + GRID_STEP_DEG:
+                        pt = Point(lon, lat)
+                        if geometry.contains(pt):
+                            dist_m = geometry.boundary.distance(pt) * DEG_TO_M
+                            r_miles = miles_floor(dist_m)  # inteiro, floor
+                            if r_miles >= MIN_RADIUS_MILES:
+                                r_m = r_miles * MILES_TO_M
+                                candidates.append([lat, lon, r_miles, r_m, circle_shape(lat, lon, r_miles)])
+                        lon += GRID_STEP_DEG
+                    lat += GRID_STEP_DEG * (3 ** 0.5) / 2
+                    row += 1
 
-                station_hexes: set = set()
-
-                for poly in polygons:
-                    exterior_coords = [[c[1], c[0]] for c in poly.exterior.coords]
-                    holes = [[[c[1], c[0]] for c in ring.coords] for ring in poly.interiors]
-                    h3_poly = h3.LatLngPoly(exterior_coords, *holes)
-                    filled = h3.h3shape_to_cells(h3_poly, h3_res)
-                    station_hexes.update(filled)
-
-                # Filtrar: manter apenas hexágonos cujo centroid está dentro do polígono
-                valid_count = 0
-                for hex_id in station_hexes:
-                    hex_lat, hex_lon = h3.cell_to_latlng(hex_id)
-                    if not geometry.contains(Point(hex_lon, hex_lat)):
+                if not candidates:
+                    # Fallback: polígono estreito — usa o ponto mais central com raio 1mi
+                    best_pt, best_dist = None, 0
+                    row = 0
+                    lat = miny
+                    while lat <= maxy + GRID_STEP_DEG:
+                        offset = (GRID_STEP_DEG / 2) if (row % 2 == 1) else 0.0
+                        lon = minx + offset
+                        while lon <= maxx + GRID_STEP_DEG:
+                            pt = Point(lon, lat)
+                            if geometry.contains(pt):
+                                d = geometry.boundary.distance(pt) * DEG_TO_M
+                                if d > best_dist:
+                                    best_dist, best_pt = d, (lat, lon)
+                            lon += GRID_STEP_DEG
+                        lat += GRID_STEP_DEG * (3 ** 0.5) / 2
+                        row += 1
+                    if best_pt:
+                        candidates = [[best_pt[0], best_pt[1], 1, MILES_TO_M, circle_shape(best_pt[0], best_pt[1], 1)]]
+                        print(f"   ℹ {delivery_station}: polígono estreito, fallback 1mi no ponto mais central")
+                    else:
+                        print(f"   ⚠ {delivery_station}: sem candidatos válidos")
                         continue
-                    self.hex_radius_map[hex_id] = radius_miles
+
+                # --- Greedy maximum-coverage ---
+                covered = geometry.__class__()   # geometria vazia
+                placed  = []                     # (lat, lon, r_m)
+
+                while candidates:
+                    # Filtra candidatos cujo centro já está dentro da área coberta
+                    # (eles teriam ganho zero ou mínimo — otimização de velocidade)
+                    active = [c for c in candidates if not covered.contains(Point(c[1], c[0]))]
+                    if not active:
+                        break
+
+                    # Escolhe o que cobre mais área nova
+                    best = max(active, key=lambda c: c[4].difference(covered).area)
+                    gain_m2 = best[4].difference(covered).area * (DEG_TO_M ** 2)
+
+                    if gain_m2 < MIN_GAIN_M2:
+                        break
+
+                    placed.append((best[0], best[1], best[2], best[3]))  # lat, lon, r_miles, r_m
+                    covered = covered.union(best[4])
+
+                    # Remove candidatos cujo centro foi coberto pelo novo círculo
+                    candidates = [c for c in candidates if not best[4].contains(Point(c[1], c[0]))]
+
+                total_m2   = geometry.area * (DEG_TO_M ** 2)
+                covered_m2 = covered.intersection(geometry).area * (DEG_TO_M ** 2)
+                pct = 100 * covered_m2 / total_m2 if total_m2 > 0 else 0
+
+                for lat, lon, r_miles, r_m in placed:
                     centroid_data.append({
                         'delivery_station': delivery_station,
-                        'hex': hex_id,
-                        'latitude': hex_lat,
-                        'longitude': hex_lon,
-                        'radius_miles': radius_miles,
+                        'latitude': lat,
+                        'longitude': lon,
+                        'radius_miles': r_miles,
                     })
-                    valid_count += 1
+                    self.hex_radius_map[h3.latlng_to_cell(lat, lon, 8)] = r_miles
 
-                print(f"   ✓ {delivery_station}: {valid_count} círculos (raio: {radius_miles} mi, res H3: {h3_res}, área: {geometry.area:.4f}°²)")
+                print(f"   ✓ {delivery_station}: {len(placed)} círculos, cobertura ~{pct:.1f}%")
 
             except Exception as e:
                 delivery_station = feature.get('properties', {}).get('delivery_station', 'UNKNOWN')
@@ -193,8 +255,7 @@ class HexagonGenerator:
                 continue
 
         centroid_df = pd.DataFrame(centroid_data)
-        print(f"\n✅ Total de círculos gerados: {len(centroid_df)}")
-
+        print(f"\n✅ Total de círculos: {len(centroid_df)}")
         return centroid_df
 
     def export_csv(self, output_filename="hexagons_res7.csv"):
@@ -220,12 +281,9 @@ class HexagonGenerator:
 
     def export_circles_csv(self, centroid_df: pd.DataFrame, output_filename="marketing_circles.csv"):
         """
-        Exporta CSV com os círculos de cobertura de marketing gerados a partir da jurisdição.
+        Exporta CSV com os círculos de cobertura de marketing.
         Colunas: delivery_station, latitude, longitude, radius_meters
-        Raio convertido de milhas para metros (1 milha = 1609.344 m).
         """
-        MILES_TO_METERS = 1609.344
-
         if centroid_df.empty:
             print("⚠ Nenhum dado de círculos para exportar.")
             return
@@ -243,7 +301,7 @@ class HexagonGenerator:
                     row['delivery_station'],
                     row['latitude'],
                     row['longitude'],
-                    round(row['radius_miles'] * MILES_TO_METERS),
+                    round(row['radius_miles'] * 1609.344),
                 ])
 
         print(f"✅ CSV de círculos salvo em {output_path}")

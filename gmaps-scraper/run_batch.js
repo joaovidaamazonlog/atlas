@@ -28,6 +28,7 @@ const BUSINESS_TYPES = [
     'açaí e sorveteria',
     'chaveiro',
     'assistência técnica',
+    'disk agua e gas'
 ];
 
 const DATA_DIR          = path.join(__dirname, '..', 'data');

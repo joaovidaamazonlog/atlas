@@ -245,6 +245,21 @@ export async function searchLocation(partnerId) {
     const [result] = await geocodeBatch([term]);
     if (result?.lat && result?.lng) {
         state.map.setView([result.lat, result.lng], 16);
+
+        // Remove pin anterior de busca, se existir
+        if (state._searchPin) {
+            state._searchPin.remove();
+            state._searchPin = null;
+        }
+        // Cria pin temporário — fechar o popup remove o pin do mapa
+        state._searchPin = L.marker([result.lat, result.lng])
+            .addTo(state.map)
+            .bindPopup(`<b>📍 ${term}</b>`)
+            .openPopup();
+        state._searchPin.on('popupclose', () => {
+            state._searchPin.remove();
+            state._searchPin = null;
+        });
     } else {
         alert('Nenhum parceiro ou endereco encontrado para: ' + term);
     }

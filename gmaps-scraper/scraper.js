@@ -77,7 +77,7 @@ async function scrapeGmaps(query, lat, long) {
         });
 
         const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${long},15z?hl=pt-BR`;
-        await searchPage.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await searchPage.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
         await searchPage.waitForSelector('a[href*="/maps/place/"]', { timeout: 15000 }).catch(() => null);
         await autoScroll(searchPage, 'div[role="feed"]');
 
@@ -168,7 +168,7 @@ async function _scrapeDetail(browser, link) {
     });
 
     try {
-        await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        await page.goto(link, { waitUntil: 'networkidle2', timeout: 30000 });
 
         // Aguardar o painel de detalhes carregar — o endereço completo (com CEP)
         // é renderizado num segundo request após o carregamento inicial da página.

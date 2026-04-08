@@ -50,6 +50,37 @@ export async function loadResults() {
 }
 
 /**
+ * Normaliza os campos de endereço da Receita Federal num formato legível
+ * e compatível com geocodificação.
+ * Ex: "Rua das Flores, 123 - Centro, Belo Horizonte - MG, 30000-000"
+ */
+function _normalizeAddress(logradouro, numero, bairro, municipio, uf, cep) {
+    // Capitalizar primeira letra de cada palavra, exceto preposições
+    const PREPS = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'a', 'o']);
+    const titleCase = str => (str || '')
+        .toLowerCase()
+        .replace(/[^\w\s]/g, c => c) // preservar pontuação
+        .split(' ')
+        .map((w, i) => (i === 0 || !PREPS.has(w)) ? w.charAt(0).toUpperCase() + w.slice(1) : w)
+        .join(' ')
+        .trim();
+
+    // Limpar número: remover zeros à esquerda, "S/N" vira "S/N"
+    const num = (numero || '').trim().replace(/^0+(\d)/, '$1') || 'S/N';
+
+    // Formatar CEP: 00000000 → 00000-000
+    const cepFmt = (cep || '').replace(/\D/g, '').replace(/^(\d{5})(\d{3})$/, '$1-$2');
+
+    const parts = [
+        logradouro ? `${titleCase(logradouro)}, ${num}` : null,
+        bairro     ? titleCase(bairro)                  : null,
+        municipio  ? `${titleCase(municipio)} - ${(uf || '').toUpperCase()}` : null,
+        cepFmt     || null,
+    ];
+    return parts.filter(Boolean).join(', ');
+}
+
+/**
  * Busca empresas na API da Receita Federal por lista de CEPs.
  * @param {string[]} ceps
  * @returns {Promise<ProspectCompany[]>}
@@ -66,7 +97,7 @@ export async function loadFromApi(ceps) {
         const data = await res.json();
         return (data.empresas || []).map(e => new ProspectCompany({
             nome:             e.razao_social || e.nome_fantasia || 'N/A',
-            endereco:         [e.endereco, e.bairro, e.cep, e.uf].filter(Boolean).join(', '),
+            endereco:         _normalizeAddress(e.endereco, e.numero, e.bairro, e.municipio, e.uf, e.cep),
             telefone_1:       e.telefone_1 || null,
             telefone_2:       e.telefone_2 || null,
             site:             'N/A',
@@ -254,8 +285,8 @@ const _pinnedLeadMarkers = new Map();
 
 const _pinIcon = L.divIcon({
     className: '',
-    html: `<div style="font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px #0006);">📍</div>`,
-    iconAnchor: [11, 22],
+    html: `<div style="font-size:32px;line-height:1;filter:drop-shadow(0 2px 4px #0008);">📍</div>`,
+    iconAnchor: [16, 32],
 });
 
 function _leadKey(r) {
@@ -270,9 +301,16 @@ function _togglePin(r, btnEl) {
         btnEl.title = 'Fixar no mapa';
         btnEl.style.opacity = '0.35';
     } else {
+        const phone = r.primaryPhone || r.secondaryPhone;
         const marker = L.marker([r.lat, r.lon], { icon: _pinIcon })
             .addTo(state.map)
-            .bindPopup(`<b>${r.nome}</b><br><span style="font-size:11px;">${r.endereco}</span>`);
+            .bindPopup(`
+                <b>${r.nome}</b><br>
+                <span style="font-size:11px;">${r.endereco}</span>
+                ${phone ? `<br><span style="font-size:11px;">📞 ${phone}</span>` : ''}
+            `)
+            .openPopup();
+        state.map.setView([r.lat, r.lon], Math.max(state.map.getZoom(), 15));
         _pinnedLeadMarkers.set(key, marker);
         btnEl.title = 'Remover do mapa';
         btnEl.style.opacity = '1';

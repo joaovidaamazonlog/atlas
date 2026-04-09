@@ -514,6 +514,117 @@ export function updateRoutesStats() {
 }
 
 // ---------------------------------------------------------------------------
+// ANALISE DE AREA
+// ---------------------------------------------------------------------------
+
+export function populateAreaAnalysisFilters() {
+    const prospects = state.allMarkersData.filter(m => m.status === 'Prospect');
+    const states = [...new Set(prospects.map(m => m.state).filter(Boolean))].sort();
+    const sel = document.getElementById('areaStateFilter');
+    if (!sel) return;
+    sel.innerHTML = '<option value="all" selected>Todos</option>';
+    states.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+}
+
+function renderStatsPopup(prospects, { state: stateFilter, decision: decisionFilter }) {
+    closeStatsPopup(); // remove popup anterior se existir
+
+    const total   = prospects.length;
+    const goCount = prospects.filter(p => p.decision === 'Go').length;
+    const approvalRate = total > 0 ? ((goCount / total) * 100).toFixed(1) : '0.0';
+
+    const NO_GO_REASONS = [
+        'Sem oportunidade próxima',
+        'Sem oportunidade próxima na borda',
+        'Fora de jurisdição',
+    ];
+    const reasonCounts = {};
+    NO_GO_REASONS.forEach(r => {
+        reasonCounts[r] = prospects.filter(p => p.decision === 'No Go' && p.reason === r).length;
+    });
+
+    const stateLabel    = stateFilter    === 'all' ? 'Todos' : stateFilter;
+    const decisionLabel = decisionFilter === 'all' ? 'Todos' : decisionFilter;
+
+    const reasonRows = NO_GO_REASONS.map(r => {
+        const count = reasonCounts[r];
+        const pct   = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
+        return `<tr><td>${r}</td><td>${count}</td><td>${pct}%</td></tr>`;
+    }).join('');
+
+    const emptyMsg = total === 0
+        ? '<p class="text-muted">Nenhum prospect encontrado para os filtros selecionados.</p>'
+        : '';
+
+    const html = `
+      <div id="stats-area-popup" style="
+        position:fixed; top:80px; right:20px; z-index:9999;
+        background:#fff; padding:16px; border-radius:8px;
+        box-shadow:0 2px 12px rgba(0,0,0,0.2); min-width:320px; max-width:420px;
+        font-size:13px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <b>Análise de Área</b>
+          <button onclick="UIManager.closeStatsPopup()"
+                  style="border:none;background:none;font-size:1.4em;cursor:pointer;">&times;</button>
+        </div>
+        <p class="text-muted mb-1">Estado: <b>${stateLabel}</b> &nbsp;|&nbsp; Decisão: <b>${decisionLabel}</b></p>
+        <hr class="my-2">
+        ${emptyMsg}
+        ${total > 0 ? `
+        <table style="width:100%;margin-bottom:8px;">
+          <tr><td><b>Total de Prospects</b></td><td>${total}</td></tr>
+          <tr><td><b>Aprovados (Go)</b></td><td>${goCount}</td></tr>
+          <tr><td><b>Índice de Aprovação</b></td><td>${approvalRate}%</td></tr>
+        </table>
+        <b>Motivos de Não Aprovação:</b>
+        <table style="width:100%;margin-top:4px;">
+          <thead><tr><th>Motivo</th><th>#</th><th>%</th></tr></thead>
+          <tbody>${reasonRows}</tbody>
+        </table>` : ''}
+      </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', html);
+}
+
+export function analyseArea() {
+    const selState    = document.getElementById('areaStateFilter')?.value ?? 'all';
+    const selDecision = document.getElementById('areaDecisionFilter')?.value ?? 'all';
+
+    let filtered = state.allMarkersData.filter(m => m.status === 'Prospect');
+    if (selState    !== 'all') filtered = filtered.filter(m => m.state    === selState);
+    if (selDecision !== 'all') filtered = filtered.filter(m => m.decision === selDecision);
+
+    renderStatsPopup(filtered, { state: selState, decision: selDecision });
+}
+
+export function closeStatsPopup() {
+    document.getElementById('stats-area-popup')?.remove();
+}
+
+export function computeFilteredProspects(data, stateFilter, decisionFilter) {
+    let filtered = data.filter(m => m.status === 'Prospect');
+    if (stateFilter    !== 'all') filtered = filtered.filter(m => m.state    === stateFilter);
+    if (decisionFilter !== 'all') filtered = filtered.filter(m => m.decision === decisionFilter);
+    return filtered;
+}
+
+export function computeStats(prospects) {
+    const total   = prospects.length;
+    const goCount = prospects.filter(p => p.decision === 'Go').length;
+    const approvalRate = total > 0 ? (goCount / total) * 100 : 0;
+    const NO_GO_REASONS = [
+        'Sem oportunidade próxima',
+        'Sem oportunidade próxima na borda',
+        'Fora de jurisdição',
+    ];
+    const reasonCounts = {};
+    NO_GO_REASONS.forEach(r => {
+        reasonCounts[r] = prospects.filter(p => p.decision === 'No Go' && p.reason === r).length;
+    });
+    return { total, goCount, approvalRate, reasonCounts };
+}
+
+// ---------------------------------------------------------------------------
 // SOLICITACAO DE RESGATE
 // ---------------------------------------------------------------------------
 

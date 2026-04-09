@@ -127,6 +127,7 @@ class PartnerMetrics:
 
     partner_name: str       = ""
     decision: str           = ""
+    reason: str             = ""
     cluster_name: str       = "N/A"
     ctl_name: str           = "N/A"
     bdm_cluster: str        = "N/A"

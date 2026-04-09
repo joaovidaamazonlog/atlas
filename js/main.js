@@ -10,7 +10,7 @@ import { state, subscribe }          from './state.js';
 import { loadAll, applyFilters, resetFilters } from './modules/data-manager.js';
 import { initialize, createMarkers, createMarkersDeliveryStations, restyleMarkers, toggleRadii, toggleOptimizationBtn } from './modules/map-manager.js';
 import { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection } from './modules/polygon-manager.js';
-import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence } from './modules/ui-manager.js';
+import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence, populateAreaAnalysisFilters, analyseArea, closeStatsPopup } from './modules/ui-manager.js';
 import { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions } from './modules/route-manager.js';
 import { searchNearbyFromState, searchNearby } from './modules/gmaps-scraper.js';
 
@@ -34,6 +34,7 @@ subscribe('period', (period) => {
 subscribe('allMarkersData', () => {
     populateFilters();
     setupAutocomplete();
+    populateAreaAnalysisFilters();
 });
 
 // ---------------------------------------------------------------------------
@@ -43,7 +44,7 @@ subscribe('allMarkersData', () => {
 
 window.MapManager = { initialize, createMarkers, restyleMarkers, toggleRadii, toggleOptimizationBtn };
 window.PolygonManager = { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection };
-window.UIManager = { searchLocation, updateStats, togglePanelContent, requestAssistence };
+window.UIManager = { searchLocation, updateStats, togglePanelContent, requestAssistence, analyseArea, closeStatsPopup };
 window.RouteManager = { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions };
 window.GmapsScraper = { searchNearbyFromState, searchNearby };
 window.DataManager  = { applyFilters, resetFilters };
@@ -87,6 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('close-stats-panel')?.addEventListener('click', () => statsPanel?.classList.remove('open'));
     document.querySelectorAll('#stats-inner-panel a[data-toggle="tab"]').forEach(tab => {
         tab.addEventListener('shown.bs.tab', e => updateStats(e.target.getAttribute('href').substring(1)));
+    });
+
+    // Fechar Stats Popup ao trocar de aba
+    document.querySelectorAll('#controlTabs a[data-toggle="tab"]').forEach(tab => {
+        tab.addEventListener('shown.bs.tab', e => {
+            const target = e.target.getAttribute('href');
+            if (target !== '#highlight-content') closeStatsPopup();
+        });
     });
 
     // Botao HCP

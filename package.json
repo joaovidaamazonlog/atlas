@@ -1,0 +1,12 @@
+{
+  "name": "atlas",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest js/tests/area-analysis.test.js",
+    "test:pbt": "node js/tests/area-analysis.test.js"
+  },
+  "devDependencies": {
+    "fast-check": "^3.22.0"
+  }
+}

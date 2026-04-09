@@ -483,6 +483,7 @@ def _write_geojson(
                 "ctl":               p.ctl_name,
                 "territory_id":      p.cluster_name,
                 "decision":          p.decision,
+                "reason":            p.reason,
                 "matched_slot_id":   p.matched_slot_id or "",
                 "cap_suggestion":    p.capacity_s,
                 "radius_suggestion": p.radius_s,

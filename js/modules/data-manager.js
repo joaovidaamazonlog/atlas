@@ -198,6 +198,7 @@ function _aggregateOptimizationData() {
             if (info) {
                 partner.bucket_ade        = info.properties.territory_id;
                 partner.decision          = info.properties.decision;
+                partner.reason            = info.properties.reason ?? '';
                 partner.optimization.radius_suggestion = info.properties.radius_suggestion;
                 partner.optimization.cap_suggestion    = info.properties.cap_suggestion;
                 if (info.properties.delivery_station) {

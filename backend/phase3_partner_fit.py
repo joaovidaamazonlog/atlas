@@ -246,6 +246,22 @@ def _match_station(
     all_prospects = partner_data.prospects_in_jurisdiction()
     prospects_df = all_prospects[all_prospects["identified_base"] == station_code].copy()
 
+    # Prospects fora de jurisdicao — candidatos a match por proximidade de slot
+    # Pré-computar conjunto de todos os hexes cobertos pelos slots desta base
+    # para filtrar apenas prospects que estejam no grid_disk=1 de algum slot.
+    all_slot_neighbors: Set[str] = set()
+    for slot in all_slots:
+        all_slot_neighbors.update(h3.grid_disk(slot.origin_hex, 1))
+
+    outside_prospects_df = partner_data.prospects_outside_jurisdiction()
+    # Filtrar apenas os que estão fisicamente próximos a algum slot desta base
+    border_prospects_df = outside_prospects_df[
+        outside_prospects_df["origin_hex"].isin(all_slot_neighbors)
+    ].copy()
+    if not border_prospects_df.empty:
+        print(f"  [{station_code}] {len(border_prospects_df)} prospect(s) fora de "
+              f"jurisdição mas dentro de grid_disk=1 de algum slot — incluídos no pool.")
+
     # Inactives + Exited-Regretted por station_code
     inactive_df = partner_data.partners_df[
         (partner_data.partners_df["station_code"] == station_code)
@@ -273,6 +289,16 @@ def _match_station(
                            str(row.get("origin_hex", "")),
                            str(row.get("salesforce_id", "")),
                            row, "PROSPECT", station_code))
+
+    # Prospects de borda (fora de jurisdição mas próximos a um slot)
+    border_sfids: Set[str] = set()
+    for _, row in border_prospects_df.iterrows():
+        sfid = str(row.get("salesforce_id", ""))
+        border_sfids.add(sfid)
+        candidates.append((STATUS_PRIORITY["Prospect"],
+                           str(row.get("origin_hex", "")),
+                           sfid,
+                           row, "PROSPECT_BORDER", station_code))
 
     for _, row in inactive_df.iterrows():
         prio = STATUS_PRIORITY.get(str(row.get("status", "")), 5)
@@ -311,51 +337,48 @@ def _match_station(
             continue
 
         # Candidatos elegiveis:
-        # - origin_hex em grid_disk(slot.origin_hex, 1) — proximidade física
-        # - território pré-computado == território do slot — sem vazamento entre territórios
+        # Regra geral: origin_hex em grid_disk(slot.origin_hex, 1) + território correto
+        # Exceção (prospects de borda): origin_hex em grid_disk=1 do slot é suficiente,
+        #   mesmo sem território resolvido (estavam fora de jurisdição).
         slot_neighbors = set(h3.grid_disk(slot.origin_hex, 1))
         eligible = [
             c for c in candidates
             if c[2] not in allocated_sids
             and c[1] in slot_neighbors
-            and candidate_territory.get(c[2]) == slot.bucket_id
+            and (
+                candidate_territory.get(c[2]) == slot.bucket_id  # regra normal
+                or c[4] == "PROSPECT_BORDER"                      # borda: só proximidade
+            )
         ]
 
         if not eligible:
             continue
 
-        # Ordenar: prioridade de status (asc) → distancia H3 (asc)
+        # Ordenar prospects por qualidade do match de hex antes da prioridade de status:
+        #   match_tier 0 = origin_hex == slot.origin_hex (match exato)
+        #   match_tier 1 = origin_hex in grid_disk=1 (vizinho)
+        # Depois: status_priority (asc) → distancia H3 (asc)
         eligible.sort(key=lambda c: (
-            c[0],
-            h3.grid_distance(c[1], slot.origin_hex) if c[1] else 99,
+            c[0],                                                        # status priority
+            0 if c[1] == slot.origin_hex else 1,                        # match_tier
+            h3.grid_distance(c[1], slot.origin_hex) if c[1] else 99,    # distância
         ))
 
         best = eligible[0]
         prio, origin_hex, sfid, row, entity_type, p_station = best
 
-        # Determinar decision baseado em status (parceiro MATCHED com vaga)
+        # Determinar decision/reason baseado em status (parceiro MATCHED com vaga)
         status_str = str(row.get("status", ""))
-        if entity_type == "INACTIVE_EXITED":
-            decision = f"Reavaliar possivel retorno - vaga {slot.slot_id}"
-            optDecision = None
-        elif entity_type == "PROSPECT":
-            decision = f"Seguir cadastro - vaga {slot.slot_id}"
-            optDecision = None
-        elif status_str == "Active":
-            decision = f"Vinculado a vaga {slot.slot_id}"
+        if status_str == "Active":
             optDecision = "Optimization suggested"
-        elif status_str in ("Onboarding", "BG Checks"):
-            decision = f"Vinculado a vaga {slot.slot_id}"
-            optDecision = None
         else:
-            decision = f"Vinculado a vaga {slot.slot_id}"
             optDecision = None
 
         pm = row_to_partner_metrics(
             row=row,
             entity_type=entity_type,
             station_code=p_station,
-            decision=decision,
+            decision="Go",
             radius_s=slot.radius_s,
             capacity_s=slot.capacity_s,
             optimization_decision=optDecision,
@@ -365,6 +388,7 @@ def _match_station(
                 for a in slot.allocations
             ],
         )
+        pm.reason = "Seguir cadastro"
         pm.matched_slot_id = slot.slot_id
 
         # Território do parceiro (pré-computado pela sua localização geográfica)
@@ -386,19 +410,28 @@ def _match_station(
 
         status_str = str(row.get("status", ""))
 
-        # Decision para parceiros NAO-MATCHED (baseado em status)
-        if status_str == "Active":
+        # Decision/reason para parceiros NAO-MATCHED (baseado em status)
+        if entity_type == "PROSPECT":
+            decision = "No Go"
+            reason = "Sem oportunidade próxima"
+        elif entity_type == "PROSPECT_BORDER":
+            decision = "No Go"
+            reason = "Sem oportunidade próxima na borda"
+        elif status_str == "Active":
             decision = "Nao esta em uma localizacao ideal"
+            reason = ""
         elif status_str == "Onboarding":
             decision = "Nao esta em uma localizacao ideal"
+            reason = ""
         elif status_str == "BG Checks":
             decision = "Nao esta em uma localizacao ideal"
-        elif entity_type == "PROSPECT":
-            decision = "Não Cadastar - Sem oportunidade proxima"
+            reason = ""
         elif entity_type == "INACTIVE_EXITED":
             decision = "Finalizar cadastro - Sem oportunidade proxima"
+            reason = ""
         else:
             decision = "Nao esta em uma localizacao ideal"
+            reason = ""
 
         pm = row_to_partner_metrics(
             row=row,
@@ -408,6 +441,7 @@ def _match_station(
             radius_s=0,
             capacity_s=0,
         )
+        pm.reason = reason
         pm.bdm_cluster = bdm_cluster
 
         # Território já pré-computado
@@ -420,14 +454,20 @@ def _match_station(
         partner_results.append(pm)
 
     # ── Parceiros fora de jurisdicao ──────────────────────────────────────
+    # Prospects de borda já foram processados no pool de candidatos acima.
+    # Aqui listamos apenas os que não tiveram nenhuma proximidade com slots.
     outside_list: List[PartnerMetrics] = []
     outside_df = partner_data.prospects_outside_jurisdiction()
     for _, row in outside_df.iterrows():
+        sfid = str(row.get("salesforce_id", ""))
+        if sfid in border_sfids:
+            continue  # já tratado no pool (matched ou unmatched com decision própria)
         pm = row_to_partner_metrics(
             row=row, entity_type="PROSPECT",
-            station_code="", decision="Fora de jurisdição",
+            station_code="", decision="No Go",
         )
-        pm.cluster_name = "Out of Jurisdiction"  # Territory especial
+        pm.reason = "Fora de jurisdição"
+        pm.cluster_name = "Out of Jurisdiction"
         outside_list.append(pm)
 
     # ── Montar TerritoryFit por territorio ────────────────────────────────

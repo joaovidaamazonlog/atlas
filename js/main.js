@@ -13,6 +13,7 @@ import { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, tog
 import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence, populateAreaAnalysisFilters, analyseArea, closeStatsPopup } from './modules/ui-manager.js';
 import { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions } from './modules/route-manager.js';
 import { searchNearbyFromState, searchNearby } from './modules/gmaps-scraper.js';
+import * as ManagementDashboard from './modules/management-dashboard.js';
 
 // ---------------------------------------------------------------------------
 // REATIVIDADE — subscribers do estado global
@@ -48,6 +49,7 @@ window.UIManager = { searchLocation, updateStats, togglePanelContent, requestAss
 window.RouteManager = { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions };
 window.GmapsScraper = { searchNearbyFromState, searchNearby };
 window.DataManager  = { applyFilters, resetFilters };
+window.ManagementDashboard = ManagementDashboard;
 
 // ---------------------------------------------------------------------------
 // BOOTSTRAP
@@ -83,12 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const statsPanel = document.getElementById('stats-panel');
     document.getElementById('stats-toggle-button')?.addEventListener('click', () => {
         statsPanel?.classList.toggle('open');
-        if (statsPanel?.classList.contains('open')) updateActiveStatsTab();
+        if (statsPanel?.classList.contains('open')) ManagementDashboard.init();
     });
     document.getElementById('close-stats-panel')?.addEventListener('click', () => statsPanel?.classList.remove('open'));
-    document.querySelectorAll('#stats-inner-panel a[data-toggle="tab"]').forEach(tab => {
-        tab.addEventListener('shown.bs.tab', e => updateStats(e.target.getAttribute('href').substring(1)));
-    });
 
     // Fechar Stats Popup ao trocar de aba
     document.querySelectorAll('#controlTabs a[data-toggle="tab"]').forEach(tab => {

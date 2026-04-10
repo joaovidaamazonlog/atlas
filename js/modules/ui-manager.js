@@ -378,7 +378,7 @@ function _popupProspect(data) {
         </div>
         <hr class="my-2">
         <div class="partner-actions">
-            ${_table(_row('Decisao',data.decision)+_row('Capacidade Sugerida',data.optimization.cap_suggestion+' pkgs')+_row('Raio Sugerido',data.optimization.radius_suggestion+' m'))}
+            ${_table(_row('Decisao',data.reason)+_row('Capacidade Sugerida',data.optimization.cap_suggestion+' pkgs')+_row('Raio Sugerido',data.optimization.radius_suggestion+' m'))}
         </div>
     </div>`;
 }

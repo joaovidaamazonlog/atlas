@@ -186,8 +186,121 @@ def _write_strategic(
 
 
 # ---------------------------------------------------------------------------
-# 2. RELATORIO EXECUTIVO
+# 2. RELATORIO EXECUTIVO (TXT + JSON)
 # ---------------------------------------------------------------------------
+
+def _ceps_for_territory(
+    territory_id: str,
+    territories: TerritoriesResult,
+    pkg: PackageData,
+) -> List[str]:
+    """Retorna lista de CEPs únicos associados a um território via hex_to_ceps."""
+    ceps: Set[str] = set()
+    for hex_id, tid in territories.hex_to_territory.items():
+        if tid == territory_id:
+            ceps.update(pkg.hex_to_ceps.get(hex_id, set()))
+    return sorted(ceps)
+
+
+def _write_executive_json(
+    path: Path,
+    territories: TerritoriesResult,
+    supply: IdealSupplyResult,
+    fit: FitResult,
+    pkg: PackageData,
+) -> None:
+    """
+    Gera relatorio_executivo.json com os dados estruturados do relatório executivo.
+    Inclui CEPs por território (via hex_to_ceps).
+    Consumido diretamente pelo Management Dashboard no frontend.
+    """
+    generated_at = datetime.now().strftime("%d/%m/%Y %H:%M")
+    bases = []
+
+    for station in sorted(territories.stations):
+        t_metas = territories.territories_for(station)
+        bdm     = Config.get_bdm_cluster(station)
+
+        total_daily_demand = sum(m["daily_demand"] for m in t_metas)
+        total_slots        = sum(len(supply.slots_for(m["territory_id"])) for m in t_metas)
+        total_open         = sum(
+            len([s for s in supply.slots_for(m["territory_id"]) if s.is_open])
+            for m in t_metas
+        )
+
+        base_partners = [
+            p for tid in [m["territory_id"] for m in t_metas]
+            for p in (fit.territories[tid].partners if tid in fit.territories else [])
+        ]
+        active     = sum(1 for p in base_partners if p.status == "Active")
+        onboarding = sum(1 for p in base_partners if p.status == "Onboarding")
+        bg         = sum(1 for p in base_partners if p.status == "BG Checks")
+        prospects  = sum(1 for p in base_partners if p.entity_type == "PROSPECT")
+        inactives  = sum(1 for p in base_partners if p.entity_type == "INACTIVE_EXITED")
+
+        total_filled = total_slots - total_open
+        coverage     = round(total_filled / total_slots, 4) if total_slots else 0.0
+        attainment   = round(active / total_slots, 4) if total_slots else 0.0
+
+        territory_list = []
+        for meta in sorted(t_metas, key=lambda m: m["territory_id"]):
+            tid          = meta["territory_id"]
+            ctl          = _ctl_for_territory(tid)
+            t_fit        = fit.territories.get(tid)
+            t_slots      = supply.slots_for(tid)
+            n_open       = len([s for s in t_slots if s.is_open])
+            t_active     = len(t_fit.partners_by_status("Active"))     if t_fit else 0
+            t_onboarding = len(t_fit.partners_by_status("Onboarding")) if t_fit else 0
+            t_bg         = len(t_fit.partners_by_status("BG Checks"))  if t_fit else 0
+            t_prospects  = len([p for p in (t_fit.partners if t_fit else []) if p.entity_type == "PROSPECT"])
+            t_inactives  = len([p for p in (t_fit.partners if t_fit else []) if p.entity_type == "INACTIVE_EXITED"])
+            t_attainment = round(t_fit.attainment / 100, 4) if t_fit else 0.0
+            t_accuracy   = round(t_fit.accuracy / 100, 4)   if t_fit else 0.0
+            ceps         = _ceps_for_territory(tid, territories, pkg)
+
+            territory_list.append({
+                "id":          tid,
+                "ctl":         ctl,
+                "dailyDemand": round(meta["daily_demand"], 1),
+                "totalSlots":  len(t_slots),
+                "openSlots":   n_open,
+                "active":      t_active,
+                "onboarding":  t_onboarding,
+                "bg":          t_bg,
+                "prospects":   t_prospects,
+                "inactive":    t_inactives,
+                "attainment":  t_attainment,
+                "accuracy":    t_accuracy,
+                "ceps":        ceps,
+            })
+
+        bases.append({
+            "code":          station,
+            "bdm":           bdm,
+            "numTerritories": len(t_metas),
+            "dailyDemand":   round(total_daily_demand, 1),
+            "idealSlots":    total_slots,
+            "matchedSlots":  total_filled,
+            "openSlots":     total_open,
+            "coverage":      coverage,
+            "partners": {
+                "active":     active,
+                "onboarding": onboarding,
+                "bgChecks":   bg,
+                "prospects":  prospects,
+                "inactive":   inactives,
+            },
+            "attainment":    attainment,
+            "territories":   territory_list,
+        })
+
+    payload = {"generatedAt": generated_at, "bases": bases}
+
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    print(f"  ✅ {path.name}")
+
 
 def _write_executive(
     path: Path,
@@ -601,10 +714,15 @@ def run_phase5(
     _write_strategic(p, territories, supply, fit, pkg, cnpj_result=cnpj_result)
     paths["strategic"] = p
 
-    # 2. Relatorio executivo
+    # 2. Relatorio executivo (TXT)
     p = out_dir / "RELATORIO_EXECUTIVO.txt"
     _write_executive(p, territories, supply, fit, pkg)
     paths["executive"] = p
+
+    # 2b. Relatorio executivo (JSON — consumido pelo Management Dashboard)
+    p = out_dir / "relatorio_executivo.json"
+    _write_executive_json(p, territories, supply, fit, pkg)
+    paths["executive_json"] = p
 
     # 3. Partners CSV
     p = out_dir / "PARTNERS_PER_DS_BUCKET.csv"

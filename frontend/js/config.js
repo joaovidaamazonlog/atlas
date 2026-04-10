@@ -10,12 +10,13 @@ const BASE_URL      = 'https://joaovidaamazonlog.github.io/atlas/output_data';
 const BASE_URL_CFG  = 'https://joaovidaamazonlog.github.io/atlas/config';
 
 export const DATA_URLS = Object.freeze({
-    partners:     `${BASE_URL}/dados_mapa.json`,
-    territories:  `${BASE_URL}/territories.geojson`,
-    jurisdiction: `${BASE_URL_CFG}/jurisdiction.geojson`,
-    optimization: `${BASE_URL}/optimization_data.geojson`,
-    heatmap:      `${BASE_URL}/heatmap.geojson`,
-    gmapsResults: `${BASE_URL}/gmaps_results.json`,
+    partners:        `${BASE_URL}/dados_mapa.json`,
+    territories:     `${BASE_URL}/territories.geojson`,
+    jurisdiction:    `${BASE_URL_CFG}/jurisdiction.geojson`,
+    optimization:    `${BASE_URL}/optimization_data.geojson`,
+    heatmap:         `${BASE_URL}/heatmap.geojson`,
+    gmapsResults:    `${BASE_URL}/gmaps_results.json`,
+    executiveReport: `${BASE_URL}/relatorio_executivo.json`,
 });
 
 /** Configuração inicial do mapa Leaflet */

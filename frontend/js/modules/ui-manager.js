@@ -676,7 +676,7 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
           <!-- Motivos de No Go — sempre visíveis no overview -->
           ${overview.nogo > 0 ? `
           <div style="margin-top:10px;">
-            <b style="font-size:11px;color:#555">Motivos de No Go:</b>
+            <b style="font-size:11px;color:#555">Detalhamento de No Go:</b>
             <table style="width:100%;margin-top:4px;font-size:11px;border-collapse:collapse;">
               <thead><tr style="background:#f0f0f0">
                 <th style="padding:3px 4px;text-align:left">Motivo</th>

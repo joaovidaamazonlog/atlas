@@ -88,13 +88,15 @@ export class Partner {
         /** @type {string}           */ this.tooltip                = raw.tooltip                ?? '';
 
         // Campos injetados pelo data-manager via optimization_data.geojson (não vêm do JSON)
-        /** @type {string}           */ this.bucket_ade             = raw.bucket_ade             ?? '';
+        /** @type {string}           */ this.bucket_ade             = raw.bucket_ade             ?? raw.bucket ?? '';
         /** @type {string}           */ this.regiao                 = raw.regiao                 ?? '';
         /** @type {string}           */ this.decision               = raw.decision               ?? '';
         /** @type {string}           */ this.reason                 = raw.reason                 ?? '';
         /** @type {OptimizationData} */ this.optimization           = raw.optimization
             ? new OptimizationData(raw.optimization.radius_suggestion, raw.optimization.cap_suggestion)
-            : OptimizationData.default();
+            : (raw.radius_suggestion != null
+                ? new OptimizationData(raw.radius_suggestion, raw.cap_suggestion)
+                : OptimizationData.default());
 
         // Campos de slots ideais (injetados por Partner.fromSlot)
         /** @type {string[]|string}  */ this.ceps                   = raw.ceps                   ?? [];

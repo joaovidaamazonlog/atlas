@@ -6,22 +6,22 @@
  * Responsabilidades
  * -----------------
  * - Fetch paralelo dos arquivos de dados estáticos
- * - Construção dos objetos Partner a partir dos dados brutos
- * - Agregação de dados de otimização nos parceiros
+ * - Construção dos objetos Partner a partir dos dados brutos (campos de
+ *   otimização já embutidos pelo backend no dados_mapa.json)
  * - Associação de parceiros a polígonos (regiao)
+ * - Injeção de slots ideais como marcadores "New"
  * - Comunicação com o Web Worker para filtragem off-thread
- * - Exposição de applyFilters() e resetFilters()
  */
 
 import { state, subscribe }    from '../state.js';
-import { Partner, PartnerStatus } from '../models.js';
+import { Partner } from '../models.js';
 import { DATA_URLS }           from '../config.js';
 
 // ---------------------------------------------------------------------------
 // WEB WORKER
 // ---------------------------------------------------------------------------
 
-const dataWorker = new Worker('../../data-worker.js');
+const dataWorker = new Worker('./data-worker.js');
 
 dataWorker.onmessage = (e) => {
     if (e.data.action === 'filterResult') {
@@ -48,7 +48,7 @@ export async function loadAll() {
                 fetch(DATA_URLS.heatmap).then(r => r.json()).catch(() => null),
             ]);
 
-        // Construir objetos Partner tipados
+        // Construir objetos Partner — campos de otimização já vêm embutidos
         state.allMarkersData = partnerData.allMarkerData
             .filter(p => p.lat !== null || p.lon !== null)
             .map(p => new Partner(p));
@@ -58,13 +58,12 @@ export async function loadAll() {
         state.polygonsData     = polygonData;
         state.jurisdictionData = jurisdictionData;
         state.optimizationData = optData;
+        // optimization_data.geojson agora contém apenas TERRITORY_HEX e IDEAL_SLOT
         state.idealSupplyData  = optData.features.filter(f => f.properties.type === 'IDEAL_SLOT');
         state.heatmapData      = heatmapData;
 
-        // Pipeline de enriquecimento
         _associatePartnersToPolygons();
         _injectOpportunitySlots();
-        _aggregateOptimizationData();
 
         applyFilters();
 
@@ -80,17 +79,14 @@ export async function loadAll() {
 // FILTROS
 // ---------------------------------------------------------------------------
 
-/**
- * Coleta os valores dos filtros da UI e envia ao Worker para filtragem off-thread.
- */
 export function applyFilters() {
     const get = id => document.getElementById(id);
 
     const filters = {
-        allMarkersData:   state.allMarkersData,
-        selectedStatuses: _getMultiSelect('statusFilter'),
-        selectedStations: _getMultiSelect('stationFilter'),
-        selectedBuckets:  _getMultiSelect('bucket_ade'),
+        allMarkersData:    state.allMarkersData,
+        selectedStatuses:  _getMultiSelect('statusFilter'),
+        selectedStations:  _getMultiSelect('stationFilter'),
+        selectedBuckets:   _getMultiSelect('bucket_ade'),
         initiativesFilter: get('initiativesFilter')?.value ?? 'all',
         jurisdictionFilter: get('jurisdictionFilter')?.value ?? 'all',
     };
@@ -102,9 +98,6 @@ export function applyFilters() {
     dataWorker.postMessage({ action: 'filter', filters });
 }
 
-/**
- * Reseta todos os filtros para o valor padrão e reaaplica.
- */
 export function resetFilters() {
     const set = (id, val) => {
         const el = document.getElementById(id);
@@ -130,10 +123,6 @@ export function resetFilters() {
 // PIPELINE INTERNO
 // ---------------------------------------------------------------------------
 
-/**
- * Associa cada parceiro ao polígono de território que o contém (campo regiao).
- * Usa turf.js para point-in-polygon.
- */
 function _associatePartnersToPolygons() {
     if (!state.polygonsData || !state.allMarkersData.length) return;
 
@@ -154,10 +143,6 @@ function _associatePartnersToPolygons() {
     console.log(`[DataManager] ${count} parceiros associados a polígonos.`);
 }
 
-/**
- * Injeta os slots ideais sem parceiro como marcadores do tipo "New"
- * para que apareçam no mapa como oportunidades.
- */
 function _injectOpportunitySlots() {
     if (!state.idealSupplyData?.length) return;
 
@@ -167,56 +152,10 @@ function _injectOpportunitySlots() {
     console.log(`[DataManager] ${slots.length} slots de oportunidade injetados.`);
 }
 
-/**
- * Agrega dados de otimização (territory_id, decision, radius/cap suggestion)
- * nos parceiros existentes a partir do optimization_data.geojson.
- */
-function _aggregateOptimizationData() {
-    if (!state.optimizationData) return;
-
-    // Índice rápido: salesforce_id → feature
-    /** @type {Map<string, Object>} */
-    const index = new Map(
-        state.optimizationData.features
-            .filter(f => f.properties.salesforce_id)
-            .map(f => [f.properties.salesforce_id, f])
-    );
-
-    const STATUSES_WITH_OPT = [
-        PartnerStatus.ACTIVE,
-        PartnerStatus.INACTIVE,
-        PartnerStatus.ONBOARDING,
-        PartnerStatus.BG_CHECKS,
-        PartnerStatus.PROSPECT,
-        PartnerStatus.EXITED,
-    ];
-
-    state.allMarkersData
-        .filter(p => STATUSES_WITH_OPT.includes(p.status))
-        .forEach(partner => {
-            const info = index.get(partner.salesforce_id);
-            if (info) {
-                partner.bucket_ade        = info.properties.territory_id;
-                partner.decision          = info.properties.decision;
-                partner.reason            = info.properties.reason ?? '';
-                partner.optimization.radius_suggestion = info.properties.radius_suggestion;
-                partner.optimization.cap_suggestion    = info.properties.cap_suggestion;
-                if (info.properties.delivery_station) {
-                    partner.delivery_station = info.properties.delivery_station;
-                }
-            }
-        });
-}
-
 // ---------------------------------------------------------------------------
 // HELPERS
 // ---------------------------------------------------------------------------
 
-/**
- * Retorna os valores selecionados de um <select multiple>.
- * @param {string} id
- * @returns {string[]}
- */
 function _getMultiSelect(id) {
     const el = document.getElementById(id);
     if (!el) return ['all'];

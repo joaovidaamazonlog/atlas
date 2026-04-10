@@ -54,11 +54,11 @@
                             <!-- Barra de Pesquisa -->
                             <div class="floating-panel" id="search-panel">
                                 <div id="search-container">
-                                    <form class= "form-search" onsubmit="event.preventDefault(); UIManager.searchPartner();">
+                                    <form class= "form-search" onsubmit="event.preventDefault(); UIManager.searchLocation();">
                                         <input type="text" class="form-control form-control-sm" id="search-input" placeholder="Pesquisar...">
                                     </form>
                                     <div class="btn-search">
-                                        <button class="btn btn-primary btn-sm" id="search-btn" onclick="UIManager.searchPartner()"><i class="fa fa-search"></i></button>
+                                        <button class="btn btn-primary btn-sm" id="search-btn" onclick="UIManager.searchLocation()"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                     <hr>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="showRadii" onchange="MapManager.toggleRadii()"><label class="form-check-label">Exibir Raios</label></div>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="showPolygons" onchange="PolygonManager.togglePolygons()"><label class="form-check-label">Exibir Ares de Prospecção</label></div>
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="showJurisdictions" onchange="PolygonManager.toggleJurisdictons()"><label class="form-check-label">Exibir Jurisdições</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="showJurisdictions" onchange="PolygonManager.toggleJurisdictions()"><label class="form-check-label">Exibir Jurisdições</label></div>
                                     <div class="form-check"><input class="form-check-input" type="checkbox" id="showOptimizationLayer" onchange="PolygonManager.toggleOptimizationLayer()"><label class="form-check-label">Exibir Camada de Otimização</label></div>
                                 </div>
                             </div>

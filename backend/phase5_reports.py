@@ -512,16 +512,14 @@ def _write_geojson(
     cnpj_result=None,
 ) -> None:
     """
-    FeatureCollection com tres camadas:
+    FeatureCollection com duas camadas:
 
-    TERRITORY_HEX  — poligono de cada hex com metadados do territorio
-    PARTNER_POINT  — ponto de cada parceiro (matched ou excedente)
+    TERRITORY_HEX  — polígono de cada hex com metadados do território
     IDEAL_SLOT     — ponto de cada vaga ideal ainda em aberto
 
-    Quando stations é fornecido, faz merge com o arquivo existente
-    preservando as features das demais stations.
+    PARTNER_POINT foi removido — os dados de parceiros agora estão
+    embutidos diretamente em dados_mapa.json.
     """
-    # Carregar features existentes de outras stations (merge parcial)
     existing_features: List[dict] = []
     if stations and path.exists():
         try:
@@ -530,6 +528,7 @@ def _write_geojson(
             existing_features = [
                 ft for ft in existing.get("features", [])
                 if ft.get("properties", {}).get("delivery_station") not in stations
+                and ft.get("properties", {}).get("type") != "PARTNER_POINT"
             ]
             print(f"  Merge {path.name}: mantendo {len(existing_features)} features de outras stations.")
         except Exception as e:
@@ -537,18 +536,11 @@ def _write_geojson(
 
     features: List[dict] = []
 
-    # ── Camada 1: hexagonos por territorio ───────────────────────────────
-    for territory_id, hex_id in territories.hex_to_territory.items():
-        # hex_id e a chave, territory_id e o valor — inverter nomenclatura local
-        hex_id_real     = hex_id          # confusao de nomes — corrigir abaixo
-        territory_id_real = territory_id  # idem
-
-    # hex_to_territory: hex_id -> territory_id
+    # ── Camada 1: hexágonos por território ───────────────────────────────
     for h, tid in territories.hex_to_territory.items():
-        meta    = territories.territory_index.get(tid, {})
-        t_fit   = fit.territories.get(tid)
-        ctl     = _ctl_for_territory(tid)
-        demand  = pkg.demand_map(meta.get("station_code", "")).get(h, 0)
+        meta   = territories.territory_index.get(tid, {})
+        ctl    = _ctl_for_territory(tid)
+        demand = pkg.demand_map(meta.get("station_code", "")).get(h, 0)
 
         boundary = h3.cell_to_boundary(h)
         coords   = [[c[1], c[0]] for c in boundary]
@@ -570,62 +562,25 @@ def _write_geojson(
             },
         })
 
-    # ── Camada 2: parceiros (todos os status, matched e excedentes) ───────
-    all_fit_partners: List[PartnerMetrics] = fit.all_partners()
-
-    for p in all_fit_partners:
-        import math
-        has_coords = p.lat and p.lon and not math.isnan(p.lat) and not math.isnan(p.lon)
-
-        geometry = (
-            {"type": "Point", "coordinates": [p.lon, p.lat]}
-            if has_coords else None
-        )
-
-        ceps = _ceps_for_partner(p, pkg.hex_to_ceps) if has_coords else []
-
-        features.append({
-            "type": "Feature",
-            "geometry": geometry,
-            "properties": {
-                "type":              "PARTNER_POINT",
-                "salesforce_id":     p.salesforce_id,
-                "name":              p.partner_name,
-                "status":            p.status,
-                "entity":            p.entity_type,
-                "delivery_station":  p.station_code or "",
-                "bdm":               p.bdm_cluster,
-                "ctl":               p.ctl_name,
-                "territory_id":      p.cluster_name,
-                "decision":          p.decision,
-                "reason":            p.reason,
-                "matched_slot_id":   p.matched_slot_id or "",
-                "cap_suggestion":    p.capacity_s,
-                "radius_suggestion": p.radius_s,
-                "ceps":              ceps,
-            },
-        })
-
-    # ── Camada 3: vagas ideais em aberto ──────────────────────────────────
+    # ── Camada 2: vagas ideais em aberto ─────────────────────────────────
     for slot in supply.all_slots:
         if not slot.is_open:
             continue
         ceps = _ceps_for_slot(slot, pkg.hex_to_ceps)
 
-        # Empresas candidatas do CNPJ lookup
         opportunities = []
         if cnpj_result:
             for c in cnpj_result.candidates_by_slot.get(slot.slot_id, []):
                 opportunities.append({
-                    "cnpj":          c.cnpj,
-                    "razao_social":  c.razao_social,
-                    "porte":         c.porte_descricao,
-                    "endereco":      c.endereco_completo,
-                    "cep":           c.cep,
-                    "telefone_1":    c.telefone_1,
-                    "telefone_2":    c.telefone_2,
-                    "email":         c.email,
-                    "responsavel":   c.responsavel,
+                    "cnpj":           c.cnpj,
+                    "razao_social":   c.razao_social,
+                    "porte":          c.porte_descricao,
+                    "endereco":       c.endereco_completo,
+                    "cep":            c.cep,
+                    "telefone_1":     c.telefone_1,
+                    "telefone_2":     c.telefone_2,
+                    "email":          c.email,
+                    "responsavel":    c.responsavel,
                     "cnae_principal": c.cnae_principal,
                 })
 
@@ -633,15 +588,15 @@ def _write_geojson(
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [slot.lon, slot.lat]},
             "properties": {
-                "type":             "IDEAL_SLOT",
-                "slot_id":          slot.slot_id,
-                "territory_id":     slot.bucket_id,
+                "type":            "IDEAL_SLOT",
+                "slot_id":         slot.slot_id,
+                "territory_id":    slot.bucket_id,
                 "delivery_station": slot.station_code,
-                "radius_s":         slot.radius_s,
-                "capacity_day":     round(slot.capacity_s, 1),
-                "ceps":             ceps,
-                "opportunities":    opportunities,
-                "n_opportunities":  len(opportunities),
+                "radius_s":        slot.radius_s,
+                "capacity_day":    round(slot.capacity_s, 1),
+                "ceps":            ceps,
+                "opportunities":   opportunities,
+                "n_opportunities": len(opportunities),
             },
         })
 
@@ -649,10 +604,9 @@ def _write_geojson(
         "type": "FeatureCollection",
         "features": existing_features + features,
         "metadata": {
-            "generated_at":    datetime.now().isoformat(timespec="seconds"),
-            "n_hex_features":  sum(1 for ft in existing_features + features if ft["properties"]["type"] == "TERRITORY_HEX"),
-            "n_partners":      sum(1 for ft in existing_features + features if ft["properties"]["type"] == "PARTNER_POINT"),
-            "n_open_slots":    sum(1 for ft in existing_features + features if ft["properties"]["type"] == "IDEAL_SLOT"),
+            "generated_at":   datetime.now().isoformat(timespec="seconds"),
+            "n_hex_features": sum(1 for ft in existing_features + features if ft["properties"]["type"] == "TERRITORY_HEX"),
+            "n_open_slots":   sum(1 for ft in existing_features + features if ft["properties"]["type"] == "IDEAL_SLOT"),
             "n_opportunities": sum(ft["properties"].get("n_opportunities", 0) for ft in existing_features + features if ft["properties"]["type"] == "IDEAL_SLOT"),
         },
     }
@@ -663,10 +617,56 @@ def _write_geojson(
     size_mb = path.stat().st_size / (1024 * 1024)
     print(f"  ✅ {path.name}  "
           f"({geojson['metadata']['n_hex_features']:,} hexes | "
-          f"{geojson['metadata']['n_partners']:,} parceiros | "
           f"{geojson['metadata']['n_open_slots']:,} vagas abertas | "
           f"{geojson['metadata']['n_opportunities']:,} candidatos CNPJ | "
           f"{size_mb:.1f} MB)")
+
+
+def _write_dados_mapa(
+    path: Path,
+    fit: FitResult,
+    partner_data_json_path: Path,
+    stations: Optional[List[str]] = None,
+) -> None:
+    """
+    Atualiza dados_mapa.json embutindo decision, reason, bucket_ade,
+    radius_suggestion e cap_suggestion diretamente em cada parceiro.
+
+    Faz merge parcial quando stations é fornecido — preserva parceiros
+    de outras stations que já estavam no arquivo.
+    """
+    if not partner_data_json_path.exists():
+        print(f"  WARN _write_dados_mapa: {partner_data_json_path} não encontrado — pulando.")
+        return
+
+    with open(partner_data_json_path, "r", encoding="utf-8") as f:
+        payload = json.load(f)
+
+    # Índice rápido: salesforce_id → PartnerMetrics
+    opt_index: Dict[str, PartnerMetrics] = {
+        p.salesforce_id: p
+        for p in fit.all_partners()
+        if p.salesforce_id
+    }
+
+    updated = 0
+    for record in payload.get("allMarkerData", []):
+        sfid = record.get("salesforce_id")
+        pm   = opt_index.get(sfid)
+        if pm:
+            record["decision"]          = pm.decision
+            record["reason"]            = pm.reason
+            record["bucket_ade"]        = pm.cluster_name or record.get("bucket")
+            record["radius_suggestion"] = pm.radius_s
+            record["cap_suggestion"]    = pm.capacity_s
+            updated += 1
+
+    with open(partner_data_json_path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    size_mb = partner_data_json_path.stat().st_size / (1024 * 1024)
+    print(f"  ✅ {partner_data_json_path.name}  "
+          f"({updated} parceiros enriquecidos | {size_mb:.1f} MB)")
 
 
 # ---------------------------------------------------------------------------
@@ -736,10 +736,15 @@ def run_phase5(
     _write_webleads_csv(p, webleads, stations=stations)
     paths["webleads_csv"] = p
 
-    # 5. GeoJSON final
+    # 5. GeoJSON final (TERRITORY_HEX + IDEAL_SLOT apenas)
     p = out_dir / "optimization_data.geojson"
     _write_geojson(p, territories, supply, fit, pkg, stations=stations, cnpj_result=cnpj_result)
     paths["geojson"] = p
+
+    # 6. Enriquecer dados_mapa.json com campos de otimização
+    dados_mapa_path = out_dir / "dados_mapa.json"
+    _write_dados_mapa(dados_mapa_path, fit, dados_mapa_path, stations=stations)
+    paths["dados_mapa"] = dados_mapa_path
 
     print(f"\n{'='*60}")
     print(f"  FASE 5 CONCLUIDA — {len(paths)} arquivos gerados")

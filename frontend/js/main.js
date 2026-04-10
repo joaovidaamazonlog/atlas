@@ -50,6 +50,8 @@ window.RouteManager = { generateRoute, startRouteFromHere, addStop, renderStopsL
 window.GmapsScraper = { searchNearbyFromState, searchNearby };
 window.DataManager  = { applyFilters, resetFilters };
 window.ManagementDashboard = ManagementDashboard;
+// Exposto diretamente pois é chamado via onclick inline sem namespace
+window.togglePanelContent = togglePanelContent;
 
 // ---------------------------------------------------------------------------
 // BOOTSTRAP

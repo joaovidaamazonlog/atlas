@@ -9,6 +9,8 @@
  *          getChartDataForBase(), sortTerritories(), getUniqueCeps()
  */
 
+import { DATA_URLS } from '../config.js';
+
 // ---------------------------------------------------------------------------
 // Estado interno
 // ---------------------------------------------------------------------------
@@ -937,7 +939,7 @@ export async function init() {
     root.innerHTML = `<div class="md-spinner-wrapper"><div class="md-spinner"></div><span>Carregando relatório...</span></div>`;
 
     try {
-        const response = await fetch('data/relatorio_executivo.json');
+        const response = await fetch(DATA_URLS.executiveReport);
         if (!response.ok) {
             throw new Error(`Não foi possível carregar o relatório (HTTP ${response.status})`);
         }

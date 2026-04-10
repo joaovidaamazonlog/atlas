@@ -11,28 +11,10 @@ Dois modos de operacao
     Fase 2: Identificacao de vagas ideais  -> ideal_supply.json
 
 --mode daily    (roda todo dia)
+    0. Lê Excel (Salesforce) via load_partners() → dados_mapa.json
     Fase 3: Matching parceiros x vagas     -> ideal_supply.json (atualizado)
     Fase 4: Qualificacao de webleads
-    Fase 5: Geracao de relatorios          -> *.txt, *.csv, *.geojson
-
-Uso
----
-    python orchestrator.py --mode setup
-    python orchestrator.py --mode daily
-    python orchestrator.py --mode setup --stations DSP2 DSP4
-    python orchestrator.py --mode daily --output output/2026-03-18/
-
-Dependencias entre artefatos
-------------------------------
-    setup  ->  territories_index.json
-               ideal_supply.json
-    daily  ->  le territories_index.json  (Fase 1 ja rodada)
-               le ideal_supply.json       (Fase 2 ja rodada)
-               escreve ideal_supply.json  (matched_partner_id atualizado)
-               escreve relatorios finais
-
-Se territories_index.json ou ideal_supply.json nao existirem no modo daily,
-o orchestrador aborta com mensagem descritiva indicando para rodar --mode setup.
+    Fase 5: Relatorios + enriquece dados_mapa.json com campos de otimizacao
 """
 
 from __future__ import annotations
@@ -44,7 +26,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
-from main import run_pipeline
 from load_packages import load_packages
 from load_partners import load_partners
 from models import Config
@@ -107,8 +88,10 @@ def run_daily(
     legacy_bucket_names: bool = False,
 ) -> None:
     """
-    Fases 3, 4 e 5: matching diario de parceiros e geracao de relatorios.
-    Le os artefatos de setup sem re-rodar territorializacao ou solver.
+    Pipeline diário completo:
+    1. Lê Excel (Salesforce) → serializa dados_mapa.json
+    2. Fases 3/4/5: matching, webleads, relatórios
+    3. Enriquece dados_mapa.json com campos de otimização (decision, reason, etc.)
     """
     print(f"\n{'#'*60}")
     print(f"  MODO DAILY")

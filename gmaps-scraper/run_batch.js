@@ -31,7 +31,7 @@ const BUSINESS_TYPES = [
     'disk agua e gas'
 ];
 
-const DATA_DIR          = path.join(__dirname, '..', 'data');
+const DATA_DIR          = path.join(__dirname, '..', 'output_data');
 const IDEAL_SUPPLY_PATH = path.join(DATA_DIR, 'ideal_supply.json');
 const TERRITORIES_PATH  = path.join(DATA_DIR, 'territories_index.json');
 const OUTPUT_PATH       = path.join(DATA_DIR, 'gmaps_results.json');

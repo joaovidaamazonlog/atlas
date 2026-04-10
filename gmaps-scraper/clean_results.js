@@ -11,7 +11,7 @@
 const fs   = require('fs');
 const path = require('path');
 
-const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'gmaps_results.json');
+const OUTPUT_PATH = path.join(__dirname, '..', 'output_data', 'gmaps_results.json');
 
 const data = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
 

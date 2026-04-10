@@ -1,0 +1,2676 @@
+RELATORIO EXECUTIVO DE OTIMIZACAO
+Gerado em: 10/04/2026 15:08
+================================================================================
+
+BASE: DBH5 | BDM: BH
+--------------------------------------------------------------------------------
+  Territorios:                      4
+  Demanda diaria total:             18,396.0 pacotes/dia
+  Vagas ideais (total):             291
+  Vagas com match:                  19
+  Vagas em aberto:                  272
+  Cobertura (match / total):        19/291 = 6.5%
+  Parceiros existentes:             19
+    • Ativos:                       11
+    • Onboarding:                   2
+    • BG Checks / Vetting:          1
+    • Prospects a aprovar:          3
+    • Inativos a reativar:          2
+  Attainment (Ativos / Vagas):      3.8%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DBH5_bucket-01 (CTL-A)
+    Demanda diaria:      6,048.0 pacotes/dia
+    Vagas / Em aberto:   73 / 67
+    Ativos:               5
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            6.8%
+    Acuracidade:          83.3%
+
+  DBH5_bucket-02 (CTL-A)
+    Demanda diaria:      4,284.0 pacotes/dia
+    Vagas / Em aberto:   72 / 62
+    Ativos:               6
+    Onboarding:           1
+    BG:                   1
+    Prospects:            1
+    Inativos:             1
+    Attainment:            8.3%
+    Acuracidade:          60.0%
+
+  DBH5_bucket-03 (CTL-A)
+    Demanda diaria:      4,326.0 pacotes/dia
+    Vagas / Em aberto:   73 / 72
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBH5_bucket-04 (CTL-A)
+    Demanda diaria:      3,738.0 pacotes/dia
+    Vagas / Em aberto:   73 / 71
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: DBR9 | BDM: SP/SUL
+--------------------------------------------------------------------------------
+  Territorios:                      27
+  Demanda diaria total:             32,886.0 pacotes/dia
+  Vagas ideais (total):             598
+  Vagas com match:                  86
+  Vagas em aberto:                  512
+  Cobertura (match / total):        86/598 = 14.4%
+  Parceiros existentes:             86
+    • Ativos:                       30
+    • Onboarding:                   5
+    • BG Checks / Vetting:          5
+    • Prospects a aprovar:          34
+    • Inativos a reativar:          12
+  Attainment (Ativos / Vagas):      5.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DBR9_bucket-01 (CTL-A)
+    Demanda diaria:      1,008.0 pacotes/dia
+    Vagas / Em aberto:   22 / 19
+    Ativos:               0
+    Onboarding:           0
+    BG:                   1
+    Prospects:            2
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-02 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 11
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            3
+    Inativos:             5
+    Attainment:           13.6%
+    Acuracidade:          27.3%
+
+  DBR9_bucket-03 (CTL-A)
+    Demanda diaria:        966.0 pacotes/dia
+    Vagas / Em aberto:   23 / 19
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-04 (CTL-A)
+    Demanda diaria:      1,008.0 pacotes/dia
+    Vagas / Em aberto:   22 / 18
+    Ativos:               2
+    Onboarding:           0
+    BG:                   1
+    Prospects:            0
+    Inativos:             1
+    Attainment:            9.1%
+    Acuracidade:          50.0%
+
+  DBR9_bucket-05 (CTL-A)
+    Demanda diaria:      1,218.0 pacotes/dia
+    Vagas / Em aberto:   23 / 17
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            3
+    Inativos:             1
+    Attainment:            8.7%
+    Acuracidade:          33.3%
+
+  DBR9_bucket-06 (CTL-A)
+    Demanda diaria:        966.0 pacotes/dia
+    Vagas / Em aberto:   22 / 19
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:            4.5%
+    Acuracidade:          33.3%
+
+  DBR9_bucket-07 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 17
+    Ativos:               4
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:           18.2%
+    Acuracidade:          80.0%
+
+  DBR9_bucket-08 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 21
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            4.5%
+    Acuracidade:         100.0%
+
+  DBR9_bucket-09 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 20
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            4.5%
+    Acuracidade:          50.0%
+
+  DBR9_bucket-10 (CTL-A)
+    Demanda diaria:      1,554.0 pacotes/dia
+    Vagas / Em aberto:   22 / 17
+    Ativos:               3
+    Onboarding:           0
+    BG:                   2
+    Prospects:            0
+    Inativos:             0
+    Attainment:           13.6%
+    Acuracidade:          60.0%
+
+  DBR9_bucket-11 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   23 / 22
+    Ativos:               0
+    Onboarding:           0
+    BG:                   1
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-12 (CTL-A)
+    Demanda diaria:      1,386.0 pacotes/dia
+    Vagas / Em aberto:   22 / 16
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            6
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-13 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 20
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-14 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   22 / 13
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            7
+    Inativos:             0
+    Attainment:            9.1%
+    Acuracidade:          22.2%
+
+  DBR9_bucket-15 (CTL-A)
+    Demanda diaria:      1,512.0 pacotes/dia
+    Vagas / Em aberto:   22 / 21
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-16 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   22 / 21
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-17 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 22
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-18 (CTL-A)
+    Demanda diaria:      1,512.0 pacotes/dia
+    Vagas / Em aberto:   22 / 20
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:            4.5%
+    Acuracidade:          50.0%
+
+  DBR9_bucket-19 (CTL-A)
+    Demanda diaria:      1,386.0 pacotes/dia
+    Vagas / Em aberto:   22 / 22
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-20 (CTL-A)
+    Demanda diaria:      1,260.0 pacotes/dia
+    Vagas / Em aberto:   22 / 18
+    Ativos:               4
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           18.2%
+    Acuracidade:         100.0%
+
+  DBR9_bucket-21 (CTL-A)
+    Demanda diaria:      1,176.0 pacotes/dia
+    Vagas / Em aberto:   23 / 19
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           13.0%
+    Acuracidade:          75.0%
+
+  DBR9_bucket-22 (CTL-A)
+    Demanda diaria:      1,260.0 pacotes/dia
+    Vagas / Em aberto:   22 / 21
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-23 (CTL-A)
+    Demanda diaria:      1,092.0 pacotes/dia
+    Vagas / Em aberto:   22 / 15
+    Ativos:               3
+    Onboarding:           1
+    BG:                   0
+    Prospects:            3
+    Inativos:             0
+    Attainment:           13.6%
+    Acuracidade:          42.9%
+
+  DBR9_bucket-24 (CTL-A)
+    Demanda diaria:      1,176.0 pacotes/dia
+    Vagas / Em aberto:   22 / 20
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-25 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   22 / 20
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            2
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-26 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   22 / 22
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DBR9_bucket-27 (CTL-A)
+    Demanda diaria:      1,092.0 pacotes/dia
+    Vagas / Em aberto:   22 / 22
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: DBS5 | BDM: RJ/CW
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             30,072.0 pacotes/dia
+  Vagas ideais (total):             468
+  Vagas com match:                  61
+  Vagas em aberto:                  407
+  Cobertura (match / total):        61/468 = 13.0%
+  Parceiros existentes:             61
+    • Ativos:                       47
+    • Onboarding:                   5
+    • BG Checks / Vetting:          2
+    • Prospects a aprovar:          3
+    • Inativos a reativar:          4
+  Attainment (Ativos / Vagas):      10.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DBS5_bucket-01 (CTL-A)
+    Demanda diaria:      4,242.0 pacotes/dia
+    Vagas / Em aberto:   93 / 87
+    Ativos:               6
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            6.5%
+    Acuracidade:         100.0%
+
+  DBS5_bucket-02 (CTL-A)
+    Demanda diaria:      6,510.0 pacotes/dia
+    Vagas / Em aberto:   94 / 90
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:            2.1%
+    Acuracidade:          50.0%
+
+  DBS5_bucket-03 (CTL-A)
+    Demanda diaria:      5,292.0 pacotes/dia
+    Vagas / Em aberto:   94 / 89
+    Ativos:               5
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            5.3%
+    Acuracidade:         100.0%
+
+  DBS5_bucket-04 (CTL-A)
+    Demanda diaria:      5,712.0 pacotes/dia
+    Vagas / Em aberto:   93 / 78
+    Ativos:              12
+    Onboarding:           1
+    BG:                   2
+    Prospects:            0
+    Inativos:             0
+    Attainment:           12.9%
+    Acuracidade:          80.0%
+
+  DBS5_bucket-05 (CTL-A)
+    Demanda diaria:      8,316.0 pacotes/dia
+    Vagas / Em aberto:   94 / 63
+    Ativos:              22
+    Onboarding:           4
+    BG:                   0
+    Prospects:            2
+    Inativos:             3
+    Attainment:           23.4%
+    Acuracidade:          71.0%
+
+
+BASE: DCE3 | BDM: FORTALEZA
+--------------------------------------------------------------------------------
+  Territorios:                      2
+  Demanda diaria total:             28,896.0 pacotes/dia
+  Vagas ideais (total):             471
+  Vagas com match:                  139
+  Vagas em aberto:                  332
+  Cobertura (match / total):        139/471 = 29.5%
+  Parceiros existentes:             139
+    • Ativos:                       85
+    • Onboarding:                   13
+    • BG Checks / Vetting:          5
+    • Prospects a aprovar:          27
+    • Inativos a reativar:          9
+  Attainment (Ativos / Vagas):      18.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DCE3_bucket-01 (CTL-A)
+    Demanda diaria:     16,422.0 pacotes/dia
+    Vagas / Em aberto:  236 / 170
+    Ativos:              34
+    Onboarding:          10
+    BG:                   3
+    Prospects:           13
+    Inativos:             6
+    Attainment:           14.4%
+    Acuracidade:          51.5%
+
+  DCE3_bucket-02 (CTL-A)
+    Demanda diaria:     12,474.0 pacotes/dia
+    Vagas / Em aberto:  235 / 162
+    Ativos:              51
+    Onboarding:           3
+    BG:                   2
+    Prospects:           14
+    Inativos:             3
+    Attainment:           21.7%
+    Acuracidade:          69.9%
+
+
+BASE: DES2 | BDM: ES/BA
+--------------------------------------------------------------------------------
+  Territorios:                      3
+  Demanda diaria total:             9,618.0 pacotes/dia
+  Vagas ideais (total):             145
+  Vagas com match:                  28
+  Vagas em aberto:                  117
+  Cobertura (match / total):        28/145 = 19.3%
+  Parceiros existentes:             28
+    • Ativos:                       21
+    • Onboarding:                   1
+    • BG Checks / Vetting:          1
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          5
+  Attainment (Ativos / Vagas):      14.5%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DES2_bucket-01 (CTL-A)
+    Demanda diaria:      2,856.0 pacotes/dia
+    Vagas / Em aberto:   49 / 34
+    Ativos:              13
+    Onboarding:           1
+    BG:                   1
+    Prospects:            0
+    Inativos:             0
+    Attainment:           26.5%
+    Acuracidade:          86.7%
+
+  DES2_bucket-02 (CTL-A)
+    Demanda diaria:      3,528.0 pacotes/dia
+    Vagas / Em aberto:   48 / 44
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:            4.2%
+    Acuracidade:          50.0%
+
+  DES2_bucket-03 (CTL-A)
+    Demanda diaria:      3,234.0 pacotes/dia
+    Vagas / Em aberto:   48 / 39
+    Ativos:               6
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:           12.5%
+    Acuracidade:          66.7%
+
+
+BASE: DGO2 | BDM: RJ/CW
+--------------------------------------------------------------------------------
+  Territorios:                      4
+  Demanda diaria total:             13,818.0 pacotes/dia
+  Vagas ideais (total):             252
+  Vagas com match:                  44
+  Vagas em aberto:                  208
+  Cobertura (match / total):        44/252 = 17.5%
+  Parceiros existentes:             44
+    • Ativos:                       32
+    • Onboarding:                   1
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          1
+    • Inativos a reativar:          10
+  Attainment (Ativos / Vagas):      12.7%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DGO2_bucket-01 (CTL-A)
+    Demanda diaria:      3,192.0 pacotes/dia
+    Vagas / Em aberto:   63 / 56
+    Ativos:               7
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           11.1%
+    Acuracidade:         100.0%
+
+  DGO2_bucket-02 (CTL-A)
+    Demanda diaria:      3,486.0 pacotes/dia
+    Vagas / Em aberto:   63 / 54
+    Ativos:               5
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             4
+    Attainment:            7.9%
+    Acuracidade:          55.6%
+
+  DGO2_bucket-03 (CTL-A)
+    Demanda diaria:      2,982.0 pacotes/dia
+    Vagas / Em aberto:   63 / 44
+    Ativos:              13
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             4
+    Attainment:           20.6%
+    Acuracidade:          68.4%
+
+  DGO2_bucket-04 (CTL-A)
+    Demanda diaria:      4,158.0 pacotes/dia
+    Vagas / Em aberto:   63 / 54
+    Ativos:               7
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:           11.1%
+    Acuracidade:          77.8%
+
+
+BASE: DMG2 | BDM: BH
+--------------------------------------------------------------------------------
+  Territorios:                      13
+  Demanda diaria total:             16,841.0 pacotes/dia
+  Vagas ideais (total):             365
+  Vagas com match:                  89
+  Vagas em aberto:                  276
+  Cobertura (match / total):        89/365 = 24.4%
+  Parceiros existentes:             89
+    • Ativos:                       65
+    • Onboarding:                   4
+    • BG Checks / Vetting:          1
+    • Prospects a aprovar:          5
+    • Inativos a reativar:          14
+  Attainment (Ativos / Vagas):      17.8%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DMG2_bucket-01 (CTL-A)
+    Demanda diaria:      1,218.0 pacotes/dia
+    Vagas / Em aberto:   28 / 25
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:            3.6%
+    Acuracidade:          33.3%
+
+  DMG2_bucket-02 (CTL-A)
+    Demanda diaria:      1,260.0 pacotes/dia
+    Vagas / Em aberto:   28 / 19
+    Ativos:               7
+    Onboarding:           2
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           25.0%
+    Acuracidade:          77.8%
+
+  DMG2_bucket-03 (CTL-A)
+    Demanda diaria:      1,260.0 pacotes/dia
+    Vagas / Em aberto:   28 / 21
+    Ativos:               4
+    Onboarding:           0
+    BG:                   1
+    Prospects:            0
+    Inativos:             2
+    Attainment:           14.3%
+    Acuracidade:          57.1%
+
+  DMG2_bucket-04 (CTL-A)
+    Demanda diaria:      1,260.0 pacotes/dia
+    Vagas / Em aberto:   28 / 23
+    Ativos:               4
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           14.3%
+    Acuracidade:          80.0%
+
+  DMG2_bucket-05 (CTL-A)
+    Demanda diaria:      1,176.0 pacotes/dia
+    Vagas / Em aberto:   28 / 23
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:            7.1%
+    Acuracidade:          40.0%
+
+  DMG2_bucket-06 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   28 / 24
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           10.7%
+    Acuracidade:          75.0%
+
+  DMG2_bucket-07 (CTL-A)
+    Demanda diaria:      1,512.0 pacotes/dia
+    Vagas / Em aberto:   29 / 16
+    Ativos:              13
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           44.8%
+    Acuracidade:         100.0%
+
+  DMG2_bucket-08 (CTL-A)
+    Demanda diaria:      1,386.0 pacotes/dia
+    Vagas / Em aberto:   28 / 14
+    Ativos:              13
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:           46.4%
+    Acuracidade:          92.9%
+
+  DMG2_bucket-09 (CTL-A)
+    Demanda diaria:      1,176.0 pacotes/dia
+    Vagas / Em aberto:   28 / 24
+    Ativos:               1
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:            3.6%
+    Acuracidade:          25.0%
+
+  DMG2_bucket-10 (CTL-A)
+    Demanda diaria:      1,344.0 pacotes/dia
+    Vagas / Em aberto:   28 / 19
+    Ativos:               8
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:           28.6%
+    Acuracidade:          88.9%
+
+  DMG2_bucket-11 (CTL-A)
+    Demanda diaria:      1,386.0 pacotes/dia
+    Vagas / Em aberto:   28 / 22
+    Ativos:               6
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           21.4%
+    Acuracidade:         100.0%
+
+  DMG2_bucket-12 (CTL-A)
+    Demanda diaria:      1,217.0 pacotes/dia
+    Vagas / Em aberto:   28 / 22
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:           10.7%
+    Acuracidade:          50.0%
+
+  DMG2_bucket-13 (CTL-A)
+    Demanda diaria:      1,176.0 pacotes/dia
+    Vagas / Em aberto:   28 / 24
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: DPB3 | BDM: RECIFE/JOAO PESSOA
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             17,178.0 pacotes/dia
+  Vagas ideais (total):             229
+  Vagas com match:                  75
+  Vagas em aberto:                  154
+  Cobertura (match / total):        75/229 = 32.8%
+  Parceiros existentes:             75
+    • Ativos:                       62
+    • Onboarding:                   3
+    • BG Checks / Vetting:          2
+    • Prospects a aprovar:          3
+    • Inativos a reativar:          5
+  Attainment (Ativos / Vagas):      27.1%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DPB3_bucket-01 (CTL-A)
+    Demanda diaria:      2,646.0 pacotes/dia
+    Vagas / Em aberto:   45 / 36
+    Ativos:               8
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           17.8%
+    Acuracidade:          88.9%
+
+  DPB3_bucket-02 (CTL-A)
+    Demanda diaria:      3,696.0 pacotes/dia
+    Vagas / Em aberto:   46 / 33
+    Ativos:              10
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:           21.7%
+    Acuracidade:          76.9%
+
+  DPB3_bucket-03 (CTL-A)
+    Demanda diaria:      4,284.0 pacotes/dia
+    Vagas / Em aberto:   46 / 36
+    Ativos:               9
+    Onboarding:           0
+    BG:                   1
+    Prospects:            0
+    Inativos:             0
+    Attainment:           19.6%
+    Acuracidade:          90.0%
+
+  DPB3_bucket-04 (CTL-A)
+    Demanda diaria:      3,780.0 pacotes/dia
+    Vagas / Em aberto:   46 / 23
+    Ativos:              20
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:           43.5%
+    Acuracidade:          87.0%
+
+  DPB3_bucket-05 (CTL-A)
+    Demanda diaria:      2,772.0 pacotes/dia
+    Vagas / Em aberto:   46 / 26
+    Ativos:              15
+    Onboarding:           1
+    BG:                   1
+    Prospects:            2
+    Inativos:             1
+    Attainment:           32.6%
+    Acuracidade:          75.0%
+
+
+BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
+--------------------------------------------------------------------------------
+  Territorios:                      15
+  Demanda diaria total:             29,148.0 pacotes/dia
+  Vagas ideais (total):             450
+  Vagas com match:                  110
+  Vagas em aberto:                  340
+  Cobertura (match / total):        110/450 = 24.4%
+  Parceiros existentes:             110
+    • Ativos:                       55
+    • Onboarding:                   9
+    • BG Checks / Vetting:          12
+    • Prospects a aprovar:          23
+    • Inativos a reativar:          11
+  Attainment (Ativos / Vagas):      12.2%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DPE4_bucket-01 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   30 / 29
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DPE4_bucket-02 (CTL-A)
+    Demanda diaria:      1,512.0 pacotes/dia
+    Vagas / Em aberto:   30 / 25
+    Ativos:               4
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           13.3%
+    Acuracidade:          80.0%
+
+  DPE4_bucket-03 (CTL-A)
+    Demanda diaria:      1,890.0 pacotes/dia
+    Vagas / Em aberto:   30 / 18
+    Ativos:               3
+    Onboarding:           2
+    BG:                   2
+    Prospects:            3
+    Inativos:             2
+    Attainment:           10.0%
+    Acuracidade:          25.0%
+
+  DPE4_bucket-04 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   30 / 24
+    Ativos:               3
+    Onboarding:           2
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:           10.0%
+    Acuracidade:          50.0%
+
+  DPE4_bucket-05 (CTL-A)
+    Demanda diaria:      1,344.0 pacotes/dia
+    Vagas / Em aberto:   30 / 22
+    Ativos:               2
+    Onboarding:           0
+    BG:                   2
+    Prospects:            3
+    Inativos:             1
+    Attainment:            6.7%
+    Acuracidade:          25.0%
+
+  DPE4_bucket-06 (CTL-A)
+    Demanda diaria:      2,562.0 pacotes/dia
+    Vagas / Em aberto:   30 / 15
+    Ativos:              11
+    Onboarding:           0
+    BG:                   0
+    Prospects:            2
+    Inativos:             2
+    Attainment:           36.7%
+    Acuracidade:          73.3%
+
+  DPE4_bucket-07 (CTL-A)
+    Demanda diaria:      2,100.0 pacotes/dia
+    Vagas / Em aberto:   30 / 30
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DPE4_bucket-08 (CTL-A)
+    Demanda diaria:      3,192.0 pacotes/dia
+    Vagas / Em aberto:   30 / 27
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DPE4_bucket-09 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   30 / 22
+    Ativos:               4
+    Onboarding:           1
+    BG:                   2
+    Prospects:            1
+    Inativos:             0
+    Attainment:           13.3%
+    Acuracidade:          50.0%
+
+  DPE4_bucket-10 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   30 / 22
+    Ativos:               2
+    Onboarding:           1
+    BG:                   1
+    Prospects:            3
+    Inativos:             1
+    Attainment:            6.7%
+    Acuracidade:          25.0%
+
+  DPE4_bucket-11 (CTL-A)
+    Demanda diaria:      2,520.0 pacotes/dia
+    Vagas / Em aberto:   30 / 16
+    Ativos:              10
+    Onboarding:           0
+    BG:                   0
+    Prospects:            3
+    Inativos:             1
+    Attainment:           33.3%
+    Acuracidade:          71.4%
+
+  DPE4_bucket-12 (CTL-A)
+    Demanda diaria:      1,806.0 pacotes/dia
+    Vagas / Em aberto:   30 / 20
+    Ativos:               3
+    Onboarding:           1
+    BG:                   3
+    Prospects:            3
+    Inativos:             0
+    Attainment:           10.0%
+    Acuracidade:          30.0%
+
+  DPE4_bucket-13 (CTL-A)
+    Demanda diaria:      3,234.0 pacotes/dia
+    Vagas / Em aberto:   30 / 28
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            6.7%
+    Acuracidade:         100.0%
+
+  DPE4_bucket-14 (CTL-A)
+    Demanda diaria:      2,100.0 pacotes/dia
+    Vagas / Em aberto:   30 / 21
+    Ativos:               6
+    Onboarding:           2
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:           20.0%
+    Acuracidade:          66.7%
+
+  DPE4_bucket-15 (CTL-A)
+    Demanda diaria:      1,512.0 pacotes/dia
+    Vagas / Em aberto:   30 / 21
+    Ativos:               5
+    Onboarding:           0
+    BG:                   2
+    Prospects:            2
+    Inativos:             0
+    Attainment:           16.7%
+    Acuracidade:          55.6%
+
+
+BASE: DPR2 | BDM: SP/SUL
+--------------------------------------------------------------------------------
+  Territorios:                      6
+  Demanda diaria total:             17,892.0 pacotes/dia
+  Vagas ideais (total):             324
+  Vagas com match:                  87
+  Vagas em aberto:                  237
+  Cobertura (match / total):        87/324 = 26.9%
+  Parceiros existentes:             87
+    • Ativos:                       61
+    • Onboarding:                   2
+    • BG Checks / Vetting:          4
+    • Prospects a aprovar:          9
+    • Inativos a reativar:          11
+  Attainment (Ativos / Vagas):      18.8%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DPR2_bucket-01 (CTL-A)
+    Demanda diaria:      3,234.0 pacotes/dia
+    Vagas / Em aberto:   54 / 39
+    Ativos:              10
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             4
+    Attainment:           18.5%
+    Acuracidade:          66.7%
+
+  DPR2_bucket-02 (CTL-A)
+    Demanda diaria:      2,982.0 pacotes/dia
+    Vagas / Em aberto:   54 / 46
+    Ativos:               4
+    Onboarding:           0
+    BG:                   1
+    Prospects:            0
+    Inativos:             3
+    Attainment:            7.4%
+    Acuracidade:          50.0%
+
+  DPR2_bucket-03 (CTL-A)
+    Demanda diaria:      2,772.0 pacotes/dia
+    Vagas / Em aberto:   54 / 42
+    Ativos:               9
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:           16.7%
+    Acuracidade:          75.0%
+
+  DPR2_bucket-04 (CTL-A)
+    Demanda diaria:      2,898.0 pacotes/dia
+    Vagas / Em aberto:   54 / 40
+    Ativos:               7
+    Onboarding:           1
+    BG:                   1
+    Prospects:            4
+    Inativos:             1
+    Attainment:           13.0%
+    Acuracidade:          50.0%
+
+  DPR2_bucket-05 (CTL-A)
+    Demanda diaria:      3,024.0 pacotes/dia
+    Vagas / Em aberto:   54 / 34
+    Ativos:              18
+    Onboarding:           0
+    BG:                   1
+    Prospects:            1
+    Inativos:             0
+    Attainment:           33.3%
+    Acuracidade:          90.0%
+
+  DPR2_bucket-06 (CTL-A)
+    Demanda diaria:      2,982.0 pacotes/dia
+    Vagas / Em aberto:   54 / 36
+    Ativos:              13
+    Onboarding:           1
+    BG:                   1
+    Prospects:            2
+    Inativos:             1
+    Attainment:           24.1%
+    Acuracidade:          72.2%
+
+
+BASE: DRJ3 | BDM: RJ/CW
+--------------------------------------------------------------------------------
+  Territorios:                      22
+  Demanda diaria total:             27,636.0 pacotes/dia
+  Vagas ideais (total):             383
+  Vagas com match:                  40
+  Vagas em aberto:                  343
+  Cobertura (match / total):        40/383 = 10.4%
+  Parceiros existentes:             40
+    • Ativos:                       20
+    • Onboarding:                   3
+    • BG Checks / Vetting:          1
+    • Prospects a aprovar:          11
+    • Inativos a reativar:          5
+  Attainment (Ativos / Vagas):      5.2%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DRJ3_bucket-01 (CTL-A)
+    Demanda diaria:      1,092.0 pacotes/dia
+    Vagas / Em aberto:   17 / 7
+    Ativos:               6
+    Onboarding:           1
+    BG:                   0
+    Prospects:            2
+    Inativos:             1
+    Attainment:           35.3%
+    Acuracidade:          60.0%
+
+  DRJ3_bucket-02 (CTL-A)
+    Demanda diaria:        966.0 pacotes/dia
+    Vagas / Em aberto:   18 / 13
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            2
+    Inativos:             0
+    Attainment:           16.7%
+    Acuracidade:          60.0%
+
+  DRJ3_bucket-03 (CTL-A)
+    Demanda diaria:        756.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-04 (CTL-A)
+    Demanda diaria:        924.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-05 (CTL-A)
+    Demanda diaria:      1,386.0 pacotes/dia
+    Vagas / Em aberto:   18 / 16
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-06 (CTL-A)
+    Demanda diaria:      1,344.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-07 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   17 / 16
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            5.9%
+    Acuracidade:         100.0%
+
+  DRJ3_bucket-08 (CTL-A)
+    Demanda diaria:        840.0 pacotes/dia
+    Vagas / Em aberto:   18 / 11
+    Ativos:               5
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           27.8%
+    Acuracidade:          71.4%
+
+  DRJ3_bucket-09 (CTL-A)
+    Demanda diaria:      1,764.0 pacotes/dia
+    Vagas / Em aberto:   17 / 15
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-10 (CTL-A)
+    Demanda diaria:        924.0 pacotes/dia
+    Vagas / Em aberto:   18 / 14
+    Ativos:               4
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           22.2%
+    Acuracidade:         100.0%
+
+  DRJ3_bucket-11 (CTL-A)
+    Demanda diaria:      1,764.0 pacotes/dia
+    Vagas / Em aberto:   18 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-12 (CTL-A)
+    Demanda diaria:      1,932.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-13 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   18 / 18
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-14 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   17 / 15
+    Ativos:               0
+    Onboarding:           0
+    BG:                   1
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-15 (CTL-A)
+    Demanda diaria:      1,848.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-16 (CTL-A)
+    Demanda diaria:      1,596.0 pacotes/dia
+    Vagas / Em aberto:   18 / 15
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:            5.6%
+    Acuracidade:          33.3%
+
+  DRJ3_bucket-17 (CTL-A)
+    Demanda diaria:      1,722.0 pacotes/dia
+    Vagas / Em aberto:   17 / 15
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            2
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-18 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   18 / 18
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-19 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-20 (CTL-A)
+    Demanda diaria:        840.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-21 (CTL-A)
+    Demanda diaria:        756.0 pacotes/dia
+    Vagas / Em aberto:   17 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRJ3_bucket-22 (CTL-A)
+    Demanda diaria:      1,008.0 pacotes/dia
+    Vagas / Em aberto:   18 / 17
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: DRS5 | BDM: SP/SUL
+--------------------------------------------------------------------------------
+  Territorios:                      10
+  Demanda diaria total:             22,721.0 pacotes/dia
+  Vagas ideais (total):             488
+  Vagas com match:                  40
+  Vagas em aberto:                  448
+  Cobertura (match / total):        40/488 = 8.2%
+  Parceiros existentes:             40
+    • Ativos:                       24
+    • Onboarding:                   3
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          13
+  Attainment (Ativos / Vagas):      4.9%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DRS5_bucket-01 (CTL-A)
+    Demanda diaria:      2,058.0 pacotes/dia
+    Vagas / Em aberto:   49 / 47
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:            2.0%
+    Acuracidade:          50.0%
+
+  DRS5_bucket-02 (CTL-A)
+    Demanda diaria:      2,058.0 pacotes/dia
+    Vagas / Em aberto:   49 / 43
+    Ativos:               6
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:           12.2%
+    Acuracidade:         100.0%
+
+  DRS5_bucket-03 (CTL-A)
+    Demanda diaria:      2,772.0 pacotes/dia
+    Vagas / Em aberto:   49 / 40
+    Ativos:               8
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           16.3%
+    Acuracidade:          88.9%
+
+  DRS5_bucket-04 (CTL-A)
+    Demanda diaria:      2,226.0 pacotes/dia
+    Vagas / Em aberto:   49 / 45
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:            6.1%
+    Acuracidade:          75.0%
+
+  DRS5_bucket-05 (CTL-A)
+    Demanda diaria:      2,184.0 pacotes/dia
+    Vagas / Em aberto:   48 / 47
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            2.1%
+    Acuracidade:         100.0%
+
+  DRS5_bucket-06 (CTL-A)
+    Demanda diaria:      2,604.0 pacotes/dia
+    Vagas / Em aberto:   49 / 45
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:            2.0%
+    Acuracidade:          25.0%
+
+  DRS5_bucket-07 (CTL-A)
+    Demanda diaria:      2,394.0 pacotes/dia
+    Vagas / Em aberto:   49 / 48
+    Ativos:               0
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DRS5_bucket-08 (CTL-A)
+    Demanda diaria:      2,225.0 pacotes/dia
+    Vagas / Em aberto:   49 / 45
+    Ativos:               1
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:            2.0%
+    Acuracidade:          25.0%
+
+  DRS5_bucket-09 (CTL-A)
+    Demanda diaria:      2,142.0 pacotes/dia
+    Vagas / Em aberto:   48 / 42
+    Ativos:               2
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:            4.2%
+    Acuracidade:          33.3%
+
+  DRS5_bucket-10 (CTL-A)
+    Demanda diaria:      2,058.0 pacotes/dia
+    Vagas / Em aberto:   49 / 46
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:            2.0%
+    Acuracidade:          33.3%
+
+
+BASE: DSA8 | BDM: ES/BA
+--------------------------------------------------------------------------------
+  Territorios:                      4
+  Demanda diaria total:             13,986.0 pacotes/dia
+  Vagas ideais (total):             279
+  Vagas com match:                  29
+  Vagas em aberto:                  250
+  Cobertura (match / total):        29/279 = 10.4%
+  Parceiros existentes:             29
+    • Ativos:                       16
+    • Onboarding:                   3
+    • BG Checks / Vetting:          1
+    • Prospects a aprovar:          4
+    • Inativos a reativar:          5
+  Attainment (Ativos / Vagas):      5.7%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DSA8_bucket-01 (CTL-A)
+    Demanda diaria:      3,192.0 pacotes/dia
+    Vagas / Em aberto:   70 / 60
+    Ativos:               6
+    Onboarding:           2
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:            8.6%
+    Acuracidade:          60.0%
+
+  DSA8_bucket-02 (CTL-A)
+    Demanda diaria:      3,360.0 pacotes/dia
+    Vagas / Em aberto:   70 / 60
+    Ativos:               6
+    Onboarding:           0
+    BG:                   1
+    Prospects:            1
+    Inativos:             2
+    Attainment:            8.6%
+    Acuracidade:          60.0%
+
+  DSA8_bucket-03 (CTL-A)
+    Demanda diaria:      3,234.0 pacotes/dia
+    Vagas / Em aberto:   69 / 63
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            3
+    Inativos:             1
+    Attainment:            2.9%
+    Acuracidade:          33.3%
+
+  DSA8_bucket-04 (CTL-A)
+    Demanda diaria:      4,200.0 pacotes/dia
+    Vagas / Em aberto:   70 / 67
+    Ativos:               2
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            2.9%
+    Acuracidade:          66.7%
+
+
+BASE: DSP2 | BDM: SP/SUL
+--------------------------------------------------------------------------------
+  Territorios:                      12
+  Demanda diaria total:             15,582.0 pacotes/dia
+  Vagas ideais (total):             300
+  Vagas com match:                  87
+  Vagas em aberto:                  213
+  Cobertura (match / total):        87/300 = 29.0%
+  Parceiros existentes:             87
+    • Ativos:                       62
+    • Onboarding:                   5
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          6
+    • Inativos a reativar:          14
+  Attainment (Ativos / Vagas):      20.7%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DSP2_bucket-01 (CTL-A)
+    Demanda diaria:      1,428.0 pacotes/dia
+    Vagas / Em aberto:   25 / 12
+    Ativos:              11
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:           44.0%
+    Acuracidade:          84.6%
+
+  DSP2_bucket-02 (CTL-A)
+    Demanda diaria:      1,596.0 pacotes/dia
+    Vagas / Em aberto:   25 / 13
+    Ativos:               8
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:           32.0%
+    Acuracidade:          66.7%
+
+  DSP2_bucket-03 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   25 / 21
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:           12.0%
+    Acuracidade:          75.0%
+
+  DSP2_bucket-04 (CTL-A)
+    Demanda diaria:      1,806.0 pacotes/dia
+    Vagas / Em aberto:   25 / 15
+    Ativos:               9
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           36.0%
+    Acuracidade:          90.0%
+
+  DSP2_bucket-05 (CTL-A)
+    Demanda diaria:      1,302.0 pacotes/dia
+    Vagas / Em aberto:   25 / 18
+    Ativos:               3
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:           12.0%
+    Acuracidade:          42.9%
+
+  DSP2_bucket-06 (CTL-A)
+    Demanda diaria:      1,386.0 pacotes/dia
+    Vagas / Em aberto:   25 / 18
+    Ativos:               6
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             1
+    Attainment:           24.0%
+    Acuracidade:          85.7%
+
+  DSP2_bucket-07 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   25 / 21
+    Ativos:               2
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            8.0%
+    Acuracidade:          50.0%
+
+  DSP2_bucket-08 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   25 / 16
+    Ativos:               6
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:           24.0%
+    Acuracidade:          66.7%
+
+  DSP2_bucket-09 (CTL-A)
+    Demanda diaria:      1,176.0 pacotes/dia
+    Vagas / Em aberto:   25 / 23
+    Ativos:               1
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            4.0%
+    Acuracidade:          50.0%
+
+  DSP2_bucket-10 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   25 / 22
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            8.0%
+    Acuracidade:          66.7%
+
+  DSP2_bucket-11 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   25 / 14
+    Ativos:               9
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             2
+    Attainment:           36.0%
+    Acuracidade:          81.8%
+
+  DSP2_bucket-12 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   25 / 20
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:            8.0%
+    Acuracidade:          40.0%
+
+
+BASE: DSP4 | BDM: SP/SUL
+--------------------------------------------------------------------------------
+  Territorios:                      11
+  Demanda diaria total:             18,438.0 pacotes/dia
+  Vagas ideais (total):             357
+  Vagas com match:                  42
+  Vagas em aberto:                  315
+  Cobertura (match / total):        42/357 = 11.8%
+  Parceiros existentes:             42
+    • Ativos:                       15
+    • Onboarding:                   3
+    • BG Checks / Vetting:          3
+    • Prospects a aprovar:          15
+    • Inativos a reativar:          6
+  Attainment (Ativos / Vagas):      4.2%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DSP4_bucket-01 (CTL-A)
+    Demanda diaria:      1,974.0 pacotes/dia
+    Vagas / Em aberto:   32 / 25
+    Ativos:               4
+    Onboarding:           1
+    BG:                   1
+    Prospects:            1
+    Inativos:             0
+    Attainment:           12.5%
+    Acuracidade:          57.1%
+
+  DSP4_bucket-02 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   32 / 24
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            5
+    Inativos:             2
+    Attainment:            3.1%
+    Acuracidade:          12.5%
+
+  DSP4_bucket-03 (CTL-A)
+    Demanda diaria:      2,058.0 pacotes/dia
+    Vagas / Em aberto:   32 / 31
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DSP4_bucket-04 (CTL-A)
+    Demanda diaria:      1,974.0 pacotes/dia
+    Vagas / Em aberto:   32 / 30
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            3.1%
+    Acuracidade:          50.0%
+
+  DSP4_bucket-05 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   33 / 31
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            6.1%
+    Acuracidade:         100.0%
+
+  DSP4_bucket-06 (CTL-A)
+    Demanda diaria:      1,554.0 pacotes/dia
+    Vagas / Em aberto:   33 / 29
+    Ativos:               1
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
+    Attainment:            3.0%
+    Acuracidade:          25.0%
+
+  DSP4_bucket-07 (CTL-A)
+    Demanda diaria:      1,512.0 pacotes/dia
+    Vagas / Em aberto:   33 / 31
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            6.1%
+    Acuracidade:         100.0%
+
+  DSP4_bucket-08 (CTL-A)
+    Demanda diaria:      1,680.0 pacotes/dia
+    Vagas / Em aberto:   32 / 27
+    Ativos:               1
+    Onboarding:           0
+    BG:                   2
+    Prospects:            0
+    Inativos:             2
+    Attainment:            3.1%
+    Acuracidade:          20.0%
+
+  DSP4_bucket-09 (CTL-A)
+    Demanda diaria:      1,722.0 pacotes/dia
+    Vagas / Em aberto:   33 / 30
+    Ativos:               2
+    Onboarding:           1
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            6.1%
+    Acuracidade:          66.7%
+
+  DSP4_bucket-10 (CTL-A)
+    Demanda diaria:      1,554.0 pacotes/dia
+    Vagas / Em aberto:   33 / 30
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            3
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DSP4_bucket-11 (CTL-A)
+    Demanda diaria:      1,470.0 pacotes/dia
+    Vagas / Em aberto:   32 / 27
+    Ativos:               1
+    Onboarding:           1
+    BG:                   0
+    Prospects:            3
+    Inativos:             0
+    Attainment:            3.1%
+    Acuracidade:          20.0%
+
+
+BASE: DSP5 | BDM: SP/SUL
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             18,060.0 pacotes/dia
+  Vagas ideais (total):             377
+  Vagas com match:                  36
+  Vagas em aberto:                  341
+  Cobertura (match / total):        36/377 = 9.5%
+  Parceiros existentes:             36
+    • Ativos:                       21
+    • Onboarding:                   4
+    • BG Checks / Vetting:          1
+    • Prospects a aprovar:          4
+    • Inativos a reativar:          6
+  Attainment (Ativos / Vagas):      5.6%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  DSP5_bucket-01 (CTL-A)
+    Demanda diaria:      3,738.0 pacotes/dia
+    Vagas / Em aberto:   75 / 71
+    Ativos:               3
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             0
+    Attainment:            4.0%
+    Acuracidade:          75.0%
+
+  DSP5_bucket-02 (CTL-A)
+    Demanda diaria:      3,822.0 pacotes/dia
+    Vagas / Em aberto:   76 / 73
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             3
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  DSP5_bucket-03 (CTL-A)
+    Demanda diaria:      3,654.0 pacotes/dia
+    Vagas / Em aberto:   76 / 69
+    Ativos:               4
+    Onboarding:           1
+    BG:                   0
+    Prospects:            1
+    Inativos:             1
+    Attainment:            5.3%
+    Acuracidade:          57.1%
+
+  DSP5_bucket-04 (CTL-A)
+    Demanda diaria:      3,318.0 pacotes/dia
+    Vagas / Em aberto:   75 / 69
+    Ativos:               2
+    Onboarding:           2
+    BG:                   0
+    Prospects:            2
+    Inativos:             0
+    Attainment:            2.7%
+    Acuracidade:          33.3%
+
+  DSP5_bucket-05 (CTL-A)
+    Demanda diaria:      3,528.0 pacotes/dia
+    Vagas / Em aberto:   75 / 59
+    Ativos:              12
+    Onboarding:           1
+    BG:                   1
+    Prospects:            0
+    Inativos:             2
+    Attainment:           16.0%
+    Acuracidade:          75.0%
+
+
+BASE: XBA1 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             2,265.0 pacotes/dia
+  Vagas ideais (total):             54
+  Vagas com match:                  0
+  Vagas em aberto:                  54
+  Cobertura (match / total):        0/54 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XBA1_bucket-01 (CTL-A)
+    Demanda diaria:        461.0 pacotes/dia
+    Vagas / Em aberto:   11 / 11
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XBA1_bucket-02 (CTL-A)
+    Demanda diaria:        462.0 pacotes/dia
+    Vagas / Em aberto:   11 / 11
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XBA1_bucket-03 (CTL-A)
+    Demanda diaria:        418.0 pacotes/dia
+    Vagas / Em aberto:   10 / 10
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XBA1_bucket-04 (CTL-A)
+    Demanda diaria:        462.0 pacotes/dia
+    Vagas / Em aberto:   11 / 11
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XBA1_bucket-05 (CTL-A)
+    Demanda diaria:        462.0 pacotes/dia
+    Vagas / Em aberto:   11 / 11
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XCP1 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             2,646.0 pacotes/dia
+  Vagas ideais (total):             63
+  Vagas com match:                  0
+  Vagas em aberto:                  63
+  Cobertura (match / total):        0/63 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XCP1_bucket-01 (CTL-A)
+    Demanda diaria:        546.0 pacotes/dia
+    Vagas / Em aberto:   13 / 13
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCP1_bucket-02 (CTL-A)
+    Demanda diaria:        504.0 pacotes/dia
+    Vagas / Em aberto:   12 / 12
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCP1_bucket-03 (CTL-A)
+    Demanda diaria:        546.0 pacotes/dia
+    Vagas / Em aberto:   13 / 13
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCP1_bucket-04 (CTL-A)
+    Demanda diaria:        504.0 pacotes/dia
+    Vagas / Em aberto:   12 / 12
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCP1_bucket-05 (CTL-A)
+    Demanda diaria:        546.0 pacotes/dia
+    Vagas / Em aberto:   13 / 13
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XCS1 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             4,074.0 pacotes/dia
+  Vagas ideais (total):             97
+  Vagas com match:                  0
+  Vagas em aberto:                  97
+  Cobertura (match / total):        0/97 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XCS1_bucket-01 (CTL-A)
+    Demanda diaria:        840.0 pacotes/dia
+    Vagas / Em aberto:   20 / 20
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCS1_bucket-02 (CTL-A)
+    Demanda diaria:        798.0 pacotes/dia
+    Vagas / Em aberto:   19 / 19
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCS1_bucket-03 (CTL-A)
+    Demanda diaria:        840.0 pacotes/dia
+    Vagas / Em aberto:   20 / 20
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCS1_bucket-04 (CTL-A)
+    Demanda diaria:        798.0 pacotes/dia
+    Vagas / Em aberto:   19 / 19
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XCS1_bucket-05 (CTL-A)
+    Demanda diaria:        798.0 pacotes/dia
+    Vagas / Em aberto:   19 / 19
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XGA2 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             588.0 pacotes/dia
+  Vagas ideais (total):             14
+  Vagas com match:                  0
+  Vagas em aberto:                  14
+  Cobertura (match / total):        0/14 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XGA2_bucket-01 (CTL-A)
+    Demanda diaria:        126.0 pacotes/dia
+    Vagas / Em aberto:    3 / 3
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XGA2_bucket-02 (CTL-A)
+    Demanda diaria:        126.0 pacotes/dia
+    Vagas / Em aberto:    3 / 3
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XGA2_bucket-03 (CTL-A)
+    Demanda diaria:        126.0 pacotes/dia
+    Vagas / Em aberto:    3 / 3
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XGA2_bucket-04 (CTL-A)
+    Demanda diaria:        126.0 pacotes/dia
+    Vagas / Em aberto:    3 / 3
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XGA2_bucket-05 (CTL-A)
+    Demanda diaria:         84.0 pacotes/dia
+    Vagas / Em aberto:    2 / 2
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XPB1 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             5,502.0 pacotes/dia
+  Vagas ideais (total):             123
+  Vagas com match:                  0
+  Vagas em aberto:                  123
+  Cobertura (match / total):        0/123 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XPB1_bucket-01 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   25 / 25
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XPB1_bucket-02 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   24 / 24
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XPB1_bucket-03 (CTL-A)
+    Demanda diaria:      1,092.0 pacotes/dia
+    Vagas / Em aberto:   25 / 25
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XPB1_bucket-04 (CTL-A)
+    Demanda diaria:      1,218.0 pacotes/dia
+    Vagas / Em aberto:   25 / 25
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XPB1_bucket-05 (CTL-A)
+    Demanda diaria:      1,008.0 pacotes/dia
+    Vagas / Em aberto:   24 / 24
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XRJ2 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             8,778.0 pacotes/dia
+  Vagas ideais (total):             122
+  Vagas com match:                  0
+  Vagas em aberto:                  122
+  Cobertura (match / total):        0/122 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XRJ2_bucket-01 (CTL-A)
+    Demanda diaria:      1,974.0 pacotes/dia
+    Vagas / Em aberto:   24 / 24
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ2_bucket-02 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   25 / 25
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ2_bucket-03 (CTL-A)
+    Demanda diaria:      2,268.0 pacotes/dia
+    Vagas / Em aberto:   24 / 24
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ2_bucket-04 (CTL-A)
+    Demanda diaria:      2,352.0 pacotes/dia
+    Vagas / Em aberto:   25 / 25
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ2_bucket-05 (CTL-A)
+    Demanda diaria:      1,050.0 pacotes/dia
+    Vagas / Em aberto:   24 / 24
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XRJ4 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             1,172.0 pacotes/dia
+  Vagas ideais (total):             28
+  Vagas com match:                  0
+  Vagas em aberto:                  28
+  Cobertura (match / total):        0/28 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XRJ4_bucket-01 (CTL-A)
+    Demanda diaria:        208.0 pacotes/dia
+    Vagas / Em aberto:    5 / 5
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ4_bucket-02 (CTL-A)
+    Demanda diaria:        250.0 pacotes/dia
+    Vagas / Em aberto:    6 / 6
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ4_bucket-03 (CTL-A)
+    Demanda diaria:        252.0 pacotes/dia
+    Vagas / Em aberto:    6 / 6
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ4_bucket-04 (CTL-A)
+    Demanda diaria:        210.0 pacotes/dia
+    Vagas / Em aberto:    5 / 5
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XRJ4_bucket-05 (CTL-A)
+    Demanda diaria:        252.0 pacotes/dia
+    Vagas / Em aberto:    6 / 6
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XSJ1 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             6,216.0 pacotes/dia
+  Vagas ideais (total):             134
+  Vagas com match:                  0
+  Vagas em aberto:                  134
+  Cobertura (match / total):        0/134 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XSJ1_bucket-01 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   27 / 27
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSJ1_bucket-02 (CTL-A)
+    Demanda diaria:      1,344.0 pacotes/dia
+    Vagas / Em aberto:   27 / 27
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSJ1_bucket-03 (CTL-A)
+    Demanda diaria:      1,260.0 pacotes/dia
+    Vagas / Em aberto:   26 / 26
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSJ1_bucket-04 (CTL-A)
+    Demanda diaria:      1,344.0 pacotes/dia
+    Vagas / Em aberto:   27 / 27
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSJ1_bucket-05 (CTL-A)
+    Demanda diaria:      1,134.0 pacotes/dia
+    Vagas / Em aberto:   27 / 27
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XSP7 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             1,764.0 pacotes/dia
+  Vagas ideais (total):             40
+  Vagas com match:                  0
+  Vagas em aberto:                  40
+  Cobertura (match / total):        0/40 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XSP7_bucket-01 (CTL-A)
+    Demanda diaria:        378.0 pacotes/dia
+    Vagas / Em aberto:    8 / 8
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP7_bucket-02 (CTL-A)
+    Demanda diaria:        336.0 pacotes/dia
+    Vagas / Em aberto:    8 / 8
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP7_bucket-03 (CTL-A)
+    Demanda diaria:        336.0 pacotes/dia
+    Vagas / Em aberto:    8 / 8
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP7_bucket-04 (CTL-A)
+    Demanda diaria:        378.0 pacotes/dia
+    Vagas / Em aberto:    8 / 8
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP7_bucket-05 (CTL-A)
+    Demanda diaria:        336.0 pacotes/dia
+    Vagas / Em aberto:    8 / 8
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+
+BASE: XSP9 | BDM: OUTROS
+--------------------------------------------------------------------------------
+  Territorios:                      5
+  Demanda diaria total:             2,100.0 pacotes/dia
+  Vagas ideais (total):             50
+  Vagas com match:                  0
+  Vagas em aberto:                  50
+  Cobertura (match / total):        0/50 = 0.0%
+  Parceiros existentes:             0
+    • Ativos:                       0
+    • Onboarding:                   0
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          0
+    • Inativos a reativar:          0
+  Attainment (Ativos / Vagas):      0.0%
+--------------------------------------------------------------------------------
+  DETALHAMENTO POR TERRITORIO:
+
+  XSP9_bucket-01 (CTL-A)
+    Demanda diaria:        420.0 pacotes/dia
+    Vagas / Em aberto:   10 / 10
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP9_bucket-02 (CTL-A)
+    Demanda diaria:        420.0 pacotes/dia
+    Vagas / Em aberto:   10 / 10
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP9_bucket-03 (CTL-A)
+    Demanda diaria:        420.0 pacotes/dia
+    Vagas / Em aberto:   10 / 10
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP9_bucket-04 (CTL-A)
+    Demanda diaria:        420.0 pacotes/dia
+    Vagas / Em aberto:   10 / 10
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+  XSP9_bucket-05 (CTL-A)
+    Demanda diaria:        420.0 pacotes/dia
+    Vagas / Em aberto:   10 / 10
+    Ativos:               0
+    Onboarding:           0
+    BG:                   0
+    Prospects:            0
+    Inativos:             0
+    Attainment:            0.0%
+    Acuracidade:           0.0%
+
+================================================================================

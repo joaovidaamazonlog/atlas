@@ -517,8 +517,15 @@ export function updateRoutesStats() {
 // ANALISE DE AREA
 // ---------------------------------------------------------------------------
 
+const NO_GO_REASONS = [
+    'Sem oportunidade próxima',
+    'Sem oportunidade próxima na borda',
+    'Fora de jurisdição',
+    'Sem localização (lat/lon ausente)',
+];
+
 export function populateAreaAnalysisFilters() {
-    const prospects = state.allMarkersData.filter(m => m.status === 'Prospect');
+    const prospects = state.allMarkersData.filter(m => m.status === 'Prospect' && m.decision);
     const states = [...new Set(prospects.map(m => m.state).filter(Boolean))].sort();
     const sel = document.getElementById('areaStateFilter');
     if (!sel) return;
@@ -526,83 +533,241 @@ export function populateAreaAnalysisFilters() {
     states.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
 }
 
-function renderStatsPopup(prospects, { state: stateFilter, decision: decisionFilter }) {
-    closeStatsPopup(); // remove popup anterior se existir
+/**
+ * Retorna o overview global de prospects (sem filtros) para o painel.
+ * Apenas prospects com decision (avaliados pela fase 3).
+ */
+function _getGlobalOverview() {
+    const allProspects = state.allMarkersData.filter(m => m.status === 'Prospect');
+    // Com o backend corrigido todos os prospects têm decision.
+    // noCoords é exibido como warning apenas se ainda existirem prospects
+    // sem coords E sem decision (dados gerados pelo backend antigo).
+    const noCoords  = allProspects.filter(m => !m.hasCoords && !m.decision).length;
+    const evaluated = allProspects.filter(m => m.hasCoords || m.decision);
+    const go   = evaluated.filter(p => p.decision === 'Go').length;
+    const nogo = evaluated.filter(p => p.decision === 'No Go').length;
+    const rate = evaluated.length > 0 ? ((go / evaluated.length) * 100).toFixed(1) : '0.0';
+    return { total: evaluated.length, go, nogo, rate, noCoords };
+}
 
-    const total   = prospects.length;
-    const goCount = prospects.filter(p => p.decision === 'Go').length;
-    const approvalRate = total > 0 ? ((goCount / total) * 100).toFixed(1) : '0.0';
-
-    const NO_GO_REASONS = [
-        'Sem oportunidade próxima',
-        'Sem oportunidade próxima na borda',
-        'Fora de jurisdição',
-    ];
-    const reasonCounts = {};
-    NO_GO_REASONS.forEach(r => {
-        reasonCounts[r] = prospects.filter(p => p.decision === 'No Go' && p.reason === r).length;
+/**
+ * Agrupa prospects avaliados por estado, retornando stats por UF.
+ */
+function _getStatsByState(prospects) {
+    const byState = {};
+    prospects.forEach(p => {
+        const uf = p.state || 'N/A';
+        if (!byState[uf]) byState[uf] = { go: 0, nogo: 0 };
+        if (p.decision === 'Go') byState[uf].go++;
+        else byState[uf].nogo++;
     });
+    return byState;
+}
+
+function _renderStateDetail(prospects) {
+    const byState = _getStatsByState(prospects);
+    const rows = Object.entries(byState)
+        .sort((a, b) => (b[1].go + b[1].nogo) - (a[1].go + a[1].nogo))
+        .map(([uf, s]) => {
+            const total = s.go + s.nogo;
+            const rate  = total > 0 ? ((s.go / total) * 100).toFixed(0) : '0';
+            return `<tr>
+              <td style="padding:3px 6px;font-weight:600">${uf}</td>
+              <td style="padding:3px 6px;text-align:center">${total}</td>
+              <td style="padding:3px 6px;text-align:center;color:#28a745">${s.go}</td>
+              <td style="padding:3px 6px;text-align:center;color:#dc3545">${s.nogo}</td>
+              <td style="padding:3px 6px;text-align:center">${rate}%</td>
+            </tr>`;
+        }).join('');
+
+    return `
+      <div id="state-detail-section" style="margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <b style="font-size:12px">Detalhamento por Estado</b>
+          <button onclick="document.getElementById('state-detail-section').remove()"
+                  style="border:none;background:none;font-size:1em;cursor:pointer;color:#666">&times;</button>
+        </div>
+        <div style="max-height:220px;overflow-y:auto;">
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <thead>
+              <tr style="background:#f5f5f5;border-bottom:1px solid #ddd">
+                <th style="padding:4px 6px;text-align:left">UF</th>
+                <th style="padding:4px 6px;text-align:center">Total</th>
+                <th style="padding:4px 6px;text-align:center;color:#28a745">Go</th>
+                <th style="padding:4px 6px;text-align:center;color:#dc3545">No Go</th>
+                <th style="padding:4px 6px;text-align:center">Aprov.</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>`;
+}
+
+function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: decisionFilter }) {
+    closeStatsPopup();
+
+    const overview = _getGlobalOverview();
+
+    // Prospects filtrados (para o mapa e para o detalhamento)
+    const fTotal = filteredProspects.length;
+    const fGo    = filteredProspects.filter(p => p.decision === 'Go').length;
+    const fNoGo  = filteredProspects.filter(p => p.decision === 'No Go').length;
+    const fRate  = fTotal > 0 ? ((fGo / fTotal) * 100).toFixed(1) : '0.0';
+
+    const reasonRows = NO_GO_REASONS.map(r => {
+        const count = filteredProspects.filter(p => p.decision === 'No Go' && p.reason === r).length;
+        const pct   = fTotal > 0 ? ((count / fTotal) * 100).toFixed(1) : '0.0';
+        return `<tr>
+          <td style="padding:2px 4px">${r}</td>
+          <td style="padding:2px 4px;text-align:center">${count}</td>
+          <td style="padding:2px 4px;text-align:center">${pct}%</td>
+        </tr>`;
+    }).join('');
 
     const stateLabel    = stateFilter    === 'all' ? 'Todos' : stateFilter;
     const decisionLabel = decisionFilter === 'all' ? 'Todos' : decisionFilter;
 
-    const reasonRows = NO_GO_REASONS.map(r => {
-        const count = reasonCounts[r];
-        const pct   = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
-        return `<tr><td>${r}</td><td>${count}</td><td>${pct}%</td></tr>`;
-    }).join('');
-
-    const emptyMsg = total === 0
-        ? '<p class="text-muted">Nenhum prospect encontrado para os filtros selecionados.</p>'
-        : '';
+    const hasFilter = stateFilter !== 'all' || decisionFilter !== 'all';
 
     const html = `
       <div id="stats-area-popup" style="
         position:fixed; top:80px; right:20px; z-index:9999;
         background:#fff; padding:16px; border-radius:8px;
-        box-shadow:0 2px 12px rgba(0,0,0,0.2); min-width:320px; max-width:420px;
-        font-size:13px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <b>Análise de Área</b>
+        box-shadow:0 2px 12px rgba(0,0,0,0.2); min-width:340px; max-width:440px;
+        font-size:13px; max-height:90vh; overflow-y:auto;">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <b style="font-size:14px">Análise de Área — Prospects</b>
           <button onclick="UIManager.closeStatsPopup()"
                   style="border:none;background:none;font-size:1.4em;cursor:pointer;">&times;</button>
         </div>
-        <p class="text-muted mb-1">Estado: <b>${stateLabel}</b> &nbsp;|&nbsp; Decisão: <b>${decisionLabel}</b></p>
-        <hr class="my-2">
-        ${emptyMsg}
-        ${total > 0 ? `
-        <table style="width:100%;margin-bottom:8px;">
-          <tr><td><b>Total de Prospects</b></td><td>${total}</td></tr>
-          <tr><td><b>Aprovados (Go)</b></td><td>${goCount}</td></tr>
-          <tr><td><b>Índice de Aprovação</b></td><td>${approvalRate}%</td></tr>
-        </table>
-        <b>Motivos de Não Aprovação:</b>
-        <table style="width:100%;margin-top:4px;">
-          <thead><tr><th>Motivo</th><th>#</th><th>%</th></tr></thead>
-          <tbody>${reasonRows}</tbody>
-        </table>` : ''}
+
+        <!-- OVERVIEW GLOBAL (fixo, sem filtros) -->
+        <div style="background:#f8f9fa;border-radius:6px;padding:10px;margin-bottom:10px;">
+          <div style="font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Overview Geral</div>
+          <div style="display:flex;gap:8px;justify-content:space-between;">
+            <div style="text-align:center;flex:1">
+              <div style="font-size:20px;font-weight:700">${overview.total}</div>
+              <div style="font-size:10px;color:#666">Total avaliados</div>
+            </div>
+            <div style="text-align:center;flex:1">
+              <div style="font-size:20px;font-weight:700;color:#28a745">${overview.go}</div>
+              <div style="font-size:10px;color:#666">Go</div>
+            </div>
+            <div style="text-align:center;flex:1">
+              <div style="font-size:20px;font-weight:700;color:#dc3545">${overview.nogo}</div>
+              <div style="font-size:10px;color:#666">No Go</div>
+            </div>
+            <div style="text-align:center;flex:1">
+              <div style="font-size:20px;font-weight:700;color:#007bff">${overview.rate}%</div>
+              <div style="font-size:10px;color:#666">Aprovação</div>
+            </div>
+          </div>
+          ${overview.noCoords > 0 ? `
+          <div style="margin-top:10px;padding:6px 8px;background:#fff8e1;border-radius:4px;border-left:3px solid #f9a825;font-size:11px;color:#555;line-height:1.5;">
+            ⚠️ <b>${overview.noCoords}</b> lead(s) sem lat/lon — não avaliados pela Fase 3
+          </div>` : ''}
+        </div>
+
+        ${hasFilter ? `
+        <!-- RESULTADO DO FILTRO -->
+        <div style="border-top:1px solid #eee;padding-top:10px;margin-bottom:8px;">
+          <div style="font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">
+            Filtro: Estado = <b>${stateLabel}</b> | Decisão = <b>${decisionLabel}</b>
+          </div>
+          ${fTotal === 0
+            ? '<p class="text-muted" style="font-size:12px">Nenhum prospect encontrado.</p>'
+            : `<div style="display:flex;gap:8px;justify-content:space-between;margin-bottom:10px;">
+                <div style="text-align:center;flex:1">
+                  <div style="font-size:18px;font-weight:700">${fTotal}</div>
+                  <div style="font-size:10px;color:#666">Total</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                  <div style="font-size:18px;font-weight:700;color:#28a745">${fGo}</div>
+                  <div style="font-size:10px;color:#666">Go</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                  <div style="font-size:18px;font-weight:700;color:#dc3545">${fNoGo}</div>
+                  <div style="font-size:10px;color:#666">No Go</div>
+                </div>
+                <div style="text-align:center;flex:1">
+                  <div style="font-size:18px;font-weight:700;color:#007bff">${fRate}%</div>
+                  <div style="font-size:10px;color:#666">Aprovação</div>
+                </div>
+              </div>
+              <b style="font-size:12px">Motivos de No Go:</b>
+              <table style="width:100%;margin-top:4px;font-size:12px;border-collapse:collapse;">
+                <thead><tr style="background:#f5f5f5">
+                  <th style="padding:3px 4px;text-align:left">Motivo</th>
+                  <th style="padding:3px 4px;text-align:center">#</th>
+                  <th style="padding:3px 4px;text-align:center">%</th>
+                </tr></thead>
+                <tbody>${reasonRows}</tbody>
+              </table>`
+          }
+        </div>` : ''}
+
+        <!-- BOTÃO DETALHAMENTO POR ESTADO -->
+        <div id="state-detail-container"></div>
+        <button onclick="UIManager.showStateDetail()"
+                style="width:100%;margin-top:8px;padding:6px;border:1px solid #007bff;
+                       background:#fff;color:#007bff;border-radius:4px;cursor:pointer;font-size:12px;">
+          <i class="fas fa-table"></i> Ver detalhamento por Estado
+        </button>
       </div>`;
 
     document.body.insertAdjacentHTML('beforeend', html);
+
+    // Guarda os prospects filtrados para uso no detalhamento
+    window._areaAnalysisProspects = filteredProspects;
+}
+
+export function showStateDetail() {
+    const container = document.getElementById('state-detail-container');
+    if (!container) return;
+    // Toggle: se já está aberto, fecha
+    if (container.innerHTML.trim()) {
+        container.innerHTML = '';
+        return;
+    }
+    const prospects = window._areaAnalysisProspects
+        ?? state.allMarkersData.filter(m => m.status === 'Prospect' && m.decision);
+    container.innerHTML = _renderStateDetail(prospects);
 }
 
 export function analyseArea() {
     const selState    = document.getElementById('areaStateFilter')?.value ?? 'all';
     const selDecision = document.getElementById('areaDecisionFilter')?.value ?? 'all';
 
-    let filtered = state.allMarkersData.filter(m => m.status === 'Prospect');
-    if (selState    !== 'all') filtered = filtered.filter(m => m.state    === selState);
-    if (selDecision !== 'all') filtered = filtered.filter(m => m.decision === selDecision);
+    // Todos os prospects avaliados (com decision)
+    let prospects = state.allMarkersData.filter(m => m.status === 'Prospect' && m.decision);
+    if (selState    !== 'all') prospects = prospects.filter(m => m.state    === selState);
+    if (selDecision !== 'all') prospects = prospects.filter(m => m.decision === selDecision);
 
-    renderStatsPopup(filtered, { state: selState, decision: selDecision });
+    _applyProspectMapFilter(selState, selDecision);
+    _renderStatsPopup(prospects, { state: selState, decision: selDecision });
+}
+
+/**
+ * Aplica filtro de prospects no mapa, ignorando os filtros gerais da UI.
+ * Ajusta o zoom para mostrar todos os marcadores resultantes.
+ */
+function _applyProspectMapFilter(stateFilter, decisionFilter) {
+    let data = state.allMarkersData.filter(m => m.status === 'Prospect' && m.hasCoords);
+    if (stateFilter    !== 'all') data = data.filter(m => m.state    === stateFilter);
+    if (decisionFilter !== 'all') data = data.filter(m => m.decision === decisionFilter);
+    // Usa o namespace global exposto pelo main.js para evitar dependência circular
+    window.MapManager?.createMarkers(data, /* fitBounds= */ true);
 }
 
 export function closeStatsPopup() {
     document.getElementById('stats-area-popup')?.remove();
+    window._areaAnalysisProspects = null;
 }
 
 export function computeFilteredProspects(data, stateFilter, decisionFilter) {
-    let filtered = data.filter(m => m.status === 'Prospect');
+    let filtered = data.filter(m => m.status === 'Prospect' && m.decision);
     if (stateFilter    !== 'all') filtered = filtered.filter(m => m.state    === stateFilter);
     if (decisionFilter !== 'all') filtered = filtered.filter(m => m.decision === decisionFilter);
     return filtered;
@@ -612,11 +777,6 @@ export function computeStats(prospects) {
     const total   = prospects.length;
     const goCount = prospects.filter(p => p.decision === 'Go').length;
     const approvalRate = total > 0 ? (goCount / total) * 100 : 0;
-    const NO_GO_REASONS = [
-        'Sem oportunidade próxima',
-        'Sem oportunidade próxima na borda',
-        'Fora de jurisdição',
-    ];
     const reasonCounts = {};
     NO_GO_REASONS.forEach(r => {
         reasonCounts[r] = prospects.filter(p => p.decision === 'No Go' && p.reason === r).length;

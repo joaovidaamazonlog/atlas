@@ -49,9 +49,10 @@ from models import Config, PartnerMetrics
 class PartnerData:
     """Resultado do carregamento de parceiros e jurisdições."""
 
-    partners_df: pd.DataFrame       # parceiros operacionais (todos os status)
+    partners_df: pd.DataFrame       # parceiros operacionais (todos os status, com lat/lon)
     web_leads_df: pd.DataFrame      # web leads (leadSource = Website Pardot Form)
     jurisdictions: Dict             # GeoJSON das jurisdições
+    no_coords_prospects_df: pd.DataFrame = field(default_factory=pd.DataFrame)  # prospects sem lat/lon
 
     # Índice rápido: hex → base (construído a partir das jurisdições)
     # Preenchido por get_base_from_jurisdiction() sob demanda
@@ -188,12 +189,21 @@ def load_partners(
         if src in web_leads_df.columns:
             web_leads_df.rename(columns={src: dst}, inplace=True)
 
-    # 4. Limpar lat/lon ausentes
+    # 4. Separar prospects sem lat/lon (serão avaliados com decision fixa na Fase 3)
+    #    Demais parceiros: remover lat/lon ausentes normalmente
+    prospects_mask = df["status"] == "Prospect"
+    no_coords_mask = df["lat"].isna() | df["lon"].isna()
+
+    no_coords_prospects_df = df[prospects_mask & no_coords_mask].copy()
     before = len(df)
-    df.dropna(subset=["lat", "lon"], inplace=True)
-    dropped = before - len(df)
+    df = df[~(prospects_mask & no_coords_mask)].copy()  # remove só prospects sem coords
+    df.dropna(subset=["lat", "lon"], inplace=True)       # remove demais sem coords
+    dropped = before - len(df) - len(no_coords_prospects_df)
+    if len(no_coords_prospects_df):
+        print(f"   INFO: {len(no_coords_prospects_df)} prospect(s) sem lat/lon — "
+              f"receberão decision fixa na Fase 3.")
     if dropped:
-        print(f"   WARN: {dropped} parceiros removidos por lat/lon ausente.")
+        print(f"   WARN: {dropped} parceiros não-prospect removidos por lat/lon ausente.")
 
     # 5. Normalizar tipos
     df["lat"] = df["lat"].astype(float)
@@ -236,6 +246,7 @@ def load_partners(
         partners_df=df,
         web_leads_df=web_leads_df,
         jurisdictions=jurisdictions,
+        no_coords_prospects_df=no_coords_prospects_df,
     )
 
 

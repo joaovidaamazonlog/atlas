@@ -762,6 +762,34 @@ def run_phase3(
     # Atualizar ideal_supply.json com matched_partner_ids
     _update_supply_file(supply, out_dir)
 
+    # ── Prospects sem lat/lon: decision fixa ─────────────────────────────
+    no_coords_df = partner_data.no_coords_prospects_df
+    if not no_coords_df.empty:
+        print(f"\n  Processando {len(no_coords_df)} prospect(s) sem lat/lon ...")
+        for _, row in no_coords_df.iterrows():
+            pm = PartnerMetrics(
+                origin_hex   = "",
+                station_code = str(row.get("station_code", "") or ""),
+                radius_s     = 0,
+                capacity_s   = 0,
+                entity_type  = "PROSPECT",
+                status       = "Prospect",
+                partner_name = str(row.get("partner_name", "") or row.get("name", "")),
+                salesforce_id= str(row.get("salesforce_id", "")),
+                store_id     = str(row.get("store_id", "")) or None,
+                decision     = "No Go",
+                reason       = "Sem localização (lat/lon ausente)",
+                lat          = 0.0,
+                lon          = 0.0,
+                zip_code     = str(row.get("zip_code", "") or ""),
+                city         = str(row.get("city", "") or ""),
+                owner_id     = row.get("owner_id") or None,
+                bucket       = row.get("bucket") or None,
+                cluster_name = "Sem localização",
+            )
+            fit_result.outside_jurisdiction.append(pm)
+        print(f"  {len(no_coords_df)} prospect(s) marcados como 'No Go — Sem localização'.")
+
     # Sumario global
     summ = fit_result.summary()
     total_slots  = sum(v["slots"]  for v in summ.values())

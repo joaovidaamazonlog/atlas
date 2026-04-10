@@ -10,7 +10,7 @@ import { state, subscribe }          from './state.js';
 import { loadAll, applyFilters, resetFilters } from './modules/data-manager.js';
 import { initialize, createMarkers, createMarkersDeliveryStations, restyleMarkers, toggleRadii, toggleOptimizationBtn } from './modules/map-manager.js';
 import { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection } from './modules/polygon-manager.js';
-import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence, populateAreaAnalysisFilters, analyseArea, closeStatsPopup } from './modules/ui-manager.js';
+import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence, populateAreaAnalysisFilters, analyseArea, closeStatsPopup, showStateDetail } from './modules/ui-manager.js';
 import { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions } from './modules/route-manager.js';
 import { searchNearbyFromState, searchNearby } from './modules/gmaps-scraper.js';
 import * as ManagementDashboard from './modules/management-dashboard.js';
@@ -45,7 +45,7 @@ subscribe('allMarkersData', () => {
 
 window.MapManager = { initialize, createMarkers, restyleMarkers, toggleRadii, toggleOptimizationBtn };
 window.PolygonManager = { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection };
-window.UIManager = { searchLocation, updateStats, togglePanelContent, requestAssistence, analyseArea, closeStatsPopup };
+window.UIManager = { searchLocation, updateStats, togglePanelContent, requestAssistence, analyseArea, closeStatsPopup, showStateDetail };
 window.RouteManager = { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions };
 window.GmapsScraper = { searchNearbyFromState, searchNearby };
 window.DataManager  = { applyFilters, resetFilters };

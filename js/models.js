@@ -79,6 +79,8 @@ export class Partner {
         /** @type {string}           */ this.HCP_rate_card          = raw.HCP_rate_card          ?? '';
         /** @type {string}           */ this.supply_run             = raw.supply_run             ?? '';
         /** @type {string}           */ this.decision               = raw.decision               ?? '';
+        /** @type {string}           */ this.reason                 = raw.reason                 ?? '';
+        /** @type {string}           */ this.state                  = raw.state                  ?? '';
         /** @type {string}           */ this.tooltip                = raw.tooltip                ?? '';
         /** @type {string[]|string}  */ this.ceps                   = raw.ceps                   ?? [];
         /** @type {OptimizationData} */ this.optimization           = raw.optimization

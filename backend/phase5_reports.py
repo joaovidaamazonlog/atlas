@@ -574,17 +574,19 @@ def _write_geojson(
     all_fit_partners: List[PartnerMetrics] = fit.all_partners()
 
     for p in all_fit_partners:
-        if not p.lat or not p.lon:
-            continue
         import math
-        if math.isnan(p.lat) or math.isnan(p.lon):
-            continue
+        has_coords = p.lat and p.lon and not math.isnan(p.lat) and not math.isnan(p.lon)
 
-        ceps = _ceps_for_partner(p, pkg.hex_to_ceps)
+        geometry = (
+            {"type": "Point", "coordinates": [p.lon, p.lat]}
+            if has_coords else None
+        )
+
+        ceps = _ceps_for_partner(p, pkg.hex_to_ceps) if has_coords else []
 
         features.append({
             "type": "Feature",
-            "geometry": {"type": "Point", "coordinates": [p.lon, p.lat]},
+            "geometry": geometry,
             "properties": {
                 "type":              "PARTNER_POINT",
                 "salesforce_id":     p.salesforce_id,

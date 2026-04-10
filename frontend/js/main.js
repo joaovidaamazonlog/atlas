@@ -6,7 +6,7 @@
  * Nao contem logica de negocio — apenas wiring.
  */
 
-import { state, subscribe }          from '../state.js';
+import { state, subscribe }          from './state.js';
 import { loadAll, applyFilters, resetFilters } from './modules/data-manager.js';
 import { initialize, createMarkers, createMarkersDeliveryStations, restyleMarkers, toggleRadii, toggleOptimizationBtn } from './modules/map-manager.js';
 import { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection } from './modules/polygon-manager.js';

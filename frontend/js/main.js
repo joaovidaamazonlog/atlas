@@ -6,13 +6,13 @@
  * Nao contem logica de negocio — apenas wiring.
  */
 
-import { state, subscribe }          from '../../js/state.js';
-import { loadAll, applyFilters, resetFilters } from '../../js/modules/data-manager.js';
-import { initialize, createMarkers, createMarkersDeliveryStations, restyleMarkers, toggleRadii, toggleOptimizationBtn } from '../../js/modules/map-manager.js';
+import { state, subscribe }          from '../state.js';
+import { loadAll, applyFilters, resetFilters } from './modules/data-manager.js';
+import { initialize, createMarkers, createMarkersDeliveryStations, restyleMarkers, toggleRadii, toggleOptimizationBtn } from './modules/map-manager.js';
 import { updateFilteredPolygons, updateFilteredJurisdiction, togglePolygons, toggleJurisdictions, toggleOptimizationLayer, optimizationSelection } from './modules/polygon-manager.js';
 import { updatePeriodInfo, populateFilters, setupAutocomplete, searchLocation, updateActiveStatsTab, updateStats, togglePanelContent, requestAssistence, populateAreaAnalysisFilters, analyseArea, closeStatsPopup, showStateDetail } from './modules/ui-manager.js';
 import { generateRoute, startRouteFromHere, addStop, renderStopsList, moveStopUp, moveStopDown, removeStop, clearRoute, hcpSuggestHostClusters, resetHcpSuggestions } from './modules/route-manager.js';
-import { searchNearbyFromState, searchNearby } from '../../js/modules/gmaps-scraper.js';
+import { searchNearbyFromState, searchNearby } from './modules/gmaps-scraper.js';
 import * as ManagementDashboard from './modules/management-dashboard.js';
 
 // ---------------------------------------------------------------------------

@@ -15,13 +15,13 @@
 
 import { state, subscribe }    from '../state.js';
 import { Partner, PartnerStatus } from '../models.js';
-import { DATA_URLS }           from '../../frontend/js/config.js';
+import { DATA_URLS }           from '../config.js';
 
 // ---------------------------------------------------------------------------
 // WEB WORKER
 // ---------------------------------------------------------------------------
 
-const dataWorker = new Worker('../../data-worker.js', { type: 'module' });
+const dataWorker = new Worker('../../data-worker.js');
 
 dataWorker.onmessage = (e) => {
     if (e.data.action === 'filterResult') {

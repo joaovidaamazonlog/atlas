@@ -14,7 +14,7 @@
  */
 
 import { state }          from '../state.js';
-import { MAP_CONFIG, COLOR_PALETTES } from '../../frontend/js/config.js';
+import { MAP_CONFIG, COLOR_PALETTES } from '../config.js';
 import { PartnerStatus }  from '../models.js';
 import { getPopupContent } from './ui-manager.js';
 

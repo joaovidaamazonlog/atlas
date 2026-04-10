@@ -16,9 +16,9 @@
  */
 
 import { state }       from '../state.js';
-import { DATA_URLS, CNPJ_API_URL } from '../../frontend/js/config.js';
+import { DATA_URLS, CNPJ_API_URL } from '../config.js';
 import { ProspectCompany } from '../models.js';
-import { geocodeBatch } from '../../frontend/js/modules/ui-manager.js';
+import { geocodeBatch } from './ui-manager.js';
 
 /** @type {Object|null} Cache em memória do gmaps_results.json */
 let _cache = null;

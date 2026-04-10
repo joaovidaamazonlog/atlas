@@ -67,12 +67,12 @@ SHEETS_TO_LOAD = [
     "Active",
     "Launches",
     "Delivery Stations",
-    "ADV - Coverage raw data",
-    "Lead",
-    "PerfectMile",
     "Jurisdictions",
-    "WebLeads"
+    "WebLeads",
 ]
+
+# Abas exclusivas do scorecard (usadas em main.py)
+SHEETS_SCORECARD = ["Lead"]
 
 # --- Nomes de Colunas (para garantir consistência) ---
 # É uma boa prática definir nomes de colunas aqui para evitar erros de digitação no código.

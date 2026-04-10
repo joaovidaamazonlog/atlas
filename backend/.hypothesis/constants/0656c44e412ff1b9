@@ -1,0 +1,4 @@
+# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\shapely\constructive.py
+# hypothesis_version: 6.151.12
+
+[0.0, 5.0, '3.10.0', '3.11.0', 'BufferCapStyle', 'BufferJoinStyle', 'boundary', 'buffer', 'build_area', 'cap_style', 'centroid', 'clip_by_rect', 'concave_hull', 'convex_hull', 'delaunay_triangles', 'envelope', 'extend_to', 'join_style', 'linework', 'make_valid', 'mitre_limit', 'node', 'normalize', 'offset_curve', 'only_edges', 'ordered', 'orient_polygons', 'oriented_envelope', 'point_on_surface', 'polygonize', 'polygonize_full', 'preserve_topology', 'quad_segs', 'ratio must be scalar', 'reverse', 'round', 'segmentize', 'simplify', 'single_sided', 'snap', 'structure', 'voronoi_polygons']

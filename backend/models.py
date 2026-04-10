@@ -139,7 +139,8 @@ class PartnerMetrics:
     salesforce_id: str      = ""
     jurisdiction_type: str  = ""
     launch_date: str        = ""
-    exitedDate: str         = ""
+    exitedDate: str         = ""   # mantido por compatibilidade — use exited_date em código novo
+    exited_date: str        = ""
     decision_status: str    = ""
     supply_run: str         = ""
     hub_delivey_initiatives: str = ""
@@ -411,3 +412,215 @@ class ProspectCandidate:
             f"CEP {self.cep}",
         ]
         return ", ".join(p for p in parts if p)
+
+
+# ---------------------------------------------------------------------------
+# PARTNER  (modelo unificado — pipeline refatorado)
+# ---------------------------------------------------------------------------
+
+_PHONE_TRANS = str.maketrans({"(": "", ")": "", " ": "", "-": "", "+": ""})
+
+_DS_REMAP = {
+    "HSP2": "DSP2", "HSP3": "DSP3", "HSP5": "DSP5", "HBH5": "DBH5",
+    "HFO3": "DCE3", "HVI2": "DES2", "HRJ3": "DRJ3", "HGO2": "DGO2",
+    "HBS5": "DBS5", "HPE4": "DPE4", "HPR2": "DPR2", "HRS5": "DRS5",
+    "HPB3": "DPB3", "HSV8": "DSA8",
+}
+
+
+def _clean(value, default=None):
+    """Converte NaN/NaT/None para default; preserva demais valores."""
+    try:
+        import pandas as _pd
+        if _pd.isna(value):
+            return default
+    except (TypeError, ValueError):
+        pass
+    return value
+
+
+def _clean_str(value) -> Optional[str]:
+    """Retorna string limpa ou None — nunca 'nan'/'None'/'NaN'."""
+    v = _clean(value)
+    if v is None:
+        return None
+    s = str(v).strip()
+    return None if s.lower() in ("nan", "none", "nat", "") else s
+
+
+def _clean_float(value) -> Optional[float]:
+    """Retorna float ou None."""
+    v = _clean(value)
+    if v is None:
+        return None
+    try:
+        return float(str(v).replace(",", "."))
+    except (ValueError, TypeError):
+        return None
+
+
+def _clean_int(value, default: int = 0) -> int:
+    """Retorna int ou default."""
+    v = _clean(value)
+    if v is None:
+        return default
+    try:
+        f = float(str(v).replace(",", "."))
+        return int(f)
+    except (ValueError, TypeError):
+        return default
+
+
+@dataclass
+class Partner:
+    """
+    Modelo unificado de parceiro — construído a partir do Excel e
+    serializado diretamente para dados_mapa.json (Schema_Limpo).
+
+    Substitui a cadeia DataProcessor → JsonGenerator → load_partners(JSON).
+    """
+    salesforce_id:          str
+    store_id:               Optional[str]
+    name:                   str
+    status:                 str
+    lead_source:            Optional[str]
+    lat:                    Optional[float]
+    lon:                    Optional[float]
+    zip_code:               Optional[str]
+    city:                   Optional[str]
+    state:                  Optional[str]
+    delivery_station:       str
+    supply_run:             Optional[str]
+    radius:                 int
+    capacity:               int
+    bucket:                 Optional[str]
+    jurisdiction_type:      Optional[str]
+    hub_delivey_initiatives: Optional[str]
+    HCP_rate_card:          Optional[str]
+    HCP_host_partner:       Optional[str]
+    launch_date:            Optional[str]
+    exited_date:            Optional[str]
+    telefone:               Optional[str]
+    owner_id:               Optional[str]
+    decision_status:        Optional[str]
+    tooltip:                str
+
+    # ------------------------------------------------------------------
+    # Construção a partir de uma linha do DataFrame consolidado
+    # ------------------------------------------------------------------
+
+    @classmethod
+    def from_row(
+        cls,
+        row,                        # pd.Series
+        station_map: dict,          # {station_id: station_name}
+        jurisdictions_map: dict,    # {jurisdiction_id: bucket_name}
+        host_map: dict,             # {salesforce_id: name}  (active partners)
+    ) -> "Partner":
+        from utils.formatters import format_date_to_str
+
+        # Coordenadas
+        lat = _clean_float(row.get("Latitude"))
+        lon = _clean_float(row.get("Longitude"))
+
+        # Delivery Station: Id → Name → remap legado
+        raw_ds = _clean_str(row.get("Delivery Station")) or ""
+        ds = station_map.get(raw_ds, raw_ds)
+        ds = _DS_REMAP.get(ds, ds)
+
+        # Bucket via Jurisdiction Id → Name[5:]
+        raw_jur = _clean_str(row.get("Jurisdiction"))
+        bucket = jurisdictions_map.get(raw_jur) if raw_jur else None
+        # fallback: campo Bucket já resolvido
+        if bucket is None:
+            bucket = _clean_str(row.get("Bucket"))
+
+        # HCP Host Partner: Id → Name
+        raw_host = _clean_str(row.get("HCP Host Partner"))
+        hcp_host = host_map.get(raw_host, raw_host) if raw_host else None
+
+        # Telefone normalizado
+        raw_phone = _clean_str(row.get("Phone"))
+        telefone = raw_phone.translate(_PHONE_TRANS) if raw_phone else None
+
+        # Datas
+        launch_date = format_date_to_str(row.get("Launch Date"))
+        launch_date = None if launch_date == "TBC" else launch_date
+        exited_date = format_date_to_str(row.get("Exit_Date__c"))
+        exited_date = None if exited_date == "TBC" else exited_date
+
+        # Campos simples
+        sf_id   = _clean_str(row.get("Id")) or ""
+        name    = _clean_str(row.get("Name")) or ""
+        status  = _clean_str(row.get("Status")) or ""
+        store_id = _clean_str(row.get("StoreID"))
+
+        hub_init = _clean_str(row.get("Hub Delivery Initiatives"))
+
+        tooltip = (
+            f"ID: {store_id or ''} | "
+            f"Name: {name} | "
+            f"HUB Delivery Initiatives: {hub_init or ''}"
+        )
+
+        return cls(
+            salesforce_id           = sf_id,
+            store_id                = store_id,
+            name                    = name,
+            status                  = status,
+            lead_source             = _clean_str(row.get("LeadSource")),
+            lat                     = lat,
+            lon                     = lon,
+            zip_code                = _clean_str(row.get("CEP")),
+            city                    = _clean_str(row.get("Cidade")),
+            state                   = _clean_str(row.get("Estado")),
+            delivery_station        = ds,
+            supply_run              = _clean_str(row.get("Supply Run")),
+            radius                  = _clean_int(row.get("Radius"), default=1500),
+            capacity                = _clean_int(row.get("Volume Cap"), default=42),
+            bucket                  = bucket,
+            jurisdiction_type       = _clean_str(row.get("Jurisdiction Type")),
+            hub_delivey_initiatives = hub_init,
+            HCP_rate_card           = _clean_str(row.get("HCP Rate Card")),
+            HCP_host_partner        = hcp_host,
+            launch_date             = launch_date,
+            exited_date             = exited_date,
+            telefone                = telefone,
+            owner_id                = _clean_str(row.get("OwnerId")),
+            decision_status         = _clean_str(row.get("Decision_Status__c")),
+            tooltip                 = tooltip,
+        )
+
+    # ------------------------------------------------------------------
+    # Serialização para o Schema_Limpo
+    # ------------------------------------------------------------------
+
+    def to_dict(self) -> dict:
+        """Serializa para o formato exato do Schema_Limpo (JSON-safe)."""
+        return {
+            "salesforce_id":           self.salesforce_id,
+            "store_id":                self.store_id,
+            "name":                    self.name,
+            "status":                  self.status,
+            "lead_source":             self.lead_source,
+            "lat":                     self.lat,
+            "lon":                     self.lon,
+            "zip_code":                self.zip_code,
+            "city":                    self.city,
+            "state":                   self.state,
+            "delivery_station":        self.delivery_station,
+            "supply_run":              self.supply_run,
+            "radius":                  self.radius,
+            "capacity":                self.capacity,
+            "bucket":                  self.bucket,
+            "jurisdiction_type":       self.jurisdiction_type,
+            "hub_delivey_initiatives": self.hub_delivey_initiatives,
+            "HCP_rate_card":           self.HCP_rate_card,
+            "HCP_host_partner":        self.HCP_host_partner,
+            "launch_date":             self.launch_date,
+            "exited_date":             self.exited_date,
+            "telefone":                self.telefone,
+            "owner_id":                self.owner_id,
+            "decision_status":         self.decision_status,
+            "tooltip":                 self.tooltip,
+        }

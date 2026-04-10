@@ -1,0 +1,4 @@
+# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\shapely\predicates.py
+# hypothesis_version: 6.151.12
+
+[0.0, '3.10.0', '3.12.0', 'contains', 'contains_properly', 'contains_xy', 'covered_by', 'covers', 'crosses', 'disjoint', 'dwithin', 'equals', 'equals_exact', 'equals_identical', 'has_m', 'has_z', 'ignore', 'intersects', 'intersects_xy', 'is_ccw', 'is_closed', 'is_empty', 'is_geometry', 'is_missing', 'is_prepared', 'is_ring', 'is_simple', 'is_valid', 'is_valid_input', 'is_valid_reason', 'overlaps', 'relate', 'relate_pattern', 'touches', 'within']

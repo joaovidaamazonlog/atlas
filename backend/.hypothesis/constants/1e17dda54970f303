@@ -1,0 +1,4 @@
+# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\pandas\core\tools\numeric.py
+# hypothesis_version: 6.151.12
+
+['Float', 'Integer', 'O', 'UnsignedInteger', 'coerce', 'dtype', 'float', 'i8', 'ignore', 'integer', 'mM', 'ndim', 'pyarrow', 'raise', 'signed', 'unsigned']

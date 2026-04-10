@@ -1,0 +1,4 @@
+# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\pandas\core\construction.py
+# hypothesis_version: 6.151.12
+
+['M', 'U', '__array__', '_typ', 'boolean', 'categoricalindex', 'datetime', 'datetimeindex', 'dtype', 'empty', 'floating', 'index', 'int64', 'integer', 'interval', 'intervalindex', 'iu', 'm', 'mM', 'mixed-integer-float', 'multiindex', 'ndim', 'npy_extension', 'object', 'period', 'periodindex', 'python', 'rangeindex', 'series', 'str', 'string', 'timedelta', 'timedeltaindex', 'uint64']

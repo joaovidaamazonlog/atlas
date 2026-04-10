@@ -58,37 +58,46 @@ export const PartnerStatus = Object.freeze({
  */
 export class Partner {
     /**
-     * @param {Object} raw - Objeto bruto vindo da API
+     * @param {Object} raw - Objeto bruto vindo da API (Schema_Limpo)
      */
     constructor(raw = {}) {
         /** @type {string}           */ this.salesforce_id          = raw.salesforce_id          ?? '';
-        /** @type {string}           */ this.store_id               = raw.store_id               ?? '';
+        /** @type {string|null}      */ this.store_id               = raw.store_id               ?? null;
         /** @type {string}           */ this.name                   = raw.name                   ?? '';
         /** @type {string}           */ this.status                 = raw.status                 ?? PartnerStatus.ACTIVE;
-        /** @type {number}           */ this.lat                    = raw.lat                    ?? 0;
-        /** @type {number}           */ this.lon                    = raw.lon                    ?? 0;
+        /** @type {number|null}      */ this.lat                    = raw.lat                    ?? null;
+        /** @type {number|null}      */ this.lon                    = raw.lon                    ?? null;
+        /** @type {string|null}      */ this.zip_code               = raw.zip_code               ?? null;
+        /** @type {string|null}      */ this.city                   = raw.city                   ?? null;
+        /** @type {string|null}      */ this.state                  = raw.state                  ?? null;
         /** @type {string}           */ this.delivery_station       = raw.delivery_station       ?? '';
-        /** @type {string}           */ this.bucket_ade             = raw.bucket_ade             ?? '';
-        /** @type {string}           */ this.regiao                 = raw.regiao                 ?? '';
+        /** @type {string|null}      */ this.supply_run             = raw.supply_run             ?? null;
         /** @type {number}           */ this.radius                 = raw.radius                 ?? 0;
         /** @type {number}           */ this.capacity               = raw.capacity               ?? 0;
-        /** @type {string}           */ this.launch_date            = raw.launch_date            ?? '';
-        /** @type {string}           */ this.telefone               = raw.telefone               ?? '';
-        /** @type {string}           */ this.hub_delivey_initiatives = raw.hub_delivey_initiatives ?? '';
-        /** @type {string}           */ this.HCP_host_partner       = raw.HCP_host_partner       ?? '';
-        /** @type {string}           */ this.HCP_rate_card          = raw.HCP_rate_card          ?? '';
-        /** @type {string}           */ this.supply_run             = raw.supply_run             ?? '';
+        /** @type {string|null}      */ this.bucket                 = raw.bucket                 ?? null;
+        /** @type {string|null}      */ this.jurisdiction_type      = raw.jurisdiction_type      ?? null;
+        /** @type {string|null}      */ this.hub_delivey_initiatives = raw.hub_delivey_initiatives ?? null;
+        /** @type {string|null}      */ this.HCP_rate_card          = raw.HCP_rate_card          ?? null;
+        /** @type {string|null}      */ this.HCP_host_partner       = raw.HCP_host_partner       ?? null;
+        /** @type {string|null}      */ this.launch_date            = raw.launch_date            ?? null;
+        /** @type {string|null}      */ this.exited_date            = raw.exited_date            ?? null;
+        /** @type {string|null}      */ this.telefone               = raw.telefone               ?? null;
+        /** @type {string|null}      */ this.owner_id               = raw.owner_id               ?? null;
+        /** @type {string|null}      */ this.decision_status        = raw.decision_status        ?? null;
+        /** @type {string|null}      */ this.lead_source            = raw.lead_source            ?? null;
+        /** @type {string}           */ this.tooltip                = raw.tooltip                ?? '';
+
+        // Campos injetados pelo data-manager via optimization_data.geojson (não vêm do JSON)
+        /** @type {string}           */ this.bucket_ade             = raw.bucket_ade             ?? '';
+        /** @type {string}           */ this.regiao                 = raw.regiao                 ?? '';
         /** @type {string}           */ this.decision               = raw.decision               ?? '';
         /** @type {string}           */ this.reason                 = raw.reason                 ?? '';
-        /** @type {string}           */ this.state                  = raw.state                  ?? '';
-        /** @type {string}           */ this.tooltip                = raw.tooltip                ?? '';
-        /** @type {string[]|string}  */ this.ceps                   = raw.ceps                   ?? [];
         /** @type {OptimizationData} */ this.optimization           = raw.optimization
             ? new OptimizationData(raw.optimization.radius_suggestion, raw.optimization.cap_suggestion)
             : OptimizationData.default();
-        /** @type {Object|null}      */ this.main_store_data        = raw.main_store_data        ?? null;
-        /** @type {Object|null}      */ this.overlap_data           = raw.overlap_data           ?? null;
-        /** @type {number}           */ this.ADV                    = raw.ADV                    ?? 0;
+
+        // Campos de slots ideais (injetados por Partner.fromSlot)
+        /** @type {string[]|string}  */ this.ceps                   = raw.ceps                   ?? [];
         /** @type {string}           */ this.slot_id                = raw.slot_id                ?? '';
     }
 

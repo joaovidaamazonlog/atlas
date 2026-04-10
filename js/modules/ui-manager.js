@@ -519,13 +519,13 @@ export function updateRoutesStats() {
 
 const NO_GO_REASONS = [
     'Sem oportunidade próxima',
-    'Sem oportunidade próxima na borda',
     'Fora de jurisdição',
-    'Sem localização (lat/lon ausente)',
+    'Não avaliado por falta de coordenadas',
 ];
 
 export function populateAreaAnalysisFilters() {
-    const prospects = state.allMarkersData.filter(m => m.status === 'Prospect' && m.decision);
+    // Inclui todos os prospects — com ou sem decision — para capturar todos os estados
+    const prospects = state.allMarkersData.filter(m => m.status === 'Prospect');
     const states = [...new Set(prospects.map(m => m.state).filter(Boolean))].sort();
     const sel = document.getElementById('areaStateFilter');
     if (!sel) return;
@@ -534,20 +534,23 @@ export function populateAreaAnalysisFilters() {
 }
 
 /**
- * Retorna o overview global de prospects (sem filtros) para o painel.
- * Apenas prospects com decision (avaliados pela fase 3).
+ * Retorna o overview global de prospects (sem filtros, sempre estático).
  */
 function _getGlobalOverview() {
     const allProspects = state.allMarkersData.filter(m => m.status === 'Prospect');
-    // Com o backend corrigido todos os prospects têm decision.
-    // noCoords é exibido como warning apenas se ainda existirem prospects
-    // sem coords E sem decision (dados gerados pelo backend antigo).
-    const noCoords  = allProspects.filter(m => !m.hasCoords && !m.decision).length;
-    const evaluated = allProspects.filter(m => m.hasCoords || m.decision);
+    const noCoords     = allProspects.filter(m => !m.hasCoords).length;
+    const evaluated    = allProspects.filter(m => m.decision);
     const go   = evaluated.filter(p => p.decision === 'Go').length;
     const nogo = evaluated.filter(p => p.decision === 'No Go').length;
     const rate = evaluated.length > 0 ? ((go / evaluated.length) * 100).toFixed(1) : '0.0';
-    return { total: evaluated.length, go, nogo, rate, noCoords };
+
+    // Motivos de No Go — calculados sobre TODOS os avaliados (sem filtro)
+    const nogoReasonCounts = {};
+    NO_GO_REASONS.forEach(r => {
+        nogoReasonCounts[r] = evaluated.filter(p => p.decision === 'No Go' && p.reason === r).length;
+    });
+
+    return { total: evaluated.length, go, nogo, rate, noCoords, nogoReasonCounts };
 }
 
 /**
@@ -608,16 +611,12 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
     closeStatsPopup();
 
     const overview = _getGlobalOverview();
+    const hasFilter = stateFilter !== 'all' || decisionFilter !== 'all';
 
-    // Prospects filtrados (para o mapa e para o detalhamento)
-    const fTotal = filteredProspects.length;
-    const fGo    = filteredProspects.filter(p => p.decision === 'Go').length;
-    const fNoGo  = filteredProspects.filter(p => p.decision === 'No Go').length;
-    const fRate  = fTotal > 0 ? ((fGo / fTotal) * 100).toFixed(1) : '0.0';
-
-    const reasonRows = NO_GO_REASONS.map(r => {
-        const count = filteredProspects.filter(p => p.decision === 'No Go' && p.reason === r).length;
-        const pct   = fTotal > 0 ? ((count / fTotal) * 100).toFixed(1) : '0.0';
+    // Motivos de No Go do overview (sempre sobre todos os dados)
+    const overviewReasonRows = NO_GO_REASONS.map(r => {
+        const count = overview.nogoReasonCounts[r] ?? 0;
+        const pct   = overview.nogo > 0 ? ((count / overview.nogo) * 100).toFixed(1) : '0.0';
         return `<tr>
           <td style="padding:2px 4px">${r}</td>
           <td style="padding:2px 4px;text-align:center">${count}</td>
@@ -625,10 +624,14 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
         </tr>`;
     }).join('');
 
+    // Contagens do filtro ativo (apenas para exibição secundária)
+    const fTotal = filteredProspects.length;
+    const fGo    = filteredProspects.filter(p => p.decision === 'Go').length;
+    const fNoGo  = filteredProspects.filter(p => p.decision === 'No Go').length;
+    const fRate  = fTotal > 0 ? ((fGo / fTotal) * 100).toFixed(1) : '0.0';
+
     const stateLabel    = stateFilter    === 'all' ? 'Todos' : stateFilter;
     const decisionLabel = decisionFilter === 'all' ? 'Todos' : decisionFilter;
-
-    const hasFilter = stateFilter !== 'all' || decisionFilter !== 'all';
 
     const html = `
       <div id="stats-area-popup" style="
@@ -643,7 +646,7 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
                   style="border:none;background:none;font-size:1.4em;cursor:pointer;">&times;</button>
         </div>
 
-        <!-- OVERVIEW GLOBAL (fixo, sem filtros) -->
+        <!-- OVERVIEW GLOBAL (sempre estático, independente de filtros) -->
         <div style="background:#f8f9fa;border-radius:6px;padding:10px;margin-bottom:10px;">
           <div style="font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Overview Geral</div>
           <div style="display:flex;gap:8px;justify-content:space-between;">
@@ -664,21 +667,36 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
               <div style="font-size:10px;color:#666">Aprovação</div>
             </div>
           </div>
+
           ${overview.noCoords > 0 ? `
-          <div style="margin-top:10px;padding:6px 8px;background:#fff8e1;border-radius:4px;border-left:3px solid #f9a825;font-size:11px;color:#555;line-height:1.5;">
+          <div style="margin-top:8px;padding:6px 8px;background:#fff8e1;border-radius:4px;border-left:3px solid #f9a825;font-size:11px;color:#555;line-height:1.5;">
             ⚠️ <b>${overview.noCoords}</b> lead(s) sem lat/lon — não avaliados pela Fase 3
+          </div>` : ''}
+
+          <!-- Motivos de No Go — sempre visíveis no overview -->
+          ${overview.nogo > 0 ? `
+          <div style="margin-top:10px;">
+            <b style="font-size:11px;color:#555">Motivos de No Go:</b>
+            <table style="width:100%;margin-top:4px;font-size:11px;border-collapse:collapse;">
+              <thead><tr style="background:#f0f0f0">
+                <th style="padding:3px 4px;text-align:left">Motivo</th>
+                <th style="padding:3px 4px;text-align:center">#</th>
+                <th style="padding:3px 4px;text-align:center">% No Go</th>
+              </tr></thead>
+              <tbody>${overviewReasonRows}</tbody>
+            </table>
           </div>` : ''}
         </div>
 
         ${hasFilter ? `
-        <!-- RESULTADO DO FILTRO -->
+        <!-- RESULTADO DO FILTRO (contagens apenas, sem repetir tabela de motivos) -->
         <div style="border-top:1px solid #eee;padding-top:10px;margin-bottom:8px;">
           <div style="font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">
             Filtro: Estado = <b>${stateLabel}</b> | Decisão = <b>${decisionLabel}</b>
           </div>
           ${fTotal === 0
             ? '<p class="text-muted" style="font-size:12px">Nenhum prospect encontrado.</p>'
-            : `<div style="display:flex;gap:8px;justify-content:space-between;margin-bottom:10px;">
+            : `<div style="display:flex;gap:8px;justify-content:space-between;">
                 <div style="text-align:center;flex:1">
                   <div style="font-size:18px;font-weight:700">${fTotal}</div>
                   <div style="font-size:10px;color:#666">Total</div>
@@ -695,16 +713,7 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
                   <div style="font-size:18px;font-weight:700;color:#007bff">${fRate}%</div>
                   <div style="font-size:10px;color:#666">Aprovação</div>
                 </div>
-              </div>
-              <b style="font-size:12px">Motivos de No Go:</b>
-              <table style="width:100%;margin-top:4px;font-size:12px;border-collapse:collapse;">
-                <thead><tr style="background:#f5f5f5">
-                  <th style="padding:3px 4px;text-align:left">Motivo</th>
-                  <th style="padding:3px 4px;text-align:center">#</th>
-                  <th style="padding:3px 4px;text-align:center">%</th>
-                </tr></thead>
-                <tbody>${reasonRows}</tbody>
-              </table>`
+              </div>`
           }
         </div>` : ''}
 
@@ -740,13 +749,14 @@ export function analyseArea() {
     const selState    = document.getElementById('areaStateFilter')?.value ?? 'all';
     const selDecision = document.getElementById('areaDecisionFilter')?.value ?? 'all';
 
-    // Todos os prospects avaliados (com decision)
-    let prospects = state.allMarkersData.filter(m => m.status === 'Prospect' && m.decision);
-    if (selState    !== 'all') prospects = prospects.filter(m => m.state    === selState);
-    if (selDecision !== 'all') prospects = prospects.filter(m => m.decision === selDecision);
+    // Prospects avaliados para o filtro (afeta mapa e contagens secundárias)
+    let filteredProspects = state.allMarkersData.filter(m => m.status === 'Prospect' && m.decision);
+    if (selState    !== 'all') filteredProspects = filteredProspects.filter(m => m.state    === selState);
+    if (selDecision !== 'all') filteredProspects = filteredProspects.filter(m => m.decision === selDecision);
 
     _applyProspectMapFilter(selState, selDecision);
-    _renderStatsPopup(prospects, { state: selState, decision: selDecision });
+    // Overview sempre usa allMarkersData — _renderStatsPopup chama _getGlobalOverview internamente
+    _renderStatsPopup(filteredProspects, { state: selState, decision: selDecision });
 }
 
 /**

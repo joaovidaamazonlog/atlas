@@ -3,7 +3,7 @@
     "generated_at": "2026-03-31T15:23:14",
     "n_territories": 198,
     "n_slots": 6502,
-    "last_fit_at": "2026-04-10T14:13:20"
+    "last_fit_at": "2026-04-10T15:07:29"
   },
   "slots": {
     "DBS5_bucket-01": [
@@ -8854,7 +8854,7 @@
             "packages_assigned": 28
           }
         ],
-        "matched_partner_id": "00Qat00000RFI58EAH"
+        "matched_partner_id": "001at00000b7RNAAA2"
       },
       {
         "slot_id": "DBS5_bucket-04_S51",
@@ -24306,7 +24306,7 @@
             "packages_assigned": 67
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000R1O2LEAV"
       },
       {
         "slot_id": "DRJ3_bucket-14_S04",
@@ -42688,7 +42688,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000SQqAwEAL"
       },
       {
         "slot_id": "DPE4_bucket-08_S16",
@@ -111159,7 +111159,7 @@
             "packages_assigned": 40
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000SQyEyEAL"
       },
       {
         "slot_id": "DBR9_bucket-14_S07",
@@ -115418,7 +115418,7 @@
             "packages_assigned": 33
           }
         ],
-        "matched_partner_id": "00Qat00000RsVTuEAN"
+        "matched_partner_id": "001at00000b7PhUAAU"
       },
       {
         "slot_id": "DBR9_bucket-22_S05",
@@ -116551,7 +116551,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "00Qat00000RPDknEAH"
+        "matched_partner_id": "001at00000b7Vt4AAE"
       },
       {
         "slot_id": "DBR9_bucket-24_S10",
@@ -117368,7 +117368,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000QKoHpEAL"
       }
     ],
     "DBR9_bucket-26": [
@@ -181426,7 +181426,7 @@
             "packages_assigned": 8
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000SRYQTEA5"
       },
       {
         "slot_id": "DCE3_bucket-01_S71",

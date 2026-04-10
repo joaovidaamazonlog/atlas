@@ -1,5 +1,5 @@
 RELATORIO EXECUTIVO DE OTIMIZACAO
-Gerado em: 10/04/2026 14:13
+Gerado em: 10/04/2026 15:08
 ================================================================================
 
 BASE: DBH5 | BDM: BH
@@ -70,14 +70,14 @@ BASE: DBR9 | BDM: SP/SUL
   Territorios:                      27
   Demanda diaria total:             32,886.0 pacotes/dia
   Vagas ideais (total):             598
-  Vagas com match:                  84
-  Vagas em aberto:                  514
-  Cobertura (match / total):        84/598 = 14.0%
-  Parceiros existentes:             83
+  Vagas com match:                  86
+  Vagas em aberto:                  512
+  Cobertura (match / total):        86/598 = 14.4%
+  Parceiros existentes:             86
     • Ativos:                       30
-    • Onboarding:                   3
-    • BG Checks / Vetting:          7
-    • Prospects a aprovar:          31
+    • Onboarding:                   5
+    • BG Checks / Vetting:          5
+    • Prospects a aprovar:          34
     • Inativos a reativar:          12
   Attainment (Ativos / Vagas):      5.0%
 --------------------------------------------------------------------------------
@@ -228,14 +228,14 @@ BASE: DBR9 | BDM: SP/SUL
 
   DBR9_bucket-14 (CTL-A)
     Demanda diaria:      1,302.0 pacotes/dia
-    Vagas / Em aberto:   22 / 14
+    Vagas / Em aberto:   22 / 13
     Ativos:               2
     Onboarding:           0
     BG:                   0
-    Prospects:            6
+    Prospects:            7
     Inativos:             0
     Attainment:            9.1%
-    Acuracidade:          25.0%
+    Acuracidade:          22.2%
 
   DBR9_bucket-15 (CTL-A)
     Demanda diaria:      1,512.0 pacotes/dia
@@ -318,8 +318,8 @@ BASE: DBR9 | BDM: SP/SUL
     Demanda diaria:      1,260.0 pacotes/dia
     Vagas / Em aberto:   22 / 21
     Ativos:               0
-    Onboarding:           0
-    BG:                   1
+    Onboarding:           1
+    BG:                   0
     Prospects:            0
     Inativos:             0
     Attainment:            0.0%
@@ -331,7 +331,7 @@ BASE: DBR9 | BDM: SP/SUL
     Ativos:               3
     Onboarding:           1
     BG:                   0
-    Prospects:            2
+    Prospects:            3
     Inativos:             0
     Attainment:           13.6%
     Acuracidade:          42.9%
@@ -340,8 +340,8 @@ BASE: DBR9 | BDM: SP/SUL
     Demanda diaria:      1,176.0 pacotes/dia
     Vagas / Em aberto:   22 / 20
     Ativos:               0
-    Onboarding:           0
-    BG:                   1
+    Onboarding:           1
+    BG:                   0
     Prospects:            1
     Inativos:             0
     Attainment:            0.0%
@@ -349,11 +349,11 @@ BASE: DBR9 | BDM: SP/SUL
 
   DBR9_bucket-25 (CTL-A)
     Demanda diaria:      1,134.0 pacotes/dia
-    Vagas / Em aberto:   22 / 21
+    Vagas / Em aberto:   22 / 20
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            2
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -391,8 +391,8 @@ BASE: DBS5 | BDM: RJ/CW
   Cobertura (match / total):        61/468 = 13.0%
   Parceiros existentes:             61
     • Ativos:                       47
-    • Onboarding:                   4
-    • BG Checks / Vetting:          3
+    • Onboarding:                   5
+    • BG Checks / Vetting:          2
     • Prospects a aprovar:          3
     • Inativos a reativar:          4
   Attainment (Ativos / Vagas):      10.0%
@@ -436,8 +436,8 @@ BASE: DBS5 | BDM: RJ/CW
     Demanda diaria:      5,712.0 pacotes/dia
     Vagas / Em aberto:   93 / 78
     Ativos:              12
-    Onboarding:           0
-    BG:                   3
+    Onboarding:           1
+    BG:                   2
     Prospects:            0
     Inativos:             0
     Attainment:           12.9%
@@ -460,14 +460,14 @@ BASE: DCE3 | BDM: FORTALEZA
   Territorios:                      2
   Demanda diaria total:             28,896.0 pacotes/dia
   Vagas ideais (total):             471
-  Vagas com match:                  138
-  Vagas em aberto:                  333
-  Cobertura (match / total):        138/471 = 29.3%
-  Parceiros existentes:             138
+  Vagas com match:                  139
+  Vagas em aberto:                  332
+  Cobertura (match / total):        139/471 = 29.5%
+  Parceiros existentes:             139
     • Ativos:                       85
     • Onboarding:                   13
     • BG Checks / Vetting:          5
-    • Prospects a aprovar:          26
+    • Prospects a aprovar:          27
     • Inativos a reativar:          9
   Attainment (Ativos / Vagas):      18.0%
 --------------------------------------------------------------------------------
@@ -475,14 +475,14 @@ BASE: DCE3 | BDM: FORTALEZA
 
   DCE3_bucket-01 (CTL-A)
     Demanda diaria:     16,422.0 pacotes/dia
-    Vagas / Em aberto:  236 / 171
+    Vagas / Em aberto:  236 / 170
     Ativos:              34
     Onboarding:          10
     BG:                   3
-    Prospects:           12
+    Prospects:           13
     Inativos:             6
     Attainment:           14.4%
-    Acuracidade:          52.3%
+    Acuracidade:          51.5%
 
   DCE3_bucket-02 (CTL-A)
     Demanda diaria:     12,474.0 pacotes/dia
@@ -557,25 +557,25 @@ BASE: DGO2 | BDM: RJ/CW
   Vagas em aberto:                  208
   Cobertura (match / total):        44/252 = 17.5%
   Parceiros existentes:             44
-    • Ativos:                       31
-    • Onboarding:                   2
+    • Ativos:                       32
+    • Onboarding:                   1
     • BG Checks / Vetting:          0
     • Prospects a aprovar:          1
     • Inativos a reativar:          10
-  Attainment (Ativos / Vagas):      12.3%
+  Attainment (Ativos / Vagas):      12.7%
 --------------------------------------------------------------------------------
   DETALHAMENTO POR TERRITORIO:
 
   DGO2_bucket-01 (CTL-A)
     Demanda diaria:      3,192.0 pacotes/dia
     Vagas / Em aberto:   63 / 56
-    Ativos:               6
-    Onboarding:           1
+    Ativos:               7
+    Onboarding:           0
     BG:                   0
     Prospects:            0
     Inativos:             0
-    Attainment:            9.5%
-    Acuracidade:          85.7%
+    Attainment:           11.1%
+    Acuracidade:         100.0%
 
   DGO2_bucket-02 (CTL-A)
     Demanda diaria:      3,486.0 pacotes/dia
@@ -852,14 +852,14 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
   Territorios:                      15
   Demanda diaria total:             29,148.0 pacotes/dia
   Vagas ideais (total):             450
-  Vagas com match:                  109
-  Vagas em aberto:                  341
-  Cobertura (match / total):        109/450 = 24.2%
-  Parceiros existentes:             109
+  Vagas com match:                  110
+  Vagas em aberto:                  340
+  Cobertura (match / total):        110/450 = 24.4%
+  Parceiros existentes:             110
     • Ativos:                       55
     • Onboarding:                   9
     • BG Checks / Vetting:          12
-    • Prospects a aprovar:          22
+    • Prospects a aprovar:          23
     • Inativos a reativar:          11
   Attainment (Ativos / Vagas):      12.2%
 --------------------------------------------------------------------------------
@@ -944,11 +944,11 @@ BASE: DPE4 | BDM: RECIFE/JOAO PESSOA
 
   DPE4_bucket-08 (CTL-A)
     Demanda diaria:      3,192.0 pacotes/dia
-    Vagas / Em aberto:   30 / 28
+    Vagas / Em aberto:   30 / 27
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            0
+    Prospects:            1
     Inativos:             2
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -1121,14 +1121,14 @@ BASE: DRJ3 | BDM: RJ/CW
   Territorios:                      22
   Demanda diaria total:             27,636.0 pacotes/dia
   Vagas ideais (total):             383
-  Vagas com match:                  39
-  Vagas em aberto:                  344
-  Cobertura (match / total):        39/383 = 10.2%
-  Parceiros existentes:             39
+  Vagas com match:                  40
+  Vagas em aberto:                  343
+  Cobertura (match / total):        40/383 = 10.4%
+  Parceiros existentes:             40
     • Ativos:                       20
     • Onboarding:                   3
     • BG Checks / Vetting:          1
-    • Prospects a aprovar:          10
+    • Prospects a aprovar:          11
     • Inativos a reativar:          5
   Attainment (Ativos / Vagas):      5.2%
 --------------------------------------------------------------------------------
@@ -1279,11 +1279,11 @@ BASE: DRJ3 | BDM: RJ/CW
 
   DRJ3_bucket-14 (CTL-A)
     Demanda diaria:      1,470.0 pacotes/dia
-    Vagas / Em aberto:   17 / 16
+    Vagas / Em aberto:   17 / 15
     Ativos:               0
     Onboarding:           0
     BG:                   1
-    Prospects:            0
+    Prospects:            1
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%

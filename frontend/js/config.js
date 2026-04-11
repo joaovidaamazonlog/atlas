@@ -15,9 +15,7 @@ export const DATA_URLS = Object.freeze({
     jurisdiction:    `${BASE_URL_CFG}/jurisdiction.geojson`,
     optimization:    `${BASE_URL}/optimization_data.geojson`,
     heatmap:         `${BASE_URL}/heatmap.geojson`,
-    gmapsResults:    `${BASE_URL}/gmaps_results.json`,
     executiveReport: `${BASE_URL}/relatorio_executivo.json`,
-    savedLeads:      `${BASE_URL}/saved_leads.json`,
 });
 
 /** Configuração inicial do mapa Leaflet */
@@ -47,8 +45,8 @@ export const HCP_CONFIG = Object.freeze({
     maxClusterMembers:   6,
 });
 
-/** URL da API de prospecção (Receita Federal) */
-export const CNPJ_API_URL = 'https://api-cnpj-br.vercel.app/api/buscar';
+/** URL base da API de prospecção */
+export const API_BASE_URL = 'https://api-cnpj-br.vercel.app';
 
 /** Paletas de cores para marcadores */
 export const COLOR_PALETTES = Object.freeze({

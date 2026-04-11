@@ -1,116 +1,18 @@
 /**
  * gmaps-scraper.js
  * ================
- * Busca empresas candidatas a parceiro logístico.
+ * Busca empresas candidatas a parceiro logístico via API unificada.
  *
- * Fontes de dados
- * ---------------
- * 1. gmaps_results.json — gerado pelo GitHub Actions (Google Maps scraping)
- * 2. API Receita Federal — busca em tempo real por CEP
- *
- * Filtro
- * ------
- * Quando o usuário clica em "Ver Empresas Candidatas" num slot,
- * os resultados são filtrados pelos CEPs do slot.
- * Se nenhum resultado for encontrado pelos CEPs, exibe todos do território.
+ * Fonte de dados
+ * --------------
+ * POST /api/empresas — retorna Receita Federal + Google Maps com flag contactada
+ * POST /api/empresas/contactada — toggle de empresa contactada
  */
 
-import { state }       from '../state.js';
-import { DATA_URLS, CNPJ_API_URL } from '../config.js';
+import { state }        from '../state.js';
+import { API_BASE_URL } from '../config.js';
 import { ProspectCompany } from '../models.js';
-import { geocodeBatch } from './ui-manager.js';
-
-/** @type {Object|null} Cache em memória do gmaps_results.json */
-let _cache = null;
-
-// ---------------------------------------------------------------------------
-// CARREGAMENTO
-// ---------------------------------------------------------------------------
-
-/**
- * Carrega gmaps_results.json com cache em memória.
- * Se indisponível, retorna estrutura vazia sem lançar erro.
- * @returns {Promise<Object>}
- */
-export async function loadResults() {
-    if (_cache) return _cache;
-    try {
-        const res = await fetch(DATA_URLS.gmapsResults);
-        if (!res.ok) {
-            console.warn(`[GmapsScraper] gmaps_results.json nao encontrado (${res.status}) — usando apenas API.`);
-            _cache = { results: {}, generated_at: null };
-            return _cache;
-        }
-        _cache = await res.json();
-    } catch (err) {
-        console.warn('[GmapsScraper] gmaps_results.json indisponivel — usando apenas API.', err);
-        _cache = { results: {}, generated_at: null };
-    }
-    return _cache;
-}
-
-/**
- * Normaliza os campos de endereço da Receita Federal num formato legível
- * e compatível com geocodificação.
- * Ex: "Rua das Flores, 123 - Centro, Belo Horizonte - MG, 30000-000"
- */
-function _normalizeAddress(logradouro, numero, bairro, municipio, uf, cep) {
-    // Capitalizar primeira letra de cada palavra, exceto preposições
-    const PREPS = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'a', 'o']);
-    const titleCase = str => (str || '')
-        .toLowerCase()
-        .replace(/[^\w\s]/g, c => c) // preservar pontuação
-        .split(' ')
-        .map((w, i) => (i === 0 || !PREPS.has(w)) ? w.charAt(0).toUpperCase() + w.slice(1) : w)
-        .join(' ')
-        .trim();
-
-    // Limpar número: remover zeros à esquerda, "S/N" vira "S/N"
-    const num = (numero || '').trim().replace(/^0+(\d)/, '$1') || 'S/N';
-
-    // Formatar CEP: 00000000 → 00000-000
-    const cepFmt = (cep || '').replace(/\D/g, '').replace(/^(\d{5})(\d{3})$/, '$1-$2');
-
-    const parts = [
-        logradouro ? `${titleCase(logradouro)}, ${num}` : null,
-        bairro     ? titleCase(bairro)                  : null,
-        municipio  ? `${titleCase(municipio)} - ${(uf || '').toUpperCase()}` : null,
-        cepFmt     || null,
-    ];
-    return parts.filter(Boolean).join(', ');
-}
-
-/**
- * Busca empresas na API da Receita Federal por lista de CEPs.
- * @param {string[]} ceps
- * @returns {Promise<ProspectCompany[]>}
- */
-export async function loadFromApi(ceps) {
-    if (!ceps || ceps.length === 0) return [];
-    try {
-        const res = await fetch(CNPJ_API_URL, {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ceps }),
-        });
-        if (!res.ok) return [];
-        const data = await res.json();
-        return (data.empresas || []).map(e => new ProspectCompany({
-            nome:             e.razao_social || e.nome_fantasia || 'N/A',
-            endereco:         _normalizeAddress(e.endereco, e.numero, e.bairro, e.municipio, e.uf, e.cep),
-            telefone_1:       e.telefone_1 || null,
-            telefone_2:       e.telefone_2 || null,
-            site:             'N/A',
-            google_maps_link: 'N/A',
-            cep:              e.cep,
-            tipo:             'Receita Federal',
-            _fonte:           'Receita Federal 🏛️',
-        }));
-    } catch (err) {
-        console.warn('[GmapsScraper] API Receita Federal indisponivel:', err);
-        return [];
-    }
-}
+import { geocodeBatch }    from './ui-manager.js';
 
 // ---------------------------------------------------------------------------
 // BUSCA PRINCIPAL
@@ -118,25 +20,15 @@ export async function loadFromApi(ceps) {
 
 /**
  * Chamado pelo botão no popup do slot via chave de estado.
- * Recupera os CEPs do AppState e delega para searchNearby.
- *
- * @param {Event}  event
- * @param {string} territoryId
- * @param {string} slotKey     - Chave em state._slotPopupData
  */
 export async function searchNearbyFromState(event, territoryId, slotKey) {
     const ceps = (state._slotPopupData && state._slotPopupData[slotKey]) || [];
 
-    // slotKey é o slot_id sanitizado (ex: "DBH5_bucket_01_S09")
-    // Reverter a sanitização para encontrar o slot correto no geojson
-    // O slot_id original usa hífens: "DBH5_bucket-01_S09"
-    // A sanitização troca "-" por "_", então tentamos ambos os formatos
     const slotFeature = state.idealSupplyData?.find(f => {
         const sid = f.properties.slot_id || '';
         const sidSanitized = sid.replace(/[^a-zA-Z0-9_]/g, '_');
         return sidSanitized === slotKey || sid === slotKey;
     }) || state.idealSupplyData?.find(
-        // Fallback: primeiro slot aberto do território
         f => f.properties.territory_id === territoryId && f.properties.type === 'IDEAL_SLOT'
     );
 
@@ -152,12 +44,7 @@ export async function searchNearbyFromState(event, territoryId, slotKey) {
 
 /**
  * Busca empresas candidatas para um slot/território.
- * Combina resultados do Google Maps e da Receita Federal.
- *
- * @param {Event}    event
- * @param {string}   territoryId
- * @param {string[]} slotCeps
- * @param {{lat:number,lon:number,radius_s:number}|null} slotGeo - Para match geográfico
+ * Um único request à API retorna Receita Federal + Maps + flag contactada.
  */
 export async function searchNearby(event, territoryId, slotCeps, slotGeo = null) {
     event.stopPropagation();
@@ -175,21 +62,33 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 
         const cepSet = new Set(cepList);
 
-        const [gmapsData, apiResults] = await Promise.all([
-            loadResults(),
-            loadFromApi(cepList),
-        ]);
+        // ── Request único à API ───────────────────────────────────────────
+        const res = await fetch(`${API_BASE_URL}/api/empresas`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ ceps: cepList, territory_id: territoryId }),
+        });
 
-        // ── Google Maps: filtrar ≤1000m e calcular distância ─────────────
-        const GMAPS_MAX_DISTANCE_M = 1000;
-        const allForTerritory = gmapsData.results?.[territoryId] || [];
-        const gmapsResults = allForTerritory
-            .map(r => {
-                const company = new ProspectCompany({ ...r, _fonte: 'Google Maps 🗺️' });
+        if (!res.ok) throw new Error(`API retornou ${res.status}`);
+        const data = await res.json();
+
+        // ── Mapear para ProspectCompany e calcular distâncias ─────────────
+        const MAX_DISTANCE_M = 1000;
+
+        // Separar por fonte para processamento específico
+        const rawMaps    = (data.empresas || []).filter(e => e.fonte === 'Google Maps');
+        const rawReceita = (data.empresas || []).filter(e => e.fonte === 'Receita Federal');
+
+        // Maps — calcular distância diretamente (já tem lat/lon)
+        const mapsResults = rawMaps
+            .map(e => {
+                const company = new ProspectCompany({ ...e, _fonte: 'Google Maps 🗺️' });
                 if (slotGeo && company.isGeolocated) {
-                    const slotPt    = turf.point([slotGeo.lon, slotGeo.lat]);
-                    const companyPt = turf.point([company.lon, company.lat]);
-                    const distM     = Math.round(turf.distance(slotPt, companyPt, { units: 'meters' }));
+                    const distM = Math.round(turf.distance(
+                        turf.point([slotGeo.lon, slotGeo.lat]),
+                        turf.point([company.lon, company.lat]),
+                        { units: 'meters' }
+                    ));
                     company.isMatch   = distM <= slotGeo.radius_s;
                     company.distanceM = distM;
                 } else {
@@ -198,13 +97,9 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
                 }
                 return company;
             })
-            // Mostrar apenas empresas a até 1km do slot (quando temos coordenadas)
-            .filter(c => c.distanceM === null || c.distanceM <= GMAPS_MAX_DISTANCE_M);
+            .filter(c => c.distanceM === null || c.distanceM <= MAX_DISTANCE_M);
 
-        // ── Receita Federal: pré-filtro por hex via CEP → geocode → distância ─
-        const MAX_DISTANCE_M = 1000;
-
-        // 1. Identificar quais hexes cobrem os CEPs do slot
+        // Receita Federal — pré-filtro por hex → geocode → distância
         const slotHexIds = new Set(
             state.heatmapData?.features
                 ?.filter(f => Array.isArray(f.properties.ceps) &&
@@ -212,19 +107,26 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
                 ?.map(f => f.properties.hex_id) ?? []
         );
 
-        // 2. Pré-filtrar: manter apenas empresas cujo CEP pertence a um hex do slot
         const preFiltered = slotHexIds.size > 0
-            ? apiResults.filter(r => {
+            ? rawReceita.filter(r => {
                 if (!r.cep) return false;
                 const hex = state.heatmapData?.features?.find(
                     f => Array.isArray(f.properties.ceps) && f.properties.ceps.includes(r.cep)
                 );
                 return hex ? slotHexIds.has(hex.properties.hex_id) : false;
             })
-            : apiResults; // sem heatmap, não filtra
+            : rawReceita;
 
-        // 3. Geocodificar apenas as empresas pré-filtradas
-        const addressesToGeocode = preFiltered
+        // Normalizar endereço Receita Federal
+        const receitaObjs = preFiltered.map(e => new ProspectCompany({
+            ...e,
+            nome:     e.razao_social || e.nome_fantasia || 'N/A',
+            endereco: _normalizeAddress(e.endereco, e.numero, e.bairro, e.municipio, e.uf, e.cep),
+            _fonte:   'Receita Federal 🏛️',
+        }));
+
+        // Geocodificar e calcular distância
+        const addressesToGeocode = receitaObjs
             .map((r, i) => ({ i, address: r.endereco }))
             .filter(({ address }) => !!address);
 
@@ -235,13 +137,12 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
         addressesToGeocode.forEach(({ i }, gi) => {
             const g = geocoded[gi];
             if (g?.lat && g?.lng) {
-                preFiltered[i].lat = g.lat;
-                preFiltered[i].lon = g.lng;
+                receitaObjs[i].lat = g.lat;
+                receitaObjs[i].lon = g.lng;
             }
         });
 
-        // 4. Calcular distância métrica e filtrar ≤1km (igual ao fluxo Maps)
-        const apiResultsMapped = preFiltered
+        const receitaResults = receitaObjs
             .map(r => {
                 if (slotGeo && r.lat != null && r.lon != null) {
                     const distM = Math.round(turf.distance(
@@ -259,9 +160,9 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
             })
             .filter(r => r.distanceM === null || r.distanceM <= MAX_DISTANCE_M);
 
-        const results = [...gmapsResults, ...apiResultsMapped];
+        const results = [...mapsResults, ...receitaResults];
+        showResults(results, territoryId, cepSet.size > 0);
 
-        showResults(results, territoryId, cepSet.size > 0, gmapsData.generated_at);
     } catch (err) {
         alert(`Erro: ${err.message}`);
         console.error('[GmapsScraper]', err);
@@ -271,93 +172,42 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 }
 
 // ---------------------------------------------------------------------------
-// MARCADORES DE LEAD NO MAPA
+// TOGGLE CONTACTADA
 // ---------------------------------------------------------------------------
 
-// ---------------------------------------------------------------------------
-// LEADS SALVOS — persistência via GitHub Actions + localStorage como cache
-// ---------------------------------------------------------------------------
-
-const SAVED_LEADS_KEY    = 'atlas_saved_leads';
-const SAVED_LEADS_TS_KEY = 'atlas_saved_leads_ts';
-
-// Cache em memória dos leads salvos (sincronizado com GitHub + localStorage)
-let _savedLeadsCache = null;
-
-/**
- * Carrega os leads salvos — tenta o JSON do GitHub Pages primeiro,
- * cai no localStorage se offline ou falhar.
- */
-async function _loadSavedLeads() {
-    if (_savedLeadsCache) return _savedLeadsCache;
-
-    // Tentar carregar do GitHub Pages (fonte de verdade)
-    try {
-        const res = await fetch(DATA_URLS.savedLeads + '?_=' + Date.now());
-        if (res.ok) {
-            const data = await res.json();
-            _savedLeadsCache = new Set(Object.keys(data.leads || {}));
-            // Sincronizar localStorage com o remoto
-            localStorage.setItem(SAVED_LEADS_KEY, JSON.stringify([..._savedLeadsCache]));
-            return _savedLeadsCache;
-        }
-    } catch (_) { /* offline — usa localStorage */ }
-
-    // Fallback: localStorage
-    try {
-        _savedLeadsCache = new Set(JSON.parse(localStorage.getItem(SAVED_LEADS_KEY) || '[]'));
-    } catch {
-        _savedLeadsCache = new Set();
-    }
-    return _savedLeadsCache;
-}
-
-/**
- * Gera uma chave única para identificar uma empresa.
- * Prioriza o link do Maps (mais estável), fallback para nome|endereço.
- */
-function _savedLeadKey(r) {
+function _leadKey(r) {
     if (r.google_maps_link && r.google_maps_link !== 'N/A') return r.google_maps_link;
     return `${r.nome}|${r.endereco}`;
 }
 
-/**
- * Dispara o workflow do GitHub Actions para salvar/remover o lead.
- * Atualiza o cache local imediatamente (otimistic update).
- */
-async function _toggleSavedLead(r) {
-    const key     = _savedLeadKey(r);
-    const saved   = await _loadSavedLeads();
-    const action  = saved.has(key) ? 'remove' : 'add';
+async function _toggleContactada(r) {
+    const key    = _leadKey(r);
+    const action = r.contactada ? 'remove' : 'add';
 
-    // Otimistic update — reflete na UI antes da resposta do Actions
-    if (action === 'add') { saved.add(key); } else { saved.delete(key); }
-    localStorage.setItem(SAVED_LEADS_KEY, JSON.stringify([...saved]));
-
-    // Disparar via Vercel Function (PAT fica server-side)
     try {
-        const res = await fetch('https://atlas-proxy.vercel.app/api/save-lead', {
+        const res = await fetch(`${API_BASE_URL}/api/empresas/contactada`, {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                action:          action,
-                lead_key:        key,
-                lead_nome:       r.nome || '',
-                lead_territorio: r.territory_id || '',
+                lead_key:   key,
+                lead_nome:  r.nome        || '',
+                territorio: r.territory_id || '',
+                fonte:      r._fonte       || '',
+                action,
             }),
         });
-        if (!res.ok) {
-            console.warn('[SavedLeads] Proxy falhou:', res.status, await res.text());
-        }
+        if (!res.ok) console.warn('[Contactada] API falhou:', res.status);
     } catch (err) {
-        console.warn('[SavedLeads] Erro ao chamar proxy:', err);
-        // Não reverte — o localStorage já tem o estado correto como fallback
+        console.warn('[Contactada] Erro:', err);
     }
 
     return action === 'add';
 }
 
-/** @type {Map<string, L.Marker>} Marcadores de lead fixados no mapa */
+// ---------------------------------------------------------------------------
+// MARCADORES DE LEAD NO MAPA
+// ---------------------------------------------------------------------------
+
 const _pinnedLeadMarkers = new Map();
 
 const _pinIcon = L.divIcon({
@@ -366,12 +216,12 @@ const _pinIcon = L.divIcon({
     iconAnchor: [16, 32],
 });
 
-function _leadKey(r) {
+function _mapLeadKey(r) {
     return `${r.nome}|${r.lat}|${r.lon}`;
 }
 
 function _togglePin(r, btnEl) {
-    const key = _leadKey(r);
+    const key = _mapLeadKey(r);
     if (_pinnedLeadMarkers.has(key)) {
         _pinnedLeadMarkers.get(key).remove();
         _pinnedLeadMarkers.delete(key);
@@ -400,39 +250,53 @@ function _clearAllPins() {
 }
 
 // ---------------------------------------------------------------------------
+// NORMALIZAÇÃO DE ENDEREÇO (Receita Federal)
+// ---------------------------------------------------------------------------
+
+function _normalizeAddress(logradouro, numero, bairro, municipio, uf, cep) {
+    const PREPS = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'a', 'o']);
+    const titleCase = str => (str || '')
+        .toLowerCase()
+        .split(' ')
+        .map((w, i) => (i === 0 || !PREPS.has(w)) ? w.charAt(0).toUpperCase() + w.slice(1) : w)
+        .join(' ')
+        .trim();
+
+    const num    = (numero || '').trim().replace(/^0+(\d)/, '$1') || 'S/N';
+    const cepFmt = (cep || '').replace(/\D/g, '').replace(/^(\d{5})(\d{3})$/, '$1-$2');
+
+    return [
+        logradouro ? `${titleCase(logradouro)}, ${num}` : null,
+        bairro     ? titleCase(bairro)                  : null,
+        municipio  ? `${titleCase(municipio)} - ${(uf || '').toUpperCase()}` : null,
+        cepFmt     || null,
+    ].filter(Boolean).join(', ');
+}
+
+// ---------------------------------------------------------------------------
 // EXIBIÇÃO DE RESULTADOS
 // ---------------------------------------------------------------------------
 
-/**
- * Exibe os resultados num popup lateral agrupados por tipo de negócio.
- *
- * @param {ProspectCompany[]} results
- * @param {string}            territoryId
- * @param {boolean}           usedCepFilter
- * @param {string|null}       generatedAt
- */
-export async function showResults(results, territoryId, usedCepFilter, generatedAt) {
+export function showResults(results, territoryId, usedCepFilter) {
     document.getElementById('gmaps-scraper-popup')?.remove();
 
-    // Carregar leads salvos (GitHub Pages → localStorage fallback)
-    const savedKeys = await _loadSavedLeads();
+    // Ordenar: dentro do raio → fora → sem validação → contactadas por último
     results.sort((a, b) => {
-        const saved  = r => savedKeys.has(_savedLeadKey(r)) ? 1 : 0;
-        const score  = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
+        const saved = r => r.contactada ? 1 : 0;
+        const score = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
         return (saved(a) - saved(b)) || (score(a) - score(b));
     });
 
-    const byType = {};
+    const byType     = {};
+    const mapsCount  = results.filter(r => r._fonte?.includes('Maps')).length;
+    const rfCount    = results.filter(r => r._fonte?.includes('Receita')).length;
+    const savedCount = results.filter(r => r.contactada).length;
+
     results.forEach(r => {
         const t = r.tipo || 'outros';
         if (!byType[t]) byType[t] = [];
         byType[t].push(r);
     });
-
-    const dateStr    = generatedAt ? new Date(generatedAt).toLocaleDateString('pt-BR') : 'N/A';
-    const apiCount   = results.filter(r => r._fonte?.includes('Receita')).length;
-    const gmapsCount = results.length - apiCount;
-    const savedCount = results.filter(r => savedKeys.has(_savedLeadKey(r))).length;
 
     const popup = document.createElement('div');
     popup.id = 'gmaps-scraper-popup';
@@ -452,9 +316,13 @@ export async function showResults(results, territoryId, usedCepFilter, generated
     // Subtítulo
     const sub = document.createElement('div');
     sub.style = 'font-size:11px;color:#666;margin-bottom:8px;';
-    sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal`
-        + (savedCount > 0 ? ` · <span style="color:#16a34a;">✅ ${savedCount} contactada(s)</span>` : '')
-        + `<br>${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}`;
+    const updateSub = () => {
+        const sc = results.filter(r => r.contactada).length;
+        sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${mapsCount} Google Maps · 🏛️ ${rfCount} Receita Federal`
+            + (sc > 0 ? ` · <span style="color:#16a34a;">✅ ${sc} contactada(s)</span>` : '')
+            + `<br>${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do território'}`;
+    };
+    updateSub();
     popup.appendChild(sub);
 
     // Lista
@@ -462,7 +330,7 @@ export async function showResults(results, territoryId, usedCepFilter, generated
     list.style = 'max-height:600px;overflow-y:auto;';
 
     if (results.length === 0) {
-        list.innerHTML = '<div style="color:#888;padding:12px 0;">Nenhuma empresa encontrada.<br>Execute o workflow no GitHub Actions para atualizar os dados.</div>';
+        list.innerHTML = '<div style="color:#888;padding:12px 0;">Nenhuma empresa encontrada.</div>';
     } else {
         for (const [tipo, empresas] of Object.entries(byType)) {
             const groupTitle = document.createElement('h6');
@@ -471,11 +339,9 @@ export async function showResults(results, territoryId, usedCepFilter, generated
             list.appendChild(groupTitle);
 
             empresas.forEach(r => {
-                const isSaved = savedKeys.has(_savedLeadKey(r));
                 const card = document.createElement('div');
-                card.style = `border-bottom:1px solid #eee;padding:6px 0;font-size:12px;position:relative;${isSaved ? 'opacity:0.6;' : ''}`;
+                card.style = `border-bottom:1px solid #eee;padding:6px 0;font-size:12px;position:relative;${r.contactada ? 'opacity:0.6;' : ''}`;
 
-                // Badge de distância
                 let matchBadge = '';
                 if (r.isMatch === true) {
                     const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
@@ -500,40 +366,34 @@ export async function showResults(results, territoryId, usedCepFilter, generated
                     ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
                     ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
                     <div style="margin-top:3px;">
-                        <button class="lead-save-btn" style="border:none;background:none;font-size:11px;cursor:pointer;padding:0;color:${isSaved ? '#16a34a' : '#999'};">
-                            ${isSaved ? '✅ Empresa contactada' : '☐ Marcar como contactada'}
+                        <button class="lead-save-btn" style="border:none;background:none;font-size:11px;cursor:pointer;padding:0;color:${r.contactada ? '#16a34a' : '#999'};">
+                            ${r.contactada ? '✅ Empresa contactada' : '☐ Marcar como contactada'}
                         </button>
                     </div>
                     ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
                     ${r.hasMapsLink ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
                 `;
 
-                // Toggle "contactada"
+                // Toggle contactada
                 const saveBtn = card.querySelector('.lead-save-btn');
                 saveBtn.onclick = async (e) => {
                     e.stopPropagation();
                     saveBtn.disabled = true;
                     saveBtn.textContent = '⏳ Salvando...';
-                    const nowSaved = await _toggleSavedLead(r);
-                    // Invalidar cache para próxima abertura buscar do GitHub
-                    _savedLeadsCache = null;
+                    const nowSaved = await _toggleContactada(r);
+                    r.contactada = nowSaved;
                     saveBtn.disabled = false;
                     saveBtn.textContent = nowSaved ? '✅ Empresa contactada' : '☐ Marcar como contactada';
                     saveBtn.style.color = nowSaved ? '#16a34a' : '#999';
-                    card.style.opacity = nowSaved ? '0.6' : '1';
-                    // Atualizar contador no subtítulo
-                    const currentSaved = await _loadSavedLeads();
-                    const newCount = results.filter(x => currentSaved.has(_savedLeadKey(x))).length;
-                    sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal`
-                        + (newCount > 0 ? ` · <span style="color:#16a34a;">✅ ${newCount} contactada(s)</span>` : '')
-                        + `<br>${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}`;
+                    card.style.opacity  = nowSaved ? '0.6' : '1';
+                    updateSub();
                 };
 
                 if (hasCoords) {
                     const pinBtn = card.querySelector('.lead-pin-btn');
                     pinBtn.onclick = () => _togglePin(r, pinBtn);
-                    card.addEventListener('mouseenter', () => { pinBtn.style.opacity = _pinnedLeadMarkers.has(_leadKey(r)) ? '1' : '0.35'; });
-                    card.addEventListener('mouseleave', () => { if (!_pinnedLeadMarkers.has(_leadKey(r))) pinBtn.style.opacity = '0'; });
+                    card.addEventListener('mouseenter', () => { pinBtn.style.opacity = _pinnedLeadMarkers.has(_mapLeadKey(r)) ? '1' : '0.35'; });
+                    card.addEventListener('mouseleave', () => { if (!_pinnedLeadMarkers.has(_mapLeadKey(r))) pinBtn.style.opacity = '0'; });
                 }
 
                 list.appendChild(card);

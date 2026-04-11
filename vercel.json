@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/save-lead.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
-}

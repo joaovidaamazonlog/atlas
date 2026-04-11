@@ -788,8 +788,32 @@ def run_phase3(
             radius_s=0,
             capacity_s=0,
         )
-        pm.reason       = ev["reason"]
-        pm.cluster_name = "No Go"
+        pm.reason = ev["reason"]
+
+        # Calcular território via point-in-polygon (mesmo sem match de slot)
+        origin_hex = str(row.get("origin_hex", ""))
+        lat = float(row.get("lat", 0) or 0)
+        lon = float(row.get("lon", 0) or 0)
+        all_territories_meta = [
+            meta
+            for station in target_stations
+            for meta in territories.territories_for(station)
+        ]
+        tid = _get_territory_for_partner(
+            origin_hex, all_territories_meta,
+            lat=lat or None, lon=lon or None,
+            territory_polys=territory_polys,
+            partner_id=sfid,
+        )
+        pm.cluster_name = tid or ""
+        if tid:
+            try:
+                bucket_idx = int(tid.split("_T")[-1]) - 1
+            except (ValueError, IndexError):
+                bucket_idx = 0
+            pm.bdm_cluster = Config.get_bdm_cluster(tid.split("_T")[0])
+            pm.ctl_name    = f"CTL-{chr(65 + (bucket_idx // 5))}"
+
         fit_result.outside_jurisdiction.append(pm)
 
     nogo_total = len(fit_result.outside_jurisdiction)

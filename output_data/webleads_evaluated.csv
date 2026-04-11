@@ -944,17 +944,12 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000SRMVlEAP,,88118310,N/A,Mara Machado,,CEP nao mapeado - analisar manualmente
 00Qat00000SRSBOEA5,,91150291,N/A,Klaus Driemeyer,,CEP nao mapeado - analisar manualmente
 00Qat00000SRVahEAH,,24445830,N/A,Tatiane Borges da Silva,,CEP nao mapeado - analisar manualmente
-00Qat00000SRW5JEAX,,23060270,N/A,Gabriely Da Silva vieira,,CEP nao mapeado - analisar manualmente
-00Qat00000SRWBlEAP,,24421140,N/A,Anderson Ferreira,,CEP nao mapeado - analisar manualmente
 00Qat00000SRWmrEAH,,32043020,N/A,Anny Rezende,,CEP nao mapeado - analisar manualmente
-00Qat00000SRWuwEAH,,32043020,N/A,Anny Rezende,,CEP nao mapeado - analisar manualmente
 00Qat00000SRXEMEA5,,04849032,N/A,Mirian De Oliveira Garcia,,CEP nao mapeado - analisar manualmente
-00Qat00000SRY78EAH,,30280170,N/A,DEBORA MAIA DE CASTRO CORDEIRO,,Out of jurisdiction - analisar manualmente
 00Qat00000SRadZEAT,,55470000,N/A,JOSENILSON JUNIOR,,CEP nao mapeado - analisar manualmente
 00Qat00000SRbg5EAD,DSP2,03822000,DSP2_bucket-01,Kelle Teles,,Qualificar lead
 00Qat00000SRcXKEA1,DSP4,04647010,DSP4_bucket-06,José Fabrício da Silva DA SILVA,,Qualificar lead
 00Qat00000SRcttEAD,,14530092,N/A,Janaina Barbosa,,CEP nao mapeado - analisar manualmente
-00Qat00000SRd1xEAD,,26210060,N/A,Barbara Hein,,CEP nao mapeado - analisar manualmente
 00Qat00000SRe7jEAD,,40841335,N/A,VALDECI DE JESUS MOURA,,CEP nao mapeado - analisar manualmente
 00Qat00000SReEAEA1,,53605408,N/A,Maviaer Bispo de Melo Neto Neto,,CEP nao mapeado - analisar manualmente
 00Qat00000SRfOjEAL,,85770000,N/A,Lithielli Pertile,,CEP nao mapeado - analisar manualmente
@@ -964,3 +959,8 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000SRlM5EAL,DSP4,09820760,DSP4_bucket-11,Diana Castelano,,Qualificar lead
 00Qat00000SRmjZEAT,DPE4,51130180,DPE4_bucket-14,Everson nascimento,,Qualificar lead
 00Qat00000SRn7lEAD,DCE3,60714690,DCE3_bucket-02,Anderson Amaro,,Qualificar lead
+00Qat00000SRn7mEAD,DMG2,32310220,DMG2_bucket-12,Juarez Pereira da Silva Filho,,Qualificar lead
+00Qat00000SRt6lEAD,DMG2,32342140,DMG2_bucket-11,Rafael Alencar Sampaio Ribeiro,,Qualificar lead
+00Qat00000SRtTJEA1,,88317410,N/A,Gabriel Zimmermann,,CEP nao mapeado - analisar manualmente
+00Qat00000SRuxGEAT,,30692508,N/A,Eduardo Martins,,CEP nao mapeado - analisar manualmente
+00Qat00000SRwMLEA1,,04877080,N/A,Marcus Vinicius Romualdo de Almeida,,CEP nao mapeado - analisar manualmente

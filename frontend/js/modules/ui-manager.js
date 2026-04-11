@@ -611,9 +611,10 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
     closeStatsPopup();
 
     const overview = _getGlobalOverview();
-    const hasFilter = stateFilter !== 'all' || decisionFilter !== 'all';
+    const hasFilter    = stateFilter !== 'all' || decisionFilter !== 'all';
+    const hasStateFilter = stateFilter !== 'all';
 
-    // Motivos de No Go do overview (sempre sobre todos os dados)
+    // Motivos de No Go do overview global (sempre estáticos)
     const overviewReasonRows = NO_GO_REASONS.map(r => {
         const count = overview.nogoReasonCounts[r] ?? 0;
         const pct   = overview.nogo > 0 ? ((count / overview.nogo) * 100).toFixed(1) : '0.0';
@@ -624,11 +625,22 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
         </tr>`;
     }).join('');
 
-    // Contagens do filtro ativo (apenas para exibição secundária)
+    // Contagens do filtro ativo
     const fTotal = filteredProspects.length;
     const fGo    = filteredProspects.filter(p => p.decision === 'Go').length;
     const fNoGo  = filteredProspects.filter(p => p.decision === 'No Go').length;
     const fRate  = fTotal > 0 ? ((fGo / fTotal) * 100).toFixed(1) : '0.0';
+
+    // Motivos de No Go do estado filtrado
+    const stateNogoReasonRows = hasStateFilter ? NO_GO_REASONS.map(r => {
+        const count = filteredProspects.filter(p => p.decision === 'No Go' && p.reason === r).length;
+        const pct   = fNoGo > 0 ? ((count / fNoGo) * 100).toFixed(1) : '0.0';
+        return `<tr>
+          <td style="padding:2px 4px">${r}</td>
+          <td style="padding:2px 4px;text-align:center">${count}</td>
+          <td style="padding:2px 4px;text-align:center">${pct}%</td>
+        </tr>`;
+    }).join('') : '';
 
     const stateLabel    = stateFilter    === 'all' ? 'Todos' : stateFilter;
     const decisionLabel = decisionFilter === 'all' ? 'Todos' : decisionFilter;
@@ -646,7 +658,7 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
                   style="border:none;background:none;font-size:1.4em;cursor:pointer;">&times;</button>
         </div>
 
-        <!-- OVERVIEW GLOBAL (sempre estático, independente de filtros) -->
+        <!-- OVERVIEW GLOBAL (sempre estático) -->
         <div style="background:#f8f9fa;border-radius:6px;padding:10px;margin-bottom:10px;">
           <div style="font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Overview Geral</div>
           <div style="display:flex;gap:8px;justify-content:space-between;">
@@ -673,8 +685,8 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
             ⚠️ <b>${overview.noCoords}</b> lead(s) sem lat/lon — não avaliados pela Fase 3
           </div>` : ''}
 
-          <!-- Motivos de No Go — sempre visíveis no overview -->
-          ${overview.nogo > 0 ? `
+          <!-- Motivos de No Go globais — visíveis apenas quando não há filtro de estado -->
+          ${!hasStateFilter && overview.nogo > 0 ? `
           <div style="margin-top:10px;">
             <b style="font-size:11px;color:#555">Detalhamento de No Go:</b>
             <table style="width:100%;margin-top:4px;font-size:11px;border-collapse:collapse;">
@@ -689,14 +701,15 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
         </div>
 
         ${hasFilter ? `
-        <!-- RESULTADO DO FILTRO (contagens apenas, sem repetir tabela de motivos) -->
+        <!-- RESULTADO DO FILTRO -->
         <div style="border-top:1px solid #eee;padding-top:10px;margin-bottom:8px;">
           <div style="font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">
-            Filtro: Estado = <b>${stateLabel}</b> | Decisão = <b>${decisionLabel}</b>
+            ${hasStateFilter ? `Estado: <b>${stateLabel}</b>` : ''}
+            ${decisionFilter !== 'all' ? ` | Decisão: <b>${decisionLabel}</b>` : ''}
           </div>
           ${fTotal === 0
             ? '<p class="text-muted" style="font-size:12px">Nenhum prospect encontrado.</p>'
-            : `<div style="display:flex;gap:8px;justify-content:space-between;">
+            : `<div style="display:flex;gap:8px;justify-content:space-between;margin-bottom:10px;">
                 <div style="text-align:center;flex:1">
                   <div style="font-size:18px;font-weight:700">${fTotal}</div>
                   <div style="font-size:10px;color:#666">Total</div>
@@ -713,22 +726,31 @@ function _renderStatsPopup(filteredProspects, { state: stateFilter, decision: de
                   <div style="font-size:18px;font-weight:700;color:#007bff">${fRate}%</div>
                   <div style="font-size:10px;color:#666">Aprovação</div>
                 </div>
-              </div>`
+              </div>
+              ${hasStateFilter && fNoGo > 0 ? `
+              <b style="font-size:11px;color:#555">Detalhamento de No Go — ${stateLabel}:</b>
+              <table style="width:100%;margin-top:4px;font-size:11px;border-collapse:collapse;">
+                <thead><tr style="background:#f0f0f0">
+                  <th style="padding:3px 4px;text-align:left">Motivo</th>
+                  <th style="padding:3px 4px;text-align:center">#</th>
+                  <th style="padding:3px 4px;text-align:center">% No Go</th>
+                </tr></thead>
+                <tbody>${stateNogoReasonRows}</tbody>
+              </table>` : ''}`
           }
         </div>` : ''}
 
-        <!-- BOTÃO DETALHAMENTO POR ESTADO -->
+        <!-- BOTÃO DETALHAMENTO POR ESTADO — só aparece sem filtro de estado ativo -->
         <div id="state-detail-container"></div>
+        ${!hasStateFilter ? `
         <button onclick="UIManager.showStateDetail()"
                 style="width:100%;margin-top:8px;padding:6px;border:1px solid #007bff;
                        background:#fff;color:#007bff;border-radius:4px;cursor:pointer;font-size:12px;">
           <i class="fas fa-table"></i> Ver detalhamento por Estado
-        </button>
+        </button>` : ''}
       </div>`;
 
     document.body.insertAdjacentHTML('beforeend', html);
-
-    // Guarda os prospects filtrados para uso no detalhamento
     window._areaAnalysisProspects = filteredProspects;
 }
 

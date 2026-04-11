@@ -261,12 +261,6 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 
         const results = [...gmapsResults, ...apiResultsMapped];
 
-        // Ordenar: ✅ dentro do raio/grid primeiro, depois ⚠️ fora, depois sem validação
-        results.sort((a, b) => {
-            const score = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
-            return score(a) - score(b);
-        });
-
         showResults(results, territoryId, cepSet.size > 0, gmapsData.generated_at);
     } catch (err) {
         alert(`Erro: ${err.message}`);
@@ -279,6 +273,89 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 // ---------------------------------------------------------------------------
 // MARCADORES DE LEAD NO MAPA
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// LEADS SALVOS — persistência via GitHub Actions + localStorage como cache
+// ---------------------------------------------------------------------------
+
+const SAVED_LEADS_KEY    = 'atlas_saved_leads';
+const SAVED_LEADS_TS_KEY = 'atlas_saved_leads_ts';
+
+// Cache em memória dos leads salvos (sincronizado com GitHub + localStorage)
+let _savedLeadsCache = null;
+
+/**
+ * Carrega os leads salvos — tenta o JSON do GitHub Pages primeiro,
+ * cai no localStorage se offline ou falhar.
+ */
+async function _loadSavedLeads() {
+    if (_savedLeadsCache) return _savedLeadsCache;
+
+    // Tentar carregar do GitHub Pages (fonte de verdade)
+    try {
+        const res = await fetch(DATA_URLS.savedLeads + '?_=' + Date.now());
+        if (res.ok) {
+            const data = await res.json();
+            _savedLeadsCache = new Set(Object.keys(data.leads || {}));
+            // Sincronizar localStorage com o remoto
+            localStorage.setItem(SAVED_LEADS_KEY, JSON.stringify([..._savedLeadsCache]));
+            return _savedLeadsCache;
+        }
+    } catch (_) { /* offline — usa localStorage */ }
+
+    // Fallback: localStorage
+    try {
+        _savedLeadsCache = new Set(JSON.parse(localStorage.getItem(SAVED_LEADS_KEY) || '[]'));
+    } catch {
+        _savedLeadsCache = new Set();
+    }
+    return _savedLeadsCache;
+}
+
+/**
+ * Gera uma chave única para identificar uma empresa.
+ * Prioriza o link do Maps (mais estável), fallback para nome|endereço.
+ */
+function _savedLeadKey(r) {
+    if (r.google_maps_link && r.google_maps_link !== 'N/A') return r.google_maps_link;
+    return `${r.nome}|${r.endereco}`;
+}
+
+/**
+ * Dispara o workflow do GitHub Actions para salvar/remover o lead.
+ * Atualiza o cache local imediatamente (otimistic update).
+ */
+async function _toggleSavedLead(r) {
+    const key     = _savedLeadKey(r);
+    const saved   = await _loadSavedLeads();
+    const action  = saved.has(key) ? 'remove' : 'add';
+
+    // Otimistic update — reflete na UI antes da resposta do Actions
+    if (action === 'add') { saved.add(key); } else { saved.delete(key); }
+    localStorage.setItem(SAVED_LEADS_KEY, JSON.stringify([...saved]));
+
+    // Disparar via Vercel Function (PAT fica server-side)
+    try {
+        const res = await fetch('https://atlas-proxy.vercel.app/api/save-lead', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action:          action,
+                lead_key:        key,
+                lead_nome:       r.nome || '',
+                lead_territorio: r.territory_id || '',
+            }),
+        });
+        if (!res.ok) {
+            console.warn('[SavedLeads] Proxy falhou:', res.status, await res.text());
+        }
+    } catch (err) {
+        console.warn('[SavedLeads] Erro ao chamar proxy:', err);
+        // Não reverte — o localStorage já tem o estado correto como fallback
+    }
+
+    return action === 'add';
+}
 
 /** @type {Map<string, L.Marker>} Marcadores de lead fixados no mapa */
 const _pinnedLeadMarkers = new Map();
@@ -334,8 +411,16 @@ function _clearAllPins() {
  * @param {boolean}           usedCepFilter
  * @param {string|null}       generatedAt
  */
-export function showResults(results, territoryId, usedCepFilter, generatedAt) {
+export async function showResults(results, territoryId, usedCepFilter, generatedAt) {
     document.getElementById('gmaps-scraper-popup')?.remove();
+
+    // Carregar leads salvos (GitHub Pages → localStorage fallback)
+    const savedKeys = await _loadSavedLeads();
+    results.sort((a, b) => {
+        const saved  = r => savedKeys.has(_savedLeadKey(r)) ? 1 : 0;
+        const score  = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
+        return (saved(a) - saved(b)) || (score(a) - score(b));
+    });
 
     const byType = {};
     results.forEach(r => {
@@ -347,6 +432,7 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
     const dateStr    = generatedAt ? new Date(generatedAt).toLocaleDateString('pt-BR') : 'N/A';
     const apiCount   = results.filter(r => r._fonte?.includes('Receita')).length;
     const gmapsCount = results.length - apiCount;
+    const savedCount = results.filter(r => savedKeys.has(_savedLeadKey(r))).length;
 
     const popup = document.createElement('div');
     popup.id = 'gmaps-scraper-popup';
@@ -366,8 +452,9 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
     // Subtítulo
     const sub = document.createElement('div');
     sub.style = 'font-size:11px;color:#666;margin-bottom:8px;';
-    sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal<br>
-        ${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}`;
+    sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal`
+        + (savedCount > 0 ? ` · <span style="color:#16a34a;">✅ ${savedCount} contactada(s)</span>` : '')
+        + `<br>${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}`;
     popup.appendChild(sub);
 
     // Lista
@@ -384,8 +471,9 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
             list.appendChild(groupTitle);
 
             empresas.forEach(r => {
+                const isSaved = savedKeys.has(_savedLeadKey(r));
                 const card = document.createElement('div');
-                card.style = 'border-bottom:1px solid #eee;padding:6px 0;font-size:12px;position:relative;';
+                card.style = `border-bottom:1px solid #eee;padding:6px 0;font-size:12px;position:relative;${isSaved ? 'opacity:0.6;' : ''}`;
 
                 // Badge de distância
                 let matchBadge = '';
@@ -411,9 +499,35 @@ export function showResults(results, territoryId, usedCepFilter, generatedAt) {
                     </div>
                     ${r.primaryPhone   ? `<span>📞 ${r.primaryPhone}</span><br>`   : ''}
                     ${r.secondaryPhone ? `<span>📞 ${r.secondaryPhone}</span><br>` : ''}
+                    <div style="margin-top:3px;">
+                        <button class="lead-save-btn" style="border:none;background:none;font-size:11px;cursor:pointer;padding:0;color:${isSaved ? '#16a34a' : '#999'};">
+                            ${isSaved ? '✅ Empresa contactada' : '☐ Marcar como contactada'}
+                        </button>
+                    </div>
                     ${r.hasSite     ? `<span>🌐 <a href="${r.site}" target="_blank">${r.site}</a></span><br>` : ''}
                     ${r.hasMapsLink ? `<a href="${r.google_maps_link}" target="_blank" style="font-size:11px;">Ver no Google Maps ↗</a>` : ''}
                 `;
+
+                // Toggle "contactada"
+                const saveBtn = card.querySelector('.lead-save-btn');
+                saveBtn.onclick = async (e) => {
+                    e.stopPropagation();
+                    saveBtn.disabled = true;
+                    saveBtn.textContent = '⏳ Salvando...';
+                    const nowSaved = await _toggleSavedLead(r);
+                    // Invalidar cache para próxima abertura buscar do GitHub
+                    _savedLeadsCache = null;
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = nowSaved ? '✅ Empresa contactada' : '☐ Marcar como contactada';
+                    saveBtn.style.color = nowSaved ? '#16a34a' : '#999';
+                    card.style.opacity = nowSaved ? '0.6' : '1';
+                    // Atualizar contador no subtítulo
+                    const currentSaved = await _loadSavedLeads();
+                    const newCount = results.filter(x => currentSaved.has(_savedLeadKey(x))).length;
+                    sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${gmapsCount} Google Maps · 🏛️ ${apiCount} Receita Federal`
+                        + (newCount > 0 ? ` · <span style="color:#16a34a;">✅ ${newCount} contactada(s)</span>` : '')
+                        + `<br>${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do territorio'} · atualizado em ${dateStr}`;
+                };
 
                 if (hasCoords) {
                     const pinBtn = card.querySelector('.lead-pin-btn');

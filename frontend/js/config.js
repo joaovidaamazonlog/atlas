@@ -17,6 +17,7 @@ export const DATA_URLS = Object.freeze({
     heatmap:         `${BASE_URL}/heatmap.geojson`,
     gmapsResults:    `${BASE_URL}/gmaps_results.json`,
     executiveReport: `${BASE_URL}/relatorio_executivo.json`,
+    savedLeads:      `${BASE_URL}/saved_leads.json`,
 });
 
 /** Configuração inicial do mapa Leaflet */

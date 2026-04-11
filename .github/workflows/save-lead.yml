@@ -1,0 +1,96 @@
+name: Salvar Lead Contactado
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'add ou remove'
+        required: true
+        default: 'add'
+      lead_key:
+        description: 'Chave única do lead (maps link ou nome|endereço)'
+        required: true
+      lead_nome:
+        description: 'Nome da empresa'
+        required: false
+        default: ''
+      lead_territorio:
+        description: 'ID do território'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Atualizar saved_leads.json
+        run: |
+          FILE="output_data/saved_leads.json"
+
+          # Criar arquivo se não existir
+          if [ ! -f "$FILE" ]; then
+            echo '{"leads":{}}' > "$FILE"
+          fi
+
+          ACTION="${{ github.event.inputs.action }}"
+          KEY="${{ github.event.inputs.lead_key }}"
+          NOME="${{ github.event.inputs.lead_nome }}"
+          TERRITORIO="${{ github.event.inputs.lead_territorio }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          if [ "$ACTION" = "add" ]; then
+            # Adicionar/atualizar lead usando python para manipular JSON com segurança
+            python3 - <<EOF
+          import json, sys
+
+          with open("$FILE", "r") as f:
+              data = json.load(f)
+
+          key = """$KEY"""
+          data["leads"][key] = {
+              "saved_at": "$TIMESTAMP",
+              "nome": """$NOME""",
+              "territorio": "$TERRITORIO"
+          }
+
+          with open("$FILE", "w") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+
+          print(f"Lead adicionado: {key}")
+          EOF
+          else
+            # Remover lead
+            python3 - <<EOF
+          import json
+
+          with open("$FILE", "r") as f:
+              data = json.load(f)
+
+          key = """$KEY"""
+          removed = data["leads"].pop(key, None)
+
+          with open("$FILE", "w") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+
+          print(f"Lead removido: {key}" if removed else f"Lead não encontrado: {key}")
+          EOF
+          fi
+
+      - name: Commit e push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add output_data/saved_leads.json
+          git diff --staged --quiet || git commit -m "chore: atualiza saved_leads.json [${{ github.event.inputs.action }}] $(date +'%Y-%m-%d %H:%M')"
+          git pull --rebase origin main
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.LEADS_PAT }}

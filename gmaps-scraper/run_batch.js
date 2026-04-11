@@ -103,10 +103,12 @@ async function main() {
 
     // Carregar resultado existente para merge incremental
     let existing = {};
+    let existingUpdatedAt = {};
     if (fs.existsSync(OUTPUT_PATH)) {
         try {
             const prev = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
             existing = prev.results || {};
+            existingUpdatedAt = prev.updated_at || {};
             console.log(`  Merge com ${Object.keys(existing).length} territórios existentes.\n`);
         } catch (e) {
             console.warn('  WARN: não foi possível ler gmaps_results.json existente — sobrescrevendo.');

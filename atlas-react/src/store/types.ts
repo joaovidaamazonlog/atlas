@@ -1,0 +1,171 @@
+/**
+ * types.ts
+ * ========
+ * Interfaces TypeScript centrais da aplicação.
+ * Usadas pelo Store Zustand e pelos componentes React.
+ * Espelha os modelos de frontend/js/models.js com tipagem estrita.
+ */
+
+// ---------------------------------------------------------------------------
+// OTIMIZAÇÃO
+// ---------------------------------------------------------------------------
+
+export interface OptimizationData {
+  radius_suggestion: number;
+  cap_suggestion: number;
+}
+
+// ---------------------------------------------------------------------------
+// PARCEIRO
+// ---------------------------------------------------------------------------
+
+export type PartnerStatus =
+  | 'Active'
+  | 'Inactive'
+  | 'Onboarding'
+  | 'BG Checks'
+  | 'Prospect'
+  | 'Exited'
+  | 'New';
+
+export interface Partner {
+  salesforce_id: string;
+  store_id: string | null;
+  name: string;
+  status: PartnerStatus;
+  lat: number | null;
+  lon: number | null;
+  zip_code: string | null;
+  city: string | null;
+  state: string | null;
+  delivery_station: string;
+  supply_run: string | null;
+  radius: number;
+  capacity: number;
+  bucket: string | null;
+  bucket_ade: string;
+  jurisdiction_type: string | null;
+  hub_delivey_initiatives: string | null;
+  HCP_rate_card: string | null;
+  HCP_host_partner: string | null;
+  launch_date: string | null;
+  exited_date: string | null;
+  telefone: string | null;
+  owner_id: string | null;
+  decision_status: string | null;
+  lead_source: string | null;
+  tooltip: string;
+  regiao: string;
+  decision: string;
+  reason: string;
+  optimization: OptimizationData;
+  ceps: string[];
+  slot_id: string;
+}
+
+// ---------------------------------------------------------------------------
+// DELIVERY STATION
+// ---------------------------------------------------------------------------
+
+export interface DeliveryStation {
+  nome: string;
+  lat: number;
+  lon: number;
+}
+
+// ---------------------------------------------------------------------------
+// FILTRO
+// ---------------------------------------------------------------------------
+
+export interface FilterState {
+  selectedStatuses: string[] | 'all';
+  selectedStations: string[] | 'all';
+  selectedBuckets: string[] | 'all';
+  initiativesFilter: string;
+  jurisdictionFilter: string;
+}
+
+// ---------------------------------------------------------------------------
+// ESTILIZAÇÃO DO MAPA
+// ---------------------------------------------------------------------------
+
+export interface StyleConfig {
+  /** Campo para cor de preenchimento dos marcadores */
+  primaryField: string;
+  /** Campo para cor de borda dos marcadores */
+  secondaryField: string;
+  showRadii: boolean;
+  showPolygons: boolean;
+  showJurisdictions: boolean;
+  showOptimizationLayer: boolean;
+  showHeatmap: boolean;
+}
+
+// ---------------------------------------------------------------------------
+// ROTA / PARADA
+// ---------------------------------------------------------------------------
+
+export interface RouteStop {
+  store_id: string;
+  name: string;
+  lat: number;
+  lon: number;
+}
+
+// ---------------------------------------------------------------------------
+// HCP
+// ---------------------------------------------------------------------------
+
+export interface HcpState {
+  suggestionCache: Record<string, unknown>;
+  usedStores: Record<string, Set<string>>;
+  suggestionsActive: boolean;
+}
+
+export interface HcpGroups {
+  hosts: Partner[];
+  pickups: Partner[];
+  heros: Partner[];
+  all: Partner[];
+}
+
+export interface HcpMove {
+  pickup: Partner;
+  from: string;
+  to: string;
+  type: 'move';
+}
+
+// ---------------------------------------------------------------------------
+// PROSPECÇÃO
+// ---------------------------------------------------------------------------
+
+export interface ProspectCompany {
+  nome: string;
+  endereco: string;
+  telefone_1: string | null;
+  telefone_2: string | null;
+  /** @deprecated campo legado Google Maps */
+  telefone: string | null;
+  site: string;
+  google_maps_link: string;
+  cep: string;
+  tipo: string;
+  _fonte: string;
+  lat: number | null;
+  lon: number | null;
+}
+
+// ---------------------------------------------------------------------------
+// CRITÉRIO DE HIGHLIGHT
+// ---------------------------------------------------------------------------
+
+export interface HighlightCriteria {
+  eligibleOp: 'gt' | 'lt';
+  eligibleVal: number;
+  allocatedOp: 'gt' | 'lt';
+  allocatedVal: number;
+  statusHighlight: string;
+  overlappingOp: 'gt' | 'lt' | 'eq';
+  overlappingVal: number;
+}

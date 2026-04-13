@@ -1,0 +1,21 @@
+{
+  "name": "ATLAS - Analytical Tracking",
+  "short_name": "ATLAS",
+  "description": "Analytical Tracking for Location and Store performance",
+  "start_url": "/atlas/",
+  "display": "standalone",
+  "background_color": "#232f3e",
+  "theme_color": "#232f3e",
+  "icons": [
+    {
+      "src": "icons/hub.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/hub.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

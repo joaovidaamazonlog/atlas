@@ -1,0 +1,126 @@
+/* ============================================================
+   Leaflet Overrides — Tema Escuro ATLAS
+   ============================================================ */
+
+/* Container do mapa ocupa toda a área disponível */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background-color: #16202c;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Controles de zoom */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--color-navy) !important;
+  color: var(--color-light) !important;
+  border-color: var(--border-color) !important;
+  transition: background-color var(--transition-fast);
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--color-dark) !important;
+  color: var(--color-accent) !important;
+}
+
+/* Popups */
+.leaflet-popup-content-wrapper {
+  background-color: var(--color-navy) !important;
+  color: var(--color-light) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow-lg) !important;
+  max-width: 320px;
+}
+
+.leaflet-popup-tip {
+  background-color: var(--color-navy) !important;
+}
+
+.leaflet-popup-close-button {
+  color: var(--color-muted) !important;
+  font-size: 18px !important;
+  padding: 6px 8px !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: var(--color-light) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 16px !important;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Attribution */
+.leaflet-control-attribution {
+  background-color: rgba(22, 32, 44, 0.8) !important;
+  color: var(--color-muted) !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-accent) !important;
+}
+
+/* Tooltips */
+.leaflet-tooltip {
+  background-color: var(--color-darker) !important;
+  color: var(--color-light) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 4px !important;
+  box-shadow: var(--shadow-sm) !important;
+  font-size: 0.75rem;
+  padding: 4px 8px !important;
+}
+
+.leaflet-tooltip-top::before,
+.leaflet-tooltip-bottom::before,
+.leaflet-tooltip-left::before,
+.leaflet-tooltip-right::before {
+  border-top-color: var(--border-color) !important;
+}
+
+/* Routing machine */
+.leaflet-routing-container {
+  background-color: var(--color-navy) !important;
+  color: var(--color-light) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow-md) !important;
+  max-width: 280px;
+}
+
+.leaflet-routing-container h2,
+.leaflet-routing-container h3 {
+  color: var(--color-accent) !important;
+}
+
+.leaflet-routing-alt {
+  background-color: var(--color-dark) !important;
+}
+
+.leaflet-routing-alt:hover {
+  background-color: var(--color-navy) !important;
+}
+
+/* Esconder controles padrão do routing machine (usamos UI própria) */
+.leaflet-routing-geocoders {
+  display: none !important;
+}
+
+/* Pane do mapa — garante que o mapa fique abaixo dos overlays React */
+.leaflet-pane {
+  z-index: var(--z-map) !important;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: calc(var(--z-map) + 10) !important;
+}

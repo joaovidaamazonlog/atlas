@@ -131,14 +131,17 @@ export const useStore = create<AtlasStore>((set, get) => ({
     set({ isLoading: true, loadingMessage: 'Carregando dados...', error: null });
 
     try {
+      console.log('[AtlasStore] Iniciando loadAll, URL:', DATA_URLS.partners);
       // Carrega dados principais dos parceiros
       const partnersRes = await fetch(DATA_URLS.partners);
-      if (!partnersRes.ok) throw new Error(`Falha ao carregar parceiros: ${partnersRes.status}`);
+      console.log('[AtlasStore] Resposta parceiros:', partnersRes.status, partnersRes.ok);
+      if (!partnersRes.ok) throw new Error(`Falha ao carregar parceiros: ${partnersRes.status} ${partnersRes.statusText}`);
       const partnersJson = await partnersRes.json();
 
       const allMarkersData: Partner[] = partnersJson.partners ?? partnersJson;
       const deliveryStations: DeliveryStation[] = partnersJson.delivery_stations ?? [];
       const period: string | object = partnersJson.period ?? '';
+      console.log('[AtlasStore] Parceiros carregados:', allMarkersData.length);
 
       // Carrega camadas GeoJSON em paralelo (falhas individuais não bloqueiam)
       const [territoriesResult, jurisdictionResult, optimizationResult, heatmapResult] =
@@ -179,7 +182,7 @@ export const useStore = create<AtlasStore>((set, get) => ({
       });
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro desconhecido ao carregar dados';
-      console.error('[AtlasStore] loadAll falhou:', message);
+      console.error('[AtlasStore] loadAll falhou:', message, err);
       set({
         ...prevState,
         isLoading: false,

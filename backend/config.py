@@ -39,7 +39,7 @@ CLUSTER_PER_STATION = {
     "DBH5": 4,
     "DMG2": 13,
     "DBS5": 5,
-    "DCE3": 2,
+    "DCE3": 13,
     "DES2": 3,
     "DFR2": 2,
     "DGO2": 4,

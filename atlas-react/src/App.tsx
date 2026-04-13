@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { AppShell } from './components/layout/AppShell';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorToast } from './components/ui/ErrorToast';
-import { useDataWorker } from './hooks/useDataWorker';
+import { useStore } from './store';
 
 function AppInner() {
-  const { loadData } = useDataWorker();
+  const loadAll = useStore((s) => s.loadAll);
 
   useEffect(() => {
-    loadData();
+    loadAll();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

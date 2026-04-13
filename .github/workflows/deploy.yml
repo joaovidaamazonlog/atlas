@@ -32,6 +32,11 @@ jobs:
         run: npm ci
         working-directory: atlas-react
 
+      - name: Copy data files
+        run: |
+          cp -r output_data atlas-react/public/output_data
+          cp -r config atlas-react/public/config
+
       - name: Build
         run: npm run build
         working-directory: atlas-react

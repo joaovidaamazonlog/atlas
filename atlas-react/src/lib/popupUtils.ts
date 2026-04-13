@@ -29,8 +29,14 @@ function _waLink(tel: string | null): string {
   return `<a href="https://wa.me/${tel}" target="_blank" style="color:#25d366;">WhatsApp</a>`;
 }
 
-// ---------------------------------------------------------------------------
-// POPUP DE PARCEIRO (principal)
+// Helper para acessar optimization de forma segura
+// (suporte a dados brutos que não passaram pela classe Partner)
+function _opt(p: Partner) {
+  return p.optimization ?? {
+    cap_suggestion: (p as unknown as Record<string, number>).cap_suggestion ?? p.capacity ?? 0,
+    radius_suggestion: (p as unknown as Record<string, number>).radius_suggestion ?? p.radius ?? 0,
+  };
+}
 // ---------------------------------------------------------------------------
 
 /**
@@ -79,9 +85,9 @@ function _popupActive(p: Partner): string {
 
 function _popupInactive(p: Partner): string {
   const capSuggestion =
-    p.status === 'Exited' ? p.capacity : p.optimization.cap_suggestion;
+    p.status === 'Exited' ? p.capacity : _opt(p).cap_suggestion;
   const radiusSuggestion =
-    p.status === 'Exited' ? p.radius : p.optimization.radius_suggestion;
+    p.status === 'Exited' ? p.radius : _opt(p).radius_suggestion;
   return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
     <h5 style="font-weight:bold;margin-bottom:8px;">${p.name}</h5>
     ${_table(
@@ -118,8 +124,8 @@ function _popupOnboarding(p: Partner): string {
     ${_sfLink(p.salesforce_id)}${_waLink(p.telefone)}
     <hr style="border-color:#4a5568;margin:8px 0;">
     ${_table(
-      _row('Capacidade Sugerida', p.optimization.cap_suggestion + ' pkgs') +
-      _row('Raio Sugerido', p.optimization.radius_suggestion + ' m'),
+      _row('Capacidade Sugerida', _opt(p).cap_suggestion + ' pkgs') +
+      _row('Raio Sugerido', _opt(p).radius_suggestion + ' m'),
     )}
   </div>`;
 }
@@ -138,8 +144,8 @@ function _popupVetting(p: Partner): string {
     ${_sfLink(p.salesforce_id)}${_waLink(p.telefone)}
     <hr style="border-color:#4a5568;margin:8px 0;">
     ${_table(
-      _row('Capacidade Sugerida', p.optimization.cap_suggestion + ' pkgs') +
-      _row('Raio Sugerido', p.optimization.radius_suggestion + ' m'),
+      _row('Capacidade Sugerida', _opt(p).cap_suggestion + ' pkgs') +
+      _row('Raio Sugerido', _opt(p).radius_suggestion + ' m'),
     )}
   </div>`;
 }
@@ -158,8 +164,8 @@ function _popupProspect(p: Partner): string {
     <hr style="border-color:#4a5568;margin:8px 0;">
     ${_table(
       _row('Decisão', p.reason) +
-      _row('Capacidade Sugerida', p.optimization.cap_suggestion + ' pkgs') +
-      _row('Raio Sugerido', p.optimization.radius_suggestion + ' m'),
+      _row('Capacidade Sugerida', _opt(p).cap_suggestion + ' pkgs') +
+      _row('Raio Sugerido', _opt(p).radius_suggestion + ' m'),
     )}
   </div>`;
 }

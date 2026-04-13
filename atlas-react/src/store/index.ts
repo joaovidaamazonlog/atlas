@@ -14,6 +14,7 @@ import type {
   RouteStop,
   HcpState,
 } from './types';
+import { Partner as PartnerModel } from '../lib/models';
 import { applyFiltersLogic } from './actions/dataActions';
 import { defaultStyleConfig } from './actions/mapActions';
 import { DATA_URLS } from '../lib/config';
@@ -138,13 +139,13 @@ export const useStore = create<AtlasStore>((set, get) => ({
       if (!partnersRes.ok) throw new Error(`Falha ao carregar parceiros: ${partnersRes.status} ${partnersRes.statusText}`);
       const partnersJson = await partnersRes.json();
 
-      const allMarkersData: Partner[] = Array.isArray(partnersJson.allMarkerData)
+      const allMarkersData: Partner[] = (Array.isArray(partnersJson.allMarkerData)
         ? partnersJson.allMarkerData
         : Array.isArray(partnersJson.partners)
           ? partnersJson.partners
           : Array.isArray(partnersJson)
             ? partnersJson
-            : [];
+            : []).map((raw: unknown) => new PartnerModel(raw as Record<string, unknown>));
       const deliveryStations: DeliveryStation[] = partnersJson.deliveryStations ?? partnersJson.delivery_stations ?? [];
       const period: string | object = partnersJson.period ?? '';
       console.log('[AtlasStore] Parceiros carregados:', allMarkersData.length);

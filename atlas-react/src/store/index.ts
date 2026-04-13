@@ -138,8 +138,14 @@ export const useStore = create<AtlasStore>((set, get) => ({
       if (!partnersRes.ok) throw new Error(`Falha ao carregar parceiros: ${partnersRes.status} ${partnersRes.statusText}`);
       const partnersJson = await partnersRes.json();
 
-      const allMarkersData: Partner[] = partnersJson.partners ?? partnersJson;
-      const deliveryStations: DeliveryStation[] = partnersJson.delivery_stations ?? [];
+      const allMarkersData: Partner[] = Array.isArray(partnersJson.allMarkerData)
+        ? partnersJson.allMarkerData
+        : Array.isArray(partnersJson.partners)
+          ? partnersJson.partners
+          : Array.isArray(partnersJson)
+            ? partnersJson
+            : [];
+      const deliveryStations: DeliveryStation[] = partnersJson.deliveryStations ?? partnersJson.delivery_stations ?? [];
       const period: string | object = partnersJson.period ?? '';
       console.log('[AtlasStore] Parceiros carregados:', allMarkersData.length);
 

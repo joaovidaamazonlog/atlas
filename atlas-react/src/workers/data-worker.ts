@@ -98,8 +98,14 @@ async function loadData(urls: DataUrls): Promise<void> {
     }
     const partnersJson = await partnersRes.json();
 
-    const allMarkersData: Partner[] = partnersJson.partners ?? partnersJson;
-    const deliveryStations = partnersJson.delivery_stations ?? [];
+    const allMarkersData: Partner[] = Array.isArray(partnersJson.allMarkerData)
+      ? partnersJson.allMarkerData
+      : Array.isArray(partnersJson.partners)
+        ? partnersJson.partners
+        : Array.isArray(partnersJson)
+          ? partnersJson
+          : [];
+    const deliveryStations = partnersJson.deliveryStations ?? partnersJson.delivery_stations ?? [];
     const period: string | object = partnersJson.period ?? '';
 
     const [territoriesResult, jurisdictionResult, optimizationResult, heatmapResult] =

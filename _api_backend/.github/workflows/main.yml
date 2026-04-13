@@ -1,0 +1,37 @@
+name: Atualizar Base de Prospecção (Receita Federal)
+
+on:
+  schedule:
+    # Roda dia 15 de cada mês às 02h UTC
+    - cron: '0 2 15 * *'
+  workflow_dispatch:
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Liberar espaço em disco
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /usr/local/share/boost "$AGENT_TOOLSDIRECTORY"
+          df -h
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependências
+        run: pip install -r _api_backend/requirements.txt
+
+      - name: Executar ETL → Turso
+        run: python _api_backend/etl_cnpj.py
+        env:
+          TURSO_URL:   ${{ secrets.TURSO_URL }}
+          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}

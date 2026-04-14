@@ -364,8 +364,8 @@ export function sortTerritories(
 ): TerritoryRow[] {
   if (!territories || !column) return territories ? [...territories] : [];
   return [...territories].sort((a, b) => {
-    const va = (a as Record<string, unknown>)[column];
-    const vb = (b as Record<string, unknown>)[column];
+    const va = (a as unknown as Record<string, unknown>)[column];
+    const vb = (b as unknown as Record<string, unknown>)[column];
     let cmp: number;
     if (typeof va === 'string' && typeof vb === 'string') {
       cmp = va.localeCompare(vb);

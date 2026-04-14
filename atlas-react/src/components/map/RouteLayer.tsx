@@ -34,7 +34,7 @@ export default function RouteLayer() {
     const control = L.Routing.control({
       waypoints: allStops.map((s) => L.latLng(s.lat, s.lon)),
       router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-      lineOptions: { styles: [{ color: 'blue', opacity: 0.8, weight: 5 }] },
+      lineOptions: { styles: [{ color: 'blue', opacity: 0.8, weight: 5 }], extendToWaypoints: false, missingRouteTolerance: 0 },
       createMarker: (_i: number, wp: L.Routing.Waypoint) => L.marker(wp.latLng),
       show: true,
     });

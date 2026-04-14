@@ -1,32 +1,56 @@
 /**
  * RouteLayer.tsx
  * ==============
- * Camada de rota no mapa.
- * Renderiza uma Polyline conectando as paradas quando há 2 ou mais.
- *
- * Nota: leaflet-routing-machine será integrado via useEffect com
- * L.Routing.control em uma iteração futura para roteamento real.
- * Por ora, usa Polyline simples conectando os pontos em ordem.
+ * Camada de rota no mapa usando leaflet-routing-machine.
+ * Calcula rota real via OSRM e otimiza paradas intermediárias.
  */
 
-import { Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet-routing-machine';
+import { useEffect, useRef } from 'react';
+import { useMap } from 'react-leaflet';
 import { useStore } from '../../store';
+import { optimizeStops } from '../../lib/routeUtils';
 
 export default function RouteLayer() {
+  const map = useMap();
   const route = useStore((s) => s.route);
+  const setError = useStore((s) => s.setError);
+  const routingControlRef = useRef<L.Routing.Control | null>(null);
 
-  if (route.length < 2) return null;
+  useEffect(() => {
+    // Cleanup previous control
+    if (routingControlRef.current) {
+      map.removeControl(routingControlRef.current);
+      routingControlRef.current = null;
+    }
 
-  const positions = route.map((stop) => [stop.lat, stop.lon] as [number, number]);
+    if (route.length < 2) return;
 
-  return (
-    <Polyline
-      positions={positions}
-      pathOptions={{
-        color: '#3b82f6',
-        opacity: 0.8,
-        weight: 5,
-      }}
-    />
-  );
+    const [first, last, ...middle] = route;
+    const optimized = optimizeStops(first, last, middle);
+    const allStops = [first, ...optimized, last];
+
+    const control = L.Routing.control({
+      waypoints: allStops.map((s) => L.latLng(s.lat, s.lon)),
+      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+      lineOptions: { styles: [{ color: 'blue', opacity: 0.8, weight: 5 }] },
+      createMarker: (_i: number, wp: L.Routing.Waypoint) => L.marker(wp.latLng),
+      show: true,
+    });
+
+    control.on('routingerror', (e: any) => {
+      setError(`Erro ao calcular rota: ${e.error?.message ?? 'serviço OSRM indisponível'}`);
+    });
+
+    control.addTo(map);
+    routingControlRef.current = control;
+
+    return () => {
+      map.removeControl(control);
+      routingControlRef.current = null;
+    };
+  }, [route, map, setError]);
+
+  return null;
 }

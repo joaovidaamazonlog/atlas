@@ -274,8 +274,8 @@ describe('reportUtils — Propriedade 4: sortTerritories produz array ordenado',
 
           // Verificar que o array é não-decrescente
           for (let i = 0; i < sorted.length - 1; i++) {
-            const va = (sorted[i] as Record<string, unknown>)[col] as number;
-            const vb = (sorted[i + 1] as Record<string, unknown>)[col] as number;
+            const va = (sorted[i] as unknown as Record<string, unknown>)[col] as number;
+            const vb = (sorted[i + 1] as unknown as Record<string, unknown>)[col] as number;
             expect(va).toBeLessThanOrEqual(vb);
           }
         },
@@ -293,8 +293,8 @@ describe('reportUtils — Propriedade 4: sortTerritories produz array ordenado',
 
           // Verificar que o array é não-crescente
           for (let i = 0; i < sorted.length - 1; i++) {
-            const va = (sorted[i] as Record<string, unknown>)[col] as number;
-            const vb = (sorted[i + 1] as Record<string, unknown>)[col] as number;
+            const va = (sorted[i] as unknown as Record<string, unknown>)[col] as number;
+            const vb = (sorted[i + 1] as unknown as Record<string, unknown>)[col] as number;
             expect(va).toBeGreaterThanOrEqual(vb);
           }
         },

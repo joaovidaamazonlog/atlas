@@ -154,6 +154,29 @@ export interface ProspectCompany {
   _fonte: string;
   lat: number | null;
   lon: number | null;
+  isMatch: boolean | null;
+  contactada: boolean;
+  territory_id?: string;
+}
+
+export interface ProspectCluster {
+  centroid: { lat: number; lon: number };
+  count: number;
+  match_count: number;
+  priority: number;
+  intensity: number;
+  company_indices: number[];
+}
+
+export interface ProspectState {
+  companies: ProspectCompany[];
+  clusters: ProspectCluster[];
+  isLoading: boolean;
+  error: string | null;
+  selectedStation: string | null;
+  selectedBucket: string | null;
+  /** Keys of pinned companies (serializable array, convert to Set when needed) */
+  pinnedKeys: string[];
 }
 
 // ---------------------------------------------------------------------------

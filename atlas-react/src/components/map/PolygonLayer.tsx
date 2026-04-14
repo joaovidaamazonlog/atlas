@@ -3,6 +3,8 @@
  * ================
  * Camada de polígonos de território no mapa.
  * Filtra features por delivery_station e bucket_ade baseado em filterState.
+ * Quando o heatmap de prospecção está ativo (clusters.length > 0), exibe apenas
+ * o polígono da carteira selecionada (selectedBucket).
  */
 
 import { useMemo } from 'react';
@@ -15,13 +17,27 @@ export default function PolygonLayer() {
   const polygonsData = useStore((s) => s.polygonsData);
   const filterState = useStore((s) => s.filterState);
   const showPolygons = useStore((s) => s.styleConfig.showPolygons);
+  const prospectClusters = useStore((s) => s.prospectState.clusters);
+  const selectedBucket = useStore((s) => s.prospectState.selectedBucket);
 
   const filteredData = useMemo(() => {
     if (!polygonsData) return null;
 
+    const heatmapActive = prospectClusters.length > 0;
+
     const features = polygonsData.features.filter((f) => {
       const props = f.properties ?? {};
 
+      // When heatmap is active, show only the polygon matching selectedBucket
+      if (heatmapActive) {
+        if (!selectedBucket) return false;
+        return (
+          props.bucket_ade === selectedBucket ||
+          props.territory_id === selectedBucket
+        );
+      }
+
+      // Default behavior: filter by filterState
       const stationMatch =
         filterState.selectedStations === 'all' ||
         filterState.selectedStations.includes(props.delivery_station);
@@ -34,7 +50,7 @@ export default function PolygonLayer() {
     });
 
     return { type: 'FeatureCollection' as const, features };
-  }, [polygonsData, filterState]);
+  }, [polygonsData, filterState, prospectClusters, selectedBucket]);
 
   if (!showPolygons || !filteredData) return null;
 
@@ -48,7 +64,7 @@ export default function PolygonLayer() {
 
   return (
     <GeoJSON
-      key={JSON.stringify(filterState)}
+      key={JSON.stringify(filterState) + selectedBucket + prospectClusters.length}
       data={filteredData}
       style={styleFunc}
       pane="polygonsPane"

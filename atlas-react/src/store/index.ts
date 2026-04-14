@@ -6,6 +6,8 @@
  */
 
 import { create } from 'zustand';
+import { createRef } from 'react';
+import type React from 'react';
 import type {
   Partner,
   DeliveryStation,
@@ -13,6 +15,9 @@ import type {
   StyleConfig,
   RouteStop,
   HcpState,
+  ProspectState,
+  ProspectCompany,
+  ProspectCluster,
 } from './types';
 import { Partner as PartnerModel } from '../lib/models';
 import { applyFiltersLogic } from './actions/dataActions';
@@ -61,6 +66,13 @@ export interface AtlasStore {
   filterState: FilterState;
   route: RouteStop[];
   hcp: HcpState;
+  /** true quando há uma origem de rota definida no RoutesTab */
+  routeOriginActive: boolean;
+  /** Ref preenchido pelo MapView para executar fitBounds a partir de qualquer componente */
+  fitBoundsRef: React.MutableRefObject<((coords: [number, number][]) => void) | null>;
+
+  // --- Prospect ---
+  prospectState: ProspectState;
 
   // --- Actions ---
   loadAll: () => Promise<void>;
@@ -81,6 +93,16 @@ export interface AtlasStore {
     heatmapData?: GeoJSON.FeatureCollection | null;
     period?: string | object;
   }) => void;
+
+  // --- Prospect Actions ---
+  setCompanies: (companies: ProspectCompany[]) => void;
+  setClusters: (clusters: ProspectCluster[]) => void;
+  setProspectLoading: (isLoading: boolean) => void;
+  setProspectError: (error: string | null) => void;
+  setProspectStation: (station: string | null) => void;
+  setProspectBucket: (bucket: string | null) => void;
+  togglePin: (key: string) => void;
+  clearProspect: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -107,6 +129,19 @@ export const useStore = create<AtlasStore>((set, get) => ({
   filterState: { ...DEFAULT_FILTER_STATE },
   route: [],
   hcp: { ...DEFAULT_HCP_STATE },
+  routeOriginActive: false,
+  fitBoundsRef: createRef<((coords: [number, number][]) => void) | null>() as React.MutableRefObject<((coords: [number, number][]) => void) | null>,
+
+  // --- Estado inicial: prospect ---
+  prospectState: {
+    companies: [],
+    clusters: [],
+    isLoading: false,
+    error: null,
+    selectedStation: null,
+    selectedBucket: null,
+    pinnedKeys: [],
+  },
 
   // ---------------------------------------------------------------------------
   // ACTIONS
@@ -336,6 +371,84 @@ export const useStore = create<AtlasStore>((set, get) => ({
       console.error('[AtlasStore] setAllData falhou:', message);
       set({ ...prevState, error: message });
     }
+  },
+
+  // ---------------------------------------------------------------------------
+  // PROSPECT ACTIONS
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Atualiza a lista de empresas prospectadas.
+   * Também reseta pinnedKeys (nova busca limpa alfinetes).
+   */
+  setCompanies: (companies: ProspectCompany[]) => {
+    set((state) => ({ prospectState: { ...state.prospectState, companies, pinnedKeys: [] } }));
+  },
+
+  /**
+   * Atualiza os clusters K-means calculados.
+   */
+  setClusters: (clusters: ProspectCluster[]) => {
+    set((state) => ({ prospectState: { ...state.prospectState, clusters } }));
+  },
+
+  /**
+   * Atualiza o estado de carregamento da prospecção.
+   */
+  setProspectLoading: (isLoading: boolean) => {
+    set((state) => ({ prospectState: { ...state.prospectState, isLoading } }));
+  },
+
+  /**
+   * Define a mensagem de erro da prospecção (null para limpar).
+   */
+  setProspectError: (error: string | null) => {
+    set((state) => ({ prospectState: { ...state.prospectState, error } }));
+  },
+
+  /**
+   * Define a Delivery Station selecionada na prospecção.
+   */
+  setProspectStation: (selectedStation: string | null) => {
+    set((state) => ({ prospectState: { ...state.prospectState, selectedStation } }));
+  },
+
+  /**
+   * Define a Carteira selecionada na prospecção.
+   */
+  setProspectBucket: (selectedBucket: string | null) => {
+    set((state) => ({ prospectState: { ...state.prospectState, selectedBucket } }));
+  },
+
+  /**
+   * Alterna o estado de alfinete de uma empresa (adiciona se ausente, remove se presente).
+   */
+  togglePin: (key: string) => {
+    set((state) => {
+      const prev = state.prospectState.pinnedKeys;
+      const pinnedKeys = prev.includes(key)
+        ? prev.filter((k) => k !== key)
+        : [...prev, key];
+      return { prospectState: { ...state.prospectState, pinnedKeys } };
+    });
+  },
+
+  /**
+   * Reseta o estado de prospecção para o estado inicial.
+   */
+  clearProspect: () => {
+    set((state) => ({
+      prospectState: {
+        ...state.prospectState,
+        companies: [],
+        clusters: [],
+        selectedStation: null,
+        selectedBucket: null,
+        isLoading: false,
+        error: null,
+        pinnedKeys: [],
+      },
+    }));
   },
 }));
 

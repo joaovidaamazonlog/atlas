@@ -5,13 +5,14 @@
  * Filtros | Estilo | Área | Rotas
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FiltersTab from './FiltersTab';
 import StyleTab from './StyleTab';
 import AreaAnalysisTab from './AreaAnalysisTab';
 import RoutesTab from './RoutesTab';
+import ProspectTab from './ProspectTab';
 
-type TabId = 'filters' | 'style' | 'area' | 'routes';
+type TabId = 'filters' | 'style' | 'area' | 'routes' | 'prospect';
 
 interface Tab {
   id: TabId;
@@ -23,10 +24,21 @@ const TABS: Tab[] = [
   { id: 'style', label: 'Estilo' },
   { id: 'area', label: 'Área' },
   { id: 'routes', label: 'Rotas' },
+  { id: 'prospect', label: 'Prospectar' },
 ];
 
 export default function ControlPanel() {
   const [activeTab, setActiveTab] = useState<TabId>('filters');
+
+  // Listen for external tab-switch requests (e.g. "Rota a partir daqui" popup button)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const tab = (e as CustomEvent<string>).detail as TabId;
+      if (TABS.some((t) => t.id === tab)) setActiveTab(tab);
+    };
+    window.addEventListener('atlas:open-tab', handler);
+    return () => window.removeEventListener('atlas:open-tab', handler);
+  }, []);
 
   return (
     <div className="flex flex-col h-full bg-atlas-navy text-atlas-light overflow-hidden">
@@ -57,39 +69,22 @@ export default function ControlPanel() {
         ))}
       </div>
 
-      {/* Tab content */}
+      {/* Tab content — todos sempre montados para preservar estado */}
       <div className="flex-1 overflow-y-auto">
-        <div
-          role="tabpanel"
-          id="tabpanel-filters"
-          aria-labelledby="tab-filters"
-          hidden={activeTab !== 'filters'}
-        >
-          {activeTab === 'filters' && <FiltersTab />}
+        <div role="tabpanel" id="tabpanel-filters" aria-labelledby="tab-filters" hidden={activeTab !== 'filters'}>
+          <FiltersTab />
         </div>
-        <div
-          role="tabpanel"
-          id="tabpanel-style"
-          aria-labelledby="tab-style"
-          hidden={activeTab !== 'style'}
-        >
-          {activeTab === 'style' && <StyleTab />}
+        <div role="tabpanel" id="tabpanel-style" aria-labelledby="tab-style" hidden={activeTab !== 'style'}>
+          <StyleTab />
         </div>
-        <div
-          role="tabpanel"
-          id="tabpanel-area"
-          aria-labelledby="tab-area"
-          hidden={activeTab !== 'area'}
-        >
-          {activeTab === 'area' && <AreaAnalysisTab />}
+        <div role="tabpanel" id="tabpanel-area" aria-labelledby="tab-area" hidden={activeTab !== 'area'}>
+          <AreaAnalysisTab />
         </div>
-        <div
-          role="tabpanel"
-          id="tabpanel-routes"
-          aria-labelledby="tab-routes"
-          hidden={activeTab !== 'routes'}
-        >
-          {activeTab === 'routes' && <RoutesTab />}
+        <div role="tabpanel" id="tabpanel-routes" aria-labelledby="tab-routes" hidden={activeTab !== 'routes'}>
+          <RoutesTab />
+        </div>
+        <div role="tabpanel" id="tabpanel-prospect" aria-labelledby="tab-prospect" hidden={activeTab !== 'prospect'}>
+          <ProspectTab />
         </div>
       </div>
     </div>

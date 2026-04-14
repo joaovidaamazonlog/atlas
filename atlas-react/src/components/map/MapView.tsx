@@ -8,8 +8,11 @@
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import { MAP_CONFIG } from '../../lib/config';
+import { useStore } from '../../store';
 import PartnerMarkers from './PartnerMarkers';
+import ProspectMarkers from './ProspectMarkers';
 import StationMarkers from './StationMarkers';
 import PolygonLayer from './PolygonLayer';
 import JurisdictionLayer from './JurisdictionLayer';
@@ -41,6 +44,39 @@ function PolygonsPaneSetup() {
   return null;
 }
 
+// Wires store.fitBoundsRef to the Leaflet map instance
+function FitBoundsWire() {
+  const map = useMap();
+  const fitBoundsRef = useStore((s) => s.fitBoundsRef);
+  useEffect(() => {
+    fitBoundsRef.current = (coords: [number, number][]) => {
+      if (coords.length === 0) return;
+      if (coords.length === 1) { map.setView(coords[0], 13); return; }
+      map.fitBounds(L.latLngBounds(coords), { padding: [40, 40] });
+    };
+    return () => { fitBoundsRef.current = null; };
+  }, [map, fitBoundsRef]);
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// PROSPECT MARKERS LAYER
+// ---------------------------------------------------------------------------
+
+function ProspectMarkersLayer() {
+  const companies = useStore((s) => s.prospectState.companies);
+  const pinnedKeys = useStore((s) => s.prospectState.pinnedKeys);
+
+  if (companies.length === 0) return null;
+
+  return (
+    <ProspectMarkers
+      pinnedKeys={new Set(pinnedKeys)}
+      companies={companies}
+    />
+  );
+}
+
 // ---------------------------------------------------------------------------
 // MAPVIEW
 // ---------------------------------------------------------------------------
@@ -65,6 +101,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
         subdomains={MAP_CONFIG.subdomains}
       />
       <PolygonsPaneSetup />
+      <FitBoundsWire />
       {flyToRef && <MapFlyTo flyToRef={flyToRef} />}
       <PartnerMarkers />
       <StationMarkers />
@@ -74,6 +111,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <HeatmapLayer />
       <RouteLayer />
       <MapLegend />
+      <ProspectMarkersLayer />
     </MapContainer>
   );
 }

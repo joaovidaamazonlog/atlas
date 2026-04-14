@@ -1,25 +1,16 @@
 /**
  * FiltersTab.tsx
  * ==============
- * Aba de filtros do ControlPanel.
- * Campos: busca por nome (debounce 300ms), Status, Delivery Station,
- * Carteira ADE, Delivery Initiatives, Jurisdiction Type.
+ * - Carteiras cascateadas pela Delivery Station selecionada
+ * - fitBounds automático ao filtrar (via store.fitBoundsRef)
+ * - Sem campo de busca por nome (agora é a SearchBar no mapa)
  */
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useStore } from '../../store';
 import { getUniqueValues } from '../../store/actions/dataActions';
-import { useDebounce } from '../../hooks/useDebounce';
 
-const STATUS_OPTIONS = [
-  'Active',
-  'Inactive',
-  'Onboarding',
-  'BG Checks',
-  'Prospect',
-  'Exited',
-  'New',
-];
+const STATUS_OPTIONS = ['Active', 'Inactive', 'Onboarding', 'BG Checks', 'Prospect', 'Exited', 'New'];
 
 const INITIATIVES_OPTIONS = [
   { value: 'all', label: 'Todos' },
@@ -29,91 +20,62 @@ const INITIATIVES_OPTIONS = [
   { value: 'null', label: '(Sem iniciativa)' },
 ];
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function MultiSelect({
-  label,
-  options,
-  selected,
-  onChange,
-}: {
-  label: string;
-  options: string[];
-  selected: string[];
-  onChange: (values: string[]) => void;
+function MultiSelect({ label, options, selected, onChange }: {
+  label: string; options: string[]; selected: string[]; onChange: (v: string[]) => void;
 }) {
-  const toggle = (val: string) => {
-    if (selected.includes(val)) {
-      onChange(selected.filter((v) => v !== val));
-    } else {
-      onChange([...selected, val]);
-    }
-  };
+  const toggle = (val: string) =>
+    onChange(selected.includes(val) ? selected.filter((v) => v !== val) : [...selected, val]);
 
   return (
     <div className="mb-3">
       <label className="block text-xs font-medium text-atlas-muted mb-1">{label}</label>
       <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto p-1 bg-atlas-darker rounded border border-white/10">
         {options.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => toggle(opt)}
-            className={[
-              'px-2 py-1 rounded text-xs transition-colors duration-150',
-              'min-h-[28px] focus:outline-none focus-visible:ring-1 focus-visible:ring-atlas-accent',
-              selected.includes(opt)
-                ? 'bg-atlas-accent text-atlas-darker font-semibold'
-                : 'bg-white/10 text-atlas-light hover:bg-white/20',
-            ].join(' ')}
-          >
+          <button key={opt} type="button" onClick={() => toggle(opt)}
+            className={['px-2 py-1 rounded text-xs transition-colors min-h-[28px] focus:outline-none',
+              selected.includes(opt) ? 'bg-atlas-accent text-atlas-darker font-semibold' : 'bg-white/10 text-atlas-light hover:bg-white/20',
+            ].join(' ')}>
             {opt}
           </button>
         ))}
-        {options.length === 0 && (
-          <span className="text-xs text-atlas-muted px-1 py-1">Carregando...</span>
-        )}
+        {options.length === 0 && <span className="text-xs text-atlas-muted px-1 py-1">Carregando...</span>}
       </div>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// FiltersTab
-// ---------------------------------------------------------------------------
-
 export default function FiltersTab() {
   const allMarkersData = useStore((s) => s.allMarkersData);
+  const currentFilteredData = useStore((s) => s.currentFilteredData);
   const applyFilters = useStore((s) => s.applyFilters);
   const resetFilters = useStore((s) => s.resetFilters);
+  const fitBoundsRef = useStore((s) => s.fitBoundsRef);
 
-  // Local state
-  const [nameSearch, setNameSearch] = useState('');
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedStations, setSelectedStations] = useState<string[]>([]);
   const [selectedBuckets, setSelectedBuckets] = useState<string[]>([]);
   const [initiativesFilter, setInitiativesFilter] = useState('all');
   const [jurisdictionFilter, setJurisdictionFilter] = useState('all');
 
-  const debouncedName = useDebounce(nameSearch, 300);
+  const stationOptions = useMemo(() => getUniqueValues(allMarkersData, 'delivery_station').sort(), [allMarkersData]);
 
-  // Populate selects from data
-  const stationOptions = useMemo(
-    () => getUniqueValues(allMarkersData, 'delivery_station').sort(),
-    [allMarkersData]
-  );
-  const bucketOptions = useMemo(
-    () => getUniqueValues(allMarkersData, 'bucket_ade').sort(),
-    [allMarkersData]
-  );
-  const jurisdictionOptions = useMemo(
-    () => getUniqueValues(allMarkersData, 'jurisdiction_type').sort(),
-    [allMarkersData]
-  );
+  // Carteiras cascateadas pelas stations selecionadas
+  const bucketOptions = useMemo(() => {
+    const base = selectedStations.length > 0
+      ? allMarkersData.filter((p) => selectedStations.includes(p.delivery_station))
+      : allMarkersData;
+    return getUniqueValues(base, 'bucket_ade').sort();
+  }, [allMarkersData, selectedStations]);
 
-  // Apply filters automatically whenever any filter changes (with debounce on name)
+  // Limpa carteiras inválidas quando stations mudam
+  useEffect(() => {
+    setSelectedBuckets((prev) => prev.filter((b) => bucketOptions.includes(b)));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bucketOptions]);
+
+  const jurisdictionOptions = useMemo(() => getUniqueValues(allMarkersData, 'jurisdiction_type').sort(), [allMarkersData]);
+
+  // Aplica filtros automaticamente
   useEffect(() => {
     applyFilters({
       selectedStatuses: selectedStatuses.length ? selectedStatuses : 'all',
@@ -122,11 +84,20 @@ export default function FiltersTab() {
       initiativesFilter,
       jurisdictionFilter,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedName, selectedStatuses, selectedStations, selectedBuckets, initiativesFilter, jurisdictionFilter]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStatuses, selectedStations, selectedBuckets, initiativesFilter, jurisdictionFilter]);
+
+  // fitBounds quando station ou carteira está selecionada e dados mudam
+  useEffect(() => {
+    if (selectedStations.length === 0 && selectedBuckets.length === 0) return;
+    const coords = currentFilteredData
+      .filter((p) => p.lat != null && p.lon != null && p.lat !== 0 && p.lon !== 0)
+      .map((p) => [p.lat!, p.lon!] as [number, number]);
+    fitBoundsRef.current?.(coords);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentFilteredData]);
 
   const handleClear = useCallback(() => {
-    setNameSearch('');
     setSelectedStatuses([]);
     setSelectedStations([]);
     setSelectedBuckets([]);
@@ -137,120 +108,31 @@ export default function FiltersTab() {
 
   return (
     <div className="p-3">
-      {/* Busca por nome */}
+      <MultiSelect label="Status" options={STATUS_OPTIONS} selected={selectedStatuses} onChange={setSelectedStatuses} />
+      <MultiSelect label="Delivery Station" options={stationOptions} selected={selectedStations} onChange={setSelectedStations} />
+      <MultiSelect label="Carteira ADE" options={bucketOptions} selected={selectedBuckets} onChange={setSelectedBuckets} />
+
       <div className="mb-3">
-        <label htmlFor="filter-name" className="block text-xs font-medium text-atlas-muted mb-1">
-          Busca por nome
-        </label>
-        <input
-          id="filter-name"
-          type="text"
-          value={nameSearch}
-          onChange={(e) => setNameSearch(e.target.value)}
-          placeholder="Nome do parceiro..."
-          className={[
-            'w-full px-3 py-2 rounded bg-atlas-darker border border-white/10',
-            'text-sm text-atlas-light placeholder-atlas-muted',
-            'focus:outline-none focus:border-atlas-accent transition-colors duration-150',
-            'min-h-[44px]',
-          ].join(' ')}
-        />
-      </div>
-
-      {/* Status */}
-      <MultiSelect
-        label="Status"
-        options={STATUS_OPTIONS}
-        selected={selectedStatuses}
-        onChange={setSelectedStatuses}
-      />
-
-      {/* Delivery Station */}
-      <MultiSelect
-        label="Delivery Station"
-        options={stationOptions}
-        selected={selectedStations}
-        onChange={setSelectedStations}
-      />
-
-      {/* Carteira ADE */}
-      <MultiSelect
-        label="Carteira ADE"
-        options={bucketOptions}
-        selected={selectedBuckets}
-        onChange={setSelectedBuckets}
-      />
-
-      {/* Delivery Initiatives */}
-      <div className="mb-3">
-        <label
-          htmlFor="filter-initiatives"
-          className="block text-xs font-medium text-atlas-muted mb-1"
-        >
-          Delivery Initiatives
-        </label>
-        <select
-          id="filter-initiatives"
-          value={initiativesFilter}
-          onChange={(e) => setInitiativesFilter(e.target.value)}
-          className={[
-            'w-full px-3 py-2 rounded bg-atlas-darker border border-white/10',
-            'text-sm text-atlas-light',
-            'focus:outline-none focus:border-atlas-accent transition-colors duration-150',
-            'min-h-[44px]',
-          ].join(' ')}
-        >
-          {INITIATIVES_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
+        <label htmlFor="filter-initiatives" className="block text-xs font-medium text-atlas-muted mb-1">Delivery Initiatives</label>
+        <select id="filter-initiatives" value={initiativesFilter} onChange={(e) => setInitiativesFilter(e.target.value)}
+          className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]">
+          {INITIATIVES_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </div>
 
-      {/* Jurisdiction Type */}
       <div className="mb-4">
-        <label
-          htmlFor="filter-jurisdiction"
-          className="block text-xs font-medium text-atlas-muted mb-1"
-        >
-          Jurisdiction Type
-        </label>
-        <select
-          id="filter-jurisdiction"
-          value={jurisdictionFilter}
-          onChange={(e) => setJurisdictionFilter(e.target.value)}
-          className={[
-            'w-full px-3 py-2 rounded bg-atlas-darker border border-white/10',
-            'text-sm text-atlas-light',
-            'focus:outline-none focus:border-atlas-accent transition-colors duration-150',
-            'min-h-[44px]',
-          ].join(' ')}
-        >
+        <label htmlFor="filter-jurisdiction" className="block text-xs font-medium text-atlas-muted mb-1">Jurisdiction Type</label>
+        <select id="filter-jurisdiction" value={jurisdictionFilter} onChange={(e) => setJurisdictionFilter(e.target.value)}
+          className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]">
           <option value="all">Todos</option>
-          {jurisdictionOptions.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
+          {jurisdictionOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
         </select>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={handleClear}
-          className={[
-            'w-full py-3 px-4 rounded bg-white/10 text-atlas-light',
-            'text-sm font-medium transition-colors duration-150',
-            'hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
-            'min-h-[44px]',
-          ].join(' ')}
-        >
-          Limpar Filtros
-        </button>
-      </div>
+      <button type="button" onClick={handleClear}
+        className="w-full py-3 px-4 rounded bg-white/10 text-atlas-light text-sm font-medium hover:bg-white/20 focus:outline-none min-h-[44px] transition-colors">
+        Limpar Filtros
+      </button>
     </div>
   );
 }

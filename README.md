@@ -1,4 +1,4 @@
-# ATLAS — Analytical Tracking for Location and Store performance
+# ATLAS — Analytical Tracking for Location and Store
 
 > Sistema completo de gestão e otimização de rede de parceiros logísticos last-mile.
 >

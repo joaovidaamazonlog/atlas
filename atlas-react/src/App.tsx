@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AppShell } from './components/layout/AppShell';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorToast } from './components/ui/ErrorToast';
+import ProspectLoadingOverlay from './components/ui/ProspectLoadingOverlay';
 import { useStore } from './store';
 
 function AppInner() {
@@ -16,6 +17,7 @@ function AppInner() {
     <>
       <AppShell />
       <ErrorToast />
+      <ProspectLoadingOverlay />
     </>
   );
 }

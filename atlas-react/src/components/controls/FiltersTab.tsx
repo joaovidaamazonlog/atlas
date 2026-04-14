@@ -33,7 +33,7 @@ function MultiSelect({ label, options, selected, onChange }: {
         {options.map((opt) => (
           <button key={opt} type="button" onClick={() => toggle(opt)}
             className={['px-2 py-1 rounded text-xs transition-colors min-h-[28px] focus:outline-none',
-              selected.includes(opt) ? 'bg-atlas-accent text-atlas-darker font-semibold' : 'bg-white/10 text-atlas-light hover:bg-white/20',
+              selected.includes(opt) ? 'bg-atlas-accent text-white font-semibold' : 'bg-white/10 text-atlas-light hover:bg-white/20',
             ].join(' ')}>
             {opt}
           </button>
@@ -61,10 +61,13 @@ export default function FiltersTab() {
 
   // Carteiras cascateadas pelas stations selecionadas
   const bucketOptions = useMemo(() => {
-    const base = selectedStations.length > 0
-      ? allMarkersData.filter((p) => selectedStations.includes(p.delivery_station))
-      : allMarkersData;
-    return getUniqueValues(base, 'bucket_ade').sort();
+    if (selectedStations.length === 0) {
+      return getUniqueValues(allMarkersData, 'bucket_ade').filter(Boolean).sort();
+    }
+    return getUniqueValues(
+      allMarkersData.filter((p) => selectedStations.includes(p.delivery_station)),
+      'bucket_ade'
+    ).filter(Boolean).sort();
   }, [allMarkersData, selectedStations]);
 
   // Limpa carteiras inválidas quando stations mudam

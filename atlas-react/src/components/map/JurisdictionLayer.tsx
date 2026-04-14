@@ -45,7 +45,7 @@ export default function JurisdictionLayer() {
       key={JSON.stringify(filterState)}
       data={filteredData}
       style={styleFunc}
-      pane="polygonsPane"
+      pane="jurisdictionPane"
       onEachFeature={(feature, layer) => {
         const station = feature.properties?.delivery_station ?? '';
         layer.bindPopup(`<b>${station}</b>`);

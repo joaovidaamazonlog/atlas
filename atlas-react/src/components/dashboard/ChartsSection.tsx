@@ -14,8 +14,12 @@ import type { Partner } from '../../store/types';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
+function getCSSVar(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
 const CHART_COLORS = [
-  '#ff9900',
+  '#00a8e1',
   '#4daf4a',
   '#377eb8',
   '#e41a1c',
@@ -27,16 +31,14 @@ const CHART_COLORS = [
   '#66c2a5',
 ];
 
-const darkChartDefaults = {
-  color: '#ecf0f1',
-  borderColor: '#1e2a38',
-};
-
 interface ChartsSectionProps {
   data: Partner[];
 }
 
 const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
+  const textColor = getCSSVar('--color-light') || '#ecf0f1';
+  const gridColor = getCSSVar('--color-dark') || '#1e2a38';
+  const bgColor = getCSSVar('--color-darker') || '#16202c';
   // Distribuição por Status (Doughnut)
   const statusChartData = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -50,7 +52,7 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
         {
           data: labels.map((l) => counts[l]),
           backgroundColor: labels.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
-          borderColor: '#16202c',
+          borderColor: bgColor,
           borderWidth: 2,
         },
       ],
@@ -71,8 +73,8 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
         {
           label: 'Parceiros',
           data: sorted.map(([, c]) => c),
-          backgroundColor: '#ff9900cc',
-          borderColor: '#ff9900',
+          backgroundColor: '#00a8e1cc',
+          borderColor: '#00a8e1',
           borderWidth: 1,
         },
       ],
@@ -85,12 +87,12 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
     plugins: {
       legend: {
         position: 'bottom' as const,
-        labels: { color: darkChartDefaults.color, boxWidth: 12, padding: 8 },
+        labels: { color: textColor, boxWidth: 12, padding: 8 },
       },
       title: {
         display: true,
         text: 'Distribuição por Status',
-        color: darkChartDefaults.color,
+        color: textColor,
         font: { size: 14 },
       },
     },
@@ -104,18 +106,18 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
       title: {
         display: true,
         text: 'Parceiros por Delivery Station',
-        color: darkChartDefaults.color,
+        color: textColor,
         font: { size: 14 },
       },
     },
     scales: {
       x: {
-        ticks: { color: darkChartDefaults.color, maxRotation: 45 },
-        grid: { color: '#1e2a38' },
+        ticks: { color: textColor, maxRotation: 45 },
+        grid: { color: gridColor },
       },
       y: {
-        ticks: { color: darkChartDefaults.color },
-        grid: { color: '#1e2a38' },
+        ticks: { color: textColor },
+        grid: { color: gridColor },
       },
     },
   };

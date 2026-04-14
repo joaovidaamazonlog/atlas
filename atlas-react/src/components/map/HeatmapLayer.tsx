@@ -2,20 +2,12 @@
  * HeatmapLayer.tsx
  * ================
  * Renderiza um heatmap via leaflet.heat com os clusters de prospecção.
- * Lê prospectState.clusters do store Zustand e usa useMap() do react-leaflet.
- *
- * Requisitos: 5.1, 5.3, 5.5, 5.6, 6.3
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet.heat';
 import { useStore } from '../../store';
-
-// ---------------------------------------------------------------------------
-// WebGL detection
-// ---------------------------------------------------------------------------
+import { createHeatLayer, type HeatLayerInstance, type HeatLatLngTuple } from '../../lib/leafletHeat';
 
 const supportsWebGL = (): boolean => {
   try {
@@ -26,37 +18,39 @@ const supportsWebGL = (): boolean => {
   }
 };
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
 export default function HeatmapLayer(): null {
   const map = useMap();
   const clusters = useStore((s) => s.prospectState.clusters);
+  const layerRef = useRef<HeatLayerInstance | null>(null);
 
   useEffect(() => {
-    // Req 6.3: não renderizar quando clusters está vazio
+    // Remove camada anterior sempre que clusters mudar
+    if (layerRef.current) {
+      map.removeLayer(layerRef.current);
+      layerRef.current = null;
+    }
+
     if (!clusters || clusters.length === 0) return;
 
-    // Req 5.5 / 5.6: detectar suporte a WebGL para ajustar radius/blur
     const webgl = supportsWebGL();
     const radius = webgl ? 40 : 25;
     const blur = webgl ? 25 : 15;
 
-    // Req 5.1 / 5.3: construir pontos [lat, lon, intensity] para cada cluster
-    const points: [number, number, number][] = clusters.map((cluster) => [
-      cluster.centroid.lat,
-      cluster.centroid.lon,
-      cluster.intensity,
+    const points: HeatLatLngTuple[] = clusters.map((c) => [
+      c.centroid.lat,
+      c.centroid.lon,
+      c.intensity,
     ]);
 
-    // Criar e adicionar a camada ao mapa
-    const heatLayer = L.heatLayer(points, { radius, blur });
-    heatLayer.addTo(map);
+    const layer = createHeatLayer(points, { radius, blur });
+    layer.addTo(map);
+    layerRef.current = layer;
 
-    // Cleanup: remover a camada ao desmontar ou quando clusters mudar
     return () => {
-      map.removeLayer(heatLayer);
+      if (layerRef.current) {
+        map.removeLayer(layerRef.current);
+        layerRef.current = null;
+      }
     };
   }, [map, clusters]);
 

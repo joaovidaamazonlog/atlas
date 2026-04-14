@@ -50,6 +50,36 @@ from phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 
 
 # ---------------------------------------------------------------------------
+# HELPER — extrai índice numérico do territory_id (suporta ambos os formatos)
+# ---------------------------------------------------------------------------
+
+def _bucket_seq(territory_id: str) -> int:
+    """
+    Extrai o índice sequencial (0-based) de um territory_id.
+
+    Suporta:
+        "DSP2_bucket-01"  → 0
+        "DSP2_bucket-1"   → 0   (legado sem zero-padding)
+        "DSP2_T01"        → 0   (formato antigo)
+    """
+    for sep in ("_bucket-", "_T"):
+        if sep in territory_id:
+            try:
+                return int(territory_id.split(sep)[-1]) - 1
+            except (ValueError, IndexError):
+                pass
+    return 0
+
+
+def _station_from_tid(territory_id: str) -> str:
+    """Extrai o código da DS de um territory_id (ex: 'DSP2_bucket-01' → 'DSP2')."""
+    for sep in ("_bucket-", "_T"):
+        if sep in territory_id:
+            return territory_id.split(sep)[0]
+    return territory_id
+
+
+# ---------------------------------------------------------------------------
 # HIERARQUIA DE STATUS
 # ---------------------------------------------------------------------------
 
@@ -422,7 +452,7 @@ def _match_station(
 
         territory_id = candidate_territory.get(sfid, slot.bucket_id)
         try:
-            bucket_idx = int(territory_id.split("_T")[-1]) - 1
+            bucket_idx = _bucket_seq(territory_id)
         except (ValueError, IndexError):
             bucket_idx = 0
         pm.cluster_name = territory_id
@@ -469,7 +499,7 @@ def _match_station(
         territory_id = candidate_territory.get(sfid)
         if territory_id:
             try:
-                bucket_idx = int(territory_id.split("_T")[-1]) - 1
+                bucket_idx = _bucket_seq(territory_id)
             except (ValueError, IndexError):
                 bucket_idx = 0
             pm.cluster_name = territory_id
@@ -484,7 +514,7 @@ def _match_station(
     for meta in territories_meta:
         tid = meta["territory_id"]
         try:
-            bucket_idx = int(tid.split("_T")[-1]) - 1
+            bucket_idx = _bucket_seq(tid)
         except (ValueError, IndexError):
             bucket_idx = 0
         ctl_name = f"CTL-{chr(65 + (bucket_idx // 5))}"
@@ -808,10 +838,10 @@ def run_phase3(
         pm.cluster_name = tid or ""
         if tid:
             try:
-                bucket_idx = int(tid.split("_T")[-1]) - 1
+                bucket_idx = _bucket_seq(tid)
             except (ValueError, IndexError):
                 bucket_idx = 0
-            pm.bdm_cluster = Config.get_bdm_cluster(tid.split("_T")[0])
+            pm.bdm_cluster = Config.get_bdm_cluster(_station_from_tid(tid))
             pm.ctl_name    = f"CTL-{chr(65 + (bucket_idx // 5))}"
 
         fit_result.outside_jurisdiction.append(pm)

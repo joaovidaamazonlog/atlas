@@ -105,8 +105,12 @@ export const HCP_CONFIG: Readonly<HcpConfig> = Object.freeze({
   maxClusterMembers: 6,
 });
 
-/** URL base da API de prospecção */
-export const API_BASE_URL = 'https://api-cnpj-br.vercel.app';
+/** URL base da API de prospecção.
+ * Em desenvolvimento usa o proxy do Vite (/api-proxy) para contornar CORS.
+ * Em produção (build) usa a URL real da API.
+ */
+export const API_BASE_URL =
+  import.meta.env.DEV ? '/api-proxy' : 'https://api-cnpj-br.vercel.app';
 
 /** Paletas de cores para marcadores */
 export interface ColorPalettes {

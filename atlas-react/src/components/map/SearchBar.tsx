@@ -182,7 +182,6 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
           aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
           style={{
             ...styles.input,
-            ...(addressMode ? { color: 'var(--color-accent)' } : {}),
           }}
           autoComplete="off"
         />
@@ -267,7 +266,7 @@ const styles: Record<string, React.CSSProperties> = {
     outline: 'none',
     color: 'var(--text-primary)',
     fontSize: 'var(--font-size-sm)',
-    padding: '10px 4px',
+    padding: '12px 4px',
     fontFamily: 'inherit',
   },
   clearBtn: {

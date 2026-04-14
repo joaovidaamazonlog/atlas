@@ -12,6 +12,17 @@ export default defineConfig({
   // Ex: se o repo se chama "atlas", use '/atlas/'
   // Se for o root (usuario.github.io), use '/'
   base: '/atlas/',
+  server: {
+    proxy: {
+      // Proxy para contornar CORS em desenvolvimento local.
+      // Chamadas para /api-proxy/* são redirecionadas para a API real.
+      '/api-proxy': {
+        target: 'https://api-cnpj-br.vercel.app',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-proxy/, ''),
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

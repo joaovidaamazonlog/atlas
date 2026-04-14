@@ -61,13 +61,18 @@ function CompanyCard({
   const hasGoogleMaps =
     company.google_maps_link != null && company.google_maps_link !== 'N/A';
 
+  // Badge de fonte: "Google Maps 🗺️" ou "Receita Federal 🏛️"
+  const fonteBadge = company._fonte
+    ? company._fonte.includes('Google') ? '🗺️ Google Maps' : '🏛️ Receita Federal'
+    : null;
+
   return (
     <div
       className={`rounded-lg bg-white/5 p-3 flex flex-col gap-1 border border-white/5 transition-opacity ${
         contactada ? 'opacity-50' : 'opacity-100'
       }`}
     >
-      {/* Nome */}
+      {/* Nome + pin */}
       <div className="flex items-start justify-between gap-2">
         <span className="text-sm font-semibold text-atlas-light leading-tight flex-1">
           {company.nome}
@@ -80,25 +85,22 @@ function CompanyCard({
             onClick={onTogglePin}
             aria-label={isPinned ? 'Remover alfinete' : 'Fixar no mapa'}
             title={isPinned ? 'Remover alfinete' : 'Fixar no mapa'}
-            className={`shrink-0 transition-opacity hover:opacity-100 ${
+            className={`shrink-0 text-lg leading-none transition-opacity hover:opacity-100 ${
               isPinned ? 'opacity-100' : 'opacity-30'
             }`}
           >
-            {/* Pin icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 text-atlas-accent"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" />
-            </svg>
+            📌
           </button>
         )}
       </div>
 
-      {/* Tipo */}
-      <span className="text-xs text-atlas-muted">{company.tipo}</span>
+      {/* Fonte + Tipo */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {fonteBadge && (
+          <span className="text-xs text-atlas-accent">{fonteBadge}</span>
+        )}
+        <span className="text-xs text-atlas-muted">{company.tipo}</span>
+      </div>
 
       {/* Endereço */}
       <span className="text-xs text-atlas-muted leading-snug">{company.endereco}</span>
@@ -161,6 +163,8 @@ function PanelContent({
     useGeolocation();
 
   const contactadaCount = contactadaStates.filter(Boolean).length;
+  const mapsCount = companies.filter((c) => c._fonte === 'Google Maps').length;
+  const receitaCount = companies.filter((c) => c._fonte === 'Receita Federal').length;
 
   // Virtualizer
   const parentRef = useRef<HTMLDivElement>(null);
@@ -177,14 +181,26 @@ function PanelContent({
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-start justify-between px-4 py-3 shrink-0 border-b border-white/10">
-        <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+        <div className="flex flex-col gap-1 flex-1 min-w-0">
           <span className="font-semibold text-atlas-light text-sm truncate">
             {selectedStation} — {selectedBucket}
           </span>
-          <div className="flex gap-3 text-xs text-atlas-muted">
-            <span>{companies.length} empresa{companies.length !== 1 ? 's' : ''}</span>
-            <span className="text-green-400">{contactadaCount} contactada{contactadaCount !== 1 ? 's' : ''}</span>
+          {/* Total + fontes */}
+          <div className="flex items-center gap-2 text-xs flex-wrap">
+            <span className="text-atlas-light font-medium">{companies.length} empresa{companies.length !== 1 ? 's' : ''}</span>
+            {mapsCount > 0 && (
+              <span className="text-atlas-muted">🗺️ {mapsCount} Maps</span>
+            )}
+            {receitaCount > 0 && (
+              <span className="text-atlas-muted">🏛️ {receitaCount} Receita</span>
+            )}
           </div>
+          {/* Contactadas */}
+          {contactadaCount > 0 && (
+            <span className="text-xs text-green-400">
+              ✓ {contactadaCount} contactada{contactadaCount !== 1 ? 's' : ''}
+            </span>
+          )}
         </div>
         <button
           onClick={onClose}
@@ -368,18 +384,18 @@ export default function ResultPanel(props: ResultPanelProps) {
     );
   }
 
-  // Desktop/Tablet: render via portal as fixed left panel
+  // Desktop/Tablet: render via portal as fixed RIGHT panel
   return createPortal(
     <div
       className="fixed overflow-hidden flex flex-col"
       style={{
-        top: '48px',
-        left: '0',
+        top: '56px',
+        right: '0',
         bottom: '0',
-        width: '340px',
+        width: 'clamp(360px, 28vw, 480px)',
         zIndex: 'var(--z-overlay)' as unknown as number,
         backgroundColor: 'var(--color-navy)',
-        borderRight: '1px solid var(--border-color)',
+        borderLeft: '1px solid var(--border-color)',
       }}
     >
       <PanelContent {...contentProps} />

@@ -656,7 +656,9 @@ def _write_dados_mapa(
         if pm:
             record["decision"]          = pm.decision
             record["reason"]            = pm.reason
-            record["bucket_ade"]        = pm.cluster_name or record.get("bucket")
+            # Usar cluster_name do pipeline; nunca fazer fallback para record["bucket"]
+            # pois esse campo vem do Salesforce e pode pertencer a outra DS
+            record["bucket_ade"]        = pm.cluster_name if pm.cluster_name and pm.cluster_name != "N/A" else ""
             record["radius_suggestion"] = pm.radius_s
             record["cap_suggestion"]    = pm.capacity_s
             updated += 1

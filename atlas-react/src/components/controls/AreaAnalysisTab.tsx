@@ -213,10 +213,10 @@ function ResultPanel({
     <div
       className="fixed overflow-y-auto flex flex-col"
       style={{
-        top: '48px',
+        top: '56px',
         right: '0',
         bottom: '0',
-        width: '340px',
+        width: 'clamp(360px, 28vw, 480px)',
         zIndex: 'var(--z-overlay)' as unknown as number,
         backgroundColor: 'var(--color-navy)',
         borderLeft: '1px solid var(--border-color)',
@@ -426,7 +426,7 @@ export default function AreaAnalysisTab() {
         <button
           type="button"
           onClick={handleAnalyze}
-          className="w-full py-3 px-4 rounded bg-atlas-accent text-atlas-darker text-sm font-semibold hover:bg-amber-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent min-h-[44px] mb-4 transition-colors"
+          className="w-full py-3 px-4 rounded bg-atlas-accent text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent min-h-[44px] mb-4 transition-colors"
         >
           Analisar Área
         </button>

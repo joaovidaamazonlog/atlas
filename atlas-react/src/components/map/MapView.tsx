@@ -27,17 +27,25 @@ import { MapFlyTo } from './SearchBar';
 // ---------------------------------------------------------------------------
 
 /**
- * Componente interno que cria o pane 'polygonsPane' via useMap().
- * Deve ser filho do MapContainer para ter acesso à instância do mapa.
+ * Componente interno que cria os panes de camadas via useMap().
+ * Hierarquia (de baixo para cima):
+ *   jurisdictionPane (200) → polygonsPane (250) → optimizationPane (300)
  */
-function PolygonsPaneSetup() {
+function LayerPanesSetup() {
   const map = useMap();
 
   useEffect(() => {
-    if (!map.getPane('polygonsPane')) {
-      const pane = map.createPane('polygonsPane');
-      pane.style.zIndex = '200';
-      pane.style.pointerEvents = 'none';
+    const panes: [string, string][] = [
+      ['jurisdictionPane', '200'],
+      ['polygonsPane', '250'],
+      ['optimizationPane', '300'],
+    ];
+    for (const [name, zIndex] of panes) {
+      if (!map.getPane(name)) {
+        const pane = map.createPane(name);
+        pane.style.zIndex = zIndex;
+        pane.style.pointerEvents = 'none';
+      }
     }
   }, [map]);
 
@@ -100,7 +108,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
         maxZoom={MAP_CONFIG.maxZoom}
         subdomains={MAP_CONFIG.subdomains}
       />
-      <PolygonsPaneSetup />
+      <LayerPanesSetup />
       <FitBoundsWire />
       {flyToRef && <MapFlyTo flyToRef={flyToRef} />}
       <PartnerMarkers />

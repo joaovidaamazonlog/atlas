@@ -44,10 +44,23 @@ export default function RouteLayer() {
       setError(`Erro ao calcular rota: ${e.error?.message ?? 'serviço OSRM indisponível'}`);
     });
 
+    control.on('routesfound', () => {
+      // Move o container do routing para document.body para garantir z-index correto
+      const container = control.getContainer();
+      if (container && container.parentElement !== document.body) {
+        document.body.appendChild(container);
+      }
+    });
+
     control.addTo(map);
     routingControlRef.current = control;
 
     return () => {
+      // Remover container do body se foi movido
+      const container = control.getContainer();
+      if (container && container.parentElement === document.body) {
+        document.body.removeChild(container);
+      }
       map.removeControl(control);
       routingControlRef.current = null;
     };

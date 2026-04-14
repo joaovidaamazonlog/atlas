@@ -87,31 +87,82 @@
   border-top-color: var(--border-color) !important;
 }
 
-/* Routing machine */
+/* Routing machine — painel fixo à direita */
 .leaflet-routing-container {
+  position: fixed !important;
+  top: 56px !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: clamp(360px, 28vw, 480px) !important;
+  max-width: clamp(360px, 28vw, 480px) !important;
+  max-height: none !important;
+  height: auto !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-left: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
   background-color: var(--color-navy) !important;
   color: var(--color-light) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 8px !important;
-  box-shadow: var(--shadow-md) !important;
-  max-width: 280px;
+  overflow-y: auto !important;
+  z-index: 9000 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 13px !important;
 }
 
-.leaflet-routing-container h2,
+.leaflet-routing-container h2 {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--color-light) !important;
+  padding: 12px 16px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  background-color: var(--color-darker) !important;
+}
+
 .leaflet-routing-container h3 {
+  font-size: 12px !important;
+  font-weight: 500 !important;
   color: var(--color-accent) !important;
+  padding: 8px 16px 4px !important;
+  margin: 0 !important;
 }
 
 .leaflet-routing-alt {
-  background-color: var(--color-dark) !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 8px 16px !important;
 }
 
 .leaflet-routing-alt:hover {
-  background-color: var(--color-navy) !important;
+  background-color: rgba(255,255,255,0.05) !important;
+}
+
+.leaflet-routing-alt table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.leaflet-routing-alt td {
+  padding: 4px 4px !important;
+  color: var(--color-light) !important;
+  font-size: 12px !important;
+  vertical-align: top !important;
+}
+
+.leaflet-routing-alt td:first-child {
+  color: var(--color-muted) !important;
+  white-space: nowrap !important;
+  padding-right: 8px !important;
 }
 
 /* Esconder controles padrão do routing machine (usamos UI própria) */
 .leaflet-routing-geocoders {
+  display: none !important;
+}
+
+/* Esconder o collapse button do routing machine */
+.leaflet-routing-collapse-btn {
   display: none !important;
 }
 
@@ -123,4 +174,18 @@
 .leaflet-top,
 .leaflet-bottom {
   z-index: calc(var(--z-map) + 10) !important;
+}
+
+/* Garante que o container pai do routing não corte o painel fixo */
+.leaflet-top.leaflet-right {
+  overflow: visible !important;
+}
+
+/* Popups sempre acima de qualquer camada do mapa e do painel lateral */
+.leaflet-popup-pane {
+  z-index: 9000 !important;
+}
+
+.leaflet-popup {
+  z-index: 9000 !important;
 }

@@ -16,6 +16,7 @@ export default function MapLegend() {
   const map = useMap();
   const data = useStore((s) => s.currentFilteredData);
   const styleConfig = useStore((s) => s.styleConfig);
+  const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
   const controlRef = useRef<L.Control | null>(null);
 
   const colorMaps = useMemo(
@@ -30,12 +31,15 @@ export default function MapLegend() {
       controlRef.current = null;
     }
 
+    // Não exibir legenda quando prospect está ativo
+    if (prospectActive) return;
+
     const LegendControl = L.Control.extend({
       onAdd() {
         const div = L.DomUtil.create('div');
         div.style.cssText = [
-          'background:#1e2a38',
-          'color:#ecf0f1',
+          'background:var(--color-dark)',
+          'color:var(--color-light)',
           'padding:10px 14px',
           'border-radius:6px',
           'font-size:12px',
@@ -76,7 +80,7 @@ export default function MapLegend() {
         controlRef.current = null;
       }
     };
-  }, [map, colorMaps, styleConfig]);
+  }, [map, colorMaps, styleConfig, prospectActive]);
 
   return null;
 }

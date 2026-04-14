@@ -52,7 +52,10 @@ export default function PolygonLayer() {
     return { type: 'FeatureCollection' as const, features };
   }, [polygonsData, filterState, prospectClusters, selectedBucket]);
 
-  if (!showPolygons || !filteredData) return null;
+  const heatmapActive = prospectClusters.length > 0;
+
+  if (!showPolygons && !heatmapActive) return null;
+  if (!filteredData) return null;
 
   const styleFunc: StyleFunction = (feature?: Feature): PathOptions => ({
     color: (feature?.properties?.cor as string) ?? '#3388ff',

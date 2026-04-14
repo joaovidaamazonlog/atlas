@@ -12,7 +12,7 @@ export const FAB: React.FC<FABProps> = ({ icon, onClick, label, className = '' }
     <button
       onClick={onClick}
       aria-label={label}
-      className={`touch-target rounded-full bg-atlas-accent text-atlas-darker shadow-lg hover:brightness-110 active:scale-95 transition-all duration-150 ${className}`}
+      className={`touch-target rounded-full bg-atlas-accent text-white shadow-lg hover:brightness-110 active:scale-95 transition-all duration-150 ${className}`}
     >
       {icon}
     </button>

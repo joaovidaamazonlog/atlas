@@ -53,31 +53,42 @@ const TERRITORY_COLUMNS: { key: string; label: string }[] = [
 // Chart options
 // ---------------------------------------------------------------------------
 
-const darkColor = '#ecf0f1';
-const gridColor = '#1e2a38';
+// Chart colors — read from CSS variables at runtime for theme support
+function getCSSVar(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function chartColors() {
+  return {
+    text: getCSSVar('--color-light') || '#ecf0f1',
+    grid: getCSSVar('--color-dark') || '#1e2a38',
+  };
+}
 
-const barOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { display: false },
-    title: {
-      display: true,
-      color: darkColor,
-      font: { size: 13 },
+function getBarOptions() {
+  const { text, grid } = chartColors();
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        color: text,
+        font: { size: 13 },
+      },
     },
-  },
-  scales: {
-    x: {
-      ticks: { color: darkColor, maxRotation: 45, font: { size: 11 } },
-      grid: { color: gridColor },
+    scales: {
+      x: {
+        ticks: { color: text, maxRotation: 45, font: { size: 11 } },
+        grid: { color: grid },
+      },
+      y: {
+        ticks: { color: text, font: { size: 11 } },
+        grid: { color: grid },
+      },
     },
-    y: {
-      ticks: { color: darkColor, font: { size: 11 } },
-      grid: { color: gridColor },
-    },
-  },
-};
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Dashboard component
@@ -200,7 +211,7 @@ const Dashboard: React.FC = () => {
         <p className="text-red-400 text-center text-sm">{reportError}</p>
         <button
           onClick={handleRetry}
-          className="mt-2 px-4 py-2 bg-atlas-accent text-atlas-darker text-sm font-semibold rounded hover:opacity-90 transition-opacity"
+          className="mt-2 px-4 py-2 bg-atlas-accent text-white text-sm font-semibold rounded hover:opacity-90 transition-opacity"
         >
           Tentar novamente
         </button>
@@ -317,8 +328,8 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ chartData }) => {
       {
         label: 'Attainment (%)',
         data: chartData.attainmentByBase.data,
-        backgroundColor: '#ff9900cc',
-        borderColor: '#ff9900',
+        backgroundColor: '#00a8e1cc',
+        borderColor: '#00a8e1',
         borderWidth: 1,
       },
     ],
@@ -329,24 +340,27 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ chartData }) => {
     datasets: chartData.partnersByBase.datasets,
   };
 
+  const base = getBarOptions();
+  const { text } = chartColors();
+
   const attainmentOptions = {
-    ...barOptions,
+    ...base,
     plugins: {
-      ...barOptions.plugins,
+      ...base.plugins,
       legend: { display: false },
-      title: { ...barOptions.plugins.title, display: true, text: 'Attainment por Base (%)' },
+      title: { ...base.plugins.title, display: true, text: 'Attainment por Base (%)' },
     },
   };
 
   const partnersOptions = {
-    ...barOptions,
+    ...base,
     plugins: {
-      ...barOptions.plugins,
+      ...base.plugins,
       legend: {
         display: true,
-        labels: { color: darkColor, boxWidth: 12, padding: 8 },
+        labels: { color: text, boxWidth: 12, padding: 8 },
       },
-      title: { ...barOptions.plugins.title, display: true, text: 'Composição de Parceiros por Base' },
+      title: { ...base.plugins.title, display: true, text: 'Composição de Parceiros por Base' },
     },
   };
 

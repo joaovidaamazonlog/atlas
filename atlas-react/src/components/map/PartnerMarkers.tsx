@@ -27,6 +27,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
   const styleConfig = useStore((s) => s.styleConfig);
   const allMarkersData = useStore((s) => s.allMarkersData);
   const routeOriginActive = useStore((s) => s.routeOriginActive);
+  const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
 
   const rescuePopup = useRescuePopup();
 
@@ -77,7 +78,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
   return (
     <>
       {rescuePopup}
-      {data.filter(hasValidCoords).map((partner) => {
+      {!prospectActive && data.filter(hasValidCoords).map((partner) => {
         const style = getMarkerStyle(partner, primary, secondary, colorMaps);
         const popupHtml = getPartnerPopupHtml(partner, routeOriginActive);
 

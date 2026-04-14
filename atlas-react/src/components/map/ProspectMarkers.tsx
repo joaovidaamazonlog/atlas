@@ -41,7 +41,6 @@ export default function ProspectMarkers({ pinnedKeys, companies }: ProspectMarke
           .addTo(map);
 
         markers.set(key, marker);
-        map.setView([company.lat, company.lon], Math.max(map.getZoom(), 15));
       }
     }
 
@@ -50,6 +49,16 @@ export default function ProspectMarkers({ pinnedKeys, companies }: ProspectMarke
       if (!pinnedKeys.has(key)) {
         marker.remove();
         markers.delete(key);
+      }
+    }
+
+    // Fit map to show all active markers
+    if (markers.size > 0) {
+      const coords = Array.from(markers.values()).map((m) => m.getLatLng());
+      if (coords.length === 1) {
+        map.setView(coords[0], Math.max(map.getZoom(), 15));
+      } else {
+        map.fitBounds(L.latLngBounds(coords), { padding: [60, 60], maxZoom: 16 });
       }
     }
   }, [map, pinnedKeys, companies]);

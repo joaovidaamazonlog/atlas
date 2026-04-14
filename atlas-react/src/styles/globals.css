@@ -13,8 +13,21 @@
   --color-dark: #1e2a38;
   --color-darker: #16202c;
   --color-light: #ecf0f1;
-  --color-accent: #ff9900;
+  --color-accent: #00a8e1;
   --color-muted: #8899aa;
+
+  /* Valores RGB para Tailwind opacity modifiers */
+  --color-navy-rgb: 35 47 62;
+  --color-dark-rgb: 30 42 56;
+  --color-darker-rgb: 22 32 44;
+  --color-light-rgb: 236 240 241;
+  --color-accent-rgb: 0 168 225;
+  --color-muted-rgb: 136 153 170;
+
+  /* Header — sempre escuro, independente do tema */
+  --header-bg: #232f3e;
+  --header-text: #ecf0f1;
+  --header-border: rgba(255, 255, 255, 0.1);
 
   /* Superfícies */
   --surface-primary: var(--color-navy);
@@ -60,6 +73,37 @@
   --z-drawer: 200;
   --z-modal: 300;
   --z-toast: 400;
+}
+
+/* ============================================================
+   Tema Claro ATLAS
+   ============================================================ */
+html.light {
+  --color-navy: #f0f4f8;
+  --color-dark: #e2e8f0;
+  --color-darker: #ffffff;
+  --color-light: #1a202c;
+  --color-muted: #4a5568;
+  --border-color: rgba(0, 0, 0, 0.12);
+  --border-color-strong: rgba(0, 0, 0, 0.2);
+
+  /* Valores RGB para Tailwind opacity modifiers */
+  --color-navy-rgb: 240 244 248;
+  --color-dark-rgb: 226 232 240;
+  --color-darker-rgb: 255 255 255;
+  --color-light-rgb: 26 32 44;
+  --color-muted-rgb: 74 85 104;
+
+  --surface-primary: var(--color-navy);
+  --surface-secondary: var(--color-dark);
+  --surface-tertiary: var(--color-darker);
+
+  --text-primary: var(--color-light);
+  --text-secondary: var(--color-muted);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* ============================================================
@@ -133,4 +177,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Corrige cor do texto quando browser aplica autofill (endereço, email, etc.) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-light) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--color-darker) inset !important;
+  caret-color: var(--color-light);
+  transition: background-color 5000s ease-in-out 0s;
 }

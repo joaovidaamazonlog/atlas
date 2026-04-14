@@ -51,7 +51,7 @@ function RescuePopupUI({ state, onClose }: { state: RescueState; onClose: () => 
   return createPortal(
     <div style={{
       position: 'fixed', top: '80px', right: '20px', zIndex: 9999,
-      background: '#1e2a38', color: '#ecf0f1', padding: '20px',
+      background: 'var(--color-dark)', color: 'var(--color-light)', padding: '20px',
       borderRadius: '8px', boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
       maxWidth: '420px', width: '90vw', maxHeight: '80vh', overflowY: 'auto',
       fontSize: '13px',

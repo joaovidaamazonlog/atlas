@@ -71,7 +71,7 @@ export default function OptimizationLayer() {
       key={JSON.stringify(filterState)}
       data={filteredData}
       style={styleFunc}
-      pane="polygonsPane"
+      pane="optimizationPane"
     />
   );
 }

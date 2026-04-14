@@ -223,50 +223,117 @@ async function runHcpPhases(currentFilteredData: Partner[]): Promise<HcpResult> 
 // ---------------------------------------------------------------------------
 
 function HcpPopup({ result, onClose }: { result: HcpResult; onClose: () => void }) {
+  const totalActions = result.moves.length + result.assignments.length + result.suggestions.length;
+
   return createPortal(
     <div style={{
-      position: 'fixed', top: '80px', right: '20px', zIndex: 9999,
-      background: '#1e2a38', color: '#ecf0f1', padding: '16px', borderRadius: '8px',
-      boxShadow: '0 2px 12px rgba(0,0,0,0.4)', minWidth: '340px', maxWidth: '440px',
-      fontSize: '13px', maxHeight: '80vh', overflowY: 'auto',
+      position: 'fixed', top: '56px', right: '0', bottom: '0', width: 'clamp(360px, 28vw, 480px)',
+      zIndex: 9000, backgroundColor: 'var(--color-navy)',
+      borderLeft: '1px solid var(--border-color)',
+      display: 'flex', flexDirection: 'column', overflow: 'hidden',
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-        <strong>Sugestões HCP Initiatives</strong>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#ecf0f1', cursor: 'pointer', fontSize: '1.2em' }}>✕</button>
+      {/* Header */}
+      <div className="flex items-start justify-between px-4 py-3 shrink-0 border-b border-white/10">
+        <div className="flex flex-col gap-0.5">
+          <span className="font-semibold text-atlas-light text-sm">HCP Initiatives</span>
+          <span className="text-xs text-atlas-muted">{totalActions} sugestão{totalActions !== 1 ? 'ões' : ''}</span>
+        </div>
+        <button onClick={onClose} className="ml-2 text-atlas-muted hover:text-atlas-light transition-colors" aria-label="Fechar">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </button>
       </div>
 
-      <h4 style={{ fontSize: '12px', color: '#a0aec0', marginBottom: '6px' }}>Movimentos sugeridos (Pickups)</h4>
-      {result.moves.length === 0
-        ? <p style={{ color: '#718096', fontSize: '12px' }}>Nenhum movimento sugerido.</p>
-        : <ul style={{ paddingLeft: '16px', fontSize: '12px' }}>
-            {result.moves.map((m, i) => (
-              <li key={i}><strong>{m.pickup.name}</strong> — de <em>{m.from ?? 'N/A'}</em> para <em>{m.to}</em></li>
-            ))}
-          </ul>
-      }
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-4">
 
-      <h4 style={{ fontSize: '12px', color: '#a0aec0', margin: '10px 0 6px' }}>Alocações em hosts existentes</h4>
-      {result.assignments.length === 0
-        ? <p style={{ color: '#718096', fontSize: '12px' }}>Nenhuma alocação sugerida.</p>
-        : <ul style={{ paddingLeft: '16px', fontSize: '12px' }}>
-            {result.assignments.map((a, i) => (
-              <li key={i}><strong>{a.hero.name}</strong> → Host: <strong>{a.host.name}</strong></li>
-            ))}
-          </ul>
-      }
+        {/* Fase 1 — Movimentos */}
+        <div>
+          <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2 px-1">
+            📦 Fase 1 — Movimentos de Pickup
+          </p>
+          {result.moves.length === 0
+            ? <p className="text-xs text-atlas-muted px-1">Nenhum movimento sugerido.</p>
+            : <div className="flex flex-col gap-2">
+                {result.moves.map((m, i) => (
+                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-3 flex flex-col gap-1">
+                    <span className="text-sm font-semibold text-atlas-light leading-tight">{m.pickup.name}</span>
+                    <div className="flex items-center gap-1 text-xs text-atlas-muted flex-wrap">
+                      <span className="text-red-400">{m.from ?? 'N/A'}</span>
+                      <span>→</span>
+                      <span className="text-green-400">{m.to}</span>
+                    </div>
+                    {m.pickup.store_id && (
+                      <span className="text-xs text-atlas-muted">ID: {m.pickup.store_id}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+          }
+        </div>
 
-      <h4 style={{ fontSize: '12px', color: '#a0aec0', margin: '10px 0 6px' }}>Novos Hosts sugeridos</h4>
-      {result.suggestions.length === 0
-        ? <p style={{ color: '#718096', fontSize: '12px' }}>Nenhum novo host sugerido.</p>
-        : result.suggestions.map((s, i) => (
-            <div key={i} style={{ marginBottom: '8px', fontSize: '12px' }}>
-              <strong>Cluster {i + 1} — Host: {s.hostCandidate.name}</strong>
-              <ul style={{ paddingLeft: '16px', marginTop: '4px' }}>
-                {s.pickups.map((p) => <li key={p.store_id}>{p.name}</li>)}
-              </ul>
-            </div>
-          ))
-      }
+        {/* Fase 2 — Alocações */}
+        <div>
+          <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2 px-1">
+            🏠 Fase 2 — Alocações em Hosts
+          </p>
+          {result.assignments.length === 0
+            ? <p className="text-xs text-atlas-muted px-1">Nenhuma alocação sugerida.</p>
+            : <div className="flex flex-col gap-2">
+                {result.assignments.map((a, i) => (
+                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-3 flex flex-col gap-1">
+                    <span className="text-sm font-semibold text-atlas-light leading-tight">{a.hero.name}</span>
+                    <div className="flex items-center gap-1 text-xs">
+                      <span className="text-atlas-muted">Host:</span>
+                      <span className="text-atlas-accent font-medium">{a.host.name}</span>
+                    </div>
+                    {a.hero.store_id && (
+                      <span className="text-xs text-atlas-muted">ID: {a.hero.store_id}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+          }
+        </div>
+
+        {/* Fase 3 — Novos Hosts */}
+        <div>
+          <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2 px-1">
+            ✨ Fase 3 — Novos Hosts Sugeridos
+          </p>
+          {result.suggestions.length === 0
+            ? <p className="text-xs text-atlas-muted px-1">Nenhum novo host sugerido.</p>
+            : <div className="flex flex-col gap-2">
+                {result.suggestions.map((s, i) => (
+                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-3 flex flex-col gap-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="text-sm font-semibold text-atlas-light leading-tight">{s.hostCandidate.name}</span>
+                      <span className="text-xs bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded px-1.5 py-0.5 shrink-0">
+                        Host
+                      </span>
+                    </div>
+                    {s.hostCandidate.store_id && (
+                      <span className="text-xs text-atlas-muted">ID: {s.hostCandidate.store_id}</span>
+                    )}
+                    <div className="border-t border-white/10 pt-2">
+                      <p className="text-xs text-atlas-muted mb-1">Pickups ({s.pickups.length}):</p>
+                      <div className="flex flex-col gap-1">
+                        {s.pickups.map((p) => (
+                          <div key={p.store_id} className="flex items-center justify-between text-xs">
+                            <span className="text-atlas-light">{p.name}</span>
+                            {p.store_id && <span className="text-atlas-muted">{p.store_id}</span>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+          }
+        </div>
+
+      </div>
     </div>,
     document.body
   );
@@ -443,7 +510,7 @@ export default function RoutesTab() {
       </button>
 
       <button type="button" onClick={handleFindRoute} disabled={!canFindRoute}
-        className="w-full py-3 px-4 rounded bg-atlas-accent text-atlas-darker text-sm font-semibold hover:bg-amber-400 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px] mb-2 transition-colors">
+        className="w-full py-3 px-4 rounded bg-atlas-accent text-white text-sm font-semibold hover:opacity-90 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px] mb-2 transition-colors">
         Buscar Melhor Rota
       </button>
 
@@ -467,7 +534,7 @@ export default function RoutesTab() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <div style={{
-            background: '#1e2a38', color: '#ecf0f1', padding: '28px 36px',
+            background: 'var(--color-dark)', color: 'var(--color-light)', padding: '28px 36px',
             borderRadius: '10px', boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
             display: 'flex', alignItems: 'center', gap: '16px', fontSize: '15px',
           }}>

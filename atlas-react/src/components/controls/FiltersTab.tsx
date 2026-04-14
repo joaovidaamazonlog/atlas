@@ -113,21 +113,8 @@ export default function FiltersTab() {
     [allMarkersData]
   );
 
-  // Apply name search via debounce automatically
+  // Apply filters automatically whenever any filter changes (with debounce on name)
   useEffect(() => {
-    if (debouncedName.trim()) {
-      applyFilters({
-        selectedStatuses: selectedStatuses.length ? selectedStatuses : 'all',
-        selectedStations: selectedStations.length ? selectedStations : 'all',
-        selectedBuckets: selectedBuckets.length ? selectedBuckets : 'all',
-        initiativesFilter,
-        jurisdictionFilter,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedName]);
-
-  const handleApply = useCallback(() => {
     applyFilters({
       selectedStatuses: selectedStatuses.length ? selectedStatuses : 'all',
       selectedStations: selectedStations.length ? selectedStations : 'all',
@@ -135,7 +122,8 @@ export default function FiltersTab() {
       initiativesFilter,
       jurisdictionFilter,
     });
-  }, [applyFilters, selectedStatuses, selectedStations, selectedBuckets, initiativesFilter, jurisdictionFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedName, selectedStatuses, selectedStations, selectedBuckets, initiativesFilter, jurisdictionFilter]);
 
   const handleClear = useCallback(() => {
     setNameSearch('');
@@ -252,21 +240,9 @@ export default function FiltersTab() {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={handleApply}
-          className={[
-            'flex-1 py-3 px-4 rounded bg-atlas-accent text-atlas-darker',
-            'text-sm font-semibold transition-colors duration-150',
-            'hover:bg-amber-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent',
-            'min-h-[44px]',
-          ].join(' ')}
-        >
-          Aplicar Filtros
-        </button>
-        <button
-          type="button"
           onClick={handleClear}
           className={[
-            'flex-1 py-3 px-4 rounded bg-white/10 text-atlas-light',
+            'w-full py-3 px-4 rounded bg-white/10 text-atlas-light',
             'text-sm font-medium transition-colors duration-150',
             'hover:bg-white/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30',
             'min-h-[44px]',

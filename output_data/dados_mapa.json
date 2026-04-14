@@ -1,5 +1,5 @@
 {
-  "period": "2026-04-13 : 10h:46m",
+  "period": "2026-04-14 : 09h:57m",
   "deliveryStations": [
     {
       "nome": "DAM1",
@@ -40462,7 +40462,7 @@
       "tooltip": "ID: 9117872373 | Name: 52000560 JHEFFERSON BARBOSA DE OLIVEIRA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
-      "bucket_ade": "DCE3_bucket-12",
+      "bucket_ade": "DCE3_bucket-04",
       "radius_suggestion": 0,
       "cap_suggestion": 0
     },
@@ -69198,7 +69198,7 @@
       "decision_status": null,
       "tooltip": "ID:  | Name: Marcos paulo Dias da Silva | HUB Delivery Initiatives: ",
       "decision": "No Go",
-      "reason": "Sem oportunidade próxima",
+      "reason": "Fora de jurisdição",
       "bucket_ade": "DCE3_bucket-10",
       "radius_suggestion": 0,
       "cap_suggestion": 0
@@ -70287,7 +70287,7 @@
       "tooltip": "ID:  | Name: Abner da Silva Sales | HUB Delivery Initiatives: ",
       "decision": "No Go",
       "reason": "Fora de jurisdição",
-      "bucket_ade": "DCE3_bucket-10",
+      "bucket_ade": "DCE3_bucket-12",
       "radius_suggestion": 0,
       "cap_suggestion": 0
     },
@@ -73006,7 +73006,7 @@
       "decision_status": null,
       "tooltip": "ID:  | Name: Heleno Viana | HUB Delivery Initiatives: ",
       "decision": "No Go",
-      "reason": "Sem oportunidade próxima",
+      "reason": "Fora de jurisdição",
       "bucket_ade": "DCE3_bucket-12",
       "radius_suggestion": 0,
       "cap_suggestion": 0

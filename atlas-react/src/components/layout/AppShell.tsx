@@ -2,8 +2,7 @@ import React, { useState, useRef, Suspense } from 'react';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { Header } from './Header';
 import { BottomSheet } from './BottomSheet';
-import { Drawer } from './Drawer';
-import { FloatingPanel } from './FloatingPanel';
+import { Drawer } from './Drawer';import { FloatingPanel } from './FloatingPanel';
 import { DashboardToggle } from '../ui/DashboardToggle';
 import { ControlsToggle } from '../ui/ControlsToggle';
 import MapView from '../map/MapView';
@@ -31,7 +30,7 @@ const DashboardWithSuspense: React.FC = () => (
 // ---------------------------------------------------------------------------
 
 const MobileLayout: React.FC = () => {
-  const [controlPanelOpen, setControlPanelOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const flyToRef = useRef<((lat: number, lon: number) => void) | null>(null);
   const partners = useStore(s => s.currentFilteredData);
@@ -40,49 +39,61 @@ const MobileLayout: React.FC = () => {
     <div className="relative w-full h-full flex flex-col">
       <Header />
 
-      {/* Map fills remaining space */}
       <div className="relative flex-1 overflow-hidden">
         <SearchBar partners={partners} flyToRef={flyToRef} />
         <MapView flyToRef={flyToRef} />
 
+        <ControlsToggle isOpen={drawerOpen} onClick={() => setDrawerOpen(o => !o)} />
+        <DashboardToggle isOpen={dashboardOpen} onClick={() => setDashboardOpen(o => !o)} />
+
+        {/* Dashboard full-screen */}
+        {dashboardOpen && (
+          <div
+            className="fixed inset-0 flex flex-col"
+            style={{
+              zIndex: 'var(--z-modal)' as unknown as number,
+              backgroundColor: 'var(--color-darker)',
+              transform: 'translateX(0)',
+              transition: 'transform 300ms ease-in-out',
+            }}
+          >
+            <div className="flex items-center justify-between px-4 py-3 shrink-0" style={{ borderBottom: '1px solid var(--border-color)' }}>
+              <span className="font-medium text-atlas-light text-sm">Dashboard</span>
+              <button
+                onClick={() => setDashboardOpen(false)}
+                aria-label="Fechar dashboard"
+                className="touch-target text-atlas-muted hover:text-atlas-light transition-colors duration-150"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <DashboardWithSuspense />
+            </div>
+          </div>
+        )}
       </div>
 
-      <ControlsToggle isOpen={controlPanelOpen} onClick={() => setControlPanelOpen(o => !o)} />
-      <DashboardToggle isOpen={dashboardOpen} onClick={() => setDashboardOpen(o => !o)} />
-
-      {/* BottomSheet for ControlPanel */}
-      <BottomSheet isOpen={controlPanelOpen} onClose={() => setControlPanelOpen(false)}>
-        <ControlPanel />
-      </BottomSheet>
-
-      {/* Dashboard as full-screen modal */}
-      {dashboardOpen && (
-        <div
-          className="fixed inset-0 flex flex-col"
-          style={{
-            zIndex: 'var(--z-modal)' as unknown as number,
-            backgroundColor: 'var(--color-darker)',
-            transform: dashboardOpen ? 'translateX(0)' : 'translateX(100%)',
-            transition: 'transform 300ms ease-in-out',
-          }}
-        >
-          <div className="flex items-center justify-between px-4 py-3 shrink-0" style={{ borderBottom: '1px solid var(--border-color)' }}>
-            <span className="font-medium text-atlas-light text-sm">Dashboard</span>
-            <button
-              onClick={() => setDashboardOpen(false)}
-              aria-label="Fechar dashboard"
-              className="touch-target text-atlas-muted hover:text-atlas-light transition-colors duration-150"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            <DashboardWithSuspense />
-          </div>
+      {/* Left Drawer for ControlPanel — igual tablet */}
+      <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} side="left" width={320}>
+        <div className="flex items-center justify-between px-4 py-3 shrink-0" style={{ borderBottom: '1px solid var(--border-color)' }}>
+          <span className="font-medium text-atlas-light text-sm">Controles</span>
+          <button
+            onClick={() => setDrawerOpen(false)}
+            aria-label="Fechar painel de controle"
+            className="touch-target text-atlas-muted hover:text-atlas-light transition-colors duration-150"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
         </div>
-      )}
+        <div className="flex-1 overflow-y-auto">
+          <ControlPanel />
+        </div>
+      </Drawer>
     </div>
   );
 };
@@ -179,10 +190,8 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ controlPanelWidth, dashbo
       <Header />
 
       <div className="relative flex-1 overflow-hidden">
-        <SearchBar partners={partners} flyToRef={flyToRef} />
+        <SearchBar partners={partners} flyToRef={flyToRef} controlPanelWidth={controlPanelWidth} />
         <MapView flyToRef={flyToRef} />
-
-        {/* Floating ControlPanel — top left */}
         <div
           className="absolute top-4 left-4"
           style={{ zIndex: 'var(--z-overlay)' as unknown as number }}
@@ -200,7 +209,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ controlPanelWidth, dashbo
           <div
             className="absolute top-0 right-0 bottom-0 overflow-y-auto"
             style={{
-              width: `${dashboardWidth}px`,
+              width: '60vw',
               zIndex: 'var(--z-overlay)' as unknown as number,
               backgroundColor: 'var(--color-navy)',
               borderLeft: '1px solid var(--border-color)',

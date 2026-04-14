@@ -1,24 +1,8 @@
-/**
- * SearchBar.tsx
- * =============
- * Componente overlay de busca flutuante sobre o mapa.
- * Renderizado FORA do MapContainer — não é filho do Leaflet.
- *
- * Sub-componente interno `MapFlyTo` é filho do MapContainer e
- * usa useMap().flyTo() para navegar o mapa.
- *
- * Requirements: 1.1, 1.4, 1.5, 1.6, 1.7, 1.8, 1.10
- */
-
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useMap } from 'react-leaflet';
 import type { Partner } from '../../store/types';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useBreakpoint, type Breakpoint } from '../../hooks/useBreakpoint';
-
-// ---------------------------------------------------------------------------
-// TIPOS
-// ---------------------------------------------------------------------------
 
 interface NominatimResult {
   lat: string;
@@ -26,97 +10,89 @@ interface NominatimResult {
   display_name: string;
 }
 
-// ---------------------------------------------------------------------------
-// MapFlyTo — filho do MapContainer
-// ---------------------------------------------------------------------------
-
 interface MapFlyToProps {
   flyToRef: React.MutableRefObject<((lat: number, lon: number) => void) | null>;
 }
 
 function MapFlyTo({ flyToRef }: MapFlyToProps) {
   const map = useMap();
-
   useEffect(() => {
-    flyToRef.current = (lat: number, lon: number) => {
-      map.flyTo([lat, lon], 15);
-    };
-    return () => {
-      flyToRef.current = null;
-    };
+    flyToRef.current = (lat: number, lon: number) => map.flyTo([lat, lon], 15);
+    return () => { flyToRef.current = null; };
   }, [map, flyToRef]);
-
   return null;
 }
 
-// ---------------------------------------------------------------------------
-// SearchBar — overlay fora do MapContainer
-// ---------------------------------------------------------------------------
-
 export interface SearchBarProps {
   partners: Partner[];
-  /** Ref para o sub-componente MapFlyTo ser injetado no MapContainer pelo pai */
   flyToRef: React.MutableRefObject<((lat: number, lon: number) => void) | null>;
-  /** Breakpoint opcional; se omitido, usa o hook useBreakpoint internamente */
   breakpoint?: Breakpoint;
+  /** Largura do FloatingPanel de controles — usado no desktop para posicionar a barra ao lado */
+  controlPanelWidth?: number;
 }
 
-function getContainerStyle(bp: Breakpoint): React.CSSProperties {
-  const isMobileOrTablet = bp === 'mobile' || bp === 'tablet';
-  return isMobileOrTablet
-    ? {
-        position: 'absolute',
-        top: '16px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '90vw',
-        maxWidth: '90vw',
-        zIndex: 'var(--z-overlay)' as unknown as number,
-        fontFamily: 'var(--font-family)',
-      }
-    : {
-        position: 'absolute',
-        top: '16px',
-        left: '16px',
-        width: 'clamp(280px, 30vw, 480px)',
-        zIndex: 'var(--z-overlay)' as unknown as number,
-        fontFamily: 'var(--font-family)',
-      };
+function getContainerStyle(bp: Breakpoint, controlPanelWidth: number): React.CSSProperties {
+  if (bp === 'mobile' || bp === 'tablet') {
+    return {
+      position: 'absolute',
+      top: '16px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '90vw',
+      maxWidth: '90vw',
+      zIndex: 'var(--z-overlay)' as unknown as number,
+    };
+  }
+  return {
+    position: 'absolute',
+    top: '16px',
+    left: `${controlPanelWidth + 24}px`,
+    width: 'clamp(280px, 30vw, 480px)',
+    zIndex: 'var(--z-overlay)' as unknown as number,
+  };
 }
 
-export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp }: SearchBarProps) {
+export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, controlPanelWidth = 0 }: SearchBarProps) {
   const detectedBreakpoint = useBreakpoint();
   const bp = breakpointProp ?? detectedBreakpoint;
+
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Partner[]>([]);
+  // true quando não há match de parceiro e o campo vira modo endereço (igual vanilla)
+  const [addressMode, setAddressMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
   const debouncedQuery = useDebounce(query, 300);
 
-  // Filtra parceiros por nome (mínimo 2 caracteres)
+  // Filtra parceiros; quando não há match ativa modo endereço
   useEffect(() => {
     if (debouncedQuery.length < 2) {
       setSuggestions([]);
       setIsOpen(false);
+      setAddressMode(false);
       return;
     }
-
     const lower = debouncedQuery.toLowerCase();
     const filtered = partners.filter(
       (p) => p.name.toLowerCase().includes(lower) && p.lat != null && p.lon != null
     );
     setSuggestions(filtered.slice(0, 8));
-    setIsOpen(filtered.length > 0);
+    if (filtered.length > 0) {
+      setAddressMode(false);
+      setIsOpen(true);
+    } else {
+      // Sem match de parceiro — modo endereço, igual ao comportamento vanilla
+      setAddressMode(true);
+      setIsOpen(true);
+    }
     setActiveIndex(-1);
     setError(null);
   }, [debouncedQuery, partners]);
 
-  // Fecha ao clicar fora
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -127,100 +103,87 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp }: Se
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const selectPartner = useCallback(
-    (partner: Partner) => {
-      if (partner.lat != null && partner.lon != null) {
-        flyToRef.current?.(partner.lat, partner.lon);
-      }
-      setQuery(partner.name);
-      setIsOpen(false);
-      setSuggestions([]);
-      setError(null);
-    },
-    [flyToRef]
-  );
+  const selectPartner = useCallback((partner: Partner) => {
+    if (partner.lat != null && partner.lon != null) {
+      flyToRef.current?.(partner.lat, partner.lon);
+    }
+    setQuery(partner.name);
+    setIsOpen(false);
+    setSuggestions([]);
+    setAddressMode(false);
+    setError(null);
+  }, [flyToRef]);
 
   const geocodeAddress = useCallback(async (q: string) => {
     setError(null);
+    setIsOpen(false);
+    setAddressMode(false);
     try {
       const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1`;
-      const res = await fetch(url, {
-        headers: { 'Accept-Language': 'pt-BR,pt;q=0.9' },
-      });
+      const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR,pt;q=0.9' } });
       if (!res.ok) throw new Error('Falha na geocodificação');
       const data: NominatimResult[] = await res.json();
-      if (data.length === 0) {
-        setError('Endereço não encontrado');
-        return;
-      }
-      const { lat, lon } = data[0];
-      flyToRef.current?.(parseFloat(lat), parseFloat(lon));
-      setIsOpen(false);
+      if (data.length === 0) { setError('Endereço não encontrado'); return; }
+      flyToRef.current?.(parseFloat(data[0].lat), parseFloat(data[0].lon));
     } catch {
       setError('Erro ao buscar endereço');
     }
   }, [flyToRef]);
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Escape') {
-        setIsOpen(false);
-        setActiveIndex(-1);
-        inputRef.current?.blur();
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setIsOpen(false);
+      setActiveIndex(-1);
+      inputRef.current?.blur();
+      return;
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1));
+      return;
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((i) => Math.max(i - 1, -1));
+      return;
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && suggestions[activeIndex]) {
+        selectPartner(suggestions[activeIndex]);
         return;
       }
-
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1));
-        return;
+      if (query.trim().length >= 2) {
+        geocodeAddress(query.trim());
       }
+    }
+  }, [activeIndex, suggestions, query, selectPartner, geocodeAddress]);
 
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setActiveIndex((i) => Math.max(i - 1, -1));
-        return;
-      }
-
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        if (activeIndex >= 0 && suggestions[activeIndex]) {
-          selectPartner(suggestions[activeIndex]);
-          return;
-        }
-        // Sem match de parceiro selecionado — geocodifica
-        if (query.trim().length >= 2) {
-          setIsOpen(false);
-          geocodeAddress(query.trim());
-        }
-      }
-    },
-    [activeIndex, suggestions, query, selectPartner, geocodeAddress]
-  );
+  const placeholder = addressMode
+    ? `Buscar endereço: "${query}"`
+    : 'Buscar parceiro ou endereço…';
 
   return (
-    <div ref={containerRef} style={getContainerStyle(bp)}>
+    <div ref={containerRef} style={getContainerStyle(bp, controlPanelWidth)}>
       <div style={styles.inputWrapper}>
-        <span style={styles.icon} aria-hidden="true">🔍</span>
+        <span style={styles.icon} aria-hidden="true">{addressMode ? '📍' : '🔍'}</span>
         <input
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setError(null);
-          }}
+          onChange={(e) => { setQuery(e.target.value); setError(null); }}
           onKeyDown={handleKeyDown}
-          onFocus={() => {
-            if (suggestions.length > 0) setIsOpen(true);
-          }}
-          placeholder="Buscar parceiro ou endereço…"
+          onFocus={() => { if (isOpen || suggestions.length > 0 || addressMode) setIsOpen(true); }}
+          placeholder={placeholder}
           aria-label="Buscar parceiro ou endereço"
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls="searchbar-suggestions"
           aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
-          style={styles.input}
+          style={{
+            ...styles.input,
+            ...(addressMode ? { color: 'var(--color-accent)' } : {}),
+          }}
           autoComplete="off"
         />
         {query && (
@@ -229,6 +192,7 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp }: Se
               setQuery('');
               setSuggestions([]);
               setIsOpen(false);
+              setAddressMode(false);
               setError(null);
               inputRef.current?.focus();
             }}
@@ -241,28 +205,30 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp }: Se
         )}
       </div>
 
-      {error && (
-        <div style={styles.error} role="alert">
-          {error}
-        </div>
-      )}
+      {error && <div style={styles.error} role="alert">{error}</div>}
 
-      {isOpen && suggestions.length > 0 && (
-        <ul
-          id="searchbar-suggestions"
-          role="listbox"
-          style={styles.dropdown}
-        >
+      {isOpen && (
+        <ul id="searchbar-suggestions" role="listbox" style={styles.dropdown}>
+          {/* Modo endereço: mostra opção de geocodificar (igual vanilla) */}
+          {addressMode && query.trim().length >= 2 && (
+            <li
+              role="option"
+              aria-selected={false}
+              onMouseDown={(e) => { e.preventDefault(); geocodeAddress(query.trim()); }}
+              style={{ ...styles.suggestion, ...styles.addressOption }}
+            >
+              <span style={styles.suggestionName}>📍 Buscar endereço: <em>{query}</em></span>
+              <span style={styles.suggestionMeta}>Pressione Enter ou clique para geocodificar</span>
+            </li>
+          )}
+          {/* Sugestões de parceiros */}
           {suggestions.map((partner, idx) => (
             <li
               key={partner.salesforce_id}
               id={`suggestion-${idx}`}
               role="option"
               aria-selected={idx === activeIndex}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                selectPartner(partner);
-              }}
+              onMouseDown={(e) => { e.preventDefault(); selectPartner(partner); }}
               onMouseEnter={() => setActiveIndex(idx)}
               style={{
                 ...styles.suggestion,
@@ -283,10 +249,6 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp }: Se
   );
 }
 
-// ---------------------------------------------------------------------------
-// ESTILOS INLINE (usa variáveis CSS do projeto)
-// ---------------------------------------------------------------------------
-
 const styles: Record<string, React.CSSProperties> = {
   inputWrapper: {
     display: 'flex',
@@ -297,11 +259,7 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: 'var(--shadow-md)',
     overflow: 'hidden',
   },
-  icon: {
-    padding: '0 8px 0 12px',
-    fontSize: '14px',
-    flexShrink: 0,
-  },
+  icon: { padding: '0 8px 0 12px', fontSize: '14px', flexShrink: 0 },
   input: {
     flex: 1,
     background: 'transparent',
@@ -330,7 +288,6 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '6px',
     color: '#ff6b6b',
     fontSize: 'var(--font-size-xs)',
-    boxShadow: 'var(--shadow-sm)',
   },
   dropdown: {
     marginTop: '4px',
@@ -351,9 +308,10 @@ const styles: Record<string, React.CSSProperties> = {
     borderBottom: '1px solid var(--border-color)',
     transition: 'background var(--transition-fast)',
   },
-  suggestionActive: {
-    background: 'var(--surface-secondary)',
+  addressOption: {
+    background: 'rgba(255, 153, 0, 0.08)',
   },
+  suggestionActive: { background: 'var(--surface-secondary)' },
   suggestionName: {
     color: 'var(--text-primary)',
     fontSize: 'var(--font-size-sm)',
@@ -365,9 +323,5 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: '2px',
   },
 };
-
-// ---------------------------------------------------------------------------
-// EXPORT do sub-componente MapFlyTo para uso no MapContainer
-// ---------------------------------------------------------------------------
 
 export { MapFlyTo };

@@ -36,6 +36,8 @@ export default function RouteLayer() {
       router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
       lineOptions: { styles: [{ color: 'blue', opacity: 0.8, weight: 5 }], extendToWaypoints: false, missingRouteTolerance: 0 },
       show: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      createMarker: (_i: number, wp: any) => L.marker(wp.latLng),
     } as L.Routing.RoutingControlOptions);
 
     control.on('routingerror', (e: any) => {

@@ -1,2 +1,1 @@
 backend/base_pacotes.csv filter=lfs diff=lfs merge=lfs -text
-output_data/*.geojson filter=lfs diff=lfs merge=lfs -text

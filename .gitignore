@@ -1,1 +1,14 @@
-*.db
+_api_backend/empresas_lookup.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Node
+node_modules/
+
+# Build
+dist/
+*.tsbuildinfo

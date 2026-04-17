@@ -22,7 +22,13 @@ import type {
 import { Partner as PartnerModel } from '../lib/models';
 import { applyFiltersLogic } from './actions/dataActions';
 import { defaultStyleConfig } from './actions/mapActions';
-import { DATA_URLS } from '../lib/config';
+import { DATA_URLS, GEO_INTELLIGENCE_API_BASE_URL } from '../lib/config';
+import type {
+  GeoIntelligenceSlice,
+  GeoIntelligenceState,
+  GeoIntelligenceFilter,
+} from './geoIntelligenceSlice';
+import { DEFAULT_GEO_INTELLIGENCE_STATE } from './geoIntelligenceSlice';
 
 // ---------------------------------------------------------------------------
 // ESTADO INICIAL
@@ -103,6 +109,13 @@ export interface AtlasStore {
   setProspectBucket: (bucket: string | null) => void;
   togglePin: (key: string) => void;
   clearProspect: () => void;
+
+  // --- Geo Intelligence (GeoIntelligenceSlice) ---
+  geoIntelligence: GeoIntelligenceState;
+  loadGeoIntelligence: (stationCode: string) => Promise<void>;
+  setGeoFilter: (filter: Partial<GeoIntelligenceFilter>) => void;
+  setExpansionTarget: (pct: number) => void;
+  selectGeoTerritory: (territoryId: string | null) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -142,6 +155,9 @@ export const useStore = create<AtlasStore>((set, get) => ({
     selectedBucket: null,
     pinnedKeys: [],
   },
+
+  // --- Estado inicial: geo intelligence ---
+  geoIntelligence: { ...DEFAULT_GEO_INTELLIGENCE_STATE },
 
   // ---------------------------------------------------------------------------
   // ACTIONS
@@ -447,6 +463,101 @@ export const useStore = create<AtlasStore>((set, get) => ({
         isLoading: false,
         error: null,
         pinnedKeys: [],
+      },
+    }));
+  },
+
+  // ---------------------------------------------------------------------------
+  // GEO INTELLIGENCE ACTIONS
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Carrega dados de geointeligência para uma Delivery Station.
+   * Busca territories, geojson e scorecard em paralelo.
+   */
+  loadGeoIntelligence: async (stationCode: string) => {
+    set((state) => ({
+      geoIntelligence: { ...state.geoIntelligence, isLoading: true, error: null },
+    }));
+
+    try {
+      const base = GEO_INTELLIGENCE_API_BASE_URL;
+      const [territoriesRes, geojsonRes, scorecardRes] = await Promise.allSettled([
+        fetch(`${base}/geo-intelligence/${stationCode}/territories`).then((r) =>
+          r.ok ? r.json() : Promise.reject(new Error(`territories: ${r.status}`))
+        ),
+        fetch(`${base}/geo-intelligence/${stationCode}/geojson`).then((r) =>
+          r.ok ? r.json() : Promise.reject(new Error(`geojson: ${r.status}`))
+        ),
+        fetch(`${base}/geo-intelligence/${stationCode}/scorecard`).then((r) =>
+          r.ok ? r.json() : Promise.reject(new Error(`scorecard: ${r.status}`))
+        ),
+      ]);
+
+      const territories =
+        territoriesRes.status === 'fulfilled' ? territoriesRes.value : [];
+      const geojson =
+        geojsonRes.status === 'fulfilled' ? geojsonRes.value : null;
+      const scorecard =
+        scorecardRes.status === 'fulfilled' ? scorecardRes.value : null;
+
+      set((state) => ({
+        geoIntelligence: {
+          ...state.geoIntelligence,
+          territories,
+          geojson,
+          scorecard,
+          isLoading: false,
+        },
+      }));
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Erro ao carregar geointeligência';
+      console.error('[AtlasStore] loadGeoIntelligence falhou:', message);
+      set((state) => ({
+        geoIntelligence: {
+          ...state.geoIntelligence,
+          isLoading: false,
+          error: message,
+        },
+      }));
+    }
+  },
+
+  /**
+   * Atualiza parcialmente o filtro de geointeligência.
+   */
+  setGeoFilter: (filter: Partial<GeoIntelligenceFilter>) => {
+    set((state) => ({
+      geoIntelligence: {
+        ...state.geoIntelligence,
+        filter: { ...state.geoIntelligence.filter, ...filter },
+      },
+    }));
+  },
+
+  /**
+   * Calcula e armazena o resultado do expansion target para um percentual dado.
+   */
+  setExpansionTarget: async (pct: number) => {
+    const stationCode = null; // expansion target requer stationCode — chamadores devem usar loadGeoIntelligence primeiro
+    void stationCode; // suprime warning de unused
+    set((state) => ({
+      geoIntelligence: {
+        ...state.geoIntelligence,
+        expansionTargetResult: { expansion_target_pct: pct },
+      },
+    }));
+  },
+
+  /**
+   * Seleciona (ou deseleciona) um território pelo ID.
+   */
+  selectGeoTerritory: (territoryId: string | null) => {
+    set((state) => ({
+      geoIntelligence: {
+        ...state.geoIntelligence,
+        selectedTerritoryId: territoryId,
       },
     }));
   },

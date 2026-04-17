@@ -23,6 +23,8 @@ import {
 import { Spinner } from '../ui/Spinner';
 import FilterCascade from './FilterCascade';
 import KpiCard from './KpiCard';
+import PartnersByBucketTable from './PartnersByBucketTable';
+import { useStore } from '../../store';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -106,6 +108,7 @@ const Dashboard: React.FC = () => {
     territory: 'all',
   });
   const [sortState, setSortState] = useState<SortState>({ column: null, direction: 'asc' });
+  const allMarkersData = useStore((s) => s.allMarkersData);
 
   // Fetch on first mount or on retry (when reportData is null)
   useEffect(() => {
@@ -263,6 +266,9 @@ const Dashboard: React.FC = () => {
           onSort={handleColumnSort}
         />
       </section>
+
+      {/* Partners by Bucket */}
+      <PartnersByBucketTable data={allMarkersData} selectedStation={filters.base} />
     </div>
   );
 };

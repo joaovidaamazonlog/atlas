@@ -21,6 +21,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api-proxy/, ''),
       },
+      // Proxy para a API GeoIntelligence local (backend Python)
+      '/geo-intelligence': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      },
     },
   },
   resolve: {

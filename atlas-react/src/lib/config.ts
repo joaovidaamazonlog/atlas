@@ -112,6 +112,15 @@ export const HCP_CONFIG: Readonly<HcpConfig> = Object.freeze({
 export const API_BASE_URL =
   import.meta.env.DEV ? '/api-proxy' : 'https://api-cnpj-br.vercel.app';
 
+/** URL base da API de Geointeligência.
+ * Em desenvolvimento usa o proxy do Vite (/geo-intelligence) para contornar CORS.
+ * Em produção usa a URL real configurada via VITE_GEO_INTELLIGENCE_API_URL.
+ */
+export const GEO_INTELLIGENCE_API_BASE_URL: string =
+  import.meta.env.DEV
+    ? ''  // usa proxy do Vite: /geo-intelligence/* → http://localhost:8001/geo-intelligence/*
+    : ((import.meta.env.VITE_GEO_INTELLIGENCE_API_URL as string | undefined) ?? 'http://localhost:8001');
+
 /** Paletas de cores para marcadores */
 export interface ColorPalettes {
   border: string[];

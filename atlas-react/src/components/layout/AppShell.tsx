@@ -11,7 +11,7 @@ import { Spinner } from '../ui/Spinner';
 import { SearchBar } from '../map/SearchBar';
 import { useStore } from '../../store';
 
-const Dashboard = React.lazy(() => import('../dashboard/Dashboard'));
+const Dashboard = React.lazy(() => import('../dashboard/GeoIntelligenceDashboard'));
 
 const DashboardWithSuspense: React.FC = () => (
   <Suspense

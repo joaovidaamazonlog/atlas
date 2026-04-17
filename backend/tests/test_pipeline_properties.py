@@ -29,8 +29,8 @@ import pytest
 from hypothesis import given, settings, HealthCheck
 from hypothesis import strategies as st
 
-from models import Partner, Config
-from load_partners import _build_partner_data, serialize_to_json
+from shared.models import Partner, Config
+from shared.load_partners import _build_partner_data, serialize_to_json
 
 # ---------------------------------------------------------------------------
 # SCHEMA esperado (25 campos exatos)

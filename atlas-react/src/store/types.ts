@@ -99,6 +99,10 @@ export interface StyleConfig {
   showJurisdictions: boolean;
   showOptimizationLayer: boolean;
   showHeatmap: boolean;
+  /** Exibe a camada de Geointeligência (territórios + supply ideal) */
+  showGeoIntelligence: boolean;
+  /** Exibe a camada de Geointeligência (territórios + supply ideal) */
+  showGeoIntelligence: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -157,6 +161,8 @@ export interface ProspectCompany {
   isMatch: boolean | null;
   contactada: boolean;
   territory_id?: string;
+  gridDisk?: number | null;
+  matched_slot?: string | null;
 }
 
 export interface ProspectCluster {

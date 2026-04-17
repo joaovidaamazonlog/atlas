@@ -37,6 +37,8 @@ export async function searchNearbyFromState(event, territoryId, slotKey) {
         lon:      slotFeature.geometry.coordinates[0],
         radius_s: slotFeature.properties.radius_s,
         slot_id:  slotFeature.properties.slot_id,
+        h3_r9_id: slotFeature.properties.h3_r9_id ?? null,
+        h3_r8_id: slotFeature.properties.h3_r8_id ?? null,
     } : null;
 
     return searchNearby(event, territoryId, ceps, slotGeo);
@@ -62,70 +64,56 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
 
         const cepSet = new Set(cepList);
 
+        // ── Monta lista de todos os slots vagos do território ────────────
+        const openSlots = (state.idealSupplyData || [])
+            .filter(f => {
+                const p = f.properties || {};
+                return p.type === 'IDEAL_SLOT' &&
+                       p.territory_id === territoryId &&
+                       !p.matched_partner_id;
+            })
+            .map(f => ({
+                slot_id:  f.properties.slot_id,
+                h3_r9_id: f.properties.h3_r9_id ?? null,
+                h3_r8_id: f.properties.h3_r8_id ?? null,
+                lat:      f.geometry.coordinates[1],
+                lon:      f.geometry.coordinates[0],
+            }));
+
         // ── Request único à API ───────────────────────────────────────────
         const res = await fetch(`${API_BASE_URL}/api/empresas`, {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ ceps: cepList, territory_id: territoryId }),
+            body:    JSON.stringify({
+                territory_id: territoryId,
+                slots:        openSlots,
+                ceps:         cepList,   // fallback legado
+            }),
         });
 
         if (!res.ok) throw new Error(`API retornou ${res.status}`);
         const data = await res.json();
 
-        // ── Mapear para ProspectCompany e calcular distâncias ─────────────
-        const MAX_DISTANCE_M = 1000;
-
-        // Separar por fonte para processamento específico
+        // ── Mapear para ProspectCompany ───────────────────────────────────
+        // O match agora vem da API via grid_disk — sem cálculo de distância no cliente
         const rawMaps    = (data.empresas || []).filter(e => e.fonte === 'Google Maps');
         const rawReceita = (data.empresas || []).filter(e => e.fonte === 'Receita Federal');
 
-        // Maps — calcular distância diretamente (já tem lat/lon)
-        const mapsResults = rawMaps
-            .map(e => {
-                const company = new ProspectCompany({ ...e, _fonte: 'Google Maps 🗺️' });
-                if (slotGeo && company.isGeolocated) {
-                    const distM = Math.round(turf.distance(
-                        turf.point([slotGeo.lon, slotGeo.lat]),
-                        turf.point([company.lon, company.lat]),
-                        { units: 'meters' }
-                    ));
-                    company.isMatch   = distM <= slotGeo.radius_s;
-                    company.distanceM = distM;
-                } else {
-                    company.isMatch   = null;
-                    company.distanceM = null;
-                }
-                return company;
-            })
-            .filter(c => c.distanceM === null || c.distanceM <= MAX_DISTANCE_M);
+        const mapsResults = rawMaps.map(e => {
+            const company = new ProspectCompany({ ...e, _fonte: 'Google Maps 🗺️' });
+            company.isMatch     = e.matched_slot != null ? true : null;
+            company.matched_slot = e.matched_slot ?? null;
+            return company;
+        });
 
-        // Receita Federal — pré-filtro por hex → geocode → distância
-        const slotHexIds = new Set(
-            state.heatmapData?.features
-                ?.filter(f => Array.isArray(f.properties.ceps) &&
-                              f.properties.ceps.some(c => cepSet.has(c)))
-                ?.map(f => f.properties.hex_id) ?? []
-        );
-
-        const preFiltered = slotHexIds.size > 0
-            ? rawReceita.filter(r => {
-                if (!r.cep) return false;
-                const hex = state.heatmapData?.features?.find(
-                    f => Array.isArray(f.properties.ceps) && f.properties.ceps.includes(r.cep)
-                );
-                return hex ? slotHexIds.has(hex.properties.hex_id) : false;
-            })
-            : rawReceita;
-
-        // Normalizar endereço Receita Federal
-        const receitaObjs = preFiltered.map(e => new ProspectCompany({
+        // Receita Federal — geocode ainda necessário para pin no mapa
+        const receitaObjs = rawReceita.map(e => new ProspectCompany({
             ...e,
             nome:     e.razao_social || e.nome_fantasia || 'N/A',
             endereco: _normalizeAddress(e.endereco, e.numero, e.bairro, e.municipio, e.uf, e.cep),
             _fonte:   'Receita Federal 🏛️',
         }));
 
-        // Geocodificar e calcular distância
         const addressesToGeocode = receitaObjs
             .map((r, i) => ({ i, address: r.endereco }))
             .filter(({ address }) => !!address);
@@ -142,26 +130,14 @@ export async function searchNearby(event, territoryId, slotCeps, slotGeo = null)
             }
         });
 
-        const receitaResults = receitaObjs
-            .map(r => {
-                if (slotGeo && r.lat != null && r.lon != null) {
-                    const distM = Math.round(turf.distance(
-                        turf.point([slotGeo.lon, slotGeo.lat]),
-                        turf.point([r.lon, r.lat]),
-                        { units: 'meters' }
-                    ));
-                    r.isMatch   = distM <= slotGeo.radius_s;
-                    r.distanceM = distM;
-                } else {
-                    r.isMatch   = cepSet.size > 0 ? cepSet.has(r.cep) : null;
-                    r.distanceM = null;
-                }
-                return r;
-            })
-            .filter(r => r.distanceM === null || r.distanceM <= MAX_DISTANCE_M);
+        const receitaResults = receitaObjs.map((r, i) => {
+            r.isMatch     = rawReceita[i]?.matched_slot != null ? true : null;
+            r.matched_slot = rawReceita[i]?.matched_slot ?? null;
+            return r;
+        });
 
         const results = [...mapsResults, ...receitaResults];
-        showResults(results, territoryId, cepSet.size > 0);
+        showResults(results, territoryId);
 
     } catch (err) {
         alert(`Erro: ${err.message}`);
@@ -277,20 +253,18 @@ function _normalizeAddress(logradouro, numero, bairro, municipio, uf, cep) {
 // EXIBIÇÃO DE RESULTADOS
 // ---------------------------------------------------------------------------
 
-export function showResults(results, territoryId, usedCepFilter) {
+export function showResults(results, territoryId) {
     document.getElementById('gmaps-scraper-popup')?.remove();
 
-    // Ordenar: dentro do raio → fora → sem validação → contactadas por último
+    // Ordenar: não contactadas primeiro, depois por fonte
     results.sort((a, b) => {
         const saved = r => r.contactada ? 1 : 0;
-        const score = r => r.isMatch === true ? 0 : r.isMatch === false ? 1 : 2;
-        return (saved(a) - saved(b)) || (score(a) - score(b));
+        return saved(a) - saved(b);
     });
 
-    const byType     = {};
-    const mapsCount  = results.filter(r => r._fonte?.includes('Maps')).length;
-    const rfCount    = results.filter(r => r._fonte?.includes('Receita')).length;
-    const savedCount = results.filter(r => r.contactada).length;
+    const byType    = {};
+    const mapsCount = results.filter(r => r._fonte?.includes('Maps')).length;
+    const rfCount   = results.filter(r => r._fonte?.includes('Receita')).length;
 
     results.forEach(r => {
         const t = r.tipo || 'outros';
@@ -319,8 +293,7 @@ export function showResults(results, territoryId, usedCepFilter) {
     const updateSub = () => {
         const sc = results.filter(r => r.contactada).length;
         sub.innerHTML = `${results.length} empresa(s) — 🗺️ ${mapsCount} Google Maps · 🏛️ ${rfCount} Receita Federal`
-            + (sc > 0 ? ` · <span style="color:#16a34a;">✅ ${sc} contactada(s)</span>` : '')
-            + `<br>${usedCepFilter ? '🔎 filtrado por CEPs do slot' : '📍 todos do território'}`;
+            + (sc > 0 ? ` · <span style="color:#16a34a;">✅ ${sc} contactada(s)</span>` : '');
     };
     updateSub();
     popup.appendChild(sub);
@@ -342,15 +315,6 @@ export function showResults(results, territoryId, usedCepFilter) {
                 const card = document.createElement('div');
                 card.style = `border-bottom:1px solid #eee;padding:6px 0;font-size:12px;position:relative;${r.contactada ? 'opacity:0.6;' : ''}`;
 
-                let matchBadge = '';
-                if (r.isMatch === true) {
-                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
-                    matchBadge = `<div style="margin:2px 0;"><span style="color:#16a34a;font-weight:bold;">✅ Dentro do raio do slot</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
-                } else if (r.isMatch === false) {
-                    const dist = r.distanceM !== null ? ` (${r.distanceM}m)` : '';
-                    matchBadge = `<div style="margin:2px 0;"><span style="color:#d97706;">⚠️ Fora do raio</span><span style="font-size:10px;color:#666;">${dist}</span></div>`;
-                }
-
                 const hasCoords = r.lat != null && r.lon != null;
 
                 card.innerHTML = `
@@ -358,7 +322,6 @@ export function showResults(results, territoryId, usedCepFilter) {
                         <b style="flex:1;margin-right:4px;">${r.nome}</b>
                         <span style="font-size:10px;color:#888;white-space:nowrap;">${r._fonte || ''}</span>
                     </div>
-                    ${matchBadge}
                     <div style="display:flex;align-items:baseline;justify-content:space-between;color:#555;">
                         <span style="flex:1;">📍 ${r.endereco}</span>
                         ${hasCoords ? `<button class="lead-pin-btn" title="Fixar no mapa" style="border:none;background:none;font-size:18px;cursor:pointer;opacity:0;transition:opacity .15s;padding:0;line-height:1;flex-shrink:0;margin-left:4px;">📌</button>` : ''}

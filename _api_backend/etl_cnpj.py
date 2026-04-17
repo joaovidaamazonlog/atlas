@@ -279,11 +279,6 @@ def _thread_escritora(write_queue):
     """)
     client.execute("DELETE FROM empresas_alvo")
 
-    if not tabela_criada:
-        # Limpar dados antigos antes de inserir novos
-        client.execute("DELETE FROM empresas_alvo")
-        tabela_criada = True
-
     while True:
         batch = write_queue.get()
         if batch is _SENTINEL:

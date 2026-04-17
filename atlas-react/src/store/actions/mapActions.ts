@@ -18,5 +18,7 @@ export function defaultStyleConfig(): StyleConfig {
     showJurisdictions: false,
     showOptimizationLayer: false,
     showHeatmap: false,
+    showGeoIntelligence: false,
+    showGeoIntelligence: false,
   };
 }

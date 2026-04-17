@@ -17,7 +17,6 @@
  */
 
 import { useState, useMemo, useCallback } from 'react';
-import * as turf from '@turf/turf';
 import { useStore } from '../../store';
 import { getUniqueValues } from '../../store/actions/dataActions';
 import { kmeansCluster } from '../../lib/kmeansUtils';
@@ -34,7 +33,6 @@ function normalizeCompany(raw: Record<string, unknown>): ProspectCompany {
   const fonte = (raw.fonte as string) ?? '';
   const isReceita = fonte === 'Receita Federal';
 
-  // Endereço: Receita Federal vem fragmentado
   const endereco = isReceita
     ? [raw.logradouro, raw.numero, raw.bairro, raw.municipio, raw.uf, raw.cep]
         .filter(Boolean)
@@ -58,105 +56,52 @@ function normalizeCompany(raw: Record<string, unknown>): ProspectCompany {
     _fonte: fonte,
     lat: (raw.lat as number | null) ?? null,
     lon: (raw.lon as number | null) ?? null,
-    isMatch: (raw.isMatch as boolean | null) ?? null,
+    // API já filtra pelo match — todos os retornados são candidatos válidos
+    isMatch: null,
+    gridDisk: null,
+    matched_slot: null,
     contactada: (raw.contactada as boolean) ?? false,
     territory_id: (raw.territory_id as string | undefined),
   };
 }
 
 // ---------------------------------------------------------------------------
-// Validação isMatch — replica a lógica do vanilla gmaps-scraper.js
+// Extrai todos os slots vagos de um bucket para passar à API
 // ---------------------------------------------------------------------------
 
-interface SlotGeo {
-  lat: number;
-  lon: number;
-  radius_s: number;
-  ceps: string[];
+interface SlotRef {
+  slot_id:  string;
+  h3_r9_id: string | null;
+  h3_r8_id: string | null;
+  lat:      number;
+  lon:      number;
 }
 
-/**
- * Extrai os slots IDEAL_SLOT do idealSupplyData para um dado bucket_ade.
- */
-function getSlotsForBucket(
+function getAllOpenSlots(
   idealSupplyData: GeoJSON.Feature[] | null,
   bucketAde: string
-): SlotGeo[] {
+): SlotRef[] {
   if (!idealSupplyData) return [];
   return idealSupplyData
     .filter((f) => {
       const p = f.properties ?? {};
       return (
         p.type === 'IDEAL_SLOT' &&
-        (p.territory_id === bucketAde || p.bucket_ade === bucketAde)
+        (p.territory_id === bucketAde || p.bucket_ade === bucketAde) &&
+        !p.matched_partner_id
       );
     })
     .map((f) => {
       const p = f.properties ?? {};
-      // Centróide do slot: geometry é um Point ou Polygon
-      let lat = p.lat as number | undefined;
-      let lon = p.lon as number | undefined;
-      if ((lat == null || lon == null) && f.geometry?.type === 'Point') {
-        const coords = (f.geometry as GeoJSON.Point).coordinates;
-        lon = coords[0];
-        lat = coords[1];
-      }
+      const coords = (f.geometry as GeoJSON.Point).coordinates;
       return {
-        lat: lat ?? 0,
-        lon: lon ?? 0,
-        radius_s: (p.radius_s as number) ?? 500,
-        ceps: (p.ceps as string[]) ?? [],
+        slot_id:  (p.slot_id as string) ?? '',
+        h3_r9_id: (p.h3_r9_id as string | null) ?? null,
+        h3_r8_id: (p.h3_r8_id as string | null) ?? null,
+        lat:      coords[1],
+        lon:      coords[0],
       };
-    })
-    .filter((s) => s.lat !== 0 || s.lon !== 0);
-}
-
-const MAX_DISTANCE_M = 1000;
-
-/**
- * Valida e filtra empresas conforme a lógica do vanilla:
- * - Google Maps (tem lat/lon): dentro do raio de algum slot E <= 1000m
- * - Receita Federal (sem lat/lon): CEP pertence ao cepSet de algum slot
- * Retorna apenas as empresas que passam na validação, com isMatch setado.
- */
-function validateAndFilter(
-  companies: ProspectCompany[],
-  slots: SlotGeo[],
-  cepSet: Set<string>
-): ProspectCompany[] {
-  if (slots.length === 0 && cepSet.size === 0) return companies;
-
-  return companies
-    .map((company) => {
-      const isGoogleMaps = company._fonte === 'Google Maps';
-
-      if (isGoogleMaps && company.lat != null && company.lon != null) {
-        // Calcular distância ao slot mais próximo
-        let minDist = Infinity;
-        let matchRadius = false;
-        for (const slot of slots) {
-          const distM = Math.round(
-            turf.distance(
-              turf.point([slot.lon, slot.lat]),
-              turf.point([company.lon, company.lat]),
-              { units: 'meters' }
-            )
-          );
-          if (distM < minDist) minDist = distM;
-          if (distM <= slot.radius_s) { matchRadius = true; break; }
-        }
-        // Filtrar: deve estar dentro do raio de algum slot E <= MAX_DISTANCE_M
-        if (minDist > MAX_DISTANCE_M) return null;
-        return { ...company, isMatch: matchRadius };
-      } else {
-        // Receita Federal — validar por CEP
-        const cleanCep = (company.cep ?? '').replace(/\D/g, '');
-        const isMatch = cepSet.size > 0 ? cepSet.has(cleanCep) : null;
-        if (isMatch === false) return null; // fora dos CEPs da carteira
-        return { ...company, isMatch };
-      }
-    })
-    .filter((c): c is ProspectCompany => c !== null);
+    });
 }
 
 export default function ProspectTab(): JSX.Element {
@@ -207,19 +152,14 @@ export default function ProspectTab(): JSX.Element {
     setProspectError(null);
 
     try {
-      // Coleta os CEPs únicos dos parceiros da carteira selecionada
-      const partnerCeps = allMarkersData
-        .filter((p) => p.delivery_station === selectedStation && p.bucket_ade === selectedBucket)
-        .flatMap((p) => p.ceps ?? [])
-        .filter(Boolean);
-      const uniqueCeps = [...new Set(partnerCeps)];
+      const openSlots = getAllOpenSlots(idealSupplyData, selectedBucket);
 
       const res = await fetch(`${API_BASE_URL}/api/empresas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ceps: uniqueCeps,
           territory_id: selectedBucket,
+          slots:        openSlots,
         }),
       });
 
@@ -228,14 +168,8 @@ export default function ProspectTab(): JSX.Element {
       }
 
       const data = await res.json();
-      // API retorna { total, empresas: [...] } ou array direto
-      const rawCompanies = (Array.isArray(data) ? data : (data.empresas ?? []))
+      const companies = (Array.isArray(data) ? data : (data.empresas ?? []))
         .map((raw: Record<string, unknown>) => normalizeCompany(raw));
-
-      // Validar: manter apenas empresas dentro do raio de algum slot (Google Maps)
-      // ou com CEP pertencente à carteira (Receita Federal)
-      const slots = getSlotsForBucket(idealSupplyData, selectedBucket);
-      const companies = validateAndFilter(rawCompanies, slots, new Set(uniqueCeps));
 
       setCompanies(companies);
       setProspectStation(selectedStation);

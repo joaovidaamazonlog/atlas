@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from models import PartnerMetrics, Allocation
+from shared.models import PartnerMetrics, Allocation
 
 # ---------------------------------------------------------------------------
 # Constants mirrored from the design document

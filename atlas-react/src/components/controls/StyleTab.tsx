@@ -131,6 +131,18 @@ export default function StyleTab() {
           checked={styleConfig.showOptimizationLayer}
           onChange={(v) => setStyleConfig({ showOptimizationLayer: v })}
         />
+        <CheckboxRow
+          id="layer-geo-intelligence"
+          label="Exibir Geointeligência"
+          checked={styleConfig.showGeoIntelligence}
+          onChange={(v) => setStyleConfig({ showGeoIntelligence: v })}
+        />
+        <CheckboxRow
+          id="layer-geo-intelligence"
+          label="Exibir Geointeligência"
+          checked={styleConfig.showGeoIntelligence}
+          onChange={(v) => setStyleConfig({ showGeoIntelligence: v })}
+        />
       </div>
     </div>
   );

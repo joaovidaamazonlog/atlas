@@ -1,4 +1,4 @@
-# ATLAS — Analytical Tracking for Location and Store
+﻿﻿# ATLAS — Analytical Tracking for Location and Store performance
 
 > Sistema completo de gestão e otimização de rede de parceiros logísticos last-mile.
 >
@@ -13,8 +13,10 @@
   - [Funcionalidades](#funcionalidades)
   - [Arquitetura Geral](#arquitetura-geral)
   - [Backend — Pipeline de Otimização](#backend--pipeline-de-otimização)
+  - [Pipeline GeoIntelligence v2](#pipeline-geointelligence-v2)
   - [Frontend — Interface Interativa](#frontend--interface-interativa)
-  - [Google Maps Scraper](#google-maps-scraper)
+  - [Frontend React (atlas-react)](#frontend-react-atlas-react)
+  - [Google Maps Scraper e API de Prospecção](#google-maps-scraper-e-api-de-prospecção)
   - [Estrutura de Arquivos](#estrutura-de-arquivos)
   - [Como Usar](#como-usar)
   - [Configuração](#configuração)
@@ -24,8 +26,10 @@
   - [Features](#features)
   - [General Architecture](#general-architecture)
   - [Backend — Optimization Pipeline](#backend--optimization-pipeline)
+  - [GeoIntelligence Pipeline v2](#geointelligence-pipeline-v2)
   - [Frontend — Interactive Interface](#frontend--interactive-interface)
-  - [Google Maps Scraper](#google-maps-scraper-1)
+  - [React Frontend (atlas-react)](#react-frontend-atlas-react)
+  - [Google Maps Scraper and Prospecting API](#google-maps-scraper-and-prospecting-api)
   - [File Structure](#file-structure)
   - [How to Use](#how-to-use)
   - [Configuration](#configuration)
@@ -203,12 +207,25 @@ Apenas empresas a **≤1000m** do slot são exibidas no popup. Empresas mais dis
 │                                                             │
 │  GitHub Actions (cron diário)                               │
 │  → run_batch.js → Puppeteer → gmaps_results.json            │
+
+
+┌─────────────────────────────────────────────────────────────┐
+│           GEOINTELLIGENCE V2 PIPELINE (Python + ML)        │
+│                                                             │
+│  Fase 1: Area Intelligence (H3 + enrichers + classifier)    │
+│  Fase 2: Ideal Supply (CP-SAT solver)                       │
+│  Fase 3: Territory Fit (matching)                           │
+│  → Resultados persistidos no Turso (libSQL)                 │
 └─────────────────────────────────────────────────────────────┘
-```
 
----
-
-## Backend — Pipeline de Otimização
+┌─────────────────────────────────────────────────────────────┐
+│           FRONTEND REACT — atlas-react (React 18)           │
+│                                                             │
+│  Vite + TypeScript + Leaflet + Zustand + Tailwind CSS       │
+│  Mapa interativo, dashboard KPIs, prospecção de leads       │
+│  PWA com Web Worker para processamento assíncrono           │
+└─────────────────────────────────────────────────────────────┘
+```\n\n---\n\n## Backend — Pipeline de Otimização
 
 ### Modo Setup — "Onde deveriam estar os parceiros?"
 
@@ -282,6 +299,246 @@ Ao usar `--stations` em qualquer modo, o sistema faz **merge inteligente** dos a
 
 ---
 
+
+## Pipeline GeoIntelligence v2
+
+Pipeline baseado em H3 + ML para expansão territorial orientada a dados. Roda independente do pipeline principal e responde à pergunta: **"Quais territórios têm maior potencial para novos parceiros?"**
+
+```bash
+cd backend
+python geo_intelligence/geo_orchestrator.py --mode setup --target 50
+python geo_intelligence/geo_orchestrator.py --mode setup --target 50 --stations DSP2
+python geo_intelligence/geo_orchestrator.py --update-heatmap
+```
+
+### Visão Geral das Fases
+
+```
+packages.csv + partners.json
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  FASE 1 — Area Intelligence                                 │
+│                                                             │
+│  Ingestor → Enrichers (CNPJ, OSM, IBGE, Satélite)          │
+│  → Feature Engineering (24 features, imputação, min-max)   │
+│  → Profile Builder (Success/Failure vectors)                │
+│  → Classifier (UMAP → HDBSCAN / KMeans / Random Forest)    │
+│  → Potential Calculator (score [0-100] por hex e território)│
+│  → Area Selector (top N% por gap)                           │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  FASE 2 — Ideal Supply (CP-SAT)                             │
+│  Posiciona vagas ideais nos territórios selecionados        │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  FASE 3 — Territory Fit                                     │
+│  Matching de parceiros existentes com territórios           │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+   Turso (libSQL) — resultados persistidos
+   Camada showGeoIntelligence no mapa
+```
+
+---
+
+### Fase 1 — Area Intelligence (ML detalhado)
+
+#### 1.1 Ingestor
+
+Mapeia entregas históricas para hexágonos H3 resolução 8 (~1 km²) dentro da jurisdição da base.
+
+- Lê `packages.csv` (lat, lon, station_code)
+- Converte cada entrega para `h3.latlng_to_cell(lat, lon, res=8)`
+- Filtra hexes fora do polígono de jurisdição via `shapely.contains(centroide)`
+- Aplica `DELIVERY_DENSITY_THRESHOLD = 5` entregas/dia — hexes abaixo são descartados (sem demanda viável)
+- Resultado: `{h3_id: delivery_count}` — apenas hexes com demanda real
+
+#### 1.2 Enrichers — Fontes de Dados
+
+Cada enricher é independente e tem degradação graciosa (falha → features `None`, pipeline continua).
+
+**CnpjEnricher** (Turso/libSQL):
+- Consulta tabela `empresas_geo` com `h3_id` pré-computado
+- Calcula por hex (~0.1 km²):
+  - `company_density` — total de empresas / área
+  - `cnae_diversity_index` — entropia de Shannon normalizada sobre CNAEs (diversidade econômica)
+  - `target_business_density` — empresas com CNAE 5320/5310/5229/5212/5211 (logística/entrega) / área
+  - `bars_restaurants_density`, `churches_density`, `schools_density`, `dealerships_density`, `petshops_density` — densidades por tipo de estabelecimento (proxy de fluxo de pessoas)
+
+**OsmEnricher** (OpenStreetMap via osmnx):
+- Extrai features urbanas por bounding box do hex:
+  - `building_density` — edifícios / km²
+  - `avg_building_size_m2` — área média das footprints (m²)
+  - `landuse_residential_ratio` / `landuse_commercial_ratio` — fração da área por tipo de uso
+  - `poi_density` — pontos de interesse / km²
+  - `road_connectivity_index` — grau médio dos nós na rede viária (acessibilidade)
+  - `landuse_entropy` — entropia de Shannon sobre categorias de landuse (diversidade urbana)
+  - `road_centrality_index` — betweenness centralidade média da rede viária (normalizado)
+  - `local_clustering_coefficient` — coeficiente de clustering médio da rede viária
+
+**IbgeEnricher** (Censo 2022):
+- Interseção geométrica entre o hex H3 e setores censitários IBGE
+- Média ponderada pela área de interseção:
+  - `avg_income` — renda média do setor
+  - `population_density` — densidade demográfica
+- Download automático do shapefile por UF via API IBGE se não existir localmente
+
+**SatelliteEnricher** (Google Earth Engine):
+- `ndvi_mean` — índice de vegetação NDVI médio (Landsat 8, últimos 12 meses, cloud < 20%)
+- `urban_density_index` — proporção de superfície construída (GHSL GHS_BUILT_S, normalizado para [0,1])
+- `built_up_ratio` — fração de pixels construídos (GHSL GHS_BUILT_C)
+- `morphology_class` — classificação da morfologia urbana por thresholds:
+  - `ndvi > 0.4` → `green_area`
+  - `urban_density > 0.8` → `high_density_urban`
+  - `urban_density > 0.4` → `low_density_urban`
+  - `built_up > 0.6 AND ndvi < 0.1` → `commercial_industrial`
+  - `built_up > 0.3 AND urban_density < 0.3` → `informal_settlement`
+  - else → `rural`
+
+#### 1.3 Feature Engineering
+
+Pipeline: **build → impute → normalize**
+
+**24 features numéricas** consolidadas de todos os enrichers:
+
+| Grupo | Features |
+|---|---|
+| Econômicas (CNPJ) | `company_density`, `cnae_diversity_index`, `target_business_density`, `bars_restaurants_density`, `churches_density`, `schools_density`, `dealerships_density`, `petshops_density` |
+| Urbanas (OSM) | `building_density`, `avg_building_size_m2`, `landuse_residential_ratio`, `landuse_commercial_ratio`, `poi_density`, `road_connectivity_index`, `landuse_entropy`, `road_centrality_index`, `local_clustering_coefficient` |
+| Socioeconômicas (IBGE) | `avg_income`, `population_density` |
+| Satélite (GEE) | `ndvi_mean`, `urban_density_index`, `built_up_ratio` |
+| Derivadas (v2) | `commercial_activity_index = (landuse_commercial_ratio + target_business_density) / 2` |
+| Contexto (v2) | `delivery_density_r8` — volume normalizado de entregas no hex (peso máx `DELIVERY_DENSITY_WEIGHT = 0.10`) |
+
+**Imputação por vizinhança H3:**
+Valores `None` são imputados pela mediana dos hexes no `grid_disk(h, 1)` (anel de 6 vizinhos). Isso preserva a continuidade espacial sem introduzir viés global.
+
+**Normalização min-max por DS:**
+Cada feature é normalizada para `[0, 1]` dentro da base (`(x - min) / (max - min)`). Os parâmetros são persistidos em `models/{station_code}_norm_params_{timestamp}.json` (mantém os 3 mais recentes).
+
+#### 1.4 Profile Builder — Memória Institucional
+
+Constrói dois vetores de referência a partir do histórico de parceiros:
+
+**Success Vector** — média ponderada por `log(1 + tenure_days)` dos parceiros `Active` com tenure ≥ 30 dias. Representa o perfil geográfico de onde parceiros prosperam.
+
+**Failure Vector** — média ponderada por `area_penalty × log(1 + tenure_days)` dos parceiros `Exited` com `exit_reason_class = "area_signal"`. Representa onde a área em si causou a saída (não o parceiro).
+
+Classificação de motivos de saída:
+
+| Motivo | Classe | Penalidade |
+|---|---|---|
+| `volume_insuficiente` | `area_signal` | 1.0 |
+| `acesso_dificil` | `area_signal` | 0.8 |
+| `sobreposicao` | `area_signal` | 0.5 |
+| `operacional` | `partner_signal` | 0.2 |
+| `falencia`, `desistencia_voluntaria`, `compliance` | `partner_signal` | 0.0 |
+
+Fallback global: se `n_active < 3`, usa perfil global pré-construído para evitar overfitting em bases novas.
+
+`profile_coverage` mede a fração de hexes com pelo menos um parceiro no `grid_disk(h, 1)`. Alerta se < 10%.
+
+Vetores persistidos em `models/{station_code}_success_{timestamp}.npy` e `_failure_{timestamp}.npy`.
+
+#### 1.5 Classifier — UMAP → HDBSCAN
+
+**Objetivo:** classificar cada hex em um `RegionType` (tipo de região) para ponderar o potential score.
+
+**Pipeline de classificação:**
+
+```
+Feature Matrix (n_cells × 24)
+        │
+        ▼
+   UMAP (n_components=2, n_neighbors=15, min_dist=0.1)
+   Redução dimensional não-linear — preserva estrutura local
+        │
+        ▼
+   HDBSCAN (min_cluster_size = max(5, n//20))
+   Clustering hierárquico baseado em densidade
+   Detecta clusters de forma arbitrária + ruído (label=-1)
+        │
+        ├─ < 3 clusters → fallback KMeans (k=6)
+        │
+        ▼
+   Silhouette Score — alerta se < 0.2 (clustering de baixa qualidade)
+        │
+        ▼
+   Semantic Anchors (opcional)
+   Mapeia cluster_id → RegionType via hex de referência configurado
+        │
+        ▼
+   CellClassification {h3_id, region_type, model_confidence, low_confidence}
+```
+
+**RegionTypes disponíveis:**
+
+| Tipo | Peso no potential score |
+|---|---|
+| `comercial` | 1.0 |
+| `residencial_alta_renda` | 0.9 |
+| `alto_padrao` | 0.85 |
+| `residencial_media_renda` | 0.7 |
+| `residencial_baixa_renda` | 0.5 |
+| `favela_comunidade` | 0.4 |
+| `industrial` | 0.3 |
+| `rural` | 0.1 |
+
+**Confiança do modelo:** calculada como `1 - (distância ao centroide / distância máxima)` no espaço UMAP. Hexes com confiança < 0.5 são marcados como `low_confidence`.
+
+**Modo supervisionado (quando há dados rotulados suficientes):**
+Se `labeled_data` for fornecido com ≥ 50 amostras por classe, treina um **Random Forest** (ou XGBoost se disponível) sobre as features brutas (não UMAP). Métricas por classe (precision, recall, F1) são logadas. O modelo é persistido em `models/{station_code}_{timestamp}.joblib`.
+
+O modelo UMAP é salvo em `models/{station_code}_umap_{timestamp}.joblib` e um scatter plot em `models/{station_code}_umap_scatter_{timestamp}.png` para inspeção visual.
+
+#### 1.6 Potential Calculator
+
+**Score por hex (cell-level):**
+
+```
+potential = Σ(weight_i × feature_i) / Σ(weight_i)
+```
+
+Onde as features e pesos são:
+
+| Feature | Peso |
+|---|---|
+| `target_business_density` | 0.25 |
+| `avg_income` | 0.20 |
+| `region_type_weight` | 0.20 |
+| `population_density` | 0.15 |
+| `road_connectivity_index` | 0.10 |
+| `commercial_activity_index` | 0.10 |
+
+**Agregação por território:**
+Média ponderada pelo volume de entregas (`delivery_count`) dos hexes do território. Normalizada para `[0, 100]` dentro da DS (max = 100).
+
+**Gap:**
+```
+gap = potential_score - (current_partners / ideal_slots × 100)
+```
+Territórios com `gap > 20` são marcados como `high_opportunity`.
+
+**Modo similarity (v2):**
+Quando há perfis de referência, usa similaridade de cosseno no espaço UMAP:
+```
+raw_score = cosine_sim(cell_umap, success_umap)
+           - FAILURE_PENALTY_WEIGHT × cosine_sim(cell_umap, failure_umap)
+```
+Penalidades adicionais:
+- Fast-exit penalty (`-0.20`) se o hex tem histórico de 2+ saídas rápidas (< 180 dias) por `area_signal`
+- Delivery density gate: `raw_score = 0` se `delivery_density < DELIVERY_DENSITY_THRESHOLD`
+
+Resultados persistidos no Turso. Camada `showGeoIntelligence` disponível no mapa.
+
+---
+
 ## Frontend — Interface Interativa
 
 ### Módulos (ES Modules nativos)
@@ -312,23 +569,89 @@ Ao usar `--stations` em qualquer modo, o sistema faz **merge inteligente** dos a
 
 ---
 
-## Google Maps Scraper
+
+## Frontend React (atlas-react)
+
+Versão moderna do ATLAS em React 18 + TypeScript + Leaflet + Zustand. Substitui progressivamente o frontend legado.
+
+```bash
+cd atlas-react
+npm install
+npm run dev    # desenvolvimento
+npm run build  # produção
+npm test       # testes (vitest --run)
+```
+
+- Mapa interativo: marcadores, polígonos, heatmap, rotas, camada GeoIntelligence v2
+- Painel de controles: Filtros, Rotas, Prospecção, Análise de Área, Estilo
+- Dashboard com KPIs, gráficos (Chart.js) e tabela de estações
+- Prospecção de leads com clustering visual e integração com a API
+- PWA com service worker, Web Worker para processamento assíncrono
+- Tema claro/escuro, layout responsivo (Tailwind CSS)
+
+| Biblioteca | Uso |
+|---|---|
+| React 18 + TypeScript | UI e tipagem |
+| Vite | Build e dev server |
+| Leaflet + react-leaflet | Mapa interativo |
+| @turf/turf | Operações geoespaciais |
+| Zustand | Estado global |
+| Chart.js | Gráficos |
+| Tailwind CSS | Estilização |
+| Vitest + fast-check | Testes + PBT |
+
+---
+
+## Google Maps Scraper e API de Prospecção
+
+Ecossistema de prospecção de leads composto por dois serviços complementares.
+
+### Google Maps Scraper (Node.js)
 
 Serviço Node.js que roda via GitHub Actions para gerar o banco de dados de empresas candidatas.
 
-### Tipos de negócio buscados
+#### Tipos de negócio buscados
 - Lanchonete
 - Açaí e sorveteria
 - Chaveiro
 - Assistência técnica
 
-### Instalação
+#### Instalação
 
 ```bash
-cd gmaps-scraper
+cd _api_backend/gmaps_scraper
 npm install
 node run_batch.js                          # todas as bases
 node run_batch.js --stations DSP2 DBH5    # bases específicas
+```
+
+### API de Prospecção (FastAPI + Vercel)
+
+FastAPI deployada no Vercel. Conecta ao Turso via HTTP API para busca de leads e rastreamento de contatos.
+
+#### Endpoints
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/api` | Status da API |
+| POST | `/api/empresas` | Busca empresas por CEPs e/ou territory_id |
+| POST | `/api/empresas/contactada` | Marca/desmarca lead como contactado |
+
+#### Deploy local
+
+```bash
+cd _api_backend
+pip install -r requirements.txt
+uvicorn api.main:app --reload
+```
+
+Variáveis de ambiente: `TURSO_URL`, `TURSO_TOKEN`.
+
+#### ETL CNPJ
+
+```bash
+python _api_backend/etl_cnpj.py           # versão padrão
+python _api_backend/etl_cnpj_low_mem.py   # versão low-memory
 ```
 
 ---
@@ -486,6 +809,7 @@ export const CNPJ_API_URL = "https://api-cnpj-br.vercel.app/api/buscar";
 | `cors` | Controle de CORS |
 
 ---
+
 
 # English
 
@@ -653,12 +977,25 @@ Only companies within **≤1000m** of the slot are shown in the popup. More dist
 │                                                             │
 │  GitHub Actions (daily cron)                                │
 │  → run_batch.js → Puppeteer → gmaps_results.json            │
+
+
+┌─────────────────────────────────────────────────────────────┐
+│           GEOINTELLIGENCE V2 PIPELINE (Python + ML)        │
+│                                                             │
+│  Phase 1: Area Intelligence (H3 + enrichers + classifier)   │
+│  Phase 2: Ideal Supply (CP-SAT solver)                      │
+│  Phase 3: Territory Fit (matching)                          │
+│  → Results persisted in Turso (libSQL)                      │
 └─────────────────────────────────────────────────────────────┘
-```
 
----
-
-## Backend — Optimization Pipeline
+┌─────────────────────────────────────────────────────────────┐
+│           REACT FRONTEND — atlas-react (React 18)           │
+│                                                             │
+│  Vite + TypeScript + Leaflet + Zustand + Tailwind CSS       │
+│  Interactive map, KPI dashboard, lead prospecting           │
+│  PWA with Web Worker for async data processing              │
+└─────────────────────────────────────────────────────────────┘
+```\n\n---\n\n## Backend — Optimization Pipeline
 
 ### Setup Mode
 
@@ -728,6 +1065,246 @@ Only companies within **≤1000m** of the slot are shown in the popup. More dist
 
 ---
 
+
+## GeoIntelligence Pipeline v2
+
+H3 + ML-based pipeline for data-driven territorial expansion. Runs independently from the main pipeline and answers: **"Which territories have the highest potential for new partners?"**
+
+```bash
+cd backend
+python geo_intelligence/geo_orchestrator.py --mode setup --target 50
+python geo_intelligence/geo_orchestrator.py --mode setup --target 50 --stations DSP2
+python geo_intelligence/geo_orchestrator.py --update-heatmap
+```
+
+### Phase Overview
+
+```
+packages.csv + partners.json
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  PHASE 1 — Area Intelligence                                │
+│                                                             │
+│  Ingestor → Enrichers (CNPJ, OSM, IBGE, Satellite)         │
+│  → Feature Engineering (24 features, imputation, min-max)  │
+│  → Profile Builder (Success/Failure vectors)                │
+│  → Classifier (UMAP → HDBSCAN / KMeans / Random Forest)    │
+│  → Potential Calculator (score [0-100] per hex/territory)   │
+│  → Area Selector (top N% by gap)                            │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  PHASE 2 — Ideal Supply (CP-SAT)                            │
+│  Positions ideal slots in selected territories              │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│  PHASE 3 — Territory Fit                                    │
+│  Matches existing partners to territories                   │
+└─────────────────────────────────────────────────────────────┘
+        │
+        ▼
+   Turso (libSQL) — persisted results
+   showGeoIntelligence layer on the map
+```
+
+---
+
+### Phase 1 — Area Intelligence (ML detail)
+
+#### 1.1 Ingestor
+
+Maps historical deliveries to H3 hexagons at resolution 8 (~1 km²) within the station's jurisdiction.
+
+- Reads `packages.csv` (lat, lon, station_code)
+- Converts each delivery to `h3.latlng_to_cell(lat, lon, res=8)`
+- Filters hexes outside the jurisdiction polygon via `shapely.contains(centroid)`
+- Applies `DELIVERY_DENSITY_THRESHOLD = 5` deliveries/day — hexes below are discarded (no viable demand)
+- Output: `{h3_id: delivery_count}` — only hexes with real demand
+
+#### 1.2 Enrichers — Data Sources
+
+Each enricher is independent with graceful degradation (failure → features `None`, pipeline continues).
+
+**CnpjEnricher** (Turso/libSQL):
+- Queries `empresas_geo` table with pre-computed `h3_id`
+- Computes per hex (~0.1 km²):
+  - `company_density` — total companies / area
+  - `cnae_diversity_index` — normalized Shannon entropy over CNAEs (economic diversity)
+  - `target_business_density` — companies with CNAE 5320/5310/5229/5212/5211 (logistics/delivery) / area
+  - `bars_restaurants_density`, `churches_density`, `schools_density`, `dealerships_density`, `petshops_density` — densities by establishment type (foot traffic proxy)
+
+**OsmEnricher** (OpenStreetMap via osmnx):
+- Extracts urban features per hex bounding box:
+  - `building_density` — buildings / km²
+  - `avg_building_size_m2` — average building footprint area (m²)
+  - `landuse_residential_ratio` / `landuse_commercial_ratio` — area fraction by land use type
+  - `poi_density` — points of interest / km²
+  - `road_connectivity_index` — average node degree in road network (accessibility)
+  - `landuse_entropy` — Shannon entropy over land use categories (urban diversity)
+  - `road_centrality_index` — average betweenness centrality of road network (normalized)
+  - `local_clustering_coefficient` — average clustering coefficient of road network
+
+**IbgeEnricher** (Census 2022):
+- Geometric intersection between H3 hex and IBGE census sectors
+- Area-weighted average:
+  - `avg_income` — sector average income
+  - `population_density` — demographic density
+- Auto-downloads state shapefile from IBGE API if not found locally
+
+**SatelliteEnricher** (Google Earth Engine):
+- `ndvi_mean` — average NDVI vegetation index (Landsat 8, last 12 months, cloud < 20%)
+- `urban_density_index` — built surface proportion (GHSL GHS_BUILT_S, normalized to [0,1])
+- `built_up_ratio` — fraction of built pixels (GHSL GHS_BUILT_C)
+- `morphology_class` — urban morphology classification by thresholds:
+  - `ndvi > 0.4` → `green_area`
+  - `urban_density > 0.8` → `high_density_urban`
+  - `urban_density > 0.4` → `low_density_urban`
+  - `built_up > 0.6 AND ndvi < 0.1` → `commercial_industrial`
+  - `built_up > 0.3 AND urban_density < 0.3` → `informal_settlement`
+  - else → `rural`
+
+#### 1.3 Feature Engineering
+
+Pipeline: **build → impute → normalize**
+
+**24 numeric features** consolidated from all enrichers:
+
+| Group | Features |
+|---|---|
+| Economic (CNPJ) | `company_density`, `cnae_diversity_index`, `target_business_density`, `bars_restaurants_density`, `churches_density`, `schools_density`, `dealerships_density`, `petshops_density` |
+| Urban (OSM) | `building_density`, `avg_building_size_m2`, `landuse_residential_ratio`, `landuse_commercial_ratio`, `poi_density`, `road_connectivity_index`, `landuse_entropy`, `road_centrality_index`, `local_clustering_coefficient` |
+| Socioeconomic (IBGE) | `avg_income`, `population_density` |
+| Satellite (GEE) | `ndvi_mean`, `urban_density_index`, `built_up_ratio` |
+| Derived (v2) | `commercial_activity_index = (landuse_commercial_ratio + target_business_density) / 2` |
+| Context (v2) | `delivery_density_r8` — normalized delivery volume in hex (max weight `DELIVERY_DENSITY_WEIGHT = 0.10`) |
+
+**H3 neighborhood imputation:**
+`None` values are imputed by the median of hexes in `grid_disk(h, 1)` (ring of 6 neighbors). This preserves spatial continuity without introducing global bias.
+
+**Min-max normalization per DS:**
+Each feature is normalized to `[0, 1]` within the station (`(x - min) / (max - min)`). Parameters are persisted in `models/{station_code}_norm_params_{timestamp}.json` (keeps 3 most recent).
+
+#### 1.4 Profile Builder — Institutional Memory
+
+Builds two reference vectors from partner history:
+
+**Success Vector** — tenure-weighted average (`log(1 + tenure_days)`) of `Active` partners with tenure ≥ 30 days. Represents the geographic profile of where partners thrive.
+
+**Failure Vector** — weighted average (`area_penalty × log(1 + tenure_days)`) of `Exited` partners with `exit_reason_class = "area_signal"`. Represents where the area itself caused the exit (not the partner).
+
+Exit reason classification:
+
+| Reason | Class | Penalty |
+|---|---|---|
+| `volume_insuficiente` | `area_signal` | 1.0 |
+| `acesso_dificil` | `area_signal` | 0.8 |
+| `sobreposicao` | `area_signal` | 0.5 |
+| `operacional` | `partner_signal` | 0.2 |
+| `falencia`, `desistencia_voluntaria`, `compliance` | `partner_signal` | 0.0 |
+
+Global fallback: if `n_active < 3`, uses a pre-built global profile to avoid overfitting on new stations.
+
+`profile_coverage` measures the fraction of hexes with at least one partner in `grid_disk(h, 1)`. Warns if < 10%.
+
+Vectors persisted in `models/{station_code}_success_{timestamp}.npy` and `_failure_{timestamp}.npy`.
+
+#### 1.5 Classifier — UMAP → HDBSCAN
+
+**Goal:** classify each hex into a `RegionType` to weight the potential score.
+
+**Classification pipeline:**
+
+```
+Feature Matrix (n_cells × 24)
+        │
+        ▼
+   UMAP (n_components=2, n_neighbors=15, min_dist=0.1)
+   Non-linear dimensionality reduction — preserves local structure
+        │
+        ▼
+   HDBSCAN (min_cluster_size = max(5, n//20))
+   Hierarchical density-based clustering
+   Detects arbitrary-shape clusters + noise (label=-1)
+        │
+        ├─ < 3 clusters → fallback KMeans (k=6)
+        │
+        ▼
+   Silhouette Score — warns if < 0.2 (low quality clustering)
+        │
+        ▼
+   Semantic Anchors (optional)
+   Maps cluster_id → RegionType via configured reference hex
+        │
+        ▼
+   CellClassification {h3_id, region_type, model_confidence, low_confidence}
+```
+
+**Available RegionTypes:**
+
+| Type | Weight in potential score |
+|---|---|
+| `comercial` | 1.0 |
+| `residencial_alta_renda` | 0.9 |
+| `alto_padrao` | 0.85 |
+| `residencial_media_renda` | 0.7 |
+| `residencial_baixa_renda` | 0.5 |
+| `favela_comunidade` | 0.4 |
+| `industrial` | 0.3 |
+| `rural` | 0.1 |
+
+**Model confidence:** calculated as `1 - (distance to centroid / max distance)` in UMAP space. Hexes with confidence < 0.5 are flagged as `low_confidence`.
+
+**Supervised mode (when enough labeled data is available):**
+If `labeled_data` is provided with ≥ 50 samples per class, trains a **Random Forest** (or XGBoost if available) on raw features (not UMAP). Per-class metrics (precision, recall, F1) are logged. Model persisted in `models/{station_code}_{timestamp}.joblib`.
+
+The UMAP model is saved in `models/{station_code}_umap_{timestamp}.joblib` and a scatter plot in `models/{station_code}_umap_scatter_{timestamp}.png` for visual inspection.
+
+#### 1.6 Potential Calculator
+
+**Per-hex score (cell-level):**
+
+```
+potential = Σ(weight_i × feature_i) / Σ(weight_i)
+```
+
+Features and weights:
+
+| Feature | Weight |
+|---|---|
+| `target_business_density` | 0.25 |
+| `avg_income` | 0.20 |
+| `region_type_weight` | 0.20 |
+| `population_density` | 0.15 |
+| `road_connectivity_index` | 0.10 |
+| `commercial_activity_index` | 0.10 |
+
+**Territory aggregation:**
+Delivery-volume-weighted average of hex scores within the territory. Normalized to `[0, 100]` within the DS (max = 100).
+
+**Gap:**
+```
+gap = potential_score - (current_partners / ideal_slots × 100)
+```
+Territories with `gap > 20` are flagged as `high_opportunity`.
+
+**Similarity mode (v2):**
+When reference profiles are available, uses cosine similarity in UMAP space:
+```
+raw_score = cosine_sim(cell_umap, success_umap)
+           - FAILURE_PENALTY_WEIGHT × cosine_sim(cell_umap, failure_umap)
+```
+Additional penalties:
+- Fast-exit penalty (`-0.20`) if the hex has a history of 2+ fast exits (< 180 days) due to `area_signal`
+- Delivery density gate: `raw_score = 0` if `delivery_density < DELIVERY_DENSITY_THRESHOLD`
+
+Results persisted in Turso. `showGeoIntelligence` layer available on the map.
+
+---
+
 ## Frontend — Interactive Interface
 
 ### Modules (Native ES Modules)
@@ -747,23 +1324,89 @@ Only companies within **≤1000m** of the slot are shown in the popup. More dist
 
 ---
 
-## Google Maps Scraper
+
+## React Frontend (atlas-react)
+
+Modern ATLAS version in React 18 + TypeScript + Leaflet + Zustand. Progressively replacing the legacy frontend.
+
+```bash
+cd atlas-react
+npm install
+npm run dev    # development
+npm run build  # production
+npm test       # tests (vitest --run)
+```
+
+- Interactive Leaflet map: markers, polygons, heatmap, routes, GeoIntelligence v2 layer
+- Control panel: Filters, Routes, Prospecting, Area Analysis, Style
+- Dashboard with KPIs, charts (Chart.js) and stations table
+- Lead prospecting with visual clustering and API integration
+- PWA with service worker, Web Worker for async data processing
+- Light/dark theme, responsive layout (Tailwind CSS)
+
+| Library | Usage |
+|---|---|
+| React 18 + TypeScript | UI and typing |
+| Vite | Build and dev server |
+| Leaflet + react-leaflet | Interactive map |
+| @turf/turf | Geospatial operations |
+| Zustand | Global state |
+| Chart.js | Charts |
+| Tailwind CSS | Styling |
+| Vitest + fast-check | Tests + PBT |
+
+---
+
+## Google Maps Scraper and Prospecting API
+
+Lead prospecting ecosystem composed of two complementary services.
+
+### Google Maps Scraper (Node.js)
 
 Node.js service running via GitHub Actions to generate the candidate company database.
 
-### Business types searched
+#### Business types searched
 - Snack bar (lanchonete)
 - Acai and ice cream shop
 - Locksmith (chaveiro)
 - Tech support (assistência técnica)
 
-### Installation
+#### Installation
 
 ```bash
-cd gmaps-scraper
+cd _api_backend/gmaps_scraper
 npm install
 node run_batch.js
 node run_batch.js --stations DSP2 DBH5
+```
+
+### Prospecting API (FastAPI + Vercel)
+
+FastAPI deployed on Vercel. Connects to Turso via HTTP API for lead search and contact tracking.
+
+#### Endpoints
+
+| Method | Route | Description |
+|---|---|---|
+| GET | `/api` | API status |
+| POST | `/api/empresas` | Search companies by ZIP codes and/or territory_id |
+| POST | `/api/empresas/contactada` | Mark/unmark lead as contacted |
+
+#### Local deploy
+
+```bash
+cd _api_backend
+pip install -r requirements.txt
+uvicorn api.main:app --reload
+```
+
+Environment variables: `TURSO_URL`, `TURSO_TOKEN`.
+
+#### CNPJ ETL
+
+```bash
+python _api_backend/etl_cnpj.py           # standard version
+python _api_backend/etl_cnpj_low_mem.py   # low-memory version
 ```
 
 ---

@@ -3,20 +3,22 @@
  * =============
  * Legenda do mapa no canto inferior direito.
  * Mostra colorMap de borda (primaryField) e preenchimento (secondaryField).
+ * Quando a camada de Geointeligência está ativa, exibe a escala de potencial.
  */
 
-import { useMemo } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
-import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { useStore } from '../../store';
 import { buildColorMaps } from '../../lib/colorUtils';
+import { potentialScoreToColor } from '../../lib/geoIntelligenceUtils';
 
 export default function MapLegend() {
   const map = useMap();
   const data = useStore((s) => s.currentFilteredData);
   const styleConfig = useStore((s) => s.styleConfig);
   const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
+  const showGeoIntelligence = useStore((s) => s.styleConfig.showGeoIntelligence);
   const controlRef = useRef<L.Control | null>(null);
 
   const colorMaps = useMemo(
@@ -25,13 +27,11 @@ export default function MapLegend() {
   );
 
   useEffect(() => {
-    // Remove controle anterior
     if (controlRef.current) {
       map.removeControl(controlRef.current);
       controlRef.current = null;
     }
 
-    // Não exibir legenda quando prospect está ativo
     if (prospectActive) return;
 
     const LegendControl = L.Control.extend({
@@ -51,18 +51,23 @@ export default function MapLegend() {
 
         let html = '<b style="display:block;margin-bottom:6px;">Legenda</b>';
 
-        // Borda (primaryField)
         html += `<b>Borda (${styleConfig.primaryField}):</b><br>`;
         for (const [key, color] of Object.entries(colorMaps.border)) {
           html += `<span style="display:inline-block;width:14px;height:14px;background:#fff;border:3px solid ${color};margin-right:5px;vertical-align:middle;"></span>${key}<br>`;
         }
 
-        // Preenchimento (secondaryField) — só quando diferente do primário
         if (Object.keys(colorMaps.fill).length > 0) {
           html += `<hr style="border-color:#4a5568;margin:6px 0;"><b>Preenchimento (${styleConfig.secondaryField}):</b><br>`;
           for (const [key, color] of Object.entries(colorMaps.fill)) {
             html += `<span style="display:inline-block;width:14px;height:14px;background:${color};border:1.5px solid #222;margin-right:5px;vertical-align:middle;"></span>${key}<br>`;
           }
+        }
+
+        if (showGeoIntelligence) {
+          const stops = [0, 25, 50, 75, 100].map((s) => `${potentialScoreToColor(s)} ${s}%`).join(', ');
+          html += `<hr style="border-color:#4a5568;margin:6px 0;"><b>Potencial (Geointeligência):</b><br>`;
+          html += `<div style="width:100%;height:14px;background:linear-gradient(to right,${stops});border-radius:3px;margin:4px 0 2px;border:1px solid #334155;"></div>`;
+          html += `<div style="display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;"><span>0</span><span>100</span></div>`;
         }
 
         div.innerHTML = html;
@@ -80,7 +85,7 @@ export default function MapLegend() {
         controlRef.current = null;
       }
     };
-  }, [map, colorMaps, styleConfig, prospectActive]);
+  }, [map, colorMaps, styleConfig, prospectActive, showGeoIntelligence]);
 
   return null;
 }

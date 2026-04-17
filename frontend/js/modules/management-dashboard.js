@@ -10,6 +10,7 @@
  */
 
 import { DATA_URLS } from '../config.js';
+import { state } from '../state.js';
 
 // ---------------------------------------------------------------------------
 // Estado interno
@@ -1010,6 +1011,104 @@ function _renderCepListing(container, selectedTerritory) {
 }
 
 // ---------------------------------------------------------------------------
+// Parceiros Ativos por Bucket
+// ---------------------------------------------------------------------------
+
+/**
+ * Retorna parceiros ativos agrupados por bucket_ade, usando bucket_ade como fonte.
+ * Filtra pela delivery_station selecionada (ou todas se 'all').
+ * @param {string} selectedStation
+ * @returns {{ bucket: string, partners: {name:string, store_id:string, bucket_ade:string}[] }[]}
+ */
+function _getActivePartnersByBucket(selectedStation) {
+    const all = state.allMarkersData || [];
+    const active = all.filter(p =>
+        p.status === 'Active' &&
+        p.bucket_ade &&
+        (selectedStation === 'all' || p.delivery_station === selectedStation)
+    );
+
+    const grouped = {};
+    for (const p of active) {
+        const key = p.bucket_ade;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push({ name: p.name, store_id: p.store_id, bucket_ade: p.bucket_ade });
+    }
+
+    return Object.entries(grouped)
+        .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+        .map(([bucket, partners]) => ({ bucket, partners }));
+}
+
+/**
+ * Exporta os dados de parceiros ativos por bucket como arquivo CSV.
+ * @param {{ bucket: string, partners: {name:string, store_id:string, bucket_ade:string}[] }[]} groups
+ */
+function _exportPartnersBucketCSV(groups) {
+    const rows = [['name', 'store_id', 'bucket_ade']];
+    for (const { partners } of groups) {
+        for (const p of partners) {
+            rows.push([`"${p.name}"`, p.store_id, p.bucket_ade]);
+        }
+    }
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'parceiros_ativos_por_bucket.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+/**
+ * Renderiza a tabela de parceiros ativos por bucket.
+ * @param {HTMLElement} container
+ * @param {string} selectedStation
+ */
+function _renderPartnersByBucketTable(container, selectedStation) {
+    const groups = _getActivePartnersByBucket(selectedStation);
+    const total = groups.reduce((s, g) => s + g.partners.length, 0);
+
+    if (total === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const rows = groups.flatMap(({ partners }) =>
+        partners.map(p => `<tr>
+            <td>${p.name}</td>
+            <td>${p.store_id}</td>
+            <td>${p.bucket_ade}</td>
+        </tr>`)
+    ).join('');
+
+    container.innerHTML = `
+        <div class="md-partners-bucket-section">
+            <div class="md-section-header">
+                <h3>Parceiros Ativos por Bucket (${total})</h3>
+                <button class="md-export-btn" id="md-export-bucket-btn">⬇ Exportar CSV</button>
+            </div>
+            <div class="md-table-wrapper">
+                <table class="md-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Store ID</th>
+                            <th>Bucket</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        </div>`;
+
+    document.getElementById('md-export-bucket-btn')?.addEventListener('click', () => {
+        _exportPartnersBucketCSV(groups);
+    });
+}
+
+// ---------------------------------------------------------------------------
 // API pública
 // ---------------------------------------------------------------------------
 
@@ -1069,4 +1168,13 @@ export function render() {
         root.appendChild(cepContainer);
     }
     _renderCepListing(cepContainer, _activeFilters.territory);
+
+    // Render partners by bucket table
+    let bucketContainer = root.querySelector('.md-partners-bucket-container');
+    if (!bucketContainer) {
+        bucketContainer = document.createElement('div');
+        bucketContainer.className = 'md-partners-bucket-container';
+        root.appendChild(bucketContainer);
+    }
+    _renderPartnersByBucketTable(bucketContainer, _activeFilters.base);
 }

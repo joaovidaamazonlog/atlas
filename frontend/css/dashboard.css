@@ -351,3 +351,41 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ---------------------------------------------------------------------------
+   Parceiros Ativos por Bucket
+   --------------------------------------------------------------------------- */
+
+.md-partners-bucket-section {
+    margin-top: var(--md-spacing-md);
+}
+
+.md-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--md-spacing-sm);
+}
+
+.md-section-header h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--md-text-secondary);
+    margin: 0;
+}
+
+.md-export-btn {
+    background: var(--md-accent);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.md-export-btn:hover {
+    opacity: 0.85;
+}

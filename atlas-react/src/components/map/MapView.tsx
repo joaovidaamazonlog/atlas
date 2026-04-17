@@ -21,19 +21,10 @@ import HeatmapLayer from './HeatmapLayer';
 import RouteLayer from './RouteLayer';
 import MapLegend from './MapLegend';
 import { MapFlyTo } from './SearchBar';
+import GeoIntelligenceLayer from './GeoIntelligenceLayer';
 
-// ---------------------------------------------------------------------------
-// PANE SETUP
-// ---------------------------------------------------------------------------
-
-/**
- * Componente interno que cria os panes de camadas via useMap().
- * Hierarquia (de baixo para cima):
- *   jurisdictionPane (200) → polygonsPane (250) → optimizationPane (300)
- */
 function LayerPanesSetup() {
   const map = useMap();
-
   useEffect(() => {
     const panes: [string, string][] = [
       ['jurisdictionPane', '200'],
@@ -48,11 +39,9 @@ function LayerPanesSetup() {
       }
     }
   }, [map]);
-
   return null;
 }
 
-// Wires store.fitBoundsRef to the Leaflet map instance
 function FitBoundsWire() {
   const map = useMap();
   const fitBoundsRef = useStore((s) => s.fitBoundsRef);
@@ -67,27 +56,18 @@ function FitBoundsWire() {
   return null;
 }
 
-// ---------------------------------------------------------------------------
-// PROSPECT MARKERS LAYER
-// ---------------------------------------------------------------------------
+function GeoIntelligenceLayerConditional() {
+  const showGeoIntelligence = useStore((s) => s.styleConfig.showGeoIntelligence);
+  if (!showGeoIntelligence) return null;
+  return <GeoIntelligenceLayer />;
+}
 
 function ProspectMarkersLayer() {
   const companies = useStore((s) => s.prospectState.companies);
   const pinnedKeys = useStore((s) => s.prospectState.pinnedKeys);
-
   if (companies.length === 0) return null;
-
-  return (
-    <ProspectMarkers
-      pinnedKeys={new Set(pinnedKeys)}
-      companies={companies}
-    />
-  );
+  return <ProspectMarkers pinnedKeys={new Set(pinnedKeys)} companies={companies} />;
 }
-
-// ---------------------------------------------------------------------------
-// MAPVIEW
-// ---------------------------------------------------------------------------
 
 interface MapViewProps {
   className?: string;
@@ -103,11 +83,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       className={className ?? 'w-full h-full'}
       style={{ width: '100%', height: '100%' }}
     >
-      <TileLayer
-        url={MAP_CONFIG.tileUrl}
-        maxZoom={MAP_CONFIG.maxZoom}
-        subdomains={MAP_CONFIG.subdomains}
-      />
+      <TileLayer url={MAP_CONFIG.tileUrl} maxZoom={MAP_CONFIG.maxZoom} subdomains={MAP_CONFIG.subdomains} />
       <LayerPanesSetup />
       <FitBoundsWire />
       {flyToRef && <MapFlyTo flyToRef={flyToRef} />}
@@ -119,6 +95,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <HeatmapLayer />
       <RouteLayer />
       <MapLegend />
+      <GeoIntelligenceLayerConditional />
       <ProspectMarkersLayer />
     </MapContainer>
   );

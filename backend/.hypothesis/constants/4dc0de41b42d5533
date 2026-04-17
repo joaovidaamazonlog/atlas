@@ -1,4 +1,0 @@
-# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\shapely\io.py
-# hypothesis_version: 6.151.12
-
-['3.10.0', '3.10.1', 'DecodingErrorOptions', 'WKBFlavorOptions', 'extended', 'fix', 'from_geojson', 'from_ragged_array', 'from_wkb', 'from_wkt', 'ignore', 'iso', 'raise', 'to_geojson', 'to_ragged_array', 'to_wkb', 'to_wkt', 'warn']

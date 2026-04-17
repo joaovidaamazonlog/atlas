@@ -1,4 +1,0 @@
-# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\shapely\measurement.py
-# hypothesis_version: 6.151.12
-
-['area', 'bounds', 'distance', 'frechet_distance', 'hausdorff_distance', 'ignore', 'length', 'minimum_clearance', 'total_bounds']

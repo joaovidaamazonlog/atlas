@@ -3,12 +3,18 @@ _api_backend/empresas_lookup.db
 # Python
 __pycache__/
 *.pyc
-*.pyo
-.env
+.hypothesis/
 
 # Node
 node_modules/
-
-# Build
 dist/
+
+# TypeScript
 *.tsbuildinfo
+
+# Temporários
+~$*
+_api_backend/etl_progress.txt
+
+# Env
+.env

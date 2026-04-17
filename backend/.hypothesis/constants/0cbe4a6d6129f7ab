@@ -1,4 +1,0 @@
-# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\shapely\linear.py
-# hypothesis_version: 6.151.12
-
-['line_locate_point', 'line_merge', 'normalized', 'shared_paths', 'shortest_line']

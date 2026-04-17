@@ -1,4 +1,0 @@
-# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\pandas\arrays\__init__.py
-# hypothesis_version: 6.151.12
-
-['ArrowExtensionArray', 'ArrowStringArray', 'BooleanArray', 'Categorical', 'DatetimeArray', 'FloatingArray', 'IntegerArray', 'IntervalArray', 'NumpyExtensionArray', 'PandasArray', 'PeriodArray', 'SparseArray', 'StringArray', 'TimedeltaArray']

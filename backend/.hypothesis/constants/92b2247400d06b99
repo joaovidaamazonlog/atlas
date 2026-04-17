@@ -1,4 +1,0 @@
-# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\shapely\coordinates.py
-# hypothesis_version: 6.151.12
-
-['count_coordinates', 'get_coordinates', 'include_z', 'return_index', 'set_coordinates', 'transform']

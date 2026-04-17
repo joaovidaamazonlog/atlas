@@ -1,4 +1,0 @@
-# file: C:\Users\joaovida\AppData\Roaming\Python\Python313\site-packages\pandas\_libs\__init__.py
-# hypothesis_version: 6.151.12
-
-['Interval', 'NaT', 'NaTType', 'OutOfBoundsDatetime', 'Period', 'Timedelta', 'Timestamp', 'iNaT']

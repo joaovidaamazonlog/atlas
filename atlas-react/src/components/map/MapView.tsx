@@ -30,12 +30,13 @@ function LayerPanesSetup() {
       ['jurisdictionPane', '200'],
       ['polygonsPane', '250'],
       ['optimizationPane', '300'],
+      ['markersPane', '400'],
     ];
     for (const [name, zIndex] of panes) {
       if (!map.getPane(name)) {
         const pane = map.createPane(name);
         pane.style.zIndex = zIndex;
-        pane.style.pointerEvents = 'none';
+        if (name !== 'markersPane') pane.style.pointerEvents = 'none';
       }
     }
   }, [map]);

@@ -22,7 +22,7 @@ interface Tab {
 
 const TABS: Tab[] = [
   { id: 'filters', label: 'Filtros' },
-  { id: 'style', label: 'Estilo' },
+  { id: 'style', label: 'Camadas' },
   { id: 'area', label: 'Área' },
   { id: 'routes', label: 'Rotas' },
   { id: 'prospect', label: 'Prospectar' },

@@ -101,8 +101,8 @@ export interface StyleConfig {
   showHeatmap: boolean;
   /** Exibe a camada de Geointeligência (territórios + supply ideal) */
   showGeoIntelligence: boolean;
-  /** Exibe a camada de Geointeligência (territórios + supply ideal) */
-  showGeoIntelligence: boolean;
+  /** Campo para colorir os polígonos de território: 'default' | 'delivery_station' | 'attainment' */
+  polygonColorField: string;
 }
 
 // ---------------------------------------------------------------------------

@@ -521,7 +521,7 @@ export default function RoutesTab() {
 
       {showHcpButton && (
         <button type="button" onClick={handleSuggestHcp} disabled={hcpLoading}
-          className="w-full py-3 px-4 rounded border border-purple-500/50 text-purple-300 text-sm font-medium hover:bg-purple-500/20 focus:outline-none disabled:opacity-60 min-h-[44px] transition-colors">
+          className="w-full py-3 px-4 rounded bg-purple-600 text-white text-sm font-semibold hover:bg-purple-500 active:bg-purple-700 focus:outline-none disabled:opacity-50 min-h-[44px] transition-colors shadow-md">
           Sugerir HCP Initiatives
         </button>
       )}

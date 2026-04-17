@@ -19,6 +19,6 @@ export function defaultStyleConfig(): StyleConfig {
     showOptimizationLayer: false,
     showHeatmap: false,
     showGeoIntelligence: false,
-    showGeoIntelligence: false,
+    polygonColorField: 'territory',
   };
 }

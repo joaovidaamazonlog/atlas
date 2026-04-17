@@ -10,7 +10,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useStore } from '../../store';
 import { getUniqueValues } from '../../store/actions/dataActions';
 
-const STATUS_OPTIONS = ['Active', 'Inactive', 'Onboarding', 'BG Checks', 'Prospect', 'Exited', 'New'];
+const STATUS_OPTIONS = ['Active', 'Inactive', 'Onboarding', 'BG Checks', 'Prospect'];
 
 const INITIATIVES_OPTIONS = [
   { value: 'all', label: 'Todos' },

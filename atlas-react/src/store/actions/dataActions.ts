@@ -17,6 +17,9 @@ import type { Partner, FilterState } from '../types';
  */
 export function applyFiltersLogic(partners: Partner[], filters: FilterState): Partner[] {
   return partners.filter((p) => {
+    // Sempre ocultar Exited e New
+    if (p.status === 'Exited' || p.status === 'New') return false;
+
     // Filtro por status
     if (filters.selectedStatuses !== 'all') {
       if (!filters.selectedStatuses.includes(p.status)) return false;

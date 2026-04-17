@@ -47,7 +47,6 @@ function CheckboxRow({ id, label, checked, onChange }: CheckboxRowProps) {
 export default function StyleTab() {
   const styleConfig = useStore((s) => s.styleConfig);
   const setStyleConfig = useStore((s) => s.setStyleConfig);
-
   return (
     <div className="p-3">
       {/* Estilizar por */}
@@ -119,6 +118,24 @@ export default function StyleTab() {
           checked={styleConfig.showPolygons}
           onChange={(v) => setStyleConfig({ showPolygons: v })}
         />
+        {styleConfig.showPolygons && (
+          <div className="px-3 pb-2">
+            <label className="block text-xs font-medium text-atlas-muted mb-1">
+              Colorir territórios por
+            </label>
+            <select
+              value={styleConfig.polygonColorField}
+              onChange={(e) => setStyleConfig({ polygonColorField: e.target.value })}
+              className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+            >
+              <option value="attainment">Por Attainment</option>
+              <option value="territory">Por Carteira</option>
+              <option value="ds">Por Delivery Station</option>
+              <option value="ctl">Por CTL</option>
+              <option value="bdm">Por BDM</option>
+            </select>
+          </div>
+        )}
         <CheckboxRow
           id="layer-jurisdictions"
           label="Exibir Jurisdições"
@@ -127,15 +144,9 @@ export default function StyleTab() {
         />
         <CheckboxRow
           id="layer-optimization"
-          label="Exibir Camada de Otimização"
+          label="Exibir Hexágonos de Demanda"
           checked={styleConfig.showOptimizationLayer}
           onChange={(v) => setStyleConfig({ showOptimizationLayer: v })}
-        />
-        <CheckboxRow
-          id="layer-geo-intelligence"
-          label="Exibir Geointeligência"
-          checked={styleConfig.showGeoIntelligence}
-          onChange={(v) => setStyleConfig({ showGeoIntelligence: v })}
         />
         <CheckboxRow
           id="layer-geo-intelligence"

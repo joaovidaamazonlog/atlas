@@ -87,6 +87,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
             <CircleMarker
               center={[partner.lat, partner.lon]}
               radius={7}
+              pane="markersPane"
               pathOptions={{
                 color: style.color,
                 fillColor: style.fillColor,

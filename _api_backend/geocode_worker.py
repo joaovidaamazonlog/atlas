@@ -106,7 +106,7 @@ class TursoClient:
         stmt = {"sql": sql}
         if params:
             stmt["args"] = [self._arg(p) for p in params]
-        data = self._post({"requests": [{"type": "execute", "stmt": stmt}, {"type": "close"}]})
+        data = self._post({"requests": [{"type": "execute", "stmt": stmt}, {"type": "close"}]}, timeout=60)
         result = data["results"][0]
         if result.get("type") == "error":
             raise RuntimeError(result["error"].get("message", "unknown"))
@@ -280,7 +280,7 @@ def main():
         already_done = {r["cnpj"] for r in rows}
         log.info("%d empresas já processadas (serão puladas).", len(already_done))
 
-    # Query de origem
+    # Query de origem — paginada para não estourar timeout do Turso
     conditions, params = [], []
     if args.cep_min:
         conditions.append("cep >= ?"); params.append(args.cep_min)
@@ -289,80 +289,86 @@ def main():
     if args.uf:
         conditions.append("uf = ?");   params.append(args.uf.upper())
 
-    sql = "SELECT * FROM empresas_alvo"
-    if conditions:
-        sql += " WHERE " + " AND ".join(conditions)
-    if args.limit:
-        sql += f" LIMIT {args.limit}"
-    if args.offset:
-        sql += f" OFFSET {args.offset}"
+    where = (" WHERE " + " AND ".join(conditions)) if conditions else ""
 
-    log.info("Buscando empresas do Turso...")
-    empresas    = turso.execute(sql, params or None)
-    to_process  = [
-        e for e in empresas
-        if (e.get("cnpj_basico","") + e.get("cnpj_ordem","") + e.get("cnpj_dv","")) not in already_done
-    ]
-    log.info("%d empresas para geocodificar.", len(to_process))
+    # Conta total para o tracker
+    count_sql = f"SELECT COUNT(*) as n FROM empresas_alvo{where}"
+    total_count = int(turso.execute(count_sql, params or None)[0]["n"])
+    to_skip     = len(already_done)
+    total_left  = total_count - to_skip
+    log.info("%d empresas na faixa, %d para processar.", total_count, total_left)
 
-    if not to_process:
+    if total_left <= 0:
         log.info("Nada a fazer. Encerrando.")
         return
 
-    tracker = ProgressTracker(len(to_process), args.worker_id, log)
+    PAGE_SIZE = 5000  # busca 5000 por vez do Turso
+    tracker   = ProgressTracker(total_left, args.worker_id, log)
     batch: list[dict] = []
+    offset    = 0
+    processed = 0
 
-    for i, emp in enumerate(to_process, 1):
-        cnpj = emp.get("cnpj_basico","") + emp.get("cnpj_ordem","") + emp.get("cnpj_dv","")
+    while True:
+        page_sql = f"SELECT * FROM empresas_alvo{where} LIMIT {PAGE_SIZE} OFFSET {offset}"
+        page = turso.execute(page_sql, params or None)
+        if not page:
+            break
 
-        result = _geocode(
-            emp.get("endereco",""), emp.get("bairro",""),
-            emp.get("cep",""),      emp.get("municipio",""),
-            emp.get("uf",""),
-        )
+        for emp in page:
+            cnpj = emp.get("cnpj_basico","") + emp.get("cnpj_ordem","") + emp.get("cnpj_dv","")
+            if cnpj in already_done:
+                continue
 
-        if result:
-            lat, lng  = result
-            h3_r9     = h3.latlng_to_cell(lat, lng, 9)
-            h3_r8     = h3.latlng_to_cell(lat, lng, 8)
-            status    = "ok"
-        else:
-            lat = lng = h3_r9 = h3_r8 = None
-            status = "failed"
+            result = _geocode(
+                emp.get("endereco",""), emp.get("bairro",""),
+                emp.get("cep",""),      emp.get("municipio",""),
+                emp.get("uf",""),
+            )
 
-        batch.append({
-            "cnpj":            cnpj,
-            "razao_social":    emp.get("razao_social"),
-            "nome_fantasia":   emp.get("nome_fantasia"),
-            "cnae_principal":  emp.get("cnae_principal"),
-            "cnae_secundaria": emp.get("cnae_secundaria"),
-            "endereco":        emp.get("endereco"),
-            "bairro":          emp.get("bairro"),
-            "cep":             emp.get("cep"),
-            "uf":              emp.get("uf"),
-            "municipio":       emp.get("municipio"),
-            "telefone_1":      emp.get("telefone_1"),
-            "email":           emp.get("email"),
-            "lat": lat, "lng": lng,
-            "h3_r9_id": h3_r9, "h3_r8_id": h3_r8,
-            "geocode_status":  status,
-            "geocoded_at":     datetime.now(timezone.utc).isoformat(),
-        })
+            if result:
+                lat, lng  = result
+                h3_r9     = h3.latlng_to_cell(lat, lng, 9)
+                h3_r8     = h3.latlng_to_cell(lat, lng, 8)
+                status    = "ok"
+            else:
+                lat = lng = h3_r9 = h3_r8 = None
+                status = "failed"
 
-        tracker.update(status == "ok")
+            batch.append({
+                "cnpj":            cnpj,
+                "razao_social":    emp.get("razao_social"),
+                "nome_fantasia":   emp.get("nome_fantasia"),
+                "cnae_principal":  emp.get("cnae_principal"),
+                "cnae_secundaria": emp.get("cnae_secundaria"),
+                "endereco":        emp.get("endereco"),
+                "bairro":          emp.get("bairro"),
+                "cep":             emp.get("cep"),
+                "uf":              emp.get("uf"),
+                "municipio":       emp.get("municipio"),
+                "telefone_1":      emp.get("telefone_1"),
+                "email":           emp.get("email"),
+                "lat": lat, "lng": lng,
+                "h3_r9_id": h3_r9, "h3_r8_id": h3_r8,
+                "geocode_status":  status,
+                "geocoded_at":     datetime.now(timezone.utc).isoformat(),
+            })
 
-        # Flush a cada ~1h de processamento (BATCH_SIZE empresas)
-        if len(batch) >= BATCH_SIZE:
-            log.info("Gravando batch de %d empresas no Turso...", len(batch))
-            turso.batch_upsert(batch)
-            batch = []
-            log.info("Batch gravado com sucesso.")
+            tracker.update(status == "ok")
+            processed += 1
 
-        # Log a cada 50 empresas
-        if i % 50 == 0 or i == len(to_process):
-            tracker.report(i)
+            if len(batch) >= BATCH_SIZE:
+                log.info("Gravando batch de %d empresas no Turso...", len(batch))
+                turso.batch_upsert(batch)
+                batch = []
+                log.info("Batch gravado com sucesso.")
 
-    # Flush do restante
+            if processed % 50 == 0:
+                tracker.report(processed)
+
+        offset += PAGE_SIZE
+        if len(page) < PAGE_SIZE:
+            break
+
     if batch:
         log.info("Gravando batch final de %d empresas no Turso...", len(batch))
         turso.batch_upsert(batch)

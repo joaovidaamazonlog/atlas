@@ -47,8 +47,8 @@ jobs:
 
       - name: Run geocode worker ${{ matrix.worker_id }}
         env:
-          TURSO_URL:   ${{ secrets.TURSO_URL }}
-          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+          TURSO_URL:   ${{ vars.TURSO_URL }}
+          TURSO_TOKEN: ${{ vars.TURSO_TOKEN }}
         run: |
           EXTRA=""
           if [ "${{ github.event.inputs.no_resume }}" = "true" ]; then
@@ -64,8 +64,8 @@ jobs:
       - name: Progress report
         if: always()
         env:
-          TURSO_URL:   ${{ secrets.TURSO_URL }}
-          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+          TURSO_URL:   ${{ vars.TURSO_URL }}
+          TURSO_TOKEN: ${{ vars.TURSO_TOKEN }}
         run: python progress_report.py
         working-directory: _api_backend
 
@@ -87,7 +87,7 @@ jobs:
 
       - name: Global progress summary
         env:
-          TURSO_URL:   ${{ secrets.TURSO_URL }}
-          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+          TURSO_URL:   ${{ vars.TURSO_URL }}
+          TURSO_TOKEN: ${{ vars.TURSO_TOKEN }}
         run: python progress_report.py --by-uf
         working-directory: _api_backend

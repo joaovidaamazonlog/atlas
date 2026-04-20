@@ -75,7 +75,6 @@ def main():
     args = parser.parse_args()
 
     extra = ["--no-resume"] if args.no_resume else []
-    ranges = LOCAL_RANGES[: args.workers]
 
     # Carrega .env antes de spawnar os workers
     _load_env(Path(__file__).parent / ".env")

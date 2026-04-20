@@ -29,6 +29,7 @@ vi.mock('react-leaflet', () => ({
     getPane: () => null,
     createPane: () => ({ style: {} }),
   }),
+  useMapEvents: () => null,
 }));
 
 // Mock all child layer components to avoid deep dependency chains
@@ -40,6 +41,8 @@ vi.mock('./OptimizationLayer', () => ({ default: () => null }));
 vi.mock('./HeatmapLayer', () => ({ default: () => null }));
 vi.mock('./RouteLayer', () => ({ default: () => null }));
 vi.mock('./MapLegend', () => ({ default: () => null }));
+vi.mock('./RecruitableAreaLayer', () => ({ default: () => null }));
+vi.mock('./MapClickCapture', () => ({ default: () => null }));
 
 // ---------------------------------------------------------------------------
 // TESTES

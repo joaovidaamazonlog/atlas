@@ -12,6 +12,7 @@ import AreaAnalysisTab from './AreaAnalysisTab';
 import RoutesTab from './RoutesTab';
 import ProspectTab from './ProspectTab';
 import { useStore } from '../../store';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 type TabId = 'filters' | 'style' | 'area' | 'routes' | 'prospect';
 
@@ -28,11 +29,24 @@ const TABS: Tab[] = [
   { id: 'prospect', label: 'Prospectar' },
 ];
 
+// Labels curtos para painéis estreitos
+const TABS_SHORT: Tab[] = [
+  { id: 'filters', label: 'Filtros' },
+  { id: 'style', label: 'Layers' },
+  { id: 'area', label: 'Área' },
+  { id: 'routes', label: 'Rotas' },
+  { id: 'prospect', label: 'Prospectar' },
+];
+
 export default function ControlPanel() {
   const [activeTab, setActiveTab] = useState<TabId>('filters');
   const [prospectKey, setProspectKey] = useState(0);
   const clearProspect = useStore((s) => s.clearProspect);
+  const setActiveTabStore = useStore((s) => s.setActiveTab);
   const prevTabRef = useRef<TabId>('filters');
+  const bp = useBreakpoint();
+  const isCompact = bp === 'laptop';
+  const tabs = isCompact ? TABS_SHORT : TABS;
 
   // Limpar estado de prospecção ao sair da aba "Prospectar"
   const handleTabChange = (tab: TabId) => {
@@ -42,6 +56,7 @@ export default function ControlPanel() {
     }
     prevTabRef.current = tab;
     setActiveTab(tab);
+    setActiveTabStore(tab);
   };
 
   // Listen for external tab-switch requests (e.g. "Rota a partir daqui" popup button)
@@ -63,7 +78,7 @@ export default function ControlPanel() {
         role="tablist"
         aria-label="Abas de controle"
       >
-        {TABS.map((tab) => (
+        {tabs.map((tab) => (
           <button
             key={tab.id}
             role="tab"
@@ -72,8 +87,8 @@ export default function ControlPanel() {
             id={`tab-${tab.id}`}
             onClick={() => handleTabChange(tab.id)}
             className={[
-              'flex-1 py-3 px-2 text-xs font-medium transition-colors duration-150',
-              'min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent',
+              'flex-1 py-2 px-1 text-xs font-medium transition-colors duration-150',
+              'min-h-[36px] focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent',
               activeTab === tab.id
                 ? 'text-atlas-accent border-b-2 border-atlas-accent bg-atlas-navy/50'
                 : 'text-atlas-muted hover:text-atlas-light hover:bg-white/5',

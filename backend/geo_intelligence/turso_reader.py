@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Optional
+from typing import Dict, List, Optional
 
 from geo_intelligence.turso_http import TursoHTTP
 
@@ -111,4 +111,56 @@ class TursoReader:
             return cached
         rows = self._query("SELECT * FROM geo_ideal_supply WHERE station_code=? AND run_id=?", [station_code, run_id])
         self._cache_set(key, rows)
+        return rows
+
+    def get_h3_cells_for_station(self, station_code: str, run_id: str) -> List[Dict]:
+        """
+        Retorna todos os registros de geo_h3_cells para a base/run_id.
+        Cache TTL 5 min com chave 'h3_cells_station:{station_code}:{run_id}'.
+        """
+        key = f"h3_cells_station:{station_code}:{run_id}"
+        hit, cached = self._cache_get(key)
+        if hit:
+            return cached
+        rows = self._query(
+            "SELECT * FROM geo_h3_cells WHERE station_code=? AND run_id=?",
+            [station_code, run_id],
+        )
+        self._cache_set(key, rows)
+        return rows
+
+    def get_cap_opportunities(
+        self,
+        station_code: str,
+        run_id: Optional[str] = None,
+        only_with_opportunity: bool = False,
+    ) -> List[Dict]:
+        """
+        Retorna registros de geo_partner_cap_opportunities para a base/run_id.
+
+        Se run_id não for fornecido, resolve automaticamente o run_id mais
+        recente via get_latest_run_id(station_code).
+
+        Se only_with_opportunity=True, filtra apenas registros com
+        estimated_adv_gain IS NOT NULL.
+
+        Cache TTL 5 min com chave 'cap_opportunities:{station_code}:{run_id}'.
+        Retorna lista vazia (não lança exceção) se não houver registros.
+        """
+        if run_id is None:
+            run_id = self.get_latest_run_id(station_code)
+
+        key = f"cap_opportunities:{station_code}:{run_id}"
+        hit, cached = self._cache_get(key)
+        if hit:
+            rows = cached
+        else:
+            sql = "SELECT * FROM geo_partner_cap_opportunities WHERE station_code=? AND run_id=?"
+            params: list = [station_code, run_id]
+            rows = self._query(sql, params)
+            self._cache_set(key, rows)
+
+        if only_with_opportunity:
+            rows = [r for r in rows if r.get("estimated_adv_gain") is not None]
+
         return rows

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 
-export type Breakpoint = 'mobile' | 'tablet' | 'notebook' | 'desktop';
+export type Breakpoint = 'mobile' | 'tablet' | 'laptop' | 'notebook' | 'desktop';
 
 const QUERIES: Record<Breakpoint, string> = {
-  mobile: '(max-width: 767px)',
-  tablet: '(min-width: 768px) and (max-width: 1023px)',
-  notebook: '(min-width: 1024px) and (max-width: 1439px)',
-  desktop: '(min-width: 1440px)',
+  mobile:   '(max-width: 767px)',
+  tablet:   '(min-width: 768px) and (max-width: 1023px)',
+  laptop:   '(min-width: 1024px) and (max-width: 1365px)',
+  notebook: '(min-width: 1366px) and (max-width: 1439px)',
+  desktop:  '(min-width: 1440px)',
 };
 
 function getInitialBreakpoint(): Breakpoint {

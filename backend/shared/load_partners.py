@@ -367,7 +367,7 @@ def _consolidate_stores(dfs: dict) -> pd.DataFrame:
     """
     import pandas as _pd
 
-    active_df      = dfs.get("Active",            _pd.DataFrame()).copy()
+    active_df      = dfs.get("Active",             _pd.DataFrame()).copy()
     launches_df    = dfs.get("Launches",           _pd.DataFrame()).copy()
     stations_df    = dfs.get("Delivery Stations",  _pd.DataFrame()).copy()
     jurisdictions_df = dfs.get("Jurisdictions",    _pd.DataFrame()).copy()

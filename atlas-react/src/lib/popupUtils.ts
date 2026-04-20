@@ -12,6 +12,14 @@ import type { Partner, DeliveryStation } from '../store/types';
 // HELPERS INTERNOS
 // ---------------------------------------------------------------------------
 
+function _popupWrapper(content: string): string {
+  return `<div style="font-size:12px;">${content}</div>`;
+}
+
+function _hr(): string {
+  return `<hr style="border-color:var(--border-color);margin:8px 0;">`;
+}
+
 function _row(label: string, value: string | number | null | undefined): string {
   return `<tr><td style="width:40%"><b>${label}:</b></td><td style="width:60%">${value ?? 'N/A'}</td></tr>`;
 }
@@ -108,7 +116,7 @@ export function getPartnerPopupHtml(partner: Partner, routeOriginActive = false)
 }
 
 function _popupActive(p: Partner, routeOriginActive = false): string {
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return _popupWrapper(`
     <h5 style="font-weight:bold;margin-bottom:8px;">${p.name}</h5>
     ${_table(
       _row('Store ID', p.store_id) +
@@ -122,16 +130,16 @@ function _popupActive(p: Partner, routeOriginActive = false): string {
       _row('Radius', p.radius + ' m') +
       _row('Capacity', p.capacity + ' pkgs'),
     )}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_sfLink(p.salesforce_id)}${_waLink(p.telefone)}
     ${_actionButtons(p, routeOriginActive)}
-  </div>`;
+  `);
 }
 
 function _popupInactive(p: Partner, routeOriginActive = false): string {
   const capSuggestion = p.status === 'Exited' ? p.capacity : _opt(p).cap_suggestion;
   const radiusSuggestion = p.status === 'Exited' ? p.radius : _opt(p).radius_suggestion;
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return _popupWrapper(`
     <h5 style="font-weight:bold;margin-bottom:8px;">${p.name}</h5>
     ${_table(
       _row('Store ID', p.store_id) +
@@ -139,20 +147,20 @@ function _popupInactive(p: Partner, routeOriginActive = false): string {
       _row('Carteira', p.bucket_ade) +
       _row('Delivery Station', p.delivery_station),
     )}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_sfLink(p.salesforce_id)}${_waLink(p.telefone)}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_table(
       _row('Decisão', p.decision) +
       _row('Capacidade Sugerida', capSuggestion + ' pkgs') +
       _row('Raio Sugerido', radiusSuggestion + ' m'),
     )}
     ${_actionButtons(p, routeOriginActive)}
-  </div>`;
+  `);
 }
 
 function _popupOnboarding(p: Partner, routeOriginActive = false): string {
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return _popupWrapper(`
     <h5 style="font-weight:bold;margin-bottom:8px;">${p.name}</h5>
     ${_table(
       _row('Store ID', p.store_id) +
@@ -164,19 +172,19 @@ function _popupOnboarding(p: Partner, routeOriginActive = false): string {
       _row('HCP Host Partner', p.HCP_host_partner) +
       _row('HCP Rate Card', p.HCP_rate_card),
     )}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_sfLink(p.salesforce_id)}${_waLink(p.telefone)}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_table(
       _row('Capacidade Sugerida', _opt(p).cap_suggestion + ' pkgs') +
       _row('Raio Sugerido', _opt(p).radius_suggestion + ' m'),
     )}
     ${_actionButtons(p, routeOriginActive)}
-  </div>`;
+  `);
 }
 
 function _popupVetting(p: Partner, routeOriginActive = false): string {
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return _popupWrapper(`
     <h5 style="font-weight:bold;margin-bottom:8px;">${p.name}</h5>
     ${_table(
       _row('Store ID', p.store_id) +
@@ -185,19 +193,19 @@ function _popupVetting(p: Partner, routeOriginActive = false): string {
       _row('Delivery Station', p.delivery_station) +
       _row('Launch Date', p.launch_date),
     )}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_sfLink(p.salesforce_id)}${_waLink(p.telefone)}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_table(
       _row('Capacidade Sugerida', _opt(p).cap_suggestion + ' pkgs') +
       _row('Raio Sugerido', _opt(p).radius_suggestion + ' m'),
     )}
     ${_actionButtons(p, routeOriginActive)}
-  </div>`;
+  `);
 }
 
 function _popupProspect(p: Partner, routeOriginActive = false): string {
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return _popupWrapper(`
     <h5 style="font-weight:bold;margin-bottom:8px;">${p.name}</h5>
     ${_table(
       _row('Store ID', p.store_id) +
@@ -205,27 +213,27 @@ function _popupProspect(p: Partner, routeOriginActive = false): string {
       _row('Carteira', p.bucket_ade) +
       _row('Delivery Station', p.delivery_station),
     )}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_sfLink(p.salesforce_id)}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     ${_table(
       _row('Decisão', p.reason) +
       _row('Capacidade Sugerida', _opt(p).cap_suggestion + ' pkgs') +
       _row('Raio Sugerido', _opt(p).radius_suggestion + ' m'),
     )}
     ${_actionButtons(p, routeOriginActive)}
-  </div>`;
+  `);
 }
 
 function _popupNewPartner(p: Partner): string {
   const cepsDisplay = Array.isArray(p.ceps) ? p.ceps.join(', ') : (p.ceps ?? '');
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return _popupWrapper(`
     <h5 style="font-weight:bold;margin-bottom:8px;">New Partner</h5>
     ${_table(
       _row('Delivery Station', p.delivery_station) +
       _row('Bucket', p.bucket_ade),
     )}
-    <hr style="border-color:#4a5568;margin:8px 0;">
+    ${_hr()}
     <div style="max-height:220px;overflow-y:auto;">
       ${_table(
         _row('CEPs Alvo', cepsDisplay) +
@@ -233,7 +241,7 @@ function _popupNewPartner(p: Partner): string {
         _row('Raio Sugerido', p.radius + ' m'),
       )}
     </div>
-  </div>`;
+  `);
 }
 
 // ---------------------------------------------------------------------------
@@ -266,12 +274,12 @@ export function getComparisonPopupHtml(p1: Partner, p2: Partner): string {
     )
     .join('');
 
-  return `<div style="width:420px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
+  return `<div style="font-size:12px;background:var(--surface-secondary);color:var(--text-primary);border-radius:6px;padding:10px;">
     <h5 style="font-weight:bold;margin-bottom:8px;">Comparação de Parceiros</h5>
     <table style="width:100%;border-collapse:collapse;">
       <thead>
-        <tr style="border-bottom:1px solid #4a5568;">
-          <th style="padding:4px 6px;text-align:left;color:#a0aec0;">Campo</th>
+        <tr style="border-bottom:1px solid var(--border-color);">
+          <th style="padding:4px 6px;text-align:left;color:var(--text-secondary);">Campo</th>
           <th style="padding:4px 6px;text-align:left;">${p1.name}</th>
           <th style="padding:4px 6px;text-align:left;">${p2.name}</th>
         </tr>
@@ -292,8 +300,8 @@ export function getSlotPopupHtml(partner: Partner): string {
   const cepsDisplay = Array.isArray(partner.ceps)
     ? partner.ceps.join(', ')
     : (partner.ceps ?? '');
-  return `<div style="width:300px;font-size:12px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:10px;">
-    <h5 style="font-weight:bold;margin-bottom:8px;">🎯 Slot Ideal</h5>
+  return _popupWrapper(
+    `<h5 style="font-weight:bold;margin-bottom:8px;">🎯 Slot Ideal</h5>
     ${_table(
       _row('Delivery Station', partner.delivery_station) +
       _row('Território', partner.bucket_ade) +
@@ -301,8 +309,8 @@ export function getSlotPopupHtml(partner: Partner): string {
       _row('Capacidade Sugerida', partner.capacity + ' pkgs') +
       _row('Raio Sugerido', partner.radius + ' m') +
       _row('CEPs Alvo', cepsDisplay),
-    )}
-  </div>`;
+    )}`
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -313,8 +321,8 @@ export function getSlotPopupHtml(partner: Partner): string {
  * Retorna o HTML do popup de uma delivery station.
  */
 export function getStationPopupHtml(station: DeliveryStation): string {
-  return `<div style="font-size:13px;background:#1e2a38;color:#ecf0f1;border-radius:6px;padding:8px 12px;">
+  return `<div style="font-size:13px;background:var(--surface-secondary);color:var(--text-primary);border-radius:6px;padding:8px 12px;">
     <b>${station.nome}</b><br>
-    <span style="color:#a0aec0;font-size:11px;">${station.lat.toFixed(4)}, ${station.lon.toFixed(4)}</span>
+    <span style="color:var(--text-secondary);font-size:11px;">${station.lat.toFixed(4)}, ${station.lon.toFixed(4)}</span>
   </div>`;
 }

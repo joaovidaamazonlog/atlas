@@ -81,6 +81,19 @@ _DDL_STATEMENTS = [
         run_id               TEXT NOT NULL,
         PRIMARY KEY (salesforce_id, run_id)
     )""",
+    """CREATE TABLE IF NOT EXISTS geo_partner_cap_opportunities (
+        partner_id              TEXT    NOT NULL,
+        run_id                  TEXT    NOT NULL,
+        station_code            TEXT    NOT NULL,
+        suggested_lat           REAL,
+        suggested_lon           REAL,
+        suggested_cap           INTEGER,
+        suggested_radius        INTEGER,
+        estimated_adv_gain      INTEGER,
+        distance_from_current   REAL,
+        created_at              TEXT    NOT NULL,
+        PRIMARY KEY (partner_id, run_id)
+    )""",
 ]
 
 # ALTER TABLE statements for geo_run_metadata — SQLite does not support IF NOT EXISTS
@@ -300,6 +313,43 @@ class TursoWriter:
             ]))
         self._execute_batch_with_retry(stmts, run_id)
         logger.info("upsert_partner_profiles: success+failure persistidos (run=%s, station=%s).", run_id, station_code)
+
+    def upsert_cap_opportunities(self, run_id: str, opportunities: list[dict]) -> None:
+        """Persiste ou atualiza registros em geo_partner_cap_opportunities.
+
+        Cada dict em opportunities deve conter:
+          partner_id, station_code, suggested_lat, suggested_lon,
+          suggested_cap, suggested_radius, estimated_adv_gain,
+          distance_from_current, created_at
+
+        Usa INSERT ... ON CONFLICT(partner_id, run_id) DO UPDATE.
+        """
+        sql = """INSERT INTO geo_partner_cap_opportunities
+            (partner_id, run_id, station_code, suggested_lat, suggested_lon,
+             suggested_cap, suggested_radius, estimated_adv_gain,
+             distance_from_current, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
+            ON CONFLICT(partner_id, run_id) DO UPDATE SET
+            station_code=excluded.station_code,
+            suggested_lat=excluded.suggested_lat,
+            suggested_lon=excluded.suggested_lon,
+            suggested_cap=excluded.suggested_cap,
+            suggested_radius=excluded.suggested_radius,
+            estimated_adv_gain=excluded.estimated_adv_gain,
+            distance_from_current=excluded.distance_from_current,
+            created_at=excluded.created_at"""
+        for batch in _chunks(opportunities, _BATCH_SIZE):
+            stmts = []
+            for opp in batch:
+                stmts.append((sql, [
+                    opp["partner_id"], run_id, opp["station_code"],
+                    opp.get("suggested_lat"), opp.get("suggested_lon"),
+                    opp.get("suggested_cap"), opp.get("suggested_radius"),
+                    opp.get("estimated_adv_gain"), opp.get("distance_from_current"),
+                    opp["created_at"],
+                ]))
+            self._execute_batch_with_retry(stmts, run_id)
+        logger.info("upsert_cap_opportunities: %d oportunidades persistidas (run=%s).", len(opportunities), run_id)
 
     def upsert_partner_history(self, run_id: str, partner_profiles: list[PartnerProfile]) -> None:
         """Persiste histórico de parceiros em geo_partner_history."""

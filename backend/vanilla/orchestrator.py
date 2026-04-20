@@ -142,6 +142,13 @@ def run_daily(
     # Reconstruir polígonos a partir dos hexágonos H3 reais (pós-matching)
     rebuild_territory_polygons(output_dir=output_dir, stations=stations)
 
+    # Fase 3.5: otimização de cap
+    try:
+        from vanilla.phase3_5_cap_optimizer import run_phase3_5
+        run_phase3_5(fit=fit, output_dir=output_dir, stations=stations)
+    except Exception as e:
+        print(f"  WARN Phase 3.5 falhou: {e}")
+
     # Fase 4: webleads
     webleads = run_phase4(
         partner_data=partner_data,

@@ -17,6 +17,9 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
 }) => {
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
+  // Altura disponível = viewport - header (56px) - margem top (16px) - margem bottom (16px)
+  const maxContentHeight = `calc(100vh - 56px - 16px - 16px - 44px)`; // 44px = header do painel
+
   return (
     <div
       className={`flex flex-col rounded-lg overflow-hidden ${className}`}
@@ -25,6 +28,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
         backgroundColor: 'var(--color-navy)',
         border: '1px solid var(--border-color)',
         boxShadow: 'var(--shadow-lg)',
+        maxHeight: `calc(100vh - 56px - 32px)`,
       }}
     >
       {/* Header */}
@@ -35,7 +39,6 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
         aria-controls="floating-panel-content"
       >
         <span className="font-medium text-atlas-light text-sm">{title}</span>
-        {/* Chevron icon */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-4 h-4 text-atlas-muted transition-transform duration-300"
@@ -53,18 +56,18 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
       </button>
 
       {/* Collapsible content */}
-      <div
-        id="floating-panel-content"
-        className="overflow-hidden transition-all duration-300"
-        style={{ maxHeight: collapsed ? '0px' : '600px' }}
-      >
+      {!collapsed && (
         <div
-          className="overflow-y-auto"
-          style={{ borderTop: '1px solid var(--border-color)' }}
+          id="floating-panel-content"
+          className="overflow-y-auto flex-1"
+          style={{
+            borderTop: '1px solid var(--border-color)',
+            maxHeight: maxContentHeight,
+          }}
         >
           {children}
         </div>
-      </div>
+      )}
     </div>
   );
 };

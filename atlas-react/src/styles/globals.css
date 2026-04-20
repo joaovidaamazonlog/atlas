@@ -179,7 +179,47 @@ body {
   justify-content: center;
 }
 
-/* Corrige cor do texto quando browser aplica autofill (endereço, email, etc.) */
+/* ============================================================
+   Leaflet Popup — tema adaptativo + centralização
+   ============================================================ */
+.leaflet-popup-content-wrapper {
+  background: var(--surface-secondary) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--border-color-strong) !important;
+  /* NÃO sobrescrever padding — o Leaflet usa para calcular posição da seta */
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: 276px !important; /* 300px - 2×12px padding do wrapper */
+  box-sizing: border-box !important;
+}
+
+.leaflet-popup-tip-container {
+  /* garante que a seta fique centralizada */
+  margin-left: 0 !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--surface-secondary) !important;
+}
+
+.leaflet-popup-close-button {
+  color: var(--text-secondary) !important;
+  top: 6px !important;
+  right: 6px !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Popup de comparação — mais largo */
+.leaflet-popup.comparison-popup .leaflet-popup-content {
+  width: 420px !important;
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -189,3 +229,18 @@ input:-webkit-autofill:active {
   caret-color: var(--color-light);
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* ============================================================
+   Painel de controles — escala de fonte responsiva
+   ============================================================ */
+.control-panel-scaled .text-xs  { font-size: 0.7rem !important; }
+.control-panel-scaled .text-sm  { font-size: 0.8rem !important; }
+.control-panel-scaled .text-base { font-size: 0.875rem !important; }
+.control-panel-scaled .min-h-\[44px\] { min-height: 36px !important; }
+.control-panel-scaled input,
+.control-panel-scaled select,
+.control-panel-scaled button { font-size: 0.8rem !important; }
+.control-panel-scaled .py-3 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+.control-panel-scaled .py-2 { padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
+.control-panel-scaled .px-3 { padding-left: 0.625rem !important; padding-right: 0.625rem !important; }
+.control-panel-scaled .p-3  { padding: 0.625rem !important; }

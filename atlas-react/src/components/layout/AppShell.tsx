@@ -1,4 +1,4 @@
-import React, { useState, useRef, Suspense } from 'react';
+import React, { useState, useRef, Suspense, useEffect } from 'react';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { Header } from './Header';
 import { BottomSheet } from './BottomSheet';
@@ -34,13 +34,14 @@ const MobileLayout: React.FC = () => {
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const flyToRef = useRef<((lat: number, lon: number) => void) | null>(null);
   const partners = useStore(s => s.currentFilteredData);
+  const manualAnalysisOpen = useStore(s => s.manualAnalysisOpen);
 
   return (
     <div className="relative w-full h-full flex flex-col">
       <Header />
 
       <div className="relative flex-1 overflow-hidden">
-        <SearchBar partners={partners} flyToRef={flyToRef} />
+        {!manualAnalysisOpen && <SearchBar partners={partners} flyToRef={flyToRef} />}
         <MapView flyToRef={flyToRef} />
 
         <ControlsToggle isOpen={drawerOpen} onClick={() => setDrawerOpen(o => !o)} />
@@ -107,13 +108,14 @@ const TabletLayout: React.FC = () => {
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const flyToRef = useRef<((lat: number, lon: number) => void) | null>(null);
   const partners = useStore(s => s.currentFilteredData);
+  const manualAnalysisOpen = useStore(s => s.manualAnalysisOpen);
 
   return (
     <div className="relative w-full h-full flex flex-col">
       <Header />
 
       <div className="relative flex-1 overflow-hidden">
-        <SearchBar partners={partners} flyToRef={flyToRef} />
+        {!manualAnalysisOpen && <SearchBar partners={partners} flyToRef={flyToRef} />}
         <MapView flyToRef={flyToRef} />
 
         <ControlsToggle isOpen={drawerOpen} onClick={() => setDrawerOpen(o => !o)} />
@@ -184,20 +186,38 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ controlPanelWidth, dashbo
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const flyToRef = useRef<((lat: number, lon: number) => void) | null>(null);
   const partners = useStore(s => s.currentFilteredData);
+  const manualAnalysisOpen = useStore(s => s.manualAnalysisOpen);
+
+  // Largura real da viewport, reativa a resize
+  const [vw, setVw] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 1440);
+  useEffect(() => {
+    const handler = () => setVw(window.innerWidth);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  // Largura do painel proporcional à viewport
+  const effectivePanelWidth = Math.round(
+    vw < 1100 ? Math.max(260, vw * 0.25) :
+    vw < 1280 ? Math.max(270, vw * 0.23) :
+    controlPanelWidth
+  );
 
   return (
     <div className="relative w-full h-full flex flex-col">
       <Header />
 
       <div className="relative flex-1 overflow-hidden">
-        <SearchBar partners={partners} flyToRef={flyToRef} controlPanelWidth={controlPanelWidth} />
+        {!manualAnalysisOpen && <SearchBar partners={partners} flyToRef={flyToRef} controlPanelWidth={effectivePanelWidth} />}
         <MapView flyToRef={flyToRef} />
         <div
           className="absolute top-4 left-4"
           style={{ zIndex: 'var(--z-overlay)' as unknown as number }}
         >
-          <FloatingPanel title="Controles" width={controlPanelWidth}>
-            <ControlPanel />
+          <FloatingPanel title="Controles" width={effectivePanelWidth}>
+            <div className={vw < 1280 ? 'control-panel-scaled' : ''}>
+              <ControlPanel />
+            </div>
           </FloatingPanel>
         </div>
 
@@ -246,7 +266,8 @@ export const AppShell: React.FC = () => {
 
   if (breakpoint === 'mobile') return <MobileLayout />;
   if (breakpoint === 'tablet') return <TabletLayout />;
-  if (breakpoint === 'notebook') return <DesktopLayout controlPanelWidth={320} dashboardWidth={480} />;
+  if (breakpoint === 'laptop') return <DesktopLayout controlPanelWidth={240} dashboardWidth={380} />;
+  if (breakpoint === 'notebook') return <DesktopLayout controlPanelWidth={280} dashboardWidth={440} />;
   // desktop
   return <DesktopLayout controlPanelWidth={360} dashboardWidth={560} />;
 };

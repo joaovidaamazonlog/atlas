@@ -1528,7 +1528,7 @@ def run_update_heatmap(
                        heatmap.geojson será salvo.
     stations   : list  Filtrar bases. Se None, processa todas do índice.
     """
-    from load_packages import load_packages
+    from shared.load_packages import load_packages
 
     out_dir  = Path(output_dir or Config.DEST_FOLDER)
     idx_path = out_dir / "territories_index.json"

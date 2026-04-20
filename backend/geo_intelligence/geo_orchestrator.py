@@ -281,6 +281,26 @@ def run_daily(
             territories_index=territories_index,
         )
 
+        # Fase 3.5 — Cap Optimization (GeoIntelligence)
+        try:
+            from geo_intelligence.geo_phase3_5_cap_optimizer import run_geo_phase3_5
+            n_opportunities = run_geo_phase3_5(
+                daily_result=daily_result,
+                run_id=run_id,
+                station_code=station_code,
+                writer=writer,
+                reader=reader,
+            )
+            logger.info(
+                "[%s] Fase 3.5 Geo: %d oportunidades identificadas em %d parceiros avaliados.",
+                station_code,
+                n_opportunities,
+                len([m for m in daily_result.matched + daily_result.unmatched
+                     if m.status == "Active"]),
+            )
+        except Exception as exc:
+            logger.error("[%s] Fase 3.5 Geo falhou (pipeline continua): %s", station_code, exc)
+
         # Persiste matched_partner_id
         matches = [
             {"supply_id": m.matched_slot_id, "partner_id": m.partner_id}

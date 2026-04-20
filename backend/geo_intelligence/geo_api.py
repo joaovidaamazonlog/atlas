@@ -180,6 +180,35 @@ def compute_expansion_targets(
     }
 
 
+@app.get("/geo-intelligence/{station_code}/cap-opportunities")
+def get_cap_opportunities(
+    station_code: str,
+    run_id: Optional[str] = Query(default=None),
+    only_with_opportunity: bool = Query(default=False),
+) -> list[dict[str, Any]]:
+    """
+    Retorna oportunidades de cap para a base especificada.
+
+    Query params:
+      run_id                — run_id específico; se omitido, usa o mais recente
+      only_with_opportunity — se true, retorna apenas registros com
+                              estimated_adv_gain IS NOT NULL
+
+    Ordenação: estimated_adv_gain DESC (nulls por último).
+
+    HTTP 200 com lista vazia se não houver oportunidades.
+    HTTP 404 se run_id mais recente não for encontrado para a base.
+    """
+    reader = _get_reader()
+    resolved = _resolve_run_id(reader, station_code, run_id)
+    opportunities = reader.get_cap_opportunities(station_code, resolved, only_with_opportunity)
+    # Sort by estimated_adv_gain descending, nulls last
+    opportunities.sort(
+        key=lambda o: (o.get("estimated_adv_gain") is None, -(o.get("estimated_adv_gain") or 0))
+    )
+    return opportunities
+
+
 @app.get("/geo-intelligence/{station_code}/runs")
 def list_runs(station_code: str) -> list[dict[str, Any]]:
     reader = _get_reader()

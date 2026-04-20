@@ -65,6 +65,8 @@ class GeoPartnerMatch:
     territory_id: Optional[str]
     decision: str
     reason: str
+    radius: int = 1500
+    capacity: int = 42
 
 
 @dataclass
@@ -303,6 +305,8 @@ def run_daily(
         origin_hex = str(partner.get("origin_hex") or "")
         lat = float(partner.get("lat") or 0)
         lon = float(partner.get("lon") or 0)
+        radius = int(partner.get("radius") or partner.get("radius_s") or 1500)
+        capacity = int(partner.get("capacity") or partner.get("capacity_s") or 42)
 
         if pid in allocated_partners:
             continue
@@ -315,6 +319,7 @@ def run_daily(
                     partner_id=pid, status=status, origin_hex=origin_hex,
                     lat=lat, lon=lon, matched_slot_id=None,
                     territory_id=None, decision=decision, reason=reason,
+                    radius=radius, capacity=capacity,
                 ))
                 continue
 
@@ -333,6 +338,7 @@ def run_daily(
                 partner_id=pid, status=status, origin_hex=origin_hex,
                 lat=lat, lon=lon, matched_slot_id=None,
                 territory_id=tid, decision="No Go", reason=CANONICAL_REASONS["no_opportunity"],
+                radius=radius, capacity=capacity,
             ))
             continue
 
@@ -357,6 +363,7 @@ def run_daily(
             matched_slot_id=best_slot["supply_id"],
             territory_id=tid,
             decision="Go", reason=CANONICAL_REASONS["go"],
+            radius=radius, capacity=capacity,
         ))
         allocated_partners.add(pid)
         allocated_slots.add(best_slot["supply_id"])

@@ -1,11 +1,5 @@
 /**
  * AreaAnalysisTab.tsx
- * ===================
- * Aba de análise de área — porta fiel da versão vanilla (ui-manager.js).
- *
- * Desktop/Tablet: painel lateral com overview global, motivos de No Go,
- *   resultado filtrado e botão "Ver detalhamento por Estado" (tabela expansível).
- * Mobile: resultado inline no painel de controles (sem painel lateral).
  */
 
 import { useState, useMemo, useCallback } from 'react';
@@ -15,54 +9,16 @@ import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { getUniqueValues } from '../../store/actions/dataActions';
 import type { Partner } from '../../store/types';
 
-// ---------------------------------------------------------------------------
-// Constantes
-// ---------------------------------------------------------------------------
-
 const NO_GO_REASONS = [
   'Sem oportunidade próxima',
   'Fora de jurisdição',
   'Não avaliado por falta de coordenadas',
 ];
 
-// ---------------------------------------------------------------------------
-// Tipos
-// ---------------------------------------------------------------------------
-
-interface NoGoReasonCount {
-  reason: string;
-  count: number;
-  pct: string;
-}
-
-interface Overview {
-  total: number;
-  go: number;
-  nogo: number;
-  rate: string;
-  noCoords: number;
-  nogoReasonCounts: Record<string, number>;
-}
-
-interface FilteredStats {
-  total: number;
-  go: number;
-  nogo: number;
-  rate: string;
-  nogoReasonRows: NoGoReasonCount[];
-}
-
-interface StateRow {
-  uf: string;
-  total: number;
-  go: number;
-  nogo: number;
-  rate: string;
-}
-
-// ---------------------------------------------------------------------------
-// Funções puras (portadas de ui-manager.js)
-// ---------------------------------------------------------------------------
+interface NoGoReasonCount { reason: string; count: number; pct: string; }
+interface Overview { total: number; go: number; nogo: number; rate: string; noCoords: number; nogoReasonCounts: Record<string, number>; }
+interface FilteredStats { total: number; go: number; nogo: number; rate: string; nogoReasonRows: NoGoReasonCount[]; }
+interface StateRow { uf: string; total: number; go: number; nogo: number; rate: string; }
 
 function getGlobalOverview(allMarkersData: Partner[]): Overview {
   const allProspects = allMarkersData.filter((m) => m.status === 'Prospect');
@@ -78,7 +34,7 @@ function getGlobalOverview(allMarkersData: Partner[]): Overview {
   return { total: evaluated.length, go, nogo, rate, noCoords, nogoReasonCounts };
 }
 
-function getFilteredStats(prospects: Partner[], nogo: number): FilteredStats {
+function getFilteredStats(prospects: Partner[]): FilteredStats {
   const total = prospects.length;
   const go = prospects.filter((p) => p.decision === 'Go').length;
   const fNogo = prospects.filter((p) => p.decision === 'No Go').length;
@@ -106,10 +62,6 @@ function getStatsByState(prospects: Partner[]): StateRow[] {
       return { uf, total, go: s.go, nogo: s.nogo, rate: total > 0 ? ((s.go / total) * 100).toFixed(0) : '0' };
     });
 }
-
-// ---------------------------------------------------------------------------
-// Sub-componentes
-// ---------------------------------------------------------------------------
 
 function StatBox({ value, label, color }: { value: string | number; label: string; color?: string }) {
   return (
@@ -176,7 +128,116 @@ function StateTable({ rows }: { rows: StateRow[] }) {
 }
 
 // ---------------------------------------------------------------------------
-// Painel de resultados (desktop/tablet) — painel lateral fixo
+// LeadCard — card individual de lead avaliado
+// ---------------------------------------------------------------------------
+
+function LeadCard({ lead, onSearch }: { lead: Partner; onSearch: (lead: Partner) => void }) {
+  const isGo = lead.decision === 'Go';
+  const hasCoords = lead.lat != null && lead.lon != null;
+  return (
+    <div className="rounded-lg bg-white/5 border border-white/8 p-3 flex flex-col gap-1.5">
+      <div className="flex items-start justify-between gap-2">
+        <span className="text-sm font-semibold text-atlas-light leading-tight flex-1">{lead.name}</span>
+        <span
+          className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold ${
+            isGo ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+          }`}
+        >
+          {lead.decision}
+        </span>
+      </div>
+
+      {lead.reason && (
+        <p className="text-xs text-atlas-muted leading-snug">{lead.reason}</p>
+      )}
+
+      <div className="flex items-center justify-between gap-2 mt-1">
+        <span className="text-xs text-atlas-muted/60">
+          {lead.city ? `${lead.city}${lead.state ? `, ${lead.state}` : ''}` : lead.state ?? ''}
+        </span>
+        {hasCoords && (
+          <button
+            type="button"
+            onClick={() => onSearch(lead)}
+            title="Visualizar no mapa"
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs text-atlas-accent border border-atlas-accent/30 hover:bg-atlas-accent/10 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            </svg>
+            Visualizar
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// LeadsPanel — lista de leads avaliados com busca
+// ---------------------------------------------------------------------------
+
+function LeadsPanel({ leads }: { leads: Partner[] }) {
+  const [search, setSearch] = useState('');
+
+  const filtered = useMemo(() => {
+    const sorted = [...leads].sort((a, b) => {
+      if (a.decision === 'Go' && b.decision !== 'Go') return -1;
+      if (a.decision !== 'Go' && b.decision === 'Go') return 1;
+      return a.name.localeCompare(b.name);
+    });
+    if (!search.trim()) return sorted;
+    const q = search.toLowerCase();
+    return sorted.filter(
+      (l) => l.name.toLowerCase().includes(q) || (l.city ?? '').toLowerCase().includes(q) || (l.state ?? '').toLowerCase().includes(q)
+    );
+  }, [leads, search]);
+
+  const handleSearch = useCallback((lead: Partner) => {
+    if (lead.lat != null && lead.lon != null) {
+      window.dispatchEvent(new CustomEvent('atlas:open-partner-popup', {
+        detail: { salesforceId: lead.salesforce_id, lat: lead.lat, lon: lead.lon },
+      }));
+    }
+  }, []);
+
+  return (
+    <div className="rounded-lg bg-white/5 p-3 flex flex-col gap-3">
+      <p className="text-xs font-semibold text-atlas-muted uppercase tracking-wide">
+        Leads Avaliados <span className="text-atlas-light font-bold ml-1">{leads.length}</span>
+      </p>
+
+      {/* Busca */}
+      <div className="flex items-center rounded bg-atlas-darker border border-white/10 overflow-hidden focus-within:border-atlas-accent transition-colors">
+        <span className="px-2 text-xs text-atlas-muted">🔍</span>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Filtrar leads…"
+          className="flex-1 bg-transparent border-none outline-none text-xs text-atlas-light py-2 pr-2 placeholder:text-atlas-muted/50"
+        />
+        {search && (
+          <button type="button" onClick={() => setSearch('')} className="px-2 text-xs text-atlas-muted hover:text-atlas-light">✕</button>
+        )}
+      </div>
+
+      {/* Cards */}
+      <div className="flex flex-col gap-2 max-h-96 overflow-y-auto pr-0.5">
+        {filtered.length === 0 ? (
+          <p className="text-xs text-atlas-muted text-center py-4">Nenhum lead encontrado.</p>
+        ) : (
+          filtered.map((lead) => (
+            <LeadCard key={lead.salesforce_id} lead={lead} onSearch={handleSearch} />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ResultPanel — painel lateral fixo (desktop/tablet)
 // ---------------------------------------------------------------------------
 
 interface ResultPanelProps {
@@ -185,20 +246,15 @@ interface ResultPanelProps {
   stateFilter: string;
   decisionFilter: string;
   stateRows: StateRow[];
+  leads: Partner[];
   showStateTable: boolean;
   onToggleStateTable: () => void;
   onClose: () => void;
 }
 
 function ResultPanel({
-  overview,
-  filtered,
-  stateFilter,
-  decisionFilter,
-  stateRows,
-  showStateTable,
-  onToggleStateTable,
-  onClose,
+  overview, filtered, stateFilter, decisionFilter, stateRows, leads,
+  showStateTable, onToggleStateTable, onClose,
 }: ResultPanelProps) {
   const hasStateFilter = stateFilter !== 'all';
   const hasFilter = stateFilter !== 'all' || decisionFilter !== 'all';
@@ -211,18 +267,15 @@ function ResultPanel({
 
   return (
     <div
-      className="fixed overflow-y-auto flex flex-col"
+      className="fixed overflow-hidden flex flex-col"
       style={{
-        top: '56px',
-        right: '0',
-        bottom: '0',
+        top: '56px', right: '0', bottom: '0',
         width: 'clamp(360px, 28vw, 480px)',
         zIndex: 'var(--z-overlay)' as unknown as number,
         backgroundColor: 'var(--color-navy)',
         borderLeft: '1px solid var(--border-color)',
       }}
     >
-      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-white/10">
         <span className="font-semibold text-atlas-light text-sm">Análise de Área — Prospects</span>
         <button onClick={onClose} aria-label="Fechar painel" className="text-atlas-muted hover:text-atlas-light transition-colors">
@@ -233,7 +286,7 @@ function ResultPanel({
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-        {/* Overview global */}
+        {/* Overview */}
         <div className="rounded-lg bg-white/5 p-3">
           <p className="text-xs uppercase tracking-wide text-atlas-muted mb-3">Overview Geral</p>
           <div className="flex gap-2">
@@ -242,20 +295,17 @@ function ResultPanel({
             <StatBox value={overview.nogo} label="No Go" color="text-red-400" />
             <StatBox value={`${overview.rate}%`} label="Aprovação" color="text-blue-400" />
           </div>
-
           {overview.noCoords > 0 && (
             <div className="mt-3 px-3 py-2 rounded bg-yellow-500/10 border-l-2 border-yellow-400 text-xs text-atlas-muted">
               ⚠️ <strong>{overview.noCoords}</strong> lead(s) sem lat/lon — não avaliados
             </div>
           )}
-
-          {/* Motivos de No Go globais — só quando não há filtro de estado */}
           {!hasStateFilter && overview.nogo > 0 && (
             <NoGoTable rows={overviewNoGoRows} title="Detalhamento de No Go:" />
           )}
         </div>
 
-        {/* Resultado filtrado */}
+        {/* Filtrado */}
         {hasFilter && filtered && (
           <div className="rounded-lg bg-white/5 p-3">
             <p className="text-xs uppercase tracking-wide text-atlas-muted mb-1">
@@ -280,14 +330,17 @@ function ResultPanel({
           </div>
         )}
 
-        {/* Botão detalhamento por estado — só sem filtro de estado */}
+        {/* Toggle tabela por estado */}
         {!hasStateFilter && (
           <button
             type="button"
             onClick={onToggleStateTable}
-            className="w-full py-2 px-3 rounded border border-blue-500/50 text-blue-400 text-xs hover:bg-blue-500/10 transition-colors"
+            className="w-full py-2 px-3 rounded border border-blue-500/50 text-blue-400 text-xs hover:bg-blue-500/10 transition-colors flex items-center justify-center gap-1.5"
           >
-            {showStateTable ? '▲ Ocultar detalhamento por Estado' : '▼ Ver detalhamento por Estado'}
+            <svg xmlns="http://www.w3.org/2000/svg" className={`w-3 h-3 transition-transform duration-200 ${showStateTable ? 'rotate-90' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L11.586 10 7.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+            {showStateTable ? 'Ocultar detalhamento por Estado' : 'Ver detalhamento por Estado'}
           </button>
         )}
 
@@ -296,6 +349,180 @@ function ResultPanel({
             <p className="text-xs font-semibold text-atlas-muted mb-1">Detalhamento por Estado</p>
             <StateTable rows={stateRows} />
           </div>
+        )}
+
+        {/* Cards de leads avaliados */}
+        {leads.length > 0 && (
+          <LeadsPanel leads={leads} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// HexSelectionSummary — resumo de hexes selecionados na aba Área
+// ---------------------------------------------------------------------------
+
+function HexSelectionSummary() {
+  const hexSelectionState = useStore((s) => s.hexSelectionState);
+  const activeTab = useStore((s) => s.activeTab);
+  const minAdv = useStore((s) => s.recruitableAnalysis.params.minAdv);
+  const clearHexSelection = useStore((s) => s.clearHexSelection);
+
+  if (activeTab !== 'area' || hexSelectionState.selectedHexIds.length === 0) {
+    return null;
+  }
+
+  const { selectedHexIds, totalDemandDaily, totalDemandResidual } = hexSelectionState;
+  const hasMinAdv = minAdv > 0;
+  const pct = hasMinAdv ? ((totalDemandResidual / minAdv) * 100).toFixed(1) : null;
+
+  return (
+    <div className="mt-4 rounded-lg bg-indigo-500/10 border border-indigo-500/30 p-3 flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold text-indigo-300 uppercase tracking-wide">
+          Hexes Selecionados
+        </p>
+        <button
+          type="button"
+          onClick={clearHexSelection}
+          className="text-xs text-atlas-muted hover:text-atlas-light transition-colors"
+          aria-label="Limpar seleção de hexes"
+        >
+          ✕ Limpar
+        </button>
+      </div>
+
+      <div className="flex gap-2">
+        <div className="text-center flex-1">
+          <div className="text-lg font-bold text-indigo-300">{selectedHexIds.length}</div>
+          <div className="text-xs text-atlas-muted">Hexes</div>
+        </div>
+        <div className="text-center flex-1">
+          <div className="text-lg font-bold text-atlas-light">{totalDemandDaily.toFixed(1)}</div>
+          <div className="text-xs text-atlas-muted">Demanda Diária</div>
+        </div>
+        <div className="text-center flex-1">
+          <div className="text-lg font-bold text-green-400">{totalDemandResidual.toFixed(1)}</div>
+          <div className="text-xs text-atlas-muted">Demanda Residual</div>
+        </div>
+      </div>
+
+      {hasMinAdv && pct !== null && (
+        <div className="mt-1 px-3 py-2 rounded bg-white/5 border border-white/10 text-xs text-atlas-muted">
+          Demanda residual vs ADV mínimo:{' '}
+          <span className="text-atlas-light font-semibold">
+            {totalDemandResidual.toFixed(1)} / {minAdv}
+          </span>{' '}
+          <span className={parseFloat(pct) >= 100 ? 'text-green-400 font-semibold' : 'text-yellow-400 font-semibold'}>
+            ({pct}%)
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// CapOpportunityPanel — painel lateral de oportunidades de cap
+// ---------------------------------------------------------------------------
+
+function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
+  const allMarkersData = useStore((s) => s.allMarkersData);
+  const selectedPartnerId = useStore((s) => s.capOpportunityState.selectedPartnerId);
+  const setSelectedCapOpportunity = useStore((s) => s.setSelectedCapOpportunity);
+
+  const opportunities = useMemo(() => {
+    return allMarkersData
+      .filter((p) => p.status === 'Active' && p.adv_opportunity != null)
+      .sort((a, b) => (b.adv_opportunity!.estimated_adv_gain) - (a.adv_opportunity!.estimated_adv_gain));
+  }, [allMarkersData]);
+
+  return (
+    <div
+      className="fixed overflow-hidden flex flex-col"
+      style={{
+        top: '56px',
+        right: '0',
+        bottom: '0',
+        width: 'clamp(360px, 28vw, 480px)',
+        zIndex: 'var(--z-overlay)' as unknown as number,
+        backgroundColor: 'var(--color-navy)',
+        borderLeft: '1px solid var(--border-color)',
+      }}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-white/10">
+        <span className="font-semibold text-atlas-light text-sm">Oportunidades de Cap</span>
+        <button
+          onClick={onClose}
+          aria-label="Fechar painel"
+          className="text-atlas-muted hover:text-atlas-light transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2">
+        {opportunities.length === 0 ? (
+          <div className="flex-1 flex items-center justify-center p-4">
+            <p className="text-sm text-atlas-muted text-center">
+              Nenhuma oportunidade de cap identificada
+            </p>
+          </div>
+        ) : (
+          opportunities.map((partner) => {
+            const opp = partner.adv_opportunity!;
+            const isSelected = selectedPartnerId === partner.salesforce_id;
+            return (
+              <button
+                key={partner.salesforce_id}
+                type="button"
+                onClick={() => setSelectedCapOpportunity(partner.salesforce_id)}
+                className={[
+                  'w-full text-left rounded-lg p-3 flex flex-col gap-1.5 border transition-colors',
+                  isSelected
+                    ? 'bg-amber-500/15 border-amber-500/50'
+                    : 'bg-white/5 border-white/8 hover:bg-white/10',
+                ].join(' ')}
+              >
+                {/* Partner name + gain badge */}
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-sm font-semibold text-atlas-light leading-tight flex-1">
+                    {partner.name}
+                  </span>
+                  <span className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400">
+                    +{opp.estimated_adv_gain} ADV
+                  </span>
+                </div>
+
+                {/* Cap: atual → sugerido */}
+                <div className="flex items-center gap-3 text-xs">
+                  <span className="text-atlas-muted">Cap:</span>
+                  <span className="text-atlas-light font-medium">{partner.capacity}</span>
+                  <span className="text-atlas-muted">→</span>
+                  <span className="text-amber-400 font-semibold">{opp.suggested_cap}</span>
+                </div>
+
+                {/* Raio: atual → sugerido */}
+                <div className="flex items-center gap-3 text-xs">
+                  <span className="text-atlas-muted">Raio:</span>
+                  <span className="text-atlas-light font-medium">{partner.radius} m</span>
+                  <span className="text-atlas-muted">→</span>
+                  <span className="text-amber-400 font-semibold">{opp.suggested_radius} m</span>
+                </div>
+
+                {/* Ganho estimado */}
+                <div className="text-xs text-atlas-muted">
+                  Ganho estimado: <span className="text-amber-400 font-semibold">{opp.estimated_adv_gain} ADV/dia</span>
+                </div>
+              </button>
+            );
+          })
         )}
       </div>
     </div>
@@ -309,23 +536,28 @@ function ResultPanel({
 export default function AreaAnalysisTab() {
   const allMarkersData = useStore((s) => s.allMarkersData);
   const applyFilters = useStore((s) => s.applyFilters);
+  const resetFilters = useStore((s) => s.resetFilters);
+  const setManualAnalysisOpen = useStore((s) => s.setManualAnalysisOpen);
+  const manualAnalysisOpen = useStore((s) => s.manualAnalysisOpen);
+  const setSelectedCapOpportunity = useStore((s) => s.setSelectedCapOpportunity);
   const bp = useBreakpoint();
   const isMobile = bp === 'mobile';
 
   const [selectedState, setSelectedState] = useState('all');
   const [selectedDecision, setSelectedDecision] = useState('all');
 
-  // Resultado da análise
   const [analysisResult, setAnalysisResult] = useState<{
     overview: Overview;
     filtered: FilteredStats;
     stateRows: StateRow[];
+    leads: Partner[];
     stateFilter: string;
     decisionFilter: string;
   } | null>(null);
 
   const [showPanel, setShowPanel] = useState(false);
   const [showStateTable, setShowStateTable] = useState(false);
+  const [showCapOpportunityPanel, setShowCapOpportunityPanel] = useState(false);
 
   const stateOptions = useMemo(() => {
     const prospects = allMarkersData.filter((p) => p.status === 'Prospect');
@@ -344,16 +576,12 @@ export default function AreaAnalysisTab() {
     });
 
     const overview = getGlobalOverview(allMarkersData);
-    const filtered = getFilteredStats(filteredProspects, overview.nogo);
+    const filtered = getFilteredStats(filteredProspects);
     const stateRows = getStatsByState(allProspects.filter((p) => !!p.decision));
+    // Todos os leads avaliados (com decisão), respeitando filtros
+    const leads = filteredProspects;
 
-    setAnalysisResult({
-      overview,
-      filtered,
-      stateRows,
-      stateFilter: selectedState,
-      decisionFilter: selectedDecision,
-    });
+    setAnalysisResult({ overview, filtered, stateRows, leads, stateFilter: selectedState, decisionFilter: selectedDecision });
     setShowPanel(true);
     setShowStateTable(false);
   }, [allMarkersData, applyFilters, selectedState, selectedDecision]);
@@ -363,9 +591,20 @@ export default function AreaAnalysisTab() {
     setShowStateTable(false);
   }, []);
 
+  const handleOpenCapOpportunity = useCallback(() => {
+    setShowCapOpportunityPanel(true);
+    setShowPanel(false);
+    applyFilters({ selectedStatuses: ['Active'] });
+  }, [applyFilters]);
+
+  const handleCloseCapOpportunity = useCallback(() => {
+    setShowCapOpportunityPanel(false);
+    setSelectedCapOpportunity(null);
+    resetFilters();
+  }, [resetFilters, setSelectedCapOpportunity]);
+
   return (
     <>
-      {/* Painel lateral de resultados — desktop e tablet */}
       {!isMobile && showPanel && analysisResult && (
         createPortal(
           <ResultPanel
@@ -374,6 +613,7 @@ export default function AreaAnalysisTab() {
             stateFilter={analysisResult.stateFilter}
             decisionFilter={analysisResult.decisionFilter}
             stateRows={analysisResult.stateRows}
+            leads={analysisResult.leads}
             showStateTable={showStateTable}
             onToggleStateTable={() => setShowStateTable((v) => !v)}
             onClose={handleClose}
@@ -382,13 +622,68 @@ export default function AreaAnalysisTab() {
         )
       )}
 
-      {/* Formulário de filtros */}
+      {!isMobile && showCapOpportunityPanel && (
+        createPortal(
+          <CapOpportunityPanel onClose={handleCloseCapOpportunity} />,
+          document.body
+        )
+      )}
+
       <div className="p-3">
-        {/* Estado */}
+        {/* Botão Análise Manual — sólido e vivo */}
+        <div className="mb-5">
+          <p className="text-xs uppercase tracking-wide text-atlas-muted mb-3 font-semibold border-b border-white/10 pb-1">
+            Análise de Áreas
+          </p>
+          <button
+            type="button"
+            onClick={() => setManualAnalysisOpen(!manualAnalysisOpen)}
+            className={[
+              'w-full py-3 px-4 rounded text-sm font-semibold min-h-[44px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 shadow-lg',
+              manualAnalysisOpen
+                ? 'bg-indigo-500 text-white hover:bg-indigo-400 shadow-indigo-500/30'
+                : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-indigo-600/40',
+            ].join(' ')}
+          >
+            {manualAnalysisOpen ? '✕ Fechar Análise Manual' : '🔍 Análise Manual'}
+          </button>
+          {manualAnalysisOpen && (
+            <p className="mt-2 text-xs text-indigo-300 text-center">
+              Clique no mapa para definir o ponto central
+            </p>
+          )}
+        </div>
+
+        <div className="border-t border-white/10 mb-4" />
+
+        {/* Oportunidades de Cap */}
+        <div className="mb-5">
+          <p className="text-xs uppercase tracking-wide text-atlas-muted mb-3 font-semibold">
+            Oportunidades de Cap
+          </p>
+          <button
+            type="button"
+            onClick={showCapOpportunityPanel ? handleCloseCapOpportunity : handleOpenCapOpportunity}
+            className={[
+              'w-full py-3 px-4 rounded text-sm font-semibold min-h-[44px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shadow-lg',
+              showCapOpportunityPanel
+                ? 'bg-amber-500 text-white hover:bg-amber-400 shadow-amber-500/30'
+                : 'bg-amber-600 text-white hover:bg-amber-500 shadow-amber-600/40',
+            ].join(' ')}
+          >
+            {showCapOpportunityPanel ? '✕ Fechar Oportunidades' : '📈 Oportunidades de Cap'}
+          </button>
+        </div>
+
+        <div className="border-t border-white/10 mb-4" />
+
+        {/* Análise de Prospects */}
+        <p className="text-xs uppercase tracking-wide text-atlas-muted mb-3 font-semibold">
+          Análise de Prospects
+        </p>
+
         <div className="mb-3">
-          <label htmlFor="area-state" className="block text-xs font-medium text-atlas-muted mb-1">
-            Estado
-          </label>
+          <label htmlFor="area-state" className="block text-xs font-medium text-atlas-muted mb-1">Estado</label>
           <select
             id="area-state"
             value={selectedState}
@@ -396,17 +691,12 @@ export default function AreaAnalysisTab() {
             className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
           >
             <option value="all">Todos os estados</option>
-            {stateOptions.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
+            {stateOptions.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
 
-        {/* Decisão */}
         <div className="mb-4">
-          <label htmlFor="area-decision" className="block text-xs font-medium text-atlas-muted mb-1">
-            Decisão
-          </label>
+          <label htmlFor="area-decision" className="block text-xs font-medium text-atlas-muted mb-1">Decisão</label>
           <select
             id="area-decision"
             value={selectedDecision}
@@ -428,13 +718,15 @@ export default function AreaAnalysisTab() {
           onClick={handleAnalyze}
           className="w-full py-3 px-4 rounded bg-atlas-accent text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent min-h-[44px] mb-4 transition-colors"
         >
-          Analisar Área
+          Exibir Leads Avaliados
         </button>
+
+        {/* Resumo de seleção de hexes — visível apenas na aba Área com hexes selecionados */}
+        <HexSelectionSummary />
 
         {/* Mobile: resultado inline */}
         {isMobile && analysisResult && (
           <div className="flex flex-col gap-3">
-            {/* Overview */}
             <div className="rounded-lg bg-white/5 p-3">
               <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2">Overview Geral</p>
               <div className="flex gap-2">
@@ -443,7 +735,6 @@ export default function AreaAnalysisTab() {
                 <StatBox value={analysisResult.overview.nogo} label="No Go" color="text-red-400" />
                 <StatBox value={`${analysisResult.overview.rate}%`} label="Aprov." color="text-blue-400" />
               </div>
-              {/* Motivos de No Go — mobile sempre mostra */}
               {analysisResult.overview.nogo > 0 && (
                 <NoGoTable
                   rows={NO_GO_REASONS.map((r) => ({
@@ -457,8 +748,6 @@ export default function AreaAnalysisTab() {
                 />
               )}
             </div>
-
-            {/* Filtrado (se houver filtro) */}
             {(analysisResult.stateFilter !== 'all' || analysisResult.decisionFilter !== 'all') && (
               <div className="rounded-lg bg-white/5 p-3">
                 <p className="text-xs text-atlas-muted mb-2">
@@ -475,6 +764,9 @@ export default function AreaAnalysisTab() {
                   <NoGoTable rows={analysisResult.filtered.nogoReasonRows} title="Detalhamento de No Go:" />
                 )}
               </div>
+            )}
+            {analysisResult.leads.length > 0 && (
+              <LeadsPanel leads={analysisResult.leads} />
             )}
           </div>
         )}

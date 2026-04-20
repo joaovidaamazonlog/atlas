@@ -18,6 +18,11 @@ import type {
   ProspectState,
   ProspectCompany,
   ProspectCluster,
+  RecruitableAnalysisState,
+  RecruitableAnalysisParams,
+  EvaluatorResult,
+  CapOpportunityState,
+  HexSelectionState,
 } from './types';
 import { Partner as PartnerModel } from '../lib/models';
 import { applyFiltersLogic } from './actions/dataActions';
@@ -46,6 +51,19 @@ const DEFAULT_HCP_STATE: HcpState = {
   suggestionCache: {},
   usedStores: {},
   suggestionsActive: false,
+};
+
+const DEFAULT_RECRUITABLE_ANALYSIS_STATE: RecruitableAnalysisState = {
+  params: {
+    minAdv: 40,
+    radiusMeters: 1000,
+    centerLat: '',
+    centerLon: '',
+    selectedLeadId: null,
+  },
+  result: null,
+  error: null,
+  isStale: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -116,6 +134,36 @@ export interface AtlasStore {
   setGeoFilter: (filter: Partial<GeoIntelligenceFilter>) => void;
   setExpansionTarget: (pct: number) => void;
   selectGeoTerritory: (territoryId: string | null) => void;
+
+  // --- Active Tab ---
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+
+  // --- Manual Analysis Panel ---
+  manualAnalysisOpen: boolean;
+  setManualAnalysisOpen: (open: boolean) => void;
+  /** Pin temporário no mapa para análise manual (endereço geocodificado) */
+  manualAnalysisPin: { lat: number; lon: number; label: string } | null;
+  setManualAnalysisPin: (pin: { lat: number; lon: number; label: string } | null) => void;
+
+  // --- Recruitable Area Analysis ---
+  recruitableAnalysis: RecruitableAnalysisState;
+  setRecruitableParams: (params: Partial<RecruitableAnalysisParams>) => void;
+  setRecruitableResult: (result: EvaluatorResult | null, error?: string | null) => void;
+  clearRecruitableAnalysis: () => void;
+
+  // --- Cap Opportunity ---
+  capOpportunityState: CapOpportunityState;
+  setSelectedCapOpportunity: (partnerId: string | null) => void;
+
+  // --- Hex Selection ---
+  hexSelectionState: HexSelectionState;
+  toggleHexSelection: (hexId: string, demandDaily: number, demandResidual: number) => void;
+  clearHexSelection: () => void;
+
+  // --- What-If Mode ---
+  whatIfModeActive: boolean;
+  setWhatIfModeActive: (active: boolean) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -158,6 +206,25 @@ export const useStore = create<AtlasStore>((set, get) => ({
 
   // --- Estado inicial: geo intelligence ---
   geoIntelligence: { ...DEFAULT_GEO_INTELLIGENCE_STATE },
+
+  // --- Estado inicial: active tab ---
+  activeTab: 'filters',
+
+  // --- Estado inicial: manual analysis panel ---
+  manualAnalysisOpen: false,
+  manualAnalysisPin: null,
+
+  // --- Estado inicial: recruitable area analysis ---
+  recruitableAnalysis: { ...DEFAULT_RECRUITABLE_ANALYSIS_STATE, params: { ...DEFAULT_RECRUITABLE_ANALYSIS_STATE.params } },
+
+  // --- Estado inicial: cap opportunity ---
+  capOpportunityState: { selectedPartnerId: null },
+
+  // --- Estado inicial: hex selection ---
+  hexSelectionState: { selectedHexIds: [], totalDemandDaily: 0, totalDemandResidual: 0 },
+
+  // --- Estado inicial: what-if mode ---
+  whatIfModeActive: false,
 
   // ---------------------------------------------------------------------------
   // ACTIONS
@@ -561,11 +628,169 @@ export const useStore = create<AtlasStore>((set, get) => ({
       },
     }));
   },
-}));
 
-// ---------------------------------------------------------------------------
-// ACESSO FORA DE COMPONENTES REACT
-// ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // ACTIVE TAB ACTION
+  // ---------------------------------------------------------------------------
+
+  setActiveTab: (tab: string) => {
+    set({ activeTab: tab });
+  },
+
+  // ---------------------------------------------------------------------------
+  // MANUAL ANALYSIS PANEL ACTION
+  // ---------------------------------------------------------------------------
+
+  setManualAnalysisOpen: (open: boolean) => {
+    set({ manualAnalysisOpen: open });
+    if (!open) {
+      // Limpa análise e pin ao fechar o painel
+      set((state) => ({
+        manualAnalysisPin: null,
+        recruitableAnalysis: {
+          ...state.recruitableAnalysis,
+          params: {
+            ...state.recruitableAnalysis.params,
+            centerLat: '',
+            centerLon: '',
+            selectedLeadId: null,
+            radiusMeters: 1000,
+          },
+          result: null,
+          error: null,
+          isStale: false,
+        },
+      }));
+    }
+  },
+
+  setManualAnalysisPin: (pin) => {
+    set({ manualAnalysisPin: pin });
+  },
+
+  // ---------------------------------------------------------------------------
+  // RECRUITABLE AREA ANALYSIS ACTIONS
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Atualiza parcialmente os parâmetros de análise recrutável.
+   * Marca isStale: true quando há resultado existente.
+   */
+  setRecruitableParams: (params: Partial<RecruitableAnalysisParams>) => {
+    set((state) => {
+      const hasResult = state.recruitableAnalysis.result !== null;
+      return {
+        recruitableAnalysis: {
+          ...state.recruitableAnalysis,
+          params: { ...state.recruitableAnalysis.params, ...params },
+          isStale: hasResult ? true : state.recruitableAnalysis.isStale,
+        },
+      };
+    });
+  },
+
+  /**
+   * Armazena o resultado da análise recrutável (e erro opcional).
+   */
+  setRecruitableResult: (result: EvaluatorResult | null, error: string | null = null) => {
+    set((state) => ({
+      recruitableAnalysis: {
+        ...state.recruitableAnalysis,
+        result,
+        error,
+        isStale: false,
+      },
+    }));
+  },
+
+  /**
+   * Limpa resultado, erro, ponto central e lead selecionado.
+   * Preserva minAdv e radiusMeters.
+   */
+  clearRecruitableAnalysis: () => {
+    set((state) => ({
+      recruitableAnalysis: {
+        ...state.recruitableAnalysis,
+        params: {
+          ...state.recruitableAnalysis.params,
+          centerLat: '',
+          centerLon: '',
+          selectedLeadId: null,
+        },
+        result: null,
+        error: null,
+        isStale: false,
+      },
+    }));
+  },
+
+  // ---------------------------------------------------------------------------
+  // CAP OPPORTUNITY ACTIONS
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Seleciona (ou deseleciona) um parceiro para visualização de oportunidade de cap.
+   * Toggle: se o mesmo partnerId já estiver selecionado, deseleciona (null).
+   */
+  setSelectedCapOpportunity: (partnerId: string | null) => {
+    set((state) => ({
+      capOpportunityState: {
+        selectedPartnerId:
+          state.capOpportunityState.selectedPartnerId === partnerId ? null : partnerId,
+      },
+    }));
+  },
+
+  // ---------------------------------------------------------------------------
+  // HEX SELECTION ACTIONS
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Alterna a seleção de um hex H3.
+   * Se já selecionado, remove e subtrai os valores de demanda.
+   * Se não selecionado, adiciona e acumula os valores de demanda.
+   */
+  toggleHexSelection: (hexId: string, demandDaily: number, demandResidual: number) => {
+    set((state) => {
+      const { selectedHexIds, totalDemandDaily, totalDemandResidual } = state.hexSelectionState;
+      const isSelected = selectedHexIds.includes(hexId);
+      if (isSelected) {
+        return {
+          hexSelectionState: {
+            selectedHexIds: selectedHexIds.filter((id) => id !== hexId),
+            totalDemandDaily: totalDemandDaily - demandDaily,
+            totalDemandResidual: totalDemandResidual - demandResidual,
+          },
+        };
+      }
+      return {
+        hexSelectionState: {
+          selectedHexIds: [...selectedHexIds, hexId],
+          totalDemandDaily: totalDemandDaily + demandDaily,
+          totalDemandResidual: totalDemandResidual + demandResidual,
+        },
+      };
+    });
+  },
+
+  /**
+   * Limpa toda a seleção de hexes e reseta os acumuladores de demanda.
+   */
+  clearHexSelection: () => {
+    set({ hexSelectionState: { selectedHexIds: [], totalDemandDaily: 0, totalDemandResidual: 0 } });
+  },
+
+  // ---------------------------------------------------------------------------
+  // WHAT-IF MODE ACTION
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Ativa ou desativa o modo what-if de reposicionamento de parceiros.
+   */
+  setWhatIfModeActive: (active: boolean) => {
+    set({ whatIfModeActive: active });
+  },
+}));
 
 /**
  * Acessa o estado atual do store fora de componentes React.

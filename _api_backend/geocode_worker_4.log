@@ -198,3 +198,18 @@ Traceback (most recent call last):
   File "C:\Users\joaovida\Documents\Projetos\atlas\_api_backend\geocode_worker.py", line 94, in _post
     raise RuntimeError(f"Turso: falha após {self.MAX_RETRIES} tentativas.") from last_exc
 RuntimeError: Turso: falha após 5 tentativas.
+10:41:53 [W4] INFO: Iniciando worker 4
+10:41:56 [W4] INFO: Verificando índices em empresas_alvo...
+10:41:58 [W4] INFO: Índices OK.
+10:41:59 [W4] INFO: 262 empresas já processadas (serão puladas).
+10:42:00 [W4] INFO: 798818 empresas na faixa, 798556 para processar.
+10:48:24 [W4] INFO: [50/798556] 0.0% | OK=33 FAIL=17 | 0.13/s | ETA 1703.0h
+10:55:04 [W4] INFO: [100/798556] 0.0% | OK=60 FAIL=40 | 0.13/s | ETA 1738.4h
+11:01:51 [W4] INFO: [150/798556] 0.0% | OK=89 FAIL=61 | 0.13/s | ETA 1761.2h
+11:08:54 [W4] INFO: [200/798556] 0.0% | OK=118 FAIL=82 | 0.12/s | ETA 1789.4h
+11:15:39 [W4] INFO: [250/798556] 0.0% | OK=147 FAIL=103 | 0.12/s | ETA 1790.3h
+11:22:37 [W4] INFO: [300/798556] 0.0% | OK=174 FAIL=126 | 0.12/s | ETA 1801.3h
+11:28:52 [W4] INFO: [350/798556] 0.0% | OK=202 FAIL=148 | 0.12/s | ETA 1781.2h
+11:35:39 [W4] INFO: [400/798556] 0.1% | OK=233 FAIL=167 | 0.12/s | ETA 1783.8h
+11:42:15 [W4] INFO: [450/798556] 0.1% | OK=268 FAIL=182 | 0.12/s | ETA 1781.1h
+11:49:53 [W4] INFO: [500/798556] 0.1% | OK=298 FAIL=202 | 0.12/s | ETA 1805.9h

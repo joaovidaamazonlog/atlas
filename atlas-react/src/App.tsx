@@ -3,6 +3,7 @@ import { AppShell } from './components/layout/AppShell';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorToast } from './components/ui/ErrorToast';
 import ProspectLoadingOverlay from './components/ui/ProspectLoadingOverlay';
+import ManualAnalysisPanel from './components/controls/ManualAnalysisPanel';
 import { useStore } from './store';
 
 function AppInner() {
@@ -18,6 +19,7 @@ function AppInner() {
       <AppShell />
       <ErrorToast />
       <ProspectLoadingOverlay />
+      <ManualAnalysisPanel />
     </>
   );
 }

@@ -156,6 +156,7 @@ class PartnerMetrics:
     bucket: Optional[str]   = None
     matched_slot_id: Optional[str] = None   # preenchido na Fase 3
     allocations: List[Allocation] = field(default_factory=list)
+    adv_opportunity: Optional[dict] = None  # preenchido na Fase 3.5
 
     @property
     def total_load(self) -> int:
@@ -506,6 +507,7 @@ class Partner:
     telefone:               Optional[str]
     owner_id:               Optional[str]
     tooltip:                str
+    adv_opportunity:        Optional[dict] = None  # preenchido na Fase 3.5
 
     # ------------------------------------------------------------------
     # Construção a partir de uma linha do DataFrame consolidado
@@ -627,4 +629,5 @@ class Partner:
             "decision_status":         self.decision_status,
             "decision_reason_code":    self.decision_reason_code,
             "tooltip":                 self.tooltip,
+            "adv_opportunity":         self.adv_opportunity,
         }

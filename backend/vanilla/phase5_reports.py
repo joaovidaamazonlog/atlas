@@ -624,6 +624,109 @@ def _write_geojson(
           f"{size_mb:.1f} MB)")
 
 
+def _enrich_heatmap_with_residual(
+    heatmap_path: Path,
+    fit: FitResult,
+    pkg: PackageData,
+    territories: TerritoriesResult,
+    stations: Optional[List[str]] = None,
+) -> None:
+    """
+    Enriquece heatmap.geojson com campos de demanda alocada e residual.
+
+    Para cada hex, verifica se existe parceiro Active ou Onboarding com
+    matched_slot_id cujo origin_hex está em h3.grid_disk(hex_id, 1).
+    Se sim, o hex é considerado coberto.
+
+    Campos adicionados ao properties de cada feature:
+        demand_allocated  : demand_daily se coberto, senão 0
+        demand_residual   : demand_daily - demand_allocated
+        is_covered        : True se coberto, False caso contrário
+        covering_partner_id : salesforce_id do parceiro que cobre (ou None)
+
+    Faz merge parcial: hexes de outras stations são preservados sem alteração.
+    """
+    if not heatmap_path.exists():
+        print(f"  WARN _enrich_heatmap_with_residual: {heatmap_path} não encontrado — pulando.")
+        return
+
+    # ── Construir índice slot_id → origin_hex ────────────────────────────
+    slot_origin: Dict[str, str] = {}
+    for tf in fit.territories.values():
+        for slot in tf.slots:
+            slot_origin[slot.slot_id] = slot.origin_hex
+
+    # ── Construir índice: origin_hex → parceiro Active/Onboarding ────────
+    # Um parceiro cobre um hex se seu slot's origin_hex está em grid_disk(hex, 1)
+    # Invertemos: para cada parceiro, registramos seu origin_hex
+    covering_partners: Dict[str, PartnerMetrics] = {}  # origin_hex → partner
+    for partner in fit.all_partners():
+        if partner.status not in ("Active", "Onboarding"):
+            continue
+        if not partner.matched_slot_id:
+            continue
+        origin = slot_origin.get(partner.matched_slot_id)
+        if origin:
+            # Pode haver múltiplos parceiros por origin_hex; último vence (determinístico)
+            covering_partners[origin] = partner
+
+    # ── Ler heatmap existente ─────────────────────────────────────────────
+    try:
+        with open(heatmap_path, "r", encoding="utf-8") as f:
+            heatmap = json.load(f)
+    except Exception as e:
+        print(f"  WARN _enrich_heatmap_with_residual: falha ao ler {heatmap_path} ({e}) — pulando.")
+        return
+
+    features = heatmap.get("features", [])
+
+    # ── Enriquecer features das stations processadas ──────────────────────
+    enriched = 0
+    for ft in features:
+        props = ft.get("properties", {})
+        ft_station = props.get("delivery_station", "")
+
+        # Se stations fornecido, só enriquecer hexes das stations processadas
+        if stations and ft_station not in stations:
+            continue
+
+        hex_id = props.get("hex_id", "")
+        demand_daily = props.get("demand_daily", 0)
+
+        # Verificar cobertura: algum origin_hex de parceiro ativo está em grid_disk(hex_id, 1)?
+        covering_partner: Optional[PartnerMetrics] = None
+        if hex_id:
+            try:
+                neighborhood = set(h3.grid_disk(hex_id, 1))
+            except Exception:
+                neighborhood = {hex_id}
+
+            for origin_hex, partner in covering_partners.items():
+                if origin_hex in neighborhood:
+                    covering_partner = partner
+                    break
+
+        is_covered = covering_partner is not None
+        demand_allocated = demand_daily if is_covered else 0
+        demand_residual = demand_daily - demand_allocated
+
+        props["demand_allocated"]    = demand_allocated
+        props["demand_residual"]     = round(demand_residual, 4)
+        props["is_covered"]          = is_covered
+        props["covering_partner_id"] = covering_partner.salesforce_id if covering_partner else None
+        enriched += 1
+
+    heatmap["metadata"] = heatmap.get("metadata", {})
+    heatmap["metadata"]["enriched_at"] = datetime.now().isoformat(timespec="seconds")
+    heatmap["metadata"]["n_enriched"]  = enriched
+
+    with open(heatmap_path, "w", encoding="utf-8") as f:
+        json.dump(heatmap, f, ensure_ascii=False, indent=2)
+
+    size_mb = heatmap_path.stat().st_size / (1024 * 1024)
+    print(f"  ✅ {heatmap_path.name}  ({enriched} hexes enriquecidos | {size_mb:.1f} MB)")
+
+
 def _write_dados_mapa(
     path: Path,
     fit: FitResult,
@@ -749,6 +852,11 @@ def run_phase5(
     dados_mapa_path = out_dir / "dados_mapa.json"
     _write_dados_mapa(dados_mapa_path, fit, dados_mapa_path, stations=stations)
     paths["dados_mapa"] = dados_mapa_path
+
+    # 7. Enriquecer heatmap.geojson com demanda alocada e residual
+    heatmap_path = out_dir / "heatmap.geojson"
+    _enrich_heatmap_with_residual(heatmap_path, fit, pkg, territories, stations=stations)
+    paths["heatmap"] = heatmap_path
 
     print(f"\n{'='*60}")
     print(f"  FASE 5 CONCLUIDA — {len(paths)} arquivos gerados")

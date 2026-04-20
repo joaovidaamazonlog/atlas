@@ -5,8 +5,10 @@
  * Usa React.memo para evitar re-renders desnecessários.
  */
 
-import React, { useMemo, useCallback } from 'react';
-import { CircleMarker, Circle, Popup, Tooltip } from 'react-leaflet';
+import React, { useMemo, useCallback, useEffect, useRef } from 'react';
+import { CircleMarker, Circle, Popup, Tooltip, useMap } from 'react-leaflet';
+import type { LeafletEventHandlerFnMap } from 'leaflet';
+import L from 'leaflet';
 import { useStore } from '../../store';
 import { buildColorMaps, getMarkerStyle } from '../../lib/colorUtils';
 import { getPartnerPopupHtml } from '../../lib/popupUtils';
@@ -22,6 +24,29 @@ function hasValidCoords(partner: Partner): partner is Partner & { lat: number; l
   );
 }
 
+// Escuta atlas:open-partner-popup e abre o popup + voa até o marcador
+function OpenPartnerPopupListener({
+  markerRefs,
+}: {
+  markerRefs: React.MutableRefObject<Map<string, L.CircleMarker>>;
+}) {
+  const map = useMap();
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { salesforceId, lat, lon } = (e as CustomEvent<{ salesforceId: string; lat: number; lon: number }>).detail;
+      map.flyTo([lat, lon], Math.max(map.getZoom(), 15), { duration: 0.8 });
+      // Abre o popup após o voo
+      setTimeout(() => {
+        const marker = markerRefs.current.get(salesforceId);
+        marker?.openPopup();
+      }, 900);
+    };
+    window.addEventListener('atlas:open-partner-popup', handler);
+    return () => window.removeEventListener('atlas:open-partner-popup', handler);
+  }, [map, markerRefs]);
+  return null;
+}
+
 const PartnerMarkers = React.memo(function PartnerMarkers() {
   const data = useStore((s) => s.currentFilteredData);
   const styleConfig = useStore((s) => s.styleConfig);
@@ -30,6 +55,9 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
   const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
 
   const rescuePopup = useRescuePopup();
+
+  // Refs dos marcadores para abrir popup programaticamente
+  const markerRefs = useRef<Map<string, L.CircleMarker>>(new Map());
 
   const colorMaps = useMemo(
     () => buildColorMaps(data, styleConfig),
@@ -77,6 +105,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
 
   return (
     <>
+      <OpenPartnerPopupListener markerRefs={markerRefs} />
       {rescuePopup}
       {!prospectActive && data.filter(hasValidCoords).map((partner) => {
         const style = getMarkerStyle(partner, primary, secondary, colorMaps);
@@ -88,6 +117,10 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
               center={[partner.lat, partner.lon]}
               radius={7}
               pane="markersPane"
+              ref={(ref) => {
+                if (ref) markerRefs.current.set(partner.salesforce_id, ref);
+                else markerRefs.current.delete(partner.salesforce_id);
+              }}
               pathOptions={{
                 color: style.color,
                 fillColor: style.fillColor,
@@ -95,7 +128,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
                 fillOpacity: style.fillOpacity,
               }}
             >
-              <Popup maxWidth={320}>
+              <Popup minWidth={276} maxWidth={300} autoPan={true} autoPanPadding={[16, 16]}>
                 <div dangerouslySetInnerHTML={{ __html: popupHtml }} onClick={handlePopupClick} />
               </Popup>
               {partner.tooltip && (

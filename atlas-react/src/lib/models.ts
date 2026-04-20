@@ -19,6 +19,7 @@ import type {
   HighlightCriteria as IHighlightCriteria,
   OptimizationData as IOptimizationData,
   PartnerStatus,
+  AdvOpportunity,
 } from '../store/types';
 
 // ---------------------------------------------------------------------------
@@ -109,6 +110,7 @@ export class Partner implements IPartner {
   optimization: OptimizationData;
   ceps: string[];
   slot_id: string;
+  adv_opportunity: AdvOpportunity | null;
 
   constructor(raw: RawPartner = {}) {
     this.salesforce_id = raw.salesforce_id ?? '';
@@ -157,6 +159,7 @@ export class Partner implements IPartner {
     // Campos de slots ideais
     this.ceps = (raw.ceps as string[]) ?? [];
     this.slot_id = raw.slot_id ?? '';
+    this.adv_opportunity = (raw as any).adv_opportunity ?? null;
   }
 
   get isActive(): boolean {

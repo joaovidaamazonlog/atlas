@@ -7,7 +7,7 @@
 
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { MAP_CONFIG } from '../../lib/config';
 import { useStore } from '../../store';
@@ -22,6 +22,10 @@ import RouteLayer from './RouteLayer';
 import MapLegend from './MapLegend';
 import { MapFlyTo } from './SearchBar';
 import GeoIntelligenceLayer from './GeoIntelligenceLayer';
+import RecruitableAreaLayer from './RecruitableAreaLayer';
+import CapComparisonLayer from './CapComparisonLayer';
+import PartnerWhatIfLayer from './PartnerWhatIfLayer';
+import MapClickCapture from './MapClickCapture';
 
 function LayerPanesSetup() {
   const map = useMap();
@@ -30,6 +34,8 @@ function LayerPanesSetup() {
       ['jurisdictionPane', '200'],
       ['polygonsPane', '250'],
       ['optimizationPane', '300'],
+      ['recruitableCirclePane', '320'],
+      ['recruitablePane', '340'],
       ['markersPane', '400'],
     ];
     for (const [name, zIndex] of panes) {
@@ -70,12 +76,24 @@ function ProspectMarkersLayer() {
   return <ProspectMarkers pinnedKeys={new Set(pinnedKeys)} companies={companies} />;
 }
 
+function ManualAnalysisPinLayer() {
+  const pin = useStore((s) => s.manualAnalysisPin);
+  if (!pin) return null;
+  return (
+    <Marker position={[pin.lat, pin.lon]}>
+      {pin.label && <Popup>{pin.label}</Popup>}
+    </Marker>
+  );
+}
+
 interface MapViewProps {
   className?: string;
   flyToRef?: React.MutableRefObject<((lat: number, lon: number) => void) | null>;
 }
 
 export default function MapView({ className, flyToRef }: MapViewProps) {
+  const activeTab = useStore((s) => s.activeTab);
+  const manualAnalysisOpen = useStore((s) => s.manualAnalysisOpen);
   return (
     <MapContainer
       center={MAP_CONFIG.center}
@@ -98,6 +116,11 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <MapLegend />
       <GeoIntelligenceLayerConditional />
       <ProspectMarkersLayer />
+      <ManualAnalysisPinLayer />
+      <RecruitableAreaLayer />
+      <CapComparisonLayer />
+      <PartnerWhatIfLayer />
+      <MapClickCapture isActive={manualAnalysisOpen || activeTab === 'area'} />
     </MapContainer>
   );
 }

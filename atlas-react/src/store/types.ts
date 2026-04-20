@@ -7,8 +7,27 @@
  */
 
 // ---------------------------------------------------------------------------
-// OTIMIZAÇÃO
+// OTIMIZAÇÃO / CAP OPPORTUNITY
 // ---------------------------------------------------------------------------
+
+export interface AdvOpportunity {
+  suggested_lat: number;
+  suggested_lon: number;
+  suggested_cap: number;
+  suggested_radius: number;
+  estimated_adv_gain: number;
+  distance_from_current: number;
+}
+
+export interface CapOpportunityState {
+  selectedPartnerId: string | null;
+}
+
+export interface HexSelectionState {
+  selectedHexIds: string[];
+  totalDemandDaily: number;
+  totalDemandResidual: number;
+}
 
 export interface OptimizationData {
   radius_suggestion: number;
@@ -61,6 +80,7 @@ export interface Partner {
   optimization: OptimizationData;
   ceps: string[];
   slot_id: string;
+  adv_opportunity: AdvOpportunity | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -183,6 +203,46 @@ export interface ProspectState {
   selectedBucket: string | null;
   /** Keys of pinned companies (serializable array, convert to Set when needed) */
   pinnedKeys: string[];
+}
+
+// ---------------------------------------------------------------------------
+// RECRUITABLE AREA ANALYSIS
+// ---------------------------------------------------------------------------
+
+export type ReasonCode =
+  | 'INSUFFICIENT_RESIDUAL_DEMAND'
+  | 'NO_HEATMAP_COVERAGE'
+  | 'INSUFFICIENT_TOTAL_DEMAND';
+
+export interface EvaluatorResult {
+  totalDemand: number;
+  residualDemand: number;
+  minAdv: number;
+  gap: number;
+  viable: boolean;
+  reason: ReasonCode | null;
+  selectedCells: GeoJSON.Feature[];
+  residualCells: GeoJSON.Feature[];
+}
+
+export type EvaluatorError =
+  | { type: 'MISSING_HEATMAP' }
+  | { type: 'MISSING_CENTER' }
+  | { type: 'INVALID_PARAMS'; field: string };
+
+export interface RecruitableAnalysisParams {
+  centerLat: string;
+  centerLon: string;
+  radiusMeters: number;
+  minAdv: number;
+  selectedLeadId: string | null;
+}
+
+export interface RecruitableAnalysisState {
+  params: RecruitableAnalysisParams;
+  result: EvaluatorResult | null;
+  error: string | null;
+  isStale: boolean;
 }
 
 // ---------------------------------------------------------------------------

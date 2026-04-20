@@ -13,6 +13,16 @@ from __future__ import annotations
 import argparse
 import os
 import requests
+from pathlib import Path
+
+def _load_env():
+    env = Path(__file__).parent / ".env"
+    if not env.exists():
+        return
+    for line in env.read_text().splitlines():
+        if "=" in line and not line.startswith("#"):
+            k, _, v = line.partition("=")
+            os.environ.setdefault(k.strip(), v.strip())
 
 def _turso_url() -> str:
     raw = os.environ.get("TURSO_URL", "")
@@ -41,6 +51,7 @@ def query(sql: str) -> list[dict]:
     ]
 
 def main():
+    _load_env()
     parser = argparse.ArgumentParser()
     parser.add_argument("--by-uf", action="store_true", help="Breakdown por UF")
     args = parser.parse_args()
@@ -64,22 +75,21 @@ def main():
 
     if args.by_uf:
         by_uf = query("""
-            SELECT e.uf,
-                   COUNT(*) as total,
-                   SUM(CASE WHEN g.geocode_status='ok' THEN 1 ELSE 0 END) as ok
-            FROM empresas_alvo e
-            LEFT JOIN empresas_geo g
-                   ON (e.cnpj_basico || e.cnpj_ordem || e.cnpj_dv) = g.cnpj
-            GROUP BY e.uf
-            ORDER BY total DESC
+            SELECT uf, geocode_status, COUNT(*) as n
+            FROM empresas_geo
+            GROUP BY uf, geocode_status
+            ORDER BY uf
         """)
-        print(f"\n{'UF':<6} {'Total':>10} {'OK':>10} {'%':>8}")
-        print("-" * 38)
+        # agrupa por UF
+        from collections import defaultdict
+        uf_data: dict = defaultdict(lambda: {"ok": 0, "failed": 0})
         for r in by_uf:
-            t   = int(r["total"])
-            o   = int(r["ok"] or 0)
-            pct = o / t * 100 if t else 0
-            print(f"{r['uf']:<6} {t:>10,} {o:>10,} {pct:>7.1f}%")
+            uf_data[r["uf"]][r["geocode_status"]] += int(r["n"])
+
+        print(f"\n{'UF':<6} {'OK':>10} {'Falhas':>10}")
+        print("-" * 30)
+        for uf, d in sorted(uf_data.items()):
+            print(f"{uf:<6} {d['ok']:>10,} {d['failed']:>10,}")
 
 if __name__ == "__main__":
     main()

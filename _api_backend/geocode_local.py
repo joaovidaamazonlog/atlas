@@ -23,6 +23,18 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+
+def _load_env(env_file: Path) -> None:
+    """Carrega variáveis do .env para os processos filhos."""
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip())
+
 # Faixas reservadas para workers LOCAIS
 # Os workers do GitHub Actions cobrem 00000000–49999999 (workers 1-5 do yml)
 # Aqui cobrimos 50000000–99999999 dividido em 4 faixas
@@ -65,6 +77,9 @@ def main():
 
     extra = ["--no-resume"] if args.no_resume else []
     ranges = LOCAL_RANGES[: args.workers]
+
+    # Carrega .env antes de spawnar os workers
+    _load_env(Path(__file__).parent / ".env")
 
     print(f"Iniciando {len(ranges)} workers locais...")
     print("Logs individuais: geocode_worker_<id>.log")

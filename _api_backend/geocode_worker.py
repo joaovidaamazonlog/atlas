@@ -52,10 +52,18 @@ class TursoClient:
 
     def __init__(self, logger: logging.Logger):
         self.log = logger
-        url = os.environ["TURSO_URL"].replace("libsql://", "https://")
+        turso_url = os.environ.get("TURSO_URL", "")
+        turso_token = os.environ.get("TURSO_TOKEN", "")
+
+        if not turso_url:
+            raise RuntimeError("TURSO_URL não definida. Configure a variável de ambiente.")
+        if not turso_token:
+            raise RuntimeError("TURSO_TOKEN não definido. Configure a variável de ambiente.")
+
+        url = turso_url.replace("libsql://", "https://")
         self.base = url + "/v2/pipeline"
         self.headers = {
-            "Authorization": f"Bearer {os.environ['TURSO_TOKEN']}",
+            "Authorization": f"Bearer {turso_token}",
             "Content-Type": "application/json",
         }
 

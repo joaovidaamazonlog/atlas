@@ -258,12 +258,8 @@ class ProgressTracker:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--worker-id", default="?",  help="ID do worker (para logs)")
-    parser.add_argument("--cep-min",   default=None, help="CEP mínimo (8 dígitos)")
-    parser.add_argument("--cep-max",   default=None, help="CEP máximo (8 dígitos)")
-    parser.add_argument("--offset",    type=int, default=None)
-    parser.add_argument("--limit",     type=int, default=None)
-    parser.add_argument("--uf",        default=None, help="Filtrar por UF")
+    parser.add_argument("--worker-id", default="?",   help="ID do worker (para logs)")
+    parser.add_argument("--uf",        action="append", default=[], help="UF(s) a processar (pode repetir: --uf SP --uf MG)")
     parser.add_argument("--no-resume", action="store_true", help="Reprocessar tudo")
     args = parser.parse_args()
 
@@ -272,6 +268,18 @@ def main():
 
     log.info("Iniciando worker %s", args.worker_id)
     turso.setup_table()
+
+    # Garante índices na tabela de origem para queries por CEP/UF não darem timeout
+    log.info("Verificando índices em empresas_alvo...")
+    for ddl in [
+        "CREATE INDEX IF NOT EXISTS idx_alvo_cep ON empresas_alvo (cep)",
+        "CREATE INDEX IF NOT EXISTS idx_alvo_uf  ON empresas_alvo (uf)",
+    ]:
+        try:
+            turso.execute(ddl)
+        except Exception:
+            pass
+    log.info("Índices OK.")
 
     # CNPJs já processados
     already_done: set[str] = set()
@@ -282,12 +290,10 @@ def main():
 
     # Query de origem — paginada para não estourar timeout do Turso
     conditions, params = [], []
-    if args.cep_min:
-        conditions.append("cep >= ?"); params.append(args.cep_min)
-    if args.cep_max:
-        conditions.append("cep <= ?"); params.append(args.cep_max)
     if args.uf:
-        conditions.append("uf = ?");   params.append(args.uf.upper())
+        placeholders = ",".join("?" * len(args.uf))
+        conditions.append(f"uf IN ({placeholders})")
+        params.extend([u.upper() for u in args.uf])
 
     where = (" WHERE " + " AND ".join(conditions)) if conditions else ""
 

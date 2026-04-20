@@ -35,30 +35,29 @@ def _load_env(env_file: Path) -> None:
         key, _, value = line.partition("=")
         os.environ.setdefault(key.strip(), value.strip())
 
-# Faixas reservadas para workers LOCAIS
-# Os workers do GitHub Actions cobrem 00000000–49999999 (workers 1-5 do yml)
-# Aqui cobrimos 50000000–99999999 dividido em 4 faixas
-LOCAL_RANGES = [
-    ("1", "50000000", "61999999"),
-    ("2", "62000000", "73999999"),
-    ("3", "74000000", "86999999"),
-    ("4", "87000000", "99999999"),
+# UFs divididas em 4 grupos para os workers locais
+# Ordenadas aproximadamente por volume (SP tem mais empresas)
+LOCAL_UF_GROUPS = [
+    ("1", ["SP"]),
+    ("2", ["MG", "RJ", "ES"]),
+    ("3", ["RS", "SC", "PR", "MS"]),
+    ("4", ["BA", "GO", "DF", "MT", "PA", "CE", "PE", "MA", "AM", "RN", "PB", "PI", "AL", "SE", "RO", "TO", "AC", "AP", "RR"]),
 ]
 
 
-def run_worker(worker_id: str, cep_min: str, cep_max: str, extra_args: list[str]) -> subprocess.Popen:
-    log_file = Path(f"geocode_worker_{worker_id}.log")
+def run_worker(worker_id: str, ufs: list[str], extra_args: list[str]) -> subprocess.Popen:
+    log_file   = Path(f"geocode_worker_{worker_id}.log")
     log_handle = open(log_file, "a", encoding="utf-8")
 
     cmd = [
         sys.executable, "geocode_worker.py",
         "--worker-id", worker_id,
-        "--cep-min",   cep_min,
-        "--cep-max",   cep_max,
         *extra_args,
     ]
+    for uf in ufs:
+        cmd += ["--uf", uf]
 
-    print(f"[{datetime.now():%H:%M:%S}] Iniciando worker {worker_id} | CEP {cep_min}–{cep_max} | log → {log_file}")
+    print(f"[{datetime.now():%H:%M:%S}] Iniciando worker {worker_id} | UFs: {', '.join(ufs)} | log → {log_file}")
 
     return subprocess.Popen(
         cmd,
@@ -81,16 +80,16 @@ def main():
     # Carrega .env antes de spawnar os workers
     _load_env(Path(__file__).parent / ".env")
 
-    print(f"Iniciando {len(ranges)} workers locais...")
+    print(f"Iniciando {len(LOCAL_UF_GROUPS[:args.workers])} workers locais...")
     print("Logs individuais: geocode_worker_<id>.log")
     print("Para acompanhar: tail -f geocode_worker_1.log")
     print("-" * 60)
 
     procs = []
-    for worker_id, cep_min, cep_max in ranges:
-        p = run_worker(worker_id, cep_min, cep_max, extra)
+    for worker_id, ufs in LOCAL_UF_GROUPS[: args.workers]:
+        p = run_worker(worker_id, ufs, extra)
         procs.append((worker_id, p))
-        time.sleep(2)  # pequeno delay para não sobrecarregar o Turso na inicialização
+        time.sleep(2)
 
     print(f"\n{len(procs)} workers rodando. Aguardando conclusão...")
     print("Ctrl+C para interromper (progresso já salvo no Turso).\n")

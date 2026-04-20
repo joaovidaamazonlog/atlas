@@ -10,7 +10,7 @@ on:
 
 jobs:
   geocode:
-    name: Worker ${{ matrix.worker_id }} (CEP ${{ matrix.cep_min }}-${{ matrix.cep_max }})
+    name: Worker ${{ matrix.worker_id }} (${{ matrix.ufs }})
     runs-on: ubuntu-latest
     timeout-minutes: 350
 
@@ -19,20 +19,15 @@ jobs:
       matrix:
         include:
           - worker_id: "GA1"
-            cep_min: "00000000"
-            cep_max: "09999999"
+            ufs: "RJ ES"
           - worker_id: "GA2"
-            cep_min: "10000000"
-            cep_max: "19999999"
+            ufs: "RS SC"
           - worker_id: "GA3"
-            cep_min: "20000000"
-            cep_max: "29999999"
+            ufs: "PR MS MT"
           - worker_id: "GA4"
-            cep_min: "30000000"
-            cep_max: "39999999"
+            ufs: "BA GO DF"
           - worker_id: "GA5"
-            cep_min: "40000000"
-            cep_max: "49999999"
+            ufs: "PA CE PE MA AM RN PB PI AL SE RO TO AC AP RR"
 
     steps:
       - uses: actions/checkout@v4
@@ -54,11 +49,11 @@ jobs:
           if [ "${{ github.event.inputs.no_resume }}" = "true" ]; then
             EXTRA="--no-resume"
           fi
-          python geocode_worker.py \
-            --worker-id ${{ matrix.worker_id }} \
-            --cep-min   ${{ matrix.cep_min }} \
-            --cep-max   ${{ matrix.cep_max }} \
-            $EXTRA
+          UF_ARGS=""
+          for uf in ${{ matrix.ufs }}; do
+            UF_ARGS="$UF_ARGS --uf $uf"
+          done
+          python geocode_worker.py --worker-id ${{ matrix.worker_id }} $UF_ARGS $EXTRA
         working-directory: _api_backend
 
       - name: Progress report

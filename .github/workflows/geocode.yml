@@ -1,0 +1,154 @@
+name: Geocode Empresas
+
+on:
+  workflow_dispatch:
+    inputs:
+      no_resume:
+        description: 'Reprocessar tudo? (true/false)'
+        required: false
+        default: 'false'
+
+jobs:
+  geocode:
+    name: Worker ${{ matrix.worker_id }} (CEP ${{ matrix.cep_min }}–${{ matrix.cep_max }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 350  # ~6h por job (limite gratuito do GitHub Actions)
+
+    strategy:
+      fail-fast: false  # workers independentes — um falhar não para os outros
+      matrix:
+        include:
+          - worker_id: "GA1"
+            cep_min: "00000000"
+            cep_max: "09999999"
+          - worker_id: "GA2"
+            cep_min: "10000000"
+            cep_max: "19999999"
+          - worker_id: "GA3"
+            cep_min: "20000000"
+            cep_max: "29999999"
+          - worker_id: "GA4"
+            cep_min: "30000000"
+            cep_max: "39999999"
+          - worker_id: "GA5"
+            cep_min: "40000000"
+            cep_max: "49999999"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install deps
+        run: pip install requests h3
+
+      - name: Run geocode worker ${{ matrix.worker_id }}
+        env:
+          TURSO_URL:   ${{ secrets.TURSO_URL }}
+          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+        run: |
+          EXTRA=""
+          if [ "${{ github.event.inputs.no_resume }}" = "true" ]; then
+            EXTRA="--no-resume"
+          fi
+          python geocode_worker.py \
+            --worker-id ${{ matrix.worker_id }} \
+            --cep-min   ${{ matrix.cep_min }} \
+            --cep-max   ${{ matrix.cep_max }} \
+            --resume \
+            $EXTRA
+        working-directory: _api_backend
+
+      - name: Progress report
+        if: always()  # roda mesmo se o worker falhar
+        env:
+          TURSO_URL:   ${{ secrets.TURSO_URL }}
+          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+        run: |
+          python - <<'EOF'
+          import os, requests, json
+
+          url   = os.environ["TURSO_URL"].replace("libsql://", "https://") + "/v2/pipeline"
+          token = os.environ["TURSO_TOKEN"]
+          headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+
+          def query(sql):
+              payload = {"requests": [{"type": "execute", "stmt": {"sql": sql}}, {"type": "close"}]}
+              r = requests.post(url, headers=headers, json=payload, timeout=30)
+              data = r.json()
+              inner = data["results"][0].get("response", {}).get("result", {})
+              cols  = [c["name"] for c in inner.get("cols", [])]
+              return [dict(zip(cols, [cell.get("value") for cell in row])) for row in inner.get("rows", [])]
+
+          total_alvo = query("SELECT COUNT(*) as n FROM empresas_alvo")[0]["n"]
+          rows       = query("SELECT geocode_status, COUNT(*) as n FROM empresas_geo GROUP BY geocode_status")
+
+          ok   = next((r["n"] for r in rows if r["geocode_status"] == "ok"),     0)
+          fail = next((r["n"] for r in rows if r["geocode_status"] == "failed"), 0)
+          done = ok + fail
+          pct  = done / int(total_alvo) * 100 if total_alvo else 0
+
+          print("=" * 50)
+          print(f"PROGRESSO GLOBAL")
+          print(f"  Total empresas_alvo : {int(total_alvo):,}")
+          print(f"  Geocodificadas OK   : {int(ok):,}")
+          print(f"  Falhas              : {int(fail):,}")
+          print(f"  Total processado    : {done:,} ({pct:.1f}%)")
+          print(f"  Restante            : {int(total_alvo) - done:,}")
+          print("=" * 50)
+          EOF
+        working-directory: _api_backend
+
+  summary:
+    name: Resumo Global
+    runs-on: ubuntu-latest
+    needs: geocode
+    if: always()
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Global progress summary
+        env:
+          TURSO_URL:   ${{ secrets.TURSO_URL }}
+          TURSO_TOKEN: ${{ secrets.TURSO_TOKEN }}
+        run: |
+          python - <<'EOF'
+          import os, requests
+
+          url     = os.environ["TURSO_URL"].replace("libsql://", "https://") + "/v2/pipeline"
+          token   = os.environ["TURSO_TOKEN"]
+          headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+
+          def query(sql):
+              payload = {"requests": [{"type": "execute", "stmt": {"sql": sql}}, {"type": "close"}]}
+              r = requests.post(url, headers=headers, json=payload, timeout=30)
+              inner = r.json()["results"][0].get("response", {}).get("result", {})
+              cols  = [c["name"] for c in inner.get("cols", [])]
+              return [dict(zip(cols, [cell.get("value") for cell in row])) for row in inner.get("rows", [])]
+
+          total  = int(query("SELECT COUNT(*) as n FROM empresas_alvo")[0]["n"])
+          by_uf  = query("""
+              SELECT e.uf, COUNT(*) as total,
+                     SUM(CASE WHEN g.geocode_status='ok' THEN 1 ELSE 0 END) as ok
+              FROM empresas_alvo e
+              LEFT JOIN empresas_geo g ON (e.cnpj_basico||e.cnpj_ordem||e.cnpj_dv) = g.cnpj
+              GROUP BY e.uf ORDER BY total DESC
+          """)
+
+          print(f"\n{'UF':<6} {'Total':>10} {'OK':>10} {'%':>8}")
+          print("-" * 38)
+          for r in by_uf:
+              pct = int(r['ok'] or 0) / int(r['total']) * 100 if r['total'] else 0
+              print(f"{r['uf']:<6} {int(r['total']):>10,} {int(r['ok'] or 0):>10,} {pct:>7.1f}%")
+          EOF

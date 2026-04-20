@@ -70,7 +70,7 @@ NEXTCLOUD_BASE = "https://arquivos.receitafederal.gov.br"
 CNPJ_PATH = "Dados/Cadastros/CNPJ"
 NUM_PARTES = 10
 MAX_RETRIES = 3
-BATCH_SIZE = 50  # menor batch = menos RAM por vez
+BATCH_SIZE = 200  # menor batch = menos RAM por vez
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 PROPFIND_BODY = '<?xml version="1.0" encoding="utf-8" ?><d:propfind xmlns:d="DAV:"><d:prop><d:displayname/></d:prop></d:propfind>'

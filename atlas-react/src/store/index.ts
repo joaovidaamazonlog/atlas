@@ -269,12 +269,30 @@ export const useStore = create<AtlasStore>((set, get) => ({
       console.log('[AtlasStore] Parceiros carregados:', allMarkersData.length);
 
       // Carrega camadas GeoJSON em paralelo (falhas individuais não bloqueiam)
+      // Helper: detecta ponteiro Git LFS (arquivo não servido corretamente pelo GitHub Pages)
+      const fetchGeoJson = async (url: string): Promise<GeoJSON.FeatureCollection | null> => {
+        const r = await fetch(url);
+        if (!r.ok) return null;
+        const text = await r.text();
+        // Ponteiro LFS começa com "version https://git-lfs.github.com/spec/v1"
+        if (text.trimStart().startsWith('version https://git-lfs')) {
+          console.warn(`[AtlasStore] Arquivo LFS não servido corretamente: ${url}`);
+          return null;
+        }
+        try {
+          return JSON.parse(text) as GeoJSON.FeatureCollection;
+        } catch {
+          console.warn(`[AtlasStore] Falha ao parsear GeoJSON: ${url}`);
+          return null;
+        }
+      };
+
       const [territoriesResult, jurisdictionResult, optimizationResult, heatmapResult] =
         await Promise.allSettled([
-          fetch(DATA_URLS.territories).then((r) => (r.ok ? r.json() : null)),
-          fetch(DATA_URLS.jurisdiction).then((r) => (r.ok ? r.json() : null)),
-          fetch(DATA_URLS.optimization).then((r) => (r.ok ? r.json() : null)),
-          fetch(DATA_URLS.heatmap).then((r) => (r.ok ? r.json() : null)),
+          fetchGeoJson(DATA_URLS.territories),
+          fetchGeoJson(DATA_URLS.jurisdiction),
+          fetchGeoJson(DATA_URLS.optimization),
+          fetchGeoJson(DATA_URLS.heatmap),
         ]);
 
       const polygonsData =

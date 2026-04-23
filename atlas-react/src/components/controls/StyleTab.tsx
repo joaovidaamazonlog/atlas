@@ -142,12 +142,7 @@ export default function StyleTab() {
           checked={styleConfig.showJurisdictions}
           onChange={(v) => setStyleConfig({ showJurisdictions: v })}
         />
-        <CheckboxRow
-          id="layer-optimization"
-          label="Exibir Hexágonos de Demanda"
-          checked={styleConfig.showOptimizationLayer}
-          onChange={(v) => setStyleConfig({ showOptimizationLayer: v })}
-        />
+
         <CheckboxRow
           id="layer-geo-intelligence"
           label="Exibir Geointeligência"

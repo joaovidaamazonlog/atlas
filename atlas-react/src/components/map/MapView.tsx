@@ -16,7 +16,6 @@ import ProspectMarkers from './ProspectMarkers';
 import StationMarkers from './StationMarkers';
 import PolygonLayer from './PolygonLayer';
 import JurisdictionLayer from './JurisdictionLayer';
-import OptimizationLayer from './OptimizationLayer';
 import HeatmapLayer from './HeatmapLayer';
 import RouteLayer from './RouteLayer';
 import MapLegend from './MapLegend';
@@ -109,7 +108,6 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <StationMarkers />
       <PolygonLayer />
       <JurisdictionLayer />
-      <OptimizationLayer />
       <HeatmapLayer />
       <RouteLayer />
       <MapLegend />

@@ -135,7 +135,7 @@ function LeadCard({ lead, onSearch }: { lead: Partner; onSearch: (lead: Partner)
   const isGo = lead.decision === 'Go';
   const hasCoords = lead.lat != null && lead.lon != null;
   return (
-    <div className="rounded-lg bg-white/5 border border-white/8 p-3 flex flex-col gap-1.5">
+    <div className="rounded-lg bg-white/5 p-3 flex flex-col gap-1.5">
       <div className="flex items-start justify-between gap-2">
         <span className="text-sm font-semibold text-atlas-light leading-tight flex-1">{lead.name}</span>
         <span
@@ -160,7 +160,7 @@ function LeadCard({ lead, onSearch }: { lead: Partner; onSearch: (lead: Partner)
             type="button"
             onClick={() => onSearch(lead)}
             title="Visualizar no mapa"
-            className="flex items-center gap-1 px-2 py-1 rounded text-xs text-atlas-accent border border-atlas-accent/30 hover:bg-atlas-accent/10 transition-colors"
+            className="flex items-center gap-1 px-2 py-1 rounded text-xs text-blue-400 border border-blue-400/30 hover:bg-blue-400/10 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
@@ -490,10 +490,10 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
               <div
                 key={partner.salesforce_id}
                 className={[
-                  'rounded-lg p-3 flex flex-col gap-1.5 border transition-colors',
+                  'rounded-lg p-3 flex flex-col gap-1.5 transition-colors',
                   isSelected
-                    ? 'bg-amber-500/15 border-amber-500/50'
-                    : 'bg-white/5 border-white/8',
+                    ? 'bg-amber-500/15'
+                    : 'bg-white/5',
                 ].join(' ')}
               >
                 {/* Partner name + gain badge */}
@@ -546,12 +546,13 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
                       type="button"
                       aria-label={`Ir até ${partner.name}`}
                       onClick={() => fitBoundsRef.current?.([[partner.lat!, partner.lon!]])}
-                      className="py-1.5 px-2.5 rounded bg-white/10 text-atlas-light hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 flex items-center justify-center"
-                      title="Ir até o parceiro"
+                      className="py-1.5 px-2.5 rounded text-xs font-semibold text-blue-400 border border-blue-400/30 hover:bg-blue-400/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 flex items-center gap-1"
+                      title="Visualizar no mapa"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
                       </svg>
+                      Visualizar
                     </button>
                   )}
                 </div>
@@ -600,6 +601,13 @@ export default function AreaAnalysisTab() {
   }, [allMarkersData]);
 
   const handleAnalyze = useCallback(() => {
+    // Fecha as outras análises antes de abrir esta
+    if (manualAnalysisOpen) setManualAnalysisOpen(false);
+    if (showCapOpportunityPanel) {
+      setShowCapOpportunityPanel(false);
+      setSelectedCapOpportunity(null);
+    }
+
     applyFilters({ selectedStatuses: ['Prospect'] });
 
     const allProspects = allMarkersData.filter((p) => p.status === 'Prospect');
@@ -613,13 +621,12 @@ export default function AreaAnalysisTab() {
     const overview = getGlobalOverview(allMarkersData);
     const filtered = getFilteredStats(filteredProspects);
     const stateRows = getStatsByState(allProspects.filter((p) => !!p.decision));
-    // Todos os leads avaliados (com decisão), respeitando filtros
     const leads = filteredProspects;
 
     setAnalysisResult({ overview, filtered, stateRows, leads, stateFilter: selectedState, decisionFilter: selectedDecision });
     setShowPanel(true);
     setShowStateTable(false);
-  }, [allMarkersData, applyFilters, selectedState, selectedDecision]);
+  }, [allMarkersData, applyFilters, selectedState, selectedDecision, manualAnalysisOpen, setManualAnalysisOpen, showCapOpportunityPanel, setSelectedCapOpportunity]);
 
   const handleClose = useCallback(() => {
     setShowPanel(false);
@@ -627,16 +634,37 @@ export default function AreaAnalysisTab() {
   }, []);
 
   const handleOpenCapOpportunity = useCallback(() => {
+    // Fecha as outras análises antes de abrir esta
+    if (manualAnalysisOpen) setManualAnalysisOpen(false);
+    if (showPanel) {
+      setShowPanel(false);
+      setShowStateTable(false);
+    }
     setShowCapOpportunityPanel(true);
-    setShowPanel(false);
     applyFilters({ selectedStatuses: ['Active'] });
-  }, [applyFilters]);
+  }, [applyFilters, manualAnalysisOpen, setManualAnalysisOpen, showPanel]);
 
   const handleCloseCapOpportunity = useCallback(() => {
     setShowCapOpportunityPanel(false);
     setSelectedCapOpportunity(null);
     resetFilters();
   }, [resetFilters, setSelectedCapOpportunity]);
+
+  const handleToggleManualAnalysis = useCallback(() => {
+    if (!manualAnalysisOpen) {
+      // Vai abrir — fecha as outras
+      if (showPanel) {
+        setShowPanel(false);
+        setShowStateTable(false);
+      }
+      if (showCapOpportunityPanel) {
+        setShowCapOpportunityPanel(false);
+        setSelectedCapOpportunity(null);
+        resetFilters();
+      }
+    }
+    setManualAnalysisOpen(!manualAnalysisOpen);
+  }, [manualAnalysisOpen, setManualAnalysisOpen, showPanel, showCapOpportunityPanel, setSelectedCapOpportunity, resetFilters]);
 
   return (
     <>
@@ -672,7 +700,7 @@ export default function AreaAnalysisTab() {
           </p>
           <button
             type="button"
-            onClick={() => setManualAnalysisOpen(!manualAnalysisOpen)}
+            onClick={() => handleToggleManualAnalysis()}
             className={[
               'w-full py-3 px-4 rounded text-sm font-semibold min-h-[44px] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 shadow-lg',
               manualAnalysisOpen

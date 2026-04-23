@@ -269,7 +269,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
 
       if (isEvaluatorError(result)) {
         const msgs: Record<string, string> = {
-          MISSING_HEATMAP: 'Dados de demanda não carregados',
+        MISSING_HEATMAP: 'Dados de demanda não carregados. Verifique se o arquivo heatmap.geojson está disponível no servidor.',
           MISSING_CENTER: 'Ponto central obrigatório',
           INVALID_PARAMS: 'Parâmetros inválidos',
         };
@@ -365,7 +365,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
     });
     if (isEvaluatorError(result)) {
       const msgs: Record<string, string> = {
-        MISSING_HEATMAP: 'Dados de demanda não carregados',
+        MISSING_HEATMAP: 'Dados de demanda não carregados. Verifique se o arquivo heatmap.geojson está disponível no servidor.',
         MISSING_CENTER: 'Ponto central obrigatório',
         INVALID_PARAMS: 'Parâmetros inválidos',
       };

@@ -178,7 +178,7 @@ export default function PolygonLayer() {
 
   return (
     <GeoJSON
-      key={JSON.stringify(filterState) + selectedBucket + prospectClusters.length + polygonColorField}
+      key={JSON.stringify(filterState) + selectedBucket + prospectClusters.length + polygonColorField + String(showPolygons)}
       data={filteredData}
       style={styleFunc}
       pane="polygonsPane"

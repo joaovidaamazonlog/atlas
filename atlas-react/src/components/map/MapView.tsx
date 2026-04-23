@@ -92,7 +92,6 @@ interface MapViewProps {
 }
 
 export default function MapView({ className, flyToRef }: MapViewProps) {
-  const activeTab = useStore((s) => s.activeTab);
   const manualAnalysisOpen = useStore((s) => s.manualAnalysisOpen);
   return (
     <MapContainer
@@ -120,7 +119,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <RecruitableAreaLayer />
       <CapComparisonLayer />
       <PartnerWhatIfLayer />
-      <MapClickCapture isActive={manualAnalysisOpen || activeTab === 'area'} />
+      <MapClickCapture isActive={manualAnalysisOpen} />
     </MapContainer>
   );
 }

@@ -355,3 +355,217 @@ describe('P11 — Contagem de contactadas atualizada', () => {
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// What-if result panel label tests
+// Validates: Requirements 6.1, 6.2, 6.3
+// ---------------------------------------------------------------------------
+
+/**
+ * Tests for the what-if result panel inside ManualAnalysisPanel.
+ *
+ * Strategy:
+ *   - Set manualAnalysisOpen=true and whatIfModeActive=true in the store
+ *   - Render ManualAnalysisPanel (via portal — we use document.body as container)
+ *   - Dispatch atlas:whatif-result with mock data
+ *   - Verify labels and rounded values
+ *
+ * Mocks:
+ *   - useBreakpoint → 'mobile' (renders inline, no portal)
+ *   - useDebounce → identity (avoids timer issues)
+ *   - evaluateRecruitableArea → returns a fixed result (avoids heatmap dependency)
+ */
+
+import { act } from '@testing-library/react';
+import ManualAnalysisPanel from './ManualAnalysisPanel';
+import { useStore } from '../../store';
+
+vi.mock('../../hooks/useDebounce', () => ({
+  useDebounce: (value: unknown) => value,
+}));
+
+vi.mock('../../lib/recruitableAreaEvaluator', () => ({
+  evaluateRecruitableArea: () => ({
+    totalDemand: 100,
+    residualDemand: 60,
+    minAdv: 40,
+    gap: 20,
+    viable: true,
+    reason: null,
+    selectedCells: [],
+    residualCells: [],
+  }),
+  isEvaluatorError: () => false,
+}));
+
+function setupWhatIfStore() {
+  useStore.setState((state) => ({
+    manualAnalysisOpen: true,
+    whatIfModeActive: true,
+    allMarkersData: [],
+    heatmapData: null,
+    recruitableAnalysis: {
+      ...state.recruitableAnalysis,
+      params: {
+        minAdv: 40,
+        radiusMeters: 1500,
+        centerLat: '',
+        centerLon: '',
+        selectedLeadId: null,
+      },
+      result: null,
+      error: null,
+      isStale: false,
+    },
+  }));
+}
+
+describe('What-if result panel — labels and rounding (Requirements 6.1, 6.2, 6.3)', () => {
+  beforeEach(() => {
+    setupWhatIfStore();
+  });
+
+  it('Requirement 6.1: renders "ADV simulado" label after receiving whatif-result event', async () => {
+    const { unmount } = render(<ManualAnalysisPanel />);
+
+    await act(async () => {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-result', {
+          detail: {
+            partnerName: 'Parceiro Teste',
+            simulatedLat: -23.5505,
+            simulatedLon: -46.6333,
+            advSimulated: 55,
+            simulatedRadius: 1500,
+            advGain: 15,
+            originalCap: 40,
+          },
+        }),
+      );
+    });
+
+    expect(screen.getByText('ADV simulado')).toBeInTheDocument();
+    unmount();
+  });
+
+  it('Requirement 6.2: renders "Ganho ADV" label after receiving whatif-result event', async () => {
+    const { unmount } = render(<ManualAnalysisPanel />);
+
+    await act(async () => {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-result', {
+          detail: {
+            partnerName: 'Parceiro Teste',
+            simulatedLat: -23.5505,
+            simulatedLon: -46.6333,
+            advSimulated: 55,
+            simulatedRadius: 1500,
+            advGain: 15,
+            originalCap: 40,
+          },
+        }),
+      );
+    });
+
+    expect(screen.getByText('Ganho ADV')).toBeInTheDocument();
+    unmount();
+  });
+
+  it('Requirement 6.3: displays advSimulated and advGain rounded to nearest integer', async () => {
+    const { unmount } = render(<ManualAnalysisPanel />);
+
+    await act(async () => {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-result', {
+          detail: {
+            partnerName: 'Parceiro Teste',
+            simulatedLat: -23.5505,
+            simulatedLon: -46.6333,
+            advSimulated: 54.7,
+            simulatedRadius: 1500,
+            advGain: 14.3,
+            originalCap: 40,
+          },
+        }),
+      );
+    });
+
+    // Math.round(54.7) = 55, Math.round(14.3) = 14
+    expect(screen.getByText('55 pct/dia')).toBeInTheDocument();
+    expect(screen.getByText('+14 pct/dia')).toBeInTheDocument();
+    unmount();
+  });
+
+  it('Requirement 6.3: rounds negative advGain correctly', async () => {
+    const { unmount } = render(<ManualAnalysisPanel />);
+
+    await act(async () => {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-result', {
+          detail: {
+            partnerName: 'Parceiro Teste',
+            simulatedLat: -23.5505,
+            simulatedLon: -46.6333,
+            advSimulated: 30.6,
+            simulatedRadius: 1500,
+            advGain: -9.4,
+            originalCap: 40,
+          },
+        }),
+      );
+    });
+
+    // Math.round(30.6) = 31, Math.round(-9.4) = -9
+    expect(screen.getByText('31 pct/dia')).toBeInTheDocument();
+    expect(screen.getByText('-9 pct/dia')).toBeInTheDocument();
+    unmount();
+  });
+
+  it('Requirement 6.3: rounds integer values without change', async () => {
+    const { unmount } = render(<ManualAnalysisPanel />);
+
+    await act(async () => {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-result', {
+          detail: {
+            partnerName: 'Parceiro Teste',
+            simulatedLat: -23.5505,
+            simulatedLon: -46.6333,
+            advSimulated: 60,
+            simulatedRadius: 1500,
+            advGain: 20,
+            originalCap: 40,
+          },
+        }),
+      );
+    });
+
+    expect(screen.getByText('60 pct/dia')).toBeInTheDocument();
+    expect(screen.getByText('+20 pct/dia')).toBeInTheDocument();
+    unmount();
+  });
+
+  it('does not render "Cap simulado" or old gain label', async () => {
+    const { unmount } = render(<ManualAnalysisPanel />);
+
+    await act(async () => {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-result', {
+          detail: {
+            partnerName: 'Parceiro Teste',
+            simulatedLat: -23.5505,
+            simulatedLon: -46.6333,
+            advSimulated: 55,
+            simulatedRadius: 1500,
+            advGain: 15,
+            originalCap: 40,
+          },
+        }),
+      );
+    });
+
+    expect(screen.queryByText('Cap simulado')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Ganho de ADV/)).not.toBeInTheDocument();
+    unmount();
+  });
+});

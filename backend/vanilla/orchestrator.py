@@ -10,11 +10,11 @@ Dois modos de operacao
                                               territories_index.json
     Fase 2: Identificacao de vagas ideais  -> ideal_supply.json
 
---mode daily    (roda todo dia)
+--mode daily    (roda todo dia / base de pacotes atualizada)
     0. Lê Excel (Salesforce) via load_partners() → dados_mapa.json
     Fase 3: Matching parceiros x vagas     -> ideal_supply.json (atualizado)
     Fase 4: Qualificacao de webleads
-    Fase 5: Relatorios + enriquece dados_mapa.json com campos de otimizacao
+    Fase 5: Relatorios + enriquece dados_mapa.json e heatmap.geojson
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ from typing import List, Optional
 from shared.load_packages import load_packages
 from shared.load_partners import load_partners
 from shared.models import Config
-from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons, run_update_heatmap
+from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons
 from shared.models import Config, TerritoriesResult, load_territories
 from vanilla.phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 from vanilla.phase3_partner_fit import FitResult, run_phase3
@@ -91,7 +91,12 @@ def run_daily(
     Pipeline diário completo:
     1. Lê Excel (Salesforce) → serializa dados_mapa.json
     2. Fases 3/4/5: matching, webleads, relatórios
-    3. Enriquece dados_mapa.json com campos de otimização (decision, reason, etc.)
+    3. Enriquece dados_mapa.json com hex_coverage (Active/Onboarding)
+    4. Enriquece heatmap.geojson com covering_partners e demand_residual
+
+    Deve ser rodado sempre que a base de pacotes ou os dados do Salesforce
+    forem atualizados — garante que dados_mapa.json e heatmap.geojson
+    estejam sempre em sincronia com as alocações do CP-SAT.
     """
     print(f"\n{'#'*60}")
     print(f"  MODO DAILY")
@@ -242,13 +247,6 @@ Exemplos:
         help="Numero de workers paralelos para o solver (modo setup). Default: 4.",
     )
     parser.add_argument(
-        "--update-heatmap",
-        action="store_true",
-        default=False,
-        help="Regenera heatmap.geojson com a base de pacotes atual "
-             "sem refazer o setup completo.",
-    )
-    parser.add_argument(
         "--legacy-buckets",
         action="store_true",
         default=False,
@@ -263,12 +261,7 @@ def main() -> None:
     out_dir = args.output or Config.DEST_FOLDER
 
     try:
-        if args.update_heatmap:
-            run_update_heatmap(
-                output_dir=out_dir,
-                stations=args.stations,
-            )
-        elif args.mode == "setup":
+        if args.mode == "setup":
             run_setup(
                 output_dir=out_dir,
                 stations=args.stations,
@@ -281,7 +274,7 @@ def main() -> None:
                 legacy_bucket_names=args.legacy_buckets,
             )
         else:
-            print("  Especifique --mode setup, --mode daily ou --update-heatmap.")
+            print("  Especifique --mode setup ou --mode daily.")
     except FileNotFoundError as e:
         print(f"\n  ERRO: {e}\n", file=sys.stderr)
         sys.exit(1)

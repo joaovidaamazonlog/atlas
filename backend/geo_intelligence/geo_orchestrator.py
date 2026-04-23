@@ -6,21 +6,29 @@ Ponto de entrada do pipeline GeoIntelligence.
 Modos de operação
 -----------------
 --mode setup --target <pct>
-    Executa as 3 fases do pipeline GeoIntelligence:
+    Executa as fases 1+2 do pipeline GeoIntelligence:
       Fase 1: Area Intelligence (enriquecimento H3 + classificação + potential score)
       Fase 2: Ideal Supply (CP-SAT)
-      Fase 3: Territory Fit (matching)
+    Persiste resultados no SQLite local.
 
---update-heatmap
-    Regenera o heatmap GeoIntelligence com a base de pacotes atual
-    sem refazer o setup completo (sem re-rodar enrichers, classifier ou CP-SAT).
+--mode daily
+    Executa o pipeline diário completo:
+      Fase 3: Matching parceiros × vagas (vanilla)
+      Fase 4: Qualificação de webleads (vanilla)
+      Fase 5: Relatórios + heatmap.geojson + dados_mapa.json (vanilla)
+    Lê territories e ideal supply do SQLite local.
+    Para atualizar o heatmap, basta rodar --mode daily.
+
+--sync-empresas
+    Sincroniza a tabela empresas_alvo do Turso para o SQLite local.
 
 Exemplos:
   python geo_intelligence/geo_orchestrator.py --mode setup --target 50
   python geo_intelligence/geo_orchestrator.py --mode setup --target 50 --stations DSP2
   python geo_intelligence/geo_orchestrator.py --mode setup --target 50 --stations DSP2 DSP4
-  python geo_intelligence/geo_orchestrator.py --update-heatmap
-  python geo_intelligence/geo_orchestrator.py --update-heatmap --stations DSP2
+  python geo_intelligence/geo_orchestrator.py --mode daily
+  python geo_intelligence/geo_orchestrator.py --mode daily --stations DSP2
+  python geo_intelligence/geo_orchestrator.py --sync-empresas
 """
 
 from __future__ import annotations
@@ -36,13 +44,186 @@ from typing import List, Optional
 logger = logging.getLogger(__name__)
 
 
-def run_update_geo_heatmap(
-    output_dir: str,
-    stations: Optional[List[str]] = None,
-) -> None:
-    """Regenera o heatmap GeoIntelligence sem refazer o setup completo."""
-    from geo_intelligence.geo_heatmap import run_update_geo_heatmap as _run
-    _run(output_dir=output_dir, stations=stations)
+# ---------------------------------------------------------------------------
+# Conversion helpers
+# ---------------------------------------------------------------------------
+
+def _selected_territories_to_territories_result(
+    selected_territories: list,
+    station_code: str,
+    territories_geojson_path: str | None = None,
+    demand_map: dict | None = None,
+    pkg_days: int = 30,
+) -> "TerritoriesResult":
+    """
+    Converts Phase 1 SelectedTerritory list to TerritoriesResult for vanilla Phase 3.
+    """
+    import h3
+    from pathlib import Path
+    from shared.models import Config, TerritoriesResult
+
+    territory_index: dict = {}
+    hex_to_territory: dict = {}
+
+    for territory in selected_territories:
+        territory_id = territory.territory_id
+        h3_ids = territory.h3_ids_r8
+
+        # Compute centroid from h3 cells
+        if h3_ids:
+            latlngs = [h3.cell_to_latlng(h) for h in h3_ids]
+            centroid_lat = sum(ll[0] for ll in latlngs) / len(latlngs)
+            centroid_lon = sum(ll[1] for ll in latlngs) / len(latlngs)
+        else:
+            centroid_lat = 0.0
+            centroid_lon = 0.0
+
+        # Compute daily demand from demand_map
+        dm = demand_map or {}
+        daily_demand = sum(dm.get(h, 0) for h in h3_ids) / pkg_days
+
+        territory_index[territory_id] = {
+            "station_code": station_code,
+            "hex_ids": h3_ids,
+            "potential_score": territory.potential_score,
+            "gap": territory.gap,
+            "region_type": (
+                territory.region_type.value
+                if hasattr(territory.region_type, "value")
+                else territory.region_type
+            ),
+            "model_confidence": getattr(territory, "model_confidence", None),
+            "high_opportunity": getattr(territory, "high_opportunity", False),
+            "bdm_cluster": Config.get_bdm_cluster(station_code),
+            "centroid_lat": centroid_lat,
+            "centroid_lon": centroid_lon,
+            "daily_demand": daily_demand,
+        }
+
+        for h3_id in h3_ids:
+            hex_to_territory[h3_id] = territory_id
+
+    result = TerritoriesResult(
+        territory_index=territory_index,
+        hex_to_territory=hex_to_territory,
+    )
+
+    if territories_geojson_path:
+        from pathlib import Path as _Path
+        p = _Path(territories_geojson_path)
+        if p.exists():
+            result.geojson_path = p
+
+    return result
+
+
+def _sqlite_rows_to_ideal_supply_result(supply_rows: list) -> "IdealSupplyResult":
+    """
+    Converts geo_ideal_supply SQLite rows to IdealSupplyResult for vanilla Phase 3.
+    """
+    import h3
+    from vanilla.phase2_ideal_supply import IdealSupplyResult
+    from shared.models import IdealSlot
+
+    slots_by_territory: dict = {}
+
+    for row in supply_rows:
+        slot_id = row["supply_id"]
+        bucket_id = row["territory_id"]
+        station_code = row["station_code"]
+        lat = row["lat"]
+        lon = row["lon"]
+
+        radius_km = row.get("radius_km")
+        if radius_km is None:
+            logger.warning(
+                "[_sqlite_rows_to_ideal_supply_result] radius_km ausente para slot %s — usando 1.5",
+                slot_id,
+            )
+            radius_km = 1.5
+        radius_s = int(radius_km * 1000)
+
+        capacity_s = row.get("capacity_day")
+        if capacity_s is None:
+            logger.warning(
+                "[_sqlite_rows_to_ideal_supply_result] capacity_day ausente para slot %s — usando 42",
+                slot_id,
+            )
+            capacity_s = 42
+
+        origin_hex = row.get("origin_hex")
+        if origin_hex is None:
+            logger.warning(
+                "[_sqlite_rows_to_ideal_supply_result] origin_hex ausente para slot %s — calculando via h3",
+                slot_id,
+            )
+            origin_hex = h3.latlng_to_cell(lat, lon, 9)
+
+        slot = IdealSlot(
+            slot_id=slot_id,
+            bucket_id=bucket_id,
+            station_code=station_code,
+            lat=lat,
+            lon=lon,
+            radius_s=radius_s,
+            capacity_s=capacity_s,
+            origin_hex=origin_hex,
+            allocations=[],
+        )
+
+        if bucket_id not in slots_by_territory:
+            slots_by_territory[bucket_id] = []
+        slots_by_territory[bucket_id].append(slot)
+
+    return IdealSupplyResult(slots_by_territory=slots_by_territory)
+
+
+# ---------------------------------------------------------------------------
+# Helper: convert SQLite geo_territories rows to SelectedTerritory-like objects
+# ---------------------------------------------------------------------------
+
+from dataclasses import dataclass as _dataclass, field as _field
+import json as _json
+
+
+@_dataclass
+class _TerritoryRow:
+    """Lightweight SelectedTerritory-like object built from SQLite geo_territories rows."""
+    territory_id: str
+    h3_ids_r8: list
+    potential_score: float
+    gap: float
+    region_type: str
+    model_confidence: Optional[float]
+    high_opportunity: bool
+
+
+def _territory_rows_to_selected(rows: list) -> list:
+    """
+    Converts SQLite geo_territories rows into _TerritoryRow objects
+    compatible with _selected_territories_to_territories_result.
+    """
+    result = []
+    for row in rows:
+        h3_ids_raw = row.get("h3_ids_json", "[]")
+        if isinstance(h3_ids_raw, str):
+            try:
+                h3_ids = _json.loads(h3_ids_raw)
+            except Exception:
+                h3_ids = []
+        else:
+            h3_ids = list(h3_ids_raw) if h3_ids_raw else []
+
+        result.append(_TerritoryRow(
+            territory_id=row["territory_id"],
+            h3_ids_r8=h3_ids,
+            potential_score=row.get("potential_score", 0.0),
+            gap=row.get("gap", 0.0),
+            region_type=row.get("region_type", ""),
+            model_confidence=row.get("model_confidence"),
+            high_opportunity=bool(row.get("high_opportunity", 0)),
+        ))
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -69,7 +250,7 @@ def run_setup(
     from geo_intelligence.geo_config import TURSO_URL, TURSO_AUTH_TOKEN
     from geo_intelligence.phase1_area_intelligence import run_area_intelligence
     from geo_intelligence.phase2_ideal_supply import run_phase2
-    from geo_intelligence.turso_writer import TursoWriter
+    from geo_intelligence.local_writer import LocalWriter
     from geo_intelligence.pipeline import build_run_metadata, territories_to_geojson
 
     print(f"\n{'#'*60}")
@@ -82,8 +263,7 @@ def run_setup(
     print(f"{'#'*60}")
 
     station_list = stations or _discover_stations(output_dir)
-    writer = TursoWriter(url=TURSO_URL, auth_token=TURSO_AUTH_TOKEN)
-    writer.ensure_schema()
+    writer = LocalWriter()
 
     # Load shared data — importa diretamente do módulo shared
     _backend_dir = Path(__file__).parent.parent
@@ -174,7 +354,7 @@ def run_setup(
                 n_territories=len(selected_territories),
                 clustering_algorithm=clf_metrics.get("algorithm"),
                 silhouette_score=clf_metrics.get("silhouette_score"),
-                status="completed",
+                status="setup_complete",
             )
             writer.finalize_run(run_id, metadata)
             print(f"  [{station_code}] Pipeline concluído. {len(selected_territories)} territórios selecionados.")
@@ -211,28 +391,28 @@ def run_daily(
     output_dir: str,
     stations: Optional[List[str]] = None,
 ) -> None:
-    """Executa o matching diário GeoIntelligence para cada base.
-
-    Carrega parceiros reais via load_partners(), busca os slots do setup
-    mais recente no Turso e executa o matching com hierarquia completa de
-    fallback (hex exato → point-in-polygon → centroide polígono → centroide slots).
-    Persiste attainment/accuracy e matched_partner_id no Turso.
+    """
+    Executa o pipeline diário GeoIntelligence:
+    - Lê territories e ideal supply do SQLite local (via LocalReader)
+    - Converte para TerritoriesResult e IdealSupplyResult
+    - Chama run_phase3 → run_phase4 → run_phase5 (vanilla, sem modificação)
+    - Persiste matched_partner_id e attainment/accuracy no SQLite local
     """
     import json
     import os
     from pathlib import Path
-    from geo_intelligence.geo_config import TURSO_URL, TURSO_AUTH_TOKEN
-    from geo_intelligence.turso_reader import TursoReader
-    from geo_intelligence.turso_writer import TursoWriter
-    from geo_intelligence.geo_daily import run_daily as _run_daily
-
-    # Resolve caminhos via shared.config
-    _backend_dir = Path(__file__).parent.parent
+    from geo_intelligence.local_reader import LocalReader
+    from geo_intelligence.local_writer import LocalWriter
     from shared.config import DEST_FOLDER as _DEST_FOLDER
     from shared.load_partners import load_partners
+    from shared.load_packages import load_packages
+    from vanilla.phase3_partner_fit import run_phase3
+    from vanilla.phase4_webleads import run_phase4
+    from vanilla.phase5_reports import run_phase5
+
     dest = _DEST_FOLDER
     territories_geojson_path = str(dest / "territories.geojson")
-    territories_index_path   = str(dest / "territories_index.json")
+    territories_index_path = str(dest / "territories_index.json")
 
     print(f"\n{'#'*60}")
     print(f"  GEO-INTELLIGENCE — MODO DAILY")
@@ -241,23 +421,23 @@ def run_daily(
     print(f"  Inicio: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print(f"{'#'*60}")
 
-    # Carrega parceiros reais
-    partner_data = load_partners()
+    reader = LocalReader()
+    writer = LocalWriter()
 
-    # Carrega territories_index para fallback de centroide
+    # Discover stations from territories_index if not provided
     territories_index: dict = {}
     if os.path.exists(territories_index_path):
         with open(territories_index_path, encoding="utf-8") as f:
             territories_index = json.load(f)
 
-    reader = TursoReader(url=TURSO_URL, auth_token=TURSO_AUTH_TOKEN)
-    writer = TursoWriter(url=TURSO_URL, auth_token=TURSO_AUTH_TOKEN)
-
-    # Descobre bases a processar
     station_list = stations or list({
         meta.get("station_code") for meta in territories_index.values()
         if meta.get("station_code")
     })
+
+    # Load shared data once
+    partner_data = load_partners()
+    pkg = load_packages()
 
     for station_code in sorted(station_list):
         run_id = reader.get_latest_run_id(station_code)
@@ -265,64 +445,71 @@ def run_daily(
             print(f"  [{station_code}] Nenhum run de setup encontrado — execute --mode setup primeiro.")
             continue
 
-        slots = reader.get_ideal_supply(station_code, run_id)
-        if not slots:
+        supply_rows = reader.get_ideal_supply(station_code, run_id)
+        if not supply_rows:
             print(f"  [{station_code}] Nenhum slot encontrado para run_id={run_id}.")
             continue
 
-        print(f"\n  [{station_code}] run_id={run_id} | slots={len(slots)}")
+        territory_rows = reader.get_territories(station_code, run_id)
+        print(f"\n  [{station_code}] run_id={run_id} | slots={len(supply_rows)} | territórios={len(territory_rows)}")
 
-        daily_result = _run_daily(
-            station_code=station_code,
-            run_id=run_id,
-            partner_data=partner_data,
-            slots=slots,
+        # Convert to vanilla types
+        # For territories, build SelectedTerritory-like objects from SQLite rows
+        selected_territories = _territory_rows_to_selected(territory_rows)
+        territories = _selected_territories_to_territories_result(
+            selected_territories,
+            station_code,
             territories_geojson_path=territories_geojson_path,
-            territories_index=territories_index,
+            demand_map=None,
+            pkg_days=pkg.days if pkg else 30,
+        )
+        supply = _sqlite_rows_to_ideal_supply_result(supply_rows)
+
+        # Phase 3: matching
+        fit = run_phase3(
+            territories=territories,
+            supply=supply,
+            partner_data=partner_data,
+            pkg=pkg,
+            output_dir=output_dir,
+            stations=[station_code],
         )
 
-        # Fase 3.5 — Cap Optimization (GeoIntelligence)
-        try:
-            from geo_intelligence.geo_phase3_5_cap_optimizer import run_geo_phase3_5
-            n_opportunities = run_geo_phase3_5(
-                daily_result=daily_result,
-                run_id=run_id,
-                station_code=station_code,
-                writer=writer,
-                reader=reader,
-            )
-            logger.info(
-                "[%s] Fase 3.5 Geo: %d oportunidades identificadas em %d parceiros avaliados.",
-                station_code,
-                n_opportunities,
-                len([m for m in daily_result.matched + daily_result.unmatched
-                     if m.status == "Active"]),
-            )
-        except Exception as exc:
-            logger.error("[%s] Fase 3.5 Geo falhou (pipeline continua): %s", station_code, exc)
-
-        # Persiste matched_partner_id
+        # Persist matched_partner_id and territory fit to SQLite
         matches = [
-            {"supply_id": m.matched_slot_id, "partner_id": m.partner_id}
-            for m in daily_result.matched
-            if m.matched_slot_id
+            {"supply_id": p.matched_slot_id, "partner_id": p.salesforce_id}
+            for p in fit.all_partners()
+            if p.matched_slot_id and p.salesforce_id
         ]
         if matches:
             writer.update_supply_match(run_id, matches)
 
-        # Persiste attainment/accuracy por território
         fits = [
-            {"territory_id": t.territory_id, "attainment": round(t.attainment, 1), "accuracy": round(t.accuracy, 1)}
-            for t in daily_result.territories.values()
+            {"territory_id": tid, "attainment": round(t.attainment, 1), "accuracy": round(t.accuracy, 1)}
+            for tid, t in fit.territories.items()
         ]
         if fits:
             writer.update_territory_fit(run_id, fits)
 
-        print(
-            f"  [{station_code}] matched={len(daily_result.matched)} "
-            f"unmatched={len(daily_result.unmatched)} "
-            f"territórios={len(daily_result.territories)}"
+        # Phase 4: webleads
+        webleads = run_phase4(
+            partner_data=partner_data,
+            territories=territories,
+            pkg=pkg,
         )
+
+        # Phase 5: reports + heatmap enrichment
+        run_phase5(
+            territories=territories,
+            supply=supply,
+            fit=fit,
+            webleads=webleads,
+            pkg=pkg,
+            output_dir=output_dir,
+            stations=[station_code],
+        )
+
+        print(f"  [{station_code}] Daily concluído.")
 
     print(f"\n{'#'*60}")
     print(f"  DAILY CONCLUÍDO — {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
@@ -342,8 +529,9 @@ Exemplos:
   python geo_intelligence/geo_orchestrator.py --mode setup --target 50
   python geo_intelligence/geo_orchestrator.py --mode setup --target 50 --stations DSP2
   python geo_intelligence/geo_orchestrator.py --mode setup --target 50 --stations DSP2 DSP4
-  python geo_intelligence/geo_orchestrator.py --update-heatmap
-  python geo_intelligence/geo_orchestrator.py --update-heatmap --stations DSP2
+  python geo_intelligence/geo_orchestrator.py --mode daily
+  python geo_intelligence/geo_orchestrator.py --mode daily --stations DSP2
+  python geo_intelligence/geo_orchestrator.py --sync-empresas
         """,
     )
     parser.add_argument(
@@ -372,11 +560,11 @@ Exemplos:
         help="Número de workers paralelos para o solver CP-SAT. Default: 4.",
     )
     parser.add_argument(
-        "--update-heatmap",
+        "--sync-empresas",
         action="store_true",
         default=False,
-        help="Regenera o heatmap GeoIntelligence com a base de pacotes atual "
-             "sem refazer o setup completo.",
+        help="Sincroniza a tabela empresas_alvo do Turso para o SQLite local. "
+             "Não requer --mode. Exemplo: python geo_intelligence/geo_orchestrator.py --sync-empresas",
     )
     parser.add_argument(
         "--output",
@@ -390,11 +578,39 @@ def main() -> None:
     args = _parse_args()
 
     try:
-        if args.update_heatmap:
-            run_update_geo_heatmap(
-                output_dir=args.output,
-                stations=args.stations,
+        if args.sync_empresas:
+            from geo_intelligence.geo_config import TURSO_URL, TURSO_AUTH_TOKEN
+            from geo_intelligence.local_writer import LocalWriter
+            from geo_intelligence.turso_http import TursoHTTP
+            from geo_intelligence.etl_geocode_empresas import sync_empresas_alvo
+
+            if not TURSO_URL or not TURSO_AUTH_TOKEN:
+                print(
+                    "  ERRO: TURSO_URL e TURSO_AUTH_TOKEN devem estar configurados para --sync-empresas.",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+
+            try:
+                turso_client = TursoHTTP(url=TURSO_URL, auth_token=TURSO_AUTH_TOKEN)
+            except Exception as exc:
+                print(f"  ERRO: Falha ao conectar ao Turso: {exc}", file=sys.stderr)
+                sys.exit(1)
+
+            writer = LocalWriter()
+            try:
+                summary = sync_empresas_alvo(writer, turso_client)
+            except Exception as exc:
+                print(f"  ERRO: Falha ao sincronizar empresas_alvo: {exc}", file=sys.stderr)
+                sys.exit(1)
+
+            print(
+                f"  sync-empresas concluído: "
+                f"inserted={summary['inserted']} "
+                f"updated={summary['updated']} "
+                f"total={summary['total']}"
             )
+
         elif args.mode == "setup":
             if args.target is None:
                 print("  ERRO: --target é obrigatório com --mode setup.", file=sys.stderr)
@@ -412,7 +628,7 @@ def main() -> None:
             )
         else:
             print(
-                "  Especifique --mode setup --target <pct>, --mode daily ou --update-heatmap.",
+                "  Especifique --mode setup --target <pct>, --mode daily ou --sync-empresas.",
                 file=sys.stderr,
             )
             sys.exit(1)

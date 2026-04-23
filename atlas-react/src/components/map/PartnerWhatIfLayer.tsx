@@ -10,14 +10,15 @@
  *
  * On dragend:
  *   - If new position is > 300 m from original → snap back, dispatch `atlas:whatif-warning`
- *   - If <= 300 m → recalculate suggested_cap / suggested_radius from heatmapData,
- *     dispatch `atlas:whatif-result`
+ *   - If <= 300 m → compute hex-diff (hexesLost / hexesGained), derive loss/gain from
+ *     partner.hex_coverage and heatmap demand_residual, dispatch `atlas:whatif-result`
  *
- * Requirements: 6.2, 6.3, 6.4, 6.5, 6.6
+ * Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8
  */
 
-import { useRef, useCallback } from 'react';
-import { Marker, Circle } from 'react-leaflet';
+import { useRef, useCallback, useMemo } from 'react';
+import { Marker, Circle, CircleMarker } from 'react-leaflet';
+import * as turf from '@turf/turf';
 import L from 'leaflet';
 import { useStore } from '../../store';
 import type { Partner } from '../../store/types';
@@ -28,7 +29,7 @@ import type { Partner } from '../../store/types';
 
 const GUARDRAIL_RADIUS = 300; // metres
 const INDIGO_COLOR = '#6366F1';
-const MAX_CAP = 80;
+export const MAX_CAP = 80;
 
 // ---------------------------------------------------------------------------
 // Haversine distance (metres)
@@ -46,29 +47,47 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 // ---------------------------------------------------------------------------
-// What-if calculation helpers
+// Hex-diff engine helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Sums demand_residual of heatmap features whose centroid is within
- * `radiusMeters` of (lat, lon).
+ * Returns the set of hex_ids whose feature centroids are within `radiusMeters`
+ * of the given (lat, lon) position.
  */
-function sumResidualWithinRadius(
+export function getHexesWithinRadius(
   features: GeoJSON.Feature[],
   lat: number,
   lon: number,
   radiusMeters: number,
-): number {
-  let total = 0;
+): Set<string> {
+  const center = turf.point([lon, lat]);
+  const result = new Set<string>();
   for (const feature of features) {
-    if (feature.geometry.type !== 'Point') continue;
-    const [fLon, fLat] = (feature.geometry as GeoJSON.Point).coordinates;
-    const dist = haversineDistance(lat, lon, fLat, fLon);
-    if (dist <= radiusMeters) {
-      total += (feature.properties?.demand_residual as number) ?? 0;
+    const hexId = feature.properties?.hex_id as string | undefined;
+    if (!hexId) continue;
+    const geom = feature.geometry;
+    if (!geom) continue;
+    let fLon: number, fLat: number;
+    if (geom.type === 'Point') {
+      [fLon, fLat] = (geom as GeoJSON.Point).coordinates as [number, number];
+    } else if (geom.type === 'Polygon' || geom.type === 'MultiPolygon') {
+      const c = turf.centroid(feature as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>);
+      [fLon, fLat] = c.geometry.coordinates as [number, number];
+    } else {
+      continue;
     }
+    const dist = turf.distance(center, turf.point([fLon, fLat]), { units: 'meters' });
+    if (dist <= radiusMeters) result.add(hexId);
   }
-  return total;
+  return result;
+}
+
+/**
+ * Computes the simulated ADV after repositioning.
+ * adv_simulated = min(max(capacity - loss + gain, 0), MAX_CAP)
+ */
+export function computeAdvSimulated(capacity: number, loss: number, gain: number): number {
+  return Math.min(Math.max(capacity - loss + gain, 0), MAX_CAP);
 }
 
 // ---------------------------------------------------------------------------
@@ -78,9 +97,10 @@ function sumResidualWithinRadius(
 interface WhatIfMarkerProps {
   partner: Partner & { lat: number; lon: number };
   heatmapFeatures: GeoJSON.Feature[];
+  heatmapIndex: Map<string, GeoJSON.Feature>;
 }
 
-function WhatIfMarker({ partner, heatmapFeatures }: WhatIfMarkerProps) {
+function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerProps) {
   const markerRef = useRef<L.Marker | null>(null);
 
   const handleDragEnd = useCallback(() => {
@@ -96,36 +116,78 @@ function WhatIfMarker({ partner, heatmapFeatures }: WhatIfMarkerProps) {
     if (dist > GUARDRAIL_RADIUS) {
       // Snap back to original position
       marker.setLatLng([origLat, origLon]);
-      window.dispatchEvent(
+      document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
-          detail: { partnerName: partner.name },
+          detail: { message: `${partner.name}: posição fora do raio de 300 m. Marcador reposicionado.` },
         }),
       );
       return;
     }
 
-    // Recalculate suggested_cap and suggested_radius
-    const totalResidual = sumResidualWithinRadius(heatmapFeatures, lat, lng, partner.radius);
-    const suggestedCap = Math.min(Math.floor(totalResidual), MAX_CAP);
-    const suggestedRadius = partner.radius; // keep same radius for what-if simplicity
-    const estimatedAdvGain = suggestedCap - partner.capacity;
+    // Usa o raio configurado no painel de análise (params.radiusMeters)
+    const { radiusMeters } = useStore.getState().recruitableAnalysis.params;
 
-    window.dispatchEvent(
+    // Compute hex sets for original and simulated positions
+    const hexesOriginal = getHexesWithinRadius(heatmapFeatures, origLat, origLon, radiusMeters);
+    const hexesSimulated = getHexesWithinRadius(heatmapFeatures, lat, lng, radiusMeters);
+
+    const hexesLost = new Set([...hexesOriginal].filter(h => !hexesSimulated.has(h)));
+    const hexesGained = new Set([...hexesSimulated].filter(h => !hexesOriginal.has(h)));
+
+    // Build hex_coverage lookup from partner data
+    const hexCoverageMap = new Map<string, number>(
+      (partner.hex_coverage ?? []).map(e => [e.hex_id, e.packages_allocated])
+    );
+
+    // Guard: if hex_coverage is absent/empty AND hexes are lost → warning, no result
+    if ((!partner.hex_coverage || partner.hex_coverage.length === 0) && hexesLost.size > 0) {
+      document.dispatchEvent(
+        new CustomEvent('atlas:whatif-warning', {
+          detail: { message: `${partner.name}: dados de cobertura hex indisponíveis. Reposicione após recarregar os dados.` },
+        }),
+      );
+      return;
+    }
+
+    const loss = [...hexesLost].reduce((sum, h) => sum + (hexCoverageMap.get(h) ?? 0), 0);
+    const gain = [...hexesGained].reduce((sum, h) => {
+      const feature = heatmapIndex.get(h);
+      return sum + ((feature?.properties?.demand_residual as number) ?? 0);
+    }, 0);
+
+    const advSimulated = computeAdvSimulated(partner.capacity, loss, gain);
+    const advGain = advSimulated - partner.capacity;
+
+    document.dispatchEvent(
       new CustomEvent('atlas:whatif-result', {
         detail: {
           partnerName: partner.name,
-          lat,
-          lon: lng,
-          suggestedCap,
-          suggestedRadius,
-          estimatedAdvGain,
+          simulatedLat: lat,
+          simulatedLon: lng,
+          advSimulated,
+          simulatedRadius: radiusMeters,
+          advGain,
+          originalCap: partner.capacity,
         },
       }),
     );
-  }, [partner, heatmapFeatures]);
+  }, [partner, heatmapFeatures, heatmapIndex]);
 
   return (
     <>
+      {/* Marcador original fixo — posição de referência */}
+      <CircleMarker
+        center={[partner.lat, partner.lon]}
+        radius={7}
+        pane="markersPane"
+        pathOptions={{
+          color: INDIGO_COLOR,
+          fillColor: INDIGO_COLOR,
+          weight: 2,
+          fillOpacity: 0.25,
+        }}
+      />
+      {/* Marcador arrastável — posição simulada */}
       <Marker
         position={[partner.lat, partner.lon]}
         draggable
@@ -154,12 +216,24 @@ function WhatIfMarker({ partner, heatmapFeatures }: WhatIfMarkerProps) {
 
 export default function PartnerWhatIfLayer() {
   const whatIfModeActive = useStore((s) => s.whatIfModeActive);
-  const allMarkersData = useStore((s) => s.allMarkersData);
+  const currentFilteredData = useStore((s) => s.currentFilteredData);
   const heatmapData = useStore((s) => s.heatmapData);
+
+  const heatmapFeatures: GeoJSON.Feature[] = heatmapData?.features ?? [];
+
+  const heatmapIndex = useMemo(
+    () => new Map(
+      heatmapFeatures
+        .filter(f => f.properties?.hex_id)
+        .map(f => [f.properties!.hex_id as string, f])
+    ),
+    [heatmapFeatures]
+  );
 
   if (!whatIfModeActive) return null;
 
-  const activePartners = allMarkersData.filter(
+  // Respeita o filtro ativo (ex: Delivery Station) e mostra só os ativos
+  const activePartners = currentFilteredData.filter(
     (p): p is Partner & { lat: number; lon: number } =>
       p.status === 'Active' &&
       p.lat !== null &&
@@ -168,8 +242,6 @@ export default function PartnerWhatIfLayer() {
       p.lon !== 0,
   );
 
-  const heatmapFeatures: GeoJSON.Feature[] = heatmapData?.features ?? [];
-
   return (
     <>
       {activePartners.map((partner) => (
@@ -177,6 +249,7 @@ export default function PartnerWhatIfLayer() {
           key={partner.salesforce_id}
           partner={partner}
           heatmapFeatures={heatmapFeatures}
+          heatmapIndex={heatmapIndex}
         />
       ))}
     </>

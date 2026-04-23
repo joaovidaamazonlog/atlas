@@ -35,6 +35,29 @@ export interface OptimizationData {
 }
 
 // ---------------------------------------------------------------------------
+// HEX COVERAGE MODEL
+// ---------------------------------------------------------------------------
+
+/**
+ * Represents a single partner's allocation share for a heatmap hex.
+ * Appears in heatmap feature properties as entries in `covering_partners`.
+ */
+export interface CoveringPartner {
+  salesforce_id: string;
+  packages_allocated: number;
+  share: number;
+}
+
+/**
+ * Represents a single hex entry in a partner's coverage list.
+ * Stored in `dados_mapa.json` as `partner.hex_coverage`.
+ */
+export interface HexCoverageEntry {
+  hex_id: string;
+  packages_allocated: number;
+}
+
+// ---------------------------------------------------------------------------
 // PARCEIRO
 // ---------------------------------------------------------------------------
 
@@ -81,6 +104,7 @@ export interface Partner {
   ceps: string[];
   slot_id: string;
   adv_opportunity: AdvOpportunity | null;
+  hex_coverage?: HexCoverageEntry[];
 }
 
 // ---------------------------------------------------------------------------

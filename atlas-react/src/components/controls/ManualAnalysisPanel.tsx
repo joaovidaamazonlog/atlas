@@ -143,9 +143,10 @@ interface WhatIfResult {
   partnerName: string;
   simulatedLat: number;
   simulatedLon: number;
-  simulatedCap: number;
+  advSimulated: number;
   simulatedRadius: number;
-  simulatedAdvGain: number;
+  advGain: number;
+  originalCap: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -235,13 +236,46 @@ function PanelContent({ onClose }: { onClose: () => void }) {
     return () => document.removeEventListener('atlas:map-click-coords', handler);
   }, [setRecruitableParams, setManualAnalysisPin]);
 
-  // What-if result listener
+  // What-if result listener — atualiza coords e roda análise automaticamente
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<WhatIfResult>).detail;
-      if (detail) {
-        setWhatIfResult(detail);
-        setWhatIfWarning(null);
+      if (!detail) return;
+
+      setWhatIfResult(detail);
+      setWhatIfWarning(null);
+
+      // Lê os parâmetros atuais do store (minAdv, radiusMeters)
+      const store = useStore.getState();
+      const { minAdv, radiusMeters } = store.recruitableAnalysis.params;
+
+      // Atualiza as coordenadas do painel com a posição simulada
+      store.setRecruitableParams({
+        centerLat: String(detail.simulatedLat),
+        centerLon: String(detail.simulatedLon),
+      });
+
+      // Roda análise automaticamente se os parâmetros forem válidos
+      if (!isValidPositiveNumber(minAdv) || !isValidPositiveNumber(radiusMeters)) return;
+
+      const features = store.heatmapData?.features ?? [];
+      const result = evaluateRecruitableArea({
+        centerLat: detail.simulatedLat,
+        centerLon: detail.simulatedLon,
+        radiusMeters,
+        minAdv,
+        heatmapFeatures: features,
+      });
+
+      if (isEvaluatorError(result)) {
+        const msgs: Record<string, string> = {
+          MISSING_HEATMAP: 'Dados de demanda não carregados',
+          MISSING_CENTER: 'Ponto central obrigatório',
+          INVALID_PARAMS: 'Parâmetros inválidos',
+        };
+        store.setRecruitableResult(null, msgs[result.type] ?? 'Erro desconhecido');
+      } else {
+        store.setRecruitableResult(result);
       }
     };
     document.addEventListener('atlas:whatif-result', handler);
@@ -499,18 +533,36 @@ function PanelContent({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        {/* ---- Botão analisar ---- */}
-        <button
-          type="button"
-          onClick={handleAnalyze}
-          disabled={!canAnalyze}
-          className="w-full py-3 px-4 rounded bg-blue-600 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-h-[44px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-          </svg>
-          Analisar
-        </button>
+        {/* ---- Botão analisar + limpar ponto ---- */}
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handleAnalyze}
+            disabled={!canAnalyze}
+            className="flex-1 py-3 px-4 rounded bg-blue-600 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-h-[44px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            </svg>
+            Analisar
+          </button>
+          {/* X só aparece quando há ponto definido mas nenhum painel de resultado está ativo */}
+          {(params.centerLat !== '' || params.centerLon !== '') &&
+           !recruitableAnalysis.result &&
+           !whatIfResult && (
+            <button
+              type="button"
+              onClick={() => { clearRecruitableAnalysis(); setManualAnalysisPin(null); }}
+              aria-label="Limpar ponto central"
+              className="py-3 px-3 rounded border border-white/20 text-atlas-muted hover:text-atlas-light hover:border-white/40 min-h-[44px] transition-colors flex items-center justify-center"
+              title="Limpar ponto central"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          )}
+        </div>
 
         {recruitableAnalysis.error && (
           <div className="px-3 py-2 rounded bg-red-500/10 border-l-2 border-red-400 text-xs text-red-400" role="alert">
@@ -518,17 +570,18 @@ function PanelContent({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {recruitableAnalysis.result && (
+        {/* Resultado de viabilidade — oculto quando what-if está ativo */}
+        {!whatIfModeActive && recruitableAnalysis.result && (
           <RecruitableResultPanel
             result={recruitableAnalysis.result}
             isStale={recruitableAnalysis.isStale}
           />
         )}
 
-        {recruitableAnalysis.result !== null && (
+        {!whatIfModeActive && recruitableAnalysis.result !== null && (
           <button
             type="button"
-            onClick={clearRecruitableAnalysis}
+            onClick={() => { clearRecruitableAnalysis(); setManualAnalysisPin(null); }}
             className="w-full py-2 px-4 rounded border border-red-500/50 text-red-400 text-sm hover:bg-red-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] transition-colors flex items-center justify-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
@@ -578,7 +631,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {/* What-if result */}
+          {/* What-if result — substitui o painel de viabilidade quando ativo */}
           {whatIfModeActive && whatIfResult && (
             <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/5 p-3 flex flex-col gap-2" data-testid="whatif-result-panel">
               <div className="text-xs font-semibold text-indigo-300 mb-1">Resultado da simulação</div>
@@ -593,19 +646,35 @@ function PanelContent({ onClose }: { onClose: () => void }) {
                   <div className="text-atlas-light font-semibold">{whatIfResult.simulatedLon.toFixed(5)}</div>
                 </div>
                 <div className="rounded bg-white/5 px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">Cap simulado</div>
-                  <div className="text-atlas-light font-semibold">{whatIfResult.simulatedCap} pct/dia</div>
+                  <div className="text-atlas-muted mb-0.5">Cap atual</div>
+                  <div className="text-atlas-light font-semibold">{whatIfResult.originalCap} pct/dia</div>
                 </div>
                 <div className="rounded bg-white/5 px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">Raio simulado</div>
-                  <div className="text-atlas-light font-semibold">{whatIfResult.simulatedRadius} m</div>
+                  <div className="text-atlas-muted mb-0.5">ADV simulado</div>
+                  <div className="text-atlas-light font-semibold">{Math.round(whatIfResult.advSimulated)} pct/dia</div>
                 </div>
               </div>
-              <div className="rounded bg-indigo-500/10 px-2 py-2 text-xs">
-                <div className="text-atlas-muted mb-0.5">Ganho simulado de ADV</div>
-                <div className="text-indigo-300 font-semibold">+{whatIfResult.simulatedAdvGain} pct/dia</div>
+              <div className={`rounded px-2 py-2 text-xs ${whatIfResult.advGain >= 0 ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
+                <div className="text-atlas-muted mb-0.5">Ganho ADV</div>
+                <div className={`font-semibold text-sm ${whatIfResult.advGain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {whatIfResult.advGain >= 0 ? '+' : ''}{Math.round(whatIfResult.advGain)} pct/dia
+                </div>
               </div>
             </div>
+          )}
+
+          {/* Limpar simulação — aparece após resultado what-if, igual ao Limpar Análise */}
+          {whatIfModeActive && whatIfResult && (
+            <button
+              type="button"
+              onClick={() => { setWhatIfResult(null); setWhatIfWarning(null); clearRecruitableAnalysis(); setManualAnalysisPin(null); }}
+              className="w-full py-2 px-4 rounded border border-red-500/50 text-red-400 text-sm hover:bg-red-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] transition-colors flex items-center justify-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              Limpar Simulação
+            </button>
           )}
         </div>
       </div>

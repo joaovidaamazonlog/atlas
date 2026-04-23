@@ -53,6 +53,14 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
   const allMarkersData = useStore((s) => s.allMarkersData);
   const routeOriginActive = useStore((s) => s.routeOriginActive);
   const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
+  const whatIfModeActive = useStore((s) => s.whatIfModeActive);
+
+  // No modo what-if mostra apenas parceiros ativos (os demais ficam ocultos
+  // para não poluir o mapa com os marcadores arrastáveis do PartnerWhatIfLayer)
+  const visibleData = useMemo(
+    () => whatIfModeActive ? data.filter((p) => p.status === 'Active') : data,
+    [data, whatIfModeActive],
+  );
 
   const rescuePopup = useRescuePopup();
 
@@ -107,7 +115,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
     <>
       <OpenPartnerPopupListener markerRefs={markerRefs} />
       {rescuePopup}
-      {!prospectActive && data.filter(hasValidCoords).map((partner) => {
+      {!prospectActive && visibleData.filter(hasValidCoords).map((partner) => {
         const style = getMarkerStyle(partner, primary, secondary, colorMaps);
         const popupHtml = getPartnerPopupHtml(partner, routeOriginActive);
 

@@ -1,35 +1,18 @@
 """
 geo_intelligence/geo_daily.py
 ==============================
-Modo daily do pipeline GeoIntelligence.
+DEPRECATED — O modo daily foi unificado com o pipeline vanilla.
+Use geo_orchestrator.py --mode daily em vez deste módulo.
 
-Recebe parceiros reais (via load_partners), carrega os slots ideais do Turso
-(run mais recente por base) e executa o matching com a mesma hierarquia de
-fallback do pipeline vanilla (phase3_partner_fit.py):
-
-  1. Busca exata: origin_hex do parceiro está em hex_ids do território
-  2. Point-in-polygon: lat/lon dentro do polígono (territories.geojson via Shapely)
-  3. Proximidade do centroide geométrico do polígono
-  4. Proximidade do centroide calculado pelos slots (territories_index.json)
-
-Hierarquia de status para matching:
-  Active (1) > Onboarding (2) > BG Checks (3) > Prospect (4) > Inactive/Exited (5)
-
-Outputs persistidos no Turso via TursoWriter:
-  - geo_ideal_supply.matched_partner_id  (update_supply_match)
-  - geo_territories.attainment + accuracy (update_territory_fit)
+Este arquivo é mantido apenas para compatibilidade com testes existentes
+que usam GeoDailyResult e GeoPartnerMatch. Será removido em uma versão futura.
 """
 
 from __future__ import annotations
 
-import json
 import logging
-from collections import defaultdict
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
-
-import h3
+from typing import Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -42,16 +25,9 @@ STATUS_PRIORITY: Dict[str, int] = {
     "Exited": 5,
 }
 
-CANONICAL_REASONS = {
-    "go": "Seguir cadastro",
-    "no_coords": "Não avaliado por falta de coordenadas",
-    "no_opportunity": "Sem oportunidade próxima",
-    "out_of_jurisdiction": "Fora de jurisdição",
-}
-
 
 # ---------------------------------------------------------------------------
-# Dataclasses de resultado
+# Dataclasses de resultado (mantidos para compatibilidade com testes)
 # ---------------------------------------------------------------------------
 
 @dataclass
@@ -93,11 +69,6 @@ class GeoDailyResult:
     territories: Dict[str, GeoTerritoryResult] = field(default_factory=dict)
     matched: List[GeoPartnerMatch] = field(default_factory=list)
     unmatched: List[GeoPartnerMatch] = field(default_factory=list)
-
-
-# ---------------------------------------------------------------------------
-# Territory lookup — mesma hierarquia do vanilla
-# ---------------------------------------------------------------------------
 
 def _load_territory_polygons(territories_geojson_path: str) -> Dict[str, object]:
     """Carrega polígonos Shapely por territory_id do territories.geojson."""

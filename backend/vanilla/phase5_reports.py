@@ -42,9 +42,10 @@ from __future__ import annotations
 
 import csv
 import json
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 import h3
 
@@ -624,6 +625,29 @@ def _write_geojson(
           f"{size_mb:.1f} MB)")
 
 
+def _build_hex_coverage_index(
+    fit: FitResult,
+) -> Dict[str, List[Tuple[PartnerMetrics, int]]]:
+    """
+    Constrói o índice hex_id → [(partner, packages_assigned), ...] para
+    todos os parceiros Active/Onboarding com matched_slot_id.
+
+    Usa as alocações reais do CP-SAT (PartnerMetrics.allocations) como
+    fonte autoritativa — sem heurística de vizinhança (grid_disk).
+    """
+    hex_coverage_index: Dict[str, List[Tuple[PartnerMetrics, int]]] = defaultdict(list)
+
+    for partner in fit.all_partners():
+        if partner.status not in ("Active", "Onboarding"):
+            continue
+        if not partner.matched_slot_id:
+            continue
+        for alloc in partner.allocations:
+            hex_coverage_index[alloc.hex_id].append((partner, alloc.packages_assigned))
+
+    return hex_coverage_index
+
+
 def _enrich_heatmap_with_residual(
     heatmap_path: Path,
     fit: FitResult,
@@ -634,15 +658,16 @@ def _enrich_heatmap_with_residual(
     """
     Enriquece heatmap.geojson com campos de demanda alocada e residual.
 
-    Para cada hex, verifica se existe parceiro Active ou Onboarding com
-    matched_slot_id cujo origin_hex está em h3.grid_disk(hex_id, 1).
-    Se sim, o hex é considerado coberto.
+    Para cada hex, usa as alocações reais do CP-SAT (PartnerMetrics.allocations)
+    para determinar quais parceiros cobrem o hex e quantos pacotes foram alocados.
 
     Campos adicionados ao properties de cada feature:
-        demand_allocated  : demand_daily se coberto, senão 0
-        demand_residual   : demand_daily - demand_allocated
-        is_covered        : True se coberto, False caso contrário
-        covering_partner_id : salesforce_id do parceiro que cobre (ou None)
+        demand_allocated  : soma de packages_assigned de todos os parceiros cobrindo o hex
+        demand_residual   : demand_daily - demand_allocated (arredondado a 4 casas)
+        is_covered        : True se demand_allocated > 0
+        covering_partners : lista de {salesforce_id, packages_allocated, share}
+
+    NÃO escreve covering_partner_id.
 
     Faz merge parcial: hexes de outras stations são preservados sem alteração.
     """
@@ -650,25 +675,8 @@ def _enrich_heatmap_with_residual(
         print(f"  WARN _enrich_heatmap_with_residual: {heatmap_path} não encontrado — pulando.")
         return
 
-    # ── Construir índice slot_id → origin_hex ────────────────────────────
-    slot_origin: Dict[str, str] = {}
-    for tf in fit.territories.values():
-        for slot in tf.slots:
-            slot_origin[slot.slot_id] = slot.origin_hex
-
-    # ── Construir índice: origin_hex → parceiro Active/Onboarding ────────
-    # Um parceiro cobre um hex se seu slot's origin_hex está em grid_disk(hex, 1)
-    # Invertemos: para cada parceiro, registramos seu origin_hex
-    covering_partners: Dict[str, PartnerMetrics] = {}  # origin_hex → partner
-    for partner in fit.all_partners():
-        if partner.status not in ("Active", "Onboarding"):
-            continue
-        if not partner.matched_slot_id:
-            continue
-        origin = slot_origin.get(partner.matched_slot_id)
-        if origin:
-            # Pode haver múltiplos parceiros por origin_hex; último vence (determinístico)
-            covering_partners[origin] = partner
+    # ── Construir índice hex_id → [(partner, packages_assigned)] ─────────
+    hex_coverage_index = _build_hex_coverage_index(fit)
 
     # ── Ler heatmap existente ─────────────────────────────────────────────
     try:
@@ -693,27 +701,33 @@ def _enrich_heatmap_with_residual(
         hex_id = props.get("hex_id", "")
         demand_daily = props.get("demand_daily", 0)
 
-        # Verificar cobertura: algum origin_hex de parceiro ativo está em grid_disk(hex_id, 1)?
-        covering_partner: Optional[PartnerMetrics] = None
-        if hex_id:
-            try:
-                neighborhood = set(h3.grid_disk(hex_id, 1))
-            except Exception:
-                neighborhood = {hex_id}
+        entries = hex_coverage_index.get(hex_id, [])
 
-            for origin_hex, partner in covering_partners.items():
-                if origin_hex in neighborhood:
-                    covering_partner = partner
-                    break
+        demand_allocated = sum(pkg_count for _, pkg_count in entries)
+        demand_residual = round(demand_daily - demand_allocated, 4)
+        is_covered = demand_allocated > 0
 
-        is_covered = covering_partner is not None
-        demand_allocated = demand_daily if is_covered else 0
-        demand_residual = demand_daily - demand_allocated
+        covering_partners_list = []
+        for i, (partner, pkg_count) in enumerate(entries):
+            if demand_allocated > 0:
+                if i < len(entries) - 1:
+                    share = round(pkg_count / demand_allocated, 2)
+                else:
+                    # Last partner: adjust to ensure shares sum to exactly 1.0
+                    share = round(1.0 - sum(cp["share"] for cp in covering_partners_list), 2)
+            else:
+                share = 0.0
+            covering_partners_list.append({
+                "salesforce_id":      partner.salesforce_id,
+                "packages_allocated": pkg_count,
+                "share":              share,
+            })
 
-        props["demand_allocated"]    = demand_allocated
-        props["demand_residual"]     = round(demand_residual, 4)
-        props["is_covered"]          = is_covered
-        props["covering_partner_id"] = covering_partner.salesforce_id if covering_partner else None
+        props["demand_allocated"]   = demand_allocated
+        props["demand_residual"]    = demand_residual
+        props["is_covered"]         = is_covered
+        props["covering_partners"]  = covering_partners_list
+        # NOTE: covering_partner_id is NOT written
         enriched += 1
 
     heatmap["metadata"] = heatmap.get("metadata", {})
@@ -727,6 +741,24 @@ def _enrich_heatmap_with_residual(
     print(f"  ✅ {heatmap_path.name}  ({enriched} hexes enriquecidos | {size_mb:.1f} MB)")
 
 
+def _derive_hex_coverage(pm: PartnerMetrics) -> Optional[List[dict]]:
+    """
+    Derives the hex_coverage list for a partner record.
+
+    Returns a list of {hex_id, packages_allocated} entries for Active/Onboarding
+    partners, or None if the partner's status is not Active or Onboarding.
+
+    When the partner is Active/Onboarding but has no matched_slot_id or no
+    allocations, returns an empty list [].
+    """
+    if pm.status not in ("Active", "Onboarding"):
+        return None
+    return [
+        {"hex_id": a.hex_id, "packages_allocated": a.packages_assigned}
+        for a in pm.allocations
+    ]
+
+
 def _write_dados_mapa(
     path: Path,
     fit: FitResult,
@@ -735,7 +767,10 @@ def _write_dados_mapa(
 ) -> None:
     """
     Atualiza dados_mapa.json embutindo decision, reason, bucket_ade,
-    radius_suggestion e cap_suggestion diretamente em cada parceiro.
+    radius_suggestion, cap_suggestion e hex_coverage diretamente em cada parceiro.
+
+    hex_coverage é adicionado apenas para parceiros Active/Onboarding.
+    Para outros status, o campo não é escrito.
 
     Faz merge parcial quando stations é fornecido — preserva parceiros
     de outras stations que já estavam no arquivo.
@@ -766,6 +801,12 @@ def _write_dados_mapa(
             record["bucket_ade"]        = pm.cluster_name if pm.cluster_name and pm.cluster_name != "N/A" else ""
             record["radius_suggestion"] = pm.radius_s
             record["cap_suggestion"]    = pm.capacity_s
+
+            # hex_coverage: only for Active/Onboarding partners (Requirement 3.4)
+            hex_coverage = _derive_hex_coverage(pm)
+            if hex_coverage is not None:
+                record["hex_coverage"] = hex_coverage
+
             updated += 1
 
     with open(partner_data_json_path, "w", encoding="utf-8") as f:

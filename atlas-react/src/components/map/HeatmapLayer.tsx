@@ -7,10 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { useMap, GeoJSON } from 'react-leaflet';
-import type L from 'leaflet';
-import type { PathOptions, LeafletMouseEvent } from 'leaflet';
-import type { Feature } from 'geojson';
+import { useMap } from 'react-leaflet';
 import { useStore } from '../../store';
 import { createHeatLayer, type HeatLayerInstance, type HeatLatLngTuple } from '../../lib/leafletHeat';
 
@@ -97,67 +94,9 @@ function HeatPoints(): null {
 
 export default function HeatmapLayer() {
   const activeTab = useStore((s) => s.activeTab);
-  const heatmapData = useStore((s) => s.heatmapData);
-  const hexSelectionState = useStore((s) => s.hexSelectionState);
-  const toggleHexSelection = useStore((s) => s.toggleHexSelection);
-  const clearHexSelection = useStore((s) => s.clearHexSelection);
 
-  // Clear hex selection when leaving the 'area' tab
-  useEffect(() => {
-    if (activeTab !== 'area') {
-      clearHexSelection();
-    }
-  }, [activeTab, clearHexSelection]);
-
-  if (activeTab === 'area' && heatmapData) {
-    // Pre-compute max demand for color normalization
-    const maxDemand = heatmapData.features.reduce((max, f) => {
-      const d = (f.properties?.demand_daily as number | undefined) ?? 0;
-      return d > max ? d : max;
-    }, 0);
-
-    const selectedIds = hexSelectionState.selectedHexIds;
-
-    const hexStyle = (feature?: Feature): PathOptions => {
-      if (!feature) return { fillOpacity: 0.5, weight: 1 };
-      const props = feature.properties ?? {};
-      const demandDaily: number = typeof props.demand_daily === 'number' ? props.demand_daily : 0;
-      const hexId: string = props.hex_id ?? '';
-      const isSelected = selectedIds.includes(hexId);
-      const fillColor = heatmapHexColor(demandDaily, maxDemand);
-      return {
-        fillColor,
-        color: isSelected ? 'white' : fillColor,
-        weight: isSelected ? 2 : 0.5,
-        fillOpacity: 0.6,
-        opacity: isSelected ? 1 : 0.7,
-      };
-    };
-
-    const onEachFeature = (feature: Feature, layer: L.Layer) => {
-      layer.on('click', (_e: LeafletMouseEvent) => {
-        const props = feature.properties ?? {};
-        const hexId: string = props.hex_id ?? '';
-        const demandDaily: number = typeof props.demand_daily === 'number' ? props.demand_daily : 0;
-        const demandResidual: number = typeof props.demand_residual === 'number' ? props.demand_residual : 0;
-        if (hexId) {
-          toggleHexSelection(hexId, demandDaily, demandResidual);
-        }
-      });
-    };
-
-    // Key includes selectedHexIds.length so GeoJSON re-renders when selection changes
-    const geoJsonKey = `area-hexes-${selectedIds.length}`;
-
-    return (
-      <GeoJSON
-        key={geoJsonKey}
-        data={heatmapData}
-        style={hexStyle}
-        onEachFeature={onEachFeature}
-      />
-    );
-  }
+  // Na aba 'area' não renderiza nada — os hexes não devem aparecer
+  if (activeTab === 'area') return null;
 
   // Default: heat-point behavior
   return <HeatPoints />;

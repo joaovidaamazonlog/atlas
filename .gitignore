@@ -1,4 +1,8 @@
 _api_backend/empresas_lookup.db
+backend/output/geo_intelligence/geo_intelligence.db
+
+# Arquivos grandes de output
+output_data/*.geojson
 
 # Python
 __pycache__/

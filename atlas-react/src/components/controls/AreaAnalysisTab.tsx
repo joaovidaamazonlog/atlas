@@ -425,13 +425,14 @@ function HexSelectionSummary() {
 }
 
 // ---------------------------------------------------------------------------
-// CapOpportunityPanel — painel lateral de oportunidades de cap
+// CapOpportunityPanel — painel lateral de oportunidades de aumento de ADV
 // ---------------------------------------------------------------------------
 
 function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
   const allMarkersData = useStore((s) => s.allMarkersData);
   const selectedPartnerId = useStore((s) => s.capOpportunityState.selectedPartnerId);
   const setSelectedCapOpportunity = useStore((s) => s.setSelectedCapOpportunity);
+  const fitBoundsRef = useStore((s) => s.fitBoundsRef);
 
   const opportunities = useMemo(() => {
     return allMarkersData
@@ -454,7 +455,7 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-white/10">
-        <span className="font-semibold text-atlas-light text-sm">Oportunidades de Cap</span>
+        <span className="font-semibold text-atlas-light text-sm">Oportunidades de aumento de ADV</span>
         <button
           onClick={onClose}
           aria-label="Fechar painel"
@@ -471,23 +472,28 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
         {opportunities.length === 0 ? (
           <div className="flex-1 flex items-center justify-center p-4">
             <p className="text-sm text-atlas-muted text-center">
-              Nenhuma oportunidade de cap identificada
+              Nenhuma oportunidade de aumento de ADV identificada
             </p>
           </div>
         ) : (
           opportunities.map((partner) => {
             const opp = partner.adv_opportunity!;
             const isSelected = selectedPartnerId === partner.salesforce_id;
+            // Verde se ganho > 50% do cap atual, amarelo se ≤ 50%
+            const gainPct = partner.capacity > 0 ? opp.estimated_adv_gain / partner.capacity : 1;
+            const isHighGain = gainPct > 0.5;
+            const badgeClass = isHighGain
+              ? 'bg-green-500/20 text-green-400'
+              : 'bg-amber-500/20 text-amber-400';
+            const valueClass = isHighGain ? 'text-green-400' : 'text-amber-400';
             return (
-              <button
+              <div
                 key={partner.salesforce_id}
-                type="button"
-                onClick={() => setSelectedCapOpportunity(partner.salesforce_id)}
                 className={[
-                  'w-full text-left rounded-lg p-3 flex flex-col gap-1.5 border transition-colors',
+                  'rounded-lg p-3 flex flex-col gap-1.5 border transition-colors',
                   isSelected
                     ? 'bg-amber-500/15 border-amber-500/50'
-                    : 'bg-white/5 border-white/8 hover:bg-white/10',
+                    : 'bg-white/5 border-white/8',
                 ].join(' ')}
               >
                 {/* Partner name + gain badge */}
@@ -495,7 +501,7 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
                   <span className="text-sm font-semibold text-atlas-light leading-tight flex-1">
                     {partner.name}
                   </span>
-                  <span className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400">
+                  <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold ${badgeClass}`}>
                     +{opp.estimated_adv_gain} ADV
                   </span>
                 </div>
@@ -505,7 +511,7 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
                   <span className="text-atlas-muted">Cap:</span>
                   <span className="text-atlas-light font-medium">{partner.capacity}</span>
                   <span className="text-atlas-muted">→</span>
-                  <span className="text-amber-400 font-semibold">{opp.suggested_cap}</span>
+                  <span className={`font-semibold ${valueClass}`}>{opp.suggested_cap}</span>
                 </div>
 
                 {/* Raio: atual → sugerido */}
@@ -513,14 +519,43 @@ function CapOpportunityPanel({ onClose }: { onClose: () => void }) {
                   <span className="text-atlas-muted">Raio:</span>
                   <span className="text-atlas-light font-medium">{partner.radius} m</span>
                   <span className="text-atlas-muted">→</span>
-                  <span className="text-amber-400 font-semibold">{opp.suggested_radius} m</span>
+                  <span className={`font-semibold ${valueClass}`}>{opp.suggested_radius} m</span>
                 </div>
 
                 {/* Ganho estimado */}
                 <div className="text-xs text-atlas-muted">
-                  Ganho estimado: <span className="text-amber-400 font-semibold">{opp.estimated_adv_gain} ADV/dia</span>
+                  Ganho estimado: <span className={`font-semibold ${valueClass}`}>{opp.estimated_adv_gain} ADV/dia</span>
                 </div>
-              </button>
+
+                {/* Ações */}
+                <div className="flex gap-2 mt-1">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCapOpportunity(partner.salesforce_id)}
+                    className={[
+                      'flex-1 py-1.5 px-3 rounded text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400',
+                      isSelected
+                        ? 'bg-amber-500/30 text-amber-300 hover:bg-amber-500/40'
+                        : 'bg-white/10 text-atlas-light hover:bg-white/20',
+                    ].join(' ')}
+                  >
+                    {isSelected ? '✓ Selecionado' : 'Ver mudança sugerida'}
+                  </button>
+                  {partner.lat != null && partner.lon != null && (
+                    <button
+                      type="button"
+                      aria-label={`Ir até ${partner.name}`}
+                      onClick={() => fitBoundsRef.current?.([[partner.lat!, partner.lon!]])}
+                      className="py-1.5 px-2.5 rounded bg-white/10 text-atlas-light hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 flex items-center justify-center"
+                      title="Ir até o parceiro"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
             );
           })
         )}
@@ -656,10 +691,10 @@ export default function AreaAnalysisTab() {
 
         <div className="border-t border-white/10 mb-4" />
 
-        {/* Oportunidades de Cap */}
+        {/* Oportunidades de ADV */}
         <div className="mb-5">
           <p className="text-xs uppercase tracking-wide text-atlas-muted mb-3 font-semibold">
-            Oportunidades de Cap
+            Oportunidades de ADV
           </p>
           <button
             type="button"
@@ -671,7 +706,7 @@ export default function AreaAnalysisTab() {
                 : 'bg-amber-600 text-white hover:bg-amber-500 shadow-amber-600/40',
             ].join(' ')}
           >
-            {showCapOpportunityPanel ? '✕ Fechar Oportunidades' : '📈 Oportunidades de Cap'}
+            {showCapOpportunityPanel ? '✕ Fechar Oportunidades' : '📈 Oportunidades de ADV'}
           </button>
         </div>
 

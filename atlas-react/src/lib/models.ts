@@ -111,6 +111,7 @@ export class Partner implements IPartner {
   ceps: string[];
   slot_id: string;
   adv_opportunity: AdvOpportunity | null;
+  hex_coverage?: import('./types').HexCoverageEntry[];
 
   constructor(raw: RawPartner = {}) {
     this.salesforce_id = raw.salesforce_id ?? '';
@@ -160,6 +161,7 @@ export class Partner implements IPartner {
     this.ceps = (raw.ceps as string[]) ?? [];
     this.slot_id = raw.slot_id ?? '';
     this.adv_opportunity = (raw as any).adv_opportunity ?? null;
+    this.hex_coverage = (raw as any).hex_coverage ?? undefined;
   }
 
   get isActive(): boolean {

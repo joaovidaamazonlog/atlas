@@ -1,16 +1,25 @@
 """
 phase3_5_cap_optimizer.py
 =========================
-Fase 3.5 — Identificação de oportunidades de otimização de cap para parceiros Active.
+Fase 3.5 — Identificação de oportunidades de aumento de ADV para parceiros Active.
 
 Responsabilidade
 ----------------
-- Ler o heatmap.geojson enriquecido (com demand_residual de cada hex H3).
+- Ler o heatmap.geojson enriquecido (com demand_residual e demand_allocated de cada hex H3).
 - Para cada parceiro Active com capacity_s < 80, varrer posições candidatas
-  dentro de ~300 m do centroid atual usando h3.grid_disk.
-- Calcular a demanda residual disponível em cada posição candidata.
-- Selecionar a melhor posição (maior estimated_adv_gain; desempate: menor distância).
-- Persistir o campo adv_opportunity em dados_mapa.json.
+  dentro de ~300 m do centroid atual usando h3.grid_disk(k=1).
+- Para cada posição candidata, testar todos os raios disponíveis em Config.RADII
+  usando a mesma lógica do what-if engine do frontend:
+    hexes_lost   = hexes no raio atual - hexes no raio candidato
+    hexes_gained = hexes no raio candidato - hexes no raio atual
+    loss         = soma de demand_allocated dos hexes perdidos
+    gain         = soma de demand_residual dos hexes ganhos
+    adv_simulated = min(max(capacity - loss + gain, 0), 80)
+    adv_gain      = adv_simulated - capacity
+- Selecionar a combinação (posição, raio) com maior adv_gain real > 0.
+  Em empate, prefere o menor raio.
+- Persistir o campo adv_opportunity em dados_mapa.json apenas para parceiros
+  com adv_gain > 0.
 
 Artefato modificado
 -------------------
@@ -24,7 +33,7 @@ dados_mapa.json
         "estimated_adv_gain": int,
         "distance_from_current": float
     }
-    ou null quando não há oportunidade.
+    ou null quando não há oportunidade real (adv_gain <= 0).
 """
 
 from __future__ import annotations
@@ -116,119 +125,113 @@ def _candidate_positions(
         return []
 
 
-def _available_residual(
+def _build_opportunity(
+    partner_lat: float,
+    partner_lon: float,
+    partner_capacity: int,
     candidate_hex: str,
-    partner_radius: int,
     heatmap_index: Dict[str, dict],
-) -> float:
+) -> Optional[dict]:
     """
-    Soma demand_residual de todos os hexes cujo centro está dentro de
-    partner_radius metros do centro de candidate_hex.
+    Constrói o dict adv_opportunity para uma posição candidata usando a mesma
+    lógica do what-if engine do frontend.
+
+    Para cada raio disponível em Config.RADII, calcula:
+      - hexes_original : hexes dentro do raio a partir da posição ATUAL do parceiro
+      - hexes_simulated: hexes dentro do raio a partir do candidate_hex
+      - hexes_lost     : hexes_original - hexes_simulated
+      - hexes_gained   : hexes_simulated - hexes_original
+      - loss           : soma de demand_allocated dos hexes perdidos (do parceiro)
+      - gain           : soma de demand_residual dos hexes ganhos
+      - adv_simulated  : min(max(capacity - loss + gain, 0), 80)
+      - adv_gain       : adv_simulated - capacity
+
+    Seleciona a combinação (posição, raio) com maior adv_gain.
+    Em caso de empate, prefere o menor raio.
+
+    Retorna None se nenhuma combinação produz adv_gain > 0.
     """
     try:
         c_lat, c_lon = h3.cell_to_latlng(candidate_hex)
     except Exception as exc:
         logger.warning(f"[Phase 3.5] cell_to_latlng falhou para {candidate_hex}: {exc}")
-        return 0.0
+        return None
 
-    total = 0.0
-    for hex_id, props in heatmap_index.items():
-        try:
-            h_lat, h_lon = h3.cell_to_latlng(hex_id)
-        except Exception:
-            continue
-        dist = _haversine_m(c_lat, c_lon, h_lat, h_lon)
-        if dist <= partner_radius:
-            total += props.get("demand_residual", 0.0)
-
-    return total
-
-
-def _smallest_radius_for_cap(
-    candidate_hex: str,
-    target_cap: int,
-    heatmap_index: Dict[str, dict],
-) -> Optional[int]:
-    """
-    Retorna o menor raio de Config.RADII cujo residual coberto >= target_cap.
-    Retorna None se nenhum raio for suficiente.
-    """
-    # Config.RADII é lista de dicts com chave "radius_s", ordenada crescente
     radii_sorted = sorted(Config.RADII, key=lambda r: r["radius_s"])
+
+    best: Optional[dict] = None
 
     for radius_entry in radii_sorted:
         radius_m = radius_entry["radius_s"]
-        residual = _available_residual(candidate_hex, radius_m, heatmap_index)
-        if residual >= target_cap:
-            return radius_m
 
-    return None
+        # Hexes dentro do raio a partir da posição ATUAL
+        hexes_original: set[str] = set()
+        for hex_id, props in heatmap_index.items():
+            try:
+                h_lat, h_lon = h3.cell_to_latlng(hex_id)
+            except Exception:
+                continue
+            if _haversine_m(partner_lat, partner_lon, h_lat, h_lon) <= radius_m:
+                hexes_original.add(hex_id)
 
+        # Hexes dentro do raio a partir da posição CANDIDATA
+        hexes_simulated: set[str] = set()
+        for hex_id, props in heatmap_index.items():
+            try:
+                h_lat, h_lon = h3.cell_to_latlng(hex_id)
+            except Exception:
+                continue
+            if _haversine_m(c_lat, c_lon, h_lat, h_lon) <= radius_m:
+                hexes_simulated.add(hex_id)
 
-def _build_opportunity(
-    partner_lat: float,
-    partner_lon: float,
-    partner_capacity: int,
-    partner_radius_m: int,
-    candidate_hex: str,
-    heatmap_index: Dict[str, dict],
-) -> Optional[dict]:
-    """
-    Constrói o dict adv_opportunity para uma posição candidata, ou None
-    se a posição não oferece oportunidade viável.
+        hexes_lost   = hexes_original - hexes_simulated
+        hexes_gained = hexes_simulated - hexes_original
 
-    Parâmetros
-    ----------
-    partner_lat       : latitude do centroid atual do parceiro
-    partner_lon       : longitude do centroid atual do parceiro
-    partner_capacity  : cap atual do parceiro (capacity_s)
-    partner_radius_m  : raio atual do parceiro em metros (radius_s)
-    candidate_hex     : hex H3 candidato a nova posição
-    heatmap_index     : {hex_id: properties} carregado de heatmap.geojson
+        # loss: soma de demand_allocated do parceiro nos hexes perdidos
+        # (usa demand_allocated do heatmap como proxy — o parceiro contribui
+        #  proporcionalmente; sem hex_coverage no backend, usamos demand_allocated)
+        loss = sum(
+            heatmap_index[h].get("demand_allocated", 0.0)
+            for h in hexes_lost
+            if h in heatmap_index
+        )
 
-    Lógica
-    ------
-    1. Calcula residual disponível no raio atual do parceiro a partir do candidate_hex.
-    2. Se residual <= partner_capacity: sem oportunidade → None.
-    3. suggested_cap = min(int(residual), 80)
-    4. suggested_radius = menor raio de Config.RADII que cobre suggested_cap
-    5. Se suggested_radius é None: sem oportunidade → None.
-    6. Retorna dict com: suggested_lat, suggested_lon, suggested_cap,
-       suggested_radius, estimated_adv_gain, distance_from_current.
-    """
-    # 1. Residual disponível no raio atual do parceiro a partir do candidate_hex
-    residual = _available_residual(candidate_hex, partner_radius_m, heatmap_index)
+        # gain: soma de demand_residual dos hexes ganhos
+        gain = sum(
+            heatmap_index[h].get("demand_residual", 0.0)
+            for h in hexes_gained
+            if h in heatmap_index
+        )
 
-    # 2. Sem oportunidade se residual não supera o cap atual
-    if residual <= partner_capacity:
-        return None
+        adv_simulated = min(max(partner_capacity - loss + gain, 0), _CAP_MAX)
+        adv_gain = adv_simulated - partner_capacity
 
-    # 3. suggested_cap
-    suggested_cap = min(int(residual), _CAP_MAX)
+        if adv_gain <= 0:
+            continue
 
-    # 4. suggested_radius
-    suggested_radius = _smallest_radius_for_cap(candidate_hex, suggested_cap, heatmap_index)
-    if suggested_radius is None:
-        return None
+        distance_from_current = _haversine_m(partner_lat, partner_lon, c_lat, c_lon)
 
-    # 5. Posição sugerida = centro do candidate_hex
-    try:
-        s_lat, s_lon = h3.cell_to_latlng(candidate_hex)
-    except Exception as exc:
-        logger.warning(f"[Phase 3.5] cell_to_latlng falhou para {candidate_hex}: {exc}")
-        return None
+        candidate_opp = {
+            "suggested_lat":         c_lat,
+            "suggested_lon":         c_lon,
+            "suggested_cap":         int(round(adv_simulated)),
+            "suggested_radius":      radius_m,
+            "estimated_adv_gain":    int(round(adv_gain)),
+            "distance_from_current": round(distance_from_current, 2),
+        }
 
-    # 6. Distância do centroid atual até a posição sugerida
-    distance_from_current = _haversine_m(partner_lat, partner_lon, s_lat, s_lon)
+        # Seleciona: maior adv_gain; empate → menor raio
+        if best is None:
+            best = candidate_opp
+        elif candidate_opp["estimated_adv_gain"] > best["estimated_adv_gain"]:
+            best = candidate_opp
+        elif (
+            candidate_opp["estimated_adv_gain"] == best["estimated_adv_gain"]
+            and candidate_opp["suggested_radius"] < best["suggested_radius"]
+        ):
+            best = candidate_opp
 
-    return {
-        "suggested_lat":         s_lat,
-        "suggested_lon":         s_lon,
-        "suggested_cap":         suggested_cap,
-        "suggested_radius":      suggested_radius,
-        "estimated_adv_gain":    suggested_cap - partner_capacity,
-        "distance_from_current": round(distance_from_current, 2),
-    }
+    return best
 
 
 def _patch_dados_mapa(
@@ -357,20 +360,19 @@ def run_phase3_5(
                 partner_lat=partner.lat,
                 partner_lon=partner.lon,
                 partner_capacity=partner.capacity_s,
-                partner_radius_m=partner.radius_s,
                 candidate_hex=candidate_hex,
                 heatmap_index=heatmap_index,
             )
             if opp is None:
                 continue
-            # 9. Selecionar melhor: max estimated_adv_gain, desempate min distance
+            # 9. Selecionar melhor: max estimated_adv_gain, desempate min raio
             if best is None:
                 best = opp
             elif opp["estimated_adv_gain"] > best["estimated_adv_gain"]:
                 best = opp
             elif (
                 opp["estimated_adv_gain"] == best["estimated_adv_gain"]
-                and opp["distance_from_current"] < best["distance_from_current"]
+                and opp["suggested_radius"] < best["suggested_radius"]
             ):
                 best = opp
 

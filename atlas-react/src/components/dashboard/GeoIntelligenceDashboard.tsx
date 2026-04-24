@@ -10,6 +10,7 @@
  */
 
 import React, { useMemo, useState, useCallback, lazy, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -65,6 +66,7 @@ function exportCSV(rows: TerritoryOutput[], filename = 'territorios.csv') {
 }
 
 const GeoIntelligenceDashboard: React.FC = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<ActiveTab>('geo');
   const [stationInput, setStationInput] = useState('');
   const [loadedStation, setLoadedStation] = useState<string | null>(null);
@@ -151,8 +153,8 @@ const GeoIntelligenceDashboard: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-atlas-darker">
       <div className="flex shrink-0 border-b border-atlas-navy">
-        <TabButton active={activeTab === 'geo'} onClick={() => setActiveTab('geo')}>Geointeligência</TabButton>
-        <TabButton active={activeTab === 'operacional'} onClick={() => setActiveTab('operacional')}>Operacional</TabButton>
+        <TabButton active={activeTab === 'geo'} onClick={() => setActiveTab('geo')}>{t('dashboard.tab_geo')}</TabButton>
+        <TabButton active={activeTab === 'operacional'} onClick={() => setActiveTab('operacional')}>{t('dashboard.tab_operational')}</TabButton>
       </div>
 
       {activeTab === 'operacional' && (
@@ -168,11 +170,11 @@ const GeoIntelligenceDashboard: React.FC = () => {
           <section className="flex gap-2 items-center">
             <input type="text" value={stationInput} onChange={(e) => setStationInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleLoadStation()}
-              placeholder="Código da DS (ex: DSP2)"
+              placeholder={t('dashboard.geo_ds_input_placeholder')}
               className="flex-1 bg-atlas-dark border border-atlas-navy rounded px-3 py-2 text-atlas-light text-sm placeholder-atlas-muted focus:outline-none focus:border-atlas-accent" />
             <button onClick={handleLoadStation} disabled={isLoading || !stationInput.trim()}
               className="px-4 py-2 bg-atlas-accent text-white text-sm font-semibold rounded hover:opacity-90 transition-opacity disabled:opacity-50">
-              {isLoading ? <Spinner size="sm" /> : 'Carregar'}
+              {isLoading ? <Spinner size="sm" /> : t('dashboard.geo_load_button')}
             </button>
           </section>
 
@@ -183,11 +185,11 @@ const GeoIntelligenceDashboard: React.FC = () => {
               <section>
                 <SectionTitle>KPIs — DS {loadedStation}</SectionTitle>
                 <div className="grid grid-cols-2 tablet:grid-cols-5 gap-3">
-                  <KpiCard label="Territórios" value={dsKpis.total} />
-                  <KpiCard label="Alta Oportunidade" value={dsKpis.highOpp} />
-                  <KpiCard label="Gap Médio" value={formatGap(dsKpis.avgGap)} />
-                  <KpiCard label="Potencial Total" value={dsKpis.totalPotential.toFixed(1)} />
-                  <KpiCard label="Cobertura Atual" value={`${dsKpis.coveragePct.toFixed(1)}%`} />
+                  <KpiCard label={t('dashboard.geo_kpi_territories')} value={dsKpis.total} />
+                  <KpiCard label={t('dashboard.geo_kpi_high_opportunity')} value={dsKpis.highOpp} />
+                  <KpiCard label={t('dashboard.geo_kpi_avg_gap')} value={formatGap(dsKpis.avgGap)} />
+                  <KpiCard label={t('dashboard.geo_kpi_total_potential')} value={dsKpis.totalPotential.toFixed(1)} />
+                  <KpiCard label={t('dashboard.geo_kpi_coverage')} value={`${dsKpis.coveragePct.toFixed(1)}%`} />
                 </div>
               </section>
 
@@ -195,27 +197,27 @@ const GeoIntelligenceDashboard: React.FC = () => {
                 <section>
                   <SectionTitle>KPIs — BDM</SectionTitle>
                   <div className="grid grid-cols-2 tablet:grid-cols-4 gap-3">
-                    <KpiCard label="Nº de DSs" value={bdmKpis.nDs} />
-                    <KpiCard label="Potencial Médio" value={bdmKpis.avgPotential} />
-                    <KpiCard label="Alta Oportunidade" value={bdmKpis.totalHighOpp} />
-                    <KpiCard label="Gap Médio Consolidado" value={bdmKpis.avgGap} />
+                    <KpiCard label={t('dashboard.geo_kpi_ds_count')} value={bdmKpis.nDs} />
+                    <KpiCard label={t('dashboard.geo_kpi_avg_potential')} value={bdmKpis.avgPotential} />
+                    <KpiCard label={t('dashboard.geo_kpi_total_high_opp')} value={bdmKpis.totalHighOpp} />
+                    <KpiCard label={t('dashboard.geo_kpi_avg_gap')} value={bdmKpis.avgGap} />
                   </div>
                 </section>
               )}
 
               {Object.keys(regionDist).length > 0 && (
                 <section>
-                  <SectionTitle>Distribuição por Tipo de Região</SectionTitle>
+                  <SectionTitle>{t('dashboard.geo_region_dist_title')}</SectionTitle>
                   <RegionTypeChart distribution={regionDist} />
                 </section>
               )}
 
               <section>
                 <div className="flex items-center justify-between mb-2">
-                  <SectionTitle>Territórios por Gap ({sortedTerritories.length})</SectionTitle>
+                  <SectionTitle>{t('dashboard.geo_top_gap')} ({sortedTerritories.length})</SectionTitle>
                   <button onClick={() => exportCSV(sortedTerritories)}
                     className="text-xs px-3 py-1 bg-atlas-navy border border-atlas-accent text-atlas-accent rounded hover:bg-atlas-accent hover:text-white transition-colors">
-                    Exportar CSV
+                    {t('dashboard.geo_export_csv')}
                   </button>
                 </div>
                 <TerritoryTable rows={sortedTerritories} sortCol={sortCol} sortDir={sortDir}
@@ -225,7 +227,7 @@ const GeoIntelligenceDashboard: React.FC = () => {
               <RankingsSection territories={territories} />
 
               <section>
-                <SectionTitle>Meta de Expansão</SectionTitle>
+                <SectionTitle>{t('dashboard.geo_expansion_title')}</SectionTitle>
                 <ExpansionTargetPanel value={expansionTarget} onChange={setExpansionTarget}
                   recommended={expansionRecommended} accumulatedPotential={accumulatedPotential} />
               </section>
@@ -235,14 +237,14 @@ const GeoIntelligenceDashboard: React.FC = () => {
           {!loadedStation && !isLoading && (
             <div className="flex flex-col items-center justify-center flex-1 text-atlas-muted text-sm gap-2 py-12">
               <span className="text-3xl">🗺️</span>
-              <p>Insira o código de uma DS para carregar os dados de geointeligência.</p>
+              <p>{t('dashboard.geo_no_data')}</p>
             </div>
           )}
 
           {isLoading && (
             <div className="flex flex-col items-center justify-center flex-1 gap-3 py-12 text-atlas-muted">
               <Spinner size="lg" />
-              <span className="text-sm">Carregando dados de geointeligência...</span>
+              <span className="text-sm">{t('dashboard.geo_loading')}</span>
             </div>
           )}
         </div>
@@ -273,15 +275,6 @@ const RegionTypeChart: React.FC<{ distribution: Record<string, number> }> = ({ d
   return <div className="bg-atlas-dark border border-atlas-navy rounded-lg p-4" style={{ height: 220 }}><Pie data={chartData} options={options} /></div>;
 };
 
-const GEO_COLUMNS: { key: keyof TerritoryOutput; label: string }[] = [
-  { key: 'territory_id', label: 'Território' },
-  { key: 'region_type', label: 'Tipo de Região' },
-  { key: 'potential_score', label: 'Potencial' },
-  { key: 'current_partners', label: 'Parceiros' },
-  { key: 'gap', label: 'Gap' },
-  { key: 'model_confidence', label: 'Confiança' },
-];
-
 interface TerritoryTableProps {
   rows: TerritoryOutput[];
   sortCol: SortCol;
@@ -291,7 +284,18 @@ interface TerritoryTableProps {
 }
 
 const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortCol, sortDir, onSort, onSelectTerritory }) => {
-  if (rows.length === 0) return <div className="bg-atlas-dark border border-atlas-navy rounded-lg text-atlas-muted text-center py-6 text-sm">Nenhum território encontrado.</div>;
+  const { t } = useTranslation();
+
+  const GEO_COLUMNS: { key: keyof TerritoryOutput; label: string }[] = [
+    { key: 'territory_id', label: t('dashboard.geo_col_territory') },
+    { key: 'region_type', label: t('dashboard.geo_col_type') },
+    { key: 'potential_score', label: t('dashboard.geo_col_potential') },
+    { key: 'current_partners', label: t('dashboard.geo_col_partners') },
+    { key: 'gap', label: t('dashboard.geo_col_gap') },
+    { key: 'model_confidence', label: t('dashboard.geo_col_confidence') },
+  ];
+
+  if (rows.length === 0) return <div className="bg-atlas-dark border border-atlas-navy rounded-lg text-atlas-muted text-center py-6 text-sm">{t('dashboard.no_data')}</div>;
   return (
     <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
       <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
@@ -331,11 +335,12 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortCol, sortDir,
 };
 
 const RankingsSection: React.FC<{ territories: TerritoryOutput[] }> = ({ territories }) => {
+  const { t } = useTranslation();
   if (territories.length === 0) return null;
   const byPotential = [...territories].sort((a, b) => b.potential_score - a.potential_score).slice(0, 5);
   return (
     <section>
-      <SectionTitle>Ranking de Territórios por Potencial</SectionTitle>
+      <SectionTitle>{t('dashboard.geo_top_territories')}</SectionTitle>
       <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
         {byPotential.map((t, i) => (
           <div key={t.territory_id} className="flex items-center gap-3 px-3 py-2 border-b border-atlas-navy last:border-0 hover:bg-atlas-navy transition-colors">
@@ -360,6 +365,7 @@ interface ExpansionTargetPanelProps {
 }
 
 const ExpansionTargetPanel: React.FC<ExpansionTargetPanelProps> = ({ value, onChange, recommended, accumulatedPotential }) => {
+  const { t } = useTranslation();
   const { text, grid } = chartTheme();
   const barData = {
     labels: recommended.map((t) => t.territory_id),
@@ -369,13 +375,13 @@ const ExpansionTargetPanel: React.FC<ExpansionTargetPanelProps> = ({ value, onCh
   return (
     <div className="bg-atlas-dark border border-atlas-navy rounded-lg p-4 flex flex-col gap-3">
       <div className="flex items-center gap-3">
-        <label className="text-atlas-muted text-sm shrink-0">Meta de expansão:</label>
+        <label className="text-atlas-muted text-sm shrink-0">{t('dashboard.geo_expansion_label')}:</label>
         <input type="range" min={5} max={100} step={5} value={value} onChange={(e) => onChange(Number(e.target.value))} className="flex-1 accent-atlas-accent" />
         <span className="text-atlas-light text-sm font-semibold w-10 text-right shrink-0">{value}%</span>
       </div>
       {recommended.length > 0 ? (
         <>
-          <p className="text-atlas-muted text-xs">{recommended.length} território(s) recomendado(s) — potencial acumulado: <span className="text-atlas-light font-medium">{accumulatedPotential.toFixed(1)}</span></p>
+          <p className="text-atlas-muted text-xs">{recommended.length} {t('dashboard.geo_expansion_territories')} — {t('dashboard.geo_expansion_potential')}: <span className="text-atlas-light font-medium">{accumulatedPotential.toFixed(1)}</span></p>
           <div style={{ height: 180 }}><Bar data={barData} options={barOptions} /></div>
         </>
       ) : (

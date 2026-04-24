@@ -9,6 +9,7 @@ import React, { useMemo, useCallback, useEffect, useRef } from 'react';
 import { CircleMarker, Circle, Popup, Tooltip, useMap } from 'react-leaflet';
 import type { LeafletEventHandlerFnMap } from 'leaflet';
 import L from 'leaflet';
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../../store';
 import { buildColorMaps, getMarkerStyle } from '../../lib/colorUtils';
 import { getPartnerPopupHtml } from '../../lib/popupUtils';
@@ -48,19 +49,29 @@ function OpenPartnerPopupListener({
 }
 
 const PartnerMarkers = React.memo(function PartnerMarkers() {
+  // useTranslation causes re-render on language change, regenerating popup HTML
+  const { i18n } = useTranslation();
   const data = useStore((s) => s.currentFilteredData);
   const styleConfig = useStore((s) => s.styleConfig);
   const allMarkersData = useStore((s) => s.allMarkersData);
   const routeOriginActive = useStore((s) => s.routeOriginActive);
   const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
   const whatIfModeActive = useStore((s) => s.whatIfModeActive);
+  const whatIfPartnerId = useStore((s) => s.whatIfPartnerId);
 
-  // No modo what-if mostra apenas parceiros ativos (os demais ficam ocultos
-  // para não poluir o mapa com os marcadores arrastáveis do PartnerWhatIfLayer)
-  const visibleData = useMemo(
-    () => whatIfModeActive ? data.filter((p) => p.status === 'Active') : data,
-    [data, whatIfModeActive],
-  );
+  const visibleData = useMemo(() => {
+    // When a specific partner is being simulated, hide ALL partners from the
+    // regular marker layer — PartnerWhatIfLayer renders the active one with
+    // the green/amber comparison visual
+    if (whatIfModeActive && whatIfPartnerId) {
+      return [];
+    }
+    // In what-if mode (before any drag), show only Active partners
+    if (whatIfModeActive) {
+      return data.filter((p) => p.status === 'Active');
+    }
+    return data;
+  }, [data, whatIfModeActive, whatIfPartnerId]);
 
   const rescuePopup = useRescuePopup();
 
@@ -117,10 +128,11 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
       {rescuePopup}
       {!prospectActive && visibleData.filter(hasValidCoords).map((partner) => {
         const style = getMarkerStyle(partner, primary, secondary, colorMaps);
+        // i18n.language in the key ensures popup HTML is regenerated on language change
         const popupHtml = getPartnerPopupHtml(partner, routeOriginActive);
 
         return (
-          <React.Fragment key={partner.salesforce_id}>
+          <React.Fragment key={`${partner.salesforce_id}-${i18n.language}`}>
             <CircleMarker
               center={[partner.lat, partner.lon]}
               radius={7}

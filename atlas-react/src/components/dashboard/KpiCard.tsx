@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface KpiCardProps {
   label: string;
@@ -17,6 +18,7 @@ const TrendIcon: React.FC<{ trend: 'up' | 'down' | 'neutral' }> = ({ trend }) =>
 
 const KpiCard: React.FC<KpiCardProps> = React.memo(
   ({ label, value, unit, trend, goal, className = '' }) => {
+    const { t } = useTranslation();
     const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
     const isNA = value === 'N/A' || isNaN(numericValue);
 
@@ -42,7 +44,7 @@ const KpiCard: React.FC<KpiCardProps> = React.memo(
           )}
         </div>
         {goal !== undefined && !isNA && (
-          <span className="text-atlas-muted text-xs">Meta: {goal}{unit ?? ''}</span>
+          <span className="text-atlas-muted text-xs">{t('dashboard.kpi_goal')} {goal}{unit ?? ''}</span>
         )}
       </div>
     );

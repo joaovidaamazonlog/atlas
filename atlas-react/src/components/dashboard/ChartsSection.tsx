@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -36,6 +37,7 @@ interface ChartsSectionProps {
 }
 
 const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
+  const { t } = useTranslation();
   const textColor = getCSSVar('--color-light') || '#ecf0f1';
   const gridColor = getCSSVar('--color-dark') || '#1e2a38';
   const bgColor = getCSSVar('--color-darker') || '#16202c';
@@ -71,7 +73,7 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
       labels: sorted.map(([s]) => s),
       datasets: [
         {
-          label: 'Parceiros',
+          label: t('dashboard.chart_partners_label'),
           data: sorted.map(([, c]) => c),
           backgroundColor: '#00a8e1cc',
           borderColor: '#00a8e1',
@@ -91,7 +93,7 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
       },
       title: {
         display: true,
-        text: 'Distribuição por Status',
+        text: t('dashboard.chart_status_title'),
         color: textColor,
         font: { size: 14 },
       },
@@ -105,7 +107,7 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({ data }) => {
       legend: { display: false },
       title: {
         display: true,
-        text: 'Parceiros por Delivery Station',
+        text: t('dashboard.chart_station_title'),
         color: textColor,
         font: { size: 14 },
       },

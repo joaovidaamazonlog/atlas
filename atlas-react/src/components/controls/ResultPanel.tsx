@@ -17,6 +17,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { ProspectCompany } from '../../store/types';
 import { getLeadKey } from '../../lib/kmeansUtils';
@@ -56,8 +57,10 @@ function CompanyCard({
   isPinned,
   onTogglePin,
 }: CompanyCardProps) {
+  const { t } = useTranslation();
   const hasCoords = company.lat != null && company.lon != null;
-  const hasPhone = company.telefone_1 != null;
+  const phone = company.telefone_1 ?? company.telefone_2 ?? company.telefone ?? null;
+  const hasPhone = phone != null;
   const hasGoogleMaps =
     company.google_maps_link != null && company.google_maps_link !== 'N/A';
 
@@ -67,11 +70,11 @@ function CompanyCard({
     : null;
 
   // Formata telefone para wa.me (remove tudo que não é dígito)
-  const waPhone = company.telefone_1?.replace(/\D/g, '');
+  const waPhone = phone?.replace(/\D/g, '');
 
   return (
     <div
-      className={`rounded-lg bg-white/5 p-3 flex flex-col gap-1 transition-opacity ${
+      className={`rounded-lg bg-atlas-darker p-3 flex flex-col gap-1 transition-opacity ${
         contactada ? 'opacity-50' : 'opacity-100'
       }`}
     >
@@ -86,8 +89,8 @@ function CompanyCard({
           <button
             type="button"
             onClick={onTogglePin}
-            aria-label={isPinned ? 'Remover alfinete' : 'Fixar no mapa'}
-            title={isPinned ? 'Remover alfinete' : 'Fixar no mapa'}
+            aria-label={isPinned ? t('result_panel.pin_remove') : t('result_panel.pin_add')}
+            title={isPinned ? t('result_panel.pin_remove') : t('result_panel.pin_add')}
             className={`shrink-0 text-lg leading-none transition-opacity hover:opacity-100 ${
               isPinned ? 'opacity-100' : 'opacity-30'
             }`}
@@ -111,7 +114,7 @@ function CompanyCard({
       {/* Telefone + WhatsApp */}
       {hasPhone && (
         <div className="flex items-center gap-3 mt-0.5">
-          <span className="text-xs text-atlas-light">📞 {company.telefone_1}</span>
+          <span className="text-xs text-atlas-light">📞 {phone}</span>
           {waPhone && (
             <a
               href={`https://wa.me/55${waPhone}`}
@@ -123,7 +126,7 @@ function CompanyCard({
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.858L.057 23.5l5.797-1.52A11.93 11.93 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.16-1.426l-.37-.22-3.44.902.918-3.352-.24-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
               </svg>
-              WhatsApp
+              {t('common.whatsapp')}
             </a>
           )}
         </div>
@@ -137,7 +140,7 @@ function CompanyCard({
           rel="noopener noreferrer"
           className="text-xs text-blue-400 hover:text-blue-300 underline transition-colors"
         >
-          Ver no Google Maps
+          {t('result_panel.google_maps_link')}
         </a>
       )}
 
@@ -147,11 +150,11 @@ function CompanyCard({
         onClick={onToggleContactada}
         className={`mt-1 w-full py-1.5 px-3 rounded text-xs font-medium transition-colors ${
           contactada
-            ? 'bg-green-600/30 text-green-400 border border-green-500/40 hover:bg-green-600/20'
-            : 'bg-white/5 text-atlas-muted border border-white/10 hover:bg-white/10 hover:text-atlas-light'
+            ? 'bg-green-500 text-white hover:bg-green-400'
+            : 'bg-atlas-dark text-atlas-muted border border-[var(--border-color)] hover:border-atlas-accent hover:text-atlas-accent'
         }`}
       >
-        {contactada ? '✓ Contactada' : 'Marcar como contactada'}
+        {contactada ? t('result_panel.marked_contacted') : t('result_panel.mark_contacted')}
       </button>
     </div>
   );
@@ -178,6 +181,7 @@ function PanelContent({
   onToggleContactada,
   isMobile,
 }: PanelContentProps) {
+  const { t } = useTranslation();
   const { position, isTracking, error: geoError, startTracking, stopTracking } =
     useGeolocation();
 
@@ -199,14 +203,14 @@ function PanelContent({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-start justify-between px-4 py-3 shrink-0 border-b border-white/10">
+      <div className="flex items-start justify-between px-4 py-3 shrink-0 border-b border-[var(--border-color)]">
         <div className="flex flex-col gap-1 flex-1 min-w-0">
           <span className="font-semibold text-atlas-light text-sm truncate">
             {selectedStation} — {selectedBucket}
           </span>
           {/* Total + fontes */}
           <div className="flex items-center gap-2 text-xs flex-wrap">
-            <span className="text-atlas-light font-medium">{companies.length} empresa{companies.length !== 1 ? 's' : ''}</span>
+            <span className="text-atlas-light font-medium">{t('result_panel.companies_other', { count: companies.length })}</span>
             {mapsCount > 0 && (
               <span className="text-atlas-muted">🗺️ {mapsCount} Maps</span>
             )}
@@ -217,13 +221,13 @@ function PanelContent({
           {/* Contactadas */}
           {contactadaCount > 0 && (
             <span className="text-xs text-green-400">
-              ✓ {contactadaCount} contactada{contactadaCount !== 1 ? 's' : ''}
+              {t('result_panel.contacted_other', { count: contactadaCount })}
             </span>
           )}
         </div>
         <button
           onClick={onClose}
-          aria-label="Fechar painel"
+          aria-label={t('common.close')}
           className="ml-2 shrink-0 text-atlas-muted hover:text-atlas-light transition-colors"
         >
           <svg
@@ -243,14 +247,14 @@ function PanelContent({
 
       {/* Mobile: botão "Minha localização" */}
       {isMobile && (
-        <div className="px-4 py-2 shrink-0 border-b border-white/10">
+        <div className="px-4 py-2 shrink-0 border-b border-[var(--border-color)]">
           <button
             type="button"
             onClick={isTracking ? stopTracking : startTracking}
             className={`w-full py-2 px-3 rounded text-xs font-medium flex items-center justify-center gap-2 transition-colors ${
               isTracking
-                ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40 hover:bg-blue-600/20'
-                : 'bg-white/5 text-atlas-muted border border-white/10 hover:bg-white/10 hover:text-atlas-light'
+                ? 'bg-blue-500 text-white hover:bg-blue-400'
+                : 'bg-atlas-dark text-atlas-muted border border-[var(--border-color)] hover:border-atlas-accent hover:text-atlas-accent'
             }`}
           >
             <svg
@@ -261,7 +265,7 @@ function PanelContent({
             >
               <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0013 3.06V1h-2v2.06A8.994 8.994 0 003.06 11H1v2h2.06A8.994 8.994 0 0011 20.94V23h2v-2.06A8.994 8.994 0 0020.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
             </svg>
-            {isTracking ? 'Parar rastreamento' : 'Minha localização'}
+            {isTracking ? t('result_panel.stop_tracking') : t('result_panel.my_location')}
           </button>
           {position && (
             <p className="text-xs text-atlas-muted mt-1 text-center">
@@ -278,7 +282,7 @@ function PanelContent({
       {companies.length === 0 ? (
         <div className="flex-1 flex items-center justify-center p-4">
           <p className="text-sm text-atlas-muted text-center">
-            Nenhuma empresa encontrada para esta carteira.
+            {t('result_panel.no_companies')}
           </p>
         </div>
       ) : (

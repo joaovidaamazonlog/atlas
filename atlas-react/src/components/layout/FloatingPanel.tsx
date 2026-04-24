@@ -34,7 +34,7 @@ export const FloatingPanel: React.FC<FloatingPanelProps> = ({
       {/* Header */}
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex items-center justify-between px-4 py-3 w-full text-left hover:bg-white/5 transition-colors duration-150 shrink-0"
+        className="flex items-center justify-between px-4 py-3 w-full text-left hover:bg-atlas-dark transition-colors duration-150 shrink-0"
         aria-expanded={!collapsed}
         aria-controls="floating-panel-content"
       >

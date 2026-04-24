@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,23 +34,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 // ---------------------------------------------------------------------------
 
 type SortState = { column: string | null; direction: 'asc' | 'desc' };
-
-// ---------------------------------------------------------------------------
-// Territory table columns
-// ---------------------------------------------------------------------------
-
-const TERRITORY_COLUMNS: { key: string; label: string }[] = [
-  { key: 'id', label: 'Território' },
-  { key: 'baseCode', label: 'Base' },
-  { key: 'ctl', label: 'CTL' },
-  { key: 'dailyDemand', label: 'Demanda/dia' },
-  { key: 'totalSlots', label: 'Vagas' },
-  { key: 'openSlots', label: 'Em aberto' },
-  { key: 'active', label: 'Ativos' },
-  { key: 'onboarding', label: 'Onboarding' },
-  { key: 'attainment', label: 'Attainment' },
-  { key: 'accuracy', label: 'Acuracidade' },
-];
 
 // ---------------------------------------------------------------------------
 // Chart options
@@ -97,6 +81,7 @@ function getBarOptions() {
 // ---------------------------------------------------------------------------
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation();
   const [reportData, setReportData] = useState<ReportData | null>(null);
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [reportError, setReportError] = useState<string | null>(null);
@@ -198,7 +183,7 @@ const Dashboard: React.FC = () => {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[300px] gap-3 text-atlas-muted">
         <Spinner size="lg" />
-        <span className="text-sm">Carregando relatório executivo...</span>
+        <span className="text-sm">{t('dashboard.loading')}</span>
       </div>
     );
   }
@@ -216,7 +201,7 @@ const Dashboard: React.FC = () => {
           onClick={handleRetry}
           className="mt-2 px-4 py-2 bg-atlas-accent text-white text-sm font-semibold rounded hover:opacity-90 transition-opacity"
         >
-          Tentar novamente
+          {t('dashboard.retry')}
         </button>
       </div>
     );
@@ -231,7 +216,7 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       {reportData?.generatedAt && (
         <p className="text-atlas-muted text-xs">
-          Relatório gerado em: <span className="text-atlas-light">{reportData.generatedAt}</span>
+          {t('dashboard.report_generated_at')} <span className="text-atlas-light">{reportData.generatedAt}</span>
         </p>
       )}
 
@@ -245,20 +230,20 @@ const Dashboard: React.FC = () => {
 
       {/* KPI Cards */}
       <section>
-        <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">Indicadores</h2>
+        <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">{t('dashboard.section_indicators')}</h2>
         <KpiSummaryGrid kpis={kpis} />
       </section>
 
       {/* Charts */}
       <section>
-        <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">Gráficos</h2>
+        <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">{t('dashboard.section_charts')}</h2>
         <DashboardCharts chartData={chartData} />
       </section>
 
       {/* Territory Table */}
       <section>
         <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">
-          Territórios ({sortedTerritories.length})
+          {t('dashboard.section_territories')} ({sortedTerritories.length})
         </h2>
         <TerritoryTable
           rows={sortedTerritories}
@@ -282,22 +267,23 @@ interface KpiSummaryGridProps {
 }
 
 const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis }) => {
+  const { t } = useTranslation();
   const cards = [
-    { label: 'Bases', value: kpis.totalBases },
-    { label: 'Territórios', value: kpis.totalTerritories },
+    { label: t('dashboard.kpi_bases'), value: kpis.totalBases },
+    { label: t('dashboard.kpi_territories'), value: kpis.totalTerritories },
     {
-      label: 'Demanda/dia',
-      value: kpis.totalDailyDemand.toLocaleString('pt-BR', { maximumFractionDigits: 0 }),
+      label: t('dashboard.kpi_daily_demand'),
+      value: kpis.totalDailyDemand.toLocaleString(undefined, { maximumFractionDigits: 0 }),
     },
-    { label: 'Vagas Ideais', value: kpis.totalIdealSlots },
-    { label: 'Vagas em Aberto', value: kpis.totalOpenSlots },
-    { label: 'Parceiros Ativos', value: kpis.totalActivePartners },
+    { label: t('dashboard.kpi_ideal_slots'), value: kpis.totalIdealSlots },
+    { label: t('dashboard.kpi_open_slots'), value: kpis.totalOpenSlots },
+    { label: t('dashboard.kpi_active_partners_summary'), value: kpis.totalActivePartners },
     {
-      label: 'Attainment Médio',
+      label: t('dashboard.kpi_avg_attainment'),
       value: `${(kpis.avgAttainment * 100).toFixed(1)}%`,
     },
     {
-      label: 'Cobertura Média',
+      label: t('dashboard.kpi_avg_coverage'),
       value: `${(kpis.avgCoverage * 100).toFixed(1)}%`,
     },
   ];
@@ -320,10 +306,11 @@ interface DashboardChartsProps {
 }
 
 const DashboardCharts: React.FC<DashboardChartsProps> = ({ chartData }) => {
+  const { t } = useTranslation();
   if (chartData.attainmentByBase.labels.length === 0) {
     return (
       <div className="text-atlas-muted text-center py-6 text-sm">
-        Sem dados para exibir gráficos.
+        {t('dashboard.no_chart_data')}
       </div>
     );
   }
@@ -332,7 +319,7 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ chartData }) => {
     labels: chartData.attainmentByBase.labels,
     datasets: [
       {
-        label: 'Attainment (%)',
+        label: t('dashboard.chart_attainment_label'),
         data: chartData.attainmentByBase.data,
         backgroundColor: '#00a8e1cc',
         borderColor: '#00a8e1',
@@ -354,7 +341,7 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ chartData }) => {
     plugins: {
       ...base.plugins,
       legend: { display: false },
-      title: { ...base.plugins.title, display: true, text: 'Attainment por Base (%)' },
+      title: { ...base.plugins.title, display: true, text: t('dashboard.chart_attainment_by_base') },
     },
   };
 
@@ -366,7 +353,7 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ chartData }) => {
         display: true,
         labels: { color: text, boxWidth: 12, padding: 8 },
       },
-      title: { ...base.plugins.title, display: true, text: 'Composição de Parceiros por Base' },
+      title: { ...base.plugins.title, display: true, text: t('dashboard.chart_partners_by_base') },
     },
   };
 
@@ -408,10 +395,25 @@ const STATUS_CLASS_MAP: Record<string, string> = {
 };
 
 const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort }) => {
+  const { t } = useTranslation();
+
+  const TERRITORY_COLUMNS: { key: string; label: string }[] = [
+    { key: 'id', label: t('dashboard.col_territory') },
+    { key: 'baseCode', label: t('dashboard.col_base') },
+    { key: 'ctl', label: t('dashboard.col_ctl') },
+    { key: 'dailyDemand', label: t('dashboard.col_daily_demand') },
+    { key: 'totalSlots', label: t('dashboard.col_slots') },
+    { key: 'openSlots', label: t('dashboard.col_open_slots') },
+    { key: 'active', label: t('dashboard.col_active') },
+    { key: 'onboarding', label: t('dashboard.col_onboarding') },
+    { key: 'attainment', label: t('dashboard.col_attainment') },
+    { key: 'accuracy', label: t('dashboard.col_accuracy') },
+  ];
+
   if (rows.length === 0) {
     return (
       <div className="bg-atlas-dark border border-atlas-navy rounded-lg text-atlas-muted text-center py-6 text-sm">
-        Nenhum território encontrado.
+        {t('dashboard.no_territory_found')}
       </div>
     );
   }

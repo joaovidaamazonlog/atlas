@@ -74,6 +74,7 @@ const CIRCLE_STYLE: PathOptions = {
 
 export default function RecruitableAreaLayer() {
   const { params, result } = useStore((s) => s.recruitableAnalysis);
+  const whatIfPartnerId = useStore((s) => s.whatIfPartnerId);
   const { centerLat, centerLon, radiusMeters } = params;
 
   const hasCenter = centerLat !== '' && centerLon !== '';
@@ -95,10 +96,14 @@ export default function RecruitableAreaLayer() {
     ? `cells-${result.totalDemand}-${result.residualDemand}-${result.selectedCells.length}`
     : 'no-result';
 
+  // When a what-if simulation is active, hide the recruitable circle —
+  // PartnerWhatIfLayer renders the green/amber circles instead
+  const showCircle = validCenter && !whatIfPartnerId;
+
   return (
     <>
-      {/* Círculo de raio — pane abaixo dos hexágonos */}
-      {validCenter && (
+      {/* Círculo de raio — pane abaixo dos hexágonos, oculto durante what-if */}
+      {showCircle && (
         <Circle
           center={[centerLatNum!, centerLonNum!]}
           radius={radiusMeters}

@@ -13,11 +13,16 @@
  *   - If <= 300 m → compute hex-diff (hexesLost / hexesGained), derive loss/gain from
  *     partner.hex_coverage and heatmap demand_residual, dispatch `atlas:whatif-result`
  *
+ * Visual after drag:
+ *   - Green circle = original position + radius
+ *   - Amber circle = simulated position + radius (dashed)
+ *   - All other partners hidden from PartnerMarkers
+ *
  * Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8
  */
 
 import { useRef, useCallback, useMemo } from 'react';
-import { Marker, Circle, CircleMarker } from 'react-leaflet';
+import { Circle, CircleMarker, Tooltip, Marker } from 'react-leaflet';
 import * as turf from '@turf/turf';
 import L from 'leaflet';
 import { useStore } from '../../store';
@@ -29,6 +34,8 @@ import type { Partner } from '../../store/types';
 
 const GUARDRAIL_RADIUS = 300; // metres
 const INDIGO_COLOR = '#6366F1';
+const ACTIVE_COLOR = '#22C55E';
+const AMBER_COLOR  = '#F59E0B';
 export const MAX_CAP = 80;
 
 // ---------------------------------------------------------------------------
@@ -98,10 +105,30 @@ interface WhatIfMarkerProps {
   partner: Partner & { lat: number; lon: number };
   heatmapFeatures: GeoJSON.Feature[];
   heatmapIndex: Map<string, GeoJSON.Feature>;
+  isActive: boolean; // true = this partner is the one being simulated
+  anySimulated: boolean; // true = some partner has already been dragged
+  onDragStart: (id: string) => void;
+  simulatedPos: [number, number] | null;
+  simulatedRadius: number | null;
+  onSimulatedPos: (id: string, pos: [number, number], radius: number) => void;
 }
 
-function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerProps) {
+function WhatIfMarker({
+  partner,
+  heatmapFeatures,
+  heatmapIndex,
+  isActive,
+  anySimulated,
+  onDragStart,
+  simulatedPos,
+  simulatedRadius,
+  onSimulatedPos,
+}: WhatIfMarkerProps) {
   const markerRef = useRef<L.Marker | null>(null);
+
+  const handleDragStart = useCallback(() => {
+    onDragStart(partner.salesforce_id);
+  }, [partner.salesforce_id, onDragStart]);
 
   const handleDragEnd = useCallback(() => {
     const marker = markerRef.current;
@@ -114,7 +141,6 @@ function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerPr
     const dist = haversineDistance(origLat, origLon, lat, lng);
 
     if (dist > GUARDRAIL_RADIUS) {
-      // Snap back to original position
       marker.setLatLng([origLat, origLon]);
       document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
@@ -124,22 +150,18 @@ function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerPr
       return;
     }
 
-    // Usa o raio configurado no painel de análise (params.radiusMeters)
-    const { radiusMeters } = useStore.getState().recruitableAnalysis.params;
+    const { radiusMeters: currentRadius } = useStore.getState().recruitableAnalysis.params;
 
-    // Compute hex sets for original and simulated positions
-    const hexesOriginal = getHexesWithinRadius(heatmapFeatures, origLat, origLon, radiusMeters);
-    const hexesSimulated = getHexesWithinRadius(heatmapFeatures, lat, lng, radiusMeters);
+    const hexesOriginal = getHexesWithinRadius(heatmapFeatures, origLat, origLon, currentRadius);
+    const hexesSimulated = getHexesWithinRadius(heatmapFeatures, lat, lng, currentRadius);
 
-    const hexesLost = new Set([...hexesOriginal].filter(h => !hexesSimulated.has(h)));
-    const hexesGained = new Set([...hexesSimulated].filter(h => !hexesOriginal.has(h)));
+    const hexesLost    = new Set([...hexesOriginal].filter(h => !hexesSimulated.has(h)));
+    const hexesGained  = new Set([...hexesSimulated].filter(h => !hexesOriginal.has(h)));
 
-    // Build hex_coverage lookup from partner data
     const hexCoverageMap = new Map<string, number>(
       (partner.hex_coverage ?? []).map(e => [e.hex_id, e.packages_allocated])
     );
 
-    // Guard: if hex_coverage is absent/empty AND hexes are lost → warning, no result
     if ((!partner.hex_coverage || partner.hex_coverage.length === 0) && hexesLost.size > 0) {
       document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
@@ -158,6 +180,8 @@ function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerPr
     const advSimulated = computeAdvSimulated(partner.capacity, loss, gain);
     const advGain = advSimulated - partner.capacity;
 
+    onSimulatedPos(partner.salesforce_id, [lat, lng], currentRadius);
+
     document.dispatchEvent(
       new CustomEvent('atlas:whatif-result', {
         detail: {
@@ -165,46 +189,105 @@ function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerPr
           simulatedLat: lat,
           simulatedLon: lng,
           advSimulated,
-          simulatedRadius: radiusMeters,
+          simulatedRadius: currentRadius,
           advGain,
           originalCap: partner.capacity,
         },
       }),
     );
-  }, [partner, heatmapFeatures, heatmapIndex]);
+  }, [partner, heatmapFeatures, heatmapIndex, onSimulatedPos]);
 
+  const origPos: [number, number] = [partner.lat, partner.lon];
+  const simPos = simulatedPos ?? origPos;
+  const hasMoved = simulatedPos !== null &&
+    (simulatedPos[0] !== origPos[0] || simulatedPos[1] !== origPos[1]);
+
+  // Another partner is being simulated — hide this one entirely
+  if (!isActive && anySimulated) return null;
+
+  // No simulation yet — show guardrail + draggable marker for all partners
+  if (!isActive) {
+    return (
+      <>
+        <CircleMarker
+          center={origPos}
+          radius={7}
+          pane="markersPane"
+          pathOptions={{ color: INDIGO_COLOR, fillColor: INDIGO_COLOR, weight: 2, fillOpacity: 0.25 }}
+        />
+        <Marker
+          position={origPos}
+          draggable
+          ref={markerRef}
+          eventHandlers={{ dragstart: handleDragStart, dragend: handleDragEnd }}
+        />
+        <Circle
+          center={origPos}
+          radius={GUARDRAIL_RADIUS}
+          pathOptions={{ color: INDIGO_COLOR, fillOpacity: 0.04, weight: 2, dashArray: '6 4', interactive: false }}
+        />
+      </>
+    );
+  }
+
+  // This partner is active — show full comparison visual
   return (
     <>
-      {/* Marcador original fixo — posição de referência */}
+      {/* ── Original position — green, using partner's real radius ── */}
       <CircleMarker
-        center={[partner.lat, partner.lon]}
-        radius={7}
+        center={origPos}
+        radius={10}
         pane="markersPane"
-        pathOptions={{
-          color: INDIGO_COLOR,
-          fillColor: INDIGO_COLOR,
-          weight: 2,
-          fillOpacity: 0.25,
-        }}
+        pathOptions={{ color: ACTIVE_COLOR, fillColor: ACTIVE_COLOR, fillOpacity: 0.85, weight: 2 }}
+      >
+        <Tooltip direction="top" permanent={false}>
+          {partner.name} — atual (cap {partner.capacity}, raio {partner.radius} m)
+        </Tooltip>
+      </CircleMarker>
+      <Circle
+        center={origPos}
+        radius={partner.radius}
+        pathOptions={{ color: ACTIVE_COLOR, fillColor: ACTIVE_COLOR, fillOpacity: 0.06, weight: 2 }}
       />
-      {/* Marcador arrastável — posição simulada */}
+
+      {/* ── Simulated position — amber, using analysis radius ── */}
+      {hasMoved && (
+        <>
+          <CircleMarker
+            center={simPos}
+            radius={10}
+            pane="markersPane"
+            pathOptions={{ color: AMBER_COLOR, fillColor: AMBER_COLOR, fillOpacity: 0.85, weight: 3 }}
+          >
+            <Tooltip direction="top" permanent={false}>
+              {partner.name} — simulado (raio {simulatedRadius} m)
+            </Tooltip>
+          </CircleMarker>
+          <Circle
+            center={simPos}
+            radius={simulatedRadius ?? partner.radius}
+            pathOptions={{ color: AMBER_COLOR, fillColor: AMBER_COLOR, fillOpacity: 0.06, weight: 2, dashArray: '6 4' }}
+          />
+        </>
+      )}
+
+      {/* ── Draggable marker (hidden after drag, always draggable for re-simulation) ── */}
       <Marker
-        position={[partner.lat, partner.lon]}
+        position={origPos}
         draggable
         ref={markerRef}
-        eventHandlers={{ dragend: handleDragEnd }}
+        eventHandlers={{ dragstart: handleDragStart, dragend: handleDragEnd }}
+        icon={hasMoved
+          ? L.divIcon({ className: '', iconSize: [0, 0], iconAnchor: [0, 0] })
+          : new L.Icon.Default()
+        }
       />
-      {/* 300 m guardrail circle at original centroid */}
+
+      {/* ── 300 m guardrail ── */}
       <Circle
-        center={[partner.lat, partner.lon]}
+        center={origPos}
         radius={GUARDRAIL_RADIUS}
-        pathOptions={{
-          color: INDIGO_COLOR,
-          fillOpacity: 0.04,
-          weight: 2,
-          dashArray: '6 4',
-          interactive: false,
-        }}
+        pathOptions={{ color: INDIGO_COLOR, fillOpacity: 0.04, weight: 1.5, dashArray: '6 4', interactive: false }}
       />
     </>
   );
@@ -215,9 +298,13 @@ function WhatIfMarker({ partner, heatmapFeatures, heatmapIndex }: WhatIfMarkerPr
 // ---------------------------------------------------------------------------
 
 export default function PartnerWhatIfLayer() {
-  const whatIfModeActive = useStore((s) => s.whatIfModeActive);
-  const currentFilteredData = useStore((s) => s.currentFilteredData);
-  const heatmapData = useStore((s) => s.heatmapData);
+  const whatIfModeActive      = useStore((s) => s.whatIfModeActive);
+  const whatIfPartnerId       = useStore((s) => s.whatIfPartnerId);
+  const setWhatIfPartnerId    = useStore((s) => s.setWhatIfPartnerId);
+  const whatIfSimulatedData   = useStore((s) => s.whatIfSimulatedData);
+  const setWhatIfSimulatedData = useStore((s) => s.setWhatIfSimulatedData);
+  const currentFilteredData   = useStore((s) => s.currentFilteredData);
+  const heatmapData           = useStore((s) => s.heatmapData);
 
   const heatmapFeatures: GeoJSON.Feature[] = heatmapData?.features ?? [];
 
@@ -230,28 +317,47 @@ export default function PartnerWhatIfLayer() {
     [heatmapFeatures]
   );
 
+  const handleDragStart = useCallback((id: string) => {
+    setWhatIfPartnerId(id);
+    setWhatIfSimulatedData(null); // clear previous simulation on new drag
+  }, [setWhatIfPartnerId, setWhatIfSimulatedData]);
+
+  const handleSimulatedPos = useCallback((id: string, pos: [number, number], radius: number) => {
+    setWhatIfSimulatedData({ id, pos, radius });
+  }, [setWhatIfSimulatedData]);
+
   if (!whatIfModeActive) return null;
 
-  // Respeita o filtro ativo (ex: Delivery Station) e mostra só os ativos
+  const anySimulated = whatIfPartnerId !== null;
+
   const activePartners = currentFilteredData.filter(
     (p): p is Partner & { lat: number; lon: number } =>
       p.status === 'Active' &&
-      p.lat !== null &&
-      p.lat !== 0 &&
-      p.lon !== null &&
-      p.lon !== 0,
+      p.lat !== null && p.lat !== 0 &&
+      p.lon !== null && p.lon !== 0,
   );
 
   return (
     <>
-      {activePartners.map((partner) => (
-        <WhatIfMarker
-          key={partner.salesforce_id}
-          partner={partner}
-          heatmapFeatures={heatmapFeatures}
-          heatmapIndex={heatmapIndex}
-        />
-      ))}
+      {activePartners.map((partner) => {
+        const isActive = whatIfPartnerId === partner.salesforce_id;
+        const simPos = (whatIfSimulatedData?.id === partner.salesforce_id) ? whatIfSimulatedData.pos : null;
+        const simRadius = (whatIfSimulatedData?.id === partner.salesforce_id) ? whatIfSimulatedData.radius : null;
+        return (
+          <WhatIfMarker
+            key={partner.salesforce_id}
+            partner={partner}
+            heatmapFeatures={heatmapFeatures}
+            heatmapIndex={heatmapIndex}
+            isActive={isActive}
+            anySimulated={anySimulated}
+            onDragStart={handleDragStart}
+            simulatedPos={simPos}
+            simulatedRadius={simRadius}
+            onSimulatedPos={handleSimulatedPos}
+          />
+        );
+      })}
     </>
   );
 }

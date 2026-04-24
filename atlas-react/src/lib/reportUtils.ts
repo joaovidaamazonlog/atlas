@@ -5,6 +5,8 @@
  * No side effects, no DOM access, no fetch — only data transformations.
  */
 
+import i18n from '../i18n';
+
 // ---------------------------------------------------------------------------
 // Interfaces
 // ---------------------------------------------------------------------------
@@ -418,27 +420,27 @@ export function getChartDataForBase(filteredBases: BaseData[], selectedBase: str
     labels: partnerLabels,
     datasets: [
       {
-        label: 'Ativos',
+        label: i18n.t('dashboard.legend_active'),
         data: filteredBases.map(b => (b.partners && b.partners.active) || 0),
         backgroundColor: '#27ae60',
       },
       {
-        label: 'Onboarding',
+        label: i18n.t('dashboard.legend_onboarding'),
         data: filteredBases.map(b => (b.partners && b.partners.onboarding) || 0),
         backgroundColor: '#f39c12',
       },
       {
-        label: 'BG',
+        label: i18n.t('dashboard.legend_bg'),
         data: filteredBases.map(b => (b.partners && b.partners.bgChecks) || 0),
         backgroundColor: '#e67e22',
       },
       {
-        label: 'Prospects',
+        label: i18n.t('dashboard.legend_prospects'),
         data: filteredBases.map(b => (b.partners && b.partners.prospects) || 0),
         backgroundColor: '#9b59b6',
       },
       {
-        label: 'Inativos',
+        label: i18n.t('dashboard.legend_inactive'),
         data: filteredBases.map(b => (b.partners && b.partners.inactive) || 0),
         backgroundColor: '#e74c3c',
       },

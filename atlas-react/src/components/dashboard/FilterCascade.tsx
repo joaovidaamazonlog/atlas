@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ReportData, DashboardFilters } from '../../lib/reportUtils';
 
 interface FilterCascadeProps {
@@ -18,6 +19,7 @@ const FilterCascade: React.FC<FilterCascadeProps> = ({
   onFilterChange,
   isLoading = false,
 }) => {
+  const { t } = useTranslation();
   const bases = reportData?.bases ?? [];
 
   // Available BDMs: all BDMs from reportData
@@ -66,11 +68,11 @@ const FilterCascade: React.FC<FilterCascadeProps> = ({
     'bg-atlas-darker border border-atlas-navy text-atlas-light text-sm rounded px-2 py-1 focus:outline-none focus:border-atlas-accent disabled:opacity-50 disabled:cursor-not-allowed';
 
   const filterDefs = [
-    { label: 'BDM', value: filters.bdm, options: bdmOptions, onChange: handleBdmChange },
-    { label: 'Base', value: filters.base, options: baseOptions, onChange: handleBaseChange },
-    { label: 'CTL', value: filters.ctl, options: ctlOptions, onChange: handleCtlChange },
+    { label: t('dashboard.filter_bdm'), value: filters.bdm, options: bdmOptions, onChange: handleBdmChange },
+    { label: t('dashboard.filter_base'), value: filters.base, options: baseOptions, onChange: handleBaseChange },
+    { label: t('dashboard.filter_ctl'), value: filters.ctl, options: ctlOptions, onChange: handleCtlChange },
     {
-      label: 'Território',
+      label: t('dashboard.filter_territory'),
       value: filters.territory,
       options: territoryOptions,
       onChange: handleTerritoryChange,
@@ -88,7 +90,7 @@ const FilterCascade: React.FC<FilterCascadeProps> = ({
             disabled={isLoading}
             className={selectClass}
           >
-            <option value="all">Todos</option>
+            <option value="all">{t('dashboard.filter_all')}</option>
             {options.map((opt) => (
               <option key={opt} value={opt}>
                 {opt}

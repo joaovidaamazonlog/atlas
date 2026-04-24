@@ -7,22 +7,16 @@
  */
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../../store';
 import { getUniqueValues } from '../../store/actions/dataActions';
 
 const STATUS_OPTIONS = ['Active', 'Inactive', 'Onboarding', 'BG Checks', 'Prospect'];
 
-const INITIATIVES_OPTIONS = [
-  { value: 'all', label: 'Todos' },
-  { value: 'HCP Host Partner', label: 'HCP Host Partner' },
-  { value: 'HCP Pick Up Partner', label: 'HCP Pick Up Partner' },
-  { value: 'Hub Hero', label: 'Hub Hero' },
-  { value: 'null', label: '(Sem iniciativa)' },
-];
-
 function MultiSelect({ label, options, selected, onChange }: {
   label: string; options: string[]; selected: string[]; onChange: (v: string[]) => void;
 }) {
+  const { t } = useTranslation();
   const toggle = (val: string) =>
     onChange(selected.includes(val) ? selected.filter((v) => v !== val) : [...selected, val]);
 
@@ -32,19 +26,22 @@ function MultiSelect({ label, options, selected, onChange }: {
       <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto p-1 bg-atlas-darker rounded border border-white/10">
         {options.map((opt) => (
           <button key={opt} type="button" onClick={() => toggle(opt)}
-            className={['px-2 py-1 rounded text-xs transition-colors min-h-[28px] focus:outline-none',
-              selected.includes(opt) ? 'bg-atlas-accent text-white font-semibold' : 'bg-white/10 text-atlas-light hover:bg-white/20',
+            className={['px-2 py-1 rounded text-xs transition-colors min-h-[28px] focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent',
+              selected.includes(opt)
+                ? 'bg-atlas-accent text-white font-semibold'
+                : 'bg-atlas-dark text-atlas-light border border-[var(--border-color)] hover:border-atlas-accent hover:text-atlas-accent',
             ].join(' ')}>
             {opt}
           </button>
         ))}
-        {options.length === 0 && <span className="text-xs text-atlas-muted px-1 py-1">Carregando...</span>}
+        {options.length === 0 && <span className="text-xs text-atlas-muted px-1 py-1">{t('common.loading')}</span>}
       </div>
     </div>
   );
 }
 
 export default function FiltersTab() {
+  const { t } = useTranslation();
   const allMarkersData = useStore((s) => s.allMarkersData);
   const currentFilteredData = useStore((s) => s.currentFilteredData);
   const applyFilters = useStore((s) => s.applyFilters);
@@ -56,6 +53,14 @@ export default function FiltersTab() {
   const [selectedBuckets, setSelectedBuckets] = useState<string[]>([]);
   const [initiativesFilter, setInitiativesFilter] = useState('all');
   const [jurisdictionFilter, setJurisdictionFilter] = useState('all');
+
+  const INITIATIVES_OPTIONS = [
+    { value: 'all', label: t('filters.initiatives_all') },
+    { value: 'HCP Host Partner', label: 'HCP Host Partner' },
+    { value: 'HCP Pick Up Partner', label: 'HCP Pick Up Partner' },
+    { value: 'Hub Hero', label: 'Hub Hero' },
+    { value: 'null', label: t('filters.initiatives_no_initiative') },
+  ];
 
   const stationOptions = useMemo(() => getUniqueValues(allMarkersData, 'delivery_station').sort(), [allMarkersData]);
 
@@ -111,12 +116,12 @@ export default function FiltersTab() {
 
   return (
     <div className="p-3">
-      <MultiSelect label="Status" options={STATUS_OPTIONS} selected={selectedStatuses} onChange={setSelectedStatuses} />
-      <MultiSelect label="Delivery Station" options={stationOptions} selected={selectedStations} onChange={setSelectedStations} />
-      <MultiSelect label="Carteira ADE" options={bucketOptions} selected={selectedBuckets} onChange={setSelectedBuckets} />
+      <MultiSelect label={t('filters.status_label')} options={STATUS_OPTIONS} selected={selectedStatuses} onChange={setSelectedStatuses} />
+      <MultiSelect label={t('filters.delivery_station_label')} options={stationOptions} selected={selectedStations} onChange={setSelectedStations} />
+      <MultiSelect label={t('filters.carteira_label')} options={bucketOptions} selected={selectedBuckets} onChange={setSelectedBuckets} />
 
       <div className="mb-3">
-        <label htmlFor="filter-initiatives" className="block text-xs font-medium text-atlas-muted mb-1">Delivery Initiatives</label>
+        <label htmlFor="filter-initiatives" className="block text-xs font-medium text-atlas-muted mb-1">{t('filters.initiatives_label')}</label>
         <select id="filter-initiatives" value={initiativesFilter} onChange={(e) => setInitiativesFilter(e.target.value)}
           className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]">
           {INITIATIVES_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
@@ -124,17 +129,17 @@ export default function FiltersTab() {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="filter-jurisdiction" className="block text-xs font-medium text-atlas-muted mb-1">Jurisdiction Type</label>
+        <label htmlFor="filter-jurisdiction" className="block text-xs font-medium text-atlas-muted mb-1">{t('filters.jurisdiction_label')}</label>
         <select id="filter-jurisdiction" value={jurisdictionFilter} onChange={(e) => setJurisdictionFilter(e.target.value)}
           className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]">
-          <option value="all">Todos</option>
+          <option value="all">{t('filters.initiatives_all')}</option>
           {jurisdictionOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
         </select>
       </div>
 
       <button type="button" onClick={handleClear}
-        className="w-full py-3 px-4 rounded bg-white/10 text-atlas-light text-sm font-medium hover:bg-white/20 focus:outline-none min-h-[44px] transition-colors">
-        Limpar Filtros
+        className="w-full py-3 px-4 rounded bg-atlas-dark text-atlas-light text-sm font-medium border border-[var(--border-color)] hover:border-atlas-accent hover:text-atlas-accent focus:outline-none min-h-[44px] transition-colors">
+        {t('filters.clear_button')}
       </button>
     </div>
   );

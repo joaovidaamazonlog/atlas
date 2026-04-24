@@ -13,6 +13,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../../store';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useDebounce } from '../../hooks/useDebounce';
@@ -28,12 +29,6 @@ function isValidPositiveNumber(value: string | number): boolean {
   const num = typeof value === 'string' ? Number(value) : value;
   return !isNaN(num) && num > 0;
 }
-
-const REASON_LABELS: Record<ReasonCode, string> = {
-  INSUFFICIENT_RESIDUAL_DEMAND: 'Demanda residual insuficiente',
-  NO_HEATMAP_COVERAGE: 'Área sem cobertura de heatmap',
-  INSUFFICIENT_TOTAL_DEMAND: 'Demanda total insuficiente',
-};
 
 interface NominatimResult {
   lat: string;
@@ -52,60 +47,66 @@ function RecruitableResultPanel({
   result: import('../../store/types').EvaluatorResult;
   isStale: boolean;
 }) {
+  const { t } = useTranslation();
+  const REASON_LABELS: Record<ReasonCode, string> = {
+    INSUFFICIENT_RESIDUAL_DEMAND: t('manual_analysis.reason_insufficient_residual'),
+    NO_HEATMAP_COVERAGE: t('manual_analysis.reason_no_heatmap'),
+    INSUFFICIENT_TOTAL_DEMAND: t('manual_analysis.reason_insufficient_total'),
+  };
   const { totalDemand, residualDemand, minAdv, gap, viable, reason } = result;
   const barWidth = minAdv > 0 ? Math.min((residualDemand / minAdv) * 100, 100) : 0;
   const displayPct = minAdv > 0 ? ((residualDemand / minAdv) * 100).toFixed(0) : '0';
 
   return (
     <div
-      className={`rounded-lg border p-3 flex flex-col gap-3 ${isStale ? 'border-yellow-500/50 bg-yellow-500/5' : 'border-white/10 bg-white/5'}`}
+      className={`rounded-lg p-3 flex flex-col gap-3 ${isStale ? 'border border-yellow-500/50 bg-yellow-500/5' : 'bg-atlas-darker'}`}
       data-testid="recruitable-result-panel"
     >
       {isStale && (
         <div className="flex items-center gap-2 px-2 py-1 rounded bg-yellow-500/10 border border-yellow-500/30 text-xs text-yellow-400" role="alert">
-          ⚠️ Resultado desatualizado — parâmetros foram alterados
+          ⚠️ {t('manual_analysis.stale_warning')}
         </div>
       )}
 
       <div className="flex items-center gap-2">
         {viable ? (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 text-sm font-semibold">
-            ✓ Viável
+            {t('manual_analysis.viable')}
           </span>
         ) : (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 text-sm font-semibold">
-            ✗ Não Viável
+            {t('manual_analysis.not_viable')}
           </span>
         )}
       </div>
 
       <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="rounded bg-white/5 px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">Demanda Total</div>
-          <div className="text-atlas-light font-semibold">{Math.round(totalDemand)} pct/dia</div>
+        <div className="rounded bg-atlas-darker px-2 py-2">
+          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.total_demand')}</div>
+          <div className="text-atlas-light font-semibold">{Math.round(totalDemand)} {t('common.pct_per_day')}</div>
         </div>
-        <div className="rounded bg-white/5 px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">Demanda Residual</div>
-          <div className="text-atlas-light font-semibold">{Math.round(residualDemand)} pct/dia</div>
+        <div className="rounded bg-atlas-darker px-2 py-2">
+          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.residual_demand')}</div>
+          <div className="text-atlas-light font-semibold">{Math.round(residualDemand)} {t('common.pct_per_day')}</div>
         </div>
-        <div className="rounded bg-white/5 px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">ADV Mínimo</div>
-          <div className="text-atlas-light font-semibold">{minAdv} pct/dia</div>
+        <div className="rounded bg-atlas-darker px-2 py-2">
+          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.min_adv')}</div>
+          <div className="text-atlas-light font-semibold">{minAdv} {t('common.pct_per_day')}</div>
         </div>
-        <div className="rounded bg-white/5 px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">Gap</div>
+        <div className="rounded bg-atlas-darker px-2 py-2">
+          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.gap')}</div>
           <div className={`font-semibold ${gap >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-            {gap >= 0 ? '+' : ''}{Math.round(gap)} pct/dia
+            {gap >= 0 ? '+' : ''}{Math.round(gap)} {t('common.pct_per_day')}
           </div>
         </div>
       </div>
 
       <div>
         <div className="flex justify-between text-xs text-atlas-muted mb-1">
-          <span>Cobertura de demanda residual</span>
+          <span>{t('manual_analysis.coverage_label')}</span>
           <span className={viable ? 'text-green-400' : 'text-red-400'}>{displayPct}%</span>
         </div>
-        <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+        <div className="h-2 rounded-full bg-atlas-dark overflow-hidden">
           <div
             className={`h-full rounded-full transition-all ${viable ? 'bg-green-500' : 'bg-red-500'}`}
             style={{ width: `${barWidth}%` }}
@@ -123,7 +124,7 @@ function RecruitableResultPanel({
 
       {!viable && reason && (
         <div className="px-3 py-2 rounded bg-red-500/10 border-l-2 border-red-400 text-xs text-atlas-muted">
-          <span className="text-red-400 font-semibold">Motivo:</span>{' '}
+          <span className="text-red-400 font-semibold">{t('manual_analysis.reason_label')}</span>{' '}
           <span className="text-atlas-light">{REASON_LABELS[reason]}</span>
         </div>
       )}
@@ -154,6 +155,7 @@ interface WhatIfResult {
 // ---------------------------------------------------------------------------
 
 function PanelContent({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const allMarkersData = useStore((s) => s.allMarkersData);
   const recruitableAnalysis = useStore((s) => s.recruitableAnalysis);
   const setRecruitableParams = useStore((s) => s.setRecruitableParams);
@@ -164,6 +166,8 @@ function PanelContent({ onClose }: { onClose: () => void }) {
   const setManualAnalysisPin = useStore((s) => s.setManualAnalysisPin);
   const whatIfModeActive = useStore((s) => s.whatIfModeActive);
   const setWhatIfModeActive = useStore((s) => s.setWhatIfModeActive);
+  const setWhatIfPartnerId = useStore((s) => s.setWhatIfPartnerId);
+  const setWhatIfSimulatedData = useStore((s) => s.setWhatIfSimulatedData);
 
   // --- What-if state ---
   const [whatIfResult, setWhatIfResult] = useState<WhatIfResult | null>(null);
@@ -269,11 +273,11 @@ function PanelContent({ onClose }: { onClose: () => void }) {
 
       if (isEvaluatorError(result)) {
         const msgs: Record<string, string> = {
-        MISSING_HEATMAP: 'Dados de demanda não carregados. Verifique se o arquivo heatmap.geojson está disponível no servidor.',
-          MISSING_CENTER: 'Ponto central obrigatório',
-          INVALID_PARAMS: 'Parâmetros inválidos',
+        MISSING_HEATMAP: t('manual_analysis.error_heatmap'),
+          MISSING_CENTER: t('manual_analysis.error_missing_center'),
+          INVALID_PARAMS: t('manual_analysis.error_invalid_params'),
         };
-        store.setRecruitableResult(null, msgs[result.type] ?? 'Erro desconhecido');
+        store.setRecruitableResult(null, msgs[result.type] ?? t('common.error_unknown'));
       } else {
         store.setRecruitableResult(result);
       }
@@ -299,8 +303,10 @@ function PanelContent({ onClose }: { onClose: () => void }) {
     if (!whatIfModeActive) {
       setWhatIfResult(null);
       setWhatIfWarning(null);
+      setWhatIfPartnerId(null);
+      setWhatIfSimulatedData(null);
     }
-  }, [whatIfModeActive]);
+  }, [whatIfModeActive, setWhatIfPartnerId, setWhatIfSimulatedData]);
 
   const flyTo = useCallback((lat: number, lon: number) => {
     fitBoundsRef.current?.([[lat, lon]]);
@@ -365,22 +371,22 @@ function PanelContent({ onClose }: { onClose: () => void }) {
     });
     if (isEvaluatorError(result)) {
       const msgs: Record<string, string> = {
-        MISSING_HEATMAP: 'Dados de demanda não carregados. Verifique se o arquivo heatmap.geojson está disponível no servidor.',
-        MISSING_CENTER: 'Ponto central obrigatório',
-        INVALID_PARAMS: 'Parâmetros inválidos',
+        MISSING_HEATMAP: t('manual_analysis.error_heatmap'),
+        MISSING_CENTER: t('manual_analysis.error_missing_center'),
+        INVALID_PARAMS: t('manual_analysis.error_invalid_params'),
       };
-      setRecruitableResult(null, msgs[result.type] ?? 'Erro desconhecido');
+      setRecruitableResult(null, msgs[result.type] ?? t('common.error_unknown'));
     } else {
       setRecruitableResult(result);
     }
-  }, [params, heatmapData, setRecruitableResult]);
+  }, [params, heatmapData, setRecruitableResult, t]);
 
   return (
     <div className="flex flex-col h-full bg-atlas-navy text-atlas-light">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-white/10">
-        <span className="font-semibold text-atlas-light text-sm">Análise Manual</span>
-        <button onClick={onClose} aria-label="Fechar painel" className="text-atlas-muted hover:text-atlas-light transition-colors">
+      <div className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-[var(--border-color)]">
+        <span className="font-semibold text-atlas-light text-sm">{t('manual_analysis.title')}</span>
+        <button onClick={onClose} aria-label={t('common.close')} className="text-atlas-muted hover:text-atlas-light transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
@@ -388,9 +394,9 @@ function PanelContent({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Map click hint */}
-      <div className="px-4 py-2 shrink-0 bg-indigo-500/10 border-b border-indigo-500/20 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse shrink-0" />
-        <span className="text-xs text-indigo-300">Clique no mapa para definir o ponto central</span>
+      <div className="px-4 py-2 shrink-0 bg-atlas-accent/10 border-b border-atlas-accent/20 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-atlas-accent animate-pulse shrink-0" />
+        <span className="text-xs text-atlas-accent font-medium">{t('manual_analysis.map_hint')}</span>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
@@ -398,9 +404,9 @@ function PanelContent({ onClose }: { onClose: () => void }) {
         {/* ---- Busca integrada ---- */}
         <div ref={containerRef} className="relative">
           <label className="block text-xs font-medium text-atlas-muted mb-1">
-            Buscar parceiro ou endereço
+            {t('manual_analysis.search_label')}
           </label>
-          <div className="flex items-center rounded bg-atlas-darker border border-white/10 overflow-hidden focus-within:border-atlas-accent transition-colors">
+          <div className="flex items-center rounded bg-atlas-darker border border-[var(--border-color)] overflow-hidden focus-within:border-atlas-accent transition-colors">
             <span className="px-3 text-sm shrink-0">{addressMode ? '📍' : '🔍'}</span>
             <input
               ref={inputRef}
@@ -409,8 +415,8 @@ function PanelContent({ onClose }: { onClose: () => void }) {
               onChange={(e) => { setQuery(e.target.value); setSearchError(null); }}
               onKeyDown={handleKeyDown}
               onFocus={() => { if (dropdownOpen || suggestions.length > 0 || addressMode) setDropdownOpen(true); }}
-              placeholder="Nome do parceiro ou endereço…"
-              aria-label="Buscar parceiro ou endereço"
+              placeholder={t('manual_analysis.search_placeholder')}
+              aria-label={t('manual_analysis.search_label')}
               aria-autocomplete="list"
               aria-expanded={dropdownOpen}
               className="flex-1 bg-transparent border-none outline-none text-sm text-atlas-light py-3 pr-2 placeholder:text-atlas-muted/60"
@@ -421,7 +427,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
               <button
                 type="button"
                 onClick={() => { setQuery(''); setSuggestions([]); setDropdownOpen(false); setAddressMode(false); setSearchError(null); inputRef.current?.focus(); }}
-                aria-label="Limpar busca"
+                aria-label={t('manual_analysis.search_clear')}
                 className="px-3 text-xs text-atlas-muted hover:text-atlas-light transition-colors"
               >
                 ✕
@@ -437,7 +443,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
           {dropdownOpen && (
             <ul
               role="listbox"
-              className="absolute left-0 right-0 mt-1 rounded-lg bg-atlas-darker border border-white/10 shadow-lg overflow-hidden max-h-64 overflow-y-auto z-50"
+              className="absolute left-0 right-0 mt-1 rounded-lg bg-atlas-darker border border-[var(--border-color)] shadow-lg overflow-hidden max-h-64 overflow-y-auto z-50"
             >
               {/* Geocode option */}
               {addressMode && query.trim().length >= 2 && (
@@ -445,10 +451,10 @@ function PanelContent({ onClose }: { onClose: () => void }) {
                   role="option"
                   aria-selected={false}
                   onMouseDown={(e) => { e.preventDefault(); geocodeAddress(query.trim()); }}
-                  className="flex flex-col px-3 py-2 cursor-pointer hover:bg-white/5 border-b border-white/5 bg-orange-500/5"
+                  className="flex flex-col px-3 py-2 cursor-pointer hover:bg-atlas-dark border-b border-[var(--border-color)] bg-orange-500/5"
                 >
-                  <span className="text-sm text-atlas-light font-medium">📍 Buscar endereço: <em className="not-italic text-atlas-accent">{query}</em></span>
-                  <span className="text-xs text-atlas-muted mt-0.5">Pressione Enter ou clique para geocodificar</span>
+                  <span className="text-sm text-atlas-light font-medium">{t('manual_analysis.geocode_prefix')} <em className="not-italic text-atlas-accent">{query}</em></span>
+                  <span className="text-xs text-atlas-muted mt-0.5">{t('manual_analysis.geocode_hint')}</span>
                 </li>
               )}
               {/* Partner suggestions */}
@@ -459,12 +465,12 @@ function PanelContent({ onClose }: { onClose: () => void }) {
                   aria-selected={idx === activeIndex}
                   onMouseDown={(e) => { e.preventDefault(); selectPartner(partner); }}
                   onMouseEnter={() => setActiveIndex(idx)}
-                  className={`flex flex-col px-3 py-2 cursor-pointer border-b border-white/5 transition-colors ${idx === activeIndex ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                  className={`flex flex-col px-3 py-2 cursor-pointer border-b border-[var(--border-color)] transition-colors ${idx === activeIndex ? 'bg-atlas-dark' : 'hover:bg-atlas-dark'}`}
                 >
                   <span className="text-sm text-atlas-light font-medium">{partner.name}</span>
                   {partner.city && (
                     <span className="text-xs text-atlas-muted mt-0.5">
-                      {partner.city}{partner.state ? `, ${partner.state}` : ''} · {partner.status}
+                      {t('manual_analysis.partner_status', { city: partner.city, state: partner.state ?? '', status: partner.status })}
                     </span>
                   )}
                 </li>
@@ -476,7 +482,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
         {/* ---- ADV mínimo ---- */}
         <div>
           <label htmlFor="manual-adv" className="block text-xs font-medium text-atlas-muted mb-1">
-            ADV mínimo <span className="font-normal">(pacotes/dia)</span>
+            {t('manual_analysis.adv_label')} <span className="font-normal">{t('manual_analysis.adv_unit')}</span>
           </label>
           <input
             id="manual-adv"
@@ -484,15 +490,15 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             min={1}
             value={advStr}
             onChange={(e) => setRecruitableParams({ minAdv: e.target.value === '' ? 0 : Number(e.target.value) })}
-            className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+            className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
           />
-          {!advValid && <p className="mt-1 text-xs text-red-400" role="alert">Informe um valor positivo maior que zero.</p>}
+          {!advValid && <p className="mt-1 text-xs text-red-400" role="alert">{t('manual_analysis.invalid_positive')}</p>}
         </div>
 
         {/* ---- Raio ---- */}
         <div>
           <label htmlFor="manual-radius" className="block text-xs font-medium text-atlas-muted mb-1">
-            Raio de entrega <span className="font-normal">(metros)</span>
+            {t('manual_analysis.radius_label')} <span className="font-normal">{t('manual_analysis.radius_unit')}</span>
           </label>
           <input
             id="manual-radius"
@@ -500,36 +506,36 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             min={1}
             value={radiusStr}
             onChange={(e) => setRecruitableParams({ radiusMeters: e.target.value === '' ? 0 : Number(e.target.value) })}
-            className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+            className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
           />
-          {!radiusValid && <p className="mt-1 text-xs text-red-400" role="alert">Informe um valor positivo maior que zero.</p>}
+          {!radiusValid && <p className="mt-1 text-xs text-red-400" role="alert">{t('manual_analysis.invalid_positive')}</p>}
         </div>
 
         {/* ---- Lat / Lon ---- */}
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label htmlFor="manual-lat" className="block text-xs font-medium text-atlas-muted mb-1">Latitude</label>
+            <label htmlFor="manual-lat" className="block text-xs font-medium text-atlas-muted mb-1">{t('manual_analysis.lat_label')}</label>
             <input
               id="manual-lat"
               type="text"
               placeholder="-23.5505"
               value={params.centerLat}
               onChange={(e) => { setRecruitableParams({ centerLat: e.target.value }); setManualAnalysisPin(null); }}
-              className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+              className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
             />
-            {params.centerLat !== '' && !latValid && <p className="mt-1 text-xs text-red-400" role="alert">Inválida.</p>}
+            {params.centerLat !== '' && !latValid && <p className="mt-1 text-xs text-red-400" role="alert">{t('manual_analysis.invalid_coord')}</p>}
           </div>
           <div>
-            <label htmlFor="manual-lon" className="block text-xs font-medium text-atlas-muted mb-1">Longitude</label>
+            <label htmlFor="manual-lon" className="block text-xs font-medium text-atlas-muted mb-1">{t('manual_analysis.lon_label')}</label>
             <input
               id="manual-lon"
               type="text"
               placeholder="-46.6333"
               value={params.centerLon}
               onChange={(e) => { setRecruitableParams({ centerLon: e.target.value }); setManualAnalysisPin(null); }}
-              className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+              className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
             />
-            {params.centerLon !== '' && !lonValid && <p className="mt-1 text-xs text-red-400" role="alert">Inválida.</p>}
+            {params.centerLon !== '' && !lonValid && <p className="mt-1 text-xs text-red-400" role="alert">{t('manual_analysis.invalid_coord')}</p>}
           </div>
         </div>
 
@@ -539,23 +545,22 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             type="button"
             onClick={handleAnalyze}
             disabled={!canAnalyze}
-            className="flex-1 py-3 px-4 rounded bg-blue-600 text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-h-[44px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 py-3 px-4 rounded bg-atlas-accent text-white text-sm font-semibold hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent min-h-[44px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
             </svg>
-            Analisar
+            {t('manual_analysis.analyze_button')}
           </button>
-          {/* X só aparece quando há ponto definido mas nenhum painel de resultado está ativo */}
           {(params.centerLat !== '' || params.centerLon !== '') &&
            !recruitableAnalysis.result &&
            !whatIfResult && (
             <button
               type="button"
               onClick={() => { clearRecruitableAnalysis(); setManualAnalysisPin(null); }}
-              aria-label="Limpar ponto central"
-              className="py-3 px-3 rounded border border-white/20 text-atlas-muted hover:text-atlas-light hover:border-white/40 min-h-[44px] transition-colors flex items-center justify-center"
-              title="Limpar ponto central"
+              aria-label={t('manual_analysis.clear_point')}
+              className="py-3 px-3 rounded border border-[var(--border-color)] text-atlas-muted hover:text-atlas-light hover:border-[var(--border-color-strong)] min-h-[44px] transition-colors flex items-center justify-center"
+              title={t('manual_analysis.clear_point')}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -587,12 +592,12 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
-            Limpar Análise
+            {t('manual_analysis.clear_analysis')}
           </button>
         )}
 
         {/* ---- Separador ---- */}
-        <div className="border-t border-white/10 pt-2" />
+        <div className="border-t border-[var(--border-color)] pt-2" />
 
         {/* ---- What-if toggle ---- */}
         <div className="flex flex-col gap-3">
@@ -605,22 +610,22 @@ function PanelContent({ onClose }: { onClose: () => void }) {
                 onChange={(e) => {
                   setWhatIfModeActive(e.target.checked);
                 }}
-                aria-label="Simular reposicionamento de parceiro"
+                aria-label={t('manual_analysis.whatif_toggle')}
               />
               <div
-                className={`w-10 h-6 rounded-full transition-colors ${whatIfModeActive ? 'bg-indigo-500' : 'bg-white/20'}`}
+                className={`w-10 h-6 rounded-full transition-colors ${whatIfModeActive ? 'bg-atlas-accent' : 'bg-atlas-accent/40'}`}
               />
               <div
                 className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${whatIfModeActive ? 'translate-x-4' : 'translate-x-0'}`}
               />
             </div>
-            <span className="text-sm text-atlas-light">Simular reposicionamento de parceiro</span>
+            <span className="text-sm text-atlas-light">{t('manual_analysis.whatif_toggle')}</span>
           </label>
 
           {/* Error: heatmap not loaded */}
           {whatIfModeActive && heatmapData === null && (
             <div className="px-3 py-2 rounded bg-red-500/10 border-l-2 border-red-400 text-xs text-red-400" role="alert">
-              Dados de demanda não disponíveis. Carregue o heatmap para usar o modo what-if.
+              {t('manual_analysis.whatif_error_heatmap')}
             </div>
           )}
 
@@ -633,31 +638,31 @@ function PanelContent({ onClose }: { onClose: () => void }) {
 
           {/* What-if result — substitui o painel de viabilidade quando ativo */}
           {whatIfModeActive && whatIfResult && (
-            <div className="rounded-lg border border-indigo-500/30 bg-indigo-500/5 p-3 flex flex-col gap-2" data-testid="whatif-result-panel">
-              <div className="text-xs font-semibold text-indigo-300 mb-1">Resultado da simulação</div>
+            <div className="rounded-lg border border-atlas-accent/30 bg-atlas-accent/5 p-3 flex flex-col gap-2" data-testid="whatif-result-panel">
+              <div className="text-xs font-semibold text-atlas-accent mb-1">{t('manual_analysis.whatif_result_title')}</div>
               <div className="text-sm text-atlas-light font-medium">{whatIfResult.partnerName}</div>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="rounded bg-white/5 px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">Lat simulada</div>
+                <div className="rounded bg-atlas-darker px-2 py-2">
+                  <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_lat')}</div>
                   <div className="text-atlas-light font-semibold">{whatIfResult.simulatedLat.toFixed(5)}</div>
                 </div>
-                <div className="rounded bg-white/5 px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">Lon simulada</div>
+                <div className="rounded bg-atlas-darker px-2 py-2">
+                  <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_lon')}</div>
                   <div className="text-atlas-light font-semibold">{whatIfResult.simulatedLon.toFixed(5)}</div>
                 </div>
-                <div className="rounded bg-white/5 px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">Cap atual</div>
-                  <div className="text-atlas-light font-semibold">{whatIfResult.originalCap} pct/dia</div>
+                <div className="rounded bg-atlas-darker px-2 py-2">
+                  <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_cap_current')}</div>
+                  <div className="text-atlas-light font-semibold">{whatIfResult.originalCap} {t('common.pct_per_day')}</div>
                 </div>
-                <div className="rounded bg-white/5 px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">ADV simulado</div>
-                  <div className="text-atlas-light font-semibold">{Math.round(whatIfResult.advSimulated)} pct/dia</div>
+                <div className="rounded bg-atlas-darker px-2 py-2">
+                  <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_adv_simulated')}</div>
+                  <div className="text-atlas-light font-semibold">{Math.round(whatIfResult.advSimulated)} {t('common.pct_per_day')}</div>
                 </div>
               </div>
               <div className={`rounded px-2 py-2 text-xs ${whatIfResult.advGain >= 0 ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
-                <div className="text-atlas-muted mb-0.5">Ganho ADV</div>
+                <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_gain')}</div>
                 <div className={`font-semibold text-sm ${whatIfResult.advGain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {whatIfResult.advGain >= 0 ? '+' : ''}{Math.round(whatIfResult.advGain)} pct/dia
+                  {whatIfResult.advGain >= 0 ? '+' : ''}{Math.round(whatIfResult.advGain)} {t('common.pct_per_day')}
                 </div>
               </div>
             </div>
@@ -667,13 +672,13 @@ function PanelContent({ onClose }: { onClose: () => void }) {
           {whatIfModeActive && whatIfResult && (
             <button
               type="button"
-              onClick={() => { setWhatIfResult(null); setWhatIfWarning(null); clearRecruitableAnalysis(); setManualAnalysisPin(null); }}
+              onClick={() => { setWhatIfResult(null); setWhatIfWarning(null); clearRecruitableAnalysis(); setManualAnalysisPin(null); setWhatIfPartnerId(null); setWhatIfSimulatedData(null); }}
               className="w-full py-2 px-4 rounded border border-red-500/50 text-red-400 text-sm hover:bg-red-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 min-h-[44px] transition-colors flex items-center justify-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-              Limpar Simulação
+              {t('manual_analysis.whatif_clear')}
             </button>
           )}
         </div>
@@ -690,6 +695,8 @@ export default function ManualAnalysisPanel() {
   const manualAnalysisOpen = useStore((s) => s.manualAnalysisOpen);
   const setManualAnalysisOpen = useStore((s) => s.setManualAnalysisOpen);
   const setWhatIfModeActive = useStore((s) => s.setWhatIfModeActive);
+  const setWhatIfPartnerId = useStore((s) => s.setWhatIfPartnerId);
+  const setWhatIfSimulatedData = useStore((s) => s.setWhatIfSimulatedData);
   const bp = useBreakpoint();
   const isMobile = bp === 'mobile';
 
@@ -697,6 +704,8 @@ export default function ManualAnalysisPanel() {
 
   const handleClose = () => {
     setWhatIfModeActive(false);
+    setWhatIfPartnerId(null);
+    setWhatIfSimulatedData(null);
     setManualAnalysisOpen(false);
   };
 

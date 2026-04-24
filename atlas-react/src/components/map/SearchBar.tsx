@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useMap } from 'react-leaflet';
+import { useTranslation } from 'react-i18next';
 import type { Partner } from '../../store/types';
+import { useStore } from '../../store';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useBreakpoint, type Breakpoint } from '../../hooks/useBreakpoint';
 
@@ -55,6 +57,8 @@ function getContainerStyle(bp: Breakpoint, controlPanelWidth: number): React.CSS
 export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, controlPanelWidth = 0 }: SearchBarProps) {
   const detectedBreakpoint = useBreakpoint();
   const bp = breakpointProp ?? detectedBreakpoint;
+  const { t } = useTranslation();
+  const setManualAnalysisPin = useStore((s) => s.setManualAnalysisPin);
 
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Partner[]>([]);
@@ -112,7 +116,8 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
     setSuggestions([]);
     setAddressMode(false);
     setError(null);
-  }, [flyToRef]);
+    setManualAnalysisPin(null);
+  }, [flyToRef, setManualAnalysisPin]);
 
   const geocodeAddress = useCallback(async (q: string) => {
     setError(null);
@@ -123,12 +128,16 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
       const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR,pt;q=0.9' } });
       if (!res.ok) throw new Error('Falha na geocodificação');
       const data: NominatimResult[] = await res.json();
-      if (data.length === 0) { setError('Endereço não encontrado'); return; }
-      flyToRef.current?.(parseFloat(data[0].lat), parseFloat(data[0].lon));
+      if (data.length === 0) { setError(t('search_bar.error_not_found')); return; }
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+      flyToRef.current?.(lat, lon);
+      setManualAnalysisPin({ lat, lon, label: data[0].display_name });
+      setQuery(data[0].display_name);
     } catch {
-      setError('Erro ao buscar endereço');
+      setError(t('search_bar.error_fetch'));
     }
-  }, [flyToRef]);
+  }, [flyToRef, setManualAnalysisPin]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') {
@@ -160,8 +169,8 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
   }, [activeIndex, suggestions, query, selectPartner, geocodeAddress]);
 
   const placeholder = addressMode
-    ? `Buscar endereço: "${query}"`
-    : 'Buscar parceiro ou endereço…';
+    ? t('search_bar.address_mode_placeholder', { query })
+    : t('search_bar.placeholder');
 
   return (
     <div ref={containerRef} style={getContainerStyle(bp, controlPanelWidth)}>
@@ -175,7 +184,7 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
           onKeyDown={handleKeyDown}
           onFocus={() => { if (isOpen || suggestions.length > 0 || addressMode) setIsOpen(true); }}
           placeholder={placeholder}
-          aria-label="Buscar parceiro ou endereço"
+          aria-label={t('search_bar.aria_label')}
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-controls="searchbar-suggestions"
@@ -193,6 +202,7 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
               setIsOpen(false);
               setAddressMode(false);
               setError(null);
+              setManualAnalysisPin(null);
               inputRef.current?.focus();
             }}
             style={styles.clearBtn}
@@ -216,8 +226,8 @@ export function SearchBar({ partners, flyToRef, breakpoint: breakpointProp, cont
               onMouseDown={(e) => { e.preventDefault(); geocodeAddress(query.trim()); }}
               style={{ ...styles.suggestion, ...styles.addressOption }}
             >
-              <span style={styles.suggestionName}>📍 Buscar endereço: <em>{query}</em></span>
-              <span style={styles.suggestionMeta}>Pressione Enter ou clique para geocodificar</span>
+              <span style={styles.suggestionName}>📍 {t('search_bar.geocode_prefix')} <em>{query}</em></span>
+              <span style={styles.suggestionMeta}>{t('search_bar.geocode_hint')}</span>
             </li>
           )}
           {/* Sugestões de parceiros */}

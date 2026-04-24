@@ -17,6 +17,7 @@
  */
 
 import { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../../store';
 import { getUniqueValues } from '../../store/actions/dataActions';
 import { kmeansCluster } from '../../lib/kmeansUtils';
@@ -105,6 +106,7 @@ function getAllOpenSlots(
 }
 
 export default function ProspectTab(): JSX.Element {
+  const { t } = useTranslation();
   const allMarkersData = useStore((s) => s.allMarkersData);
   const polygonsData = useStore((s) => s.polygonsData);
   const idealSupplyData = useStore((s) => s.idealSupplyData);
@@ -205,10 +207,10 @@ export default function ProspectTab(): JSX.Element {
       const isNetworkError =
         err instanceof TypeError && err.message.toLowerCase().includes('fetch');
       const message = isNetworkError
-        ? 'Erro de conexão. Verifique sua internet e tente novamente.'
+        ? t('prospect.error_connection')
         : err instanceof Error
           ? err.message
-          : 'Erro desconhecido ao buscar empresas.';
+          : t('prospect.error_unknown');
       setProspectError(message);
       // Também dispara o toast global de erro
       useStore.getState().setError(message);
@@ -252,15 +254,15 @@ export default function ProspectTab(): JSX.Element {
           htmlFor="prospect-station"
           className="block text-xs font-medium text-atlas-muted mb-1"
         >
-          Delivery Station
+          {t('prospect.station_label')}
         </label>
         <select
           id="prospect-station"
           value={selectedStation}
           onChange={(e) => handleStationChange(e.target.value)}
-          className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+          className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
         >
-          <option value="">Selecione uma DS...</option>
+          <option value="">{t('prospect.station_placeholder')}</option>
           {stationOptions.map((ds) => (
             <option key={ds} value={ds}>
               {ds}
@@ -275,16 +277,16 @@ export default function ProspectTab(): JSX.Element {
           htmlFor="prospect-bucket"
           className="block text-xs font-medium text-atlas-muted mb-1"
         >
-          Carteira
+          {t('prospect.bucket_label')}
         </label>
         <select
           id="prospect-bucket"
           value={selectedBucket}
           onChange={(e) => setSelectedBucket(e.target.value)}
           disabled={!selectedStation}
-          className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <option value="">{selectedStation ? 'Selecione uma carteira...' : 'Selecione uma DS primeiro'}</option>
+          <option value="">{selectedStation ? t('prospect.bucket_placeholder') : t('prospect.bucket_disabled')}</option>
           {bucketOptions.map((b) => (
             <option key={b} value={b}>
               {b}
@@ -300,7 +302,7 @@ export default function ProspectTab(): JSX.Element {
         disabled={!canSearch || prospectState.isLoading}
         className="w-full py-3 px-4 rounded bg-atlas-accent text-white text-sm font-semibold hover:opacity-90 focus:outline-none min-h-[44px] transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        {prospectState.isLoading ? 'Buscando...' : 'Buscar Empresas'}
+        {prospectState.isLoading ? t('prospect.search_loading') : t('prospect.search_button')}
       </button>
 
       {/* Error message (when no ResultPanel is shown) */}

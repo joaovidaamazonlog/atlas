@@ -7,6 +7,7 @@
 
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../../store';
 import { osrmTableMatrix, osrmResult, getCurrentHcpGroups } from '../../lib/routeUtils';
 import { HCP_CONFIG } from '../../lib/config';
@@ -82,14 +83,14 @@ function AutocompleteInput({ id, placeholder, value, onChange, onSelect, partner
     <div ref={containerRef} className="relative">
       <input id={id} type="text" value={value} onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder} autoComplete="off"
-        className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light placeholder-atlas-muted focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+        className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light placeholder-atlas-muted focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
       />
       {open && (
-        <ul className="absolute z-50 left-0 right-0 mt-1 rounded border border-white/10 bg-atlas-navy shadow-lg overflow-hidden" role="listbox">
+        <ul className="absolute z-50 left-0 right-0 mt-1 rounded border border-[var(--border-color)] bg-atlas-navy shadow-lg overflow-hidden" role="listbox">
           {suggestions.map((item) => (
             <li key={item.id}>
               <button type="button" onMouseDown={() => { onChange(item.name); setOpen(false); onSelect(item); }}
-                className="w-full text-left px-3 py-2 text-sm text-atlas-light hover:bg-white/10 transition-colors min-h-[44px] flex items-center" role="option" aria-selected={false}>
+                className="w-full text-left px-3 py-2 text-sm text-atlas-light hover:bg-atlas-dark transition-colors min-h-[44px] flex items-center" role="option" aria-selected={false}>
                 <span className="truncate">{item.name}</span>
                 <span className="ml-auto text-xs text-atlas-muted shrink-0 pl-2">{item.id}</span>
               </button>
@@ -223,6 +224,7 @@ async function runHcpPhases(currentFilteredData: Partner[]): Promise<HcpResult> 
 // ---------------------------------------------------------------------------
 
 function HcpPopup({ result, onClose }: { result: HcpResult; onClose: () => void }) {
+  const { t } = useTranslation();
   const totalActions = result.moves.length + result.assignments.length + result.suggestions.length;
 
   return createPortal(
@@ -233,12 +235,12 @@ function HcpPopup({ result, onClose }: { result: HcpResult; onClose: () => void 
       display: 'flex', flexDirection: 'column', overflow: 'hidden',
     }}>
       {/* Header */}
-      <div className="flex items-start justify-between px-4 py-3 shrink-0 border-b border-white/10">
+      <div className="flex items-start justify-between px-4 py-3 shrink-0 border-b border-[var(--border-color)]">
         <div className="flex flex-col gap-0.5">
-          <span className="font-semibold text-atlas-light text-sm">HCP Initiatives</span>
-          <span className="text-xs text-atlas-muted">{totalActions} sugestão{totalActions !== 1 ? 'ões' : ''}</span>
+          <span className="font-semibold text-atlas-light text-sm">{t('routes.hcp_popup_title')}</span>
+          <span className="text-xs text-atlas-muted">{t('routes.hcp_suggestions_other', { count: totalActions })}</span>
         </div>
-        <button onClick={onClose} className="ml-2 text-atlas-muted hover:text-atlas-light transition-colors" aria-label="Fechar">
+        <button onClick={onClose} className="ml-2 text-atlas-muted hover:text-atlas-light transition-colors" aria-label={t('routes.hcp_popup_close')}>
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
@@ -251,13 +253,13 @@ function HcpPopup({ result, onClose }: { result: HcpResult; onClose: () => void 
         {/* Fase 1 — Movimentos */}
         <div>
           <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2 px-1">
-            📦 Fase 1 — Movimentos de Pickup
+            {t('routes.hcp_phase1_title')}
           </p>
           {result.moves.length === 0
-            ? <p className="text-xs text-atlas-muted px-1">Nenhum movimento sugerido.</p>
+            ? <p className="text-xs text-atlas-muted px-1">{t('routes.hcp_phase1_empty')}</p>
             : <div className="flex flex-col gap-2">
                 {result.moves.map((m, i) => (
-                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-3 flex flex-col gap-1">
+                  <div key={i} className="rounded-lg bg-atlas-dark border border-[var(--border-color)] p-3 flex flex-col gap-1">
                     <span className="text-sm font-semibold text-atlas-light leading-tight">{m.pickup.name}</span>
                     <div className="flex items-center gap-1 text-xs text-atlas-muted flex-wrap">
                       <span className="text-red-400">{m.from ?? 'N/A'}</span>
@@ -276,16 +278,16 @@ function HcpPopup({ result, onClose }: { result: HcpResult; onClose: () => void 
         {/* Fase 2 — Alocações */}
         <div>
           <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2 px-1">
-            🏠 Fase 2 — Alocações em Hosts
+            {t('routes.hcp_phase2_title')}
           </p>
           {result.assignments.length === 0
-            ? <p className="text-xs text-atlas-muted px-1">Nenhuma alocação sugerida.</p>
+            ? <p className="text-xs text-atlas-muted px-1">{t('routes.hcp_phase2_empty')}</p>
             : <div className="flex flex-col gap-2">
                 {result.assignments.map((a, i) => (
-                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-3 flex flex-col gap-1">
+                  <div key={i} className="rounded-lg bg-atlas-dark border border-[var(--border-color)] p-3 flex flex-col gap-1">
                     <span className="text-sm font-semibold text-atlas-light leading-tight">{a.hero.name}</span>
                     <div className="flex items-center gap-1 text-xs">
-                      <span className="text-atlas-muted">Host:</span>
+                      <span className="text-atlas-muted">{t('routes.hcp_host_label')}</span>
                       <span className="text-atlas-accent font-medium">{a.host.name}</span>
                     </div>
                     {a.hero.store_id && (
@@ -300,24 +302,24 @@ function HcpPopup({ result, onClose }: { result: HcpResult; onClose: () => void 
         {/* Fase 3 — Novos Hosts */}
         <div>
           <p className="text-xs uppercase tracking-wide text-atlas-muted mb-2 px-1">
-            ✨ Fase 3 — Novos Hosts Sugeridos
+            {t('routes.hcp_phase3_title')}
           </p>
           {result.suggestions.length === 0
-            ? <p className="text-xs text-atlas-muted px-1">Nenhum novo host sugerido.</p>
+            ? <p className="text-xs text-atlas-muted px-1">{t('routes.hcp_phase3_empty')}</p>
             : <div className="flex flex-col gap-2">
                 {result.suggestions.map((s, i) => (
-                  <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-3 flex flex-col gap-2">
+                  <div key={i} className="rounded-lg bg-atlas-dark border border-[var(--border-color)] p-3 flex flex-col gap-2">
                     <div className="flex items-start justify-between gap-2">
                       <span className="text-sm font-semibold text-atlas-light leading-tight">{s.hostCandidate.name}</span>
                       <span className="text-xs bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded px-1.5 py-0.5 shrink-0">
-                        Host
+                        {t('routes.hcp_host_badge')}
                       </span>
                     </div>
                     {s.hostCandidate.store_id && (
                       <span className="text-xs text-atlas-muted">ID: {s.hostCandidate.store_id}</span>
                     )}
-                    <div className="border-t border-white/10 pt-2">
-                      <p className="text-xs text-atlas-muted mb-1">Pickups ({s.pickups.length}):</p>
+                    <div className="border-t border-[var(--border-color)] pt-2">
+                      <p className="text-xs text-atlas-muted mb-1">{t('routes.hcp_pickups_label', { count: s.pickups.length })}</p>
                       <div className="flex flex-col gap-1">
                         {s.pickups.map((p) => (
                           <div key={p.store_id} className="flex items-center justify-between text-xs">
@@ -348,6 +350,7 @@ let stopKeyCounter = 0;
 function newStopKey() { return `stop-${++stopKeyCounter}`; }
 
 export default function RoutesTab() {
+  const { t } = useTranslation();
   const allMarkersData = useStore((s) => s.allMarkersData);
   const currentFilteredData = useStore((s) => s.currentFilteredData);
   const deliveryStations = useStore((s) => s.deliveryStations);
@@ -460,8 +463,8 @@ export default function RoutesTab() {
     <div className="p-3">
       {/* Origem */}
       <div className="mb-3">
-        <label htmlFor="route-origin" className="block text-xs font-medium text-atlas-muted mb-1">Origem</label>
-        <AutocompleteInput id="route-origin" placeholder="Buscar parceiro ou estação..."
+        <label htmlFor="route-origin" className="block text-xs font-medium text-atlas-muted mb-1">{t('routes.origin_label')}</label>
+        <AutocompleteInput id="route-origin" placeholder={t('routes.origin_placeholder')}
           value={originText} onChange={setOriginText} onSelect={setOriginItem}
           partners={allMarkersData} stations={deliveryStations} />
         {originItem && <p className="text-xs text-atlas-accent mt-1">✓ {originItem.name}</p>}
@@ -475,19 +478,19 @@ export default function RoutesTab() {
             {stops.map((stop, index) => (
               <div key={stop.key} className="flex items-center gap-1">
                 <div className="flex flex-col gap-0.5">
-                  <button type="button" onClick={() => handleMoveUp(index)} disabled={index === 0} aria-label="Mover para cima"
-                    className="w-6 h-5 flex items-center justify-center rounded text-xs bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed">▲</button>
-                  <button type="button" onClick={() => handleMoveDown(index)} disabled={index === stops.length - 1} aria-label="Mover para baixo"
-                    className="w-6 h-5 flex items-center justify-center rounded text-xs bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed">▼</button>
+                  <button type="button" onClick={() => handleMoveUp(index)} disabled={index === 0} aria-label={t('routes.stop_move_up')}
+                    className="w-6 h-5 flex items-center justify-center rounded text-xs bg-atlas-dark hover:bg-atlas-dark disabled:opacity-30 disabled:cursor-not-allowed">▲</button>
+                  <button type="button" onClick={() => handleMoveDown(index)} disabled={index === stops.length - 1} aria-label={t('routes.stop_move_down')}
+                    className="w-6 h-5 flex items-center justify-center rounded text-xs bg-atlas-dark hover:bg-atlas-dark disabled:opacity-30 disabled:cursor-not-allowed">▼</button>
                 </div>
                 <div className="flex-1">
-                  <AutocompleteInput id={`stop-${stop.key}`} placeholder="Parada..."
+                  <AutocompleteInput id={`stop-${stop.key}`} placeholder={t('routes.stop_placeholder')}
                     value={stop.text}
                     onChange={(val) => setStops((prev) => prev.map((s) => s.key === stop.key ? { ...s, text: val, resolved: null } : s))}
                     onSelect={(item) => setStops((prev) => prev.map((s) => s.key === stop.key ? { ...s, text: item.name, resolved: item } : s))}
                     partners={allMarkersData} stations={deliveryStations} />
                 </div>
-                <button type="button" onClick={() => handleRemoveStop(stop.key)} aria-label="Remover parada"
+                <button type="button" onClick={() => handleRemoveStop(stop.key)} aria-label={t('routes.stop_remove')}
                   className="w-8 h-8 flex items-center justify-center rounded bg-red-500/20 hover:bg-red-500/40 text-red-400 shrink-0">✕</button>
               </div>
             ))}
@@ -497,32 +500,32 @@ export default function RoutesTab() {
 
       {/* Destino */}
       <div className="mb-3">
-        <label htmlFor="route-dest" className="block text-xs font-medium text-atlas-muted mb-1">Destino</label>
-        <AutocompleteInput id="route-dest" placeholder="Buscar parceiro ou estação..."
+        <label htmlFor="route-dest" className="block text-xs font-medium text-atlas-muted mb-1">{t('routes.dest_label')}</label>
+        <AutocompleteInput id="route-dest" placeholder={t('routes.origin_placeholder')}
           value={destText} onChange={setDestText} onSelect={setDestItem}
           partners={allMarkersData} stations={deliveryStations} />
         {destItem && <p className="text-xs text-atlas-accent mt-1">✓ {destItem.name}</p>}
       </div>
 
       <button type="button" onClick={handleAddStop}
-        className="w-full py-2 px-4 rounded border border-white/20 text-atlas-muted text-sm hover:bg-white/5 hover:text-atlas-light focus:outline-none min-h-[44px] mb-3 transition-colors">
-        + Adicionar Parada
+        className="w-full py-2 px-4 rounded border border-[var(--border-color)] text-atlas-muted text-sm hover:border-atlas-accent hover:text-atlas-accent focus:outline-none min-h-[44px] mb-3 transition-colors">
+        {t('routes.add_stop')}
       </button>
 
       <button type="button" onClick={handleFindRoute} disabled={!canFindRoute}
         className="w-full py-3 px-4 rounded bg-atlas-accent text-white text-sm font-semibold hover:opacity-90 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px] mb-2 transition-colors">
-        Buscar Melhor Rota
+        {t('routes.find_route')}
       </button>
 
       <button type="button" onClick={handleClear}
-        className="w-full py-3 px-4 rounded bg-white/10 text-atlas-light text-sm font-medium hover:bg-white/20 focus:outline-none min-h-[44px] mb-2 transition-colors">
-        Limpar Rota
+        className="w-full py-3 px-4 rounded bg-atlas-dark text-atlas-light text-sm font-medium hover:bg-atlas-dark focus:outline-none min-h-[44px] mb-2 transition-colors">
+        {t('routes.clear_route')}
       </button>
 
       {showHcpButton && (
         <button type="button" onClick={handleSuggestHcp} disabled={hcpLoading}
           className="w-full py-3 px-4 rounded bg-purple-600 text-white text-sm font-semibold hover:bg-purple-500 active:bg-purple-700 focus:outline-none disabled:opacity-50 min-h-[44px] transition-colors shadow-md">
-          Sugerir HCP Initiatives
+          {t('routes.suggest_hcp')}
         </button>
       )}
 
@@ -543,7 +546,7 @@ export default function RoutesTab() {
               <circle cx="12" cy="12" r="10" stroke="#a78bfa" strokeWidth="4" strokeOpacity="0.25"/>
               <path fill="#a78bfa" d="M4 12a8 8 0 018-8v8z"/>
             </svg>
-            Otimizando malha com HCP...
+            {t('routes.hcp_loading')}
           </div>
         </div>,
         document.body

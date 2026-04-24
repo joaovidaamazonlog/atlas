@@ -164,6 +164,12 @@ export interface AtlasStore {
   // --- What-If Mode ---
   whatIfModeActive: boolean;
   setWhatIfModeActive: (active: boolean) => void;
+  /** ID do parceiro sendo simulado no what-if (null = nenhum ainda arrastado) */
+  whatIfPartnerId: string | null;
+  setWhatIfPartnerId: (id: string | null) => void;
+  /** Dados da posição simulada no what-if */
+  whatIfSimulatedData: { id: string; pos: [number, number]; radius: number } | null;
+  setWhatIfSimulatedData: (data: { id: string; pos: [number, number]; radius: number } | null) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -225,6 +231,8 @@ export const useStore = create<AtlasStore>((set, get) => ({
 
   // --- Estado inicial: what-if mode ---
   whatIfModeActive: false,
+  whatIfPartnerId: null,
+  whatIfSimulatedData: null,
 
   // ---------------------------------------------------------------------------
   // ACTIONS
@@ -263,7 +271,8 @@ export const useStore = create<AtlasStore>((set, get) => ({
           ? partnersJson.partners
           : Array.isArray(partnersJson)
             ? partnersJson
-            : []).map((raw: unknown) => new PartnerModel(raw as Record<string, unknown>));
+            : []).map((raw: unknown) => new PartnerModel(raw as Record<string, unknown>))
+        .filter((p: Partner) => p.status !== 'Exited' && p.status !== 'New');
       const deliveryStations: DeliveryStation[] = partnersJson.deliveryStations ?? partnersJson.delivery_stations ?? [];
       const period: string | object = partnersJson.period ?? '';
       console.log('[AtlasStore] Parceiros carregados:', allMarkersData.length);
@@ -312,7 +321,7 @@ export const useStore = create<AtlasStore>((set, get) => ({
 
       set({
         allMarkersData,
-        currentFilteredData: allMarkersData,
+        currentFilteredData: applyFiltersLogic(allMarkersData, get().filterState),
         deliveryStations,
         polygonsData,
         jurisdictionData,
@@ -807,6 +816,14 @@ export const useStore = create<AtlasStore>((set, get) => ({
    */
   setWhatIfModeActive: (active: boolean) => {
     set({ whatIfModeActive: active });
+  },
+
+  setWhatIfPartnerId: (id) => {
+    set({ whatIfPartnerId: id });
+  },
+
+  setWhatIfSimulatedData: (data) => {
+    set({ whatIfSimulatedData: data });
   },
 }));
 

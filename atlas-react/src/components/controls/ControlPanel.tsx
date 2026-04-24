@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import FiltersTab from './FiltersTab';
 import StyleTab from './StyleTab';
 import AreaAnalysisTab from './AreaAnalysisTab';
@@ -13,6 +14,7 @@ import RoutesTab from './RoutesTab';
 import ProspectTab from './ProspectTab';
 import { useStore } from '../../store';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
+import LanguageSelector from '../ui/LanguageSelector';
 
 type TabId = 'filters' | 'style' | 'area' | 'routes' | 'prospect';
 
@@ -21,32 +23,24 @@ interface Tab {
   label: string;
 }
 
-const TABS: Tab[] = [
-  { id: 'filters', label: 'Filtros' },
-  { id: 'style', label: 'Camadas' },
-  { id: 'area', label: 'Área' },
-  { id: 'routes', label: 'Rotas' },
-  { id: 'prospect', label: 'Prospectar' },
-];
-
-// Labels curtos para painéis estreitos
-const TABS_SHORT: Tab[] = [
-  { id: 'filters', label: 'Filtros' },
-  { id: 'style', label: 'Layers' },
-  { id: 'area', label: 'Área' },
-  { id: 'routes', label: 'Rotas' },
-  { id: 'prospect', label: 'Prospectar' },
-];
-
 export default function ControlPanel() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabId>('filters');
   const [prospectKey, setProspectKey] = useState(0);
   const clearProspect = useStore((s) => s.clearProspect);
   const setActiveTabStore = useStore((s) => s.setActiveTab);
   const prevTabRef = useRef<TabId>('filters');
   const bp = useBreakpoint();
-  const isCompact = bp === 'laptop';
-  const tabs = isCompact ? TABS_SHORT : TABS;
+
+  const TABS: Tab[] = [
+    { id: 'filters', label: t('control_panel.tab_filters') },
+    { id: 'style', label: t('control_panel.tab_layers') },
+    { id: 'area', label: t('control_panel.tab_area') },
+    { id: 'routes', label: t('control_panel.tab_routes') },
+    { id: 'prospect', label: t('control_panel.tab_prospect') },
+  ];
+
+  const tabs = TABS;
 
   // Limpar estado de prospecção ao sair da aba "Prospectar"
   const handleTabChange = (tab: TabId) => {
@@ -74,7 +68,7 @@ export default function ControlPanel() {
     <div className="flex flex-col h-full bg-atlas-navy text-atlas-light overflow-hidden">
       {/* Tab navigation */}
       <div
-        className="flex border-b border-white/10 bg-atlas-darker shrink-0"
+        className="flex border-b border-[var(--border-color)] bg-atlas-darker shrink-0"
         role="tablist"
         aria-label="Abas de controle"
       >
@@ -91,7 +85,7 @@ export default function ControlPanel() {
               'min-h-[36px] focus:outline-none focus-visible:ring-2 focus-visible:ring-atlas-accent',
               activeTab === tab.id
                 ? 'text-atlas-accent border-b-2 border-atlas-accent bg-atlas-navy/50'
-                : 'text-atlas-muted hover:text-atlas-light hover:bg-white/5',
+                : 'text-atlas-muted hover:text-atlas-light hover:bg-atlas-dark',
             ].join(' ')}
           >
             {tab.label}
@@ -100,8 +94,7 @@ export default function ControlPanel() {
       </div>
 
       {/* Tab content — todos sempre montados para preservar estado */}
-      <div className="flex-1 overflow-y-auto">
-        <div role="tabpanel" id="tabpanel-filters" aria-labelledby="tab-filters" hidden={activeTab !== 'filters'}>
+      <div className="flex-1 overflow-y-auto">        <div role="tabpanel" id="tabpanel-filters" aria-labelledby="tab-filters" hidden={activeTab !== 'filters'}>
           <FiltersTab />
         </div>
         <div role="tabpanel" id="tabpanel-style" aria-labelledby="tab-style" hidden={activeTab !== 'style'}>

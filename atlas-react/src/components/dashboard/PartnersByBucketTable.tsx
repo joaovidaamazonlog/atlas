@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Partner } from '../../store/types';
 
 interface PartnerRow {
@@ -27,6 +28,7 @@ function exportCSV(rows: PartnerRow[]) {
 }
 
 const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
   const rows = useMemo<PartnerRow[]>(() => {
@@ -58,12 +60,12 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
     <section>
       <div className="flex items-center justify-between mb-2 gap-2">
         <h2 className="text-atlas-muted text-xs uppercase tracking-widest">
-          Parceiros Ativos por Bucket ({rows.length})
+          {t('dashboard.partners_by_bucket_title')} ({rows.length})
         </h2>
         <div className="flex items-center gap-2">
           <input
             type="text"
-            placeholder="Buscar..."
+            placeholder={t('dashboard.search_placeholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="bg-atlas-dark border border-atlas-navy text-atlas-light text-xs rounded px-2 py-1 w-36 focus:outline-none focus:border-atlas-accent"
@@ -72,7 +74,7 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
             onClick={() => exportCSV(filtered)}
             className="px-3 py-1 bg-atlas-accent text-white text-xs font-semibold rounded hover:opacity-90 transition-opacity whitespace-nowrap"
           >
-            ⬇ Exportar CSV
+            {t('dashboard.export_csv')}
           </button>
         </div>
       </div>
@@ -83,13 +85,13 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
             <thead className="bg-atlas-darker sticky top-0 z-10">
               <tr>
                 <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-                  Nome
+                  {t('dashboard.col_name')}
                 </th>
                 <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-                  Store ID
+                  {t('dashboard.col_store_id')}
                 </th>
                 <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-                  Bucket
+                  {t('dashboard.col_bucket')}
                 </th>
               </tr>
             </thead>

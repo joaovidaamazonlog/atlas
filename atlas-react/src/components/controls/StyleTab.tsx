@@ -5,15 +5,8 @@
  * Selects "Estilizar por" e "Detalhar por" + checkboxes de camadas.
  */
 
+import { useTranslation } from 'react-i18next';
 import { useStore } from '../../store';
-
-const STYLE_FIELD_OPTIONS = [
-  { value: 'delivery_station', label: 'Delivery Station' },
-  { value: 'status', label: 'Status' },
-  { value: 'hub_delivey_initiatives', label: 'Hub Delivery Initiatives' },
-  { value: 'supply_run', label: 'Supply Run' },
-  { value: 'bucket_ade', label: 'Carteira' },
-];
 
 interface CheckboxRowProps {
   id: string;
@@ -28,7 +21,7 @@ function CheckboxRow({ id, label, checked, onChange }: CheckboxRowProps) {
       htmlFor={id}
       className={[
         'flex items-center gap-3 px-3 py-3 rounded cursor-pointer',
-        'transition-colors duration-150 hover:bg-white/5',
+        'transition-colors duration-150 hover:bg-atlas-dark',
         'min-h-[44px]',
       ].join(' ')}
     >
@@ -45,8 +38,18 @@ function CheckboxRow({ id, label, checked, onChange }: CheckboxRowProps) {
 }
 
 export default function StyleTab() {
+  const { t } = useTranslation();
   const styleConfig = useStore((s) => s.styleConfig);
   const setStyleConfig = useStore((s) => s.setStyleConfig);
+
+  const STYLE_FIELD_OPTIONS = [
+    { value: 'delivery_station', label: t('style.field_delivery_station') },
+    { value: 'status', label: t('style.field_status') },
+    { value: 'hub_delivey_initiatives', label: t('style.field_initiatives') },
+    { value: 'supply_run', label: t('style.field_supply_run') },
+    { value: 'bucket_ade', label: t('style.field_bucket') },
+  ];
+
   return (
     <div className="p-3">
       {/* Estilizar por */}
@@ -55,14 +58,14 @@ export default function StyleTab() {
           htmlFor="style-primary"
           className="block text-xs font-medium text-atlas-muted mb-1"
         >
-          Estilizar por
+          {t('style.primary_label')}
         </label>
         <select
           id="style-primary"
           value={styleConfig.primaryField}
           onChange={(e) => setStyleConfig({ primaryField: e.target.value })}
           className={[
-            'w-full px-3 py-2 rounded bg-atlas-darker border border-white/10',
+            'w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)]',
             'text-sm text-atlas-light',
             'focus:outline-none focus:border-atlas-accent transition-colors duration-150',
             'min-h-[44px]',
@@ -82,14 +85,14 @@ export default function StyleTab() {
           htmlFor="style-secondary"
           className="block text-xs font-medium text-atlas-muted mb-1"
         >
-          Detalhar por
+          {t('style.secondary_label')}
         </label>
         <select
           id="style-secondary"
           value={styleConfig.secondaryField}
           onChange={(e) => setStyleConfig({ secondaryField: e.target.value })}
           className={[
-            'w-full px-3 py-2 rounded bg-atlas-darker border border-white/10',
+            'w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)]',
             'text-sm text-atlas-light',
             'focus:outline-none focus:border-atlas-accent transition-colors duration-150',
             'min-h-[44px]',
@@ -104,48 +107,48 @@ export default function StyleTab() {
       </div>
 
       {/* Camadas */}
-      <div className="border-t border-white/10 pt-2">
-        <p className="text-xs font-medium text-atlas-muted px-3 py-2">Camadas</p>
+      <div className="border-t border-[var(--border-color)] pt-2">
+        <p className="text-xs font-medium text-atlas-muted px-3 py-2">{t('style.layers_title')}</p>
         <CheckboxRow
           id="layer-radii"
-          label="Exibir Raios"
+          label={t('style.layer_radii')}
           checked={styleConfig.showRadii}
           onChange={(v) => setStyleConfig({ showRadii: v })}
         />
         <CheckboxRow
           id="layer-polygons"
-          label="Exibir Áreas de Prospecção"
+          label={t('style.layer_polygons')}
           checked={styleConfig.showPolygons}
           onChange={(v) => setStyleConfig({ showPolygons: v })}
         />
         {styleConfig.showPolygons && (
           <div className="px-3 pb-2">
             <label className="block text-xs font-medium text-atlas-muted mb-1">
-              Colorir territórios por
+              {t('style.polygon_color_label')}
             </label>
             <select
               value={styleConfig.polygonColorField}
               onChange={(e) => setStyleConfig({ polygonColorField: e.target.value })}
-              className="w-full px-3 py-2 rounded bg-atlas-darker border border-white/10 text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
+              className="w-full px-3 py-2 rounded bg-atlas-darker border border-[var(--border-color)] text-sm text-atlas-light focus:outline-none focus:border-atlas-accent transition-colors min-h-[44px]"
             >
-              <option value="attainment">Por Attainment</option>
-              <option value="territory">Por Carteira</option>
-              <option value="ds">Por Delivery Station</option>
-              <option value="ctl">Por CTL</option>
-              <option value="bdm">Por BDM</option>
+              <option value="attainment">{t('style.polygon_color_attainment')}</option>
+              <option value="territory">{t('style.polygon_color_territory')}</option>
+              <option value="ds">{t('style.polygon_color_ds')}</option>
+              <option value="ctl">{t('style.polygon_color_ctl')}</option>
+              <option value="bdm">{t('style.polygon_color_bdm')}</option>
             </select>
           </div>
         )}
         <CheckboxRow
           id="layer-jurisdictions"
-          label="Exibir Jurisdições"
+          label={t('style.layer_jurisdictions')}
           checked={styleConfig.showJurisdictions}
           onChange={(v) => setStyleConfig({ showJurisdictions: v })}
         />
 
         <CheckboxRow
           id="layer-geo-intelligence"
-          label="Exibir Geointeligência"
+          label={t('style.layer_geo_intelligence')}
           checked={styleConfig.showGeoIntelligence}
           onChange={(v) => setStyleConfig({ showGeoIntelligence: v })}
         />

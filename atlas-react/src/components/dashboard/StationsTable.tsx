@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import type { Partner } from '../../store/types';
 
@@ -32,16 +33,6 @@ function groupByStation(data: Partner[]): StationRow[] {
   return Object.values(map);
 }
 
-const COLUMNS: { key: SortKey; label: string }[] = [
-  { key: 'station', label: 'Delivery Station' },
-  { key: 'active', label: 'Ativos' },
-  { key: 'onboarding', label: 'Onboarding' },
-  { key: 'bgChecks', label: 'BG Checks' },
-  { key: 'prospects', label: 'Prospects' },
-  { key: 'inactive', label: 'Inativos' },
-  { key: 'total', label: 'Total' },
-];
-
 const ROW_HEIGHT = 40;
 const VIRTUALIZE_THRESHOLD = 100;
 
@@ -50,9 +41,20 @@ interface StationsTableProps {
 }
 
 const StationsTable: React.FC<StationsTableProps> = React.memo(({ data }) => {
+  const { t } = useTranslation();
   const [sortKey, setSortKey] = useState<SortKey>('active');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const parentRef = useRef<HTMLDivElement>(null);
+
+  const COLUMNS: { key: SortKey; label: string }[] = [
+    { key: 'station', label: t('dashboard.col_delivery_station') },
+    { key: 'active', label: t('dashboard.col_active') },
+    { key: 'onboarding', label: t('dashboard.col_onboarding') },
+    { key: 'bgChecks', label: t('dashboard.col_bg_checks') },
+    { key: 'prospects', label: t('dashboard.col_prospects') },
+    { key: 'inactive', label: t('dashboard.col_inactive') },
+    { key: 'total', label: t('dashboard.col_total') },
+  ];
 
   const rows = useMemo(() => {
     const grouped = groupByStation(data);

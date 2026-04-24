@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from '../../store';
 import { LoadingIndicator } from '../ui/LoadingIndicator';
 import { useTheme } from '../../hooks/useTheme';
+import LanguageSelector from '../ui/LanguageSelector';
 
 export const Header: React.FC = () => {
   const period = useStore((s) => s.period);
@@ -45,8 +46,9 @@ export const Header: React.FC = () => {
         )}
       </div>
 
-      {/* Direita — theme toggle + loading */}
-      <div className="flex items-center justify-end gap-2" style={{ width: '130px', flexShrink: 0 }}>
+      {/* Direita — language selector + theme toggle + loading */}
+      <div className="flex items-center justify-end gap-2" style={{ width: '180px', flexShrink: 0 }}>
+        <LanguageSelector />
         <button
           onClick={toggleTheme}
           aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}

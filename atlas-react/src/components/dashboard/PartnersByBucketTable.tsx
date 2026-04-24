@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Partner } from '../../store/types';
+import type { DashboardFilters, ReportData } from '../../lib/reportUtils';
+import { filterBases } from '../../lib/reportUtils';
 
 interface PartnerRow {
   name: string;
@@ -10,7 +12,8 @@ interface PartnerRow {
 
 interface Props {
   data: Partner[];
-  selectedStation?: string;
+  filters: DashboardFilters;
+  reportData: ReportData | null;
 }
 
 function exportCSV(rows: PartnerRow[]) {
@@ -27,40 +30,68 @@ function exportCSV(rows: PartnerRow[]) {
   URL.revokeObjectURL(url);
 }
 
-const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
+const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
 
+  // Deriva o conjunto de territory IDs visíveis a partir dos filtros aplicados no reportData.
+  // Isso honra todos os níveis: BDM → Base → CTL → ADE → Território.
+  const allowedBuckets = useMemo<Set<string> | null>(() => {
+    // Se nenhum filtro além de base está ativo, não precisamos restringir por bucket
+    const hasFilter =
+      filters.bdm !== 'all' ||
+      filters.ctl !== 'all' ||
+      filters.ade !== 'all' ||
+      filters.territory !== 'all';
+
+    if (!hasFilter) return null; // null = sem restrição por bucket (só base)
+
+    if (!reportData) return new Set();
+
+    const filtered = filterBases(reportData, filters);
+    const ids = filtered.flatMap((b) => b.territories.map((t) => t.id));
+    return new Set(ids);
+  }, [reportData, filters]);
+
   const rows = useMemo<PartnerRow[]>(() => {
     return data
-      .filter(
-        (p) =>
-          p.status === 'Active' &&
-          p.bucket_ade &&
-          (!selectedStation || selectedStation === 'all' || p.delivery_station === selectedStation),
-      )
-      .map((p) => ({ name: p.name, store_id: p.store_id ?? '', bucket_ade: p.bucket_ade }))
+      .filter((p) => {
+        if (p.status !== 'Active') return false;
+        if (!p.bucket_ade) return false;
+
+        // Filtro por base
+        if (filters.base !== 'all' && p.delivery_station !== filters.base) return false;
+
+        // Filtro por buckets derivados dos filtros de CTL/ADE/território
+        if (allowedBuckets !== null && !allowedBuckets.has(p.bucket_ade)) return false;
+
+        return true;
+      })
+      .map((p) => ({
+        name: p.name,
+        store_id: p.store_id ?? '',
+        bucket_ade: p.bucket_ade,
+      }))
       .sort((a, b) => a.bucket_ade.localeCompare(b.bucket_ade, undefined, { numeric: true }));
-  }, [data, selectedStation]);
+  }, [data, filters, allowedBuckets]);
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return rows;
-    const q = search.toLowerCase();
+    const q = search.trim().toLowerCase();
+    if (!q) return rows;
     return rows.filter(
       (r) =>
         r.name.toLowerCase().includes(q) ||
-        r.store_id.includes(q) ||
-        r.bucket_ade.toLowerCase().includes(q),
+        (r.store_id && r.store_id.toLowerCase().includes(q)),
     );
   }, [rows, search]);
 
-  if (rows.length === 0) return null;
+  if (rows.length === 0 && !search) return null;
 
   return (
     <section>
       <div className="flex items-center justify-between mb-2 gap-2">
         <h2 className="text-atlas-muted text-xs uppercase tracking-widest">
-          {t('dashboard.partners_by_bucket_title')} ({rows.length})
+          {t('dashboard.partners_by_bucket_title')} ({filtered.length})
         </h2>
         <div className="flex items-center gap-2">
           <input
@@ -96,9 +127,9 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((row) => (
+              {filtered.map((row, idx) => (
                 <tr
-                  key={row.store_id + row.bucket_ade}
+                  key={`${row.store_id}-${row.bucket_ade}-${idx}`}
                   className="border-b border-atlas-navy hover:bg-atlas-navy transition-colors"
                 >
                   <td className="px-3 py-2 text-atlas-light">{row.name}</td>
@@ -109,7 +140,7 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, selectedStation }) => {
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={3} className="px-3 py-4 text-center text-atlas-muted text-xs">
-                    Nenhum resultado encontrado.
+                    {t('dashboard.no_territory_found')}
                   </td>
                 </tr>
               )}

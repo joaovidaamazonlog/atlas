@@ -90,6 +90,7 @@ const Dashboard: React.FC = () => {
     bdm: 'all',
     base: 'all',
     ctl: 'all',
+    ade: 'all',
     territory: 'all',
   });
   const [sortState, setSortState] = useState<SortState>({ column: null, direction: 'asc' });
@@ -253,7 +254,7 @@ const Dashboard: React.FC = () => {
       </section>
 
       {/* Partners by Bucket */}
-      <PartnersByBucketTable data={allMarkersData} selectedStation={filters.base} />
+      <PartnersByBucketTable data={allMarkersData} filters={filters} reportData={reportData} />
     </div>
   );
 };
@@ -450,6 +451,11 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort
                 >
                   <td className="px-3 py-2 text-atlas-light font-medium whitespace-nowrap">
                     {row.id}
+                    {row.satelliteOrigin && (
+                      <span className="ml-2 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-atlas-navy text-atlas-accent border border-atlas-accent/40 whitespace-nowrap">
+                        {row.satelliteOrigin}
+                      </span>
+                    )}
                   </td>
                   <td className="px-3 py-2 text-atlas-muted whitespace-nowrap">{row.baseCode}</td>
                   <td className="px-3 py-2 text-atlas-muted whitespace-nowrap">{row.ctl}</td>

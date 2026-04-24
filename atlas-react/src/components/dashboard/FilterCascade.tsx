@@ -10,7 +10,7 @@ interface FilterCascadeProps {
 }
 
 function unique(arr: string[]): string[] {
-  return [...new Set(arr)].sort();
+  return [...new Set(arr.filter(Boolean))].sort();
 }
 
 const FilterCascade: React.FC<FilterCascadeProps> = ({
@@ -22,42 +22,56 @@ const FilterCascade: React.FC<FilterCascadeProps> = ({
   const { t } = useTranslation();
   const bases = reportData?.bases ?? [];
 
-  // Available BDMs: all BDMs from reportData
+  // BDMs disponíveis
   const bdmOptions = useMemo(() => unique(bases.map((b) => b.bdm)), [bases]);
 
-  // Available Bases: filtered by selected BDM
+  // Bases filtradas por BDM
   const baseOptions = useMemo(() => {
     const visible = filters.bdm !== 'all' ? bases.filter((b) => b.bdm === filters.bdm) : bases;
     return unique(visible.map((b) => b.code));
   }, [bases, filters.bdm]);
 
-  // Available CTLs: from bases visible after BDM + Base filter
+  // CTLs filtrados por BDM + Base
   const ctlOptions = useMemo(() => {
     let visible = filters.bdm !== 'all' ? bases.filter((b) => b.bdm === filters.bdm) : bases;
     if (filters.base !== 'all') visible = visible.filter((b) => b.code === filters.base);
-    return unique(visible.flatMap((b) => b.territories.map((t) => t.ctl)));
+    return unique(visible.flatMap((b) => b.territories.map((t) => t.ctl ?? '')));
   }, [bases, filters.bdm, filters.base]);
 
-  // Available Territories: filtered by CTL (and base/bdm)
-  const territoryOptions = useMemo(() => {
+  // ADEs filtrados por BDM + Base + CTL
+  const adeOptions = useMemo(() => {
     let visible = filters.bdm !== 'all' ? bases.filter((b) => b.bdm === filters.bdm) : bases;
     if (filters.base !== 'all') visible = visible.filter((b) => b.code === filters.base);
     const terrs = visible.flatMap((b) =>
       filters.ctl !== 'all' ? b.territories.filter((t) => t.ctl === filters.ctl) : b.territories,
     );
-    return unique(terrs.map((t) => t.id));
+    return unique(terrs.map((t) => t.ade ?? ''));
   }, [bases, filters.bdm, filters.base, filters.ctl]);
 
+  // Territórios filtrados por BDM + Base + CTL + ADE
+  const territoryOptions = useMemo(() => {
+    let visible = filters.bdm !== 'all' ? bases.filter((b) => b.bdm === filters.bdm) : bases;
+    if (filters.base !== 'all') visible = visible.filter((b) => b.code === filters.base);
+    let terrs = visible.flatMap((b) => b.territories);
+    if (filters.ctl !== 'all') terrs = terrs.filter((t) => t.ctl === filters.ctl);
+    if (filters.ade !== 'all') terrs = terrs.filter((t) => t.ade === filters.ade);
+    return unique(terrs.map((t) => t.id));
+  }, [bases, filters.bdm, filters.base, filters.ctl, filters.ade]);
+
   const handleBdmChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFilterChange({ bdm: e.target.value, base: 'all', ctl: 'all', territory: 'all' });
+    onFilterChange({ bdm: e.target.value, base: 'all', ctl: 'all', ade: 'all', territory: 'all' });
   };
 
   const handleBaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFilterChange({ ...filters, base: e.target.value, ctl: 'all', territory: 'all' });
+    onFilterChange({ ...filters, base: e.target.value, ctl: 'all', ade: 'all', territory: 'all' });
   };
 
   const handleCtlChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFilterChange({ ...filters, ctl: e.target.value, territory: 'all' });
+    onFilterChange({ ...filters, ctl: e.target.value, ade: 'all', territory: 'all' });
+  };
+
+  const handleAdeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onFilterChange({ ...filters, ade: e.target.value, territory: 'all' });
   };
 
   const handleTerritoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -68,15 +82,11 @@ const FilterCascade: React.FC<FilterCascadeProps> = ({
     'bg-atlas-darker border border-atlas-navy text-atlas-light text-sm rounded px-2 py-1 focus:outline-none focus:border-atlas-accent disabled:opacity-50 disabled:cursor-not-allowed';
 
   const filterDefs = [
-    { label: t('dashboard.filter_bdm'), value: filters.bdm, options: bdmOptions, onChange: handleBdmChange },
-    { label: t('dashboard.filter_base'), value: filters.base, options: baseOptions, onChange: handleBaseChange },
-    { label: t('dashboard.filter_ctl'), value: filters.ctl, options: ctlOptions, onChange: handleCtlChange },
-    {
-      label: t('dashboard.filter_territory'),
-      value: filters.territory,
-      options: territoryOptions,
-      onChange: handleTerritoryChange,
-    },
+    { label: t('dashboard.filter_bdm'),       value: filters.bdm,       options: bdmOptions,       onChange: handleBdmChange },
+    { label: t('dashboard.filter_base'),      value: filters.base,      options: baseOptions,      onChange: handleBaseChange },
+    { label: t('dashboard.filter_ctl'),       value: filters.ctl,       options: ctlOptions,       onChange: handleCtlChange },
+    { label: t('dashboard.filter_ade'),       value: filters.ade,       options: adeOptions,       onChange: handleAdeChange },
+    { label: t('dashboard.filter_territory'), value: filters.territory, options: territoryOptions, onChange: handleTerritoryChange },
   ];
 
   return (

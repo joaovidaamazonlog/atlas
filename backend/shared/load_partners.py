@@ -84,8 +84,11 @@ class PartnerData:
     ) -> Optional[str]:
         """
         Retorna o station_code da jurisdição que contém o ponto (lat, lon).
+        Bases satélite são resolvidas para a base canônica via STATION_ALIASES.
         Usa cache interno para evitar recalcular para o mesmo ponto.
         """
+        from shared.config import STATION_ALIASES
+
         key = f"{lat:.6f},{lon:.6f}"
         if key in self._jurisdiction_cache:
             return self._jurisdiction_cache[key]
@@ -94,7 +97,9 @@ class PartnerData:
         result = None
         for feature in self.jurisdictions.get("features", []):
             if shape(feature["geometry"]).contains(pt):
-                result = feature["properties"].get("delivery_station")
+                raw_station = feature["properties"].get("delivery_station")
+                # Resolver satélite → canônica
+                result = STATION_ALIASES.get(raw_station, raw_station)
                 break
 
         self._jurisdiction_cache[key] = result
@@ -239,6 +244,14 @@ def load_partners(
             df.rename(columns={src: dst}, inplace=True)
         if src in web_leads_df.columns:
             web_leads_df.rename(columns={src: dst}, inplace=True)
+
+    # 3b. Remapear bases satélite → base canônica
+    aliases = getattr(Config, "STATION_ALIASES", {})
+    if aliases:
+        if "station_code" in df.columns:
+            df["station_code"] = df["station_code"].replace(aliases)
+        if "station_code" in web_leads_df.columns:
+            web_leads_df["station_code"] = web_leads_df["station_code"].replace(aliases)
 
     # 4. Separar prospects sem lat/lon (serão avaliados com decision fixa na Fase 3)
     #    Demais parceiros: remover lat/lon ausentes normalmente
@@ -419,6 +432,15 @@ def _consolidate_stores(dfs: dict) -> pd.DataFrame:
     # Remap legado de DS (HSP2 → DSP2 etc.)
     if "Delivery Station" in consolidated.columns:
         consolidated["Delivery Station"] = consolidated["Delivery Station"].replace(_MAPEAMENTO_DS)
+
+    # Remap de bases satélite → base canônica (XBA1 → DSA8 etc.)
+    import shared.config as _cfg
+    _aliases = getattr(_cfg, "STATION_ALIASES", {})
+    if _aliases and "Delivery Station" in consolidated.columns:
+        consolidated["Delivery Station"] = consolidated["Delivery Station"].replace(_aliases)
+        n_sat = consolidated["Delivery Station"].isin(_aliases.keys()).sum()
+        if n_sat:
+            print(f"[_consolidate_stores] WARN: {n_sat} registros ainda com código satélite após remap.")
 
     print(f"[_consolidate_stores] {len(consolidated):,} registros consolidados.")
     return consolidated

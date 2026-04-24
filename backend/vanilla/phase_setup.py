@@ -89,13 +89,35 @@ def _slot_utm(slot: Dict) -> Tuple[float, float]:
 # ---------------------------------------------------------------------------
 
 def _load_jurisdiction_poly(station_code: str, jur_geojson: Dict):
+    """
+    Carrega o polígono shapely da jurisdição de uma base canônica,
+    incluindo a união com os polígonos das áreas satélite (STATION_ALIASES).
+    """
+    # Códigos a incluir: a base canônica + todas as suas satélites
+    satellites = Config.get_satellites(station_code)
+    codes_to_include = {station_code} | set(satellites)
+
+    polys = []
     for f in jur_geojson.get("features", []):
-        if f.get("properties", {}).get("delivery_station") == station_code:
+        code = f.get("properties", {}).get("delivery_station")
+        if code not in codes_to_include:
+            continue
+        try:
+            polys.append(make_valid(shape(f["geometry"])))
+        except Exception:
             try:
-                return make_valid(shape(f["geometry"]))
+                polys.append(shape(f["geometry"]))
             except Exception:
-                return shape(f["geometry"])
-    return None
+                pass
+
+    if not polys:
+        return None
+    if len(polys) == 1:
+        return polys[0]
+    try:
+        return make_valid(unary_union(polys))
+    except Exception:
+        return polys[0]
 
 
 # ---------------------------------------------------------------------------
@@ -1416,25 +1438,40 @@ def rebuild_territory_polygons(
         gj = json.load(f)
 
     # Carregar jurisdições para clip
+    # Inclui union de satélites na base canônica via STATION_ALIASES
     jur_polys: Dict[str, object] = {}
     if jur_path.exists():
         try:
             with open(jur_path, "r", encoding="utf-8") as f:
                 jur_gj = json.load(f)
+            raw_polys: Dict[str, object] = {}
             for ft in jur_gj.get("features", []):
                 sc = ft.get("properties", {}).get("delivery_station")
                 if sc:
                     try:
-                        jur_polys[sc] = make_valid(shape(ft["geometry"]))
+                        raw_polys[sc] = make_valid(shape(ft["geometry"]))
+                    except Exception:
+                        pass
+            # Construir jur_polys com union de satélites na canônica
+            aliases = getattr(Config, "STATION_ALIASES", {})
+            for sc, poly in raw_polys.items():
+                canonical = aliases.get(sc, sc)
+                if canonical not in jur_polys:
+                    jur_polys[canonical] = poly
+                else:
+                    try:
+                        jur_polys[canonical] = make_valid(jur_polys[canonical].union(poly))
                     except Exception:
                         pass
         except Exception:
             pass
 
     # Filtrar territórios a reconstruir
+    # Usa station_code remapeado (satélite → canônica) para filtro por stations
+    aliases = getattr(Config, "STATION_ALIASES", {})
     tids_to_rebuild = set()
     for tid, meta in territory_index.items():
-        sc = meta.get("station_code", "")
+        sc = aliases.get(meta.get("station_code", ""), meta.get("station_code", ""))
         if stations and sc not in stations:
             continue
         if meta.get("hex_ids"):
@@ -1455,7 +1492,9 @@ def rebuild_territory_polygons(
         meta       = territory_index[tid]
         hex_ids    = meta.get("hex_ids", [])
         station    = meta.get("station_code", "")
-        jur_poly   = jur_polys.get(station)
+        # Resolver satélite → canônica para buscar o polígono de jurisdição correto
+        station_canonical = aliases.get(station, station)
+        jur_poly   = jur_polys.get(station_canonical)
 
         if not hex_ids:
             skipped += 1
@@ -1523,6 +1562,53 @@ def rebuild_territory_polygons(
     size_kb = t_path.stat().st_size / 1024
     print(f"  ✅ territories.geojson reconstruído: "
           f"{rebuilt} territórios | {skipped} pulados | {size_kb:.1f} KB")
+
+
+def patch_heatmap_satellite_stations(output_dir: str) -> None:
+    """
+    Corrige delivery_station no heatmap.geojson para hexes de áreas satélite.
+
+    O heatmap é gerado no setup com delivery_station = "XBA1" (código original).
+    Esta função remapeia para a base canônica ("DSA8") via STATION_ALIASES,
+    sem precisar rodar o setup novamente.
+
+    Roda automaticamente no daily quando STATION_ALIASES está definido.
+    É idempotente — pode ser chamada múltiplas vezes sem efeito colateral.
+    """
+    aliases = getattr(Config, "STATION_ALIASES", {})
+    if not aliases:
+        return
+
+    path = Path(output_dir) / "heatmap.geojson"
+    if not path.exists():
+        return
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            heatmap = json.load(f)
+    except Exception as e:
+        print(f"  WARN patch_heatmap_satellite_stations: falha ao ler heatmap ({e})")
+        return
+
+    n_patched = 0
+    for feature in heatmap.get("features", []):
+        props = feature.get("properties", {})
+        ds = props.get("delivery_station", "")
+        canonical = aliases.get(ds)
+        if canonical:
+            props["delivery_station"] = canonical
+            n_patched += 1
+
+    if n_patched == 0:
+        return  # nada a fazer — já está correto ou não há satélites
+
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(heatmap, f, ensure_ascii=False, indent=2)
+        print(f"  ✅ heatmap.geojson: {n_patched} hexes satélite remapeados "
+              f"para bases canônicas.")
+    except Exception as e:
+        print(f"  WARN patch_heatmap_satellite_stations: falha ao salvar ({e})")
 
 
 def run_update_heatmap(

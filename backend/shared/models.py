@@ -49,21 +49,44 @@ class Config:
     BONUS_PER_OPEN       = 1500
     CLUSTER_PER_STATION  = getattr(configuration, "CLUSTER_PER_STATION", {})
 
+    # BDM_CLUSTERS derivado do TEAM — não editar manualmente.
+    # Formato: {region: [station_code, ...]}
     BDM_CLUSTERS: Dict[str, List[str]] = {
-        "SP/SUL":              ["DBR9", "DSP2", "DSP4", "DSP5", "DPR2", "DFR2", "DRS5"],
-        "RJ/CW":               ["DRJ3", "DBS5", "DGO2"],
-        "BH":                  ["DMG2", "DBH5"],
-        "RECIFE/JOAO PESSOA":  ["DPE4", "DPB3"],
-        "FORTALEZA":           ["DCE3"],
-        "ES/BA":               ["DES2", "DSA8"],
+        bdm["region"]: bdm["stations"]
+        for bdm in configuration.TEAM
+        if bdm.get("region") and bdm.get("stations")
     }
+
+    # Índice reverso: base canônica → lista de satélites
+    # Ex: {"DSA8": ["XBA1"], "DRJ3": ["XRJ2", "XRJ3", "XRJ4"], ...}
+    SATELLITE_MAP: Dict[str, List[str]] = {}
+    for _sat, _canonical in configuration.STATION_ALIASES.items():
+        SATELLITE_MAP.setdefault(_canonical, []).append(_sat)
+
+    @staticmethod
+    def get_satellites(station_code: str) -> List[str]:
+        """Retorna a lista de bases satélite de uma base canônica."""
+        return Config.SATELLITE_MAP.get(station_code, [])
 
     @staticmethod
     def get_bdm_cluster(station_code: str) -> str:
+        """Retorna a região (nome do BDM) responsável pela base."""
+        info = configuration.get_bdm_for_station(station_code)
+        region = info.get("region", "")
+        if region:
+            return region
+        # fallback: varrer BDM_CLUSTERS
         for cluster, bases in Config.BDM_CLUSTERS.items():
             if station_code in bases:
                 return cluster
         return "OUTROS"
+
+    # Atalhos para as funções utilitárias do TEAM
+    get_ade_for_territory      = staticmethod(configuration.get_ade_for_territory)
+    get_ctl_for_station        = staticmethod(configuration.get_ctl_for_station)
+    get_bdm_for_station        = staticmethod(configuration.get_bdm_for_station)
+    get_owner_id_for_territory = staticmethod(configuration.get_owner_id_for_territory)
+    get_name_for_alias         = staticmethod(configuration.get_name_for_alias)
 
 
 # ---------------------------------------------------------------------------
@@ -335,6 +358,14 @@ def load_territories(output_dir: str = None) -> "TerritoriesResult":
     Carrega territories_index.json sem re-rodar o setup.
     Usado pelo modo daily do orquestrador.
     Levanta FileNotFoundError se o setup ainda não foi executado.
+
+    Remap de satélites
+    ------------------
+    Territórios cujo station_code é uma base satélite (ex: XBA1) têm o
+    station_code substituído pela base canônica (ex: DSA8) em memória,
+    via STATION_ALIASES. O arquivo em disco não é alterado.
+    Isso permite que os buckets das satélites apareçam como buckets da
+    base canônica em todos os filtros e relatórios, sem rodar setup novamente.
     """
     out_dir    = Path(output_dir or Config.DEST_FOLDER)
     index_path = out_dir / "territories_index.json"
@@ -349,6 +380,24 @@ def load_territories(output_dir: str = None) -> "TerritoriesResult":
     print(f"[load_territories] Carregando {index_path} ...")
     with open(index_path, "r", encoding="utf-8") as f:
         territory_index = json.load(f)
+
+    # Remap em memória: satélite → canônica
+    aliases = getattr(configuration, "STATION_ALIASES", {})
+    n_remapped = 0
+    if aliases:
+        for meta in territory_index.values():
+            original = meta.get("station_code", "")
+            canonical = aliases.get(original)
+            if canonical:
+                meta["station_code"] = canonical
+                # Atualizar bdm_cluster para refletir a base canônica
+                bdm_info = configuration.get_bdm_for_station(canonical)
+                if bdm_info.get("region"):
+                    meta["bdm_cluster"] = bdm_info["region"]
+                n_remapped += 1
+        if n_remapped:
+            print(f"  STATION_ALIASES: {n_remapped} territórios satélite "
+                  f"remapeados para bases canônicas (em memória).")
 
     hex_to_territory: Dict[str, str] = {}
     for territory_id, meta in territory_index.items():

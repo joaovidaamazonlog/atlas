@@ -51,6 +51,7 @@ import h3
 
 from shared.load_packages import PackageData
 from shared.models import Config, IdealSlot, PartnerMetrics, TerritoriesResult
+import shared.config as configuration
 from vanilla.phase2_ideal_supply import IdealSupplyResult
 from vanilla.phase3_partner_fit import FitResult, TerritoryFit
 from vanilla.phase4_webleads import WebleadResult
@@ -78,11 +79,14 @@ def _ceps_for_partner(partner: PartnerMetrics, hex_to_ceps: Dict[str, Set[str]])
     return sorted(ceps)[:5]
 
 def _ctl_for_territory(territory_id: str) -> str:
-    try:
-        seq = int(territory_id.split("_T")[-1]) - 1
-        return f"CTL-{chr(65 + (seq // 5))}"
-    except (ValueError, IndexError):
-        return "CTL-A"
+    """
+    Retorna o nome do CTL responsável pelo território.
+    Deriva a base do territory_id e consulta o TEAM via Config.get_ctl_for_station.
+    """
+    station_code = territory_id.split("_")[0] if "_" in territory_id else ""
+    ctl = Config.get_ctl_for_station(station_code)
+    name = ctl.get("name", "")
+    return name if name else "N/A"
 
 
 # ---------------------------------------------------------------------------
@@ -109,30 +113,28 @@ def _write_strategic(
 
         for station in sorted(territories.stations):
             bdm = Config.get_bdm_cluster(station)
-            f.write(f"\n📍 BASE: {station} | BDM: {bdm}\n")
+            ctl_info = Config.get_ctl_for_station(station)
+            ctl_name = ctl_info.get("name") or "N/A"
+            f.write(f"\n📍 BASE: {station} | BDM: {bdm} | CTL: {ctl_name}\n")
             f.write(_line())
 
             t_metas = sorted(
                 territories.territories_for(station),
-                key=lambda m: (_ctl_for_territory(m["territory_id"]),
-                               m["territory_id"]),
+                key=lambda m: m["territory_id"],
             )
 
-            current_ctl = None
             for meta in t_metas:
-                tid = meta["territory_id"]
-                ctl = _ctl_for_territory(tid)
-
-                if ctl != current_ctl:
-                    current_ctl = ctl
-                    f.write(f"\n   👮 {ctl} (Coordenador)\n")
+                tid      = meta["territory_id"]
+                ctl      = _ctl_for_territory(tid)
+                ade_info = Config.get_ade_for_territory(tid)
+                ade_name = ade_info.get("name") or "N/A"
 
                 t_fit: Optional[TerritoryFit] = fit.territories.get(tid)
                 slots_open = [s for s in supply.slots_for(tid) if s.is_open]
                 slots_total = len(supply.slots_for(tid))
 
                 f.write(_line())
-                f.write(f"      📦 Territorio: {tid}\n")
+                f.write(f"      📦 Territorio: {tid} | CTL: {ctl} | ADE: {ade_name}\n")
                 f.write(f"          - Demanda diaria:          {meta['daily_demand']:,.1f} pacotes/dia\n")
                 f.write(f"          - Vagas ideais:             {slots_total}\n")
                 f.write(f"          - Vagas em aberto:          {len(slots_open)}\n")
@@ -220,7 +222,8 @@ def _write_executive_json(
 
     for station in sorted(territories.stations):
         t_metas = territories.territories_for(station)
-        bdm     = Config.get_bdm_cluster(station)
+        bdm_info = Config.get_bdm_for_station(station)
+        bdm      = bdm_info.get("region") or Config.get_bdm_cluster(station)
 
         total_daily_demand = sum(m["daily_demand"] for m in t_metas)
         total_slots        = sum(len(supply.slots_for(m["territory_id"])) for m in t_metas)
@@ -243,10 +246,13 @@ def _write_executive_json(
         coverage     = round(total_filled / total_slots, 4) if total_slots else 0.0
         attainment   = round(active / total_slots, 4) if total_slots else 0.0
 
+        ctl_info = Config.get_ctl_for_station(station)
+
         territory_list = []
         for meta in sorted(t_metas, key=lambda m: m["territory_id"]):
             tid          = meta["territory_id"]
             ctl          = _ctl_for_territory(tid)
+            ade_info     = Config.get_ade_for_territory(tid)
             t_fit        = fit.territories.get(tid)
             t_slots      = supply.slots_for(tid)
             n_open       = len([s for s in t_slots if s.is_open])
@@ -259,31 +265,45 @@ def _write_executive_json(
             t_accuracy   = round(t_fit.accuracy / 100, 4)   if t_fit else 0.0
             ceps         = _ceps_for_territory(tid, territories, pkg)
 
+            # Detectar se este território pertence a uma área satélite
+            # O territory_id começa com o código original (ex: "XBA1_bucket-01")
+            tid_prefix = tid.split("_")[0] if "_" in tid else ""
+            satellite_origin = tid_prefix if tid_prefix in configuration.STATION_ALIASES else None
+
             territory_list.append({
-                "id":          tid,
-                "ctl":         ctl,
-                "dailyDemand": round(meta["daily_demand"], 1),
-                "totalSlots":  len(t_slots),
-                "openSlots":   n_open,
-                "active":      t_active,
-                "onboarding":  t_onboarding,
-                "bg":          t_bg,
-                "prospects":   t_prospects,
-                "inactive":    t_inactives,
-                "attainment":  t_attainment,
-                "accuracy":    t_accuracy,
-                "ceps":        ceps,
+                "id":             tid,
+                "ctl":            ctl,
+                "ctlAlias":       ctl_info.get("alias", ""),
+                "ade":            ade_info.get("name", ""),
+                "adeAlias":       ade_info.get("alias", ""),
+                "satelliteOrigin": satellite_origin,
+                "dailyDemand":    round(meta["daily_demand"], 1),
+                "totalSlots":     len(t_slots),
+                "openSlots":      n_open,
+                "active":         t_active,
+                "onboarding":     t_onboarding,
+                "bg":             t_bg,
+                "prospects":      t_prospects,
+                "inactive":       t_inactives,
+                "attainment":     t_attainment,
+                "accuracy":       t_accuracy,
+                "ceps":           ceps,
             })
 
         bases.append({
-            "code":          station,
-            "bdm":           bdm,
+            "code":           station,
+            "bdm":            bdm,
+            "bdmName":        bdm_info.get("name", ""),
+            "bdmAlias":       bdm_info.get("alias", ""),
+            "ctl":            ctl_info.get("name", ""),
+            "ctlAlias":       ctl_info.get("alias", ""),
+            "satelliteAreas": Config.get_satellites(station),
             "numTerritories": len(t_metas),
-            "dailyDemand":   round(total_daily_demand, 1),
-            "idealSlots":    total_slots,
-            "matchedSlots":  total_filled,
-            "openSlots":     total_open,
-            "coverage":      coverage,
+            "dailyDemand":    round(total_daily_demand, 1),
+            "idealSlots":     total_slots,
+            "matchedSlots":   total_filled,
+            "openSlots":      total_open,
+            "coverage":       coverage,
             "partners": {
                 "active":     active,
                 "onboarding": onboarding,
@@ -291,8 +311,8 @@ def _write_executive_json(
                 "prospects":  prospects,
                 "inactive":   inactives,
             },
-            "attainment":    attainment,
-            "territories":   territory_list,
+            "attainment":     attainment,
+            "territories":    territory_list,
         })
 
     payload = {"generatedAt": generated_at, "bases": bases}
@@ -343,7 +363,10 @@ def _write_executive(
             coverage      = (total_filled / total_slots * 100) if total_slots else 0.0
             attainment    = (active / total_slots * 100) if total_slots else 0.0
 
-            f.write(f"\nBASE: {station} | BDM: {bdm}\n")
+            ctl_info = Config.get_ctl_for_station(station)
+            ctl_name = ctl_info.get("name") or "N/A"
+
+            f.write(f"\nBASE: {station} | BDM: {bdm} | CTL: {ctl_name}\n")
             f.write(_line("-", 80))
             f.write(f"  Territorios:                      {len(t_metas)}\n")
             f.write(f"  Demanda diaria total:             {total_daily_demand:,.1f} pacotes/dia\n")
@@ -364,6 +387,8 @@ def _write_executive(
             for meta in sorted(t_metas, key=lambda m: m["territory_id"]):
                 tid     = meta["territory_id"]
                 ctl     = _ctl_for_territory(tid)
+                ade_info = Config.get_ade_for_territory(tid)
+                ade_name = ade_info.get("name") or "N/A"
                 t_fit   = fit.territories.get(tid)
                 t_slots = supply.slots_for(tid)
                 n_open  = len([s for s in t_slots if s.is_open])
@@ -378,7 +403,7 @@ def _write_executive(
                 t_attainment = t_fit.attainment if t_fit else 0.0
                 t_accuracy   = t_fit.accuracy if t_fit else 0.0
 
-                f.write(f"  {tid} ({ctl})\n")
+                f.write(f"  {tid} | CTL: {ctl} | ADE: {ade_name}\n")
                 f.write(f"    Demanda diaria:     {meta['daily_demand']:>8,.1f} pacotes/dia\n")
                 f.write(f"    Vagas / Em aberto:  {len(t_slots):>3} / {n_open}\n")
                 f.write(f"    Ativos:             {t_active:>3}\n")
@@ -539,9 +564,11 @@ def _write_geojson(
 
     # ── Camada 1: hexágonos por território ───────────────────────────────
     for h, tid in territories.hex_to_territory.items():
-        meta   = territories.territory_index.get(tid, {})
-        ctl    = _ctl_for_territory(tid)
-        demand = pkg.demand_map(meta.get("station_code", "")).get(h, 0)
+        meta     = territories.territory_index.get(tid, {})
+        station  = meta.get("station_code", "")
+        ctl      = _ctl_for_territory(tid)
+        ade_info = Config.get_ade_for_territory(tid)
+        demand   = pkg.demand_map(station).get(h, 0)
 
         boundary = h3.cell_to_boundary(h)
         coords   = [[c[1], c[0]] for c in boundary]
@@ -554,9 +581,11 @@ def _write_geojson(
                 "type":             "TERRITORY_HEX",
                 "hex_id":           h,
                 "territory_id":     tid,
-                "delivery_station": meta.get("station_code", ""),
+                "delivery_station": station,
                 "bdm":              meta.get("bdm_cluster", ""),
                 "ctl":              ctl,
+                "ade":              ade_info.get("name", ""),
+                "adeAlias":         ade_info.get("alias", ""),
                 "demand_total":     demand,
                 "demand_daily":     round(demand / pkg.days, 2) if pkg.days else 0,
                 "ceps":             list(pkg.hex_to_ceps.get(h, set()))[:5],

@@ -54,7 +54,6 @@ from shared.load_packages import PackageData
 from shared.load_partners import PartnerData
 from shared.models import Config, PartnerMetrics, TerritoriesResult
 
-
 # ---------------------------------------------------------------------------
 # OUTPUT DATACLASS
 # ---------------------------------------------------------------------------
@@ -131,55 +130,23 @@ def _get_account_manager(
     legacy_bucket_names: bool = False,
 ) -> Optional[str]:
     """
-    Retorna o salesforce_id do ADE responsavel pelo territorio.
-
-    Suporta os formatos de territory_id:
-        Novo setup:   "DSP2_bucket-01"
-        Phase1:       "DSP2_T01"
-        Legado:       "DSP2_bucket-1"  (sem zero-padding)
+    Retorna o salesforce_id do ADE responsável pelo território.
+    Usa o TEAM como fonte da verdade via Config.get_owner_id_for_territory.
+    O parâmetro legacy_bucket_names é mantido por compatibilidade mas ignorado.
     """
-    managers = Config.ADES_ACCOUNT_MANAGERS
-    if not managers:
-        return None
-
-    keys_to_try = [territory_id]
-    if legacy_bucket_names:
-        # Tentar extrair sequência e gerar chaves alternativas
-        for sep in ("_bucket-", "_T"):
-            if sep in territory_id:
-                try:
-                    seq = int(territory_id.split(sep)[-1])
-                    keys_to_try.append(f"{station_code}_bucket-{seq}")
-                    keys_to_try.append(f"{station_code}_T{seq:02d}")
-                except (ValueError, IndexError):
-                    pass
-                break
-
-    for manager in managers:
-        buckets = manager.get("buckets", [])
-        for key in keys_to_try:
-            if key in buckets:
-                return manager.get("salesforce_id")
-
-    return None
+    return Config.get_owner_id_for_territory(territory_id)
 
 
 def _ctl_name_for_territory(territory_id: str) -> str:
     """
-    Retorna o nome do CTL a partir do territory_id.
-
-    Suporta formatos:
-        "DSP2_T01"       → sequência = 1
-        "DSP2_bucket-01" → sequência = 1
+    Retorna o nome do CTL responsável pelo território.
+    Deriva a base do territory_id e consulta o TEAM via Config.get_ctl_for_station.
     """
-    for sep in ("_bucket-", "_T"):
-        if sep in territory_id:
-            try:
-                seq = int(territory_id.split(sep)[-1]) - 1
-                return f"CTL-{chr(65 + (seq // 5))}"
-            except (ValueError, IndexError):
-                break
-    return "CTL-A"
+    # territory_id formato: "DSP2_bucket-01" → station = "DSP2"
+    station_code = territory_id.split("_")[0] if "_" in territory_id else ""
+    ctl = Config.get_ctl_for_station(station_code)
+    name = ctl.get("name", "")
+    return name if name else "N/A"
 
 
 # ---------------------------------------------------------------------------

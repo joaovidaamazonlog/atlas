@@ -98,8 +98,8 @@ STATION_ALIASES = {
     "XCS1": "DRS5",   # satélite de DRS5
     "XGA2": "DGO2",   # satélite de DGO2
     "XPB1": "DPB3",   # satélite de DPB3
+    "PUM2": "DRJ3",   # satélite de DRJ3
     "XRJ2": "DRJ3",   # satélite de DRJ3
-    "XRJ3": "DRJ3",   # satélite de DRJ3
     "XRJ4": "DRJ3",   # satélite de DRJ3
     "XSJ1": "DSP4",   # satélite de DSP4
     "XSP7": "DSP5",   # satélite de DSP5
@@ -170,6 +170,7 @@ ADES_ACCOUNT_MANAGERS = [
     {"salesforce_id": "0055G00000BA5UIQA1", "alias": "swagnerq", "buckets": ["DES2_bucket-01", "DES2_bucket-02", "DES2_bucket-03"]},
 ]
 
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 # Scouting (alias → nome completo)
 # ---------------------------------------------------------------------------
@@ -243,6 +244,30 @@ TEAM = [
                 "salesforce_id": "005at00000FLBhN",
                 "stations": ["DBR9"],
                 "reports": [
+                    {"role": "ADE", "name": "Kethelyn Santos",              "alias": "sakethel",  "email": "sakethel@amazon.com",  "salesforce_id": "005at00000EJUvE",  "buckets": ["DBR9_bucket-15"]},
+                    {"role": "ADE", "name": "Jandira Oliveira",             "alias": "olijandi",  "email": "olijandi@amazon.com",  "salesforce_id": "005at00000EJVT7",  "buckets": ["DBR9_bucket-20"]},
+                    {"role": "ADE", "name": "Caroline Lima",                "alias": "tlimaca",   "email": "tlimaca@amazon.com",   "salesforce_id": "005at00000EJUf4",  "buckets": ["DBR9_bucket-16", "DBR9_bucket-12"]},
+                    {"role": "ADE", "name": "Mariane Jesus",                "alias": "qjesusm",   "email": "qjesusm@amazon.com",   "salesforce_id": "005at00000EJUyT",  "buckets": ["DBR9_bucket-10", "DBR9_bucket-06"]},
+                    {"role": "ADE", "name": "Alicia Da Silva Sofia",        "alias": "alimsilv",  "email": "alimsilv@amazon.com",  "salesforce_id": "005at00000EJV01",  "buckets": ["DBR9_bucket-27"]},
+                    {"role": "ADE", "name": "Johni Paiva",                  "alias": "johpaiva",  "email": "johpaiva@amazon.com",  "salesforce_id": "005at00000EJUAV",  "buckets": ["DBR9_bucket-23"]},
+                    {"role": "ADE", "name": "Iuri Mendes",                  "alias": "iuriqmen",  "email": "iuriqmen@amazon.com",  "salesforce_id": "005at00000EJUvF",  "buckets": ["DBR9_bucket-24"]},
+                    {"role": "ADE", "name": "Ester Santos",                 "alias": "sanestec",  "email": "sanestec@amazon.com",  "salesforce_id": "005at00000EJUwp",  "buckets": ["DBR9_bucket-26"]},
+                    {"role": "ADE", "name": "Gabrieli Ferino",              "alias": "gaferino",  "email": "gaferino@amazon.com",  "salesforce_id": "005at00000EJV03",  "buckets": ["DBR9_bucket-14"]},
+                    {"role": "ADE", "name": "Rozelia Silva",                "alias": "rozesilv",  "email": "rozesilv@amazon.com",  "salesforce_id": "005at00000EJUwq",  "buckets": ["DBR9_bucket-08", "DBR9_bucket-11"]},
+                    {"role": "ADE", "name": "Mayara Silva",                 "alias": "xmayasil",  "email": "xmayasil@amazon.com",  "salesforce_id": "005at00000EJUAY",  "buckets": ["DBR9_bucket-18"]},
+                    {"role": "ADE", "name": "Suelen Santos",                "alias": "suelezsa",  "email": "suelezsa@amazon.com",  "salesforce_id": "005at00000EJRPd",  "buckets": ["DBR9_bucket-04"]},
+                    {"role": "ADE", "name": "Hugo Moraes",                  "alias": "hugomorb",  "email": "hugomorb@amazon.com",  "salesforce_id": "005at00000EJUtb",  "buckets": ["DBR9_bucket-02"]},
+                    {"role": "ADE", "name": "Angelo Bastos",                "alias": "angbasto",  "email": "angbasto@amazon.com",  "salesforce_id": "005at00000EJQ0P",  "buckets": ["DBR9_bucket-19"]},
+                    {"role": "ADE", "name": "Giovana Barbosa",              "alias": "cgbarbos",  "email": "cgbarbos@amazon.com",  "salesforce_id": "005at00000EJUta",  "buckets": ["DBR9_bucket-13"]},
+                    {"role": "ADE", "name": "Vivian Peres",                 "alias": "vivianpg",  "email": "vivianpg@amazon.com",  "salesforce_id": "005at00000EJOHy",  "buckets": ["DBR9_bucket-05"]},
+                    {"role": "ADE", "name": "Andresa Araujo",               "alias": "anaraujj",  "email": "anaraujj@amazon.com",  "salesforce_id": "005at00000EJTeM",  "buckets": ["DBR9_bucket-07"]},
+                    {"role": "ADE", "name": "Herlei Cristina Da",           "alias": "wherlecr",  "email": "wherlecr@amazon.com",  "salesforce_id": "005at00000EJSAH",  "buckets": ["DBR9_bucket-01"]},
+                    {"role": "ADE", "name": "Raquel Oliveira",              "alias": "deoraque",  "email": "deoraque@amazon.com",  "salesforce_id": "005at00000EJMEX",  "buckets": ["DBR9_bucket-25"]},
+                    {"role": "ADE", "name": "Alex Oliveira Serafim Lima",   "alias": "mlimalex",  "email": "mlimalex@amazon.com",  "salesforce_id": "005at00000FLBav",  "buckets": ["DBR9_bucket-09"]},
+                    {"role": "ADE", "name": "Jessica Caldo Burrattino",     "alias": "iburratt",  "email": "iburratt@amazon.com",  "salesforce_id": "005at00000FLBe9",  "buckets": ["DBR9_bucket-03"]},
+                    {"role": "ADE", "name": "Andreson Alves Da Silva",      "alias": "andrsilg",  "email": "andrsilg@amazon.com",  "salesforce_id": "005at00000FL85C",  "buckets": ["DBR9_bucket-17"]},
+                    {"role": "ADE", "name": "Clauton Moura Ferreira",       "alias": "ferclaut",  "email": "ferclaut@amazon.com",  "salesforce_id": "005at00000FLBcX",  "buckets": ["DBR9_bucket-21"]},
+                    {"role": "ADE", "name": "Lilian De Oliveira",           "alias": "ililiaol",  "email": "ililiaol@amazon.com",  "salesforce_id": "005at00000FLBfl",  "buckets": ["DBR9_bucket-22"]},
                 ],
             },
         ],
@@ -268,6 +293,16 @@ TEAM = [
                 "salesforce_id": "005at00000EJTnu",
                 "stations": ["DSP2"],
                 "reports": [
+                    {"role": "ADE", "name": "Aline Melo",       "alias": "alinmelu",  "email": "alinmelu@amazon.com",  "salesforce_id": "005at00000EJSAI",  "buckets": ["DSP2_bucket-04"]},
+                    {"role": "ADE", "name": "Yasmin Oliveira",   "alias": "oliveiya",  "email": "oliveiya@amazon.com",  "salesforce_id": "005at00000EJUVN",  "buckets": ["DSP2_bucket-01"]},
+                    {"role": "ADE", "name": "Helena Melo",       "alias": "hhelenam",  "email": "hhelenam@amazon.com",  "salesforce_id": "005at00000EJMEW",  "buckets": ["DSP2_bucket-11"]},
+                    {"role": "ADE", "name": "Maria Ferreira",    "alias": "vferrema",  "email": "vferrema@amazon.com",  "salesforce_id": "005at00000EJSBx",  "buckets": ["DSP2_bucket-03"]},
+                    {"role": "ADE", "name": "Renato Henrique",   "alias": "henrenat",  "email": "henrenat@amazon.com",  "salesforce_id": "005at00000EJSzr",  "buckets": ["DSP2_bucket-02"]},
+                    {"role": "ADE", "name": "Josafa Gouveia",    "alias": "jdgouvei",  "email": "jdgouvei@amazon.com",  "salesforce_id": "005at00000EJV3F",  "buckets": ["DSP2_bucket-12", "DSP2_bucket-10"]},
+                    {"role": "ADE", "name": "Natalia Cavadas",   "alias": "cavadnat",  "email": "cavadnat@amazon.com",  "salesforce_id": "005at00000EJV3G",  "buckets": ["DSP2_bucket-05"]},
+                    {"role": "ADE", "name": "Barbara Spinola",   "alias": "spinobar",  "email": "spinobar@amazon.com",  "salesforce_id": "005at00000EJSzs",  "buckets": ["DSP2_bucket-08"]},
+                    {"role": "ADE", "name": "Patricia Pinto",    "alias": "zpintpat",  "email": "zpintpat@amazon.com",  "salesforce_id": "005at00000EJUyR",  "buckets": ["DSP2_bucket-06"]},
+                    {"role": "ADE", "name": "Antonio Junior",    "alias": "ajuniorf",  "email": "ajuniorf@amazon.com",  "salesforce_id": "005at00000EJUwn",  "buckets": ["DSP2_bucket-07", "DSP2_bucket-09"]},
                 ],
             },
 
@@ -280,6 +315,10 @@ TEAM = [
                 "salesforce_id": "005at00000EJNVZ",
                 "stations": ["DSP4"],
                 "reports": [
+                    {"role": "ADE", "name": "Allyson Yuri De Sousa",          "alias": "souallys",  "email": "souallys@amazon.com",  "salesforce_id": "005at00000EJSYV",  "buckets": ["DSP4_bucket-05", "DSP4_bucket-07"]},
+                    {"role": "ADE", "name": "Thaina Antunes",                  "alias": "aantutha",  "email": "aantutha@amazon.com",  "salesforce_id": "005at00000EJUwr",  "buckets": ["DSP4_bucket-09", "DSP4_bucket-06", "DSP4_bucket-04"]},
+                    {"role": "ADE", "name": "Veronica Isabelly De Almeida",    "alias": "veralmei",  "email": "veralmei@amazon.com",  "salesforce_id": "-",                "buckets": []},
+                    {"role": "ADE", "name": "Fernanda Silva Magalhaes",        "alias": "magalhfe",  "email": "magalhfe@amazon.com",  "salesforce_id": "-",                "buckets": []},
                 ],
             },
 
@@ -292,6 +331,11 @@ TEAM = [
                 "salesforce_id": "005at00000F8pkj",
                 "stations": ["DSP5"],
                 "reports": [
+                    {"role": "ADE", "name": "Andreia Feliciano",              "alias": "andrfec",   "email": "andrfec@amazon.com",   "salesforce_id": "005at00000EJPQs",  "buckets": ["DSP5_bucket-04"]},
+                    {"role": "ADE", "name": "Felipe Oliveira",                "alias": "olfelipy",  "email": "olfelipy@amazon.com",  "salesforce_id": "005at00000EJIMG",  "buckets": ["DSP5_bucket-05"]},
+                    {"role": "ADE", "name": "Beatriz Pimenta",                "alias": "beatrzpi",  "email": "beatrzpi@amazon.com",  "salesforce_id": "005at00000F8gha",  "buckets": ["DSP5_bucket-01"]},
+                    {"role": "ADE", "name": "Mychael Willian Damaceno",       "alias": "damacmyc",  "email": "damacmyc@amazon.com",  "salesforce_id": "-",                "buckets": ["DSP5_bucket-02"]},
+                    {"role": "ADE", "name": "Luan Carvalho Rubiane",          "alias": "rubiluan",  "email": "rubiluan@amazon.com",  "salesforce_id": "-",                "buckets": ["DSP5_bucket-03"]},
                 ],
             },
 
@@ -304,8 +348,12 @@ TEAM = [
                 "salesforce_id": "",
                 "stations": ["DPR2"],
                 "reports": [
-                    {"role": "ADE", "name": "Kelvin Fernandes","alias": "kelvinbf", "email": "kelvinbf@amazon.com", "salesforce_id": "005at000001qfY0AAI", "buckets": ["DPR2_bucket-01", "DPR2_bucket-03", "DPR2_bucket-05"]},
-                    {"role": "ADE", "name": "Lilian Mata",     "alias": "qlilimat", "email": "qlilimat@amazon.com", "salesforce_id": "0055G00000BA0QuQAL", "buckets": ["DPR2_bucket-02", "DPR2_bucket-04", "DPR2_bucket-06"]},
+                    {"role": "ADE", "name": "Kelvin Fernandes",                          "alias": "kelvinbf",  "email": "kelvinbf@amazon.com",  "salesforce_id": "005at00000EJUaD",  "buckets": ["DPR2_bucket-01"]},
+                    {"role": "ADE", "name": "Dyene Rosere Dos Santos Rech",              "alias": "recdyene",  "email": "recdyene@amazon.com",  "salesforce_id": "-",                "buckets": ["DPR2_bucket-04"]},
+                    {"role": "ADE", "name": "Daniel Gomide Rattmann",                    "alias": "drattmad",  "email": "drattmad@amazon.com",  "salesforce_id": "-",                "buckets": ["DPR2_bucket-03"]},
+                    {"role": "ADE", "name": "Marcia Alegnasile Dias Dos Santos Lima",    "alias": "marcilik",  "email": "marcilik@amazon.com",  "salesforce_id": "-",                "buckets": ["DPR2_bucket-05"]},
+                    {"role": "ADE", "name": "Vanessa Cristina Buiar",                    "alias": "vanbuiar",  "email": "vanbuiar@amazon.com",  "salesforce_id": "-",                "buckets": ["DPR2_bucket-02"]},
+                    {"role": "ADE", "name": "Andrelise Laska De Oliveira",               "alias": "handroli",  "email": "handroli@amazon.com",  "salesforce_id": "-",                "buckets": ["DPR2_bucket-06"]},
                 ],
             },
 
@@ -330,6 +378,9 @@ TEAM = [
                 "salesforce_id": "",
                 "stations": ["DRS5"],
                 "reports": [
+                    {"role": "ADE", "name": "Brenda Sousa",              "alias": "psoubren",  "email": "psoubren@amazon.com",  "salesforce_id": "005at00000EJUYb",  "buckets": ["DRS5_bucket-01", "DRS5_bucket-02", "DRS5_bucket-04", "DRS5_bucket-05"]},
+                    {"role": "ADE", "name": "Joao Kowalski",             "alias": "jkowalsq",  "email": "jkowalsq@amazon.com",  "salesforce_id": "005at00000EJUYf",  "buckets": ["DRS5_bucket-03", "DRS5_bucket-08", "DRS5_bucket-06", "DRS5_bucket-07"]},
+                    {"role": "ADE", "name": "Marilene Gisele Da Silva",  "alias": "marileu",   "email": "marileu@amazon.com",   "salesforce_id": "-",                "buckets": ["DRS5_bucket-09", "DRS5_bucket-10"]},
                 ],
             },
         ],
@@ -355,6 +406,12 @@ TEAM = [
                 "salesforce_id": "005at00000EJLC4",
                 "stations": ["DRJ3"],
                 "reports": [
+                    {"role": "ADE", "name": "Juliana Almeida",              "alias": "almeijum",  "email": "almeijum@amazon.com",  "salesforce_id": "005at00000EJMBU",  "buckets": []},
+                    {"role": "ADE", "name": "Juliete Santos",               "alias": "shjuliet",  "email": "shjuliet@amazon.com",  "salesforce_id": "005at00000EJSjm",  "buckets": []},
+                    {"role": "ADE", "name": "Thiago Freitas",               "alias": "freithia",  "email": "freithia@amazon.com",  "salesforce_id": "005at00000EJUyQ",  "buckets": []},
+                    {"role": "ADE", "name": "Bruno Silva",                  "alias": "bruzsilv",  "email": "bruzsilv@amazon.com",  "salesforce_id": "005at00000EJUf5",  "buckets": []},
+                    {"role": "ADE", "name": "Gabriel Martins",              "alias": "marthgab",  "email": "marthgab@amazon.com",  "salesforce_id": "005at00000EJQN0",  "buckets": []},
+                    {"role": "ADE", "name": "Natalia Cristina Ferreira",    "alias": "fenatalh",  "email": "fenatalh@amazon.com",  "salesforce_id": "005at00000EJTsf",  "buckets": []},
                 ],
             },
 
@@ -367,6 +424,8 @@ TEAM = [
                 "salesforce_id": "005at00000EJLC4",
                 "stations": ["DBS5"],
                 "reports": [
+                    {"role": "ADE", "name": "Eric Souza",    "alias": "erihsouz",  "email": "erihsouz@amazon.com",  "salesforce_id": "005at00000EJUX1",  "buckets": []},
+                    {"role": "ADE", "name": "Josimar Junior", "alias": "josimaju",  "email": "josimaju@amazon.com",  "salesforce_id": "005at00000EJUX2",  "buckets": []},
                 ],
             },
 
@@ -379,30 +438,8 @@ TEAM = [
                 "salesforce_id": "005at00000EJLC4",
                 "stations": ["DGO2"],
                 "reports": [
-                ],
-            },
-
-            # DBH5 — 4 territórios
-            {
-                "role": "CTL",
-                "name": "Lucas Magela",
-                "alias": "lsouzafa",
-                "email": "lsouzafa@amazon.com",
-                "salesforce_id": "005at00000EJUVP",
-                "stations": ["DBH5"],
-                "reports": [
-                ],
-            },
-
-            # DMG2 — 13 territórios
-            {
-                "role": "CTL",
-                "name": "Lucas Magela",
-                "alias": "lsouzafa",
-                "email": "lsouzafa@amazon.com",
-                "salesforce_id": "005at00000EJUVP",
-                "stations": ["DMG2"],
-                "reports": [
+                    {"role": "ADE", "name": "Allan Carvalho",  "alias": "wcaralla",  "email": "wcaralla@amazon.com",  "salesforce_id": "005at00000EJNVW",  "buckets": []},
+                    {"role": "ADE", "name": "Fabiane Krampe",  "alias": "krampeaf",  "email": "krampeaf@amazon.com",  "salesforce_id": "005at00000EJUgi",  "buckets": []},
                 ],
             },
 
@@ -415,7 +452,7 @@ TEAM = [
                 "salesforce_id": "005at00000EJLC4",
                 "stations": ["DES2"],
                 "reports": [
-                    {"role": "ADE", "name": "Wagner Silva",   "alias": "swagnerq", "email": "swagnerq@amazon.com", "salesforce_id": "0055G00000BA5UIQA1", "buckets": ["DES2_bucket-01", "DES2_bucket-02", "DES2_bucket-03"]},
+                    {"role": "ADE", "name": "Wagner Silva",  "alias": "swagnerq",  "email": "swagnerq@amazon.com",  "salesforce_id": "005at00000EJUYe",  "buckets": []},
                 ],
             },
 
@@ -428,6 +465,59 @@ TEAM = [
                 "salesforce_id": "005at00000EJLC4",
                 "stations": ["DSA8"],
                 "reports": [
+                    {"role": "ADE", "name": "Cristiane Conceicao",  "alias": "cryconce",  "email": "cryconce@amazon.com",  "salesforce_id": "005at00000EJUn9",  "buckets": ["DSA8_bucket-01", "DSA8_bucket-04"]},
+                    {"role": "ADE", "name": "Felipe Duarte",         "alias": "dcfelipe",  "email": "dcfelipe@amazon.com",  "salesforce_id": "005at00000EJUX3",  "buckets": ["DSA8_bucket-02", "DSA8_bucket-03"]},
+                ],
+            },
+        ],
+    },
+
+     # ── BH ───────────────────────────────────────────────────────────────────
+    {
+        "role": "BDM",
+        "name": "Luiz Felipe Goulart ",
+        "alias": "luizfggs",
+        "email": "luizfggs@amazon.com",
+        "salesforce_id": "",
+        "region": "BH",
+        "stations": ["DBH5", "DMG2"],
+        "reports": [
+
+            # DBH5 — 4 territórios
+            {
+                "role": "CTL",
+                "name": "Lucas Magela",
+                "alias": "lsouzafa",
+                "email": "lsouzafa@amazon.com",
+                "salesforce_id": "005at00000EJUVP",
+                "stations": ["DBH5"],
+                "reports": [
+                    {"role": "ADE", "name": "Rafael Calcado",   "alias": "crafaeln",  "email": "crafaeln@amazon.com",  "salesforce_id": "005at00000EJUf6",  "buckets": ["DBH5_bucket-01"]},
+                    {"role": "ADE", "name": "Aline Souza",       "alias": "alcsouza",  "email": "alcsouza@amazon.com",  "salesforce_id": "005at00000EJV04",  "buckets": ["DBH5_bucket-02"]},
+                    {"role": "ADE", "name": "Mathaus Marques",   "alias": "mathausm",  "email": "mathausm@amazon.com",  "salesforce_id": "005at00000EJV05",  "buckets": ["DBH5_bucket-04", "DBH5_bucket-03"]},
+                ],
+            },
+
+            # DMG2 — 13 territórios
+            {
+                "role": "CTL",
+                "name": "Lucas Magela",
+                "alias": "lsouzafa",
+                "email": "lsouzafa@amazon.com",
+                "salesforce_id": "005at00000EJUVP",
+                "stations": ["DMG2"],
+                "reports": [
+                    {"role": "ADE", "name": "Helder Souza",                        "alias": "heldsouz",  "email": "heldsouz@amazon.com",  "salesforce_id": "005at00000EJUaM",  "buckets": ["DMG2_bucket-10", "DMG2_bucket-11"]},
+                    {"role": "ADE", "name": "Jessica Noronha",                     "alias": "noronhje",  "email": "noronhje@amazon.com",  "salesforce_id": "005at00000EJVT6",  "buckets": ["DMG2_bucket-12", "DMG2_bucket-13"]},
+                    {"role": "ADE", "name": "Abel Almeida De Oliveira",            "alias": "abelnoli",  "email": "abelnoli@amazon.com",  "salesforce_id": "005at00000FLAmw",  "buckets": []},
+                    {"role": "ADE", "name": "Cleyton Rodrigues Lopes",             "alias": "cleytlop",  "email": "cleytlop@amazon.com",  "salesforce_id": "005at00000FL5le",  "buckets": []},
+                    {"role": "ADE", "name": "Marcos Cabral Dos Santos",            "alias": "sxmarco",   "email": "sxmarco@amazon.com",   "salesforce_id": "005at00000FLBkb",  "buckets": []},
+                    {"role": "ADE", "name": "Renata Nepomuceno De Miranda",        "alias": "cmirrena",  "email": "cmirrena@amazon.com",  "salesforce_id": "005at00000FLBiz",  "buckets": []},
+                    {"role": "ADE", "name": "Silas Sergio Da Silva Junior",        "alias": "silasjun",  "email": "silasjun@amazon.com",  "salesforce_id": "005at00000FL6jK",  "buckets": []},
+                    {"role": "ADE", "name": "Joao Marcos Francisco Da Cruz",       "alias": "yjoacruz",  "email": "yjoacruz@amazon.com",  "salesforce_id": "005at00000FLBPe",  "buckets": []},
+                    {"role": "ADE", "name": "Raoni Luan Silva Miranda",            "alias": "raonimir",  "email": "raonimir@amazon.com",  "salesforce_id": "-",                "buckets": []},
+                    {"role": "ADE", "name": "Hudson De Paula Maciel",              "alias": "depauhud",  "email": "depauhud@amazon.com",  "salesforce_id": "-",                "buckets": []},
+                    {"role": "ADE", "name": "Giovanni Senra Martins Do Carmo",     "alias": "senramgy",  "email": "senramgy@amazon.com",  "salesforce_id": "-",                "buckets": []},
                 ],
             },
         ],
@@ -453,6 +543,20 @@ TEAM = [
                 "salesforce_id": "005at00000EJTnt",
                 "stations": ["DCE3"],
                 "reports": [
+                    {"role": "ADE", "name": "Alana Paulino",                              "alias": "paualane",  "email": "paualane@amazon.com",  "salesforce_id": "005at00000EJPQu",  "buckets": ["DCE3_bucket-03"]},
+                    {"role": "ADE", "name": "Sidney Lima",                                "alias": "qsidneyl",  "email": "qsidneyl@amazon.com",  "salesforce_id": "005at00000EJUdT",  "buckets": ["DCE3_bucket-09"]},
+                    {"role": "ADE", "name": "Neymara Maria De Castro Da Silva",           "alias": "neymaras",  "email": "neymaras@amazon.com",  "salesforce_id": "005at00000EJUAX",  "buckets": ["DCE3_bucket-13"]},
+                    {"role": "ADE", "name": "Daniel Nascimento Monteiro",                 "alias": "amontdan",  "email": "amontdan@amazon.com",  "salesforce_id": "005at00000EJRsX",  "buckets": ["DCE3_bucket-08"]},
+                    {"role": "ADE", "name": "Sidney Alves Da Silva",                      "alias": "sisidne",   "email": "sisidne@amazon.com",   "salesforce_id": "005at00000EJUaJ",  "buckets": ["DCE3_bucket-11"]},
+                    {"role": "ADE", "name": "Sidia Oliveira De Sousa",                    "alias": "sidisous",  "email": "sidisous@amazon.com",  "salesforce_id": "005at00000EJUaI",  "buckets": ["DCE3_bucket-06"]},
+                    {"role": "ADE", "name": "Huanderson Alexandre Almeida Teodosio",      "alias": "teodhuan",  "email": "teodhuan@amazon.com",  "salesforce_id": "005at00000EJVT4",  "buckets": ["DCE3_bucket-10"]},
+                    {"role": "ADE", "name": "Paula Charlene Nogueira Chaves",             "alias": "achavesp",  "email": "achavesp@amazon.com",  "salesforce_id": "005at00000EJVT5",  "buckets": ["DCE3_bucket-02"]},
+                    {"role": "ADE", "name": "Thiego Bezerra Marques",                     "alias": "thiemard",  "email": "thiemard@amazon.com",  "salesforce_id": "005at00000EJOwJ",  "buckets": ["DCE3_bucket-01", "DCE3_bucket-05"]},
+                    {"role": "ADE", "name": "Thiago Maciel Mora",                         "alias": "thiamora",  "email": "thiamora@amazon.com",  "salesforce_id": "005at00000EJO9q",  "buckets": ["DCE3_bucket-12"]},
+                    {"role": "ADE", "name": "Francisco Diego Lima De Sousa",              "alias": "sousatfr",  "email": "sousatfr@amazon.com",  "salesforce_id": "005at00000EJSjo",  "buckets": ["DCE3_bucket-04"]},
+                    {"role": "ADE", "name": "Yana Mara Martins Alencar De",               "alias": "alencary",  "email": "alencary@amazon.com",  "salesforce_id": "005at00000EJUyP",  "buckets": ["DCE3_bucket-07"]},
+                    {"role": "ADE", "name": "Cristiane Conceicao",                        "alias": "cryconce",  "email": "cryconce@amazon.com",  "salesforce_id": "005at00000EJUn9",  "buckets": ["DCE3_bucket-14", "DCE3_bucket-16"]},
+                    {"role": "ADE", "name": "Felipe Duarte",                              "alias": "dcfelipe",  "email": "dcfelipe@amazon.com",  "salesforce_id": "005at00000EJUX3",  "buckets": ["DCE3_bucket-15"]},
                 ],
             },
 
@@ -465,6 +569,21 @@ TEAM = [
                 "salesforce_id": "005at00000EJUjt",
                 "stations": ["DPE4"],
                 "reports": [
+                    {"role": "ADE", "name": "Maria Helena",                              "alias": "usilvm",    "email": "usilvm@amazon.com",    "salesforce_id": "005at00000EJOwG",  "buckets": ["DPE4_bucket-11"]},
+                    {"role": "ADE", "name": "Claudio Alves Ricardo De Freitas",          "alias": "claujfre",  "email": "claujfre@amazon.com",  "salesforce_id": "005at00000EJSjq",  "buckets": ["DPE4_bucket-10"]},
+                    {"role": "ADE", "name": "Renato Rosas Pinto",                        "alias": "rosaspic",  "email": "rosaspic@amazon.com",  "salesforce_id": "-",                "buckets": ["DPE4_bucket-13"]},
+                    {"role": "ADE", "name": "Luana Siqueira",                            "alias": "siqluand",  "email": "siqluand@amazon.com",  "salesforce_id": "005at00000EJRsW",  "buckets": ["DPE4_bucket-15"]},
+                    {"role": "ADE", "name": "Enyedja Santos",                            "alias": "enyedjas",  "email": "enyedjas@amazon.com",  "salesforce_id": "005at00000EJUAW",  "buckets": ["DPE4_bucket-07"]},
+                    {"role": "ADE", "name": "Fernandes Reis Da Silva",                   "alias": "qfernasi",  "email": "qfernasi@amazon.com",  "salesforce_id": "005at00000EJUaK",  "buckets": ["DPE4_bucket-01"]},
+                    {"role": "ADE", "name": "Jamerson Esdras De Oliveira Cabral",        "alias": "jamersca",  "email": "jamersca@amazon.com",  "salesforce_id": "005at00000EJUaL",  "buckets": ["DPE4_bucket-09"]},
+                    {"role": "ADE", "name": "Jose Borges",                               "alias": "joseboro",  "email": "joseboro@amazon.com",  "salesforce_id": "005at00000EJPIr",  "buckets": ["DPE4_bucket-04"]},
+                    {"role": "ADE", "name": "Raimundo Junior",                           "alias": "juniraim",  "email": "juniraim@amazon.com",  "salesforce_id": "005at00000EJOwI",  "buckets": ["DPE4_bucket-12"]},
+                    {"role": "ADE", "name": "Jose Silva",                                "alias": "nsiljos",   "email": "nsiljos@amazon.com",   "salesforce_id": "005at00000EJO9r",  "buckets": ["DPE4_bucket-02"]},
+                    {"role": "ADE", "name": "Fabio Silva",                               "alias": "fahsilva",  "email": "fahsilva@amazon.com",  "salesforce_id": "005at00000EJO9s",  "buckets": ["DPE4_bucket-05"]},
+                    {"role": "ADE", "name": "Diego Barros",                              "alias": "jbarrodi",  "email": "jbarrodi@amazon.com",  "salesforce_id": "005at00000EJOwF",  "buckets": ["DPE4_bucket-08"]},
+                    {"role": "ADE", "name": "Davi Santos",                               "alias": "santudav",  "email": "santudav@amazon.com",  "salesforce_id": "005at00000EJPIq",  "buckets": ["DPE4_bucket-03"]},
+                    {"role": "ADE", "name": "Cicero Almeida",                            "alias": "cicealme",  "email": "cicealme@amazon.com",  "salesforce_id": "005at00000EJNVa",  "buckets": ["DPE4_bucket-06"]},
+                    {"role": "ADE", "name": "Maria Silva",                               "alias": "silvmac",   "email": "silvmac@amazon.com",   "salesforce_id": "005at00000EJIMD",  "buckets": ["DPE4_bucket-14"]},
                 ],
             },
 
@@ -477,6 +596,10 @@ TEAM = [
                 "salesforce_id": "005at00000EJMxf",
                 "stations": ["DPB3"],
                 "reports": [
+                    {"role": "ADE", "name": "Everton Martins",                              "alias": "eveomart",  "email": "eveomart@amazon.com",  "salesforce_id": "005at00000EJPUE",  "buckets": ["DPB3_bucket-01", "DPB3_bucket-02"]},
+                    {"role": "ADE", "name": "Anna Beatriz Dos Santos Lima",                 "alias": "annlimay",  "email": "annlimay@amazon.com",  "salesforce_id": "005at00000EJUFO",  "buckets": ["DPB3_bucket-03"]},
+                    {"role": "ADE", "name": "Alexandre Pedro Batista De Almeida Junior",    "alias": "junalexj",  "email": "junalexj@amazon.com",  "salesforce_id": "005at00000EJW5n",  "buckets": ["DPB3_bucket-04"]},
+                    {"role": "ADE", "name": "Caio Benjamim Lima Simplicio",                 "alias": "simpcaio",  "email": "simpcaio@amazon.com",  "salesforce_id": "005at00000FWAhz",  "buckets": []},
                 ],
             },
 
@@ -493,3 +616,119 @@ TEAM = [
         ],
     },
 ]
+
+
+# ---------------------------------------------------------------------------
+# Funções utilitárias derivadas do TEAM (fonte da verdade)
+# Definidas APÓS o TEAM para que os índices sejam construídos corretamente.
+# ---------------------------------------------------------------------------
+
+def _build_team_index():
+    """
+    Percorre TEAM recursivamente e constrói índices de lookup rápido.
+
+    Retorna:
+        bucket_to_ade   : {territory_id: {name, alias, email, salesforce_id}}
+        station_to_ctl  : {station_code: {name, alias, email, salesforce_id}}
+        station_to_bdm  : {station_code: {name, alias, email, region}}
+        alias_to_name   : {alias: name}  — todos os membros do time
+    """
+    bucket_to_ade:  dict = {}
+    station_to_ctl: dict = {}
+    station_to_bdm: dict = {}
+    alias_to_name:  dict = {}
+
+    for bdm in TEAM:
+        bdm_info = {
+            "name":   bdm.get("name", ""),
+            "alias":  bdm.get("alias", ""),
+            "email":  bdm.get("email", ""),
+            "region": bdm.get("region", ""),
+        }
+        if bdm.get("alias"):
+            alias_to_name[bdm["alias"]] = bdm.get("name", "")
+
+        for station in bdm.get("stations", []):
+            station_to_bdm[station] = bdm_info
+
+        for ctl in bdm.get("reports", []):
+            if ctl.get("role") != "CTL":
+                continue
+            ctl_info = {
+                "name":          ctl.get("name", ""),
+                "alias":         ctl.get("alias", ""),
+                "email":         ctl.get("email", ""),
+                "salesforce_id": ctl.get("salesforce_id", ""),
+            }
+            if ctl.get("alias"):
+                alias_to_name[ctl["alias"]] = ctl.get("name", "")
+
+            for station in ctl.get("stations", []):
+                station_to_ctl[station] = ctl_info
+
+            for ade in ctl.get("reports", []):
+                if ade.get("role") != "ADE":
+                    continue
+                if ade.get("alias"):
+                    alias_to_name[ade["alias"]] = ade.get("name", "")
+                ade_info = {
+                    "name":          ade.get("name", ""),
+                    "alias":         ade.get("alias", ""),
+                    "email":         ade.get("email", ""),
+                    "salesforce_id": ade.get("salesforce_id", ""),
+                }
+                for bucket in ade.get("buckets", []):
+                    bucket_to_ade[bucket] = ade_info
+
+    return bucket_to_ade, station_to_ctl, station_to_bdm, alias_to_name
+
+
+# Índices construídos uma única vez no import
+_BUCKET_TO_ADE, _STATION_TO_CTL, _STATION_TO_BDM, _ALIAS_TO_NAME = _build_team_index()
+
+
+def get_ade_for_territory(territory_id: str) -> dict:
+    """
+    Retorna {name, alias, email, salesforce_id} do ADE responsável pelo território.
+    Retorna dict com strings vazias se não encontrado.
+    """
+    return _BUCKET_TO_ADE.get(territory_id, {
+        "name": "", "alias": "", "email": "", "salesforce_id": ""
+    })
+
+
+def get_ctl_for_station(station_code: str) -> dict:
+    """
+    Retorna {name, alias, email, salesforce_id} do CTL responsável pela base.
+    Retorna dict com strings vazias se não encontrado.
+    """
+    return _STATION_TO_CTL.get(station_code, {
+        "name": "", "alias": "", "email": "", "salesforce_id": ""
+    })
+
+
+def get_bdm_for_station(station_code: str) -> dict:
+    """
+    Retorna {name, alias, email, region} do BDM responsável pela base.
+    Retorna dict com strings vazias se não encontrado.
+    """
+    return _STATION_TO_BDM.get(station_code, {
+        "name": "", "alias": "", "email": "", "region": "OUTROS"
+    })
+
+
+def get_owner_id_for_territory(territory_id: str) -> str | None:
+    """
+    Retorna o salesforce_id do ADE responsável pelo território.
+    Retorna None se não encontrado ou se o salesforce_id for '-'.
+    """
+    ade = _BUCKET_TO_ADE.get(territory_id)
+    if not ade:
+        return None
+    sf_id = ade.get("salesforce_id", "")
+    return sf_id if sf_id and sf_id != "-" else None
+
+
+def get_name_for_alias(alias: str) -> str:
+    """Retorna o nome completo de qualquer membro do time pelo alias."""
+    return _ALIAS_TO_NAME.get(alias, alias)

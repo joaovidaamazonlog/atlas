@@ -29,7 +29,7 @@ from typing import List, Optional
 from shared.load_packages import load_packages
 from shared.load_partners import load_partners
 from shared.models import Config
-from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons
+from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons, patch_heatmap_satellite_stations
 from shared.models import Config, TerritoriesResult, load_territories
 from vanilla.phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 from vanilla.phase3_partner_fit import FitResult, run_phase3
@@ -162,6 +162,9 @@ def run_daily(
 
     # Reconstruir polígonos a partir dos hexágonos H3 reais (pós-matching)
     rebuild_territory_polygons(output_dir=output_dir, stations=stations)
+
+    # Corrigir delivery_station de hexes satélite no heatmap (idempotente)
+    patch_heatmap_satellite_stations(output_dir=output_dir)
 
     # Fase 3.5: otimização de cap
     try:

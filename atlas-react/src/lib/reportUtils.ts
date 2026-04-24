@@ -14,6 +14,10 @@ import i18n from '../i18n';
 export interface TerritoryData {
   id: string;
   ctl: string;
+  ctlAlias?: string;
+  ade?: string;
+  adeAlias?: string;
+  satelliteOrigin?: string | null;  // ex: "XBA1" se o bucket veio de área satélite
   dailyDemand: number;
   totalSlots: number;
   openSlots: number;
@@ -29,6 +33,11 @@ export interface TerritoryData {
 export interface BaseData {
   code: string;
   bdm: string;
+  bdmName?: string;
+  bdmAlias?: string;
+  ctl?: string;
+  ctlAlias?: string;
+  satelliteAreas?: string[];  // ex: ["XBA1"] — bases satélite absorvidas
   numTerritories: number;
   dailyDemand: number;
   idealSlots: number;
@@ -55,6 +64,7 @@ export interface DashboardFilters {
   bdm: string;
   base: string;
   ctl: string;
+  ade: string;
   territory: string;
 }
 
@@ -293,6 +303,10 @@ export function filterBases(reportData: ReportData | null, filters: DashboardFil
       territories = territories.filter(t => t.ctl === filters.ctl);
     }
 
+    if (filters.ade && filters.ade !== 'all') {
+      territories = territories.filter(t => t.ade === filters.ade);
+    }
+
     if (filters.territory && filters.territory !== 'all') {
       territories = territories.filter(t => t.id === filters.territory);
     }
@@ -300,7 +314,11 @@ export function filterBases(reportData: ReportData | null, filters: DashboardFil
     return { ...base, territories };
   });
 
-  if ((filters.ctl && filters.ctl !== 'all') || (filters.territory && filters.territory !== 'all')) {
+  if (
+    (filters.ctl && filters.ctl !== 'all') ||
+    (filters.ade && filters.ade !== 'all') ||
+    (filters.territory && filters.territory !== 'all')
+  ) {
     bases = bases.filter(b => b.territories.length > 0);
   }
 

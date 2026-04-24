@@ -82,13 +82,14 @@ def _haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
 
 def _load_jurisdiction_poly(station_code: str, jurisdiction_path: str):
     """
-    Carrega o polígono shapely da jurisdição de uma base.
+    Carrega o polígono shapely da jurisdição de uma base canônica,
+    incluindo a união com os polígonos das áreas satélite (STATION_ALIASES).
     Retorna None se não encontrado ou se shapely não estiver disponível.
-    Usado como fallback para heatmaps legados sem campo in_jurisdiction.
     """
     try:
         from shapely.geometry import shape
         from shapely.validation import make_valid
+        from shapely.ops import unary_union
     except ImportError:
         return None
 
@@ -98,16 +99,31 @@ def _load_jurisdiction_poly(station_code: str, jurisdiction_path: str):
     except Exception:
         return None
 
+    # Códigos a incluir: a base canônica + todas as suas satélites
+    satellites = Config.get_satellites(station_code)
+    codes_to_include = {station_code} | set(satellites)
+
+    polys = []
     for feature in jur_geojson.get("features", []):
-        if feature.get("properties", {}).get("delivery_station") == station_code:
+        code = feature.get("properties", {}).get("delivery_station")
+        if code not in codes_to_include:
+            continue
+        try:
+            polys.append(make_valid(shape(feature["geometry"])))
+        except Exception:
             try:
-                return make_valid(shape(feature["geometry"]))
+                polys.append(shape(feature["geometry"]))
             except Exception:
-                try:
-                    return shape(feature["geometry"])
-                except Exception:
-                    return None
-    return None
+                pass
+
+    if not polys:
+        return None
+    if len(polys) == 1:
+        return polys[0]
+    try:
+        return make_valid(unary_union(polys))
+    except Exception:
+        return polys[0]
 
 
 def _is_hex_in_jurisdiction(

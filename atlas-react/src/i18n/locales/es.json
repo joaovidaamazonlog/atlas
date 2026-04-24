@@ -252,6 +252,7 @@
     "filter_bdm": "BDM",
     "filter_base": "Base",
     "filter_ctl": "CTL",
+    "filter_ade": "ADE",
     "filter_territory": "Territorio",
     "kpi_active_partners": "Socios Activos",
     "kpi_adv_overall": "ADV General",

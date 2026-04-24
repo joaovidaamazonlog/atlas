@@ -104,12 +104,20 @@ def _build_jurisdiction_index(
     Constrói um índice { station_code → shapely polygon } a partir do
     GeoJSON de jurisdições.  Geometrias inválidas são corrigidas com
     make_valid antes de serem armazenadas.
+
+    Bases satélite (ex: XBA1) são indexadas com o código da base canônica
+    (ex: DSA8) via STATION_ALIASES, de forma que hexes dentro do polígono
+    satélite sejam atribuídos diretamente à base canônica.
     """
+    from shared.config import STATION_ALIASES
+
     index: Dict[str, object] = {}
     for feature in jur_geojson.get("features", []):
         station = feature.get("properties", {}).get("delivery_station")
         if not station:
             continue
+        # Resolver satélite → canônica
+        canonical = STATION_ALIASES.get(station, station)
         try:
             poly = make_valid(shape(feature["geometry"]))
         except Exception:
@@ -117,7 +125,16 @@ def _build_jurisdiction_index(
                 poly = shape(feature["geometry"])
             except Exception:
                 continue
-        index[station] = poly
+
+        if canonical not in index:
+            index[canonical] = poly
+        else:
+            # Unir polígonos: canônica já existe, satélite é adicionada via union
+            try:
+                index[canonical] = index[canonical].union(poly)
+            except Exception:
+                pass  # mantém o polígono existente se union falhar
+
     return index
 
 
@@ -185,6 +202,23 @@ def load_packages(
             .str.replace(r"\D", "", regex=True)
             .str.zfill(8)
         )
+
+    # 1b. Remapear bases satélite → base canônica
+    # Pacotes de XBA1, XCS1, etc. são tratados como se fossem da base canônica.
+    aliases = getattr(Config, "STATION_ALIASES", {})
+    if aliases and "station_code" in df.columns:
+        before_alias = df["station_code"].nunique()
+        df["station_code"] = df["station_code"].replace(aliases)
+        after_alias = df["station_code"].nunique()
+        remapped = (df["station_code"].isin(aliases.values())).sum()
+        if before_alias != after_alias:
+            print(f"   STATION_ALIASES: {before_alias - after_alias} bases satélite "
+                  f"consolidadas nas bases canônicas.")
+        satellite_codes = set(aliases.keys())
+        n_remapped = len(df[df["station_code"].isin(
+            [aliases[k] for k in satellite_codes if k in aliases]
+        )])
+        _ = n_remapped  # usado só para log acima
 
     # 2. Calcular hex H3 se ausente
     if "hex" not in df.columns:

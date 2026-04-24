@@ -39,6 +39,20 @@ from vanilla.cnpj_lookup import run_cnpj_lookup, CnpjLookupResult
 
 
 # ---------------------------------------------------------------------------
+# HELPERS
+# ---------------------------------------------------------------------------
+
+def _load_jurisdiction_geojson() -> Optional[dict]:
+    """Carrega o GeoJSON de jurisdições. Retorna None em caso de falha."""
+    import json
+    try:
+        with open(Config.BASE_JURISDICTION, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"  WARN jurisdição não carregada ({e}) — atribuição de hexes usará apenas volume.")
+
+
+# ---------------------------------------------------------------------------
 # MODO SETUP
 # ---------------------------------------------------------------------------
 
@@ -61,7 +75,8 @@ def run_setup(
     print(f"  Inicio: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print(f"{'#'*60}")
 
-    pkg = load_packages()
+    jur_geojson = _load_jurisdiction_geojson()
+    pkg = load_packages(jurisdiction_geojson=jur_geojson)
 
     territories, supply = _run_setup_new(
         pkg=pkg,
@@ -122,7 +137,8 @@ def run_daily(
         }
 
     # Carregar parceiros e jurisdicoes (sempre frescos)
-    pkg          = load_packages()
+    jur_geojson = _load_jurisdiction_geojson()
+    pkg          = load_packages(jurisdiction_geojson=jur_geojson)
     partner_data = load_partners()
 
     # Fase 3: matching

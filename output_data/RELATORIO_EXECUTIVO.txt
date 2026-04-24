@@ -1,5 +1,5 @@
 RELATORIO EXECUTIVO DE OTIMIZACAO
-Gerado em: 23/04/2026 15:07
+Gerado em: 24/04/2026 12:42
 ================================================================================
 
 BASE: DBH5 | BDM: BH

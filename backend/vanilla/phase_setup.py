@@ -876,6 +876,7 @@ def _build_heatmap(
     hex_to_ceps: Dict[str, Set[str]],
     station_code: str,
     days: int = 1,
+    jur_poly: object = None,              # shapely polygon da jurisdição desta base
 ) -> List[Dict]:
     tid_list = [(tid, poly) for tid, poly in territory_polys.items()
                 if poly is not None and not poly.is_empty]
@@ -899,6 +900,16 @@ def _build_heatmap(
                 tid_list, key=lambda x: pt.distance(x[1].centroid)
             )[0]
 
+        # Verificar se o centróide do hex está dentro da jurisdição desta base
+        in_jurisdiction: bool
+        if jur_poly is not None:
+            try:
+                in_jurisdiction = bool(jur_poly.contains(pt))
+            except Exception:
+                in_jurisdiction = False
+        else:
+            in_jurisdiction = True  # sem polígono de jurisdição → assume dentro
+
         boundary = h3.cell_to_boundary(h)
         coords   = [[c[1], c[0]] for c in boundary]
         coords.append(coords[0])
@@ -912,6 +923,7 @@ def _build_heatmap(
                 "ceps":             list(hex_to_ceps.get(h, set()))[:10],
                 "delivery_station": station_code,
                 "territory_id":     territory_id or "",
+                "in_jurisdiction":  in_jurisdiction,
             },
         })
 
@@ -1127,7 +1139,11 @@ def run_setup(
 
         # 5. Heatmap desta base
         dm_base = dm_filtered.get(station, {})
-        base_heatmap = _build_heatmap(dm_base, base_polys, pkg.hex_to_ceps, station, days=pkg.days)
+        base_heatmap = _build_heatmap(
+            dm_base, base_polys, pkg.hex_to_ceps, station,
+            days=pkg.days,
+            jur_poly=_load_jurisdiction_poly(station, jur_geojson),
+        )
         heatmap_features.extend(base_heatmap)
 
         # Popular hex_ids no territory_index a partir do spatial join do heatmap
@@ -1566,7 +1582,16 @@ def run_update_heatmap(
                     pass
 
     # Carregar nova base de pacotes
-    pkg = load_packages()
+    j_path = Config.BASE_JURISDICTION
+    jur_geojson: Dict = {}
+    try:
+        with open(j_path, "r", encoding="utf-8") as f:
+            jur_geojson = json.load(f)
+        print(f"  {len(jur_geojson.get('features', []))} jurisdições carregadas.")
+    except Exception as e:
+        print(f"  WARN jurisdição não carregada ({e}) — in_jurisdiction será True para todos.")
+
+    pkg = load_packages(jurisdiction_geojson=jur_geojson or None)
 
     # Filtrar stations
     target_stations = stations or list({
@@ -1601,7 +1626,11 @@ def run_update_heatmap(
             if territory_index.get(tid, {}).get("station_code") == station
         }
 
-        base_features = _build_heatmap(dm, base_polys, pkg.hex_to_ceps, station, days=pkg.days)
+        base_features = _build_heatmap(
+            dm, base_polys, pkg.hex_to_ceps, station,
+            days=pkg.days,
+            jur_poly=_load_jurisdiction_poly(station, jur_geojson),
+        )
         new_features.extend(base_features)
         print(f"  [{station}] {len(base_features)} hexes | {pkg.days} dias")
 

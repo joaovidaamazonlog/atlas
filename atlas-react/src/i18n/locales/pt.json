@@ -147,6 +147,7 @@
     "reason_insufficient_residual": "Demanda residual insuficiente",
     "reason_no_heatmap": "Área sem cobertura de heatmap",
     "reason_insufficient_total": "Demanda total insuficiente",
+    "out_of_jurisdiction_warning": "Ponto fora de jurisdição — demanda calculada para a base {{station}}",
     "whatif_toggle": "Simular reposicionamento de parceiro",
     "whatif_error_heatmap": "Dados de demanda não disponíveis. Carregue o heatmap para usar o modo what-if.",
     "whatif_result_title": "Resultado da simulação",

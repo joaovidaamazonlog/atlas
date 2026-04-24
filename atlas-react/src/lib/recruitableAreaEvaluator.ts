@@ -3,9 +3,18 @@
  * ===========================
  * Função pura de avaliação de viabilidade de área recrutável.
  *
- * Consome features do heatmap (com campos `demand_residual` e `is_covered`
- * gerados pelo backend) e calcula demanda total, residual e classificação
- * de viabilidade — sem recalcular cobertura no frontend.
+ * Regra de negócio:
+ * -----------------
+ * Apenas hexágonos cujo centroide está DENTRO de alguma jurisdição são
+ * considerados. A DS vencedora é determinada pelos hexes dentro de
+ * jurisdição: maior contagem vence; empate → maior soma de demand_residual.
+ * A demanda é calculada exclusivamente com os hexes da DS vencedora.
+ *
+ * Se o ponto central estiver fora de qualquer jurisdição, o resultado
+ * inclui `outOfJurisdictionStation` com a DS vencedora como aviso.
+ *
+ * Se nenhum hex dentro do raio estiver em alguma jurisdição, retorna
+ * demanda zero com reason NO_HEATMAP_COVERAGE.
  */
 
 import * as turf from '@turf/turf';
@@ -21,6 +30,13 @@ export interface EvaluatorInput {
   radiusMeters: number;
   minAdv: number;
   heatmapFeatures: GeoJSON.Feature[];
+  /**
+   * Polígonos de jurisdição (GeoJSON.Feature[]).
+   * Cada feature deve ter `properties.delivery_station` com o código da base.
+   * Quando omitido ou vazio, nenhuma filtragem por jurisdição é aplicada
+   * (comportamento legado — todos os hexes do raio são considerados).
+   */
+  jurisdictionFeatures?: GeoJSON.Feature[];
 }
 
 // Re-exporta tipos do store para conveniência
@@ -59,12 +75,127 @@ function extractCentroid(feature: GeoJSON.Feature): [number, number] | null {
   }
 
   if (geom.type === 'Polygon' || geom.type === 'MultiPolygon') {
-    const centroid = turf.centroid(feature as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>);
+    const centroid = turf.centroid(
+      feature as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>,
+    );
     const [lon, lat] = centroid.geometry.coordinates as [number, number];
     return [lon, lat];
   }
 
   return null;
+}
+
+/**
+ * Retorna o delivery_station da jurisdição que contém o centroide do hex.
+ *
+ * Estratégia com fallback:
+ * 1. Se o hex tem `in_jurisdiction: true` e `delivery_station` definidos
+ *    (heatmap gerado após o novo setup), usa esses campos diretamente — O(1).
+ * 2. Caso contrário, faz booleanPointInPolygon contra os polígonos de
+ *    jurisdição (heatmap legado) — O(m) onde m = nº de jurisdições.
+ *
+ * Retorna null se o hex estiver fora de todas as jurisdições.
+ */
+function stationForHex(
+  lon: number,
+  lat: number,
+  hexFeature: GeoJSON.Feature,
+  jurisdictionFeatures: GeoJSON.Feature[],
+): string | null {
+  const props = hexFeature.properties ?? {};
+
+  // Fast path: heatmap pós-setup tem in_jurisdiction e delivery_station corretos
+  if (typeof props.in_jurisdiction === 'boolean') {
+    if (!props.in_jurisdiction) return null;
+    const ds = props.delivery_station as string | undefined;
+    return ds ?? null;
+  }
+
+  // Fallback: heatmap legado — booleanPointInPolygon contra polígonos de jurisdição
+  const pt = turf.point([lon, lat]);
+  for (const jf of jurisdictionFeatures) {
+    const geom = jf.geometry;
+    if (!geom) continue;
+    if (geom.type === 'Polygon' || geom.type === 'MultiPolygon') {
+      if (
+        turf.booleanPointInPolygon(
+          pt,
+          jf as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>,
+        )
+      ) {
+        return (jf.properties?.delivery_station as string | undefined) ?? null;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Retorna o delivery_station da primeira jurisdição que contém o ponto,
+ * ou null se o ponto estiver fora de todas as jurisdições.
+ * Usado para verificar o ponto central (não um hex do heatmap).
+ */
+function stationForPoint(
+  lon: number,
+  lat: number,
+  jurisdictionFeatures: GeoJSON.Feature[],
+): string | null {
+  const pt = turf.point([lon, lat]);
+  for (const jf of jurisdictionFeatures) {
+    const geom = jf.geometry;
+    if (!geom) continue;
+    if (geom.type === 'Polygon' || geom.type === 'MultiPolygon') {
+      if (
+        turf.booleanPointInPolygon(
+          pt,
+          jf as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>,
+        )
+      ) {
+        return (jf.properties?.delivery_station as string | undefined) ?? null;
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Dado um mapa de { station → hexes dentro da jurisdição dessa station },
+ * retorna a station dominante:
+ *   1. Maior número de hexes
+ *   2. Empate → maior soma de demand_residual
+ * Retorna null se o mapa estiver vazio.
+ */
+function resolveDominantStation(
+  hexesByStation: Map<string, GeoJSON.Feature[]>,
+): string | null {
+  let winner: string | null = null;
+  let maxCount = -1;
+  let maxResidual = -1;
+
+  for (const [station, cells] of hexesByStation) {
+    const count = cells.length;
+    const residual = cells.reduce((sum, cell) => {
+      const props = cell.properties ?? {};
+      const r =
+        typeof props.demand_residual === 'number'
+          ? props.demand_residual
+          : typeof props.demand_daily === 'number'
+            ? props.demand_daily
+            : 0;
+      return sum + r;
+    }, 0);
+
+    if (
+      count > maxCount ||
+      (count === maxCount && residual > maxResidual)
+    ) {
+      winner = station;
+      maxCount = count;
+      maxResidual = residual;
+    }
+  }
+
+  return winner;
 }
 
 // ---------------------------------------------------------------------------
@@ -80,7 +211,14 @@ function extractCentroid(feature: GeoJSON.Feature): [number, number] | null {
 export function evaluateRecruitableArea(
   input: EvaluatorInput,
 ): EvaluatorResult | EvaluatorError {
-  const { centerLat, centerLon, radiusMeters, minAdv, heatmapFeatures } = input;
+  const {
+    centerLat,
+    centerLon,
+    radiusMeters,
+    minAdv,
+    heatmapFeatures,
+    jurisdictionFeatures = [],
+  } = input;
 
   // --- Validação: heatmap ---
   if (!heatmapFeatures || heatmapFeatures.length === 0) {
@@ -107,21 +245,67 @@ export function evaluateRecruitableArea(
     return { type: 'INVALID_PARAMS', field: 'minAdv' };
   }
 
-  // --- Filtragem de células por raio ---
-  const center = turf.point([centerLon, centerLat]);
+  // --- Verificar se o ponto central está dentro de alguma jurisdição ---
+  // (usado apenas para decidir se exibe o warning — não muda a lógica de filtragem)
+  const centerStation =
+    jurisdictionFeatures.length > 0
+      ? stationForPoint(centerLon, centerLat, jurisdictionFeatures)
+      : null;
+  const centerInsideJurisdiction = jurisdictionFeatures.length === 0 || centerStation !== null;
 
-  const selectedCells: GeoJSON.Feature[] = [];
+  // --- Coletar células dentro do raio ---
+  const center = turf.point([centerLon, centerLat]);
+  const cellsInRadius: GeoJSON.Feature[] = [];
 
   for (const feature of heatmapFeatures) {
     const centroid = extractCentroid(feature);
     if (!centroid) continue;
 
     const [lon, lat] = centroid;
-    const hexCentroid = turf.point([lon, lat]);
-    const distanceMeters = turf.distance(center, hexCentroid, { units: 'meters' });
+    const distanceMeters = turf.distance(
+      center,
+      turf.point([lon, lat]),
+      { units: 'meters' },
+    );
 
     if (distanceMeters <= radiusMeters) {
-      selectedCells.push(feature);
+      cellsInRadius.push(feature);
+    }
+  }
+
+  // --- Filtrar hexes por jurisdição e agrupar por DS ---
+  let selectedCells: GeoJSON.Feature[];
+  let outOfJurisdictionStation: string | undefined;
+
+  if (jurisdictionFeatures.length === 0) {
+    // Sem dados de jurisdição: comportamento legado (todos os hexes do raio)
+    selectedCells = cellsInRadius;
+  } else {
+    // Agrupar hexes do raio pela jurisdição que os contém
+    const hexesByStation = new Map<string, GeoJSON.Feature[]>();
+
+    for (const feature of cellsInRadius) {
+      const centroid = extractCentroid(feature);
+      if (!centroid) continue;
+      const [lon, lat] = centroid;
+      const station = stationForHex(lon, lat, feature, jurisdictionFeatures);
+      if (station === null) continue; // hex fora de qualquer jurisdição — descartado
+
+      if (!hexesByStation.has(station)) hexesByStation.set(station, []);
+      hexesByStation.get(station)!.push(feature);
+    }
+
+    if (hexesByStation.size === 0) {
+      // Nenhum hex dentro de qualquer jurisdição no raio
+      selectedCells = [];
+    } else {
+      const dominantStation = resolveDominantStation(hexesByStation)!;
+      selectedCells = hexesByStation.get(dominantStation)!;
+
+      // Warning quando o ponto central está fora de jurisdição
+      if (!centerInsideJurisdiction) {
+        outOfJurisdictionStation = dominantStation;
+      }
     }
   }
 
@@ -132,8 +316,10 @@ export function evaluateRecruitableArea(
 
   for (const cell of selectedCells) {
     const props = cell.properties ?? {};
-    const demandDaily: number = typeof props.demand_daily === 'number' ? props.demand_daily : 0;
-    const demandResidual: number = typeof props.demand_residual === 'number' ? props.demand_residual : demandDaily;
+    const demandDaily: number =
+      typeof props.demand_daily === 'number' ? props.demand_daily : 0;
+    const demandResidual: number =
+      typeof props.demand_residual === 'number' ? props.demand_residual : demandDaily;
     const isCovered: boolean = props.is_covered === true;
 
     totalDemand += demandDaily;
@@ -168,5 +354,6 @@ export function evaluateRecruitableArea(
     reason,
     selectedCells,
     residualCells,
+    outOfJurisdictionStation,
   };
 }

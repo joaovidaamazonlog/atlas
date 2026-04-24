@@ -247,6 +247,13 @@ export interface EvaluatorResult {
   reason: ReasonCode | null;
   selectedCells: GeoJSON.Feature[];
   residualCells: GeoJSON.Feature[];
+  /**
+   * Preenchido quando o ponto central está fora de qualquer jurisdição e
+   * hexágonos de múltiplas bases foram encontrados no raio.
+   * Indica a base vencedora (maior nº de hexes; desempate por demanda residual).
+   * A análise usa apenas os hexágonos dessa base.
+   */
+  outOfJurisdictionStation?: string;
 }
 
 export type EvaluatorError =

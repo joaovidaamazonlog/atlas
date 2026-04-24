@@ -20,11 +20,20 @@ MODO B — Parceiro sem slot matched (matched_slot_id nulo):
 
 Para cada candidato × raio, usa a mesma lógica do what-if engine:
   hexes_original  = hexes dentro do raio a partir da posição ATUAL
+                    (apenas hexes dentro da jurisdição do parceiro)
   hexes_simulated = hexes dentro do raio a partir da posição CANDIDATA
+                    (apenas hexes dentro da jurisdição do parceiro)
   loss  = soma de demand_allocated dos hexes perdidos
   gain  = soma de demand_residual dos hexes ganhos
   adv_simulated = min(max(capacity - loss + gain, 0), 80)
   adv_gain      = adv_simulated - capacity
+
+Filtragem por jurisdição
+------------------------
+Apenas hexes dentro da jurisdição da base do parceiro são considerados.
+Estratégia com fallback:
+  1. Heatmap pós-setup: usa campo `in_jurisdiction` + `delivery_station` — O(1) por hex.
+  2. Heatmap legado: usa shapely point-in-polygon contra o polígono de jurisdição.
 
 Seleciona a combinação com maior adv_gain > 0; empate → menor raio.
 Executa em paralelo com ProcessPoolExecutor (max_workers configurável).
@@ -71,6 +80,69 @@ def _haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     return 2 * R * atan2(sqrt(a), sqrt(1 - a))
 
 
+def _load_jurisdiction_poly(station_code: str, jurisdiction_path: str):
+    """
+    Carrega o polígono shapely da jurisdição de uma base.
+    Retorna None se não encontrado ou se shapely não estiver disponível.
+    Usado como fallback para heatmaps legados sem campo in_jurisdiction.
+    """
+    try:
+        from shapely.geometry import shape
+        from shapely.validation import make_valid
+    except ImportError:
+        return None
+
+    try:
+        with open(jurisdiction_path, "r", encoding="utf-8") as f:
+            jur_geojson = json.load(f)
+    except Exception:
+        return None
+
+    for feature in jur_geojson.get("features", []):
+        if feature.get("properties", {}).get("delivery_station") == station_code:
+            try:
+                return make_valid(shape(feature["geometry"]))
+            except Exception:
+                try:
+                    return shape(feature["geometry"])
+                except Exception:
+                    return None
+    return None
+
+
+def _is_hex_in_jurisdiction(
+    props: dict,
+    station_code: str,
+    h_lat: float,
+    h_lon: float,
+    jur_poly,  # shapely polygon ou None
+) -> bool:
+    """
+    Verifica se um hex pertence à jurisdição da base do parceiro.
+
+    Estratégia com fallback:
+    1. Heatmap pós-setup: campo `in_jurisdiction` (bool) + `delivery_station`.
+       Fast path — sem cálculo geoespacial.
+    2. Heatmap legado (sem `in_jurisdiction`): point-in-polygon com shapely.
+       Se jur_poly for None (shapely indisponível), aceita todos os hexes.
+    """
+    # Fast path: heatmap pós-setup
+    if "in_jurisdiction" in props:
+        return (
+            props.get("in_jurisdiction") is True
+            and props.get("delivery_station") == station_code
+        )
+
+    # Fallback: point-in-polygon
+    if jur_poly is None:
+        return True  # sem polígono disponível — não filtra
+    try:
+        from shapely.geometry import Point
+        return jur_poly.contains(Point(h_lon, h_lat))
+    except Exception:
+        return True
+
+
 def _load_heatmap_index(output_dir: str) -> Dict[str, dict]:
     """Carrega heatmap.geojson em {hex_id: properties}."""
     path = Path(output_dir) / "heatmap.geojson"
@@ -92,11 +164,18 @@ def _evaluate_position(
     partner_lat: float,
     partner_lon: float,
     partner_capacity: int,
+    partner_station: str,
     candidate_hex: str,
     heatmap_index: Dict[str, dict],
+    jur_poly,  # shapely polygon da jurisdição do parceiro, ou None
 ) -> Optional[dict]:
     """
     Avalia uma posição candidata testando todos os raios de Config.RADII.
+
+    Apenas hexes dentro da jurisdição do parceiro são considerados para
+    hexes_original e hexes_simulated — evita contabilizar demanda de
+    outras bases.
+
     Usa a lógica do what-if engine:
       loss  = demand_allocated dos hexes perdidos ao mover para candidate_hex
       gain  = demand_residual dos hexes ganhos ao mover para candidate_hex
@@ -124,6 +203,11 @@ def _evaluate_position(
                 h_lat, h_lon = h3.cell_to_latlng(hex_id)
             except Exception:
                 continue
+
+            # Filtro de jurisdição: ignora hexes fora da jurisdição do parceiro
+            if not _is_hex_in_jurisdiction(props, partner_station, h_lat, h_lon, jur_poly):
+                continue
+
             if _haversine_m(partner_lat, partner_lon, h_lat, h_lon) <= radius_m:
                 hexes_original.add(hex_id)
             if _haversine_m(c_lat, c_lon, h_lat, h_lon) <= radius_m:
@@ -164,26 +248,28 @@ def _worker_payload(payload: dict) -> Tuple[str, Optional[dict]]:
     Top-level worker function (picklable) para ProcessPoolExecutor.
 
     payload keys:
-        sfid, partner_lat, partner_lon, partner_capacity,
-        origin_hex, matched_slot_hex, h3_res, heatmap_index
+        sfid, partner_lat, partner_lon, partner_capacity, partner_station,
+        origin_hex, matched_slot_hex, h3_res, heatmap_index, jurisdiction_path
     """
     sfid             = payload["sfid"]
     partner_lat      = payload["partner_lat"]
     partner_lon      = payload["partner_lon"]
     partner_capacity = payload["partner_capacity"]
+    partner_station  = payload["partner_station"]
     origin_hex       = payload["origin_hex"]
     matched_slot_hex = payload["matched_slot_hex"]  # None se sem slot
     h3_res           = payload["h3_res"]
     heatmap_index    = payload["heatmap_index"]
+    jurisdiction_path = payload["jurisdiction_path"]
+
+    # Carrega polígono de jurisdição do parceiro (fallback para heatmap legado)
+    jur_poly = _load_jurisdiction_poly(partner_station, jurisdiction_path)
 
     # MODO A: parceiro com slot matched
     if matched_slot_hex is not None:
         if matched_slot_hex == origin_hex:
-            # Já está no hex ideal — avalia apenas essa posição para ver se há
-            # ganho de cap com raio menor (posição não muda, mas raio pode mudar)
             candidates = [origin_hex]
         else:
-            # Sugere mover para o hex do slot
             candidates = [matched_slot_hex]
 
     # MODO B: parceiro sem slot matched — grid_disk(k=1)
@@ -199,8 +285,10 @@ def _worker_payload(payload: dict) -> Tuple[str, Optional[dict]]:
             partner_lat=partner_lat,
             partner_lon=partner_lon,
             partner_capacity=partner_capacity,
+            partner_station=partner_station,
             candidate_hex=candidate_hex,
             heatmap_index=heatmap_index,
+            jur_poly=jur_poly,
         )
         if opp is None:
             continue
@@ -278,6 +366,17 @@ def run_phase3_5(
         logger.warning("[Phase 3.5] heatmap index vazio — encerrando.")
         return
 
+    # Caminho do arquivo de jurisdições (fallback para heatmap legado)
+    jurisdiction_path = str(Config.BASE_JURISDICTION)
+
+    # Detectar se o heatmap já tem in_jurisdiction (pós-setup)
+    sample_props = next(iter(heatmap_index.values()), {})
+    has_in_jurisdiction = "in_jurisdiction" in sample_props
+    if has_in_jurisdiction:
+        print("  Heatmap pós-setup detectado: usando campo in_jurisdiction (fast path).")
+    else:
+        print("  Heatmap legado: usando point-in-polygon para filtro de jurisdição.")
+
     # 2. Construir índice slot_id → origin_hex a partir do FitResult
     slot_hex_index: Dict[str, str] = {}
     for t_fit in fit.territories.values():
@@ -314,14 +413,16 @@ def run_phase3_5(
             matched_slot_hex = slot_hex_index.get(partner.matched_slot_id)
 
         payloads.append({
-            "sfid":             sfid,
-            "partner_lat":      partner.lat,
-            "partner_lon":      partner.lon,
-            "partner_capacity": partner.capacity_s,
-            "origin_hex":       partner.origin_hex,
-            "matched_slot_hex": matched_slot_hex,
-            "h3_res":           Config.get_h3_res(partner.station_code),
-            "heatmap_index":    heatmap_index,
+            "sfid":              sfid,
+            "partner_lat":       partner.lat,
+            "partner_lon":       partner.lon,
+            "partner_capacity":  partner.capacity_s,
+            "partner_station":   partner.station_code,
+            "origin_hex":        partner.origin_hex,
+            "matched_slot_hex":  matched_slot_hex,
+            "h3_res":            Config.get_h3_res(partner.station_code),
+            "heatmap_index":     heatmap_index,
+            "jurisdiction_path": jurisdiction_path,
         })
 
     mode_a = sum(1 for p in payloads if p["matched_slot_hex"] is not None)

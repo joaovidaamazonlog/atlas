@@ -59,13 +59,15 @@ function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 
 /**
  * Returns the set of hex_ids whose feature centroids are within `radiusMeters`
- * of the given (lat, lon) position.
+ * of the given (lat, lon) position, optionally restricted to hexagons inside
+ * the provided jurisdiction polygons.
  */
 export function getHexesWithinRadius(
   features: GeoJSON.Feature[],
   lat: number,
   lon: number,
   radiusMeters: number,
+  jurisdictionFeatures: GeoJSON.Feature[] = [],
 ): Set<string> {
   const center = turf.point([lon, lat]);
   const result = new Set<string>();
@@ -84,7 +86,26 @@ export function getHexesWithinRadius(
       continue;
     }
     const dist = turf.distance(center, turf.point([fLon, fLat]), { units: 'meters' });
-    if (dist <= radiusMeters) result.add(hexId);
+    if (dist > radiusMeters) continue;
+
+    // Filtra hexágonos fora da jurisdição quando jurisdictionFeatures está disponível
+    if (jurisdictionFeatures.length > 0) {
+      const pt = turf.point([fLon, fLat]);
+      const insideJurisdiction = jurisdictionFeatures.some((jf) => {
+        const jGeom = jf.geometry;
+        if (!jGeom) return false;
+        if (jGeom.type === 'Polygon' || jGeom.type === 'MultiPolygon') {
+          return turf.booleanPointInPolygon(
+            pt,
+            jf as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>,
+          );
+        }
+        return false;
+      });
+      if (!insideJurisdiction) continue;
+    }
+
+    result.add(hexId);
   }
   return result;
 }
@@ -105,6 +126,7 @@ interface WhatIfMarkerProps {
   partner: Partner & { lat: number; lon: number };
   heatmapFeatures: GeoJSON.Feature[];
   heatmapIndex: Map<string, GeoJSON.Feature>;
+  jurisdictionFeatures: GeoJSON.Feature[];
   isActive: boolean; // true = this partner is the one being simulated
   anySimulated: boolean; // true = some partner has already been dragged
   onDragStart: (id: string) => void;
@@ -117,6 +139,7 @@ function WhatIfMarker({
   partner,
   heatmapFeatures,
   heatmapIndex,
+  jurisdictionFeatures,
   isActive,
   anySimulated,
   onDragStart,
@@ -152,8 +175,8 @@ function WhatIfMarker({
 
     const { radiusMeters: currentRadius } = useStore.getState().recruitableAnalysis.params;
 
-    const hexesOriginal = getHexesWithinRadius(heatmapFeatures, origLat, origLon, currentRadius);
-    const hexesSimulated = getHexesWithinRadius(heatmapFeatures, lat, lng, currentRadius);
+    const hexesOriginal = getHexesWithinRadius(heatmapFeatures, origLat, origLon, currentRadius, jurisdictionFeatures);
+    const hexesSimulated = getHexesWithinRadius(heatmapFeatures, lat, lng, currentRadius, jurisdictionFeatures);
 
     const hexesLost    = new Set([...hexesOriginal].filter(h => !hexesSimulated.has(h)));
     const hexesGained  = new Set([...hexesSimulated].filter(h => !hexesOriginal.has(h)));
@@ -195,7 +218,7 @@ function WhatIfMarker({
         },
       }),
     );
-  }, [partner, heatmapFeatures, heatmapIndex, onSimulatedPos]);
+  }, [partner, heatmapFeatures, heatmapIndex, jurisdictionFeatures, onSimulatedPos]);
 
   const origPos: [number, number] = [partner.lat, partner.lon];
   const simPos = simulatedPos ?? origPos;
@@ -305,8 +328,10 @@ export default function PartnerWhatIfLayer() {
   const setWhatIfSimulatedData = useStore((s) => s.setWhatIfSimulatedData);
   const currentFilteredData   = useStore((s) => s.currentFilteredData);
   const heatmapData           = useStore((s) => s.heatmapData);
+  const jurisdictionData      = useStore((s) => s.jurisdictionData);
 
   const heatmapFeatures: GeoJSON.Feature[] = heatmapData?.features ?? [];
+  const jurisdictionFeatures: GeoJSON.Feature[] = jurisdictionData?.features ?? [];
 
   const heatmapIndex = useMemo(
     () => new Map(
@@ -349,6 +374,7 @@ export default function PartnerWhatIfLayer() {
             partner={partner}
             heatmapFeatures={heatmapFeatures}
             heatmapIndex={heatmapIndex}
+            jurisdictionFeatures={jurisdictionFeatures}
             isActive={isActive}
             anySimulated={anySimulated}
             onDragStart={handleDragStart}

@@ -7,8 +7,13 @@ Responsabilidades
 -----------------
 - Ler o CSV de pacotes históricos.
 - Converter lat/lon para hexágonos H3 (se necessário).
-- Resolver conflitos de hexágonos presentes em múltiplas bases
-  (winner-takes-all: base com maior volume absoluto vence).
+- Resolver conflitos de hexágonos presentes em múltiplas bases com a
+  seguinte prioridade:
+    1. Jurisdição: se o centróide do hex está dentro da jurisdição de
+       exatamente uma base, essa base vence independentemente de volume.
+    2. Volume (fallback): hexes fora de qualquer jurisdição, ou na
+       fronteira de múltiplas jurisdições, são resolvidos pela base com
+       maior volume absoluto (winner-takes-all original).
 - Construir o mapa de demanda TOTAL BRUTA por hex (sem divisão por dias),
   eliminando zeros falsos que a média inteira produzia.
 - Construir o índice CEP → hexágonos para uso nos reports.
@@ -44,10 +49,12 @@ PackageData.days : int
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 
 import h3
 import pandas as pd
+from shapely.geometry import Point, shape
+from shapely.validation import make_valid
 
 from shared.models import Config
 
@@ -90,7 +97,54 @@ class PackageData:
 # LOADER
 # ---------------------------------------------------------------------------
 
-def load_packages(path: str = None) -> PackageData:
+def _build_jurisdiction_index(
+    jur_geojson: Dict,
+) -> Dict[str, object]:
+    """
+    Constrói um índice { station_code → shapely polygon } a partir do
+    GeoJSON de jurisdições.  Geometrias inválidas são corrigidas com
+    make_valid antes de serem armazenadas.
+    """
+    index: Dict[str, object] = {}
+    for feature in jur_geojson.get("features", []):
+        station = feature.get("properties", {}).get("delivery_station")
+        if not station:
+            continue
+        try:
+            poly = make_valid(shape(feature["geometry"]))
+        except Exception:
+            try:
+                poly = shape(feature["geometry"])
+            except Exception:
+                continue
+        index[station] = poly
+    return index
+
+
+def _resolve_station_by_jurisdiction(
+    hex_id: str,
+    jur_index: Dict[str, object],
+) -> Optional[str]:
+    """
+    Retorna o station_code cuja jurisdição contém o centróide do hex.
+
+    - Se exatamente uma jurisdição contém o ponto → retorna essa base.
+    - Se nenhuma ou mais de uma contém (fronteira) → retorna None
+      (fallback por volume).
+    """
+    lat, lon = h3.cell_to_latlng(hex_id)
+    pt = Point(lon, lat)
+    matches = [
+        station for station, poly in jur_index.items()
+        if poly.contains(pt)
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+def load_packages(
+    path: str = None,
+    jurisdiction_geojson: Optional[Dict] = None,
+) -> "PackageData":
     """
     Carrega o histórico de pacotes e retorna um PackageData.
 
@@ -98,6 +152,11 @@ def load_packages(path: str = None) -> PackageData:
     ----------
     path : str, opcional
         Caminho para o CSV. Se None, usa Config.BASE_PACKAGES.
+    jurisdiction_geojson : dict, opcional
+        GeoJSON de jurisdições (FeatureCollection).  Quando fornecido,
+        a atribuição de hexes a bases usa jurisdição como critério
+        primário; volume é usado apenas como fallback para hexes fora
+        de qualquer jurisdição ou na fronteira de múltiplas.
 
     Fluxo
     -----
@@ -105,7 +164,11 @@ def load_packages(path: str = None) -> PackageData:
     2. Calcular hex H3 se não existir no CSV.
     3. Contar dias distintos no período.
     4. Agrupar por (station_code, hex) → quantidade total de linhas (entregas).
-    5. Resolver duplicidades entre bases (winner-takes-all por volume).
+    5. Resolver atribuição de hexes a bases:
+       5a. Se jurisdiction_geojson fornecido: jurisdição primeiro, volume
+           como fallback.
+       5b. Caso contrário: winner-takes-all por volume (comportamento
+           original).
     6. Construir demand_by_station com totais brutos.
     7. Construir hex_to_ceps.
     """
@@ -167,10 +230,8 @@ def load_packages(path: str = None) -> PackageData:
         .reset_index(name="total_packages")
     )
 
-    # 5. Resolver duplicidades: hexes presentes em múltiplas bases
-    #    → base com maior volume de entregas no hex vence ("winner takes all")
-    #    → demanda do hex = soma de todas as bases (não perde volume)
-    print("   Resolvendo duplicidades entre bases ...")
+    # 5. Resolver atribuição de hexes a bases
+    print("   Resolvendo atribuição de hexes a bases ...")
 
     # Demanda total do hex (soma de todas as bases onde aparece)
     hex_totals = (
@@ -179,18 +240,55 @@ def load_packages(path: str = None) -> PackageData:
         .reset_index(name="demand_total")
     )
 
-    # Base vencedora = a com maior volume no hex
-    hex_winners = (
+    # Base vencedora por volume (fallback original)
+    hex_winners_by_volume = (
         raw.sort_values("total_packages", ascending=False)
         .drop_duplicates(subset=["hex"], keep="first")[["hex", "station_code"]]
+        .rename(columns={"station_code": "station_volume"})
     )
 
-    # Unir: hex | station_vencedora | demanda_total_somada
-    unified = pd.merge(hex_winners, hex_totals, on="hex")
+    unified = pd.merge(hex_winners_by_volume, hex_totals, on="hex")
+
+    if jurisdiction_geojson:
+        # 5a. Jurisdição como critério primário
+        jur_index = _build_jurisdiction_index(jurisdiction_geojson)
+        print(f"   Jurisdição: {len(jur_index)} bases indexadas. "
+              f"Resolvendo {len(unified):,} hexes ...")
+
+        n_by_jurisdiction = 0
+        n_by_volume = 0
+        n_outside = 0
+
+        winner_stations: Dict[str, str] = {}
+        for hex_id in unified["hex"]:
+            station_jur = _resolve_station_by_jurisdiction(hex_id, jur_index)
+            if station_jur is not None:
+                winner_stations[hex_id] = station_jur
+                n_by_jurisdiction += 1
+            else:
+                # Fallback: volume
+                vol_row = hex_winners_by_volume[
+                    hex_winners_by_volume["hex"] == hex_id
+                ]
+                if not vol_row.empty:
+                    winner_stations[hex_id] = vol_row.iloc[0]["station_volume"]
+                    n_by_volume += 1
+                else:
+                    n_outside += 1
+
+        unified["station_code"] = unified["hex"].map(winner_stations)
+        unified = unified.dropna(subset=["station_code"])
+
+        print(f"   Atribuição: {n_by_jurisdiction} por jurisdição | "
+              f"{n_by_volume} por volume (fallback) | "
+              f"{n_outside} sem base (descartados).")
+    else:
+        # 5b. Comportamento original: winner-takes-all por volume
+        unified = unified.rename(columns={"station_volume": "station_code"})
 
     n_conflicts = len(raw["hex"].unique()) - len(raw.drop_duplicates("hex"))
     if n_conflicts > 0:
-        print(f"   {n_conflicts} hexes conflitantes resolvidos.")
+        print(f"   {n_conflicts} hexes com múltiplas bases no histórico.")
     print(f"   {len(unified):,} hexes únicos após unificação.")
 
     # 6. Construir demand_by_station

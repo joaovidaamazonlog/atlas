@@ -92,8 +92,12 @@ export default function RecruitableAreaLayer() {
     ? { type: 'FeatureCollection', features: result.selectedCells }
     : null;
 
+  // Key baseado no primeiro e último hex_id + contagem + base para garantir re-render
+  // quando os hexes mudam (evita cache stale do Leaflet GeoJSON)
+  const firstHex = result?.selectedCells[0]?.properties?.hex_id ?? '';
+  const lastHex = result?.selectedCells[result.selectedCells.length - 1]?.properties?.hex_id ?? '';
   const geoJsonKey = result
-    ? `cells-${result.totalDemand}-${result.residualDemand}-${result.selectedCells.length}`
+    ? `cells-${result.selectedCells.length}-${result.outOfJurisdictionStation ?? 'in'}-${firstHex}-${lastHex}`
     : 'no-result';
 
   // When a what-if simulation is active, hide the recruitable circle —

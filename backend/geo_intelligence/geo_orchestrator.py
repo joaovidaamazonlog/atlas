@@ -406,6 +406,7 @@ def run_daily(
     from shared.config import DEST_FOLDER as _DEST_FOLDER
     from shared.load_partners import load_partners
     from shared.load_packages import load_packages
+    from shared.models import Config as _Config
     from vanilla.phase3_partner_fit import run_phase3
     from vanilla.phase4_webleads import run_phase4
     from vanilla.phase5_reports import run_phase5
@@ -437,7 +438,13 @@ def run_daily(
 
     # Load shared data once
     partner_data = load_partners()
-    pkg = load_packages()
+    _jur_geojson = None
+    try:
+        with open(_Config.BASE_JURISDICTION, "r", encoding="utf-8") as _f:
+            _jur_geojson = json.load(_f)
+    except Exception as _e:
+        print(f"  WARN jurisdição não carregada ({_e}) — atribuição de hexes usará apenas volume.")
+    pkg = load_packages(jurisdiction_geojson=_jur_geojson)
 
     for station_code in sorted(station_list):
         run_id = reader.get_latest_run_id(station_code)

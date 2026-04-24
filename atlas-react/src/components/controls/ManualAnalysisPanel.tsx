@@ -68,6 +68,12 @@ function RecruitableResultPanel({
         </div>
       )}
 
+      {result.outOfJurisdictionStation && (
+        <div className="flex items-center gap-2 px-2 py-1 rounded bg-orange-500/10 border border-orange-500/30 text-xs text-orange-400" role="alert">
+          ⚠️ {t('manual_analysis.out_of_jurisdiction_warning', { station: result.outOfJurisdictionStation })}
+        </div>
+      )}
+
       <div className="flex items-center gap-2">
         {viable ? (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 text-sm font-semibold">
@@ -162,6 +168,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
   const setRecruitableResult = useStore((s) => s.setRecruitableResult);
   const clearRecruitableAnalysis = useStore((s) => s.clearRecruitableAnalysis);
   const heatmapData = useStore((s) => s.heatmapData);
+  const jurisdictionData = useStore((s) => s.jurisdictionData);
   const fitBoundsRef = useStore((s) => s.fitBoundsRef);
   const setManualAnalysisPin = useStore((s) => s.setManualAnalysisPin);
   const whatIfModeActive = useStore((s) => s.whatIfModeActive);
@@ -263,12 +270,14 @@ function PanelContent({ onClose }: { onClose: () => void }) {
       if (!isValidPositiveNumber(minAdv) || !isValidPositiveNumber(radiusMeters)) return;
 
       const features = store.heatmapData?.features ?? [];
+      const jFeatures = store.jurisdictionData?.features ?? [];
       const result = evaluateRecruitableArea({
         centerLat: detail.simulatedLat,
         centerLon: detail.simulatedLon,
         radiusMeters,
         minAdv,
         heatmapFeatures: features,
+        jurisdictionFeatures: jFeatures,
       });
 
       if (isEvaluatorError(result)) {
@@ -362,12 +371,14 @@ function PanelContent({ onClose }: { onClose: () => void }) {
 
   const handleAnalyze = useCallback(() => {
     const features = heatmapData?.features ?? [];
+    const jFeatures = jurisdictionData?.features ?? [];
     const result = evaluateRecruitableArea({
       centerLat: Number(params.centerLat),
       centerLon: Number(params.centerLon),
       radiusMeters: params.radiusMeters,
       minAdv: params.minAdv,
       heatmapFeatures: features,
+      jurisdictionFeatures: jFeatures,
     });
     if (isEvaluatorError(result)) {
       const msgs: Record<string, string> = {

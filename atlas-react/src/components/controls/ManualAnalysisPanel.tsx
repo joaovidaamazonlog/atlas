@@ -52,6 +52,7 @@ function RecruitableResultPanel({
     INSUFFICIENT_RESIDUAL_DEMAND: t('manual_analysis.reason_insufficient_residual'),
     NO_HEATMAP_COVERAGE: t('manual_analysis.reason_no_heatmap'),
     INSUFFICIENT_TOTAL_DEMAND: t('manual_analysis.reason_insufficient_total'),
+    NO_HISTORICAL_DATA: t('manual_analysis.reason_no_historical_data'),
   };
   const { totalDemand, residualDemand, minAdv, gap, viable, reason } = result;
   const barWidth = minAdv > 0 ? Math.min((residualDemand / minAdv) * 100, 100) : 0;

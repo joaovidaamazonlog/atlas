@@ -126,6 +126,7 @@ function stationForHex(
   }
 
   // Fallback: heatmap legado — booleanPointInPolygon contra polígonos de jurisdição
+  // (in_jurisdiction é null/undefined — heatmap gerado antes do novo setup)
   const pt = turf.point([lon, lat]);
   for (const jf of jurisdictionFeatures) {
     const geom = jf.geometry;
@@ -354,6 +355,9 @@ export function evaluateRecruitableArea(
   if (!viable) {
     if (selectedCells.length === 0) {
       reason = 'NO_HEATMAP_COVERAGE';
+    } else if (totalDemand === 0 && selectedCells.every(c => c.properties?.in_jurisdiction === true)) {
+      // Todos os hexes são de área satélite sem histórico de pacotes
+      reason = 'NO_HISTORICAL_DATA';
     } else if (totalDemand < minAdv) {
       reason = 'INSUFFICIENT_TOTAL_DEMAND';
     } else {

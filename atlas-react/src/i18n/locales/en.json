@@ -159,7 +159,8 @@
     "whatif_clear": "Clear Simulation",
     "geocode_error_not_found": "Address not found",
     "geocode_error_fetch": "Error fetching address",
-    "partner_status": "{{city}}, {{state}} · {{status}}"
+    "partner_status": "{{city}}, {{state}} · {{status}}",
+    "reason_no_historical_data": "Satellite area with no package history — demand data unavailable"
   },
   "result_panel": {
     "companies_one": "{{count}} company",

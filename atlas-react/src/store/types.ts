@@ -236,7 +236,8 @@ export interface ProspectState {
 export type ReasonCode =
   | 'INSUFFICIENT_RESIDUAL_DEMAND'
   | 'NO_HEATMAP_COVERAGE'
-  | 'INSUFFICIENT_TOTAL_DEMAND';
+  | 'INSUFFICIENT_TOTAL_DEMAND'
+  | 'NO_HISTORICAL_DATA';  // área satélite sem histórico de pacotes
 
 export interface EvaluatorResult {
   totalDemand: number;

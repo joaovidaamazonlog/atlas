@@ -788,15 +788,80 @@ def _derive_hex_coverage(pm: PartnerMetrics) -> Optional[List[dict]]:
     ]
 
 
+def _resolve_bucket_ade(
+    record: dict,
+    pm: Optional["PartnerMetrics"],
+    territories: "TerritoriesResult",
+) -> str:
+    """
+    Resolve o bucket_ade de um parceiro usando a hierarquia correta:
+
+    1. Match com vaga (Fase 3): pm.cluster_name
+    2. Hex do parceiro → território (hex_to_territory)
+    3. Proximidade ao centróide de território (mais próximo por lat/lon)
+
+    Nunca usa o campo bucket do Salesforce.
+    """
+    # Nível 1: match com vaga ideal (Fase 3)
+    if pm and pm.cluster_name and pm.cluster_name not in ("", "N/A"):
+        return pm.cluster_name
+
+    # Nível 2: hex do parceiro → território
+    origin_hex = pm.origin_hex if pm else None
+    if origin_hex and origin_hex in territories.hex_to_territory:
+        return territories.hex_to_territory[origin_hex]
+
+    # Nível 3: proximidade ao centróide de território
+    lat = record.get("lat") or (pm.lat if pm else None)
+    lon = record.get("lon") or (pm.lon if pm else None)
+    ds  = record.get("delivery_station", "")
+
+    if lat is None or lon is None or not ds:
+        return ""
+
+    try:
+        lat_f = float(lat)
+        lon_f = float(lon)
+    except (TypeError, ValueError):
+        return ""
+
+    # Filtrar territórios da mesma base (já remapeada)
+    candidates = territories.territories_for(ds)
+    if not candidates:
+        return ""
+
+    best_tid  = ""
+    best_dist = float("inf")
+    for meta in candidates:
+        c_lat = meta.get("centroid_lat")
+        c_lon = meta.get("centroid_lon")
+        if c_lat is None or c_lon is None:
+            continue
+        dist = (lat_f - float(c_lat)) ** 2 + (lon_f - float(c_lon)) ** 2
+        if dist < best_dist:
+            best_dist = dist
+            best_tid  = meta["territory_id"]
+
+    return best_tid
+
+
 def _write_dados_mapa(
     path: Path,
     fit: FitResult,
     partner_data_json_path: Path,
+    territories: "TerritoriesResult",
     stations: Optional[List[str]] = None,
 ) -> None:
     """
     Atualiza dados_mapa.json embutindo decision, reason, bucket_ade,
     radius_suggestion, cap_suggestion e hex_coverage diretamente em cada parceiro.
+
+    bucket_ade é resolvido pela hierarquia:
+      1. Match com vaga (Fase 3) — cluster_name
+      2. Hex do parceiro → território (hex_to_territory)
+      3. Proximidade ao centróide de território
+
+    Nunca usa o campo bucket do Salesforce.
 
     hex_coverage é adicionado apenas para parceiros Active/Onboarding.
     Para outros status, o campo não é escrito.
@@ -822,12 +887,14 @@ def _write_dados_mapa(
     for record in payload.get("allMarkerData", []):
         sfid = record.get("salesforce_id")
         pm   = opt_index.get(sfid)
+
+        # Resolver bucket_ade pela hierarquia correta
+        bucket_ade = _resolve_bucket_ade(record, pm, territories)
+        record["bucket_ade"] = bucket_ade
+
         if pm:
             record["decision"]          = pm.decision
             record["reason"]            = pm.reason
-            # Usar cluster_name do pipeline; nunca fazer fallback para record["bucket"]
-            # pois esse campo vem do Salesforce e pode pertencer a outra DS
-            record["bucket_ade"]        = pm.cluster_name if pm.cluster_name and pm.cluster_name != "N/A" else ""
             record["radius_suggestion"] = pm.radius_s
             record["cap_suggestion"]    = pm.capacity_s
 
@@ -920,7 +987,7 @@ def run_phase5(
 
     # 6. Enriquecer dados_mapa.json com campos de otimização
     dados_mapa_path = out_dir / "dados_mapa.json"
-    _write_dados_mapa(dados_mapa_path, fit, dados_mapa_path, stations=stations)
+    _write_dados_mapa(dados_mapa_path, fit, dados_mapa_path, territories=territories, stations=stations)
     paths["dados_mapa"] = dados_mapa_path
 
     # 7. Enriquecer heatmap.geojson com demanda alocada e residual

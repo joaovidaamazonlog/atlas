@@ -105,6 +105,36 @@ export const HCP_CONFIG: Readonly<HcpConfig> = Object.freeze({
   maxClusterMembers: 6,
 });
 
+/**
+ * Mapeamento de bases canônicas para suas áreas satélite.
+ * Espelha STATION_ALIASES do backend/shared/config.py (invertido).
+ * Usado para expandir filtros de DS — ao selecionar DSP5, os polígonos
+ * de XSP7, XSP9 e XCP1 também são exibidos.
+ */
+export const DS_SATELLITES: Readonly<Record<string, string[]>> = Object.freeze({
+  DSA8: ['XBA1'],
+  DRS5: ['XCS1'],
+  DGO2: ['XGA2'],
+  DPB3: ['XPB1'],
+  DRJ3: ['PUM2', 'XRJ2', 'XRJ4'],
+  DSP4: ['XSJ1'],
+  DSP5: ['XSP7', 'XSP9', 'XCP1'],
+});
+
+/**
+ * Expande uma lista de delivery stations para incluir suas áreas satélite.
+ * Ex: ['DSP5'] → ['DSP5', 'XSP7', 'XSP9', 'XCP1']
+ */
+export function expandWithSatellites(stations: string[]): string[] {
+  const expanded = new Set(stations);
+  for (const ds of stations) {
+    for (const sat of DS_SATELLITES[ds] ?? []) {
+      expanded.add(sat);
+    }
+  }
+  return Array.from(expanded);
+}
+
 /** URL base da API de prospecção.
  * Em desenvolvimento usa o proxy do Vite (/api-proxy) para contornar CORS.
  * Em produção (build) usa a URL real da API.

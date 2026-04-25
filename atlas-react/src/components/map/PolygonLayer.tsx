@@ -14,6 +14,7 @@ import { GeoJSON } from 'react-leaflet';
 import type { StyleFunction, PathOptions } from 'leaflet';
 import type { Feature } from 'geojson';
 import { useStore } from '../../store';
+import { expandWithSatellites } from '../../lib/config';
 
 // Paleta viva para modos de grupo (DS, CTL, BDM, territory)
 const GROUP_PALETTE = [
@@ -79,7 +80,7 @@ export default function PolygonLayer() {
       }
       const stationMatch =
         filterState.selectedStations === 'all' ||
-        filterState.selectedStations.includes(props.delivery_station);
+        expandWithSatellites(filterState.selectedStations as string[]).includes(props.delivery_station);
       const bucketMatch =
         filterState.selectedBuckets === 'all' ||
         filterState.selectedBuckets.includes(props.bucket_ade ?? props.territory_id);

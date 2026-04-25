@@ -10,6 +10,7 @@ import { GeoJSON } from 'react-leaflet';
 import type { StyleFunction, PathOptions } from 'leaflet';
 import type { Feature } from 'geojson';
 import { useStore } from '../../store';
+import { expandWithSatellites } from '../../lib/config';
 
 /**
  * Converte demanda em cor RGB (vermelho → verde).
@@ -36,7 +37,7 @@ export default function OptimizationLayer() {
 
       const stationMatch =
         filterState.selectedStations === 'all' ||
-        (filterState.selectedStations as string[]).includes(props.delivery_station);
+        expandWithSatellites(filterState.selectedStations as string[]).includes(props.delivery_station);
 
       const bucketMatch =
         filterState.selectedBuckets === 'all' ||

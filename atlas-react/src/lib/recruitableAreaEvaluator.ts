@@ -19,6 +19,20 @@
 
 import * as turf from '@turf/turf';
 import type { EvaluatorResult, EvaluatorError, ReasonCode } from '../store/types';
+import { DS_SATELLITES } from './config';
+
+// Índice reverso: satélite → canônica (construído uma vez)
+const SATELLITE_TO_CANONICAL: Record<string, string> = {};
+for (const [canonical, satellites] of Object.entries(DS_SATELLITES)) {
+  for (const sat of satellites) {
+    SATELLITE_TO_CANONICAL[sat] = canonical;
+  }
+}
+
+/** Resolve um código de DS para a base canônica (ex: "XSP7" → "DSP5"). */
+function resolveCanonical(ds: string): string {
+  return SATELLITE_TO_CANONICAL[ds] ?? ds;
+}
 
 // ---------------------------------------------------------------------------
 // INTERFACE DE ENTRADA
@@ -108,7 +122,7 @@ function stationForHex(
   if (typeof props.in_jurisdiction === 'boolean') {
     if (!props.in_jurisdiction) return null;
     const ds = props.delivery_station as string | undefined;
-    return ds ?? null;
+    return ds ? resolveCanonical(ds) : null;
   }
 
   // Fallback: heatmap legado — booleanPointInPolygon contra polígonos de jurisdição
@@ -123,7 +137,8 @@ function stationForHex(
           jf as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>,
         )
       ) {
-        return (jf.properties?.delivery_station as string | undefined) ?? null;
+        const ds = jf.properties?.delivery_station as string | undefined;
+        return ds ? resolveCanonical(ds) : null;
       }
     }
   }
@@ -151,7 +166,8 @@ function stationForPoint(
           jf as GeoJSON.Feature<GeoJSON.Polygon | GeoJSON.MultiPolygon>,
         )
       ) {
-        return (jf.properties?.delivery_station as string | undefined) ?? null;
+        const ds = jf.properties?.delivery_station as string | undefined;
+        return ds ? resolveCanonical(ds) : null;
       }
     }
   }

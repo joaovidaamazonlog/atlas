@@ -1575,7 +1575,8 @@ def patch_heatmap_satellite_stations(output_dir: str) -> None:
     Roda automaticamente no daily quando STATION_ALIASES está definido.
     É idempotente — pode ser chamada múltiplas vezes sem efeito colateral.
     """
-    aliases = getattr(Config, "STATION_ALIASES", {})
+    from shared.config import STATION_ALIASES
+    aliases = STATION_ALIASES
     if not aliases:
         return
 
@@ -1609,6 +1610,107 @@ def patch_heatmap_satellite_stations(output_dir: str) -> None:
               f"para bases canônicas.")
     except Exception as e:
         print(f"  WARN patch_heatmap_satellite_stations: falha ao salvar ({e})")
+
+
+def patch_heatmap_add_satellite_hexes(output_dir: str) -> None:
+    """
+    Adiciona ao heatmap.geojson os hexes das áreas satélite que estão no
+    territories_index.json mas não no heatmap (porque o setup foi rodado
+    antes do remap de satélites estar ativo).
+
+    Para cada hex satélite ausente, cria uma feature com:
+        delivery_station = <base canônica>
+        territory_id     = <territory_id do territories_index>
+        demand_total     = 0
+        demand_daily     = 0
+        demand_residual  = 0
+        demand_allocated = 0
+        is_covered       = false
+        in_jurisdiction  = true   (está dentro da jurisdição da canônica)
+        ceps             = []
+
+    É idempotente — hexes já presentes não são duplicados.
+    Roda automaticamente no daily.
+    """
+    from shared.config import STATION_ALIASES
+    aliases = STATION_ALIASES
+    if not aliases:
+        return
+
+    heatmap_path = Path(output_dir) / "heatmap.geojson"
+    index_path   = Path(output_dir) / "territories_index.json"
+
+    if not heatmap_path.exists() or not index_path.exists():
+        return
+
+    try:
+        with open(heatmap_path, "r", encoding="utf-8") as f:
+            heatmap = json.load(f)
+        with open(index_path, "r", encoding="utf-8") as f:
+            territory_index = json.load(f)
+    except Exception as e:
+        print(f"  WARN patch_heatmap_add_satellite_hexes: falha ao ler arquivos ({e})")
+        return
+
+    # Conjunto de hex_ids já presentes no heatmap
+    existing_hexes: set = {
+        ft["properties"].get("hex_id")
+        for ft in heatmap.get("features", [])
+        if ft.get("properties", {}).get("hex_id")
+    }
+
+    new_features = []
+    n_added = 0
+
+    for tid, meta in territory_index.items():
+        original_station = meta.get("station_code", "")
+        canonical = aliases.get(original_station)
+        if not canonical:
+            continue  # não é satélite
+
+        for hex_id in meta.get("hex_ids", []):
+            if hex_id in existing_hexes:
+                continue  # já existe
+
+            try:
+                lat, lon = h3.cell_to_latlng(hex_id)
+                boundary = h3.cell_to_boundary(hex_id)
+                coords   = [[c[1], c[0]] for c in boundary]
+                coords.append(coords[0])
+            except Exception:
+                continue
+
+            new_features.append({
+                "type": "Feature",
+                "geometry": {"type": "Polygon", "coordinates": [coords]},
+                "properties": {
+                    "hex_id":           hex_id,
+                    "demand_total":     0,
+                    "demand_daily":     0.0,
+                    "demand_residual":  0.0,
+                    "demand_allocated": 0.0,
+                    "is_covered":       False,
+                    "ceps":             [],
+                    "delivery_station": canonical,
+                    "territory_id":     tid,
+                    "in_jurisdiction":  True,
+                },
+            })
+            existing_hexes.add(hex_id)
+            n_added += 1
+
+    if n_added == 0:
+        print("  patch_heatmap_add_satellite_hexes: nenhum hex novo para adicionar.")
+        return
+
+    heatmap["features"].extend(new_features)
+
+    try:
+        with open(heatmap_path, "w", encoding="utf-8") as f:
+            json.dump(heatmap, f, ensure_ascii=False, indent=2)
+        print(f"  ✅ heatmap.geojson: {n_added} hexes satélite adicionados.")
+    except Exception as e:
+        print(f"  WARN patch_heatmap_add_satellite_hexes: falha ao salvar ({e})")
 
 
 def run_update_heatmap(

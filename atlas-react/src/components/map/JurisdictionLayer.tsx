@@ -10,6 +10,7 @@ import { GeoJSON } from 'react-leaflet';
 import type { StyleFunction, PathOptions } from 'leaflet';
 import type { Feature } from 'geojson';
 import { useStore } from '../../store';
+import { expandWithSatellites } from '../../lib/config';
 
 export default function JurisdictionLayer() {
   const jurisdictionData = useStore((s) => s.jurisdictionData);
@@ -22,11 +23,11 @@ export default function JurisdictionLayer() {
     const features =
       filterState.selectedStations === 'all'
         ? jurisdictionData.features
-        : jurisdictionData.features.filter((f) =>
-            (filterState.selectedStations as string[]).includes(
-              f.properties?.delivery_station,
-            ),
-          );
+        : jurisdictionData.features.filter((f) => {
+            // Expande as stations selecionadas para incluir satélites
+            const expanded = expandWithSatellites(filterState.selectedStations as string[]);
+            return expanded.includes(f.properties?.delivery_station);
+          });
 
     return { type: 'FeatureCollection' as const, features };
   }, [jurisdictionData, filterState]);

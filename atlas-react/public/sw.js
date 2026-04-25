@@ -1,6 +1,6 @@
 // Service Worker — ATLAS PWA
-const CACHE_NAME = 'atlas-v1';
-const STATIC_ASSETS = ['/', '/index.html', '/manifest.json'];
+const CACHE_NAME = 'atlas-v2';
+const STATIC_ASSETS = ['/', '/atlas/', '/atlas/index.html', '/atlas/manifest.json'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -19,18 +19,22 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Estratégia: network-first para dados, cache-first para assets estáticos
   const url = new URL(event.request.url);
 
-  if (url.pathname.startsWith('/output_data') || url.pathname.startsWith('/config')) {
-    // Dados geoespaciais: network-first
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
-    );
-  } else {
-    // Assets estáticos: cache-first
-    event.respondWith(
-      caches.match(event.request).then(cached => cached || fetch(event.request))
-    );
+  // Dados geoespaciais (output_data/ e config/) — sempre network-first, sem cache
+  // Suporta tanto /output_data/ (raiz) quanto /atlas/output_data/ (GitHub Pages)
+  const isData =
+    url.pathname.includes('/output_data/') ||
+    url.pathname.includes('/config/');
+
+  if (isData) {
+    // Network-first: busca sempre a versão mais recente, sem fallback de cache
+    event.respondWith(fetch(event.request));
+    return;
   }
+
+  // Assets estáticos: cache-first
+  event.respondWith(
+    caches.match(event.request).then(cached => cached || fetch(event.request))
+  );
 });

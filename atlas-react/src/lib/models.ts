@@ -141,7 +141,12 @@ export class Partner implements IPartner {
     this.tooltip = raw.tooltip ?? '';
 
     // Campos injetados pelo data-manager via optimization_data.geojson
-    this.bucket_ade = raw.bucket_ade ?? raw.bucket ?? '';
+    // bucket_ade é resolvido pelo backend (Fase 5) pela hierarquia:
+    //   1. Match com vaga (cluster_name da Fase 3)
+    //   2. Hex do parceiro → território
+    //   3. Proximidade ao centróide de território
+    // Nunca usa o campo bucket do Salesforce.
+    this.bucket_ade = raw.bucket_ade ?? '';
     this.regiao = raw.regiao ?? '';
     this.decision = raw.decision ?? '';
     this.reason = raw.reason ?? '';

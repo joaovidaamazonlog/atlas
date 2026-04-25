@@ -26,7 +26,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000OAnxhEAD,,18600410,N/A,AMANDA GRIZZO,,CEP nao mapeado - analisar manualmente
 00Qat00000OB17pEAD,,13481388,N/A,FERNANDA SOUZA COTRIM,,CEP nao mapeado - analisar manualmente
 00Qat00000OC8s1EAD,,14813220,N/A,Barbara Helena,,CEP nao mapeado - analisar manualmente
-00Qat00000OCFtVEAX,DSP2,03720100,DSP2_bucket-04,Arnaldo Enrique,005at00000AwtxhAAB,Qualificar lead
+00Qat00000OCFtVEAX,DSP2,03720100,DSP2_bucket-04,Arnaldo Enrique,005at00000EJSAI,Qualificar lead
 00Qat00000OCfXpEAL,,13405243,N/A,REGINA LUISA DE ANDRADE,,CEP nao mapeado - analisar manualmente
 00Qat00000OCq0EEAT,,04257145,N/A,Juarez Barbosa Nascimento,,CEP nao mapeado - analisar manualmente
 00Qat00000ODRnmEAH,,04294000,N/A,Mateus Fazan Ferreira,,CEP nao mapeado - analisar manualmente
@@ -34,8 +34,8 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000ODdvNEAT,,14820027,N/A,André Heldt,,CEP nao mapeado - analisar manualmente
 00Qat00000OFT5WEAX,,85870814,N/A,Athos Eduardo Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000OFbexEAD,,84507362,N/A,Matheus Fillus Chuproski,,CEP nao mapeado - analisar manualmente
-00Qat00000OFtzFEAT,DPR2,83402000,DPR2_bucket-01,Luis Eduardo Assis dos Santos,005at000001qfY0AAI,Qualificar lead
-00Qat00000OFu45EAD,DPR2,83402000,DPR2_bucket-01,Luis Eduardo Assis dos Santos,005at000001qfY0AAI,Qualificar lead
+00Qat00000OFtzFEAT,DPR2,83402000,DPR2_bucket-01,Luis Eduardo Assis dos Santos,005at00000EJUaD,Qualificar lead
+00Qat00000OFu45EAD,DPR2,83402000,DPR2_bucket-01,Luis Eduardo Assis dos Santos,005at00000EJUaD,Qualificar lead
 00Qat00000OG8AHEA1,,13255725,N/A,Jean Michael Souza leite,,CEP nao mapeado - analisar manualmente
 00Qat00000OGAglEAH,,96878000,N/A,Sandra Regina Hein,,CEP nao mapeado - analisar manualmente
 00Qat00000OHwszEAD,,13800496,N/A,Luis Matheus Barbosa,,CEP nao mapeado - analisar manualmente
@@ -147,7 +147,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000P9zgzEAB,,13421452,N/A,Iara Alves Leite de Oliveira,,CEP nao mapeado - analisar manualmente
 00Qat00000PA7Y5EAL,,08674080,N/A,Bruna Rocha,,CEP nao mapeado - analisar manualmente
 00Qat00000PADDhEAP,,07855250,N/A,Priscila Aureliano Aureliano,,CEP nao mapeado - analisar manualmente
-00Qat00000PAKrtEAH,DBR9,05524020,DBR9_bucket-23,Douglas dos santos,0055G00000B9Bg6QAF,Qualificar lead
+00Qat00000PAKrtEAH,DBR9,05524020,DBR9_bucket-23,Douglas dos santos,005at00000EJUAV,Qualificar lead
 00Qat00000PAgSbEAL,,89230773,N/A,Yzabelly Coutinho,,CEP nao mapeado - analisar manualmente
 00Qat00000PC2Z8EAL,,13465793,N/A,JÚLIA SANTAROSA,,CEP nao mapeado - analisar manualmente
 00Qat00000PC4FxEAL,,13574250,N/A,LUIS GIGANTE,,CEP nao mapeado - analisar manualmente
@@ -161,7 +161,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000PCs7uEAD,,08060010,N/A,Thainá Micossi,,CEP nao mapeado - analisar manualmente
 00Qat00000PCxpDEAT,,03930310,N/A,Moises Paulo,,CEP nao mapeado - analisar manualmente
 00Qat00000PD8EHEA1,,96085000,N/A,Cristiano Peres Larrossa,,CEP nao mapeado - analisar manualmente
-00Qat00000PDDDxEAP,DPR2,83701623,DPR2_bucket-06,JHONATAN FELIPE DE SOUZA CARNEIRO,0055G00000BA0QuQAL,Qualificar lead
+00Qat00000PDDDxEAP,DPR2,83701623,DPR2_bucket-06,JHONATAN FELIPE DE SOUZA CARNEIRO,,Qualificar lead
 00Qat00000PEtcaEAD,,95300000,N/A,Cristian Ribeiro,,CEP nao mapeado - analisar manualmente
 00Qat00000PEvUfEAL,,08589310,N/A,LILIANE PEREIRA,,CEP nao mapeado - analisar manualmente
 00Qat00000PFCKDEA5,,66070510,N/A,Patryck Bruno Hiroshi Nozawa cavalcante,,CEP nao mapeado - analisar manualmente
@@ -181,14 +181,14 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000PLlf3EAD,,15407700,N/A,Aguilene Scarano,,CEP nao mapeado - analisar manualmente
 00Qat00000PLqZtEAL,,11900000,N/A,Lia Cristina Rossini Sakuma Chinen,,CEP nao mapeado - analisar manualmente
 00Qat00000PMOrhEAH,,17204230,N/A,Celso Junior,,CEP nao mapeado - analisar manualmente
-00Qat00000PMUvWEAX,DRS5,91790010,DRS5_bucket-10,Amanda Vilarinho,005at00000ADsT7AAL,Qualificar lead
+00Qat00000PMUvWEAX,DRS5,91790010,DRS5_bucket-10,Amanda Vilarinho,,Qualificar lead
 00Qat00000PNshGEAT,,13212210,N/A,Camila Pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000PPSqkEAH,,13225280,N/A,REGINALDO PAISCA DOS SANTOS Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000PPWccEAH,,13880000,N/A,Fernando Almeida dos Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000PPqZiEAL,,13397062,N/A,Ana Flavia Ferreira,,CEP nao mapeado - analisar manualmente
 00Qat00000PPvxZEAT,,88352220,N/A,Andrea Orzechowski Pinto,,CEP nao mapeado - analisar manualmente
 00Qat00000PQFLBEA5,,02323415,N/A,Letícia Dos Santos Antunes,,CEP nao mapeado - analisar manualmente
-00Qat00000PRdmrEAD,DRS5,93230580,DRS5_bucket-02,Lucia de Fatima Nunes,005at00000ADsT7AAL,Qualificar lead
+00Qat00000PRdmrEAD,DRS5,93230580,DRS5_bucket-02,Lucia de Fatima Nunes,005at00000EJUYb,Qualificar lead
 00Qat00000PS5RNEA1,,76980000,N/A,Alexandre Araújo,,CEP nao mapeado - analisar manualmente
 00Qat00000PSACXEA5,,55027340,N/A,Jefferson Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000PScbpEAD,,06606120,N/A,Rafael Veiga de Almeida,,CEP nao mapeado - analisar manualmente
@@ -219,7 +219,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000PZPGUEA5,,03931040,N/A,Adriano dos santos alves alves,,CEP nao mapeado - analisar manualmente
 00Qat00000PZmzREAT,,86086350,N/A,Patrícia Alves da costa,,CEP nao mapeado - analisar manualmente
 00Qat00000Pa7CfEAJ,,88351370,N/A,Felipe Loureiro,,CEP nao mapeado - analisar manualmente
-00Qat00000PaGz7EAF,DBR9,05181280,DBR9_bucket-01,TIAGO NASCIMENTO,005at000002zVKJAA2,Qualificar lead
+00Qat00000PaGz7EAF,DBR9,05181280,DBR9_bucket-01,TIAGO NASCIMENTO,005at00000EJSAH,Qualificar lead
 00Qat00000PaLCPEA3,,05659020,N/A,Vitória Soares,,CEP nao mapeado - analisar manualmente
 00Qat00000PbUqLEAV,,86801120,N/A,Flávia Francielle da Silva,,CEP nao mapeado - analisar manualmente
 00Qat00000PbYh3EAF,,89235376,N/A,Aldovani Carlos Pinto,,CEP nao mapeado - analisar manualmente
@@ -236,12 +236,12 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000Pdj3hEAB,,79824060,N/A,Esdras Mateus mauer Teixeira,,CEP nao mapeado - analisar manualmente
 00Qat00000PdrKcEAJ,,85812290,N/A,Alessandro Wagner Depubel,,CEP nao mapeado - analisar manualmente
 00Qat00000PdtizEAB,,11705360,N/A,José Eduardo Dos Santos,,CEP nao mapeado - analisar manualmente
-00Qat00000PeuEoEAJ,DSP4,09572300,DSP4_bucket-07,Regiane Aparecida Souza,005at00000BnBQcAAN,Qualificar lead
+00Qat00000PeuEoEAJ,DSP4,09572300,DSP4_bucket-07,Regiane Aparecida Souza,005at00000EJSYV,Qualificar lead
 00Qat00000Pg81CEAR,,87300005,N/A,LUIZ MENDES DE ALMEIDA,,CEP nao mapeado - analisar manualmente
 00Qat00000PgG20EAF,,11740232,N/A,CYNTHIA CHICAN,,CEP nao mapeado - analisar manualmente
 00Qat00000PgIBqEAN,,11535030,N/A,Valmir Oliveira da Silva Oliveira,,CEP nao mapeado - analisar manualmente
 00Qat00000PgPWfEAN,,06140055,N/A,Lucas Almeida,,CEP nao mapeado - analisar manualmente
-00Qat00000PgQkTEAV,DBR9,06409000,DBR9_bucket-20,Pedro Mendes,005at000004rgN0AAI,Qualificar lead
+00Qat00000PgQkTEAV,DBR9,06409000,DBR9_bucket-20,Pedro Mendes,005at00000EJVT7,Qualificar lead
 00Qat00000PgSZREA3,,06786410,N/A,Luiza Suelen Veloso Leal Veloso,,CEP nao mapeado - analisar manualmente
 00Qat00000PgU05EAF,,06604030,N/A,Ronaldo Lucio Cruz,,CEP nao mapeado - analisar manualmente
 00Qat00000PgXE5EAN,,09960750,N/A,VANDERLI Chernioglo,,CEP nao mapeado - analisar manualmente
@@ -255,7 +255,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000Ph94sEAB,,69313505,N/A,Fabiano Henrique Rocha,,CEP nao mapeado - analisar manualmente
 00Qat00000PhAP7EAN,,13470180,N/A,Rubens Silva de Moraes,,CEP nao mapeado - analisar manualmente
 00Qat00000PhAvNEAV,,15135698,N/A,Maira Guimarães,,CEP nao mapeado - analisar manualmente
-00Qat00000PhKpuEAF,DSP2,02376010,DSP2_bucket-03,Marcelo Da Silva Ayres Farias,0055G00000B9BgVQAV,Qualificar lead
+00Qat00000PhKpuEAF,DSP2,02376010,DSP2_bucket-03,Marcelo Da Silva Ayres Farias,005at00000EJSBx,Qualificar lead
 00Qat00000PhMLSEA3,,12245110,N/A,Rubens Neto,,CEP nao mapeado - analisar manualmente
 00Qat00000PlRzFEAV,,76876000,N/A,Marlon Junior,,CEP nao mapeado - analisar manualmente
 00Qat00000PmcEHEAZ,,13453748,N/A,Raimundo DE LIMA,,CEP nao mapeado - analisar manualmente
@@ -274,7 +274,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000Pph9NEAR,,93701050,N/A,mauro vivan,,CEP nao mapeado - analisar manualmente
 00Qat00000PpiLlEAJ,,69345000,N/A,LUCAS BARBOSA,,CEP nao mapeado - analisar manualmente
 00Qat00000PpknMEAR,,04849530,N/A,gutemberg gondim da silva junior,,CEP nao mapeado - analisar manualmente
-00Qat00000PpoPOEAZ,DSP4,09061090,DSP4_bucket-07,Geisa Sales,005at00000BnBQcAAN,Qualificar lead
+00Qat00000PpoPOEAZ,DSP4,09061090,DSP4_bucket-07,Geisa Sales,005at00000EJSYV,Qualificar lead
 00Qat00000PpquGEAR,,08253510,N/A,Elton dos santos,,CEP nao mapeado - analisar manualmente
 00Qat00000Pprn3EAB,,06695560,N/A,Marcelo Mendes de Carvalho,,CEP nao mapeado - analisar manualmente
 00Qat00000PpukvEAB,,07154480,N/A,Marcelo Ramos,,CEP nao mapeado - analisar manualmente
@@ -288,7 +288,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000PqixqEAB,,89056470,N/A,Marcos Rogério Dall Alba,,CEP nao mapeado - analisar manualmente
 00Qat00000PqmF3EAJ,,89056470,N/A,Marcos Rogério Dall Alba,,CEP nao mapeado - analisar manualmente
 00Qat00000Pqo3xEAB,,07500000,N/A,Daniela Noéli,,CEP nao mapeado - analisar manualmente
-00Qat00000PqoC2EAJ,DRS5,90850340,DRS5_bucket-09,Luciana Gomes da Rosa,0055G00000BA0QkQAL,Qualificar lead
+00Qat00000PqoC2EAJ,DRS5,90850340,DRS5_bucket-09,Luciana Gomes da Rosa,,Qualificar lead
 00Qat00000PqoGtEAJ,,11723080,N/A,daniel sousa brito,,CEP nao mapeado - analisar manualmente
 00Qat00000PqqowEAB,,91430010,N/A,Daniele Menezes Tavares,,CEP nao mapeado - analisar manualmente
 00Qat00000PqvS1EAJ,,49020390,N/A,Sostenes Silva dos Anjos,,CEP nao mapeado - analisar manualmente
@@ -312,7 +312,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000PtkDWEAZ,,15025620,N/A,Evilson Carlos dos Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000PtlfpEAB,,06807800,N/A,Carla Dayana santos Silva Machado,,CEP nao mapeado - analisar manualmente
 00Qat00000PtpujEAB,,13567060,N/A,Neusa Mompean Rosalis,,CEP nao mapeado - analisar manualmente
-00Qat00000Ptq2oEAB,DSP4,09271090,DSP4_bucket-05,Douglas Souza Piau de Sousa,005at00000BnBQcAAN,Qualificar lead
+00Qat00000Ptq2oEAB,DSP4,09271090,DSP4_bucket-05,Douglas Souza Piau de Sousa,005at00000EJSYV,Qualificar lead
 00Qat00000PtqE6EAJ,,19901050,N/A,FABRICIO DOLCI,,CEP nao mapeado - analisar manualmente
 00Qat00000PtsEJEAZ,,85025360,N/A,Thiago Ribeiro Aquino,,CEP nao mapeado - analisar manualmente
 00Qat00000PtujAEAR,,14030000,N/A,José Airton Rosa,,CEP nao mapeado - analisar manualmente
@@ -320,7 +320,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000Pu2dREAR,,04417000,N/A,Thimbere Rodrigues de Almeida,,CEP nao mapeado - analisar manualmente
 00Qat00000Pu449EAB,,59570000,N/A,RENATA ROCHA,,CEP nao mapeado - analisar manualmente
 00Qat00000Pu4iTEAR,,17862022,N/A,Moriana Dutra Colpas,,CEP nao mapeado - analisar manualmente
-00Qat00000PuQJBEA3,DRS5,92025502,DRS5_bucket-03,Raphael Vaisz,0055G00000BA5USQA1,Qualificar lead
+00Qat00000PuQJBEA3,DRS5,92025502,DRS5_bucket-03,Raphael Vaisz,005at00000EJUYf,Qualificar lead
 00Qat00000Pun7kEAB,,11735584,N/A,Tatiane rocha Pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000PupMQEAZ,,13222400,N/A,Ednilson Aparecido pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000PuzbtEAB,,07985000,N/A,leticia prado,,CEP nao mapeado - analisar manualmente
@@ -334,14 +334,14 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000PvVFCEA3,,55700000,N/A,LUCIO NASCIMENTO,,CEP nao mapeado - analisar manualmente
 00Qat00000PvWOAEA3,,14944074,N/A,Gabriel Sabbadini Rubio,,CEP nao mapeado - analisar manualmente
 00Qat00000PvevBEAR,,55720000,N/A,Flávio Everton,,CEP nao mapeado - analisar manualmente
-00Qat00000PviFdEAJ,DRS5,92412216,DRS5_bucket-02,Claiton Zanette,005at00000ADsT7AAL,Qualificar lead
+00Qat00000PviFdEAJ,DRS5,92412216,DRS5_bucket-02,Claiton Zanette,005at00000EJUYb,Qualificar lead
 00Qat00000PvjgLEAR,,88060300,N/A,Thiago Silva Silveira,,Out of jurisdiction - analisar manualmente
 00Qat00000Pvl5REAR,,08020340,N/A,Sabrina Ferro,,CEP nao mapeado - analisar manualmente
 00Qat00000PvmxZEAR,,04849555,N/A,Matheus Evangelista,,CEP nao mapeado - analisar manualmente
 00Qat00000PvnK9EAJ,,55750000,N/A,Brena Maiara,,CEP nao mapeado - analisar manualmente
 00Qat00000PvqDBEAZ,,13487488,N/A,Grindley Pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000PvrpBEAR,,55811030,N/A,Alina Aureliano,,CEP nao mapeado - analisar manualmente
-00Qat00000Pw1gUEAR,DRS5,93285090,DRS5_bucket-02,Alberth Da Rosa,005at00000ADsT7AAL,Qualificar lead
+00Qat00000Pw1gUEAR,DRS5,93285090,DRS5_bucket-02,Alberth Da Rosa,005at00000EJUYb,Qualificar lead
 00Qat00000Pw2mDEAR,,13450023,N/A,Laudicio Souza,,CEP nao mapeado - analisar manualmente
 00Qat00000Pw2sfEAB,,08466070,N/A,Verenilze Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000Pw6kzEAB,,05359001,N/A,José Wilson Costa Marinho,,CEP nao mapeado - analisar manualmente
@@ -370,7 +370,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000Py5RREAZ,,68632000,N/A,joao victor furtado da silva furtado da silva,,CEP nao mapeado - analisar manualmente
 00Qat00000Py7TFEAZ,,06663195,N/A,Sérgio Fernando Pereira da Silva,,CEP nao mapeado - analisar manualmente
 00Qat00000PyKBxEAN,,17205020,N/A,ANDRE DOS SANTOS,,CEP nao mapeado - analisar manualmente
-00Qat00000PyKOsEAN,DPR2,83705400,DPR2_bucket-06,Luciano Lopes Lacerda,0055G00000BA0QuQAL,Qualificar lead
+00Qat00000PyKOsEAN,DPR2,83705400,DPR2_bucket-06,Luciano Lopes Lacerda,,Qualificar lead
 00Qat00000PyKruEAF,,87043000,N/A,ADEMILSON MUNIZ,,CEP nao mapeado - analisar manualmente
 00Qat00000PzAzjEAF,,13710320,N/A,Breno Oliveira,,CEP nao mapeado - analisar manualmente
 00Qat00000PzT9yEAF,,05570060,N/A,Patricia Limeira,,CEP nao mapeado - analisar manualmente
@@ -411,11 +411,11 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000Q1AuPEAV,,55909000,N/A,Adalgisa Maria,,CEP nao mapeado - analisar manualmente
 00Qat00000Q1ETNEA3,,09836530,N/A,Rosane de Lima Mariano Galucci,,CEP nao mapeado - analisar manualmente
 00Qat00000Q1GDREA3,,13848852,N/A,Alan Guilherme de Brito Brito,,CEP nao mapeado - analisar manualmente
-00Qat00000Q1GlJEAV,DPE4,53230115,DPE4_bucket-02,ANA CLARA CAVALCANTI ROCHA,005at00000534NZAAY,Qualificar lead
+00Qat00000Q1GlJEAV,DPE4,53230115,DPE4_bucket-02,ANA CLARA CAVALCANTI ROCHA,005at00000EJO9r,Qualificar lead
 00Qat00000Q1HflEAF,,64003700,N/A,Abgail Lemos,,CEP nao mapeado - analisar manualmente
 00Qat00000Q1Jw7EAF,,13502600,N/A,Luam Pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000Q1KfGEAV,,55130000,N/A,manoel edvaldo,,CEP nao mapeado - analisar manualmente
-00Qat00000Q1P5REAV,DBR9,06409000,DBR9_bucket-20,Luis Felipe Oliveira Avelino,005at000004rgN0AAI,Qualificar lead
+00Qat00000Q1P5REAV,DBR9,06409000,DBR9_bucket-20,Luis Felipe Oliveira Avelino,005at00000EJVT7,Qualificar lead
 00Qat00000Q1Q1WEAV,,08131325,N/A,Rafael Gadanhoto Lima,,CEP nao mapeado - analisar manualmente
 00Qat00000Q1QfqEAF,,97335000,N/A,Taiane Rodrigues Machado,,CEP nao mapeado - analisar manualmente
 00Qat00000Q1RopEAF,,13503557,N/A,Samuel Lima,,CEP nao mapeado - analisar manualmente
@@ -522,7 +522,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QB6kgEAD,,16201526,N/A,Yan Queiroz,,CEP nao mapeado - analisar manualmente
 00Qat00000QB78rEAD,,07140370,N/A,Anderson Guedes Pereira Cruz,,CEP nao mapeado - analisar manualmente
 00Qat00000QB7X4EAL,,15062594,N/A,Nelcivania filo,,CEP nao mapeado - analisar manualmente
-00Qat00000QB7gjEAD,DRS5,93534000,DRS5_bucket-01,Gilberto Diniz,0055G00000BA0QkQAL,Qualificar lead
+00Qat00000QB7gjEAD,DRS5,93534000,DRS5_bucket-01,Gilberto Diniz,005at00000EJUYb,Qualificar lead
 00Qat00000QB8BNEA1,,15062594,N/A,Nelcivania filo,,CEP nao mapeado - analisar manualmente
 00Qat00000QBG5hEAH,,02959000,N/A,FERNANDA ALFERES NOGUEIRA CAMINHA,,CEP nao mapeado - analisar manualmente
 00Qat00000QBGCAEA5,,02676040,N/A,José Wagner dos santos Wagner,,CEP nao mapeado - analisar manualmente
@@ -543,7 +543,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QBt73EAD,,06462170,N/A,Eduardo Correia,,CEP nao mapeado - analisar manualmente
 00Qat00000QBtNBEA1,,52131580,N/A,HELLEN GOMES,,CEP nao mapeado - analisar manualmente
 00Qat00000QBu7xEAD,,84500125,N/A,Neto LOYOLA,,CEP nao mapeado - analisar manualmente
-00Qat00000QBvqSEAT,DSP5,13308082,DSP5_bucket-05,Dalva lucia Da Silva,005at00000ADsT6AAL,Qualificar lead
+00Qat00000QBvqSEAT,DSP5,13308082,DSP5_bucket-05,Dalva lucia Da Silva,005at00000EJIMG,Qualificar lead
 00Qat00000QC381EAD,,55294220,N/A,Jyan Barboza,,CEP nao mapeado - analisar manualmente
 00Qat00000QCHcPEAX,,06288040,N/A,Henrique Freitas soares,,CEP nao mapeado - analisar manualmente
 00Qat00000QCpZFEA1,,04194280,N/A,Ismael Ericson Botelho,,CEP nao mapeado - analisar manualmente
@@ -554,7 +554,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QDIrNEAX,,55345000,N/A,Jonathan Olimpio,,CEP nao mapeado - analisar manualmente
 00Qat00000QDSp7EAH,,56980000,N/A,Maria Fernanda Nascimento Lima,,CEP nao mapeado - analisar manualmente
 00Qat00000QDXTqEAP,,03924040,N/A,kauan pereira dias dias,,CEP nao mapeado - analisar manualmente
-00Qat00000QDeaBEAT,DSP2,07071080,DSP2_bucket-02,ERICK DA CRUZ,005at00000CmvWyAAJ,Qualificar lead
+00Qat00000QDeaBEAT,DSP2,07071080,DSP2_bucket-02,ERICK DA CRUZ,005at00000EJSzr,Qualificar lead
 00Qat00000QDmEMEA1,,11705630,N/A,Henrique Magalhaes,,CEP nao mapeado - analisar manualmente
 00Qat00000QDpCDEA1,,08042000,N/A,Endjohn Cruz Porto,,CEP nao mapeado - analisar manualmente
 00Qat00000QDqHxEAL,,06170000,N/A,Pablo Pereira,,CEP nao mapeado - analisar manualmente
@@ -571,7 +571,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QF3oFEAT,,05570230,N/A,Karina de Oliveira Rasga,,CEP nao mapeado - analisar manualmente
 00Qat00000QG6DwEAL,,59615000,N/A,Gleyson Lima,,CEP nao mapeado - analisar manualmente
 00Qat00000QG7GHEA1,,15440043,N/A,AILTON SASS,,CEP nao mapeado - analisar manualmente
-00Qat00000QG8NdEAL,DPE4,53040080,DPE4_bucket-01,Eliana Karla Brito de Melo Brito de melo,005at000001ntHJAAY,Qualificar lead
+00Qat00000QG8NdEAL,DPE4,53040080,DPE4_bucket-01,Eliana Karla Brito de Melo Brito de melo,005at00000EJUaK,Qualificar lead
 00Qat00000QGRRtEAP,,07750000,N/A,Janiedson Ribeiro santos,,CEP nao mapeado - analisar manualmente
 00Qat00000QGdEXEA1,,13870742,N/A,Maximilian Alexandre da Silva Costa,,CEP nao mapeado - analisar manualmente
 00Qat00000QGgcDEAT,,08235310,N/A,Carlos Alberto Vieira Santos,,CEP nao mapeado - analisar manualmente
@@ -582,7 +582,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QGmxlEAD,,15502225,N/A,Adriano Boni Filassi,,CEP nao mapeado - analisar manualmente
 00Qat00000QGoTJEA1,,79102050,N/A,RODRIGO MERCADO ALVES,,CEP nao mapeado - analisar manualmente
 00Qat00000QH5VmEAL,,05210100,N/A,Lucas Gabriel Silva de Souza,,CEP nao mapeado - analisar manualmente
-00Qat00000QH6urEAD,DSP5,13067262,DSP5_bucket-02,ANDRE DE OLIVEIRA,005at000001qfXyAAI,Qualificar lead
+00Qat00000QH6urEAD,DSP5,13067262,DSP5_bucket-02,ANDRE DE OLIVEIRA,,Qualificar lead
 00Qat00000QHFAAEA5,,08210670,N/A,Feliciano Souza,,CEP nao mapeado - analisar manualmente
 00Qat00000QHjRaEAL,,02851070,N/A,LUCIA PEREIRA,,CEP nao mapeado - analisar manualmente
 00Qat00000QHjeTEAT,,11310700,N/A,FERNANDA FAUSTINO,,CEP nao mapeado - analisar manualmente
@@ -599,43 +599,43 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QL0ndEAD,,49490000,N/A,Dart Mayara Ramos de Santana,,CEP nao mapeado - analisar manualmente
 00Qat00000QL0qrEAD,,49490000,N/A,Dart Mayara Ramos de Santana,,CEP nao mapeado - analisar manualmente
 00Qat00000QL10YEAT,,02367030,N/A,Rafael Marques Pimenta,,Out of jurisdiction - analisar manualmente
-00Qat00000QL2eAEAT,DRS5,93260210,DRS5_bucket-02,margaret Ferreira ferreira,005at00000ADsT7AAL,Qualificar lead
-00Qat00000QL2vtEAD,DRS5,93260210,DRS5_bucket-02,margaret Ferreira ferreira,005at00000ADsT7AAL,Qualificar lead
+00Qat00000QL2eAEAT,DRS5,93260210,DRS5_bucket-02,margaret Ferreira ferreira,005at00000EJUYb,Qualificar lead
+00Qat00000QL2vtEAD,DRS5,93260210,DRS5_bucket-02,margaret Ferreira ferreira,005at00000EJUYb,Qualificar lead
 00Qat00000QL5SLEA1,,14057440,N/A,Flavio Maia,,CEP nao mapeado - analisar manualmente
 00Qat00000QLCqQEAX,,05877260,N/A,Thiago cassimiro,,CEP nao mapeado - analisar manualmente
 00Qat00000QLFRhEAP,,12080300,N/A,Everton Patrício,,CEP nao mapeado - analisar manualmente
-00Qat00000QLFl3EAH,DPE4,54756770,DPE4_bucket-04,jose fabio lima silva,005at000001ntHJAAY,Qualificar lead
+00Qat00000QLFl3EAH,DPE4,54756770,DPE4_bucket-04,jose fabio lima silva,005at00000EJPIr,Qualificar lead
 00Qat00000QLFptEAH,,08021590,N/A,RODRIGO FRANZINI,,CEP nao mapeado - analisar manualmente
 00Qat00000QLHGbEAP,,08285065,N/A,Ricardo Henrique Maciel Calandrin,,CEP nao mapeado - analisar manualmente
 00Qat00000QLIXdEAP,,06826540,N/A,Ana Silva,,CEP nao mapeado - analisar manualmente
 00Qat00000QLImAEAX,,06816630,N/A,Kathellen Rodrigues,,CEP nao mapeado - analisar manualmente
-00Qat00000QLNnREAX,DSP5,13010110,DSP5_bucket-02,Marcelo Kattreus,005at000001qfXyAAI,Qualificar lead
+00Qat00000QLNnREAX,DSP5,13010110,DSP5_bucket-02,Marcelo Kattreus,,Qualificar lead
 00Qat00000QLTRREA5,,85200029,N/A,Luiz Carlos Danilo,,CEP nao mapeado - analisar manualmente
 00Qat00000QLVBVEA5,,09290330,N/A,PATRICIA SOUZA,,CEP nao mapeado - analisar manualmente
-00Qat00000QLXObEAP,DSP4,04745060,DSP4_bucket-09,Wendel Dantas de Medeiros,005at00000AwtxdAAB,Qualificar lead
+00Qat00000QLXObEAP,DSP4,04745060,DSP4_bucket-09,Wendel Dantas de Medeiros,005at00000EJUwr,Qualificar lead
 00Qat00000QLbVSEA1,,77443170,N/A,64671515 Alex Vieira Araújo Vieira Araujo,,CEP nao mapeado - analisar manualmente
 00Qat00000QLk0rEAD,,04425000,N/A,Cleyton Pirossi,,CEP nao mapeado - analisar manualmente
 00Qat00000QLkH0EAL,,08081320,N/A,Vagner Solano,,CEP nao mapeado - analisar manualmente
-00Qat00000QLmXOEA1,DPE4,53070040,DPE4_bucket-01,Patrícia santana,005at000001ntHJAAY,Qualificar lead
+00Qat00000QLmXOEA1,DPE4,53070040,DPE4_bucket-01,Patrícia santana,005at00000EJUaK,Qualificar lead
 00Qat00000QLpjhEAD,,16370,N/A,Fernando Luis Martins de Brito Brito,,CEP invalido
-00Qat00000QLrITEA1,DPE4,53050240,DPE4_bucket-01,GERMISON SOUTO,005at000001ntHJAAY,Qualificar lead
+00Qat00000QLrITEA1,DPE4,53050240,DPE4_bucket-01,GERMISON SOUTO,005at00000EJUaK,Qualificar lead
 00Qat00000QLzzTEAT,,05845250,N/A,Adriano Carmo,,CEP nao mapeado - analisar manualmente
-00Qat00000QM8nxEAD,DBR9,06210108,DBR9_bucket-05,Amanda Silva,0055G00000BA5UhQAL,Qualificar lead
+00Qat00000QM8nxEAD,DBR9,06210108,DBR9_bucket-05,Amanda Silva,005at00000EJOHy,Qualificar lead
 00Qat00000QMWqIEAX,,11533050,N/A,Renan Fonseca Mateus,,CEP nao mapeado - analisar manualmente
 00Qat00000QN43xEAD,,13142180,N/A,Fabio Henrique Pontes,,CEP nao mapeado - analisar manualmente
 00Qat00000QN6grEAD,,13189142,N/A,DIEGO DELANHESE,,CEP nao mapeado - analisar manualmente
-00Qat00000QN8fREAT,DSP4,09920000,DSP4_bucket-08,Jefferson Ceschini,005at000002NE7ZAAW,Qualificar lead
+00Qat00000QN8fREAT,DSP4,09920000,DSP4_bucket-08,Jefferson Ceschini,,Qualificar lead
 00Qat00000QN9RrEAL,,55920000,N/A,rafael soares do nascimento,,CEP nao mapeado - analisar manualmente
-00Qat00000QN9lBEAT,DSP4,09580570,DSP4_bucket-07,Danilo Almeida Silva,005at00000BnBQcAAN,Qualificar lead
+00Qat00000QN9lBEAT,DSP4,09580570,DSP4_bucket-07,Danilo Almeida Silva,005at00000EJSYV,Qualificar lead
 00Qat00000QNEzNEAX,,11380090,N/A,Ricardo Guimarães Pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000QNGptEAH,,06395060,N/A,Leandro Mendes,,CEP nao mapeado - analisar manualmente
-00Qat00000QNMNTEA5,DPE4,52120320,DPE4_bucket-02,Carlos Augusto Melo,005at00000534NZAAY,Qualificar lead
+00Qat00000QNMNTEA5,DPE4,52120320,DPE4_bucket-02,Carlos Augusto Melo,005at00000EJO9r,Qualificar lead
 00Qat00000QNT5ZEAX,,06882110,N/A,Daniel Luiz,,CEP nao mapeado - analisar manualmente
 00Qat00000QNWeXEAX,,08235310,N/A,Jose Maria Fonseca,,CEP nao mapeado - analisar manualmente
 00Qat00000QNgytEAD,,79002220,N/A,ADOLPH MORAIS VAZ DE OLIVEIRA,,CEP nao mapeado - analisar manualmente
 00Qat00000QNjYXEA1,,17207620,N/A,Claudiomiro Bones,,CEP nao mapeado - analisar manualmente
-00Qat00000QNk81EAD,DPE4,54730410,DPE4_bucket-10,Danielle Lemos de Albuquerque,,Qualificar lead
-00Qat00000QNmszEAD,DSP2,03552120,DSP2_bucket-08,Deise Paula da Silva Barreto,0055G00000BA5UXQA1,Qualificar lead
+00Qat00000QNk81EAD,DPE4,54730410,DPE4_bucket-10,Danielle Lemos de Albuquerque,005at00000EJSjq,Qualificar lead
+00Qat00000QNmszEAD,DSP2,03552120,DSP2_bucket-08,Deise Paula da Silva Barreto,005at00000EJSzs,Qualificar lead
 00Qat00000QNp7hEAD,,64260000,N/A,Luiz Antônio Alves Feitosa,,CEP nao mapeado - analisar manualmente
 00Qat00000QNsiHEAT,,89219600,N/A,ADRIANA BLUM,,CEP nao mapeado - analisar manualmente
 00Qat00000QOCU5EAP,,09320050,N/A,Igor Castro Sampaio d Silva,,CEP nao mapeado - analisar manualmente
@@ -646,13 +646,13 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QOIRREA5,,05365030,N/A,Kevin Santos Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000QOqEbEAL,,09260510,N/A,Victor renato Ferreira dos Santos,,Out of jurisdiction - analisar manualmente
 00Qat00000QOqMfEAL,,13843130,N/A,Michel Wellinton Pedreira Borges,,CEP nao mapeado - analisar manualmente
-00Qat00000QOqw9EAD,DRS5,93347140,DRS5_bucket-01,Adriano Rochedo,0055G00000BA0QkQAL,Qualificar lead
+00Qat00000QOqw9EAD,DRS5,93347140,DRS5_bucket-01,Adriano Rochedo,005at00000EJUYb,Qualificar lead
 00Qat00000QPcG2EAL,,88220000,N/A,MARCIO MOREIRA,,CEP nao mapeado - analisar manualmente
 00Qat00000QPjkYEAT,,88840000,N/A,manoel neris,,CEP nao mapeado - analisar manualmente
 00Qat00000QPlSzEAL,,59064520,N/A,Lidianne Dantas,,CEP nao mapeado - analisar manualmente
 00Qat00000QPoNdEAL,,68354159,N/A,JEVERSON CARVALHO,,CEP nao mapeado - analisar manualmente
 00Qat00000QPodlEAD,,08257020,N/A,Cibele Da costa,,CEP nao mapeado - analisar manualmente
-00Qat00000QPpLJEA1,DBR9,06715685,DBR9_bucket-20,Danilo Ariki,005at000004rgN0AAI,Qualificar lead
+00Qat00000QPpLJEA1,DBR9,06715685,DBR9_bucket-20,Danilo Ariki,005at00000EJVT7,Qualificar lead
 00Qat00000QPtojEAD,,14014190,N/A,DANIEL SOBRINHO GUIMARAES,,CEP nao mapeado - analisar manualmente
 00Qat00000QPuKzEAL,,03574060,N/A,GG ionar Silveira,,CEP nao mapeado - analisar manualmente
 00Qat00000QPvSLEA1,,13905329,N/A,Amanda Sampaio,,CEP nao mapeado - analisar manualmente
@@ -677,7 +677,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QQolOEAT,,76900137,N/A,PATRICIA CAVALCANTE,,CEP nao mapeado - analisar manualmente
 00Qat00000QQsH8EAL,,76967491,N/A,PATRICIA aparecida da silva,,CEP nao mapeado - analisar manualmente
 00Qat00000QQtY9EAL,,18046376,N/A,Bruno Eduardo Destri,,CEP nao mapeado - analisar manualmente
-00Qat00000QQyWDEA1,DRS5,93265001,DRS5_bucket-02,Thalía Pereira Flores,005at00000ADsT7AAL,Qualificar lead
+00Qat00000QQyWDEA1,DRS5,93265001,DRS5_bucket-02,Thalía Pereira Flores,005at00000EJUYb,Qualificar lead
 00Qat00000QQzDlEAL,,25243010,N/A,Augusto Ferreira,,CEP nao mapeado - analisar manualmente
 00Qat00000QR9rYEAT,,13230005,N/A,PAMELLA MENEZES,,CEP nao mapeado - analisar manualmente
 00Qat00000QR9t3EAD,,76974000,N/A,Lucas Liares,,CEP nao mapeado - analisar manualmente
@@ -693,16 +693,16 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QSQiAEAX,,55550000,N/A,Ozeias Jose de Santaba,,CEP nao mapeado - analisar manualmente
 00Qat00000QSed3EAD,,69310070,N/A,MARIA ALISSIA FERREIRA DOS SANTOS,,CEP nao mapeado - analisar manualmente
 00Qat00000QSidREAT,,873600000,N/A,Gerson Almeida Macedo,,CEP invalido
-00Qat00000QSigfEAD,DBR9,02460040,DBR9_bucket-03,Carolina Leão Leão,005at000005PufHAAS,Qualificar lead
+00Qat00000QSigfEAD,DBR9,02460040,DBR9_bucket-03,Carolina Leão Leão,005at00000FLBe9,Qualificar lead
 00Qat00000QSjeLEAT,,21020280,N/A,Gabriel Vieira de Lima,,Out of jurisdiction - analisar manualmente
 00Qat00000QSkSLEA1,,66625627,N/A,Marcos Paulo Estumano de castro,,CEP nao mapeado - analisar manualmente
-00Qat00000QSkqXEAT,DSP2,03560150,DSP2_bucket-08,Cristina Almeida de Oliveira,0055G00000BA5UXQA1,Qualificar lead
+00Qat00000QSkqXEAT,DSP2,03560150,DSP2_bucket-08,Cristina Almeida de Oliveira,005at00000EJSzs,Qualificar lead
 00Qat00000QSn3dEAD,,92708190,N/A,Jheiny Nieland barbosa,,CEP nao mapeado - analisar manualmente
 00Qat00000QSoCcEAL,,02880000,N/A,Gustavo Fernandes Alves,,CEP nao mapeado - analisar manualmente
 00Qat00000QSr2PEAT,,02651120,N/A,Adão Deildes Dos Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000QSs1hEAD,,04913140,N/A,Isla De Souza Rocha,,CEP nao mapeado - analisar manualmente
 00Qat00000QSu8LEAT,,15133434,N/A,Cássio Roman,,CEP nao mapeado - analisar manualmente
-00Qat00000QSwTWEA1,DBR9,06010000,DBR9_bucket-05,Luan Dos Santos,0055G00000BA5UhQAL,Qualificar lead
+00Qat00000QSwTWEA1,DBR9,06010000,DBR9_bucket-05,Luan Dos Santos,005at00000EJOHy,Qualificar lead
 00Qat00000QT6FxEAL,,89400000,N/A,joao antonio mariano mariano,,CEP nao mapeado - analisar manualmente
 00Qat00000QT7yPEAT,,11025030,N/A,IVO MARTINS MOURA,,CEP nao mapeado - analisar manualmente
 00Qat00000QT8rFEAT,,09330790,N/A,Ricardo Barboza de Oliveira,,CEP nao mapeado - analisar manualmente
@@ -711,7 +711,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QTNTiEAP,,55730000,N/A,Lucio Mario,,CEP nao mapeado - analisar manualmente
 00Qat00000QTY4AEAX,,68515000,N/A,Lucas Ferreira,,CEP nao mapeado - analisar manualmente
 00Qat00000QTgxlEAD,,13181530,N/A,Lúcia Helena dos Santos Wildner da Silva,,CEP nao mapeado - analisar manualmente
-00Qat00000QTjE5EAL,DSP5,13304650,DSP5_bucket-05,EDMILSON Feliciano,005at00000ADsT6AAL,Qualificar lead
+00Qat00000QTjE5EAL,DSP5,13304650,DSP5_bucket-05,EDMILSON Feliciano,005at00000EJIMG,Qualificar lead
 00Qat00000QTkgPEAT,,08410390,N/A,Joao Claudio Carbone Nogueira,,CEP nao mapeado - analisar manualmente
 00Qat00000QTnRNEA1,,08265150,N/A,Safira Zinsly,,CEP nao mapeado - analisar manualmente
 00Qat00000QU9A9EAL,,07844000,N/A,ADRIANO CHAVES,,CEP nao mapeado - analisar manualmente
@@ -724,7 +724,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QVEkTEAX,,17930000,N/A,Douglas Coqueti,,CEP nao mapeado - analisar manualmente
 00Qat00000QVGUXEA5,,13185450,N/A,Wilson Roberto Cassiano Ramos,,CEP nao mapeado - analisar manualmente
 00Qat00000QVPsnEAH,,14800480,N/A,Luis Cesar Plana,,CEP nao mapeado - analisar manualmente
-00Qat00000QVQdZEAX,DSP5,13274465,DSP5_bucket-03,Adriana Matias,005at000001qfXyAAI,Qualificar lead
+00Qat00000QVQdZEAX,DSP5,13274465,DSP5_bucket-03,Adriana Matias,,Qualificar lead
 00Qat00000QVc5GEAT,,19050250,N/A,RODRIGO NASCIMENTO,,CEP nao mapeado - analisar manualmente
 00Qat00000QVfKrEAL,,06250270,N/A,Pricila macedo,,CEP nao mapeado - analisar manualmente
 00Qat00000QVgvFEAT,,25550200,N/A,Marcos Vinícius Dos Santos da Silva,,CEP nao mapeado - analisar manualmente
@@ -734,7 +734,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QW1DJEA1,,06132002,N/A,Érica Salvador Campos,,CEP nao mapeado - analisar manualmente
 00Qat00000QW4O6EAL,,79960000,N/A,ELIONAI GENTIL NEVES RODRIGUES,,CEP nao mapeado - analisar manualmente
 00Qat00000QW4ZNEA1,,08674001,N/A,Ivaldo Sebastião Jose,,CEP nao mapeado - analisar manualmente
-00Qat00000QW4m1EAD,DPE4,52140180,DPE4_bucket-03,ISABELA VITÓRIA,005at000001ntHJAAY,Qualificar lead
+00Qat00000QW4m1EAD,DPE4,52140180,DPE4_bucket-03,ISABELA VITÓRIA,005at00000EJPIq,Qualificar lead
 00Qat00000QWFg5EAH,,08575720,N/A,Dayvid Sousa,,CEP nao mapeado - analisar manualmente
 00Qat00000QWIxJEAX,,07262160,N/A,Elaine Silva,,Out of jurisdiction - analisar manualmente
 00Qat00000QWM01EAH,,03946100,N/A,Wender Oliveira Silva caíres,,CEP nao mapeado - analisar manualmente
@@ -757,11 +757,11 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QXjvREAT,,08240010,N/A,Wellington Paula,,CEP nao mapeado - analisar manualmente
 00Qat00000QXkl3EAD,,59115260,N/A,Livia Maria,,CEP nao mapeado - analisar manualmente
 00Qat00000QXnFtEAL,,02910055,N/A,Patricia Vaqueiro,,CEP nao mapeado - analisar manualmente
-00Qat00000QXoqIEAT,DPE4,54759185,DPE4_bucket-04,Rafaella Monteiro,005at000001ntHJAAY,Qualificar lead
+00Qat00000QXoqIEAT,DPE4,54759185,DPE4_bucket-04,Rafaella Monteiro,005at00000EJPIr,Qualificar lead
 00Qat00000QXrrNEAT,,13185878,N/A,Roberto Pereira,,CEP nao mapeado - analisar manualmente
 00Qat00000QXsPGEA1,,88106632,N/A,Ronei Nunes,,CEP nao mapeado - analisar manualmente
 00Qat00000QXt6nEAD,,02984035,N/A,Eusébio Alves dos Santos,,CEP nao mapeado - analisar manualmente
-00Qat00000QXwizEAD,DSP2,07135166,DSP2_bucket-01,Marina Cristina Deoclides da Silva,0055G00000B9BgLQAV,Qualificar lead
+00Qat00000QXwizEAD,DSP2,07135166,DSP2_bucket-01,Marina Cristina Deoclides da Silva,005at00000EJUVN,Qualificar lead
 00Qat00000QXz0vEAD,,06657160,N/A,Fabio Marques,,CEP nao mapeado - analisar manualmente
 00Qat00000QYJfZEAX,,08750740,N/A,Thiago Medeiros Santos,,CEP nao mapeado - analisar manualmente
 00Qat00000QYombEAD,,06040460,N/A,Marcelo Carvalho de Oliveira,,CEP nao mapeado - analisar manualmente
@@ -780,14 +780,14 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QZO35EAH,,13419100,N/A,Maikon Carlos Viola,,CEP nao mapeado - analisar manualmente
 00Qat00000QZsBREA1,,12232531,N/A,Bruno Alves,,CEP nao mapeado - analisar manualmente
 00Qat00000QZyqMEAT,,04431050,N/A,Cinthia Ferreira Luna,,CEP nao mapeado - analisar manualmente
-00Qat00000Qa8PtEAJ,DBR9,06409190,DBR9_bucket-20,Adriano Barboza da Silva,005at000004rgN0AAI,Qualificar lead
+00Qat00000Qa8PtEAJ,DBR9,06409190,DBR9_bucket-20,Adriano Barboza da Silva,005at00000EJVT7,Qualificar lead
 00Qat00000QaFCtEAN,,13500162,N/A,GIZELDA APARECIDA LORENZON GOOS,,CEP nao mapeado - analisar manualmente
 00Qat00000QaGdaEAF,,12948102,N/A,Thiago Vergara Barreira,,CEP nao mapeado - analisar manualmente
 00Qat00000QaH3OEAV,,12241130,N/A,Gisele Rodrigues,,CEP nao mapeado - analisar manualmente
 00Qat00000QaKpGEAV,,06150002,N/A,Wallyson Carvalho,,CEP nao mapeado - analisar manualmente
 00Qat00000QaMpSEAV,,11668624,N/A,Daniela Capobianco,,CEP nao mapeado - analisar manualmente
 00Qat00000QaPVaEAN,,88330027,N/A,Patricia Bianchi,,CEP nao mapeado - analisar manualmente
-00Qat00000QaRFeEAN,DSP2,03081015,DSP2_bucket-06,Carmo Galasso Neto,005at00000CmvWyAAJ,Qualificar lead
+00Qat00000QaRFeEAN,DSP2,03081015,DSP2_bucket-06,Carmo Galasso Neto,005at00000EJUyR,Qualificar lead
 00Qat00000QaT1JEAV,,89030000,N/A,Lígia Russi,,CEP nao mapeado - analisar manualmente
 00Qat00000QaVpVEAV,,13848113,N/A,HENRIQUE TEODORO,,CEP nao mapeado - analisar manualmente
 00Qat00000QaVuLEAV,,13848113,N/A,HENRIQUE TEODORO,,CEP nao mapeado - analisar manualmente
@@ -796,10 +796,10 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QacxTEAR,,037810,N/A,Celso Ricardo Anastácio Araújo,,CEP invalido
 00Qat00000QagcsEAB,,53530450,N/A,Edilson Melo,,Out of jurisdiction - analisar manualmente
 00Qat00000Qat75EAB,,08246061,N/A,Paloma Gama,,CEP nao mapeado - analisar manualmente
-00Qat00000QatDWEAZ,DSP2,03427040,DSP2_bucket-08,João Marques,0055G00000BA5UXQA1,Qualificar lead
+00Qat00000QatDWEAZ,DSP2,03427040,DSP2_bucket-08,João Marques,005at00000EJSzs,Qualificar lead
 00Qat00000QawHpEAJ,,06150350,N/A,Valerio Martins,,CEP nao mapeado - analisar manualmente
 00Qat00000QaxDtEAJ,,88056535,N/A,Diogo Roberto Pohl,,Out of jurisdiction - analisar manualmente
-00Qat00000QaxtqEAB,DSP2,03625060,DSP2_bucket-04,Tamires Quintino domingos Santana,005at00000AwtxhAAB,Qualificar lead
+00Qat00000QaxtqEAB,DSP2,03625060,DSP2_bucket-04,Tamires Quintino domingos Santana,005at00000EJSAI,Qualificar lead
 00Qat00000Qb7l7EAB,,68440000,N/A,Joel Ferreira rodrigues,,CEP nao mapeado - analisar manualmente
 00Qat00000Qb7sOEAR,,18600230,N/A,angelica katia bulgarelli Katia Bulgarelli cavalcanti,,CEP nao mapeado - analisar manualmente
 00Qat00000QbCBJEA3,,52111430,N/A,Douglas Lourenço,,CEP nao mapeado - analisar manualmente
@@ -808,11 +808,11 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QbExvEAF,,79182012,N/A,leandro cavalheiro,,CEP nao mapeado - analisar manualmente
 00Qat00000QbIBtEAN,,07144170,N/A,Alison gustavo,,CEP nao mapeado - analisar manualmente
 00Qat00000QbMiYEAV,,88010000,N/A,Juliana Sielski Galvão,,Out of jurisdiction - analisar manualmente
-00Qat00000QbPBnEAN,DSP2,02271110,DSP2_bucket-02,Neusa dos Santos Dantas,005at00000CmvWyAAJ,Qualificar lead
+00Qat00000QbPBnEAN,DSP2,02271110,DSP2_bucket-02,Neusa dos Santos Dantas,005at00000EJSzr,Qualificar lead
 00Qat00000QbTLkEAN,,15685073,N/A,Kleber Santini,,CEP nao mapeado - analisar manualmente
 00Qat00000QbVnSEAV,,12237828,N/A,Rodrigo Gomes Dos Santos Do Rosário,,CEP nao mapeado - analisar manualmente
 00Qat00000QbXAvEAN,,09330820,N/A,Leandro Da Silva,,CEP nao mapeado - analisar manualmente
-00Qat00000QbfV4EAJ,DRS5,93037170,DRS5_bucket-02,Eduarda Costa,005at00000ADsT7AAL,Qualificar lead
+00Qat00000QbfV4EAJ,DRS5,93037170,DRS5_bucket-02,Eduarda Costa,005at00000EJUYb,Qualificar lead
 00Qat00000Qbh5REAR,,13500143,N/A,Eduardo Moreira,,CEP nao mapeado - analisar manualmente
 00Qat00000QblqbEAB,,05205220,N/A,Thalyta Silva,,CEP nao mapeado - analisar manualmente
 00Qat00000Qc1Z5EAJ,,12052230,N/A,Roseli dos Santos  Pimenta,,CEP nao mapeado - analisar manualmente
@@ -943,52 +943,52 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000SRMVlEAP,,88118310,N/A,Mara Machado,,CEP nao mapeado - analisar manualmente
 00Qat00000SRWmrEAH,,32043020,N/A,Anny Rezende,,CEP nao mapeado - analisar manualmente
 00Qat00000SRXEMEA5,,04849032,N/A,Mirian De Oliveira Garcia,,CEP nao mapeado - analisar manualmente
-00Qat00000SRbg5EAD,DSP2,03822000,DSP2_bucket-01,Kelle Teles,0055G00000B9BgLQAV,Qualificar lead
-00Qat00000SRcXKEA1,DSP4,04647010,DSP4_bucket-09,José Fabrício da Silva DA SILVA,005at00000AwtxdAAB,Qualificar lead
-00Qat00000SRiUfEAL,DBR9,05618000,DBR9_bucket-21,Maria Ines Silva Oliveira,0055G00000B9BgkQAF,Qualificar lead
-00Qat00000SRlM5EAL,DSP4,09820760,DSP4_bucket-11,Diana Castelano,005at000002NE7ZAAW,Qualificar lead
-00Qat00000SRn7mEAD,DMG2,32310220,DMG2_bucket-12,Juarez Pereira da Silva Filho,005at000002kSTEAA2,Qualificar lead
-00Qat00000SRsnOEAT,DSP2,02223140,DSP2_bucket-02,Rafael Soares,005at00000CmvWyAAJ,Qualificar lead
-00Qat00000SRt6lEAD,DMG2,32342140,DMG2_bucket-11,Rafael Alencar Sampaio Ribeiro,005at000002kSTEAA2,Qualificar lead
+00Qat00000SRbg5EAD,DSP2,03822000,DSP2_bucket-01,Kelle Teles,005at00000EJUVN,Qualificar lead
+00Qat00000SRcXKEA1,DSP4,04647010,DSP4_bucket-09,José Fabrício da Silva DA SILVA,005at00000EJUwr,Qualificar lead
+00Qat00000SRiUfEAL,DBR9,05618000,DBR9_bucket-21,Maria Ines Silva Oliveira,005at00000FLBcX,Qualificar lead
+00Qat00000SRlM5EAL,DSP4,09820760,DSP4_bucket-11,Diana Castelano,,Qualificar lead
+00Qat00000SRn7mEAD,DMG2,32310220,DMG2_bucket-12,Juarez Pereira da Silva Filho,005at00000EJVT6,Qualificar lead
+00Qat00000SRsnOEAT,DSP2,02223140,DSP2_bucket-02,Rafael Soares,005at00000EJSzr,Qualificar lead
+00Qat00000SRt6lEAD,DMG2,32342140,DMG2_bucket-11,Rafael Alencar Sampaio Ribeiro,005at00000EJUaM,Qualificar lead
 00Qat00000SRtTJEA1,,88317410,N/A,Gabriel Zimmermann,,CEP nao mapeado - analisar manualmente
 00Qat00000SRwMLEA1,,04877080,N/A,Marcus Vinicius Romualdo de Almeida,,CEP nao mapeado - analisar manualmente
 00Qat00000SRx0fEAD,,04949200,N/A,Maria Terezinha carvalho,,CEP nao mapeado - analisar manualmente
-00Qat00000SRxYYEA1,DPE4,51020170,DPE4_bucket-12,Rafael Silva,,Qualificar lead
-00Qat00000SS2oLEAT,DMG2,30870050,DMG2_bucket-11,Maurila de Oliveira Viana,005at000002kSTEAA2,Qualificar lead
-00Qat00000SS5HZEA1,DMG2,31140340,DMG2_bucket-08,Ana Vale,005at000002kSTEAA2,Qualificar lead
+00Qat00000SRxYYEA1,DPE4,51020170,DPE4_bucket-12,Rafael Silva,005at00000EJOwI,Qualificar lead
+00Qat00000SS2oLEAT,DMG2,30870050,DMG2_bucket-11,Maurila de Oliveira Viana,005at00000EJUaM,Qualificar lead
+00Qat00000SS5HZEA1,DMG2,31140340,DMG2_bucket-08,Ana Vale,,Qualificar lead
 00Qat00000SS6bqEAD,,36407350,N/A,JOSE Roberto Ferreira SOUZA,,CEP nao mapeado - analisar manualmente
 00Qat00000SS6f3EAD,,53640074,N/A,Rafael Dias de lima,,Out of jurisdiction - analisar manualmente
 00Qat00000SS6wnEAD,,36407350,N/A,JOSE Roberto Ferreira SOUZA,,CEP nao mapeado - analisar manualmente
-00Qat00000SS7CwEAL,DPE4,54430350,DPE4_bucket-15,Marta Aguiar,,Qualificar lead
+00Qat00000SS7CwEAL,DPE4,54430350,DPE4_bucket-15,Marta Aguiar,005at00000EJRsW,Qualificar lead
 00Qat00000SSCm5EAH,,32405080,N/A,KAUAN Mike,,CEP nao mapeado - analisar manualmente
 00Qat00000SSCqvEAH,,25085450,N/A,Joelma Fátima dos santos knupp Knupp,,CEP nao mapeado - analisar manualmente
 00Qat00000SSEKrEAP,,05387110,N/A,Wellington Costa,,CEP nao mapeado - analisar manualmente
 00Qat00000SSFFKEA5,,37701391,N/A,elias da silva,,CEP nao mapeado - analisar manualmente
 00Qat00000SSFX3EAP,,33239308,N/A,Guilherme Bastos,,CEP nao mapeado - analisar manualmente
 00Qat00000SSH7REAX,,14115000,N/A,Vander Fragala,,CEP nao mapeado - analisar manualmente
-00Qat00000SSHfJEAX,DPE4,50960170,DPE4_bucket-04,Petrus Freitas,005at000001ntHJAAY,Qualificar lead
+00Qat00000SSHfJEAX,DPE4,50960170,DPE4_bucket-04,Petrus Freitas,005at00000EJPIr,Qualificar lead
 00Qat00000SSI1tEAH,,69151175,N/A,Leodemira Fernandes,,CEP nao mapeado - analisar manualmente
 00Qat00000SSJE7EAP,,08215400,N/A,Gabriel Rocha,,CEP nao mapeado - analisar manualmente
 00Qat00000SSL2zEAH,,06149240,N/A,rogerio Monteiro de araujo,,CEP nao mapeado - analisar manualmente
 00Qat00000SSMYZEA5,,090300,N/A,André Casagrande,,CEP invalido
 00Qat00000SSMdNEAX,,32013470,N/A,Raphael Victor Costa vaz,,CEP nao mapeado - analisar manualmente
 00Qat00000SSMqHEAX,,04866210,N/A,Rogerio Pereira,,CEP nao mapeado - analisar manualmente
-00Qat00000SSPhhEAH,DMG2,31540000,DMG2_bucket-02,Nathalia Letícia,005at000002kSTEAA2,Qualificar lead
+00Qat00000SSPhhEAH,DMG2,31540000,DMG2_bucket-02,Nathalia Letícia,,Qualificar lead
 00Qat00000SSS4UEAX,,13068271,N/A,Gilson lemos da cunha Cunha,,CEP nao mapeado - analisar manualmente
 00Qat00000SSgfKEAT,,23845200,N/A,Jane Seidel,,CEP nao mapeado - analisar manualmente
 00Qat00000SSm6PEAT,,09380559,N/A,Felipe Alves,,CEP nao mapeado - analisar manualmente
-00Qat00000STQtSEAX,DRJ3,20560070,DRJ3_bucket-02,Joao victor Caldeira,005at0000086YH0AAM,Qualificar lead
-00Qat00000STgSREA1,DSP2,02317170,DSP2_bucket-02,Vanessa dannibale Mangela,005at00000CmvWyAAJ,Qualificar lead
-00Qat00000STkLuEAL,DSP2,02209040,DSP2_bucket-02,Lucimar Rocco,005at00000CmvWyAAJ,Qualificar lead
-00Qat00000STntIEAT,DSP4,04146050,DSP4_bucket-03,Margareth Nunes,005at00000AwtxdAAB,Qualificar lead
-00Qat00000SToHREA1,DSA8,40420080,DSA8_bucket-02,Elias Machado Dos Santos,005at000004Oo6DAAS,Qualificar lead
-00Qat00000STqibEAD,DMG2,31578500,DMG2_bucket-02,Manoela Silva,005at000002kSTEAA2,Qualificar lead
-00Qat00000STsHrEAL,DRJ3,20755330,DRJ3_bucket-01,Ivan Dos Reis Machado Kayser,005at000004WxNdAAK,Qualificar lead
+00Qat00000STQtSEAX,DRJ3,20560070,DRJ3_bucket-02,Joao victor Caldeira,,Qualificar lead
+00Qat00000STgSREA1,DSP2,02317170,DSP2_bucket-02,Vanessa dannibale Mangela,005at00000EJSzr,Qualificar lead
+00Qat00000STkLuEAL,DSP2,02209040,DSP2_bucket-02,Lucimar Rocco,005at00000EJSzr,Qualificar lead
+00Qat00000STntIEAT,DSP4,04146050,DSP4_bucket-03,Margareth Nunes,,Qualificar lead
+00Qat00000SToHREA1,DSA8,40420080,DSA8_bucket-02,Elias Machado Dos Santos,005at00000EJUX3,Qualificar lead
+00Qat00000STqibEAD,DMG2,31578500,DMG2_bucket-02,Manoela Silva,,Qualificar lead
+00Qat00000STsHrEAL,DRJ3,20755330,DRJ3_bucket-01,Ivan Dos Reis Machado Kayser,,Qualificar lead
 00Qat00000STuOTEA1,,18150509,N/A,Willian Ramos Caetano,,CEP nao mapeado - analisar manualmente
 00Qat00000STvJeEAL,,88056590,N/A,Leticia Scheper Filastro,,Out of jurisdiction - analisar manualmente
 00Qat00000STwdBEAT,,95900568,N/A,Adriana Manica,,CEP nao mapeado - analisar manualmente
-00Qat00000STxuDEAT,DMG2,31950390,DMG2_bucket-07,Bruno Camargos,005at000002kSTEAA2,Qualificar lead
+00Qat00000STxuDEAT,DMG2,31950390,DMG2_bucket-07,Bruno Camargos,,Qualificar lead
 00Qat00000STzftEAD,,53415500,N/A,Roseane Santana,,Out of jurisdiction - analisar manualmente
 00Qat00000STzj7EAD,,18288899,N/A,Marcos romeiro,,CEP nao mapeado - analisar manualmente
 00Qat00000SfbJeEAJ,,20950340,N/A,Matheus Flor da Silva,,CEP nao mapeado - analisar manualmente
-00Qat00000SuWmfEAF,DSP4,09635010,DSP4_bucket-10,JONES MARVILA,005at00000Bn2aGAAR,Qualificar lead
+00Qat00000SuWmfEAF,DSP4,09635010,DSP4_bucket-10,JONES MARVILA,,Qualificar lead

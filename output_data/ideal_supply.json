@@ -3,7 +3,7 @@
     "generated_at": "2026-04-13T10:05:01",
     "n_territories": 209,
     "n_slots": 6509,
-    "last_fit_at": "2026-04-24T18:45:43"
+    "last_fit_at": "2026-04-24T19:40:27"
   },
   "slots": {
     "DBS5_bucket-01": [
@@ -145611,7 +145611,7 @@
             "packages_assigned": 8
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000LxcIUAAZ"
       },
       {
         "slot_id": "XRJ2_bucket-02_S10",
@@ -160499,7 +160499,7 @@
             "packages_assigned": 7
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000AncwZAAR"
       },
       {
         "slot_id": "XPB1_bucket-01_S17",
@@ -162261,7 +162261,7 @@
             "packages_assigned": 9
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000CsxCbAAJ"
       },
       {
         "slot_id": "XPB1_bucket-03_S22",
@@ -163498,7 +163498,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000B4w4KAAR"
       },
       {
         "slot_id": "XPB1_bucket-05_S17",
@@ -164518,7 +164518,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000SFVJjAAP"
       },
       {
         "slot_id": "XSP7_bucket-03_S03",
@@ -164938,7 +164938,7 @@
             "packages_assigned": 6
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000NTzhGAAT"
       },
       {
         "slot_id": "XSP7_bucket-05_S03",
@@ -164988,7 +164988,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000CtHMJAA3"
       },
       {
         "slot_id": "XSP7_bucket-05_S05",
@@ -165218,7 +165218,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000AnYo4AAF"
       },
       {
         "slot_id": "XCP1_bucket-01_S05",
@@ -166241,7 +166241,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000JLwUIAA1"
       },
       {
         "slot_id": "XCP1_bucket-03_S07",
@@ -167175,7 +167175,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000ECprqAAD"
       },
       {
         "slot_id": "XCP1_bucket-05_S04",
@@ -177068,7 +177068,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000Shp2PAAR"
       },
       {
         "slot_id": "XBA1_bucket-01_S09",
@@ -178355,7 +178355,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000SEnOxAAL"
       },
       {
         "slot_id": "XBA1_bucket-04_S06",

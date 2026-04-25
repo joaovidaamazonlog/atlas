@@ -45,7 +45,6 @@ class Config:
     MAX_CAP              = configuration.MAX_CAPACITY
     CAPACITIES           = configuration.CAPACITIES
     RADII                = configuration.RADII_M
-    ADES_ACCOUNT_MANAGERS = configuration.ADES_ACCOUNT_MANAGERS
     BONUS_PER_OPEN       = 1500
     CLUSTER_PER_STATION  = getattr(configuration, "CLUSTER_PER_STATION", {})
 

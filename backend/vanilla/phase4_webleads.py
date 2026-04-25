@@ -27,12 +27,8 @@ station_code e demais metadados.
 
 Account Manager (owner_id)
 --------------------------
-Config.ADES_ACCOUNT_MANAGERS e uma lista de dicts:
-    [{"salesforce_id": "...", "buckets": ["DSP2_T01", "DSP2_T02", ...]}, ...]
-
-Nota de migracao: o sistema anterior usava "DSP2_bucket-1". Se o seu
-config ainda usa o formato antigo, atualize os nomes para o novo padrao
-"DSP2_T01" ou use o parametro `legacy_bucket_names=True` que tenta ambos.
+Usa Config.get_owner_id_for_territory(territory_id), que deriva o
+salesforce_id do ADE responsável diretamente do TEAM em config.py.
 
 Decisions possiveis
 -------------------

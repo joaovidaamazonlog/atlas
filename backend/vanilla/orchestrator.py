@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from shared.load_packages import load_packages
-from shared.load_partners import load_partners
+from shared.load_partners import load_partners, load_partners_csv
 from shared.models import Config
 from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons, patch_heatmap_satellite_stations, patch_heatmap_add_satellite_hexes
 from shared.models import Config, TerritoriesResult, load_territories
@@ -101,13 +101,21 @@ def run_daily(
     output_dir: str,
     stations: Optional[List[str]] = None,
     legacy_bucket_names: bool = False,
+    partner_csv: Optional[str] = None,
 ) -> None:
     """
     Pipeline diário completo:
     1. Lê Excel (Salesforce) → serializa dados_mapa.json
+       (ou CSV via --partnerCSV)
     2. Fases 3/4/5: matching, webleads, relatórios
     3. Enriquece dados_mapa.json com hex_coverage (Active/Onboarding)
     4. Enriquece heatmap.geojson com covering_partners e demand_residual
+
+    Parâmetros
+    ----------
+    partner_csv : caminho para um CSV exportado do Salesforce.
+                  Se fornecido, substitui a leitura do Excel (terra.xlsm).
+                  Equivalente a passar ``--partnerCSV`` na CLI.
 
     Deve ser rodado sempre que a base de pacotes ou os dados do Salesforce
     forem atualizados — garante que dados_mapa.json e heatmap.geojson
@@ -139,7 +147,10 @@ def run_daily(
     # Carregar parceiros e jurisdicoes (sempre frescos)
     jur_geojson = _load_jurisdiction_geojson()
     pkg          = load_packages(jurisdiction_geojson=jur_geojson)
-    partner_data = load_partners()
+    if partner_csv:
+        partner_data = load_partners_csv(partner_csv)
+    else:
+        partner_data = load_partners()
 
     # Fase 3: matching
     fit = run_phase3(
@@ -275,6 +286,14 @@ Exemplos:
         help="Usar formato antigo de nomes de bucket no config de "
              "account managers (compatibilidade durante migracao).",
     )
+    parser.add_argument(
+        "--partnerCSV",
+        default=None,
+        metavar="PATH",
+        help="Caminho para um CSV de parceiros exportado do Salesforce. "
+             "Quando fornecido, substitui a leitura do Excel (terra.xlsm) "
+             "no modo daily. Ex: --partnerCSV data/partners.csv",
+    )
     return parser.parse_args()
 
 
@@ -294,6 +313,7 @@ def main() -> None:
                 output_dir=out_dir,
                 stations=args.stations,
                 legacy_bucket_names=args.legacy_buckets,
+                partner_csv=args.partnerCSV,
             )
         else:
             print("  Especifique --mode setup ou --mode daily.")

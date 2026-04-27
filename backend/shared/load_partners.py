@@ -576,3 +576,130 @@ def _build_partner_data(partners: "list[Partner]") -> PartnerData:
         jurisdictions           = {},   # preenchido por load_partners após carregar GeoJSON
         no_coords_prospects_df  = no_coords_df,
     )
+
+
+# ---------------------------------------------------------------------------
+# CSV PIPELINE — load_partners_csv
+# ---------------------------------------------------------------------------
+
+def load_partners_csv(
+    csv_path: str,
+    jurisdiction_path: str = None,
+) -> PartnerData:
+    """
+    Carrega parceiros a partir de um arquivo CSV exportado do Salesforce
+    (ex: partners.csv) e retorna um PartnerData idêntico ao produzido pelo
+    modo Excel.
+
+    Uso
+    ---
+    Passe ``--partnerCSV <caminho>`` na linha de comando e o orquestrador
+    chamará esta função em vez de ``load_partners()``.
+
+    Mapeamento de colunas CSV → campos internos
+    -------------------------------------------
+    O CSV usa underscores onde o Excel usa espaços, e omite o sufixo ``__c``
+    dos campos Salesforce.  A tabela abaixo mostra todas as diferenças:
+
+    CSV column                  → Partner.from_row espera
+    ─────────────────────────────────────────────────────
+    Delivery_Station            → "Delivery Station"
+    Jurisdiction_Type           → "Jurisdiction Type"
+    Hub_Delivery_Initiatives    → "Hub Delivery Initiatives"
+    HCP_Rate_Card               → "HCP Rate Card"
+    HCP_host_partner            → "HCP Host Partner"
+    Exit_Date                   → "Exit_Date__c"
+    Decision_Status             → "Decision_Status__c"
+    Decision_Reason_Code        → "Decision_Reason_Code__c"
+    Jurisdiction_Name           → "Bucket"  (já é o nome, não um ID)
+
+    Colunas ausentes no CSV (usam defaults)
+    ----------------------------------------
+    LeadSource  → None  (nenhum web lead esperado neste fluxo)
+    Radius      → 1500  (default de _clean_int)
+    Volume Cap  → 42    (default de _clean_int)
+
+    Parâmetros
+    ----------
+    csv_path          : caminho para o arquivo .csv
+    jurisdiction_path : caminho para o GeoJSON de jurisdições
+                        (default: Config.BASE_JURISDICTION)
+    """
+    import shared.config as _cfg
+
+    j_path = jurisdiction_path or Config.BASE_JURISDICTION
+
+    print(f"[load_partners_csv] Lendo CSV de parceiros: {csv_path} ...")
+
+    # ------------------------------------------------------------------
+    # 1. Ler CSV
+    # ------------------------------------------------------------------
+    df_raw = pd.read_csv(csv_path, dtype=str, keep_default_na=False)
+    print(f"   {len(df_raw):,} linhas lidas.")
+
+    # ------------------------------------------------------------------
+    # 2. Renomear colunas para o formato esperado por Partner.from_row
+    # ------------------------------------------------------------------
+    _CSV_RENAME = {
+        "Delivery_Station":         "Delivery Station",
+        "Jurisdiction_Type":        "Jurisdiction Type",
+        "Hub_Delivery_Initiatives": "Hub Delivery Initiatives",
+        "HCP_Rate_Card":            "HCP Rate Card",
+        "HCP_host_partner":         "HCP Host Partner",
+        "Exit_Date":                "Exit_Date__c",
+        "Decision_Status":          "Decision_Status__c",
+        "Decision_Reason_Code":     "Decision_Reason_Code__c",
+        # Jurisdiction_Name já é o nome do bucket — expor como "Bucket"
+        # para que from_row o use no fallback (campo Bucket já resolvido)
+        "Jurisdiction_Name":        "Bucket",
+    }
+    df_raw.rename(columns=_CSV_RENAME, inplace=True)
+
+    # ------------------------------------------------------------------
+    # 3. Normalizar valores vazios: strings vazias → NaN
+    # ------------------------------------------------------------------
+    df_raw.replace({"": None, "nan": None, "NaN": None, "None": None}, inplace=True)
+
+    # ------------------------------------------------------------------
+    # 4. Construir objetos Partner via from_row
+    #    (station_map / jurisdictions_map / host_map ficam vazios porque
+    #     o CSV já traz os valores resolvidos — nomes, não IDs)
+    # ------------------------------------------------------------------
+    partners: list[Partner] = []
+    for _, row in df_raw.iterrows():
+        try:
+            p = Partner.from_row(row, {}, {}, {})
+            partners.append(p)
+        except Exception as exc:
+            sf_id = row.get("Id", "?")
+            print(f"  WARN [load_partners_csv] Erro ao construir Partner {sf_id}: {exc}")
+
+    print(f"[load_partners_csv] {len(partners):,} objetos Partner construídos.")
+
+    # ------------------------------------------------------------------
+    # 5. Serializar para dados_mapa.json (mesmo artefato do modo Excel)
+    # ------------------------------------------------------------------
+    from datetime import datetime
+    period = datetime.today().strftime("%Y-%m-%d : %Hh:%Mm")
+    output_path = str(_cfg.DEST_FOLDER / "dados_mapa.json")
+    serialize_to_json(partners, period, output_path)
+
+    # ------------------------------------------------------------------
+    # 6. Construir PartnerData (mesma lógica do modo Excel)
+    # ------------------------------------------------------------------
+    partner_data = _build_partner_data(partners)
+
+    # ------------------------------------------------------------------
+    # 7. Carregar jurisdições
+    # ------------------------------------------------------------------
+    print(f"[load_partners_csv] Lendo jurisdições de {j_path} ...")
+    with open(j_path, "r", encoding="utf-8") as f:
+        partner_data.jurisdictions = json.load(f)
+    n_juris = len(partner_data.jurisdictions.get("features", []))
+    print(f"   {n_juris} jurisdições carregadas.")
+
+    print(
+        f"[load_partners_csv] Concluído: "
+        f"{len(partner_data.partners_df):,} parceiros operacionais."
+    )
+    return partner_data

@@ -9,60 +9,16 @@ import { useStore } from '../../store';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { getUniqueValues } from '../../store/actions/dataActions';
 import type { Partner } from '../../store/types';
-
-const NO_GO_REASONS = [
-  'Sem oportunidade próxima',
-  'Fora de jurisdição',
-  'Não avaliado por falta de coordenadas',
-];
-
-interface NoGoReasonCount { reason: string; count: number; pct: string; }
-interface Overview { total: number; go: number; nogo: number; rate: string; noCoords: number; nogoReasonCounts: Record<string, number>; }
-interface FilteredStats { total: number; go: number; nogo: number; rate: string; nogoReasonRows: NoGoReasonCount[]; }
-interface StateRow { uf: string; total: number; go: number; nogo: number; rate: string; }
-
-function getGlobalOverview(allMarkersData: Partner[]): Overview {
-  const allProspects = allMarkersData.filter((m) => m.status === 'Prospect');
-  const noCoords = allProspects.filter((m) => !m.lat || !m.lon).length;
-  const evaluated = allProspects.filter((m) => m.decision);
-  const go = evaluated.filter((p) => p.decision === 'Go').length;
-  const nogo = evaluated.filter((p) => p.decision === 'No Go').length;
-  const rate = evaluated.length > 0 ? ((go / evaluated.length) * 100).toFixed(1) : '0.0';
-  const nogoReasonCounts: Record<string, number> = {};
-  NO_GO_REASONS.forEach((r) => {
-    nogoReasonCounts[r] = evaluated.filter((p) => p.decision === 'No Go' && p.reason === r).length;
-  });
-  return { total: evaluated.length, go, nogo, rate, noCoords, nogoReasonCounts };
-}
-
-function getFilteredStats(prospects: Partner[]): FilteredStats {
-  const total = prospects.length;
-  const go = prospects.filter((p) => p.decision === 'Go').length;
-  const fNogo = prospects.filter((p) => p.decision === 'No Go').length;
-  const rate = total > 0 ? ((go / total) * 100).toFixed(1) : '0.0';
-  const nogoReasonRows = NO_GO_REASONS.map((r) => {
-    const count = prospects.filter((p) => p.decision === 'No Go' && p.reason === r).length;
-    const pct = fNogo > 0 ? ((count / fNogo) * 100).toFixed(1) : '0.0';
-    return { reason: r, count, pct };
-  });
-  return { total, go, nogo: fNogo, rate, nogoReasonRows };
-}
-
-function getStatsByState(prospects: Partner[]): StateRow[] {
-  const byState: Record<string, { go: number; nogo: number }> = {};
-  prospects.forEach((p) => {
-    const uf = p.state || 'N/A';
-    if (!byState[uf]) byState[uf] = { go: 0, nogo: 0 };
-    if (p.decision === 'Go') byState[uf].go++;
-    else byState[uf].nogo++;
-  });
-  return Object.entries(byState)
-    .sort((a, b) => (b[1].go + b[1].nogo) - (a[1].go + a[1].nogo))
-    .map(([uf, s]) => {
-      const total = s.go + s.nogo;
-      return { uf, total, go: s.go, nogo: s.nogo, rate: total > 0 ? ((s.go / total) * 100).toFixed(0) : '0' };
-    });
-}
+import {
+  NO_GO_REASONS,
+  getGlobalOverview,
+  getFilteredStats,
+  getStatsByState,
+  type NoGoReasonCount,
+  type Overview,
+  type FilteredStats,
+  type StateRow,
+} from '../../lib/areaAnalysisPure';
 
 function StatBox({ value, label, color }: { value: string | number; label: string; color?: string }) {
   return (
@@ -609,6 +565,41 @@ export default function AreaAnalysisTab() {
     return getUniqueValues(prospects, 'state').sort();
   }, [allMarkersData]);
 
+  // ---------------------------------------------------------------------------
+  // Derived state — memoizado para evitar recomputação em renders não-
+  // relacionados aos inputs (allMarkersData, selectedState, selectedDecision).
+  // ---------------------------------------------------------------------------
+  const overview = useMemo(
+    () => getGlobalOverview(allMarkersData),
+    [allMarkersData],
+  );
+
+  const filteredProspects = useMemo(() => {
+    return allMarkersData.filter((p) => {
+      if (p.status !== 'Prospect') return false;
+      if (!p.decision) return false;
+      if (selectedState !== 'all' && p.state !== selectedState) return false;
+      if (selectedDecision !== 'all' && p.decision !== selectedDecision) return false;
+      return true;
+    });
+  }, [allMarkersData, selectedState, selectedDecision]);
+
+  const filteredStats = useMemo(
+    () => getFilteredStats(filteredProspects),
+    [filteredProspects],
+  );
+
+  // `stateRows` considera TODOS os prospects com decision (não aplica
+  // filtros de UF/decisão) — é uma visão agregada de quebra por estado.
+  const allEvaluatedProspects = useMemo(
+    () => allMarkersData.filter((p) => p.status === 'Prospect' && !!p.decision),
+    [allMarkersData],
+  );
+  const stateRows = useMemo(
+    () => getStatsByState(allEvaluatedProspects),
+    [allEvaluatedProspects],
+  );
+
   const handleAnalyze = useCallback(() => {
     // Fecha as outras análises antes de abrir esta
     if (manualAnalysisOpen) setManualAnalysisOpen(false);
@@ -619,23 +610,22 @@ export default function AreaAnalysisTab() {
 
     applyFilters({ selectedStatuses: ['Prospect'] });
 
-    const allProspects = allMarkersData.filter((p) => p.status === 'Prospect');
-    const filteredProspects = allProspects.filter((p) => {
-      if (!p.decision) return false;
-      if (selectedState !== 'all' && p.state !== selectedState) return false;
-      if (selectedDecision !== 'all' && p.decision !== selectedDecision) return false;
-      return true;
+    setAnalysisResult({
+      overview,
+      filtered: filteredStats,
+      stateRows,
+      leads: filteredProspects,
+      stateFilter: selectedState,
+      decisionFilter: selectedDecision,
     });
-
-    const overview = getGlobalOverview(allMarkersData);
-    const filtered = getFilteredStats(filteredProspects);
-    const stateRows = getStatsByState(allProspects.filter((p) => !!p.decision));
-    const leads = filteredProspects;
-
-    setAnalysisResult({ overview, filtered, stateRows, leads, stateFilter: selectedState, decisionFilter: selectedDecision });
     setShowPanel(true);
     setShowStateTable(false);
-  }, [allMarkersData, applyFilters, selectedState, selectedDecision, manualAnalysisOpen, setManualAnalysisOpen, showCapOpportunityPanel, setSelectedCapOpportunity]);
+  }, [
+    applyFilters, manualAnalysisOpen, setManualAnalysisOpen,
+    showCapOpportunityPanel, setSelectedCapOpportunity,
+    overview, filteredStats, stateRows, filteredProspects,
+    selectedState, selectedDecision,
+  ]);
 
   const handleClose = useCallback(() => {
     setShowPanel(false);

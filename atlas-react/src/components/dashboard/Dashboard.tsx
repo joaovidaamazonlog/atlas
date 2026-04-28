@@ -25,6 +25,7 @@ import { Spinner } from '../ui/Spinner';
 import FilterCascade from './FilterCascade';
 import KpiCard from './KpiCard';
 import PartnersByBucketTable from './PartnersByBucketTable';
+import { useRowVirtualization } from './useRowVirtualization';
 import { useStore } from '../../store';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -395,6 +396,22 @@ const STATUS_CLASS_MAP: Record<string, string> = {
   'status-red': 'text-red-400',
 };
 
+// Altura de linha (px) e larguras de coluna compartilhadas entre header
+// e body. Mantém alinhamento quando body é virtualizado em outra <table>.
+const TERRITORY_ROW_HEIGHT = 40;
+const TERRITORY_COL_WIDTHS = [
+  '18%', // territory
+  '8%',  // base
+  '10%', // ctl
+  '11%', // dailyDemand
+  '8%',  // totalSlots
+  '9%',  // openSlots
+  '8%',  // active
+  '10%', // onboarding
+  '9%',  // attainment
+  '9%',  // accuracy
+];
+
 const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort }) => {
   const { t } = useTranslation();
 
@@ -411,6 +428,12 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort
     { key: 'accuracy', label: t('dashboard.col_accuracy') },
   ];
 
+  const { parentRef, virtualizer, enabled: virtualizeOn, containerStyle } =
+    useRowVirtualization({
+      rowCount: rows.length,
+      rowHeight: TERRITORY_ROW_HEIGHT,
+    });
+
   if (rows.length === 0) {
     return (
       <div className="bg-atlas-dark border border-atlas-navy rounded-lg text-atlas-muted text-center py-6 text-sm">
@@ -419,65 +442,104 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort
     );
   }
 
+  const renderRow = (row: TerritoryRow, style?: React.CSSProperties) => {
+    const attClass =
+      STATUS_CLASS_MAP[getStatusClass(row.attainment, ATTAINMENT_THRESHOLDS)];
+    const accClass =
+      STATUS_CLASS_MAP[getStatusClass(row.accuracy, ACCURACY_THRESHOLDS)];
+    return (
+      <tr
+        key={`${row.baseCode}-${row.id}`}
+        style={style}
+        className="border-b border-atlas-navy hover:bg-atlas-navy transition-colors"
+      >
+        <td className="px-3 py-2 text-atlas-light font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+          {row.id}
+          {row.satelliteOrigin && (
+            <span className="ml-2 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-atlas-navy text-atlas-accent border border-atlas-accent/40 whitespace-nowrap">
+              {row.satelliteOrigin}
+            </span>
+          )}
+        </td>
+        <td className="px-3 py-2 text-atlas-muted whitespace-nowrap">{row.baseCode}</td>
+        <td className="px-3 py-2 text-atlas-muted whitespace-nowrap">{row.ctl}</td>
+        <td className="px-3 py-2 text-atlas-light text-right">
+          {row.dailyDemand.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}
+        </td>
+        <td className="px-3 py-2 text-atlas-light text-right">{row.totalSlots}</td>
+        <td className="px-3 py-2 text-atlas-light text-right">{row.openSlots}</td>
+        <td className="px-3 py-2 text-green-400 text-right">{row.active}</td>
+        <td className="px-3 py-2 text-yellow-400 text-right">{row.onboarding}</td>
+        <td className={`px-3 py-2 text-right font-medium ${attClass}`}>
+          {(row.attainment * 100).toFixed(1)}%
+        </td>
+        <td className={`px-3 py-2 text-right font-medium ${accClass}`}>
+          {(row.accuracy * 100).toFixed(1)}%
+        </td>
+      </tr>
+    );
+  };
+
+  const colgroup = (
+    <colgroup>
+      {TERRITORY_COL_WIDTHS.map((w, i) => (
+        <col key={i} style={{ width: w }} />
+      ))}
+    </colgroup>
+  );
+
+  const headerTable = (
+    <table className="w-full text-sm table-fixed">
+      {colgroup}
+      <thead className="bg-atlas-darker">
+        <tr>
+          {TERRITORY_COLUMNS.map((col) => (
+            <th
+              key={col.key}
+              onClick={() => onSort(col.key)}
+              className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
+            >
+              {col.label}
+              <SortIndicator column={col.key} sortState={sortState} />
+            </th>
+          ))}
+        </tr>
+      </thead>
+    </table>
+  );
+
   return (
     <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
-      <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-atlas-darker sticky top-0 z-10">
-            <tr>
-              {TERRITORY_COLUMNS.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => onSort(col.key)}
-                  className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
-                >
-                  {col.label}
-                  <SortIndicator column={col.key} sortState={sortState} />
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => {
-              const attClass =
-                STATUS_CLASS_MAP[getStatusClass(row.attainment, ATTAINMENT_THRESHOLDS)];
-              const accClass =
-                STATUS_CLASS_MAP[getStatusClass(row.accuracy, ACCURACY_THRESHOLDS)];
-
-              return (
-                <tr
-                  key={`${row.baseCode}-${row.id}`}
-                  className="border-b border-atlas-navy hover:bg-atlas-navy transition-colors"
-                >
-                  <td className="px-3 py-2 text-atlas-light font-medium whitespace-nowrap">
-                    {row.id}
-                    {row.satelliteOrigin && (
-                      <span className="ml-2 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-atlas-navy text-atlas-accent border border-atlas-accent/40 whitespace-nowrap">
-                        {row.satelliteOrigin}
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-3 py-2 text-atlas-muted whitespace-nowrap">{row.baseCode}</td>
-                  <td className="px-3 py-2 text-atlas-muted whitespace-nowrap">{row.ctl}</td>
-                  <td className="px-3 py-2 text-atlas-light text-right">
-                    {row.dailyDemand.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}
-                  </td>
-                  <td className="px-3 py-2 text-atlas-light text-right">{row.totalSlots}</td>
-                  <td className="px-3 py-2 text-atlas-light text-right">{row.openSlots}</td>
-                  <td className="px-3 py-2 text-green-400 text-right">{row.active}</td>
-                  <td className="px-3 py-2 text-yellow-400 text-right">{row.onboarding}</td>
-                  <td className={`px-3 py-2 text-right font-medium ${attClass}`}>
-                    {(row.attainment * 100).toFixed(1)}%
-                  </td>
-                  <td className={`px-3 py-2 text-right font-medium ${accClass}`}>
-                    {(row.accuracy * 100).toFixed(1)}%
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <div className="overflow-x-auto">{headerTable}</div>
+      {virtualizeOn ? (
+        <div ref={parentRef} style={containerStyle}>
+          <table
+            className="w-full text-sm table-fixed"
+            style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
+          >
+            {colgroup}
+            <tbody>
+              {virtualizer.getVirtualItems().map((v) => {
+                const row = rows[v.index];
+                return renderRow(row, {
+                  position: 'absolute',
+                  top: v.start,
+                  left: 0,
+                  width: '100%',
+                  height: TERRITORY_ROW_HEIGHT,
+                });
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+          <table className="w-full text-sm table-fixed">
+            {colgroup}
+            <tbody>{rows.map((row) => renderRow(row))}</tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

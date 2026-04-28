@@ -24,7 +24,7 @@ describe('potentialScoreToColor', () => {
    */
   test('colorScale maps any score in [0,100] to a valid hex color', () => {
     fc.assert(
-      fc.property(fc.float({ min: 0, max: 100 }), (score) => {
+      fc.property(fc.float({ min: 0, max: 100, noNaN: true }), (score) => {
         const color = potentialScoreToColor(score);
         expect(color).toMatch(/^#[0-9a-f]{6}$/i);
       }),

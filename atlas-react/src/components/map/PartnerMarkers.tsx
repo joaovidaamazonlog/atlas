@@ -49,8 +49,10 @@ function OpenPartnerPopupListener({
 }
 
 const PartnerMarkers = React.memo(function PartnerMarkers() {
-  // useTranslation causes re-render on language change, regenerating popup HTML
-  const { i18n } = useTranslation();
+  // Subscreve ao provider de i18n para que `getPartnerPopupHtml` seja
+  // recomputado ao trocar idioma — sem usar `i18n.language` como key,
+  // os markers não são desmontados; apenas o conteúdo do popup atualiza.
+  useTranslation();
   const data = useStore((s) => s.currentFilteredData);
   const styleConfig = useStore((s) => s.styleConfig);
   const allMarkersData = useStore((s) => s.allMarkersData);
@@ -128,11 +130,13 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
       {rescuePopup}
       {!prospectActive && visibleData.filter(hasValidCoords).map((partner) => {
         const style = getMarkerStyle(partner, primary, secondary, colorMaps);
-        // i18n.language in the key ensures popup HTML is regenerated on language change
+        // popupHtml é regenerado a cada render (incluindo trocas de idioma),
+        // mas a `key` estável garante que o CircleMarker é reutilizado —
+        // apenas o conteúdo do popup atualiza no lugar.
         const popupHtml = getPartnerPopupHtml(partner, routeOriginActive);
 
         return (
-          <React.Fragment key={`${partner.salesforce_id}-${i18n.language}`}>
+          <React.Fragment key={partner.salesforce_id}>
             <CircleMarker
               center={[partner.lat, partner.lon]}
               radius={7}

@@ -52,11 +52,47 @@ from dataclasses import dataclass, field
 from typing import Dict, Optional, Set
 
 import h3
+import numpy as np
 import pandas as pd
 from shapely.geometry import Point, shape
 from shapely.validation import make_valid
 
 from shared.models import Config
+
+
+# ---------------------------------------------------------------------------
+# HELPERS DE VETORIZAÇÃO (H3)
+# ---------------------------------------------------------------------------
+
+def _vectorized_latlng_to_cell(
+    lat: pd.Series | np.ndarray,
+    lon: pd.Series | np.ndarray,
+    res: int,
+) -> np.ndarray:
+    """
+    Aplicação vetorizada de `h3.latlng_to_cell` sobre Series/arrays.
+
+    - NaN em `lat` ou `lon` resultam em `""` (string vazia) na posição
+      correspondente, preservando o comportamento do laço anterior que
+      operava APÓS o `dropna(subset=["lat", "lon"])` (zero NaN esperado
+      em produção, mas defensivo para quando a função for chamada antes
+      do drop — ex.: testes).
+    - Usa `np.vectorize` sobre a função C-level `h3.latlng_to_cell`.
+      Não é vetorização nativa em SIMD, mas elimina o overhead do
+      `list-comprehension` e da criação de objetos Python intermediários.
+    """
+    lat_arr = np.asarray(lat, dtype=float)
+    lon_arr = np.asarray(lon, dtype=float)
+    n = len(lat_arr)
+    if n == 0:
+        return np.empty(0, dtype=object)
+
+    mask = np.isfinite(lat_arr) & np.isfinite(lon_arr)
+    out = np.full(n, "", dtype=object)
+    if mask.any():
+        _fn = np.vectorize(h3.latlng_to_cell, excluded={"res"}, otypes=[object])
+        out[mask] = _fn(lat_arr[mask], lon_arr[mask], res=res)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -99,6 +135,7 @@ class PackageData:
 
 def _build_jurisdiction_index(
     jur_geojson: Dict,
+    satellite_setup_stations: Optional[Set[str]] = None,
 ) -> Dict[str, object]:
     """
     Constrói um índice { station_code → shapely polygon } a partir do
@@ -108,6 +145,12 @@ def _build_jurisdiction_index(
     Bases satélite (ex: XBA1) são indexadas com o código da base canônica
     (ex: DSA8) via STATION_ALIASES, de forma que hexes dentro do polígono
     satélite sejam atribuídos diretamente à base canônica.
+
+    Quando ``satellite_setup_stations`` é fornecido, os códigos satélite
+    contidos neste conjunto são indexados com o **próprio código satélite**
+    (não com a canônica), de modo que hexes dentro do polígono satélite
+    sejam atribuídos diretamente ao código satélite. Isso é usado pelo
+    setup pipeline quando rodando para a própria satélite.
     """
     from shared.config import STATION_ALIASES
 
@@ -116,8 +159,12 @@ def _build_jurisdiction_index(
         station = feature.get("properties", {}).get("delivery_station")
         if not station:
             continue
-        # Resolver satélite → canônica
-        canonical = STATION_ALIASES.get(station, station)
+        # Se é satélite em modo setup, indexar com o próprio código satélite
+        if satellite_setup_stations and station in satellite_setup_stations:
+            canonical = station
+        else:
+            # Resolver satélite → canônica (comportamento padrão)
+            canonical = STATION_ALIASES.get(station, station)
         try:
             poly = make_valid(shape(feature["geometry"]))
         except Exception:
@@ -161,6 +208,7 @@ def _resolve_station_by_jurisdiction(
 def load_packages(
     path: str = None,
     jurisdiction_geojson: Optional[Dict] = None,
+    satellite_setup_stations: Optional[Set[str]] = None,
 ) -> "PackageData":
     """
     Carrega o histórico de pacotes e retorna um PackageData.
@@ -174,6 +222,13 @@ def load_packages(
         a atribuição de hexes a bases usa jurisdição como critério
         primário; volume é usado apenas como fallback para hexes fora
         de qualquer jurisdição ou na fronteira de múltiplas.
+    satellite_setup_stations : set[str], opcional
+        Conjunto de códigos satélite que estão sendo processados em modo
+        setup. Para esses códigos, o remap via ``STATION_ALIASES`` é
+        **suprimido** — seus pacotes permanecem com o código satélite
+        original, e o índice de jurisdição indexa os polígonos satélite
+        com o próprio código (não a canônica). Isso permite que o setup
+        pipeline gere territórios dedicados para a satélite.
 
     Fluxo
     -----
@@ -205,20 +260,38 @@ def load_packages(
 
     # 1b. Remapear bases satélite → base canônica
     # Pacotes de XBA1, XCS1, etc. são tratados como se fossem da base canônica.
-    aliases = getattr(Config, "STATION_ALIASES", {})
+    # EXCETO quando a satélite está sendo processada em modo setup — nesse caso
+    # os pacotes dessa satélite permanecem com o código satélite original.
+    from shared.config import STATION_ALIASES as _aliases_cfg
+    aliases = getattr(Config, "STATION_ALIASES", None) or _aliases_cfg
     if aliases and "station_code" in df.columns:
-        before_alias = df["station_code"].nunique()
-        df["station_code"] = df["station_code"].replace(aliases)
-        after_alias = df["station_code"].nunique()
-        remapped = (df["station_code"].isin(aliases.values())).sum()
-        if before_alias != after_alias:
-            print(f"   STATION_ALIASES: {before_alias - after_alias} bases satélite "
-                  f"consolidadas nas bases canônicas.")
-        satellite_codes = set(aliases.keys())
-        n_remapped = len(df[df["station_code"].isin(
-            [aliases[k] for k in satellite_codes if k in aliases]
-        )])
-        _ = n_remapped  # usado só para log acima
+        # Filtrar: excluir códigos presentes em satellite_setup_stations
+        if satellite_setup_stations:
+            effective_aliases = {
+                k: v for k, v in aliases.items()
+                if k not in satellite_setup_stations
+            }
+        else:
+            effective_aliases = dict(aliases)
+
+        if effective_aliases:
+            before_alias = df["station_code"].nunique()
+            df["station_code"] = df["station_code"].replace(effective_aliases)
+            after_alias = df["station_code"].nunique()
+            remapped = (df["station_code"].isin(effective_aliases.values())).sum()
+            if before_alias != after_alias:
+                print(f"   STATION_ALIASES: {before_alias - after_alias} bases satélite "
+                      f"consolidadas nas bases canônicas.")
+            satellite_codes = set(effective_aliases.keys())
+            n_remapped = len(df[df["station_code"].isin(
+                [effective_aliases[k] for k in satellite_codes if k in effective_aliases]
+            )])
+            _ = n_remapped  # usado só para log acima
+        if satellite_setup_stations:
+            suppressed = satellite_setup_stations & set(aliases.keys())
+            if suppressed:
+                print(f"   STATION_ALIASES: remap suprimido para satélites em modo "
+                      f"setup: {sorted(suppressed)}")
 
     # 2. Calcular hex H3 se ausente
     if "hex" not in df.columns:
@@ -233,19 +306,24 @@ def load_packages(
         if has_per_station and "station_code" in df.columns:
             print(f"   Resolucoes H3 por base: {Config.H3_RES_PER_STATION} "
                   f"(demais usam res {Config.H3_RES})")
-            df["hex"] = [
-                h3.latlng_to_cell(float(la), float(lo),
-                                  Config.get_h3_res(str(sc)))
-                for la, lo, sc in zip(df["latitude"], df["longitude"],
-                                      df["station_code"])
-            ]
+            # Vetorização por grupo de resolução — cada grupo usa uma
+            # única chamada vetorizada de h3.latlng_to_cell
+            df["hex"] = ""
+            resolutions = df["station_code"].map(
+                lambda sc: Config.get_h3_res(str(sc))
+            )
+            for res, idx in resolutions.groupby(resolutions).indices.items():
+                df.loc[df.index[idx], "hex"] = _vectorized_latlng_to_cell(
+                    df.iloc[idx]["latitude"],
+                    df.iloc[idx]["longitude"],
+                    int(res),
+                )
         else:
             print(f"   Calculando hexagonos H3 (res={Config.H3_RES}) para "
                   f"{len(df):,} linhas ...")
-            df["hex"] = [
-                h3.latlng_to_cell(float(la), float(lo), Config.H3_RES)
-                for la, lo in zip(df["latitude"], df["longitude"])
-            ]
+            df["hex"] = _vectorized_latlng_to_cell(
+                df["latitude"], df["longitude"], Config.H3_RES
+            )
 
     # 3. Dias distintos no período
     if "plan_date" in df.columns:
@@ -285,7 +363,10 @@ def load_packages(
 
     if jurisdiction_geojson:
         # 5a. Jurisdição como critério primário
-        jur_index = _build_jurisdiction_index(jurisdiction_geojson)
+        jur_index = _build_jurisdiction_index(
+            jurisdiction_geojson,
+            satellite_setup_stations=satellite_setup_stations,
+        )
         print(f"   Jurisdição: {len(jur_index)} bases indexadas. "
               f"Resolvendo {len(unified):,} hexes ...")
 
@@ -325,17 +406,14 @@ def load_packages(
         print(f"   {n_conflicts} hexes com múltiplas bases no histórico.")
     print(f"   {len(unified):,} hexes únicos após unificação.")
 
-    # 6. Construir demand_by_station
-    demand_by_station: Dict[str, Dict[str, int]] = {}
-    hex_to_base: Dict[str, str] = {}
-
-    for _, row in unified.iterrows():
-        station = row["station_code"]
-        hex_id  = row["hex"]
-        demand  = int(row["demand_total"])
-
-        demand_by_station.setdefault(station, {})[hex_id] = demand
-        hex_to_base[hex_id] = station
+    # 6. Construir demand_by_station (vetorizado — substitui iterrows)
+    demand_by_station: Dict[str, Dict[str, int]] = {
+        st: dict(zip(grp["hex"], grp["demand_total"].astype(int)))
+        for st, grp in unified.groupby("station_code")
+    }
+    hex_to_base: Dict[str, str] = dict(
+        zip(unified["hex"], unified["station_code"])
+    )
 
     # 7. Índice CEP → hex
     hex_to_ceps: Dict[str, Set[str]] = {}

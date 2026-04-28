@@ -7,12 +7,20 @@
  * - 'ds'         : cor distinta por delivery_station
  * - 'ctl'        : cor distinta por CTL (derivado do territory_id)
  * - 'bdm'        : cor distinta por BDM cluster
+ *
+ * Performance
+ * -----------
+ * A camada `L.geoJSON` é criada UMA vez na montagem e mantida em
+ * `layerRef`. Atualizações de `filteredData` e `styleFunc` são aplicadas
+ * imperativamente via `clearLayers + addData` e `setStyle`, sem recriar
+ * a instância. Assim, mudar filtro/cor não dispara remount completo
+ * (padrão anterior usava `JSON.stringify(filterState)` como `key`).
  */
 
-import { useMemo } from 'react';
-import { GeoJSON } from 'react-leaflet';
-import type { StyleFunction, PathOptions } from 'leaflet';
-import type { Feature } from 'geojson';
+import { useEffect, useMemo, useRef } from 'react';
+import { useMap } from 'react-leaflet';
+import L, { type StyleFunction, type PathOptions, type GeoJSON as LGeoJSON } from 'leaflet';
+import type { Feature, FeatureCollection } from 'geojson';
 import { useStore } from '../../store';
 import { expandWithSatellites } from '../../lib/config';
 
@@ -61,7 +69,45 @@ function buildGroupColorMap(keys: string[]): Record<string, string> {
   return map;
 }
 
+// ---------------------------------------------------------------------------
+// filterFeatures — regra pura de filtragem de polígonos
+// ---------------------------------------------------------------------------
+// Exportada (com prefixo `_` para sinalizar uso interno + testes) para
+// permitir PBT sem depender de Leaflet/jsdom. A instância de L.GeoJSON
+// é atualizada imperativamente via os efeitos do componente, mas a
+// regra de quais features entram no set é esta.
+export interface FilterStateShape {
+  selectedStations: 'all' | string[];
+  selectedBuckets: 'all' | string[];
+}
+export function _filterFeatures(
+  polygonsData: FeatureCollection | null,
+  filterState: FilterStateShape,
+  prospectClusters: unknown[],
+  selectedBucket: string | null,
+): Feature[] {
+  if (!polygonsData) return [];
+  const heatmapActive = prospectClusters.length > 0;
+  return polygonsData.features.filter((f) => {
+    const props = f.properties ?? {};
+    if (heatmapActive) {
+      if (!selectedBucket) return false;
+      return props.bucket_ade === selectedBucket || props.territory_id === selectedBucket;
+    }
+    const stationMatch =
+      filterState.selectedStations === 'all' ||
+      expandWithSatellites(filterState.selectedStations as string[]).includes(props.delivery_station);
+    const bucketMatch =
+      filterState.selectedBuckets === 'all' ||
+      filterState.selectedBuckets.includes(props.bucket_ade ?? props.territory_id);
+    return stationMatch && bucketMatch;
+  });
+}
+
 export default function PolygonLayer() {
+  const map = useMap();
+  const layerRef = useRef<LGeoJSON | null>(null);
+
   const polygonsData = useStore((s) => s.polygonsData);
   const filterState = useStore((s) => s.filterState);
   const showPolygons = useStore((s) => s.styleConfig.showPolygons);
@@ -69,23 +115,14 @@ export default function PolygonLayer() {
   const prospectClusters = useStore((s) => s.prospectState.clusters);
   const selectedBucket = useStore((s) => s.prospectState.selectedBucket);
 
-  const filteredData = useMemo(() => {
+  const filteredData = useMemo<FeatureCollection | null>(() => {
     if (!polygonsData) return null;
-    const heatmapActive = prospectClusters.length > 0;
-    const features = polygonsData.features.filter((f) => {
-      const props = f.properties ?? {};
-      if (heatmapActive) {
-        if (!selectedBucket) return false;
-        return props.bucket_ade === selectedBucket || props.territory_id === selectedBucket;
-      }
-      const stationMatch =
-        filterState.selectedStations === 'all' ||
-        expandWithSatellites(filterState.selectedStations as string[]).includes(props.delivery_station);
-      const bucketMatch =
-        filterState.selectedBuckets === 'all' ||
-        filterState.selectedBuckets.includes(props.bucket_ade ?? props.territory_id);
-      return stationMatch && bucketMatch;
-    });
+    const features = _filterFeatures(
+      polygonsData,
+      filterState as FilterStateShape,
+      prospectClusters,
+      selectedBucket,
+    );
     return { type: 'FeatureCollection' as const, features };
   }, [polygonsData, filterState, prospectClusters, selectedBucket]);
 
@@ -128,76 +165,155 @@ export default function PolygonLayer() {
     return { byTerritory, byDS, byCTL, byBDM, stationRanges, multipleStations };
   }, [filteredData]);
 
-  const heatmapActive = prospectClusters.length > 0;
-  if (!showPolygons && !heatmapActive) return null;
-  if (!filteredData || !colorMap) return null;
-
-  const styleFunc: StyleFunction = (feature?: Feature): PathOptions => {
-    const props = feature?.properties ?? {};
-    const tid = (props.territory_id as string) ?? '';
-    const ds  = (props.delivery_station as string) ?? '';
-    let color = '#3388ff';
-
-    switch (polygonColorField) {
-      case 'territory':
-        color = colorMap.byTerritory[tid] ?? '#3388ff';
-        break;
-      case 'ds':
-        color = colorMap.byDS[ds] ?? '#3388ff';
-        break;
-      case 'ctl':
-        color = colorMap.byCTL[ctlFromTerritoryId(tid)] ?? '#3388ff';
-        break;
-      case 'bdm':
-        color = colorMap.byBDM[(props.bdm_cluster as string) ?? ''] ?? '#3388ff';
-        break;
-      case 'attainment': {
-        const att = props.attainment != null ? Number(props.attainment) : null;
-        const range = colorMap.stationRanges[ds];
-        if (att == null || !range) {
-          color = '#94a3b8';
-        } else {
-          const t = range.max > range.min ? (att - range.min) / (range.max - range.min) : 0.5;
-          if (colorMap.multipleStations) {
-            const base = DS_BASE_COLORS[ds] ?? [0, 122, 255];
-            const light: [number, number, number] = [
-              Math.round(base[0] + (255 - base[0]) * 0.65),
-              Math.round(base[1] + (255 - base[1]) * 0.65),
-              Math.round(base[2] + (255 - base[2]) * 0.65),
-            ];
-            color = lerpColor(light, base, t);
-          } else {
-            color = lerpColor([86, 204, 242], [10, 47, 255], t);
-          }
-        }
-        break;
-      }
+  // StyleFunction estável em função de colorMap + polygonColorField
+  const styleFunc = useMemo<StyleFunction>(() => {
+    if (!colorMap) {
+      return () => ({} as PathOptions);
     }
+    return (feature?: Feature): PathOptions => {
+      const props = feature?.properties ?? {};
+      const tid = (props.territory_id as string) ?? '';
+      const ds  = (props.delivery_station as string) ?? '';
+      let color = '#3388ff';
 
-    return { color, weight: 2, opacity: 0.85, fillColor: color, fillOpacity: 0.3, pane: 'polygonsPane' };
-  };
+      switch (polygonColorField) {
+        case 'territory':
+          color = colorMap.byTerritory[tid] ?? '#3388ff';
+          break;
+        case 'ds':
+          color = colorMap.byDS[ds] ?? '#3388ff';
+          break;
+        case 'ctl':
+          color = colorMap.byCTL[ctlFromTerritoryId(tid)] ?? '#3388ff';
+          break;
+        case 'bdm':
+          color = colorMap.byBDM[(props.bdm_cluster as string) ?? ''] ?? '#3388ff';
+          break;
+        case 'attainment': {
+          const att = props.attainment != null ? Number(props.attainment) : null;
+          const range = colorMap.stationRanges[ds];
+          if (att == null || !range) {
+            color = '#94a3b8';
+          } else {
+            const t = range.max > range.min ? (att - range.min) / (range.max - range.min) : 0.5;
+            if (colorMap.multipleStations) {
+              const base = DS_BASE_COLORS[ds] ?? [0, 122, 255];
+              const light: [number, number, number] = [
+                Math.round(base[0] + (255 - base[0]) * 0.65),
+                Math.round(base[1] + (255 - base[1]) * 0.65),
+                Math.round(base[2] + (255 - base[2]) * 0.65),
+              ];
+              color = lerpColor(light, base, t);
+            } else {
+              color = lerpColor([86, 204, 242], [10, 47, 255], t);
+            }
+          }
+          break;
+        }
+      }
 
-  return (
-    <GeoJSON
-      key={JSON.stringify(filterState) + selectedBucket + prospectClusters.length + polygonColorField + String(showPolygons)}
-      data={filteredData}
-      style={styleFunc}
-      pane="polygonsPane"
-      onEachFeature={(feature, layer) => {
-        const p = feature.properties ?? {};
-        const ctl = ctlFromTerritoryId((p.territory_id as string) ?? '');
-        layer.bindPopup(`
-          <div style="min-width:200px;font-size:12px;">
-            <b style="display:block;margin-bottom:4px">${p.territory_id ?? ''}</b>
-            <p style="margin:2px 0"><b>DS:</b> ${p.delivery_station ?? 'N/A'}</p>
-            <p style="margin:2px 0"><b>BDM:</b> ${p.bdm_cluster ?? 'N/A'}</p>
-            <p style="margin:2px 0"><b>CTL:</b> ${ctl}</p>
-            <p style="margin:2px 0"><b>Parceiros Esperados:</b> ${p.n_slots ?? 'N/A'}</p>
-            <p style="margin:2px 0"><b>Attainment:</b> ${p.attainment != null ? Number(p.attainment).toFixed(1) + '%' : 'N/A'}</p>
-            <p style="margin:2px 0"><b>Acuracidade:</b> ${p.accuracy != null ? Number(p.accuracy).toFixed(1) + '%' : 'N/A'}</p>
-          </div>
-        `);
-      }}
-    />
+      return { color, weight: 2, opacity: 0.85, fillColor: color, fillOpacity: 0.3, pane: 'polygonsPane' };
+    };
+  }, [colorMap, polygonColorField]);
+
+  // onEachFeature estável — popup baseado somente nas properties da feature
+  const onEachFeature = useMemo(
+    () => (feature: Feature, layer: L.Layer) => {
+      const p = feature.properties ?? {};
+      const ctl = ctlFromTerritoryId((p.territory_id as string) ?? '');
+      (layer as L.Layer & { bindPopup: (html: string) => void }).bindPopup(`
+        <div style="min-width:200px;font-size:12px;">
+          <b style="display:block;margin-bottom:4px">${p.territory_id ?? ''}</b>
+          <p style="margin:2px 0"><b>DS:</b> ${p.delivery_station ?? 'N/A'}</p>
+          <p style="margin:2px 0"><b>BDM:</b> ${p.bdm_cluster ?? 'N/A'}</p>
+          <p style="margin:2px 0"><b>CTL:</b> ${ctl}</p>
+          <p style="margin:2px 0"><b>Parceiros Esperados:</b> ${p.n_slots ?? 'N/A'}</p>
+          <p style="margin:2px 0"><b>Attainment:</b> ${p.attainment != null ? Number(p.attainment).toFixed(1) + '%' : 'N/A'}</p>
+          <p style="margin:2px 0"><b>Acuracidade:</b> ${p.accuracy != null ? Number(p.accuracy).toFixed(1) + '%' : 'N/A'}</p>
+        </div>
+      `);
+    },
+    [],
   );
+
+  // ---------------------------------------------------------------------------
+  // Efeito 1: cria a camada uma única vez por montagem; limpa no unmount.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const layer = L.geoJSON(undefined, {
+      style: styleFunc,
+      onEachFeature,
+      pane: 'polygonsPane',
+    });
+    layerRef.current = layer;
+    return () => {
+      if (layerRef.current) {
+        try {
+          layerRef.current.remove();
+        } catch {
+          // noop — ref já removida pelo map
+        }
+        layerRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map]);
+
+  // ---------------------------------------------------------------------------
+  // Efeito 2: controla visibilidade (add/remove do mapa) conforme
+  // `showPolygons` e `heatmapActive`.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const layer = layerRef.current;
+    if (!layer) return;
+    const heatmapActive = prospectClusters.length > 0;
+    const shouldShow = (showPolygons || heatmapActive) && filteredData != null;
+    try {
+      if (shouldShow && !map.hasLayer(layer)) {
+        layer.addTo(map);
+      }
+      if (!shouldShow && map.hasLayer(layer)) {
+        layer.remove();
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[PolygonLayer] visibilidade falhou, mantendo último estado válido:', err);
+    }
+  }, [map, showPolygons, prospectClusters.length, filteredData]);
+
+  // ---------------------------------------------------------------------------
+  // Efeito 3: atualiza as features exibidas quando `filteredData` muda.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const layer = layerRef.current;
+    if (!layer || !filteredData) return;
+    try {
+      layer.clearLayers();
+      layer.addData(filteredData);
+      // aplica o estilo atual logo após adicionar os dados
+      layer.setStyle(styleFunc);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[PolygonLayer] atualização de features falhou, mantendo último estado válido:', err);
+    }
+  }, [filteredData, styleFunc]);
+
+  // ---------------------------------------------------------------------------
+  // Efeito 4: re-aplica apenas o style quando `polygonColorField` muda
+  // (sem tocar nas features). Para features inalteradas, essa é a
+  // operação mais barata.
+  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    const layer = layerRef.current;
+    if (!layer) return;
+    try {
+      layer.setStyle(styleFunc);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[PolygonLayer] setStyle falhou:', err);
+    }
+  }, [styleFunc]);
+
+  // Componente não renderiza via React — a camada vive no DOM do Leaflet.
+  return null;
 }

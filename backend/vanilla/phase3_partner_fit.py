@@ -45,8 +45,42 @@ import h3
 
 from shared.load_packages import PackageData
 from shared.load_partners import PartnerData, row_to_partner_metrics
+from shared.h3_cache import H3Cache
 from shared.models import Allocation, Config, IdealSlot, PartnerMetrics, TerritoriesResult
 from vanilla.phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
+
+
+# ---------------------------------------------------------------------------
+# CACHE ESCOPADO DE CHAMADAS H3
+# ---------------------------------------------------------------------------
+# `_h3_cache` é instanciado por `run_phase3` dentro de um bloco `with H3Cache()`
+# e descartado ao final da fase. Funções auxiliares deste módulo acessam o
+# cache via `_get_h3_cache()`; quando chamadas fora do escopo da fase (ex.:
+# testes unitários que exercitam helpers isolados), elas caem de volta para
+# a biblioteca `h3` sem cache — comportamento funcionalmente idêntico.
+
+_h3_cache: Optional[H3Cache] = None
+
+
+def _get_h3_cache() -> Optional[H3Cache]:
+    """Retorna o cache ativo da Phase 3, ou None se fora do escopo."""
+    return _h3_cache
+
+
+def _cached_grid_disk(cell: str, k: int = 1) -> Set[str]:
+    """`h3.grid_disk` com cache escopado à Phase 3 (fallback para h3 direto)."""
+    cache = _h3_cache
+    if cache is not None:
+        return set(cache.grid_disk(cell, k))
+    return set(h3.grid_disk(cell, k))
+
+
+def _cached_grid_distance(a: str, b: str) -> int:
+    """`h3.grid_distance` com cache escopado à Phase 3 (fallback para h3 direto)."""
+    cache = _h3_cache
+    if cache is not None:
+        return cache.grid_distance(a, b)
+    return h3.grid_distance(a, b)
 
 
 # ---------------------------------------------------------------------------
@@ -195,7 +229,7 @@ class FitResult:
 
 def _partner_eligible_hexes(origin_hex: str) -> Set[str]:
     """Retorna o conjunto de hexes em grid_disk=1 ao redor do parceiro."""
-    return set(h3.grid_disk(origin_hex, 1))
+    return _cached_grid_disk(origin_hex, 1)
 
 
 def _build_hex_to_slots(
@@ -207,7 +241,7 @@ def _build_hex_to_slots(
     """
     index: Dict[str, List[IdealSlot]] = defaultdict(list)
     for slot in slots:
-        for nb in h3.grid_disk(slot.origin_hex, 1):
+        for nb in _cached_grid_disk(slot.origin_hex, 1):
             index[nb].append(slot)
     return index
 
@@ -254,7 +288,7 @@ def _evaluate_all_prospects(
     # Conjunto de todos os hexes cobertos por slots (grid_disk=1) — para lookup O(1)
     all_slot_neighbor_hexes: Set[str] = set()
     for slot in all_slots_global:
-        all_slot_neighbor_hexes.update(h3.grid_disk(slot.origin_hex, 1))
+        all_slot_neighbor_hexes.update(_cached_grid_disk(slot.origin_hex, 1))
 
     result: Dict[str, dict] = {}
 
@@ -343,7 +377,7 @@ def _match_station(
     # Prospects elegíveis para esta base (origin_hex em grid_disk=1 de algum slot desta base)
     all_slot_neighbors: Set[str] = set()
     for slot in all_slots:
-        all_slot_neighbors.update(h3.grid_disk(slot.origin_hex, 1))
+        all_slot_neighbors.update(_cached_grid_disk(slot.origin_hex, 1))
 
     eligible_prospect_sfids = {
         sfid for sfid, ev in prospect_eval.items()
@@ -411,7 +445,7 @@ def _match_station(
         if slot.slot_id in allocated_slots:
             continue
 
-        slot_neighbors = set(h3.grid_disk(slot.origin_hex, 1))
+        slot_neighbors = _cached_grid_disk(slot.origin_hex, 1)
         eligible = [
             c for c in candidates
             if c[2] not in allocated_sids
@@ -425,7 +459,7 @@ def _match_station(
         eligible.sort(key=lambda c: (
             c[0],
             0 if c[1] == slot.origin_hex else 1,
-            h3.grid_distance(c[1], slot.origin_hex) if c[1] else 99,
+            _cached_grid_distance(c[1], slot.origin_hex) if c[1] else 99,
         ))
 
         best = eligible[0]
@@ -725,7 +759,43 @@ def run_phase3(
     1. Pré-avaliação de TODOS os prospects (com e sem coords).
     2. Matching por base usando apenas prospects elegíveis (Go).
     3. Prospects não elegíveis são adicionados ao FitResult com decision/reason já definidos.
+
+    Performance
+    -----------
+    Um `H3Cache` é instanciado no início da fase e descartado ao final, de
+    forma que chamadas repetidas a `grid_disk`/`grid_distance` com os mesmos
+    argumentos são memoizadas. O cache NÃO persiste entre execuções do
+    processo — ver `shared.h3_cache.H3Cache`.
     """
+    global _h3_cache
+    with H3Cache() as cache:
+        _h3_cache = cache
+        try:
+            return _run_phase3_impl(
+                territories=territories,
+                supply=supply,
+                partner_data=partner_data,
+                pkg=pkg,
+                output_dir=output_dir,
+                stations=stations,
+            )
+        finally:
+            import logging as _logging
+            _logging.getLogger(__name__).debug(
+                "[h3_cache stats] %s", cache.stats()
+            )
+            _h3_cache = None
+
+
+def _run_phase3_impl(
+    territories: TerritoriesResult,
+    supply: IdealSupplyResult,
+    partner_data: PartnerData,
+    pkg: PackageData,
+    output_dir: str = None,
+    stations: Optional[List[str]] = None,
+) -> FitResult:
+    """Implementação interna de `run_phase3` — exige cache H3 ativo."""
     out_dir = Path(output_dir or Config.DEST_FOLDER)
     target_stations = stations or territories.stations
 

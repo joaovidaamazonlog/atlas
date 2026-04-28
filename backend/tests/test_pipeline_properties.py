@@ -43,7 +43,8 @@ SCHEMA_FIELDS = frozenset({
     "bucket", "jurisdiction_type", "hub_delivey_initiatives",
     "HCP_rate_card", "HCP_host_partner",
     "launch_date", "exited_date", "telefone",
-    "owner_id", "decision_status", "tooltip",
+    "owner_id", "decision_status", "decision_reason_code",
+    "tooltip", "adv_opportunity",
 })
 
 STRING_FIELDS = {
@@ -51,10 +52,16 @@ STRING_FIELDS = {
     "zip_code", "city", "state", "delivery_station", "supply_run",
     "bucket", "jurisdiction_type", "hub_delivey_initiatives",
     "HCP_rate_card", "HCP_host_partner", "launch_date", "exited_date",
-    "telefone", "owner_id", "decision_status", "tooltip",
+    "telefone", "owner_id", "decision_status", "decision_reason_code",
+    "tooltip",
 }
 
 INVALID_STRINGS = {"nan", "None", "NaN", "NaT", "none", "nat"}
+
+# Estratégia de texto que exclui valores "inválidos" em string fields.
+_safe_text = lambda **kw: st.text(**kw).filter(
+    lambda s: s.strip().lower() not in INVALID_STRINGS
+)
 
 # ---------------------------------------------------------------------------
 # Estratégias Hypothesis
@@ -73,9 +80,9 @@ def partner_strategy():
     """Gera objetos Partner com campos válidos e opcionais variados."""
     return st.builds(
         Partner,
-        salesforce_id           = st.text(min_size=1, max_size=18),
+        salesforce_id           = _safe_text(min_size=1, max_size=18),
         store_id                = _opt_text,
-        name                    = st.text(min_size=1, max_size=100),
+        name                    = _safe_text(min_size=1, max_size=100),
         status                  = _statuses,
         lead_source             = _opt_text,
         lat                     = st.one_of(st.none(), st.floats(min_value=-33.7, max_value=5.3, allow_nan=False)),
@@ -83,7 +90,7 @@ def partner_strategy():
         zip_code                = _opt_text,
         city                    = _opt_text,
         state                   = _opt_text,
-        delivery_station        = st.text(min_size=1, max_size=10),
+        delivery_station        = _safe_text(min_size=1, max_size=10),
         supply_run              = _opt_text,
         radius                  = st.integers(min_value=200, max_value=5000),
         capacity                = st.integers(min_value=1, max_value=200),
@@ -97,7 +104,8 @@ def partner_strategy():
         telefone                = _opt_text,
         owner_id                = _opt_text,
         decision_status         = _opt_text,
-        tooltip                 = st.text(min_size=1, max_size=200),
+        decision_reason_code    = _opt_text,
+        tooltip                 = _safe_text(min_size=1, max_size=200),
     )
 
 
@@ -105,9 +113,9 @@ def partner_with_coords_strategy():
     """Gera Partners com lat/lon sempre válidos (para testar origin_hex)."""
     return st.builds(
         Partner,
-        salesforce_id           = st.text(min_size=1, max_size=18),
+        salesforce_id           = _safe_text(min_size=1, max_size=18),
         store_id                = _opt_text,
-        name                    = st.text(min_size=1, max_size=100),
+        name                    = _safe_text(min_size=1, max_size=100),
         status                  = _statuses,
         lead_source             = _opt_text,
         lat                     = st.floats(min_value=-33.7, max_value=5.3, allow_nan=False),
@@ -115,7 +123,7 @@ def partner_with_coords_strategy():
         zip_code                = _opt_text,
         city                    = _opt_text,
         state                   = _opt_text,
-        delivery_station        = st.text(min_size=1, max_size=10),
+        delivery_station        = _safe_text(min_size=1, max_size=10),
         supply_run              = _opt_text,
         radius                  = st.integers(min_value=200, max_value=5000),
         capacity                = st.integers(min_value=1, max_value=200),
@@ -129,7 +137,8 @@ def partner_with_coords_strategy():
         telefone                = _opt_text,
         owner_id                = _opt_text,
         decision_status         = _opt_text,
-        tooltip                 = st.text(min_size=1, max_size=200),
+        decision_reason_code    = _opt_text,
+        tooltip                 = _safe_text(min_size=1, max_size=200),
     )
 
 
@@ -141,15 +150,15 @@ def mixed_records_strategy():
     web_lead = st.fixed_dictionaries({
         "status":       st.just("New"),
         "lead_source":  st.just("Website Pardot Form"),
-        "salesforce_id": st.text(min_size=1, max_size=18),
+        "salesforce_id": _safe_text(min_size=1, max_size=18),
         "store_id":     st.none(),
-        "name":         st.text(min_size=1, max_size=50),
+        "name":         _safe_text(min_size=1, max_size=50),
         "lat":          st.one_of(st.none(), st.floats(min_value=-33.7, max_value=5.3, allow_nan=False)),
         "lon":          st.one_of(st.none(), st.floats(min_value=-73.9, max_value=-34.7, allow_nan=False)),
         "zip_code":     _opt_text,
         "city":         _opt_text,
         "state":        _opt_text,
-        "delivery_station": st.text(min_size=1, max_size=10),
+        "delivery_station": _safe_text(min_size=1, max_size=10),
         "supply_run":   st.none(),
         "radius":       st.integers(min_value=200, max_value=5000),
         "capacity":     st.integers(min_value=1, max_value=200),
@@ -163,21 +172,22 @@ def mixed_records_strategy():
         "telefone":     _opt_text,
         "owner_id":     st.none(),
         "decision_status": st.none(),
-        "tooltip":      st.text(min_size=1, max_size=100),
+        "decision_reason_code": st.none(),
+        "tooltip":      _safe_text(min_size=1, max_size=100),
     })
 
     operational = st.fixed_dictionaries({
         "status":       st.sampled_from(["Active", "Onboarding", "BG Checks", "Prospect", "Inactive", "Exited"]),
-        "lead_source":  st.one_of(st.none(), st.text(min_size=1, max_size=30).filter(lambda s: s != "Website Pardot Form")),
-        "salesforce_id": st.text(min_size=1, max_size=18),
+        "lead_source":  st.one_of(st.none(), _safe_text(min_size=1, max_size=30).filter(lambda s: s != "Website Pardot Form")),
+        "salesforce_id": _safe_text(min_size=1, max_size=18),
         "store_id":     _opt_text,
-        "name":         st.text(min_size=1, max_size=50),
+        "name":         _safe_text(min_size=1, max_size=50),
         "lat":          st.floats(min_value=-33.7, max_value=5.3, allow_nan=False),
         "lon":          st.floats(min_value=-73.9, max_value=-34.7, allow_nan=False),
         "zip_code":     _opt_text,
         "city":         _opt_text,
         "state":        _opt_text,
-        "delivery_station": st.text(min_size=1, max_size=10),
+        "delivery_station": _safe_text(min_size=1, max_size=10),
         "supply_run":   _opt_text,
         "radius":       st.integers(min_value=200, max_value=5000),
         "capacity":     st.integers(min_value=1, max_value=200),
@@ -191,7 +201,8 @@ def mixed_records_strategy():
         "telefone":     _opt_text,
         "owner_id":     _opt_text,
         "decision_status": _opt_text,
-        "tooltip":      st.text(min_size=1, max_size=100),
+        "decision_reason_code": _opt_text,
+        "tooltip":      _safe_text(min_size=1, max_size=100),
     })
 
     return st.one_of(web_lead, operational)
@@ -230,6 +241,7 @@ def _partners_from_dicts(records: list[dict]) -> list[Partner]:
             telefone                = d.get("telefone"),
             owner_id                = d.get("owner_id"),
             decision_status         = d.get("decision_status"),
+            decision_reason_code    = d.get("decision_reason_code"),
             tooltip                 = d.get("tooltip", ""),
         ))
     return partners

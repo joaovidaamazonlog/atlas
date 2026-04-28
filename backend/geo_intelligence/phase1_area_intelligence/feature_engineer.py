@@ -114,7 +114,8 @@ def impute_missing(
     """Imputes None values using median of first-ring H3 neighbors."""
     result: list[H3CellFeatures] = []
     for cell in cells:
-        ring = h3.grid_disk(cell.h3_id, 1)
+        # h3 v4 retorna list — convertemos para set antes de subtrair
+        ring = set(h3.grid_disk(cell.h3_id, 1))
         neighbor_ids = ring - {cell.h3_id}
         updates: dict[str, Optional[float]] = {}
         for feat in NUMERIC_FEATURES:

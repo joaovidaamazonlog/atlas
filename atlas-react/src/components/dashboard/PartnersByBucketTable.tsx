@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { Partner } from '../../store/types';
 import type { DashboardFilters, ReportData } from '../../lib/reportUtils';
 import { filterBases } from '../../lib/reportUtils';
+import { useRowVirtualization } from './useRowVirtualization';
 
 interface PartnerRow {
   name: string;
@@ -85,7 +86,57 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
     );
   }, [rows, search]);
 
+  // Virtualização: ativada quando filtered.length > threshold (default 100).
+  const PBT_ROW_HEIGHT = 40;
+  const PBT_COL_WIDTHS = ['45%', '30%', '25%']; // name, store_id, bucket
+  const { parentRef, virtualizer, enabled: virtualizeOn, containerStyle } =
+    useRowVirtualization({
+      rowCount: filtered.length,
+      rowHeight: PBT_ROW_HEIGHT,
+    });
+
   if (rows.length === 0 && !search) return null;
+
+  const colgroup = (
+    <colgroup>
+      {PBT_COL_WIDTHS.map((w, i) => (
+        <col key={i} style={{ width: w }} />
+      ))}
+    </colgroup>
+  );
+
+  const renderRow = (row: PartnerRow, idx: number, style?: React.CSSProperties) => (
+    <tr
+      key={`${row.store_id}-${row.bucket_ade}-${idx}`}
+      style={style}
+      className="border-b border-atlas-navy hover:bg-atlas-navy transition-colors"
+    >
+      <td className="px-3 py-2 text-atlas-light overflow-hidden text-ellipsis whitespace-nowrap">
+        {row.name}
+      </td>
+      <td className="px-3 py-2 text-atlas-muted font-mono">{row.store_id}</td>
+      <td className="px-3 py-2 text-atlas-accent">{row.bucket_ade}</td>
+    </tr>
+  );
+
+  const headerTable = (
+    <table className="w-full text-sm table-fixed">
+      {colgroup}
+      <thead className="bg-atlas-darker">
+        <tr>
+          <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
+            {t('dashboard.col_name')}
+          </th>
+          <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
+            {t('dashboard.col_store_id')}
+          </th>
+          <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
+            {t('dashboard.col_bucket')}
+          </th>
+        </tr>
+      </thead>
+    </table>
+  );
 
   return (
     <section>
@@ -111,42 +162,40 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
       </div>
 
       <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
-        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-atlas-darker sticky top-0 z-10">
-              <tr>
-                <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-                  {t('dashboard.col_name')}
-                </th>
-                <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-                  {t('dashboard.col_store_id')}
-                </th>
-                <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-                  {t('dashboard.col_bucket')}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((row, idx) => (
-                <tr
-                  key={`${row.store_id}-${row.bucket_ade}-${idx}`}
-                  className="border-b border-atlas-navy hover:bg-atlas-navy transition-colors"
-                >
-                  <td className="px-3 py-2 text-atlas-light">{row.name}</td>
-                  <td className="px-3 py-2 text-atlas-muted font-mono">{row.store_id}</td>
-                  <td className="px-3 py-2 text-atlas-accent">{row.bucket_ade}</td>
-                </tr>
-              ))}
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={3} className="px-3 py-4 text-center text-atlas-muted text-xs">
-                    {t('dashboard.no_territory_found')}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <div className="overflow-x-auto">{headerTable}</div>
+        {filtered.length === 0 ? (
+          <div className="px-3 py-4 text-center text-atlas-muted text-xs">
+            {t('dashboard.no_territory_found')}
+          </div>
+        ) : virtualizeOn ? (
+          <div ref={parentRef} style={containerStyle}>
+            <table
+              className="w-full text-sm table-fixed"
+              style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
+            >
+              {colgroup}
+              <tbody>
+                {virtualizer.getVirtualItems().map((v) => {
+                  const row = filtered[v.index];
+                  return renderRow(row, v.index, {
+                    position: 'absolute',
+                    top: v.start,
+                    left: 0,
+                    width: '100%',
+                    height: PBT_ROW_HEIGHT,
+                  });
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+            <table className="w-full text-sm table-fixed">
+              {colgroup}
+              <tbody>{filtered.map((row, idx) => renderRow(row, idx))}</tbody>
+            </table>
+          </div>
+        )}
       </div>
     </section>
   );

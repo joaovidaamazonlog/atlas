@@ -1,0 +1,115 @@
+Campaign,Type,delivery_station,Intersection area (km²),DS area (km²),Coverage %
+A,Demand Generation,DBH5,139.98,139.98,100.0
+A,Demand Generation,DMG2,238.03,238.03,100.0
+A,Demand Generation,DPE4,268.71,290.79,92.41
+A,Demand Generation,DSP4,162.67,187.03,86.97
+A,Demand Generation,DRJ3,106.83,131.35,81.33
+A,Demand Generation,DSP2,205.98,261.46,78.78
+A,Demand Generation,DSA8,172.33,223.32,77.17
+A,Demand Generation,DCE3,295.58,408.36,72.38
+A,Demand Generation,DSP5,393.63,588.9,66.84
+A,Demand Generation,DBR9,212.69,408.86,52.02
+A,Demand Generation,XCP1,793.52,1573.47,50.43
+A,Search,DBH5,139.98,139.98,100.0
+A,Search,DMG2,238.03,238.03,100.0
+A,Search,DPE4,268.71,290.79,92.41
+A,Search,DSP4,162.67,187.03,86.97
+A,Search,DRJ3,106.83,131.35,81.33
+A,Search,DSP2,205.98,261.46,78.78
+A,Search,DSA8,172.33,223.32,77.17
+A,Search,DCE3,295.58,408.36,72.38
+A,Search,DSP5,393.63,588.9,66.84
+A,Search,DBR9,212.69,408.86,52.02
+A,Search,XCP1,793.52,1573.47,50.43
+B,Demand Generation,DMG2,238.03,238.03,100.0
+B,Demand Generation,DRJ3,131.35,131.35,100.0
+B,Demand Generation,DSP2,261.46,261.46,100.0
+B,Demand Generation,DPE4,290.78,290.79,100.0
+B,Demand Generation,PUM2,66.77,66.77,100.0
+B,Demand Generation,DBH5,139.82,139.98,99.89
+B,Demand Generation,DSP4,183.85,187.03,98.3
+B,Demand Generation,DBR9,399.05,408.86,97.6
+B,Demand Generation,DSP5,570.77,588.9,96.92
+B,Demand Generation,DCE3,381.24,408.36,93.36
+B,Demand Generation,XCP1,611.65,1573.47,38.87
+B,Search,DMG2,238.03,238.03,100.0
+B,Search,DRJ3,131.35,131.35,100.0
+B,Search,PUM2,66.77,66.77,100.0
+B,Search,DBH5,139.82,139.98,99.89
+B,Search,DCE3,381.24,408.36,93.36
+B,Search,DPE4,261.41,290.79,89.9
+B,Search,DSP4,162.37,187.03,86.82
+B,Search,DSP2,196.58,261.46,75.19
+B,Search,DBR9,280.57,408.86,68.62
+B,Search,DSP5,229.57,588.9,38.98
+B,Search,XCP1,189.29,1573.47,12.03
+C,Demand Generation,DRJ3,47.28,131.35,35.99
+C,Demand Generation,DSP4,52.27,187.03,27.95
+C,Demand Generation,DPE4,79.41,290.79,27.31
+C,Demand Generation,DBH5,32.29,139.98,23.07
+C,Demand Generation,DMG2,32.62,238.03,13.7
+C,Demand Generation,DBR9,48.13,408.86,11.77
+C,Search,DRJ3,47.28,131.35,35.99
+C,Search,DSP4,52.27,187.03,27.95
+C,Search,DPE4,79.41,290.79,27.31
+C,Search,DBH5,32.29,139.98,23.07
+C,Search,DMG2,32.62,238.03,13.7
+C,Search,DBR9,48.13,408.86,11.77
+D,Demand Generation,DSP5,475.13,588.9,80.68
+D,Demand Generation,DMG2,188.92,238.03,79.37
+D,Demand Generation,DBR9,311.11,408.86,76.09
+D,Demand Generation,DBH5,93.2,139.98,66.58
+D,Demand Generation,DSP4,97.01,187.03,51.87
+D,Demand Generation,DPE4,136.52,290.79,46.95
+D,Demand Generation,XCP1,353.29,1573.47,22.45
+D,Demand Generation,DRJ3,24.41,131.35,18.58
+D,Demand Generation,DRS5,72.27,567.76,12.73
+D,Demand Generation,PUM2,8.09,66.77,12.12
+D,Search,DSP5,475.13,588.9,80.68
+D,Search,DMG2,188.92,238.03,79.37
+D,Search,DBR9,311.11,408.86,76.09
+D,Search,DBH5,93.2,139.98,66.58
+D,Search,DSP4,97.01,187.03,51.87
+D,Search,DPE4,136.52,290.79,46.95
+D,Search,XCP1,353.29,1573.47,22.45
+D,Search,DRJ3,24.41,131.35,18.58
+D,Search,DRS5,72.27,567.76,12.73
+D,Search,PUM2,8.09,66.77,12.12
+E,Demand Generation,DSP5,475.11,588.9,80.68
+E,Demand Generation,DMG2,188.93,238.03,79.37
+E,Demand Generation,DBR9,311.14,408.86,76.1
+E,Demand Generation,DBH5,93.19,139.98,66.57
+E,Demand Generation,DSP4,96.94,187.03,51.83
+E,Demand Generation,DPE4,136.5,290.79,46.94
+E,Demand Generation,XCP1,353.3,1573.47,22.45
+E,Demand Generation,DRJ3,24.41,131.35,18.58
+E,Demand Generation,DRS5,72.27,567.76,12.73
+E,Demand Generation,PUM2,8.09,66.77,12.12
+E,Search,DSP5,475.11,588.9,80.68
+E,Search,DMG2,188.93,238.03,79.37
+E,Search,DBR9,311.14,408.86,76.1
+E,Search,DBH5,93.19,139.98,66.57
+E,Search,DSP4,96.94,187.03,51.83
+E,Search,DPE4,136.5,290.79,46.94
+E,Search,XCP1,353.3,1573.47,22.45
+E,Search,DRJ3,24.41,131.35,18.58
+E,Search,DRS5,72.27,567.76,12.73
+E,Search,PUM2,8.09,66.77,12.12
+F,Demand Generation,DSP5,475.11,588.9,80.68
+F,Demand Generation,DMG2,188.93,238.03,79.37
+F,Demand Generation,DBR9,311.14,408.86,76.1
+F,Demand Generation,DBH5,93.19,139.98,66.57
+F,Demand Generation,DSP4,96.94,187.03,51.83
+F,Demand Generation,DPE4,136.5,290.79,46.94
+F,Demand Generation,XCP1,353.3,1573.47,22.45
+F,Demand Generation,DRJ3,24.41,131.35,18.58
+F,Demand Generation,PUM2,8.09,66.77,12.12
+F,Search,DSP5,475.11,588.9,80.68
+F,Search,DMG2,188.93,238.03,79.37
+F,Search,DBR9,311.14,408.86,76.1
+F,Search,DBH5,93.19,139.98,66.57
+F,Search,DSP4,96.94,187.03,51.83
+F,Search,DPE4,136.5,290.79,46.94
+F,Search,XCP1,353.3,1573.47,22.45
+F,Search,DRJ3,24.41,131.35,18.58
+F,Search,PUM2,8.09,66.77,12.12

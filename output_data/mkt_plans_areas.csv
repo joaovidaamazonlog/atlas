@@ -1,0 +1,13 @@
+Campaign,Type,Circles,Sum of individual areas (km²),Union area (km²),Active DSs,DS coverage (km²),DS coverage %
+A,Demand Generation,158,128546.69,7697.38,11,2597.68,64.0
+A,Search,158,128546.69,7697.38,11,2597.68,64.0
+B,Demand Generation,400,52069.57,7614.97,11,2888.4,74.03
+B,Search,400,24684.23,4993.59,11,2095.05,53.7
+C,Demand Generation,21,414.93,402.52,6,291.98,20.92
+C,Search,21,414.93,402.52,6,291.98,20.92
+D,Demand Generation,119,1854.98,1411.3,10,1408.59,37.07
+D,Search,119,1854.98,1411.3,10,1408.59,37.07
+E,Demand Generation,119,1854.98,1411.21,10,1408.53,37.07
+E,Search,119,1854.98,1411.21,10,1408.53,37.07
+F,Demand Generation,118,1781.76,1337.99,9,1336.26,41.35
+F,Search,118,1781.76,1337.99,9,1336.26,41.35

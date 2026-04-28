@@ -88,14 +88,30 @@ def _slot_utm(slot: Dict) -> Tuple[float, float]:
 # JURISDIÇÃO
 # ---------------------------------------------------------------------------
 
-def _load_jurisdiction_poly(station_code: str, jur_geojson: Dict):
+def _load_jurisdiction_poly(
+    station_code: str,
+    jur_geojson: Dict,
+    satellite_mode: bool = False,
+):
     """
-    Carrega o polígono shapely da jurisdição de uma base canônica,
-    incluindo a união com os polígonos das áreas satélite (STATION_ALIASES).
+    Carrega o polígono shapely da jurisdição para uma estação.
+
+    Comportamento
+    -------------
+    - ``satellite_mode=False`` (padrão): para uma base canônica, retorna a
+      união do polígono da canônica com os polígonos de suas áreas satélite
+      (comportamento histórico, preserva retrocompatibilidade).
+    - ``satellite_mode=True``: retorna APENAS o polígono da própria estação
+      ``station_code``, sem unir com a canônica nem com outras satélites.
+      Usado pelo setup pipeline quando rodando para a própria satélite.
     """
-    # Códigos a incluir: a base canônica + todas as suas satélites
-    satellites = Config.get_satellites(station_code)
-    codes_to_include = {station_code} | set(satellites)
+    if satellite_mode:
+        # Modo satélite: apenas o polígono da própria estação
+        codes_to_include = {station_code}
+    else:
+        # Modo padrão: base canônica + suas satélites
+        satellites = Config.get_satellites(station_code)
+        codes_to_include = {station_code} | set(satellites)
 
     polys = []
     for f in jur_geojson.get("features", []):
@@ -965,15 +981,46 @@ def run_setup(
 ) -> Tuple[TerritoriesResult, IdealSupplyResult]:
     """
     Setup completo: solver → K-means UTM → polígonos de território.
+
+    Suporte a áreas satélite
+    ------------------------
+    Estações presentes em ``STATION_ALIASES`` são tratadas como satélites:
+    usam apenas o polígono de jurisdição da própria satélite (não unem
+    com a canônica) e recebem o campo ``canonical_base`` no
+    ``territories_index.json``.
     """
+    from shared.config import STATION_ALIASES
+
     out_dir    = Path(output_dir or Config.DEST_FOLDER)
     out_dir.mkdir(parents=True, exist_ok=True)
     j_path     = jurisdiction_path or Config.BASE_JURISDICTION
     target_sta = stations or pkg.all_stations
 
+    # Identificar estações satélite no conjunto a processar.
+    satellite_stations = {s for s in target_sta if s in STATION_ALIASES}
+
+    # Bases canônicas conhecidas (para detectar códigos desconhecidos).
+    known_canonical_codes = {
+        ds["nome"] for ds in getattr(Config, "DELIVERY_STATIONS", [])
+        if isinstance(ds, dict) and "nome" in ds
+    }
+    if not known_canonical_codes:
+        # Fallback: derivar canônicas de STATION_ALIASES + CLUSTER_PER_STATION
+        known_canonical_codes = (
+            set(STATION_ALIASES.values())
+            | set(Config.CLUSTER_PER_STATION.keys())
+        )
+
+    for station in target_sta:
+        if station not in STATION_ALIASES and station not in known_canonical_codes:
+            print(f"  WARN [{station}] Código não reconhecido em STATION_ALIASES "
+                  f"nem em DELIVERY_STATIONS — tratando como base canônica.")
+
     print(f"\n{'='*60}")
     print(f"  SETUP")
     print(f"  Bases: {target_sta}")
+    if satellite_stations:
+        print(f"  Satélites (modo independente): {sorted(satellite_stations)}")
     print(f"  Projeção UTM: {'EPSG:31983 (pyproj OK)' if _HAS_PYPROJ else 'FALLBACK WGS84 — instale pyproj'}")
     print(f"{'='*60}")
 
@@ -992,7 +1039,10 @@ def run_setup(
             continue
 
         # Filtrar hexes cujo centróide está dentro da jurisdição
-        jur_poly = _load_jurisdiction_poly(station, jur_geojson)
+        jur_poly = _load_jurisdiction_poly(
+            station, jur_geojson,
+            satellite_mode=(station in satellite_stations),
+        )
         if jur_poly is not None:
             before = len(dm)
             dm = {
@@ -1049,7 +1099,29 @@ def run_setup(
     for station in target_sta:
         slots      = base_slots.get(station, [])
         n_slots    = len(slots)
-        n_clusters = Config.CLUSTER_PER_STATION.get(station, 5)
+        is_satellite = station in satellite_stations
+        n_clusters = Config.CLUSTER_PER_STATION.get(station)
+        if n_clusters is None:
+            if is_satellite:
+                # Derivar cluster count proporcional à demanda da satélite
+                # em relação à demanda total (satélite + canônica).
+                canonical = STATION_ALIASES[station]
+                satellite_demand = sum(pkg.demand_map(station).values())
+                canonical_demand = sum(pkg.demand_map(canonical).values())
+                canonical_clusters = Config.CLUSTER_PER_STATION.get(canonical, 5)
+                total_demand = satellite_demand + canonical_demand
+                if total_demand > 0 and canonical_demand > 0:
+                    ratio = satellite_demand / total_demand
+                    n_clusters = max(1, round(canonical_clusters * ratio))
+                    print(f"  [{station}] n_clusters derivado: {n_clusters} "
+                          f"(ratio={ratio:.2f} da canônica {canonical} "
+                          f"com {canonical_clusters} clusters)")
+                else:
+                    n_clusters = 1
+                    print(f"  [{station}] n_clusters derivado: 1 (sem demanda "
+                          f"para calcular ratio).")
+            else:
+                n_clusters = 5  # default histórico
         bdm        = Config.get_bdm_cluster(station)
 
         if n_slots == 0:
@@ -1064,7 +1136,10 @@ def run_setup(
         print(f"\n  [{station}] {n_slots} slots → {n_clusters} territórios")
 
         # Jurisdição
-        jur_poly = _load_jurisdiction_poly(station, jur_geojson)
+        jur_poly = _load_jurisdiction_poly(
+            station, jur_geojson,
+            satellite_mode=is_satellite,
+        )
         if jur_poly is None:
             lats = [s["lat"] for s in slots]
             lons = [s["lon"] for s in slots]
@@ -1124,6 +1199,7 @@ def run_setup(
             territory_index[tid] = {
                 "territory_id": tid,
                 "station_code": station,
+                "canonical_base": STATION_ALIASES.get(station),
                 "bdm_cluster":  bdm,
                 "n_slots":      len(t_slots_raw),
                 "daily_demand": round(t_cap_day, 2),
@@ -1164,7 +1240,10 @@ def run_setup(
         base_heatmap = _build_heatmap(
             dm_base, base_polys, pkg.hex_to_ceps, station,
             days=pkg.days,
-            jur_poly=_load_jurisdiction_poly(station, jur_geojson),
+            jur_poly=_load_jurisdiction_poly(
+                station, jur_geojson,
+                satellite_mode=is_satellite,
+            ),
         )
         heatmap_features.extend(base_heatmap)
 

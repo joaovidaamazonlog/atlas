@@ -381,22 +381,29 @@ def load_territories(output_dir: str = None) -> "TerritoriesResult":
         territory_index = json.load(f)
 
     # Remap em memória: satélite → canônica
+    # Fonte primária: campo `canonical_base` (novo, escrito pelo setup).
+    # Fallback: STATION_ALIASES (retrocompatibilidade com arquivos antigos).
     aliases = getattr(configuration, "STATION_ALIASES", {})
     n_remapped = 0
-    if aliases:
-        for meta in territory_index.values():
-            original = meta.get("station_code", "")
+    for meta in territory_index.values():
+        original = meta.get("station_code", "")
+        # Fonte primária: campo canonical_base presente no arquivo
+        canonical = meta.get("canonical_base")
+        # Fallback para arquivos antigos sem canonical_base
+        if not canonical and aliases:
             canonical = aliases.get(original)
-            if canonical:
-                meta["station_code"] = canonical
-                # Atualizar bdm_cluster para refletir a base canônica
-                bdm_info = configuration.get_bdm_for_station(canonical)
-                if bdm_info.get("region"):
-                    meta["bdm_cluster"] = bdm_info["region"]
-                n_remapped += 1
-        if n_remapped:
-            print(f"  STATION_ALIASES: {n_remapped} territórios satélite "
-                  f"remapeados para bases canônicas (em memória).")
+        if canonical and canonical != original:
+            meta["station_code"] = canonical
+            # Preservar canonical_base explicitamente após o remap
+            meta["canonical_base"] = canonical
+            # Atualizar bdm_cluster para refletir a base canônica
+            bdm_info = configuration.get_bdm_for_station(canonical)
+            if bdm_info.get("region"):
+                meta["bdm_cluster"] = bdm_info["region"]
+            n_remapped += 1
+    if n_remapped:
+        print(f"  Satélites: {n_remapped} territórios remapeados para "
+              f"bases canônicas (em memória).")
 
     hex_to_territory: Dict[str, str] = {}
     for territory_id, meta in territory_index.items():

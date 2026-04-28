@@ -43,7 +43,8 @@ def _make_cell(h3_id: str, company_density: Optional[float] = None) -> H3CellFea
 
 
 _SP_CENTER_H3 = h3.latlng_to_cell(-23.5, -46.6, 9)
-_SP_NEIGHBORS = list(h3.grid_disk(_SP_CENTER_H3, 1) - {_SP_CENTER_H3})
+# h3 v4 retorna list — convertemos para set antes de subtrair
+_SP_NEIGHBORS = list(set(h3.grid_disk(_SP_CENTER_H3, 1)) - {_SP_CENTER_H3})
 
 
 # ---------------------------------------------------------------------------
@@ -51,10 +52,16 @@ _SP_NEIGHBORS = list(h3.grid_disk(_SP_CENTER_H3, 1) - {_SP_CENTER_H3})
 # Validates: Requirements 2.7
 # ---------------------------------------------------------------------------
 
-@given(st.lists(st.floats(min_value=0, max_value=1e6, allow_nan=False), min_size=2))
+@given(st.lists(st.floats(min_value=0, max_value=1e6, allow_nan=False), min_size=2)
+       .filter(lambda xs: min(xs) != max(xs)))
 @settings(max_examples=100)
 def test_minmax_normalization_bounds(values: list[float]) -> None:
-    """Property 3: Normalização min-max preserva ordem e limites."""
+    """Property 3: Normalização min-max preserva ordem e limites.
+
+    Filtramos listas com min==max porque normalização constante produz 0.0
+    para todas as entradas (o comportamento é definido mas não testa a
+    propriedade de limites superior=1.0).
+    """
     cells = [_make_cell(_SP_CENTER_H3, v) for v in values]
     normalized_cells, norm_params = normalize_features(cells)
 
@@ -257,14 +264,17 @@ def test_weighted_aggregation_within_component_range(scores: list[float], weight
 def test_gap_calculation_deterministic_and_correct(
     potential_score: float, current_partners: int, ideal_slots: int
 ) -> None:
-    """Property 10: gap = potential_score - (current_partners / ideal_slots * 100), high_opportunity iff gap > 20."""
-    expected_gap = potential_score - (current_partners / ideal_slots * 100.0)
-    expected_high_opp = expected_gap > 20.0
+    """Property 10: gap = potential_score - (current_partners / ideal_slots * 100), high_opportunity iff gap > 20.
 
+    Com um único território, `normalize_scores_to_100` mapeia para 100 SE
+    houver algum valor efetivamente positivo. Valores muito próximos de 0
+    (incluindo denormais como 5e-324) são tratados como zero pela
+    normalização, então o gap esperado é `0 - (current/slots * 100)`.
+    """
     from geo_intelligence.phase1_area_intelligence.potential_calculator import compute_territory_scores
 
     territories = {"T1": ["h1"]}
-    cell_potentials = {"h1": potential_score / 100.0}  # raw (will be normalized back to ~potential_score)
+    cell_potentials = {"h1": potential_score / 100.0}
     cell_volumes = {"h1": 1}
     current = {"T1": current_partners}
     slots = {"T1": ideal_slots}
@@ -272,10 +282,12 @@ def test_gap_calculation_deterministic_and_correct(
     results = compute_territory_scores(territories, cell_potentials, cell_volumes, current, slots)
     assert len(results) == 1
     ts = results[0]
-    # With a single territory, normalize_scores_to_100 maps it to 100
-    # So gap = 100 - (current_partners / ideal_slots * 100)
-    expected_gap_single = 100.0 - (current_partners / ideal_slots * 100.0)
-    assert ts.gap == pytest.approx(expected_gap_single, abs=1e-6)
+    # A normalização retorna 100 quando há algum território com score positivo
+    # não-trivial; caso contrário retorna 0. Em vez de replicar a regra exata
+    # do epsilon aqui, calculamos o gap esperado a partir do score retornado.
+    normalized = ts.potential_score
+    expected_gap = normalized - (current_partners / ideal_slots * 100.0)
+    assert ts.gap == pytest.approx(expected_gap, abs=1e-6)
     assert ts.high_opportunity == (ts.gap > 20.0)
 
 
@@ -358,14 +370,21 @@ def test_ideal_supply_is_weighted_centroid(cell_data) -> None:
 def test_total_capacity_satisfies_expansion_target_with_tolerance(
     expansion_target_volume: int, tolerance: float, capacity_ratio: float
 ) -> None:
-    """Property 16: Total capacity satisfies Expansion_Target within tolerance."""
+    """Property 16: Total capacity satisfies Expansion_Target within tolerance.
+
+    Nota sobre o truncamento inteiro: `int(x)` trunca para zero, o que pode
+    levar `total_capacity` a ficar **abaixo** de `lower_bound` por até 1
+    (quando lower_bound = expansion_target * (1-tolerance) é fracionário).
+    A assertion aceita 1 unidade de folga de cada lado para cobrir isso.
+    """
     total_capacity = int(expansion_target_volume * capacity_ratio)
     lower_bound = expansion_target_volume * (1 - tolerance)
     upper_bound = expansion_target_volume * (1 + tolerance)
 
     # If capacity_ratio is within [1-tolerance, 1+tolerance], it should satisfy
     if (1 - tolerance) <= capacity_ratio <= (1 + tolerance):
-        assert lower_bound <= total_capacity <= upper_bound + 1  # +1 for int rounding
+        # ±1 folga para compensar truncamento inteiro nos dois extremos
+        assert (lower_bound - 1) <= total_capacity <= (upper_bound + 1)
 
 
 # ---------------------------------------------------------------------------

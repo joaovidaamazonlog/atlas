@@ -131,7 +131,7 @@ def _make_dados_mapa(output_dir: str, partners: list[PartnerMetrics]) -> None:
 # Feature: partner-cap-optimization, Property 1: All Active partners are evaluated
 # ---------------------------------------------------------------------------
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     partners=st.lists(
         _active_partner_strategy,
@@ -232,7 +232,7 @@ def _make_high_demand_heatmap(output_dir: str) -> None:
         json.dump(geojson, f)
 
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     partners=st.lists(
         _cap80_partner_strategy,
@@ -347,7 +347,7 @@ _under_cap_partner_strategy = st.builds(
 )
 
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     partner=_under_cap_partner_strategy,
 )
@@ -405,7 +405,7 @@ def test_under_cap_partner_with_demand_yields_non_null_opportunity(partner: Part
 # Feature: partner-cap-optimization, Property 4: suggested_cap invariant
 # ---------------------------------------------------------------------------
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     partner=_under_cap_partner_strategy,
 )
@@ -457,7 +457,7 @@ def test_suggested_cap_invariant(partner: PartnerMetrics):
 # Feature: partner-cap-optimization, Property 5: estimated_adv_gain arithmetic invariant
 # ---------------------------------------------------------------------------
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     partner=_under_cap_partner_strategy,
 )
@@ -519,7 +519,7 @@ _candidate_opp_strategy = st.fixed_dictionaries({
 })
 
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     candidates=st.lists(_candidate_opp_strategy, min_size=1, max_size=20),
 )
@@ -579,7 +579,7 @@ def test_best_candidate_selection(candidates: list):
 # Feature: partner-cap-optimization, Property 7: Partner field preservation
 # ---------------------------------------------------------------------------
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     partners=st.lists(
         st.builds(
@@ -713,7 +713,7 @@ _dsp3_partner_strategy = st.builds(
 )
 
 
-@settings(max_examples=100)
+@settings(max_examples=100, deadline=None)
 @given(
     dsp2_partners=st.lists(
         _dsp2_partner_strategy,

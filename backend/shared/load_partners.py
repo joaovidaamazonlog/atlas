@@ -42,6 +42,61 @@ from shared.models import Config, PartnerMetrics
 
 
 # ---------------------------------------------------------------------------
+# HELPERS DE COMPOSIÇÃO DE SUBSTITUIÇÕES
+# ---------------------------------------------------------------------------
+
+def _compose_replacements(*maps: dict) -> dict:
+    """
+    Compõe múltiplos mapas de substituição em um único, simulando a
+    aplicação sequencial de `.replace(m1).replace(m2)...` do pandas.
+
+    Semântica
+    ---------
+    A semântica de `pd.Series.replace(dict)` aplica TODAS as substituições
+    **simultaneamente** (um dict = uma passagem atômica). Portanto, a
+    composição é:
+
+        resultado(k) = mn ∘ ... ∘ m2 ∘ m1 (k)
+
+    Onde cada `mi` é aplicado como um único passo (sem iterar dentro do
+    mesmo dict).
+
+    Exemplos
+    --------
+    >>> _compose_replacements({"A": "B"}, {"B": "C"})
+    {'A': 'C', 'B': 'C'}
+
+    >>> _compose_replacements({"A": "B", "B": "A"})  # swap atômico
+    {}
+
+    Identidades (`k → k`) após toda a composição são removidas do output.
+
+    Por que isto evita ciclos infinitos?
+    -------------------------------------
+    Cada `mi` é uma função total sobre strings: `mi(x) = mi.get(x, x)`.
+    A aplicação sequencial de `n` funções termina em `n` passos, sem
+    iteração dentro de cada passo.
+    """
+    if not maps:
+        return {}
+
+    # Conjunto de chaves que podem sofrer alguma substituição
+    # (apenas as que aparecem como chave em algum mapa).
+    keys: set = set()
+    for m in maps:
+        keys.update(m.keys())
+
+    composed: dict = {}
+    for k in keys:
+        v = k
+        for m in maps:
+            v = m.get(v, v)  # UMA aplicação por mapa, não iterativa
+        if v != k:
+            composed[k] = v
+    return composed
+
+
+# ---------------------------------------------------------------------------
 # OUTPUT DATACLASS
 # ---------------------------------------------------------------------------
 
@@ -287,12 +342,12 @@ def load_partners(
             .str.zfill(8)
         )
 
-    # 6. Hex H3 de origem
+    # 6. Hex H3 de origem (vetorizado — substitui list-comprehension)
+    from shared.load_packages import _vectorized_latlng_to_cell
     print(f"   Calculando hexágonos H3 de origem (res={Config.H3_RES}) ...")
-    df["origin_hex"] = [
-        h3.latlng_to_cell(float(la), float(lo), Config.H3_RES)
-        for la, lo in zip(df["lat"], df["lon"])
-    ]
+    df["origin_hex"] = _vectorized_latlng_to_cell(
+        df["lat"].astype(float), df["lon"].astype(float), Config.H3_RES
+    )
 
     # 7. Carregar jurisdições
     print(f"[load_partners] Lendo jurisdições de {j_path} ...")
@@ -429,18 +484,23 @@ def _consolidate_stores(dfs: dict) -> pd.DataFrame:
             )
             consolidated[col] = _pd.to_numeric(consolidated[col], errors="coerce")
 
-    # Remap legado de DS (HSP2 → DSP2 etc.)
-    if "Delivery Station" in consolidated.columns:
-        consolidated["Delivery Station"] = consolidated["Delivery Station"].replace(_MAPEAMENTO_DS)
-
-    # Remap de bases satélite → base canônica (XBA1 → DSA8 etc.)
+    # Remap consolidado de DS — passagem única combinando:
+    #  - _MAPEAMENTO_DS (HSP2 → DSP2, HRJ3 → DRJ3, ...)
+    #  - STATION_ALIASES (XBA1 → DSA8, ...)
+    # Fechamento transitivo resolve dependências de ordem (ex.: A→B e B→C
+    # viram A→C no mapa composto) — ver `_compose_replacements`.
     import shared.config as _cfg
     _aliases = getattr(_cfg, "STATION_ALIASES", {})
-    if _aliases and "Delivery Station" in consolidated.columns:
-        consolidated["Delivery Station"] = consolidated["Delivery Station"].replace(_aliases)
-        n_sat = consolidated["Delivery Station"].isin(_aliases.keys()).sum()
-        if n_sat:
-            print(f"[_consolidate_stores] WARN: {n_sat} registros ainda com código satélite após remap.")
+    if "Delivery Station" in consolidated.columns:
+        composed = _compose_replacements(_MAPEAMENTO_DS, _aliases)
+        if composed:
+            consolidated["Delivery Station"] = (
+                consolidated["Delivery Station"].replace(composed)
+            )
+        if _aliases:
+            n_sat = consolidated["Delivery Station"].isin(_aliases.keys()).sum()
+            if n_sat:
+                print(f"[_consolidate_stores] WARN: {n_sat} registros ainda com código satélite após remap.")
 
     print(f"[_consolidate_stores] {len(consolidated):,} registros consolidados.")
     return consolidated
@@ -538,11 +598,11 @@ def _build_partner_data(partners: "list[Partner]") -> PartnerData:
         df["lat"] = df["lat"].astype(float)
         df["lon"] = df["lon"].astype(float)
 
-        # Calcular origin_hex
-        df["origin_hex"] = [
-            _h3.latlng_to_cell(float(la), float(lo), Config.H3_RES)
-            for la, lo in zip(df["lat"], df["lon"])
-        ]
+        # Calcular origin_hex (vetorizado — substitui list-comprehension)
+        from shared.load_packages import _vectorized_latlng_to_cell
+        df["origin_hex"] = _vectorized_latlng_to_cell(
+            df["lat"], df["lon"], Config.H3_RES
+        )
 
         # Renomear exited_date para compatibilidade com PartnerMetrics
         if "exited_date" in df.columns:

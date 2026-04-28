@@ -330,16 +330,17 @@ def main() -> None:
                 "Campaign": campaign,
                 "Type": label,
                 "delivery_station": ds_name,
-                "Intersection area (km²)": round(inter_area, 2),
                 "DS area (km²)": round(ds_area, 2),
-                "Coverage %": round(inter_area / ds_area * 100, 2),
+                "MKT area (km²)": round(inter_area, 2),
+                "Diff mkt-ds (km²)": round(inter_area - ds_area, 2),
+                "MKT/DS %": round(inter_area / ds_area * 100, 2),
             }
             cov_rows.append(row)
             entries.append(row)
-        entries.sort(key=lambda r: r["Coverage %"], reverse=True)
+        entries.sort(key=lambda r: r["MKT/DS %"], reverse=True)
         drilldown[(campaign, label)] = entries
     cov_df = pd.DataFrame(cov_rows).sort_values(
-        ["Campaign", "Type", "Coverage %"], ascending=[True, True, False]
+        ["Campaign", "Type", "MKT/DS %"], ascending=[True, True, False]
     )
     cov_df.to_csv(OUT_DIR / "mkt_plans_coverage_by_ds.csv", index=False)
     print(f"\nCoverage rows: {len(cov_df)}  (see mkt_plans_coverage_by_ds.csv)")
@@ -450,13 +451,16 @@ def main() -> None:
         if entries:
             inner = (
                 "<table class='drill-table'><thead><tr>"
-                "<th>DS</th><th>km²</th><th>DS km²</th><th>%</th>"
+                "<th>DS</th><th>DS km²</th><th>MKT km²</th>"
+                "<th>Diff</th><th>MKT/DS %</th>"
                 "</tr></thead><tbody>"
                 + "".join(
                     f"<tr><td>{e['delivery_station']}</td>"
-                    f"<td>{_fmt(e['Intersection area (km²)'], 1)}</td>"
                     f"<td>{_fmt(e['DS area (km²)'], 1)}</td>"
-                    f"<td>{_fmt(e['Coverage %'], 1)}%</td></tr>"
+                    f"<td>{_fmt(e['MKT area (km²)'], 1)}</td>"
+                    f"<td style='color:{'#c00' if e['Diff mkt-ds (km²)'] < 0 else '#060'};'>"
+                    f"{_fmt(e['Diff mkt-ds (km²)'], 1)}</td>"
+                    f"<td>{_fmt(e['MKT/DS %'], 1)}%</td></tr>"
                     for e in entries
                 )
                 + "</tbody></table>"

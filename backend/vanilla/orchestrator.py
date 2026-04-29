@@ -24,13 +24,13 @@ import sys
 import traceback
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set
 
 from shared.load_packages import load_packages
 from shared.load_partners import load_partners, load_partners_csv
 from shared.models import Config
 from shared.timing import PhaseTimer, TimingReport
-from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons, patch_heatmap_satellite_stations, patch_heatmap_add_satellite_hexes
+from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons
 from shared.models import Config, TerritoriesResult, load_territories
 from vanilla.phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 from vanilla.phase3_partner_fit import FitResult, run_phase3
@@ -51,6 +51,41 @@ def _load_jurisdiction_geojson() -> Optional[dict]:
             return json.load(f)
     except Exception as e:
         print(f"  WARN jurisdição não carregada ({e}) — atribuição de hexes usará apenas volume.")
+
+
+def _detect_satellite_stations(territories: "TerritoriesResult") -> Set[str]:
+    """
+    Extrai o conjunto de códigos de `Satellite_Station` presentes no
+    `territories_index`, identificados pela presença do campo
+    `canonical_base` preenchido (truthy).
+
+    Racional
+    --------
+    Após `load_territories`, `TerritoriesResult.territory_index` tem o
+    `station_code` remapeado **em memória** para a base canônica (ex:
+    `XBA1` → `DSA8`). Por isso o campo `station_code` NÃO é um sinalizador
+    confiável para distinguir satélite de canônica no modo daily.
+
+    Em contrapartida, o `territory_id` nunca é remapeado — permanece com
+    o prefixo do código original da estação (ex: `"XBA1_bucket-01"`). O
+    campo `canonical_base`, escrito pelo setup e preservado após o remap,
+    é o sinalizador correto: está preenchido apenas para satélites.
+
+    Esta função combina os dois: usa `canonical_base` como filtro e extrai
+    o código satélite do prefixo de `territory_id` antes do primeiro `_`
+    (ex: `"XBA1_bucket-01"` → `"XBA1"`).
+
+    Retorna `set()` quando nenhuma satélite está presente no índice.
+    """
+    satellites: Set[str] = set()
+    for tid, meta in territories.territory_index.items():
+        if not meta.get("canonical_base"):
+            continue
+        # O territory_id sempre começa com o código ORIGINAL da estação.
+        sat_code = tid.split("_", 1)[0] if "_" in tid else ""
+        if sat_code:
+            satellites.add(sat_code)
+    return satellites
 
 
 # ---------------------------------------------------------------------------
@@ -197,11 +232,19 @@ def run_daily(
                 if tid in all_tids
             }
 
+    # Detectar satélites a partir do territories_index (autodetect)
+    satellite_stations = _detect_satellite_stations(territories)
+    if satellite_stations:
+        print(f"  Satélites detectadas no índice: {sorted(satellite_stations)}")
+
     # Carregar parceiros e jurisdicoes (sempre frescos)
     jur_geojson = _load_jurisdiction_geojson()
 
     with timer.phase("load_packages"):
-        pkg = load_packages(jurisdiction_geojson=jur_geojson)
+        pkg = load_packages(
+            jurisdiction_geojson=jur_geojson,
+            satellite_setup_stations=satellite_stations or None,
+        )
 
     with timer.phase("load_partners"):
         if partner_csv:
@@ -232,19 +275,15 @@ def run_daily(
         # Reconstruir polígonos a partir dos hexágonos H3 reais (pós-matching)
         rebuild_territory_polygons(output_dir=output_dir, stations=stations)
 
-        # Corrigir delivery_station de hexes satélite no heatmap (idempotente)
-        patch_heatmap_satellite_stations(output_dir=output_dir)
-
-        # Adicionar hexes satélite ausentes no heatmap (idempotente)
-        patch_heatmap_add_satellite_hexes(output_dir=output_dir)
-
-    # Fase 3.5: otimização de cap
-    with timer.phase("phase3_5_cap_optimizer"):
-        try:
-            from vanilla.phase3_5_cap_optimizer import run_phase3_5
-            run_phase3_5(fit=fit, output_dir=output_dir, stations=stations)
-        except Exception as e:
-            print(f"  WARN Phase 3.5 falhou: {e}")
+    # Fase 3.5: otimização de cap — DESABILITADA temporariamente
+    # (consome muito tempo no solver; reabilite retirando o bloco abaixo
+    # dos comentários quando quiser o cálculo de melhoria de ADV de ativos).
+    # with timer.phase("phase3_5_cap_optimizer"):
+    #     try:
+    #         from vanilla.phase3_5_cap_optimizer import run_phase3_5
+    #         run_phase3_5(fit=fit, output_dir=output_dir, stations=stations)
+    #     except Exception as e:
+    #         print(f"  WARN Phase 3.5 falhou: {e}")
 
     # Fase 4: webleads
     with timer.phase("phase4_webleads"):

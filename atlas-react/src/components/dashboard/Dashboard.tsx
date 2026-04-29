@@ -25,6 +25,7 @@ import { Spinner } from '../ui/Spinner';
 import FilterCascade from './FilterCascade';
 import KpiCard from './KpiCard';
 import PartnersByBucketTable from './PartnersByBucketTable';
+import BasesHierarchy from './BasesHierarchy';
 import { useRowVirtualization } from './useRowVirtualization';
 import { useStore } from '../../store';
 
@@ -240,6 +241,14 @@ const Dashboard: React.FC = () => {
       <section>
         <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">{t('dashboard.section_charts')}</h2>
         <DashboardCharts chartData={chartData} />
+      </section>
+
+      {/* Bases Hierarchy — canonicals + satellites parent-child rendering */}
+      <section>
+        <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">
+          {t('dashboard.section_bases_hierarchy')}
+        </h2>
+        <BasesHierarchy bases={filteredBases} />
       </section>
 
       {/* Territory Table */}

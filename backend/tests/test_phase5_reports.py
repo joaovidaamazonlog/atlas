@@ -29,7 +29,7 @@ from hypothesis import strategies as st
 
 from shared.models import Allocation, PartnerMetrics, TerritoriesResult
 from vanilla.phase3_partner_fit import FitResult, TerritoryFit
-from vanilla.phase5_reports import _build_hex_coverage_index, _enrich_heatmap_with_residual
+from vanilla.phase5_reports import _build_hex_coverage_index
 
 
 # ---------------------------------------------------------------------------
@@ -758,200 +758,33 @@ def _make_fit_for_station(
 
 
 # ---------------------------------------------------------------------------
-# Property 7: Partial Merge Preservation
-# Feature: hex-partner-coverage-model, Property 7: Partial Merge Preservation
+# Property 7: Partial Merge Preservation (REMOVIDO na feature
+# satellite-areas-daily-integration, task 3.2)
+#
+# O teste original exercitava _enrich_heatmap_with_residual que foi
+# substituída por write_heatmap_unified. O novo writer regenera o heatmap
+# inteiro a cada run — não há mais "merge parcial" para validar.
 # ---------------------------------------------------------------------------
 
-# Strategies for multi-station heatmaps
-_station_a_hex_strategy = st.sampled_from([_VALID_HEX_A, _VALID_HEX_B])
-_station_b_hex_strategy = st.sampled_from([_VALID_HEX_DSP4_A, _VALID_HEX_DSP4_B])
-
-_demand_strategy = st.floats(min_value=1.0, max_value=200.0, allow_nan=False, allow_infinity=False)
 
 
-def _multi_station_heatmap_strategy():
-    """
-    Strategy that generates a list of hex features belonging to at least 2 stations.
-    Station A (DSP2) uses _VALID_HEX_A / _VALID_HEX_B.
-    Station B (DSP4) uses _VALID_HEX_DSP4_A / _VALID_HEX_DSP4_B.
-    Returns (features_list, station_a_hex_ids, station_b_hex_ids).
-    """
-    return st.builds(
-        lambda a_hexes, b_hexes, a_demands, b_demands: (
-            [_hex_feature_for_station(h, d, _STATION_A) for h, d in zip(a_hexes, a_demands)]
-            + [_hex_feature_for_station(h, d, _STATION_B) for h, d in zip(b_hexes, b_demands)],
-            list(a_hexes),
-            list(b_hexes),
-        ),
-        a_hexes=st.lists(
-            _station_a_hex_strategy, min_size=1, max_size=2, unique=True
-        ),
-        b_hexes=st.lists(
-            _station_b_hex_strategy, min_size=1, max_size=2, unique=True
-        ),
-        a_demands=st.lists(_demand_strategy, min_size=1, max_size=2),
-        b_demands=st.lists(_demand_strategy, min_size=1, max_size=2),
-    ).filter(
-        lambda t: len(t[0]) >= 2  # at least 2 features total
-    ).map(
-        # Ensure demand lists match hex lists in length
-        lambda t: (
-            t[0][:min(len(t[1]), len(t[0]))],
-            t[1],
-            t[2],
-        )
-    )
+# Property 7 (Partial Merge Preservation) foi REMOVIDO na feature
+# satellite-areas-daily-integration (task 3.2). O novo writer
+# write_heatmap_unified regenera o heatmap inteiro a cada execução,
+# tornando a propriedade obsoleta.
 
 
-def _stations_subset_strategy(all_stations: list):
-    """Generate a non-empty subset of the given stations list."""
-    return st.lists(
-        st.sampled_from(all_stations),
-        min_size=1,
-        max_size=len(all_stations),
-        unique=True,
-    )
 
 
-@settings(max_examples=100, deadline=None)
-@given(
-    heatmap_data=st.builds(
-        lambda a_hexes, b_hexes, a_demands, b_demands: (
-            [_hex_feature_for_station(h, d, _STATION_A)
-             for h, d in list(zip(a_hexes, a_demands))[:len(a_hexes)]]
-            + [_hex_feature_for_station(h, d, _STATION_B)
-               for h, d in list(zip(b_hexes, b_demands))[:len(b_hexes)]],
-            list(a_hexes),
-            list(b_hexes),
-        ),
-        a_hexes=st.lists(_station_a_hex_strategy, min_size=1, max_size=2, unique=True),
-        b_hexes=st.lists(_station_b_hex_strategy, min_size=1, max_size=2, unique=True),
-        a_demands=st.lists(_demand_strategy, min_size=2, max_size=2),
-        b_demands=st.lists(_demand_strategy, min_size=2, max_size=2),
-    ),
-    stations_to_run=st.lists(
-        st.sampled_from([_STATION_A, _STATION_B]),
-        min_size=1,
-        max_size=1,
-        unique=True,
-    ),
-)
-def test_partial_merge_preservation(
-    heatmap_data,
-    stations_to_run: list,
-):
-    """
-    # Feature: hex-partner-coverage-model, Property 7: Partial Merge Preservation
-
-    **Validates: Requirements 7.1, 7.2, 7.3**
-
-    Property 7: For any multi-station heatmap and any non-empty stations list,
-    running _enrich_heatmap_with_residual leaves all properties of hex features
-    belonging to stations NOT in the list completely unchanged.
-    The same holds for _write_dados_mapa and partner records.
-    """
-    import tempfile
-
-    features, a_hexes, b_hexes = heatmap_data
-
-    # Trim features to match actual hex counts
-    station_a_features = [f for f in features if f["properties"]["delivery_station"] == _STATION_A]
-    station_b_features = [f for f in features if f["properties"]["delivery_station"] == _STATION_B]
-    all_features = station_a_features[:len(a_hexes)] + station_b_features[:len(b_hexes)]
-
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp = Path(tmpdir)
-
-        # ── Part 1: _enrich_heatmap_with_residual ────────────────────────────
-        heatmap_path = tmp / "heatmap.geojson"
-        _make_heatmap_file_multi(all_features, heatmap_path)
-
-        # Snapshot of features NOT in stations_to_run before enrichment
-        before_snapshot = {
-            f["properties"]["hex_id"]: copy.deepcopy(f["properties"])
-            for f in all_features
-            if f["properties"]["delivery_station"] not in stations_to_run
-        }
-
-        # Build a minimal FitResult for the stations being run
-        # (no partners — we just want to verify the skip logic)
-        fit = _make_fit_for_station(stations_to_run[0], [])
-
-        _enrich_heatmap_with_residual(heatmap_path, fit, None, None, stations=stations_to_run)
-
-        after_features = _load_heatmap_features(heatmap_path)
-        after_by_hex = {f["properties"]["hex_id"]: f["properties"] for f in after_features}
-
-        # All features NOT in stations_to_run must be byte-for-byte identical
-        for hex_id, before_props in before_snapshot.items():
-            assert hex_id in after_by_hex, (
-                f"hex_id {hex_id!r} disappeared from heatmap after enrichment"
-            )
-            after_props = after_by_hex[hex_id]
-            assert after_props == before_props, (
-                f"Properties of hex {hex_id!r} (station not in {stations_to_run}) "
-                f"were modified.\n"
-                f"  Before: {before_props}\n"
-                f"  After:  {after_props}"
-            )
-
-        # ── Part 2: _write_dados_mapa ─────────────────────────────────────────
-        # Build partner records for both stations
-        dsp2_record = {
-            "salesforce_id": "SF_DSP2_001",
-            "delivery_station": _STATION_A,
-            "some_field": "original_value_dsp2",
-        }
-        dsp4_record = {
-            "salesforce_id": "SF_DSP4_001",
-            "delivery_station": _STATION_B,
-            "some_field": "original_value_dsp4",
-        }
-
-        dados_path = tmp / "dados_mapa.json"
-        _make_dados_mapa_file([dsp2_record, dsp4_record], dados_path)
-
-        # Build a FitResult that only contains the station being run
-        # (the other station's partner is NOT in opt_index)
-        partner_in_run = PartnerMetrics(
-            origin_hex=_VALID_HEX_A,
-            station_code=stations_to_run[0],
-            radius_s=1000,
-            capacity_s=50,
-            entity_type="EXISTING",
-            status="Active",
-            salesforce_id="SF_DSP2_001" if stations_to_run[0] == _STATION_A else "SF_DSP4_001",
-            matched_slot_id="SLOT_001",
-            allocations=[],
-        )
-        fit_dados = _make_fit_for_station(stations_to_run[0], [partner_in_run])
-
-        # Snapshot of the record NOT in stations_to_run
-        not_in_run_sfid = "SF_DSP4_001" if stations_to_run[0] == _STATION_A else "SF_DSP2_001"
-        not_in_run_record_before = copy.deepcopy(
-            dsp4_record if stations_to_run[0] == _STATION_A else dsp2_record
-        )
-
-        _write_dados_mapa(dados_path, fit_dados, dados_path, territories=_make_territories_from_fit(fit_dados), stations=stations_to_run)
-
-        result_records = _load_dados_mapa(dados_path)
-        result_by_sfid = {r["salesforce_id"]: r for r in result_records}
-
-        assert not_in_run_sfid in result_by_sfid, (
-            f"Partner {not_in_run_sfid!r} disappeared from dados_mapa after _write_dados_mapa"
-        )
-        after_record = result_by_sfid[not_in_run_sfid]
-        # NOTE: `_write_dados_mapa` normaliza o schema em TODOS os records
-        # (inclusive adiciona `bucket_ade` vazio), então não podemos exigir
-        # igualdade byte-a-byte. A propriedade do teste é que nenhum campo
-        # ORIGINAL é modificado ou removido silenciosamente.
-        for k, v in not_in_run_record_before.items():
-            if k == "bucket_ade":
-                continue  # campo normalizado pela Fase 5
-            assert after_record.get(k) == v, (
-                f"Partner {not_in_run_sfid!r} campo '{k}' foi modificado por run "
-                f"{stations_to_run}: original={v!r}, novo={after_record.get(k)!r}"
-            )
+# ---------------------------------------------------------------------------
+# Property 7: Partial Merge Preservation (REMOVIDO)
+#
+# Este teste exercitava _enrich_heatmap_with_residual que foi substituída
+# pelo write_heatmap_unified na feature satellite-areas-daily-integration
+# (task 3.2). O novo writer regenera o heatmap inteiro a cada execução
+# — não há mais "merge parcial" para validar. A suite _write_dados_mapa
+# continua testada em TestWriteDadosMapaPartialMerge logo abaixo.
+# ---------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------

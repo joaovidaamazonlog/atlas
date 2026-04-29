@@ -12,6 +12,7 @@ import { useStore } from '../../store';
 import { osrmTableMatrix, osrmResult, getCurrentHcpGroups } from '../../lib/routeUtils';
 import { HCP_CONFIG } from '../../lib/config';
 import type { RouteStop, Partner, DeliveryStation } from '../../store/types';
+import type { RoutePickPin } from '../../store';
 
 // ---------------------------------------------------------------------------
 // Autocomplete + Geocodificação
@@ -70,6 +71,33 @@ async function geocodeAddress(query: string): Promise<AutocompleteItem | null> {
   }
 }
 
+/** Reverse geocode de uma coordenada clicada no mapa. Sempre retorna um item usável. */
+async function reverseGeocode(lat: number, lon: number): Promise<AutocompleteItem> {
+  const fallback: AutocompleteItem = {
+    id: `pin:${lat.toFixed(6)},${lon.toFixed(6)}`,
+    name: `${lat.toFixed(5)}, ${lon.toFixed(5)}`,
+    lat,
+    lon,
+    isAddress: true,
+  };
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+    const res = await fetch(url, { headers: { 'Accept-Language': 'pt-BR,pt;q=0.9' } });
+    if (!res.ok) return fallback;
+    const data = await res.json();
+    if (!data || !data.display_name) return fallback;
+    return {
+      id: `addr:${data.place_id ?? `${lat},${lon}`}`,
+      name: data.display_name,
+      lat,
+      lon,
+      isAddress: true,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // RouteSearchInput — autocomplete + geocodificação Nominatim
 // ---------------------------------------------------------------------------
@@ -82,9 +110,11 @@ interface RouteSearchInputProps {
   onSelect: (item: AutocompleteItem) => void;
   partners: Partner[];
   stations: DeliveryStation[];
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
-function RouteSearchInput({ id, placeholder, value, onChange, onSelect, partners, stations }: RouteSearchInputProps) {
+function RouteSearchInput({ id, placeholder, value, onChange, onSelect, partners, stations, onFocus, onBlur }: RouteSearchInputProps) {
   const { t } = useTranslation();
   const [suggestions, setSuggestions] = useState<AutocompleteItem[]>([]);
   const [open, setOpen] = useState(false);
@@ -142,6 +172,8 @@ function RouteSearchInput({ id, placeholder, value, onChange, onSelect, partners
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
+          onFocus={onFocus}
+          onBlur={onBlur}
           placeholder={placeholder}
           autoComplete="off"
           className="flex-1 bg-transparent border-none outline-none text-sm text-atlas-light py-2 pr-2 placeholder:text-atlas-muted/60 min-h-[44px]"
@@ -401,6 +433,7 @@ export default function RoutesTab() {
   const setRoute = useStore((s) => s.setRoute);
   const clearRoute = useStore((s) => s.clearRoute);
   const setRouteOriginActive = useCallback((v: boolean) => useStore.setState({ routeOriginActive: v }), []);
+  const setRouteInputFocused = useCallback((v: boolean) => useStore.setState({ routeInputFocused: v }), []);
 
   const showHcpButton = useMemo(() => {
     const stations = filterState.selectedStations;
@@ -415,7 +448,14 @@ export default function RoutesTab() {
   const [hcpLoading, setHcpLoading] = useState(false);
   const [hcpResult, setHcpResult] = useState<HcpResult | null>(null);
 
+  // Campo de rota atualmente focado — controla para onde vai uma coordenada clicada no mapa.
+  // Usamos ref em vez de state para não re-registrar listeners a cada mudança de foco.
+  const focusedFieldRef = useRef<'origin' | 'dest' | string | null>(null);
+  const [pinFillingField, setPinFillingField] = useState<string | null>(null);
+
   useEffect(() => { setRouteOriginActive(originItem != null); }, [originItem, setRouteOriginActive]);
+  // Libera a flag global ao desmontar o tab
+  useEffect(() => () => { setRouteInputFocused(false); }, [setRouteInputFocused]);
 
   // Listeners de eventos do mapa (popup "Rota a partir daqui" etc.)
   useEffect(() => {
@@ -431,6 +471,81 @@ export default function RoutesTab() {
       window.removeEventListener('atlas:add-route-stop',   handleAddStop);
     };
   }, []);
+
+  // Clique no mapa enquanto um campo de rota está focado → preenche o campo com a coordenada (reverse geocode)
+  useEffect(() => {
+    const handleClick = async (e: Event) => {
+      const target = focusedFieldRef.current;
+      if (!target) return;
+      const detail = (e as CustomEvent<{ lat: number; lng: number }>).detail;
+      if (!detail) return;
+      setPinFillingField(target);
+      const item = await reverseGeocode(detail.lat, detail.lng);
+      if (target === 'origin') {
+        setOriginText(item.name);
+        setOriginItem(item);
+      } else if (target === 'dest') {
+        setDestText(item.name);
+        setDestItem(item);
+      } else {
+        const stopKey = target;
+        setStops((prev) => prev.map((s) => s.key === stopKey ? { ...s, text: item.name, resolved: item } : s));
+      }
+      setPinFillingField(null);
+    };
+    document.addEventListener('atlas:map-click-coords', handleClick);
+    return () => document.removeEventListener('atlas:map-click-coords', handleClick);
+  }, []);
+
+  // Sincroniza os pins draggable no mapa a partir dos itens resolvidos
+  useEffect(() => {
+    const pins: RoutePickPin[] = [];
+    if (originItem) pins.push({ field: 'origin', lat: originItem.lat, lon: originItem.lon, label: originItem.name });
+    for (const s of stops) {
+      if (s.resolved) pins.push({ field: s.key, lat: s.resolved.lat, lon: s.resolved.lon, label: s.resolved.name });
+    }
+    if (destItem) pins.push({ field: 'dest', lat: destItem.lat, lon: destItem.lon, label: destItem.name });
+    useStore.setState({ routePickPins: pins });
+  }, [originItem, destItem, stops]);
+
+  // Limpa os pins ao desmontar o tab
+  useEffect(() => () => { useStore.setState({ routePickPins: [] }); }, []);
+
+  // Drag de pin no mapa → atualiza o campo com a nova coordenada (reverse geocode)
+  useEffect(() => {
+    const handleDrag = async (e: Event) => {
+      const detail = (e as CustomEvent<{ field: string; lat: number; lng: number }>).detail;
+      if (!detail) return;
+      const { field, lat, lng } = detail;
+      setPinFillingField(field);
+      const item = await reverseGeocode(lat, lng);
+      if (field === 'origin') {
+        setOriginText(item.name);
+        setOriginItem(item);
+      } else if (field === 'dest') {
+        setDestText(item.name);
+        setDestItem(item);
+      } else {
+        setStops((prev) => prev.map((s) => s.key === field ? { ...s, text: item.name, resolved: item } : s));
+      }
+      setPinFillingField(null);
+    };
+    document.addEventListener('atlas:route-pin-dragged', handleDrag);
+    return () => document.removeEventListener('atlas:route-pin-dragged', handleDrag);
+  }, []);
+
+  const handleFieldFocus = useCallback((field: 'origin' | 'dest' | string) => {
+    focusedFieldRef.current = field;
+    setRouteInputFocused(true);
+  }, [setRouteInputFocused]);
+
+  const handleFieldBlur = useCallback(() => {
+    // Pequeno atraso para permitir que um clique no mapa ocorra antes do blur desativar o estado
+    setTimeout(() => {
+      focusedFieldRef.current = null;
+      setRouteInputFocused(false);
+    }, 150);
+  }, [setRouteInputFocused]);
 
   const handleAddStop    = useCallback(() => { setStops((prev) => [...prev, { key: newStopKey(), text: '', resolved: null }]); }, []);
   const handleRemoveStop = useCallback((key: string) => { setStops((prev) => prev.filter((s) => s.key !== key)); }, []);
@@ -480,7 +595,12 @@ export default function RoutesTab() {
           onSelect={(item) => { setOriginText(item.name); setOriginItem(item); }}
           partners={allMarkersData}
           stations={deliveryStations}
+          onFocus={() => handleFieldFocus('origin')}
+          onBlur={handleFieldBlur}
         />
+        {pinFillingField === 'origin' && (
+          <p className="text-xs text-atlas-muted mt-1 px-1 animate-pulse">📍 {t('routes.map_pick_filling', { defaultValue: 'Obtendo endereço do ponto clicado…' })}</p>
+        )}
         {originItem && (
           <p className="text-xs text-atlas-accent mt-1 flex items-center gap-1">
             <span>{originItem.isAddress ? '📍' : '✓'}</span>
@@ -502,7 +622,12 @@ export default function RoutesTab() {
           onSelect={(item) => { setDestText(item.name); setDestItem(item); }}
           partners={allMarkersData}
           stations={deliveryStations}
+          onFocus={() => handleFieldFocus('dest')}
+          onBlur={handleFieldBlur}
         />
+        {pinFillingField === 'dest' && (
+          <p className="text-xs text-atlas-muted mt-1 px-1 animate-pulse">📍 {t('routes.map_pick_filling', { defaultValue: 'Obtendo endereço do ponto clicado…' })}</p>
+        )}
         {destItem && (
           <p className="text-xs text-atlas-accent mt-1 flex items-center gap-1">
             <span>{destItem.isAddress ? '📍' : '✓'}</span>
@@ -535,7 +660,12 @@ export default function RoutesTab() {
                       onSelect={(item) => setStops((prev) => prev.map((s) => s.key === stop.key ? { ...s, text: item.name, resolved: item } : s))}
                       partners={allMarkersData}
                       stations={deliveryStations}
+                      onFocus={() => handleFieldFocus(stop.key)}
+                      onBlur={handleFieldBlur}
                     />
+                    {pinFillingField === stop.key && (
+                      <p className="text-xs text-atlas-muted mt-0.5 px-1 animate-pulse">📍 {t('routes.map_pick_filling', { defaultValue: 'Obtendo endereço do ponto clicado…' })}</p>
+                    )}
                     {stop.resolved && (
                       <p className="text-xs text-atlas-accent mt-0.5 flex items-center gap-1">
                         <span>{stop.resolved.isAddress ? '📍' : '✓'}</span>

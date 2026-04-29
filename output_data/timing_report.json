@@ -1,63 +1,56 @@
 {
   "pipeline": "daily",
-  "total_s": 12128.055,
-  "started_at": 1777378549.757042,
-  "ended_at": 1777390677.812429,
+  "total_s": 395.374,
+  "started_at": 1777463052.403089,
+  "ended_at": 1777463447.7775314,
   "phases": [
     {
       "name": "load_territories_and_supply",
-      "duration_s": 0.076,
-      "started_at": 1777378549.7570496,
-      "ended_at": 1777378549.8328717,
+      "duration_s": 0.085,
+      "started_at": 1777463052.403098,
+      "ended_at": 1777463052.488039,
       "error": null
     },
     {
       "name": "load_packages",
-      "duration_s": 124.179,
-      "started_at": 1777378549.851416,
-      "ended_at": 1777378674.0306268,
+      "duration_s": 296.61,
+      "started_at": 1777463052.5055494,
+      "ended_at": 1777463349.1153939,
       "error": null
     },
     {
       "name": "load_partners",
-      "duration_s": 54.255,
-      "started_at": 1777378674.0307589,
-      "ended_at": 1777378728.2857304,
+      "duration_s": 51.227,
+      "started_at": 1777463349.1154516,
+      "ended_at": 1777463400.3427246,
       "error": null
     },
     {
       "name": "phase3_partner_fit",
-      "duration_s": 29.945,
-      "started_at": 1777378728.2857661,
-      "ended_at": 1777378758.2311895,
-      "error": null
-    },
-    {
-      "name": "phase3_5_cap_optimizer",
-      "duration_s": 11895.911,
-      "started_at": 1777378758.2312236,
-      "ended_at": 1777390654.1417437,
+      "duration_s": 25.594,
+      "started_at": 1777463400.3427665,
+      "ended_at": 1777463425.9371195,
       "error": null
     },
     {
       "name": "phase4_webleads",
-      "duration_s": 10.566,
-      "started_at": 1777390654.1433148,
-      "ended_at": 1777390664.709366,
+      "duration_s": 10.054,
+      "started_at": 1777463425.9371483,
+      "ended_at": 1777463435.9909346,
       "error": null
     },
     {
       "name": "cnpj_lookup",
-      "duration_s": 0.002,
-      "started_at": 1777390664.7094026,
-      "ended_at": 1777390664.7109458,
+      "duration_s": 0.0,
+      "started_at": 1777463435.9909713,
+      "ended_at": 1777463435.9914415,
       "error": null
     },
     {
       "name": "phase5_reports",
-      "duration_s": 13.097,
-      "started_at": 1777390664.7109628,
-      "ended_at": 1777390677.808304,
+      "duration_s": 11.782,
+      "started_at": 1777463435.991458,
+      "ended_at": 1777463447.7731063,
       "error": null
     }
   ]

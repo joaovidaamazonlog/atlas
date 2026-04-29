@@ -810,7 +810,7 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000QbMiYEAV,,88010000,N/A,Juliana Sielski Galvão,,Out of jurisdiction - analisar manualmente
 00Qat00000QbPBnEAN,DSP2,02271110,DSP2_bucket-02,Neusa dos Santos Dantas,005at00000EJSzr,Qualificar lead
 00Qat00000QbTLkEAN,,15685073,N/A,Kleber Santini,,CEP nao mapeado - analisar manualmente
-00Qat00000QbVnSEAV,DSP4,12237828,XSJ1_bucket-03,Rodrigo Gomes Dos Santos Do Rosário,,Qualificar lead
+00Qat00000QbVnSEAV,DSP4,12237828,XSJ1_bucket-01,Rodrigo Gomes Dos Santos Do Rosário,,Qualificar lead
 00Qat00000QbXAvEAN,,09330820,N/A,Leandro Da Silva,,CEP nao mapeado - analisar manualmente
 00Qat00000QbfV4EAJ,DRS5,93037170,DRS5_bucket-02,Eduarda Costa,005at00000EJUYb,Qualificar lead
 00Qat00000Qbh5REAR,DSP5,13500143,XSP9_bucket-01,Eduardo Moreira,,Qualificar lead
@@ -992,3 +992,4 @@ Id,Delivery Station,Cep,Jurisdiction,Name,OwnerId,decision
 00Qat00000STzj7EAD,,18288899,N/A,Marcos romeiro,,CEP nao mapeado - analisar manualmente
 00Qat00000SfbJeEAJ,,20950340,N/A,Matheus Flor da Silva,,CEP nao mapeado - analisar manualmente
 00Qat00000SuWmfEAF,DSP4,09635010,DSP4_bucket-10,JONES MARVILA,,Qualificar lead
+00Qat00000TEnoBEAT,DCE3,60534660,DCE3_bucket-12,Felipe nascimento do carmo Nascimento,005at00000EJO9q,Qualificar lead

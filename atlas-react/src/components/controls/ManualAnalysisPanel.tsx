@@ -54,7 +54,7 @@ function RecruitableResultPanel({
     INSUFFICIENT_TOTAL_DEMAND: t('manual_analysis.reason_insufficient_total'),
     NO_HISTORICAL_DATA: t('manual_analysis.reason_no_historical_data'),
   };
-  const { totalDemand, residualDemand, minAdv, gap, viable, reason } = result;
+  const { totalDemand, residualDemand, minAdv, gap, viable, reason, recommendedStation, canonicalBase } = result;
   const barWidth = minAdv > 0 ? Math.min((residualDemand / minAdv) * 100, 100) : 0;
   const displayPct = minAdv > 0 ? ((residualDemand / minAdv) * 100).toFixed(0) : '0';
 
@@ -75,7 +75,7 @@ function RecruitableResultPanel({
         </div>
       )}
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center flex-wrap gap-2">
         {viable ? (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 text-sm font-semibold">
             {t('manual_analysis.viable')}
@@ -83,6 +83,14 @@ function RecruitableResultPanel({
         ) : (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 text-sm font-semibold">
             {t('manual_analysis.not_viable')}
+          </span>
+        )}
+        {canonicalBase && recommendedStation && (
+          <span
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-500/20 border border-blue-500/40 text-blue-300 text-xs"
+            data-testid="satellite-annex-badge"
+          >
+            {t('manual_analysis.satellite_annex_badge', { station: recommendedStation, canonical: canonicalBase })}
           </span>
         )}
       </div>

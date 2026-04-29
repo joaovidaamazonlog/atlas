@@ -205,6 +205,120 @@ def _ceps_for_territory(
     return sorted(ceps)
 
 
+def _build_base_row(
+    original_code: str,
+    tids: List[str],
+    territories: TerritoriesResult,
+    supply: IdealSupplyResult,
+    fit: FitResult,
+    pkg: PackageData,
+    parent_canonical: Optional[str],
+) -> dict:
+    """
+    Constroi uma BaseRow para uma estação (canônica OU satélite), agregando
+    apenas os territórios cujo ``territory_id`` começa com ``original_code``.
+
+    Metricas (``numTerritories``, ``dailyDemand``, contadores de parceiros
+    e slots) contam SOMENTE os territórios listados em ``tids`` — nunca
+    misturam canônica e satélite.
+    """
+    bdm_info  = Config.get_bdm_for_station(original_code)
+    bdm       = bdm_info.get("region") or Config.get_bdm_cluster(original_code)
+    ctl_info  = Config.get_ctl_for_station(original_code)
+
+    t_metas = [territories.territory_index[t] for t in tids]
+
+    total_daily_demand = sum(m["daily_demand"] for m in t_metas)
+    total_slots        = sum(len(supply.slots_for(tid)) for tid in tids)
+    total_open         = sum(
+        len([s for s in supply.slots_for(tid) if s.is_open])
+        for tid in tids
+    )
+
+    base_partners = [
+        p for tid in tids
+        for p in (fit.territories[tid].partners if tid in fit.territories else [])
+    ]
+    active     = sum(1 for p in base_partners if p.status == "Active")
+    onboarding = sum(1 for p in base_partners if p.status == "Onboarding")
+    bg         = sum(1 for p in base_partners if p.status == "BG Checks")
+    prospects  = sum(1 for p in base_partners if p.entity_type == "PROSPECT")
+    inactives  = sum(1 for p in base_partners if p.entity_type == "INACTIVE_EXITED")
+
+    total_filled = total_slots - total_open
+    coverage     = round(total_filled / total_slots, 4) if total_slots else 0.0
+    attainment   = round(active / total_slots, 4) if total_slots else 0.0
+
+    territory_list = []
+    for tid in sorted(tids):
+        meta         = territories.territory_index[tid]
+        ctl          = _ctl_for_territory(tid)
+        ade_info     = Config.get_ade_for_territory(tid)
+        t_fit        = fit.territories.get(tid)
+        t_slots      = supply.slots_for(tid)
+        n_open       = len([s for s in t_slots if s.is_open])
+        t_active     = len(t_fit.partners_by_status("Active"))     if t_fit else 0
+        t_onboarding = len(t_fit.partners_by_status("Onboarding")) if t_fit else 0
+        t_bg         = len(t_fit.partners_by_status("BG Checks"))  if t_fit else 0
+        t_prospects  = len([p for p in (t_fit.partners if t_fit else []) if p.entity_type == "PROSPECT"])
+        t_inactives  = len([p for p in (t_fit.partners if t_fit else []) if p.entity_type == "INACTIVE_EXITED"])
+        t_attainment = round(t_fit.attainment / 100, 4) if t_fit else 0.0
+        t_accuracy   = round(t_fit.accuracy / 100, 4)   if t_fit else 0.0
+        ceps         = _ceps_for_territory(tid, territories, pkg)
+
+        # ``satelliteOrigin`` retrocompatível: preenchido quando o prefixo
+        # está em STATION_ALIASES (i.e., o território pertence a uma base
+        # satélite).
+        tid_prefix = tid.split("_")[0] if "_" in tid else ""
+        satellite_origin = tid_prefix if tid_prefix in configuration.STATION_ALIASES else None
+
+        territory_list.append({
+            "id":             tid,
+            "ctl":            ctl,
+            "ctlAlias":       ctl_info.get("alias", ""),
+            "ade":            ade_info.get("name", ""),
+            "adeAlias":       ade_info.get("alias", ""),
+            "satelliteOrigin": satellite_origin,
+            "dailyDemand":    round(meta["daily_demand"], 1),
+            "totalSlots":     len(t_slots),
+            "openSlots":      n_open,
+            "active":         t_active,
+            "onboarding":     t_onboarding,
+            "bg":             t_bg,
+            "prospects":      t_prospects,
+            "inactive":       t_inactives,
+            "attainment":     t_attainment,
+            "accuracy":       t_accuracy,
+            "ceps":           ceps,
+        })
+
+    return {
+        "code":            original_code,
+        "parentCanonical": parent_canonical,
+        "bdm":             bdm,
+        "bdmName":         bdm_info.get("name", ""),
+        "bdmAlias":        bdm_info.get("alias", ""),
+        "ctl":             ctl_info.get("name", ""),
+        "ctlAlias":        ctl_info.get("alias", ""),
+        "satelliteAreas":  Config.get_satellites(original_code),
+        "numTerritories":  len(tids),
+        "dailyDemand":     round(total_daily_demand, 1),
+        "idealSlots":      total_slots,
+        "matchedSlots":    total_filled,
+        "openSlots":       total_open,
+        "coverage":        coverage,
+        "partners": {
+            "active":     active,
+            "onboarding": onboarding,
+            "bgChecks":   bg,
+            "prospects":  prospects,
+            "inactive":   inactives,
+        },
+        "attainment":      attainment,
+        "territories":     territory_list,
+    }
+
+
 def _write_executive_json(
     path: Path,
     territories: TerritoriesResult,
@@ -216,104 +330,73 @@ def _write_executive_json(
     Gera relatorio_executivo.json com os dados estruturados do relatório executivo.
     Inclui CEPs por território (via hex_to_ceps).
     Consumido diretamente pelo Management Dashboard no frontend.
+
+    Estrutura de saída
+    ------------------
+    Cada entrada em ``bases[]`` representa UMA estação original (canônica
+    ou satélite). Satélites aparecem tanto como filhas, em
+    ``bases[i].satellites[]`` da sua canônica, quanto como entradas
+    top-level (para retrocompatibilidade). Em ambos os casos, o campo
+    ``parentCanonical`` sinaliza a canônica quando a entrada é satélite
+    (``null`` para canônicas).
+
+    Isolação de métricas
+    --------------------
+    As métricas de uma linha canônica (``numTerritories``, ``dailyDemand``,
+    contadores de parceiros) contam APENAS territórios cujo
+    ``territory_id`` começa com o código da canônica. Satélites têm a sua
+    própria linha com as suas próprias métricas. Nada é somado entre
+    canônica e satélite pelo backend — o frontend faz o total de
+    apresentação quando necessário.
     """
     generated_at = datetime.now().strftime("%d/%m/%Y %H:%M")
-    bases = []
 
-    for station in sorted(territories.stations):
-        t_metas = territories.territories_for(station)
-        bdm_info = Config.get_bdm_for_station(station)
-        bdm      = bdm_info.get("region") or Config.get_bdm_cluster(station)
+    # Agrupa territórios pelo código ORIGINAL (prefixo do territory_id).
+    # Após load_territories, o campo ``station_code`` em memória já vem
+    # remapeado para a canônica em territórios satélite; por isso usamos
+    # o prefixo do territory_id, que é imutável e sempre reflete a
+    # estação original.
+    by_original_code: Dict[str, List[str]] = defaultdict(list)
+    for tid in territories.territory_index.keys():
+        original_code = tid.split("_", 1)[0] if "_" in tid else tid
+        by_original_code[original_code].append(tid)
 
-        total_daily_demand = sum(m["daily_demand"] for m in t_metas)
-        total_slots        = sum(len(supply.slots_for(m["territory_id"])) for m in t_metas)
-        total_open         = sum(
-            len([s for s in supply.slots_for(m["territory_id"]) if s.is_open])
-            for m in t_metas
+    # Monta BaseRow por estação original, com parentCanonical preenchido
+    # para satélites.
+    base_rows: Dict[str, dict] = {}
+    for original_code in sorted(by_original_code.keys()):
+        parent_canonical = configuration.STATION_ALIASES.get(original_code)  # None p/ canônicas
+        base_rows[original_code] = _build_base_row(
+            original_code,
+            by_original_code[original_code],
+            territories,
+            supply,
+            fit,
+            pkg,
+            parent_canonical,
         )
 
-        base_partners = [
-            p for tid in [m["territory_id"] for m in t_metas]
-            for p in (fit.territories[tid].partners if tid in fit.territories else [])
-        ]
-        active     = sum(1 for p in base_partners if p.status == "Active")
-        onboarding = sum(1 for p in base_partners if p.status == "Onboarding")
-        bg         = sum(1 for p in base_partners if p.status == "BG Checks")
-        prospects  = sum(1 for p in base_partners if p.entity_type == "PROSPECT")
-        inactives  = sum(1 for p in base_partners if p.entity_type == "INACTIVE_EXITED")
+    # Anexa ``satellites: [BaseRow]`` em cada canônica. Satélites sem
+    # linha própria no top-level (ex.: satellites anexa a canônica
+    # ausente) são ignoradas — não há canônica na qual pendurar.
+    canonical_to_satellites: Dict[str, List[dict]] = defaultdict(list)
+    for code, row in base_rows.items():
+        parent = row.get("parentCanonical")
+        if parent:
+            canonical_to_satellites[parent].append(row)
 
-        total_filled = total_slots - total_open
-        coverage     = round(total_filled / total_slots, 4) if total_slots else 0.0
-        attainment   = round(active / total_slots, 4) if total_slots else 0.0
+    for code, row in base_rows.items():
+        if row.get("parentCanonical") is None:
+            row["satellites"] = sorted(
+                canonical_to_satellites.get(code, []),
+                key=lambda r: r["code"],
+            )
+        else:
+            # Satélites expostas no top-level não carregam filhas (não há
+            # satélite de satélite no modelo atual).
+            row["satellites"] = []
 
-        ctl_info = Config.get_ctl_for_station(station)
-
-        territory_list = []
-        for meta in sorted(t_metas, key=lambda m: m["territory_id"]):
-            tid          = meta["territory_id"]
-            ctl          = _ctl_for_territory(tid)
-            ade_info     = Config.get_ade_for_territory(tid)
-            t_fit        = fit.territories.get(tid)
-            t_slots      = supply.slots_for(tid)
-            n_open       = len([s for s in t_slots if s.is_open])
-            t_active     = len(t_fit.partners_by_status("Active"))     if t_fit else 0
-            t_onboarding = len(t_fit.partners_by_status("Onboarding")) if t_fit else 0
-            t_bg         = len(t_fit.partners_by_status("BG Checks"))  if t_fit else 0
-            t_prospects  = len([p for p in (t_fit.partners if t_fit else []) if p.entity_type == "PROSPECT"])
-            t_inactives  = len([p for p in (t_fit.partners if t_fit else []) if p.entity_type == "INACTIVE_EXITED"])
-            t_attainment = round(t_fit.attainment / 100, 4) if t_fit else 0.0
-            t_accuracy   = round(t_fit.accuracy / 100, 4)   if t_fit else 0.0
-            ceps         = _ceps_for_territory(tid, territories, pkg)
-
-            # Detectar se este território pertence a uma área satélite
-            # O territory_id começa com o código original (ex: "XBA1_bucket-01")
-            tid_prefix = tid.split("_")[0] if "_" in tid else ""
-            satellite_origin = tid_prefix if tid_prefix in configuration.STATION_ALIASES else None
-
-            territory_list.append({
-                "id":             tid,
-                "ctl":            ctl,
-                "ctlAlias":       ctl_info.get("alias", ""),
-                "ade":            ade_info.get("name", ""),
-                "adeAlias":       ade_info.get("alias", ""),
-                "satelliteOrigin": satellite_origin,
-                "dailyDemand":    round(meta["daily_demand"], 1),
-                "totalSlots":     len(t_slots),
-                "openSlots":      n_open,
-                "active":         t_active,
-                "onboarding":     t_onboarding,
-                "bg":             t_bg,
-                "prospects":      t_prospects,
-                "inactive":       t_inactives,
-                "attainment":     t_attainment,
-                "accuracy":       t_accuracy,
-                "ceps":           ceps,
-            })
-
-        bases.append({
-            "code":           station,
-            "bdm":            bdm,
-            "bdmName":        bdm_info.get("name", ""),
-            "bdmAlias":       bdm_info.get("alias", ""),
-            "ctl":            ctl_info.get("name", ""),
-            "ctlAlias":       ctl_info.get("alias", ""),
-            "satelliteAreas": Config.get_satellites(station),
-            "numTerritories": len(t_metas),
-            "dailyDemand":    round(total_daily_demand, 1),
-            "idealSlots":     total_slots,
-            "matchedSlots":   total_filled,
-            "openSlots":      total_open,
-            "coverage":       coverage,
-            "partners": {
-                "active":     active,
-                "onboarding": onboarding,
-                "bgChecks":   bg,
-                "prospects":  prospects,
-                "inactive":   inactives,
-            },
-            "attainment":     attainment,
-            "territories":    territory_list,
-        })
+    bases = [base_rows[code] for code in sorted(base_rows.keys())]
 
     payload = {"generatedAt": generated_at, "bases": bases}
 
@@ -677,97 +760,206 @@ def _build_hex_coverage_index(
     return hex_coverage_index
 
 
-def _enrich_heatmap_with_residual(
-    heatmap_path: Path,
-    fit: FitResult,
-    pkg: PackageData,
+def write_heatmap_unified(
+    output_dir: Path,
     territories: TerritoriesResult,
-    stations: Optional[List[str]] = None,
-) -> None:
+    pkg: PackageData,
+    fit: FitResult,
+) -> Path:
     """
-    Enriquece heatmap.geojson com campos de demanda alocada e residual.
+    Gera heatmap.geojson em uma única passagem, iterando sobre
+    ``territories.territory_index`` como fonte única da verdade.
 
-    Para cada hex, usa as alocações reais do CP-SAT (PartnerMetrics.allocations)
-    para determinar quais parceiros cobrem o hex e quantos pacotes foram alocados.
+    Invariantes garantidas
+    ----------------------
+    - Uma feature por ``hex_id`` — duplicatas entre territórios são
+      resolvidas com regra "satélite vence canônica". Quando o mesmo
+      hex aparece em ``hex_ids`` de uma canônica e de uma satélite
+      anexada a ela (cenário real quando o setup foi rodado em duas
+      passadas separadas), a feature é atribuída à satélite e a
+      duplicata na canônica é descartada com ``WARN``. Isso alinha
+      com o objetivo da feature: satélites são anexos reais, não
+      absorvidas pela canônica. Duplicatas entre estações não
+      relacionadas (não canônica↔satélite) ainda disparam ``ValueError``
+      por violarem a invariante do setup.
+    - Toda feature tem ``territory_id`` presente em ``territories.territory_index``
+      (zero órfãs).
+    - ``delivery_station`` preserva o código ORIGINAL da estação dona do
+      território (canônica ou satélite), extraído do prefixo do ``territory_id``.
+    - Demanda e cobertura são computadas usando a estação original do
+      território; parceiros atribuídos a outros territórios (inclusive
+      da canônica anexa, quando o território atual é satélite) não
+      contam.
 
-    Campos adicionados ao properties de cada feature:
-        demand_allocated  : soma de packages_assigned de todos os parceiros cobrindo o hex
-        demand_residual   : demand_daily - demand_allocated (arredondado a 4 casas)
-        is_covered        : True se demand_allocated > 0
-        covering_partners : lista de {salesforce_id, packages_allocated, share}
-
-    NÃO escreve covering_partner_id.
-
-    Faz merge parcial: hexes de outras stations são preservados sem alteração.
+    O campo legado ``demand_allocated`` é intencionalmente omitido do
+    schema do heatmap — utilizado apenas internamente para calcular o
+    residual e os ``share`` dos parceiros.
     """
-    if not heatmap_path.exists():
-        print(f"  WARN _enrich_heatmap_with_residual: {heatmap_path} não encontrado — pulando.")
-        return
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    heatmap_path = output_dir / "heatmap.geojson"
 
-    # ── Construir índice hex_id → [(partner, packages_assigned)] ─────────
+    # Índice hex_id → [(partner, packages_assigned)] (todos os parceiros).
+    # É filtrado por território logo abaixo para respeitar a isolação
+    # canônica↔satélite (Req 3).
     hex_coverage_index = _build_hex_coverage_index(fit)
 
-    # ── Ler heatmap existente ─────────────────────────────────────────────
-    try:
-        with open(heatmap_path, "r", encoding="utf-8") as f:
-            heatmap = json.load(f)
-    except Exception as e:
-        print(f"  WARN _enrich_heatmap_with_residual: falha ao ler {heatmap_path} ({e}) — pulando.")
-        return
+    # Mapa inverso: salesforce_id → territory_id (da carteira do fit).
+    partner_tid_by_sfid: Dict[str, str] = {}
+    for tid_fit, t_fit in fit.territories.items():
+        for p in t_fit.partners:
+            if p.salesforce_id:
+                partner_tid_by_sfid[p.salesforce_id] = tid_fit
 
-    features = heatmap.get("features", [])
+    features: List[dict] = []
+    seen_hexes: Dict[str, str] = {}   # hex_id → territory_id que o reivindicou
+    n_dup_sat_wins = 0                # contador de duplicatas satélite-vs-canônica
 
-    # ── Enriquecer features das stations processadas ──────────────────────
-    enriched = 0
-    for ft in features:
-        props = ft.get("properties", {})
-        ft_station = props.get("delivery_station", "")
+    # Ordenar territórios para que SATÉLITES venham antes das canônicas.
+    # Assim, quando o mesmo hex_id aparece em ambas, a satélite reivindica
+    # primeiro e a canônica é pulada com WARN (regra "satélite vence").
+    def _is_sat(item):
+        _tid, _meta = item
+        return bool(_meta.get("canonical_base"))
 
-        # Se stations fornecido, só enriquecer hexes das stations processadas
-        if stations and ft_station not in stations:
-            continue
+    ordered_items = sorted(
+        territories.territory_index.items(),
+        key=lambda kv: (0 if _is_sat(kv) else 1, kv[0]),
+    )
 
-        hex_id = props.get("hex_id", "")
-        demand_daily = props.get("demand_daily", 0)
+    for tid, meta in ordered_items:
+        # Extrai o código ORIGINAL da estação pelo prefixo do territory_id
+        # (ex: "XBA1_bucket-01" → "XBA1", "DSA8_bucket-01" → "DSA8").
+        original_code = tid.split("_", 1)[0] if "_" in tid else tid
+        canonical_base = meta.get("canonical_base")
+        is_satellite = bool(canonical_base)
 
-        entries = hex_coverage_index.get(hex_id, [])
+        # Demand source: usa pkg.demand_by_station com a chave ORIGINAL.
+        # Como load_packages foi chamado com satellite_setup_stations,
+        # satélite e canônica têm entradas separadas em demand_by_station.
+        demand_map = pkg.demand_by_station.get(original_code, {})
 
-        demand_allocated = sum(pkg_count for _, pkg_count in entries)
-        demand_residual = round(demand_daily - demand_allocated, 4)
-        is_covered = demand_allocated > 0
+        for hex_id in meta.get("hex_ids", []):
+            if hex_id in seen_hexes:
+                prev_tid = seen_hexes[hex_id]
+                # Resolver a duplicata:
+                # (a) canônica↔satélite anexada → satélite ganha (silencioso,
+                #     é o caso esperado de setup em duas passadas).
+                # (b) qualquer outra duplicata → aborta por violação de
+                #     invariante do setup.
+                prev_code = prev_tid.split("_", 1)[0] if "_" in prev_tid else prev_tid
+                prev_canonical = (
+                    configuration.STATION_ALIASES.get(prev_code)
+                    if prev_code in configuration.STATION_ALIASES
+                    else None
+                )
+                curr_canonical = (
+                    configuration.STATION_ALIASES.get(original_code)
+                    if original_code in configuration.STATION_ALIASES
+                    else None
+                )
+                related_sat_canon = (
+                    (prev_canonical and prev_canonical == original_code) or
+                    (curr_canonical and curr_canonical == prev_code)
+                )
+                if related_sat_canon:
+                    # Satélite já reivindicou (veio primeiro na ordenação).
+                    # Canônica atual perde o hex — pula sem reivindicar.
+                    n_dup_sat_wins += 1
+                    continue
+                raise ValueError(
+                    f"Duplicate hex_id {hex_id} encontrado em dois "
+                    f"territórios não relacionados: {prev_tid!r} e {tid!r}. "
+                    f"Isso viola a invariante do setup (hex_ids disjuntos "
+                    f"entre territórios não canônica↔satélite)."
+                )
+            seen_hexes[hex_id] = tid
 
-        covering_partners_list = []
-        for i, (partner, pkg_count) in enumerate(entries):
-            if demand_allocated > 0:
-                if i < len(entries) - 1:
-                    share = round(pkg_count / demand_allocated, 2)
+            demand_total = int(demand_map.get(hex_id, 0))
+            demand_daily = demand_total / pkg.days if pkg.days else float(demand_total)
+
+            # Coverage restrito ao território corrente: apenas parceiros
+            # cuja carteira pertence a este tid contam para este hex.
+            entries = [
+                (partner, pkg_count)
+                for (partner, pkg_count) in hex_coverage_index.get(hex_id, [])
+                if partner_tid_by_sfid.get(partner.salesforce_id) == tid
+            ]
+
+            demand_allocated = sum(pkg_count for _, pkg_count in entries)
+            demand_residual = round(demand_daily - demand_allocated, 4)
+            is_covered = demand_allocated > 0
+
+            covering_partners_list: List[dict] = []
+            for i, (partner, pkg_count) in enumerate(entries):
+                if demand_allocated > 0:
+                    if i < len(entries) - 1:
+                        share = round(pkg_count / demand_allocated, 2)
+                    else:
+                        # Last partner: ajusta para somar exatamente 1.0.
+                        share = round(
+                            1.0 - sum(cp["share"] for cp in covering_partners_list),
+                            2,
+                        )
                 else:
-                    # Last partner: adjust to ensure shares sum to exactly 1.0
-                    share = round(1.0 - sum(cp["share"] for cp in covering_partners_list), 2)
-            else:
-                share = 0.0
-            covering_partners_list.append({
-                "salesforce_id":      partner.salesforce_id,
-                "packages_allocated": pkg_count,
-                "share":              share,
+                    share = 0.0
+                covering_partners_list.append({
+                    "salesforce_id":      partner.salesforce_id,
+                    "packages_allocated": pkg_count,
+                    "share":              share,
+                })
+
+            # Geometria — mesma forma usada em phase_setup._build_heatmap
+            # (boundary H3 + fecho do anel).
+            boundary = h3.cell_to_boundary(hex_id)
+            coords = [[c[1], c[0]] for c in boundary]
+            coords.append(coords[0])
+
+            ceps = sorted(pkg.hex_to_ceps.get(hex_id, set()))[:10]
+
+            features.append({
+                "type": "Feature",
+                "geometry": {"type": "Polygon", "coordinates": [coords]},
+                "properties": {
+                    "hex_id":            hex_id,
+                    "territory_id":      tid,
+                    "delivery_station":  original_code,
+                    "canonical_base":    canonical_base if is_satellite else None,
+                    "demand_total":      demand_total,
+                    "demand_daily":      round(demand_daily, 4),
+                    "demand_residual":   demand_residual,
+                    "is_covered":        is_covered,
+                    "in_jurisdiction":   True,
+                    "covering_partners": covering_partners_list,
+                    "ceps":              ceps,
+                },
             })
 
-        props["demand_allocated"]   = demand_allocated
-        props["demand_residual"]    = demand_residual
-        props["is_covered"]         = is_covered
-        props["covering_partners"]  = covering_partners_list
-        # NOTE: covering_partner_id is NOT written
-        enriched += 1
-
-    heatmap["metadata"] = heatmap.get("metadata", {})
-    heatmap["metadata"]["enriched_at"] = datetime.now().isoformat(timespec="seconds")
-    heatmap["metadata"]["n_enriched"]  = enriched
+    geojson = {
+        "type": "FeatureCollection",
+        "features": features,
+        "metadata": {
+            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "n_hexes":      len(features),
+            "writer":       "write_heatmap_unified",
+        },
+    }
 
     with open(heatmap_path, "w", encoding="utf-8") as f:
-        json.dump(heatmap, f, ensure_ascii=False, indent=2)
+        json.dump(geojson, f, ensure_ascii=False, indent=2)
 
     size_mb = heatmap_path.stat().st_size / (1024 * 1024)
-    print(f"  ✅ {heatmap_path.name}  ({enriched} hexes enriquecidos | {size_mb:.1f} MB)")
+    print(
+        f"  ✅ heatmap.geojson (write_heatmap_unified) — "
+        f"{len(features)} hexes | {size_mb:.1f} MB"
+    )
+    if n_dup_sat_wins:
+        print(
+            f"     {n_dup_sat_wins} hex(es) de canônica pulados porque o "
+            f"mesmo hex pertencia a uma satélite anexada (regra satélite "
+            f"vence canônica)."
+        )
+    return heatmap_path
 
 
 def _derive_hex_coverage(pm: PartnerMetrics) -> Optional[List[dict]]:
@@ -990,9 +1182,8 @@ def run_phase5(
     _write_dados_mapa(dados_mapa_path, fit, dados_mapa_path, territories=territories, stations=stations)
     paths["dados_mapa"] = dados_mapa_path
 
-    # 7. Enriquecer heatmap.geojson com demanda alocada e residual
-    heatmap_path = out_dir / "heatmap.geojson"
-    _enrich_heatmap_with_residual(heatmap_path, fit, pkg, territories, stations=stations)
+    # 7. Gerar heatmap.geojson unificado (uma passada, uma feature por hex)
+    heatmap_path = write_heatmap_unified(out_dir, territories, pkg, fit)
     paths["heatmap"] = heatmap_path
 
     print(f"\n{'='*60}")

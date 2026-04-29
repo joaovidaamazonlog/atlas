@@ -25,6 +25,7 @@ import RecruitableAreaLayer from './RecruitableAreaLayer';
 import CapComparisonLayer from './CapComparisonLayer';
 import PartnerWhatIfLayer from './PartnerWhatIfLayer';
 import MapClickCapture from './MapClickCapture';
+import RoutePickPinsLayer from './RoutePickPinsLayer';
 
 function LayerPanesSetup() {
   const map = useMap();
@@ -92,6 +93,7 @@ interface MapViewProps {
 
 export default function MapView({ className, flyToRef }: MapViewProps) {
   const manualAnalysisOpen = useStore((s) => s.manualAnalysisOpen);
+  const routeInputFocused = useStore((s) => s.routeInputFocused);
   return (
     <MapContainer
       center={MAP_CONFIG.center}
@@ -117,7 +119,8 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <RecruitableAreaLayer />
       <CapComparisonLayer />
       <PartnerWhatIfLayer />
-      <MapClickCapture isActive={manualAnalysisOpen} />
+      <RoutePickPinsLayer />
+      <MapClickCapture isActive={manualAnalysisOpen || routeInputFocused} />
     </MapContainer>
   );
 }

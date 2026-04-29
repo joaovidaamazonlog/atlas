@@ -33,6 +33,15 @@ import type {
   GeoIntelligenceState,
   GeoIntelligenceFilter,
 } from './geoIntelligenceSlice';
+
+/** Pin arrastável no mapa para cada ponto escolhido no RoutesTab. */
+export interface RoutePickPin {
+  /** Identificador do campo no RoutesTab: 'origin', 'dest' ou a key da parada. */
+  field: string;
+  lat: number;
+  lon: number;
+  label?: string;
+}
 import { DEFAULT_GEO_INTELLIGENCE_STATE } from './geoIntelligenceSlice';
 
 // ---------------------------------------------------------------------------
@@ -92,6 +101,10 @@ export interface AtlasStore {
   hcp: HcpState;
   /** true quando há uma origem de rota definida no RoutesTab */
   routeOriginActive: boolean;
+  /** true quando um campo de rota (origem/destino/parada) está focado; ativa captura de clique no mapa */
+  routeInputFocused: boolean;
+  /** Pins draggable mostrados no mapa para cada ponto escolhido no RoutesTab (origem/destino/paradas). */
+  routePickPins: RoutePickPin[];
   /** Ref preenchido pelo MapView para executar fitBounds a partir de qualquer componente */
   fitBoundsRef: React.MutableRefObject<((coords: [number, number][]) => void) | null>;
 
@@ -197,6 +210,8 @@ export const useStore = create<AtlasStore>((set, get) => ({
   route: [],
   hcp: { ...DEFAULT_HCP_STATE },
   routeOriginActive: false,
+  routeInputFocused: false,
+  routePickPins: [],
   fitBoundsRef: createRef<((coords: [number, number][]) => void) | null>() as React.MutableRefObject<((coords: [number, number][]) => void) | null>,
 
   // --- Estado inicial: prospect ---

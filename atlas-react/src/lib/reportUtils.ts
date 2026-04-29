@@ -38,6 +38,17 @@ export interface BaseData {
   ctl?: string;
   ctlAlias?: string;
   satelliteAreas?: string[];  // ex: ["XBA1"] — bases satélite absorvidas
+  /**
+   * Canonical anchor for satellite entries (e.g., "DSA8" for satellite "XBA1").
+   * `null` (or absent) for canonical bases.
+   */
+  parentCanonical?: string | null;
+  /**
+   * List of anchored satellites for a canonical base, in the same `BaseData`
+   * shape. Absent (or empty) for canonicals without satellites and for
+   * satellite entries themselves.
+   */
+  satellites?: BaseData[];
   numTerritories: number;
   dailyDemand: number;
   idealSlots: number;

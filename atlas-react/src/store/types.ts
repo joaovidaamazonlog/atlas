@@ -255,6 +255,19 @@ export interface EvaluatorResult {
    * A análise usa apenas os hexágonos dessa base.
    */
   outOfJurisdictionStation?: string;
+  /**
+   * DS dominante (canônica OU satélite) escolhida pelo evaluator.
+   * Definido sempre que `selectedCells` não é vazio e há dados de jurisdição.
+   * Pode ser um código satélite (ex: "XBA1") — satélites não são mais
+   * colapsados na canônica.
+   */
+  recommendedStation?: string;
+  /**
+   * Canônica da DS recomendada, quando `recommendedStation` é satélite.
+   * Para canônicas puras, fica `undefined`. Usado apenas para renderização
+   * do badge "Anexo de …" na UI.
+   */
+  canonicalBase?: string;
 }
 
 export type EvaluatorError =

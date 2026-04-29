@@ -43,6 +43,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 import h3
 
+from shared.config import STATION_ALIASES
 from shared.load_packages import PackageData
 from shared.load_partners import PartnerData, row_to_partner_metrics
 from shared.h3_cache import H3Cache
@@ -608,6 +609,73 @@ def _load_territory_polygons(output_dir: Path) -> Dict[str, object]:
         return {}
 
 
+def _resolve_canonical_satellite_tiebreak(
+    matches: List[dict],
+    partner_id: str = "",
+) -> Optional[str]:
+    """
+    Resolve a canonical↔satellite tiebreak deterministically.
+
+    Given a list of match dicts (each with keys `territory_id` and `station_code`)
+    collected from a step in `_get_territory_for_partner`, apply the majority +
+    alphabetical rule **only** when the stations involved are exactly
+    ``{C, S1, ..., Sn}`` where ``C`` is a canonical station and each ``Si`` is
+    a satellite anchored to ``C`` via ``STATION_ALIASES[Si] == C``.
+
+    When the rule applies:
+    - Group matched territories by station_code.
+    - Pick the station with the most matched territories (polygons).
+    - On tie, pick ``min(tied_stations)`` alphabetically.
+    - Within the winning station, return the first matching ``territory_id``
+      (preserving the input ordering of ``matches``).
+    - A warning is printed identifying the partner, the involved stations,
+      and the chosen winner.
+
+    Returns ``None`` when the rule does not apply (stations are unrelated,
+    or fewer than two distinct stations are involved). The caller then falls
+    back to its previous tiebreak (typically: use the first match).
+    """
+    if not matches or len(matches) < 2:
+        return None
+
+    # Group matches by station_code.
+    by_station: Dict[str, List[dict]] = defaultdict(list)
+    for m in matches:
+        by_station[m["station_code"]].append(m)
+
+    stations = set(by_station.keys())
+    if len(stations) < 2:
+        return None
+
+    # Identify the canonical(s) and satellite(s) among the matched stations.
+    canonicals = {s for s in stations if s not in STATION_ALIASES}
+    satellites = {s for s in stations if s in STATION_ALIASES}
+
+    # Rule applies only when exactly one canonical is present and every
+    # satellite is anchored to that canonical.
+    if len(canonicals) != 1 or not satellites:
+        return None
+
+    canonical = next(iter(canonicals))
+    if not all(STATION_ALIASES.get(sat) == canonical for sat in satellites):
+        return None
+
+    # Majority vote by number of matched territories (polygons) per station.
+    max_count = max(len(v) for v in by_station.values())
+    tied = sorted(s for s, v in by_station.items() if len(v) == max_count)
+    winner = tied[0]  # alphabetical tiebreak
+
+    sat_matches = sorted(satellites)
+    print(
+        f"  WARN partner_fit: parceiro {partner_id} tem point-in-polygon em "
+        f"canônica {canonical} e satélite(s) {sat_matches}; atribuído a "
+        f"{winner} por majority+alphabetical"
+    )
+
+    # Within the winning station, keep the first matching territory by input order.
+    return by_station[winner][0]["territory_id"]
+
+
 def _get_territory_for_partner(
     origin_hex: str,
     territories_meta: List[dict],
@@ -655,22 +723,39 @@ def _get_territory_for_partner(
         try:
             from shapely.geometry import Point
             pt = Point(lon, lat)
+            pip_matches: List[dict] = []
             for meta in territories_meta:
                 tid = meta["territory_id"]
                 poly = territory_polys.get(tid)
                 if poly is not None:
                     try:
                         if poly.contains(pt):
-                            return _log("2-point_in_polygon", tid)
+                            pip_matches.append({
+                                "territory_id": tid,
+                                "station_code": _station_from_tid(tid),
+                            })
                     except Exception:
                         pass
+            if pip_matches:
+                if len(pip_matches) == 1:
+                    return _log("2-point_in_polygon", pip_matches[0]["territory_id"])
+                # >1 matches: try canonical↔satellite majority+alphabetical rule.
+                resolved = _resolve_canonical_satellite_tiebreak(
+                    pip_matches, partner_id=partner_id,
+                )
+                if resolved is not None:
+                    return _log("2-point_in_polygon", resolved)
+                # Unrelated stations: preserve legacy behavior (first match).
+                return _log("2-point_in_polygon", pip_matches[0]["territory_id"])
         except ImportError:
             pass
 
     # 3. Proximidade do centroide geométrico do polígono
     if territory_polys:
-        min_tid = None
-        min_dist = float("inf")
+        import math
+
+        # Compute all (tid, dist) pairs, then isolate the tied-min set.
+        scored: List[Tuple[str, float]] = []
         for meta in territories_meta:
             tid = meta["territory_id"]
             poly = territory_polys.get(tid)
@@ -678,13 +763,32 @@ def _get_territory_for_partner(
                 try:
                     c = poly.centroid
                     dist = (lat - c.y) ** 2 + (lon - c.x) ** 2
-                    if dist < min_dist:
-                        min_dist = dist
-                        min_tid = tid
+                    # Descartar NaN/Inf — quebram comparações e deixam `tied` vazio.
+                    if math.isfinite(dist):
+                        scored.append((tid, dist))
                 except Exception:
                     pass
-        if min_tid:
-            return _log("3-poly_centroid", min_tid)
+        if scored:
+            min_dist = min(d for _, d in scored)
+            tied = [tid for tid, d in scored if d == min_dist]
+            # Safety guard: após filtrar NaN via math.isfinite, `tied` só
+            # pode ficar vazia em cenários extremamente degenerados — caia
+            # para o passo 4 (slot centroid) nesses casos.
+            if tied:
+                if len(tied) == 1:
+                    return _log("3-poly_centroid", tied[0])
+                # >1 centroids tied at min_dist: try canonical↔satellite rule.
+                tied_matches = [
+                    {"territory_id": tid, "station_code": _station_from_tid(tid)}
+                    for tid in tied
+                ]
+                resolved = _resolve_canonical_satellite_tiebreak(
+                    tied_matches, partner_id=partner_id,
+                )
+                if resolved is not None:
+                    return _log("3-poly_centroid", resolved)
+                # Unrelated stations: preserve legacy behavior (first tied match).
+                return _log("3-poly_centroid", tied[0])
 
     # 4. Fallback final: centroide calculado pelos slots (campo do territory_index)
     min_tid = None

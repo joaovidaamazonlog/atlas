@@ -31,6 +31,7 @@ from shapely.ops import transform, unary_union
 
 ROOT = Path(__file__).resolve().parent.parent
 XLSX_PATH = ROOT / "MKT Plans.xlsx"
+EXTRA_PLAN_CSV = ROOT / "output_data" / "mkt_plan_b_full_coverage.csv"
 GEOJSON_PATH = ROOT / "config" / "jurisdiction.geojson"
 OUT_DIR = ROOT / "output_data"
 OUT_DIR.mkdir(exist_ok=True)
@@ -60,6 +61,7 @@ PLAN_COLORS = {
     "D": "#ff7f0e",
     "E": "#9467bd",
     "F": "#17becf",
+    "G": "#e377c2",
 }
 
 # ---------------------------------------------------------------------------
@@ -211,6 +213,38 @@ def load_plans() -> tuple[pd.DataFrame, pd.DataFrame]:
     return cleaned, invalid
 
 
+def load_extra_csv(path: Path) -> pd.DataFrame:
+    """Load an already-clean plan CSV (same headers as the Excel) and return
+    it in the same shape as load_plans()'s cleaned DataFrame."""
+    if not path.exists():
+        return pd.DataFrame()
+    raw = pd.read_csv(path, dtype=str)
+    rows = []
+    for _, r in raw.iterrows():
+        try:
+            lat = float(r["Latitude"])
+            lon = float(r["Longitude"])
+            rs = float(r["Target Radius SEARCH"])
+            rd = float(r["Target Radius DEMAND GENERATION"])
+        except (TypeError, ValueError, KeyError):
+            continue
+        rows.append(
+            {
+                "Campaign": str(r["Campaign"]).strip(),
+                "City": str(r["City"]).strip(),
+                "raw_lat": r["Latitude"],
+                "raw_lon": r["Longitude"],
+                "radius_search_mi": rs,
+                "radius_demand_mi": rd,
+                "radius_search_km": rs * MILE_TO_KM,
+                "radius_demand_km": rd * MILE_TO_KM,
+                "lat": lat,
+                "lon": lon,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 # ---------------------------------------------------------------------------
 # Geometry helpers
 # ---------------------------------------------------------------------------
@@ -251,6 +285,11 @@ def main() -> None:
     df, invalid = load_plans()
     print(f"  valid rows: {len(df)}  |  invalid rows: {len(invalid)}")
     invalid.to_csv(OUT_DIR / "mkt_plans_invalid_rows.csv", index=False)
+
+    extra = load_extra_csv(EXTRA_PLAN_CSV)
+    if not extra.empty:
+        print(f"  extra plan rows from {EXTRA_PLAN_CSV.name}: {len(extra)}")
+        df = pd.concat([df, extra], ignore_index=True)
 
     print("Loading jurisdictions...")
     with open(GEOJSON_PATH, encoding="utf-8") as f:

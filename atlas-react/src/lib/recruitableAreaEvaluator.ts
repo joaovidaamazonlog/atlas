@@ -21,7 +21,10 @@ import * as turf from '@turf/turf';
 import type { EvaluatorResult, EvaluatorError, ReasonCode } from '../store/types';
 import { DS_SATELLITES } from './config';
 
-// Índice reverso: satélite → canônica (construído uma vez)
+// Índice reverso: satélite → canônica (construído uma vez).
+// Usado APENAS para renderizar o badge "Anexo de …" na UI via
+// `canonicalBaseFor`. NÃO é usado para colapsar hexes no cálculo de
+// balde dominante — satélites mantêm sua identidade própria.
 const SATELLITE_TO_CANONICAL: Record<string, string> = {};
 for (const [canonical, satellites] of Object.entries(DS_SATELLITES)) {
   for (const sat of satellites) {
@@ -29,9 +32,13 @@ for (const [canonical, satellites] of Object.entries(DS_SATELLITES)) {
   }
 }
 
-/** Resolve um código de DS para a base canônica (ex: "XSP7" → "DSP5"). */
-function resolveCanonical(ds: string): string {
-  return SATELLITE_TO_CANONICAL[ds] ?? ds;
+/**
+ * Retorna a canônica de uma satélite (ex: "XSP7" → "DSP5"). Para canônicas
+ * retorna undefined. Usado apenas para renderizar o badge "Anexo de …"
+ * na UI — NÃO é usado para colapsar hexes no cálculo de balde dominante.
+ */
+export function canonicalBaseFor(ds: string): string | undefined {
+  return SATELLITE_TO_CANONICAL[ds];
 }
 
 // ---------------------------------------------------------------------------
@@ -122,7 +129,7 @@ function stationForHex(
   if (typeof props.in_jurisdiction === 'boolean') {
     if (!props.in_jurisdiction) return null;
     const ds = props.delivery_station as string | undefined;
-    return ds ? resolveCanonical(ds) : null;
+    return ds ?? null;
   }
 
   // Fallback: heatmap legado — booleanPointInPolygon contra polígonos de jurisdição
@@ -139,7 +146,7 @@ function stationForHex(
         )
       ) {
         const ds = jf.properties?.delivery_station as string | undefined;
-        return ds ? resolveCanonical(ds) : null;
+        return ds ?? null;
       }
     }
   }
@@ -168,7 +175,7 @@ function stationForPoint(
         )
       ) {
         const ds = jf.properties?.delivery_station as string | undefined;
-        return ds ? resolveCanonical(ds) : null;
+        return ds ?? null;
       }
     }
   }
@@ -293,6 +300,7 @@ export function evaluateRecruitableArea(
   // --- Filtrar hexes por jurisdição e agrupar por DS ---
   let selectedCells: GeoJSON.Feature[];
   let outOfJurisdictionStation: string | undefined;
+  let dominantStation: string | null = null;
 
   if (jurisdictionFeatures.length === 0) {
     // Sem dados de jurisdição: comportamento legado (todos os hexes do raio)
@@ -316,7 +324,7 @@ export function evaluateRecruitableArea(
       // Nenhum hex dentro de qualquer jurisdição no raio
       selectedCells = [];
     } else {
-      const dominantStation = resolveDominantStation(hexesByStation)!;
+      dominantStation = resolveDominantStation(hexesByStation)!;
       selectedCells = hexesByStation.get(dominantStation)!;
 
       // Warning quando o ponto central está fora de jurisdição
@@ -365,6 +373,18 @@ export function evaluateRecruitableArea(
     }
   }
 
+  // --- DEBUG TEMPORÁRIO (satellite-areas-daily-integration) ---
+  // Remover após validação em produção.
+  // eslint-disable-next-line no-console
+  console.log('[evaluator:debug]', {
+    jurisdictionFeaturesLen: jurisdictionFeatures.length,
+    cellsInRadius: cellsInRadius.length,
+    dominantStation,
+    recommendedStation: dominantStation ?? undefined,
+    canonicalBase: dominantStation ? canonicalBaseFor(dominantStation) : undefined,
+    sampleCell: selectedCells[0]?.properties,
+  });
+
   return {
     totalDemand,
     residualDemand,
@@ -375,5 +395,7 @@ export function evaluateRecruitableArea(
     selectedCells,
     residualCells,
     outOfJurisdictionStation,
+    recommendedStation: dominantStation ?? undefined,
+    canonicalBase: dominantStation ? canonicalBaseFor(dominantStation) : undefined,
   };
 }

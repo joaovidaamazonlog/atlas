@@ -301,6 +301,7 @@ export function evaluateRecruitableArea(
   let selectedCells: GeoJSON.Feature[];
   let outOfJurisdictionStation: string | undefined;
   let dominantStation: string | null = null;
+  let competingStations: string[] | undefined;
 
   if (jurisdictionFeatures.length === 0) {
     // Sem dados de jurisdição: comportamento legado (todos os hexes do raio)
@@ -326,6 +327,15 @@ export function evaluateRecruitableArea(
     } else {
       dominantStation = resolveDominantStation(hexesByStation)!;
       selectedCells = hexesByStation.get(dominantStation)!;
+
+      // Se houver mais de uma base no raio, expor as "competidoras"
+      // (excluindo a vencedora) para o painel poder avisar o usuário
+      // sobre a disputa de fronteira.
+      if (hexesByStation.size > 1) {
+        competingStations = [...hexesByStation.keys()]
+          .filter((s) => s !== dominantStation)
+          .sort();
+      }
 
       // Warning quando o ponto central está fora de jurisdição
       if (!centerInsideJurisdiction) {
@@ -373,18 +383,6 @@ export function evaluateRecruitableArea(
     }
   }
 
-  // --- DEBUG TEMPORÁRIO (satellite-areas-daily-integration) ---
-  // Remover após validação em produção.
-  // eslint-disable-next-line no-console
-  console.log('[evaluator:debug]', {
-    jurisdictionFeaturesLen: jurisdictionFeatures.length,
-    cellsInRadius: cellsInRadius.length,
-    dominantStation,
-    recommendedStation: dominantStation ?? undefined,
-    canonicalBase: dominantStation ? canonicalBaseFor(dominantStation) : undefined,
-    sampleCell: selectedCells[0]?.properties,
-  });
-
   return {
     totalDemand,
     residualDemand,
@@ -397,5 +395,6 @@ export function evaluateRecruitableArea(
     outOfJurisdictionStation,
     recommendedStation: dominantStation ?? undefined,
     canonicalBase: dominantStation ? canonicalBaseFor(dominantStation) : undefined,
+    competingStations,
   };
 }

@@ -268,6 +268,13 @@ export interface EvaluatorResult {
    * do badge "Anexo de …" na UI.
    */
   canonicalBase?: string;
+  /**
+   * Outras bases presentes no raio além de `recommendedStation`. Quando
+   * definido e não vazio, indica disputa de fronteira — a análise usou
+   * apenas os hexes de `recommendedStation`, mas o painel deve avisar
+   * que o raio tocou as bases listadas aqui.
+   */
+  competingStations?: string[];
 }
 
 export type EvaluatorError =

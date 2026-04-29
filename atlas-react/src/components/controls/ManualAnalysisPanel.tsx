@@ -54,7 +54,7 @@ function RecruitableResultPanel({
     INSUFFICIENT_TOTAL_DEMAND: t('manual_analysis.reason_insufficient_total'),
     NO_HISTORICAL_DATA: t('manual_analysis.reason_no_historical_data'),
   };
-  const { totalDemand, residualDemand, minAdv, gap, viable, reason, recommendedStation, canonicalBase } = result;
+  const { totalDemand, residualDemand, minAdv, gap, viable, reason, recommendedStation, canonicalBase, competingStations } = result;
   const barWidth = minAdv > 0 ? Math.min((residualDemand / minAdv) * 100, 100) : 0;
   const displayPct = minAdv > 0 ? ((residualDemand / minAdv) * 100).toFixed(0) : '0';
 
@@ -85,15 +85,27 @@ function RecruitableResultPanel({
             {t('manual_analysis.not_viable')}
           </span>
         )}
-        {canonicalBase && recommendedStation && (
+        {recommendedStation && (
           <span
             className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-500/20 border border-blue-500/40 text-blue-300 text-xs"
-            data-testid="satellite-annex-badge"
+            data-testid="recommended-station-badge"
           >
-            {t('manual_analysis.satellite_annex_badge', { station: recommendedStation, canonical: canonicalBase })}
+            {canonicalBase
+              ? t('manual_analysis.satellite_annex_badge', { station: recommendedStation, canonical: canonicalBase })
+              : t('manual_analysis.recommended_station_badge', { station: recommendedStation })}
           </span>
         )}
       </div>
+
+      {competingStations && competingStations.length > 0 && (
+        <div
+          className="flex items-center gap-2 px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-xs text-amber-400"
+          role="note"
+          data-testid="competing-stations-note"
+        >
+          ℹ️ {t('manual_analysis.competing_stations_note', { stations: competingStations.join(', ') })}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div className="rounded bg-atlas-darker px-2 py-2">

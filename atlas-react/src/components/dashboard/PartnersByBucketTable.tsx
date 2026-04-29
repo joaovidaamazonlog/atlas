@@ -88,8 +88,8 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
 
   // Virtualização: ativada quando filtered.length > threshold (default 100).
   const PBT_ROW_HEIGHT = 40;
-  // name cresce (auto), demais com largura fixa — garante legibilidade em telas largas
-  const PBT_COL_WIDTHS = ['auto', '160px', '200px']; // name, store_id, bucket
+  // Larguras em percentual — table-fixed com pixels+auto colapsa colunas
+  const PBT_COL_WIDTHS = ['50%', '25%', '25%']; // name, store_id, bucket
   const { parentRef, virtualizer, enabled: virtualizeOn, containerStyle } =
     useRowVirtualization({
       rowCount: filtered.length,

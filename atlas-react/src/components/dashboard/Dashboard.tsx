@@ -409,19 +409,19 @@ const STATUS_CLASS_MAP: Record<string, string> = {
 
 // Altura de linha (px) e larguras de coluna compartilhadas entre header
 // e body. Mantém alinhamento quando body é virtualizado em outra <table>.
-// Larguras em px — colunas numéricas com tamanho justo; a primeira cresce (auto).
+// Larguras em percentual — somam 100%. table-fixed com pixels+auto colapsa colunas.
 const TERRITORY_ROW_HEIGHT = 40;
 const TERRITORY_COL_WIDTHS = [
-  'auto',  // territory (cresce conforme disponível)
-  '80px',  // base
-  '140px', // ctl (nome de pessoa — precisa de mais espaço)
-  '100px', // dailyDemand
-  '70px',  // totalSlots
-  '90px',  // openSlots
-  '70px',  // active
-  '100px', // onboarding
-  '100px', // attainment
-  '110px', // accuracy
+  '18%', // territory (cresce naturalmente por ter mais texto)
+  '8%',  // base
+  '14%', // ctl (nome de pessoa)
+  '10%', // dailyDemand
+  '7%',  // totalSlots
+  '9%',  // openSlots
+  '7%',  // active
+  '10%', // onboarding
+  '8%',  // attainment
+  '9%',  // accuracy
 ];
 
 const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort }) => {

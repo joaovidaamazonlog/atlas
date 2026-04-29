@@ -215,7 +215,8 @@ const Dashboard: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex flex-col gap-4 p-4 bg-atlas-darker min-h-full overflow-y-auto">
+    <div className="flex flex-col gap-4 p-4 bg-atlas-darker">
+      <div className="flex flex-col gap-4 w-full max-w-[1400px] mx-auto">
       {/* Header */}
       {reportData?.generatedAt && (
         <p className="text-atlas-muted text-xs">
@@ -265,6 +266,7 @@ const Dashboard: React.FC = () => {
 
       {/* Partners by Bucket */}
       <PartnersByBucketTable data={allMarkersData} filters={filters} reportData={reportData} />
+      </div>
     </div>
   );
 };
@@ -407,18 +409,19 @@ const STATUS_CLASS_MAP: Record<string, string> = {
 
 // Altura de linha (px) e larguras de coluna compartilhadas entre header
 // e body. Mantém alinhamento quando body é virtualizado em outra <table>.
+// Larguras em px — colunas numéricas com tamanho justo; a primeira cresce (auto).
 const TERRITORY_ROW_HEIGHT = 40;
 const TERRITORY_COL_WIDTHS = [
-  '18%', // territory
-  '8%',  // base
-  '10%', // ctl
-  '11%', // dailyDemand
-  '8%',  // totalSlots
-  '9%',  // openSlots
-  '8%',  // active
-  '10%', // onboarding
-  '9%',  // attainment
-  '9%',  // accuracy
+  'auto',  // territory (cresce conforme disponível)
+  '80px',  // base
+  '140px', // ctl (nome de pessoa — precisa de mais espaço)
+  '100px', // dailyDemand
+  '70px',  // totalSlots
+  '90px',  // openSlots
+  '70px',  // active
+  '100px', // onboarding
+  '100px', // attainment
+  '110px', // accuracy
 ];
 
 const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort }) => {

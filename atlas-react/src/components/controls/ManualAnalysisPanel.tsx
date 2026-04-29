@@ -69,12 +69,6 @@ function RecruitableResultPanel({
         </div>
       )}
 
-      {result.outOfJurisdictionStation && (
-        <div className="flex items-center gap-2 px-2 py-1 rounded bg-orange-500/10 border border-orange-500/30 text-xs text-orange-400" role="alert">
-          ⚠️ {t('manual_analysis.out_of_jurisdiction_warning', { station: result.outOfJurisdictionStation })}
-        </div>
-      )}
-
       <div className="flex items-center flex-wrap gap-2">
         {viable ? (
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 text-sm font-semibold">
@@ -97,13 +91,26 @@ function RecruitableResultPanel({
         )}
       </div>
 
-      {competingStations && competingStations.length > 0 && (
+      {(result.outOfJurisdictionStation || (competingStations && competingStations.length > 0)) && (
         <div
-          className="flex items-center gap-2 px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-xs text-amber-400"
+          className="flex items-start gap-2 px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-xs text-amber-400"
           role="note"
-          data-testid="competing-stations-note"
+          data-testid="recommendation-context-note"
         >
-          ℹ️ {t('manual_analysis.competing_stations_note', { stations: competingStations.join(', ') })}
+          <span aria-hidden="true">ℹ️</span>
+          <span>
+            {[
+              result.outOfJurisdictionStation
+                ? t('manual_analysis.context_point_outside')
+                : null,
+              competingStations && competingStations.length > 0
+                ? t('manual_analysis.context_radius_crosses', { stations: competingStations.join(', ') })
+                : null,
+              recommendedStation
+                ? t('manual_analysis.context_analysis_used', { station: recommendedStation })
+                : null,
+            ].filter(Boolean).join(' ')}
+          </span>
         </div>
       )}
 

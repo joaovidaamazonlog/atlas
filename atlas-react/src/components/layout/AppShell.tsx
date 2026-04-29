@@ -124,7 +124,7 @@ const TabletLayout: React.FC = () => {
         {/* Dashboard right panel */}
         {dashboardOpen && (
           <div
-            className="absolute top-0 right-0 bottom-0 overflow-y-auto"
+            className="absolute top-0 right-0 bottom-0 flex flex-col"
             style={{
               width: '85vw',
               zIndex: 'var(--z-overlay)' as unknown as number,
@@ -146,7 +146,9 @@ const TabletLayout: React.FC = () => {
                 </svg>
               </button>
             </div>
-            <DashboardWithSuspense />
+            <div className="flex-1 min-h-0">
+              <DashboardWithSuspense />
+            </div>
           </div>
         )}
       </div>
@@ -227,7 +229,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ controlPanelWidth, dashbo
         {/* Dashboard right panel */}
         {dashboardOpen && (
           <div
-            className="absolute top-0 right-0 bottom-0 overflow-y-auto"
+            className="absolute top-0 right-0 bottom-0 flex flex-col"
             style={{
               width: '60vw',
               zIndex: 'var(--z-overlay)' as unknown as number,
@@ -249,7 +251,9 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ controlPanelWidth, dashbo
                 </svg>
               </button>
             </div>
-            <DashboardWithSuspense />
+            <div className="flex-1 min-h-0">
+              <DashboardWithSuspense />
+            </div>
           </div>
         )}
       </div>

@@ -1,56 +1,56 @@
 {
   "pipeline": "daily",
-  "total_s": 395.374,
-  "started_at": 1777463052.403089,
-  "ended_at": 1777463447.7775314,
+  "total_s": 463.306,
+  "started_at": 1777483781.4522853,
+  "ended_at": 1777484244.7581835,
   "phases": [
     {
       "name": "load_territories_and_supply",
-      "duration_s": 0.085,
-      "started_at": 1777463052.403098,
-      "ended_at": 1777463052.488039,
+      "duration_s": 0.102,
+      "started_at": 1777483781.4522974,
+      "ended_at": 1777483781.5545743,
       "error": null
     },
     {
       "name": "load_packages",
-      "duration_s": 296.61,
-      "started_at": 1777463052.5055494,
-      "ended_at": 1777463349.1153939,
+      "duration_s": 337.495,
+      "started_at": 1777483781.5802164,
+      "ended_at": 1777484119.075109,
       "error": null
     },
     {
       "name": "load_partners",
-      "duration_s": 51.227,
-      "started_at": 1777463349.1154516,
-      "ended_at": 1777463400.3427246,
+      "duration_s": 58.776,
+      "started_at": 1777484119.0751667,
+      "ended_at": 1777484177.8510396,
       "error": null
     },
     {
       "name": "phase3_partner_fit",
-      "duration_s": 25.594,
-      "started_at": 1777463400.3427665,
-      "ended_at": 1777463425.9371195,
+      "duration_s": 35.374,
+      "started_at": 1777484177.851085,
+      "ended_at": 1777484213.225047,
       "error": null
     },
     {
       "name": "phase4_webleads",
-      "duration_s": 10.054,
-      "started_at": 1777463425.9371483,
-      "ended_at": 1777463435.9909346,
+      "duration_s": 15.668,
+      "started_at": 1777484213.225084,
+      "ended_at": 1777484228.892602,
       "error": null
     },
     {
       "name": "cnpj_lookup",
-      "duration_s": 0.0,
-      "started_at": 1777463435.9909713,
-      "ended_at": 1777463435.9914415,
+      "duration_s": 0.001,
+      "started_at": 1777484228.892672,
+      "ended_at": 1777484228.8933208,
       "error": null
     },
     {
       "name": "phase5_reports",
-      "duration_s": 11.782,
-      "started_at": 1777463435.991458,
-      "ended_at": 1777463447.7731063,
+      "duration_s": 15.858,
+      "started_at": 1777484228.8933344,
+      "ended_at": 1777484244.7510767,
       "error": null
     }
   ]

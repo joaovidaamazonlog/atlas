@@ -35,6 +35,8 @@ function groupByStation(data: Partner[]): StationRow[] {
 
 const ROW_HEIGHT = 40;
 const VIRTUALIZE_THRESHOLD = 100;
+// Larguras em percentual para table-fixed — somam 100%
+const STATION_COL_WIDTHS = ['22%', '13%', '13%', '13%', '13%', '13%', '13%'];
 
 interface StationsTableProps {
   data: Partner[];
@@ -109,51 +111,84 @@ const StationsTable: React.FC<StationsTableProps> = React.memo(({ data }) => {
 
   return (
     <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-atlas-darker sticky top-0 z-10">
-            <tr>
-              {COLUMNS.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => handleSort(col.key)}
-                  className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
-                >
-                  {col.label}
-                  <SortIndicator col={col.key} />
-                </th>
+      {useVirtualization ? (
+        <div
+          ref={parentRef}
+          style={{ height: Math.min(rows.length * ROW_HEIGHT, 400), overflowY: 'auto' }}
+        >
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              {STATION_COL_WIDTHS.map((w, i) => (
+                <col key={i} style={{ width: w }} />
               ))}
-            </tr>
-          </thead>
-        </table>
-        {useVirtualization ? (
-          <div
-            ref={parentRef}
-            style={{ height: Math.min(rows.length * ROW_HEIGHT, 400), overflowY: 'auto' }}
-          >
-            <table className="w-full text-sm" style={{ height: virtualizer.getTotalSize() }}>
-              <tbody>
-                {virtualizer.getVirtualItems().map((virtualRow) => {
-                  const row = rows[virtualRow.index];
-                  return renderRow(row, {
-                    position: 'absolute',
-                    top: virtualRow.start,
-                    left: 0,
-                    width: '100%',
-                    height: ROW_HEIGHT,
-                  });
-                })}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <table className="w-full text-sm">
+            </colgroup>
+            <thead className="bg-atlas-darker sticky top-0 z-10">
+              <tr>
+                {COLUMNS.map((col) => (
+                  <th
+                    key={col.key}
+                    onClick={() => handleSort(col.key)}
+                    className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
+                  >
+                    {col.label}
+                    <SortIndicator col={col.key} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {(() => {
+                const items = virtualizer.getVirtualItems();
+                if (items.length === 0) return null;
+                const paddingTop = items[0].start;
+                const paddingBottom = virtualizer.getTotalSize() - items[items.length - 1].end;
+                return (
+                  <>
+                    {paddingTop > 0 && (
+                      <tr aria-hidden="true" style={{ height: paddingTop }}>
+                        <td colSpan={STATION_COL_WIDTHS.length} style={{ padding: 0, border: 0 }} />
+                      </tr>
+                    )}
+                    {items.map((v) => renderRow(rows[v.index], { height: ROW_HEIGHT }))}
+                    {paddingBottom > 0 && (
+                      <tr aria-hidden="true" style={{ height: paddingBottom }}>
+                        <td colSpan={STATION_COL_WIDTHS.length} style={{ padding: 0, border: 0 }} />
+                      </tr>
+                    )}
+                  </>
+                );
+              })()}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              {STATION_COL_WIDTHS.map((w, i) => (
+                <col key={i} style={{ width: w }} />
+              ))}
+            </colgroup>
+            <thead className="bg-atlas-darker sticky top-0 z-10">
+              <tr>
+                {COLUMNS.map((col) => (
+                  <th
+                    key={col.key}
+                    onClick={() => handleSort(col.key)}
+                    className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
+                  >
+                    {col.label}
+                    <SortIndicator col={col.key} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
               {rows.map((row) => renderRow(row))}
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
       {rows.length === 0 && (
         <div className="text-atlas-muted text-center py-6">Nenhuma estação encontrada.</div>
       )}

@@ -521,23 +521,31 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort
     <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
       {virtualizeOn ? (
         <div ref={parentRef} style={containerStyle}>
-          <table
-            className="w-full text-sm table-fixed"
-            style={{ height: virtualizer.getTotalSize() + 44, position: 'relative' }}
-          >
+          <table className="w-full text-sm table-fixed">
             {colgroup}
             {theadContent}
             <tbody>
-              {virtualizer.getVirtualItems().map((v) => {
-                const row = rows[v.index];
-                return renderRow(row, {
-                  position: 'absolute',
-                  top: v.start + 44,
-                  left: 0,
-                  width: '100%',
-                  height: TERRITORY_ROW_HEIGHT,
-                });
-              })}
+              {(() => {
+                const items = virtualizer.getVirtualItems();
+                if (items.length === 0) return null;
+                const paddingTop = items[0].start;
+                const paddingBottom = virtualizer.getTotalSize() - items[items.length - 1].end;
+                return (
+                  <>
+                    {paddingTop > 0 && (
+                      <tr aria-hidden="true" style={{ height: paddingTop }}>
+                        <td colSpan={TERRITORY_COL_WIDTHS.length} style={{ padding: 0, border: 0 }} />
+                      </tr>
+                    )}
+                    {items.map((v) => renderRow(rows[v.index], { height: TERRITORY_ROW_HEIGHT }))}
+                    {paddingBottom > 0 && (
+                      <tr aria-hidden="true" style={{ height: paddingBottom }}>
+                        <td colSpan={TERRITORY_COL_WIDTHS.length} style={{ padding: 0, border: 0 }} />
+                      </tr>
+                    )}
+                  </>
+                );
+              })()}
             </tbody>
           </table>
         </div>

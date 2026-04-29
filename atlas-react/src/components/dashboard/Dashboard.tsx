@@ -500,42 +500,39 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort
     </colgroup>
   );
 
-  const headerTable = (
-    <table className="w-full text-sm table-fixed">
-      {colgroup}
-      <thead className="bg-atlas-darker">
-        <tr>
-          {TERRITORY_COLUMNS.map((col) => (
-            <th
-              key={col.key}
-              onClick={() => onSort(col.key)}
-              className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
-            >
-              {col.label}
-              <SortIndicator column={col.key} sortState={sortState} />
-            </th>
-          ))}
-        </tr>
-      </thead>
-    </table>
+  const theadContent = (
+    <thead className="bg-atlas-darker sticky top-0 z-10">
+      <tr>
+        {TERRITORY_COLUMNS.map((col) => (
+          <th
+            key={col.key}
+            onClick={() => onSort(col.key)}
+            className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide cursor-pointer select-none hover:text-atlas-light transition-colors whitespace-nowrap"
+          >
+            {col.label}
+            <SortIndicator column={col.key} sortState={sortState} />
+          </th>
+        ))}
+      </tr>
+    </thead>
   );
 
   return (
     <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
-      <div className="overflow-x-auto">{headerTable}</div>
       {virtualizeOn ? (
         <div ref={parentRef} style={containerStyle}>
           <table
             className="w-full text-sm table-fixed"
-            style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
+            style={{ height: virtualizer.getTotalSize() + 44, position: 'relative' }}
           >
             {colgroup}
+            {theadContent}
             <tbody>
               {virtualizer.getVirtualItems().map((v) => {
                 const row = rows[v.index];
                 return renderRow(row, {
                   position: 'absolute',
-                  top: v.start,
+                  top: v.start + 44,
                   left: 0,
                   width: '100%',
                   height: TERRITORY_ROW_HEIGHT,
@@ -548,6 +545,7 @@ const TerritoryTable: React.FC<TerritoryTableProps> = ({ rows, sortState, onSort
         <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
           <table className="w-full text-sm table-fixed">
             {colgroup}
+            {theadContent}
             <tbody>{rows.map((row) => renderRow(row))}</tbody>
           </table>
         </div>

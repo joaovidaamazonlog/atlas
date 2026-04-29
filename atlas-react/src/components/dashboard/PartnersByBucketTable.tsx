@@ -120,23 +120,20 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
     </tr>
   );
 
-  const headerTable = (
-    <table className="w-full text-sm table-fixed">
-      {colgroup}
-      <thead className="bg-atlas-darker">
-        <tr>
-          <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-            {t('dashboard.col_name')}
-          </th>
-          <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-            {t('dashboard.col_store_id')}
-          </th>
-          <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
-            {t('dashboard.col_bucket')}
-          </th>
-        </tr>
-      </thead>
-    </table>
+  const theadContent = (
+    <thead className="bg-atlas-darker sticky top-0 z-10">
+      <tr>
+        <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
+          {t('dashboard.col_name')}
+        </th>
+        <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
+          {t('dashboard.col_store_id')}
+        </th>
+        <th className="px-3 py-3 text-left text-atlas-muted uppercase text-xs tracking-wide whitespace-nowrap">
+          {t('dashboard.col_bucket')}
+        </th>
+      </tr>
+    </thead>
   );
 
   return (
@@ -163,7 +160,6 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
       </div>
 
       <div className="bg-atlas-dark border border-atlas-navy rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">{headerTable}</div>
         {filtered.length === 0 ? (
           <div className="px-3 py-4 text-center text-atlas-muted text-xs">
             {t('dashboard.no_territory_found')}
@@ -172,15 +168,16 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
           <div ref={parentRef} style={containerStyle}>
             <table
               className="w-full text-sm table-fixed"
-              style={{ height: virtualizer.getTotalSize(), position: 'relative' }}
+              style={{ height: virtualizer.getTotalSize() + 44, position: 'relative' }}
             >
               {colgroup}
+              {theadContent}
               <tbody>
                 {virtualizer.getVirtualItems().map((v) => {
                   const row = filtered[v.index];
                   return renderRow(row, v.index, {
                     position: 'absolute',
-                    top: v.start,
+                    top: v.start + 44,
                     left: 0,
                     width: '100%',
                     height: PBT_ROW_HEIGHT,
@@ -193,6 +190,7 @@ const PartnersByBucketTable: React.FC<Props> = ({ data, filters, reportData }) =
           <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
             <table className="w-full text-sm table-fixed">
               {colgroup}
+              {theadContent}
               <tbody>{filtered.map((row, idx) => renderRow(row, idx))}</tbody>
             </table>
           </div>

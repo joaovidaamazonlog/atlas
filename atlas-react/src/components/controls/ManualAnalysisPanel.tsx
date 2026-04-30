@@ -19,6 +19,7 @@ import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useDebounce } from '../../hooks/useDebounce';
 import type { Partner, ReasonCode } from '../../store/types';
 import { evaluateRecruitableArea, isEvaluatorError } from '../../lib/recruitableAreaEvaluator';
+import DeliveriesInAreaPanel from './DeliveriesInAreaPanel';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -620,6 +621,11 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             result={recruitableAnalysis.result}
             isStale={recruitableAnalysis.isStale}
           />
+        )}
+
+        {/* Composição real de entregas na área (IHS vs DSP + parceiros) */}
+        {!whatIfModeActive && recruitableAnalysis.result && (
+          <DeliveriesInAreaPanel result={recruitableAnalysis.result} />
         )}
 
         {!whatIfModeActive && recruitableAnalysis.result !== null && (

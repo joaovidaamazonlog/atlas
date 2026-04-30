@@ -26,6 +26,8 @@ import CapComparisonLayer from './CapComparisonLayer';
 import PartnerWhatIfLayer from './PartnerWhatIfLayer';
 import MapClickCapture from './MapClickCapture';
 import RoutePickPinsLayer from './RoutePickPinsLayer';
+import DSPShareLayer from './DSPShareLayer';
+import PackagePinLayer from './PackagePinLayer';
 
 function LayerPanesSetup() {
   const map = useMap();
@@ -114,8 +116,10 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <RouteLayer />
       <MapLegend />
       <GeoIntelligenceLayerConditional />
+      <DSPShareLayer />
       <ProspectMarkersLayer />
       <ManualAnalysisPinLayer />
+      <PackagePinLayer />
       <RecruitableAreaLayer />
       <CapComparisonLayer />
       <PartnerWhatIfLayer />

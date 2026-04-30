@@ -19,6 +19,7 @@ export function defaultStyleConfig(): StyleConfig {
     showOptimizationLayer: false,
     showHeatmap: false,
     showGeoIntelligence: false,
+    showDspShareLayer: false,
     polygonColorField: 'territory',
   };
 }

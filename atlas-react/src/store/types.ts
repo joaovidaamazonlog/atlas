@@ -147,6 +147,8 @@ export interface StyleConfig {
   showGeoIntelligence: boolean;
   /** Campo para colorir os polígonos de território: 'default' | 'delivery_station' | 'attainment' */
   polygonColorField: string;
+  /** Exibe o layer que colore cada hex pelo % DSP (Fase 6 — deliveries). */
+  showDspShareLayer: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -309,4 +311,129 @@ export interface HighlightCriteria {
   statusHighlight: string;
   overlappingOp: 'gt' | 'lt' | 'eq';
   overlappingVal: number;
+}
+
+// ---------------------------------------------------------------------------
+// DELIVERIES / CANAL (IHS vs DSP) — Fase 6 do pipeline
+// ---------------------------------------------------------------------------
+
+/** Totais agregados por DS. Usado no card de share IHS vs DSP. */
+export interface DeliveryStationTotals {
+  total: number;
+  ihs: number;
+  dsp: number;
+  other: number;
+  ihs_share_pct: number;
+  dsp_share_pct: number;
+}
+
+/** Entrada diária (1 por date) para uma DS. */
+export interface DeliveryDailyEntry {
+  date: string;
+  ihs: number;
+  dsp: number;
+  total: number;
+}
+
+/** Série temporal diária por DS. */
+export type DailyByStation = Record<string, DeliveryDailyEntry[]>;
+
+/**
+ * Estatísticas por parceiro (store_id) para a janela da base de pacotes.
+ * Dois grupos: parceiros conhecidos (match em dados_mapa.json) e unknown
+ * (store_id presente no CSV mas sem cadastro — sinalizados no Dashboard).
+ */
+export interface PartnerDeliveryStats {
+  store_id: string;
+  salesforce_id: string | null;
+  name: string;
+  nome_empresa: string;
+  status: string | null;
+  canal_dominante: string;
+  delivery_station: string;
+  bucket_ade: string | null;
+  capacity: number;
+  total: number;
+  daily_avg: number;
+  cap_utilization_pct: number;
+  share_ds_pct: number;
+  share_ds_ihs_pct: number;
+  share_territory_pct: number;
+  trend_7d_pct: number;
+  daily_series: { date: string; total: number }[];
+  is_unknown: boolean;
+  lat: number | null;
+  lon: number | null;
+}
+
+/** Payload completo de `deliveries_summary.json`. */
+export interface DeliverySummary {
+  period: { date_min: string; date_max: string; days: number };
+  station_totals: Record<string, DeliveryStationTotals>;
+  territory_totals: Record<string, number>;
+  daily_by_station: DailyByStation;
+  partners: PartnerDeliveryStats[];
+}
+
+/** Parceiro em um hex (item do top_partners). */
+export interface HexPartnerBreakdown {
+  store_id: string;
+  nome_empresa: string;
+  count: number;
+}
+
+/** Breakdown de um hex por canal, com top_partners (máx 10). */
+export interface HexDeliveryBreakdown {
+  hex_id: string;
+  total: number;
+  ihs: number;
+  dsp: number;
+  dsp_share_pct: number;
+  top_partners: HexPartnerBreakdown[];
+  /** DS dominante do hex (presente quando a Fase 6 conseguiu resolver). */
+  station_code?: string;
+  /** Território (bucket_ade) dominante do hex, quando conhecido. */
+  territory_id?: string;
+}
+
+/** Payload completo de `deliveries_by_hex.json`. */
+export interface DeliveriesByHex {
+  period: { date_min: string; date_max: string; days: number };
+  hexes: HexDeliveryBreakdown[];
+}
+
+/** Linha individual do .jsonl.gz por DS (chaves curtas para economizar bytes). */
+export interface PackageDelivery {
+  tid: string;               // tracking_id
+  sdt: string;               // scan_datetime_br
+  rc: string;                // reason_code
+  st: string;                // store_id
+  ne: string;                // nome_empresa
+  ch: string;                // canal_entrega
+  hex: string;
+  lat?: number;
+  lon?: number;
+}
+
+/** Pin que o Dashboard solicita ao mapa para exibir um pacote específico. */
+export interface PackagePin {
+  lat: number;
+  lon: number;
+  tracking_id: string;
+  scan_datetime_br: string;
+  reason_code: string;
+  partner_name: string;
+  canal: string;
+}
+
+/** Thresholds ajustáveis por sliders na aba Insights. */
+export interface InsightThresholds {
+  /** % do cap abaixo do qual um parceiro é considerado subutilizado. */
+  cap_utilization_pct_threshold: number;
+  /** % de queda em 7d vs 7d anteriores para sinalizar queda súbita. */
+  trend_drop_pct_threshold: number;
+  /** % mínimo de share DSP num território com hub ativo para alertar. */
+  dsp_dominance_share_pct_threshold: number;
+  /** Volume diário mínimo para um hex órfão entrar na lista. */
+  orphan_hex_min_daily_volume: number;
 }

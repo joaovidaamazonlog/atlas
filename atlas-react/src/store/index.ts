@@ -33,6 +33,14 @@ import type {
   GeoIntelligenceState,
   GeoIntelligenceFilter,
 } from './geoIntelligenceSlice';
+import {
+  DEFAULT_DELIVERIES_STATE,
+  type DeliveriesState,
+  fetchDeliveriesSummary,
+  fetchDeliveriesByHex,
+  fetchDeliveryDetailForDS,
+} from './deliveriesSlice';
+import type { PackagePin } from './types';
 
 /** Pin arrastável no mapa para cada ponto escolhido no RoutesTab. */
 export interface RoutePickPin {
@@ -183,6 +191,15 @@ export interface AtlasStore {
   /** Dados da posição simulada no what-if */
   whatIfSimulatedData: { id: string; pos: [number, number]; radius: number } | null;
   setWhatIfSimulatedData: (data: { id: string; pos: [number, number]; radius: number } | null) => void;
+
+  // --- Deliveries (Fase 6 — IHS vs DSP) ---
+  deliveries: DeliveriesState;
+  /** Pin temporário no mapa para exibir um pacote específico (drill-down). */
+  packagePin: PackagePin | null;
+  loadDeliveriesSummary: () => Promise<void>;
+  loadDeliveriesByHex: () => Promise<void>;
+  loadDeliveryDetailForDS: (dsCode: string) => Promise<void>;
+  setPackagePin: (pin: PackagePin | null) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -248,6 +265,10 @@ export const useStore = create<AtlasStore>((set, get) => ({
   whatIfModeActive: false,
   whatIfPartnerId: null,
   whatIfSimulatedData: null,
+
+  // --- Estado inicial: deliveries (Fase 6) ---
+  deliveries: { ...DEFAULT_DELIVERIES_STATE },
+  packagePin: null,
 
   // ---------------------------------------------------------------------------
   // ACTIONS
@@ -347,6 +368,11 @@ export const useStore = create<AtlasStore>((set, get) => ({
         isLoading: false,
         loadingMessage: '',
       });
+
+      // Dispara o load do summary de deliveries em paralelo.
+      // Não bloqueia o loadAll — a aba "Pacotes & Canais" fica em loading
+      // local até esse fetch terminar. Erros ficam em `deliveries.errorSummary`.
+      get().loadDeliveriesSummary();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro desconhecido ao carregar dados';
       console.error('[AtlasStore] loadAll falhou:', message, err);
@@ -839,6 +865,81 @@ export const useStore = create<AtlasStore>((set, get) => ({
 
   setWhatIfSimulatedData: (data) => {
     set({ whatIfSimulatedData: data });
+  },
+
+  // ---------------------------------------------------------------------------
+  // DELIVERIES ACTIONS (Fase 6 — canal IHS vs DSP)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Carrega `deliveries_summary.json`. Idempotente: se já carregou ou há um
+   * fetch em voo, noop. Erros ficam em `deliveries.errorSummary` sem
+   * propagar para o toast global (a aba mostra warning localmente).
+   */
+  loadDeliveriesSummary: async () => {
+    const curr = get().deliveries;
+    if (curr.summary || curr.isLoadingSummary) return;
+    set({ deliveries: { ...curr, isLoadingSummary: true, errorSummary: null } });
+    try {
+      const summary = await fetchDeliveriesSummary();
+      set({ deliveries: { ...get().deliveries, summary, isLoadingSummary: false } });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Erro ao carregar summary de entregas.';
+      console.warn('[AtlasStore] loadDeliveriesSummary falhou:', msg);
+      set({
+        deliveries: { ...get().deliveries, isLoadingSummary: false, errorSummary: msg },
+      });
+    }
+  },
+
+  /**
+   * Carrega `deliveries_by_hex.json`. Lazy — só é chamado quando a UI
+   * precisa (análise manual, layer de share DSP).
+   */
+  loadDeliveriesByHex: async () => {
+    const curr = get().deliveries;
+    if (curr.byHex || curr.isLoadingByHex) return;
+    set({ deliveries: { ...curr, isLoadingByHex: true, errorByHex: null } });
+    try {
+      const byHex = await fetchDeliveriesByHex();
+      set({ deliveries: { ...get().deliveries, byHex, isLoadingByHex: false } });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Erro ao carregar entregas por hex.';
+      console.warn('[AtlasStore] loadDeliveriesByHex falhou:', msg);
+      set({
+        deliveries: { ...get().deliveries, isLoadingByHex: false, errorByHex: msg },
+      });
+    }
+  },
+
+  /**
+   * Carrega o detalhe de pacotes para uma DS específica a partir do
+   * `.jsonl.gz`. Cacheado em `detailByDs[dsCode]`.
+   */
+  loadDeliveryDetailForDS: async (dsCode: string) => {
+    const curr = get().deliveries;
+    if (curr.detailByDs[dsCode] || curr.loadingDetailDs === dsCode) return;
+    set({ deliveries: { ...curr, loadingDetailDs: dsCode, errorDetail: null } });
+    try {
+      const records = await fetchDeliveryDetailForDS(dsCode);
+      set({
+        deliveries: {
+          ...get().deliveries,
+          detailByDs: { ...get().deliveries.detailByDs, [dsCode]: records },
+          loadingDetailDs: null,
+        },
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Erro ao carregar detalhe de entregas.';
+      console.warn(`[AtlasStore] loadDeliveryDetailForDS(${dsCode}) falhou:`, msg);
+      set({
+        deliveries: { ...get().deliveries, loadingDetailDs: null, errorDetail: msg },
+      });
+    }
+  },
+
+  setPackagePin: (pin) => {
+    set({ packagePin: pin });
   },
 }));
 

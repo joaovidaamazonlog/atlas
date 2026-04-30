@@ -27,14 +27,18 @@ import type { TerritoryOutput } from '../../store/geoIntelligenceSlice';
 import { regionTypeLabel, formatGap, potentialScoreToColor } from '../../lib/geoIntelligenceUtils';
 import { Spinner } from '../ui/Spinner';
 import KpiCard from './KpiCard';
+import FilterCascade from './FilterCascade';
+import { useDashboardFilters } from '../../hooks/useDashboardFilters';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 const OriginalDashboard = lazy(() => import('./Dashboard'));
+const PackagesTab = lazy(() => import('./PackagesTab'));
+const InsightsTab = lazy(() => import('./InsightsTab'));
 
 type SortDir = 'asc' | 'desc';
 type SortCol = keyof TerritoryOutput | null;
-type ActiveTab = 'geo' | 'operacional';
+type ActiveTab = 'geo' | 'operacional' | 'packages' | 'insights';
 
 function getCSSVar(name: string): string {
   if (typeof document === 'undefined') return '';
@@ -73,6 +77,26 @@ const GeoIntelligenceDashboard: React.FC = () => {
   const [expansionTarget, setExpansionTarget] = useState<number>(50);
   const [sortCol, setSortCol] = useState<SortCol>('gap');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
+
+  // Filtros globais do Dashboard (compartilhados entre todas as abas).
+  // O FilterCascade fica fora das abas porque o gerente escolhe a
+  // visão uma vez (ex: "minha região SP/SUL") e navega pelas análises
+  // sem perder o recorte.
+  const {
+    filters,
+    setFilters,
+    reportData,
+    isLoadingReport,
+    reportError,
+    loadReport,
+    retry: retryReport,
+  } = useDashboardFilters();
+
+  React.useEffect(() => {
+    if (!reportData && !isLoadingReport && !reportError) {
+      void loadReport();
+    }
+  }, [reportData, isLoadingReport, reportError, loadReport]);
 
   const loadGeoIntelligence = useStore((s) => s.loadGeoIntelligence);
   const selectGeoTerritory = useStore((s) => s.selectGeoTerritory);
@@ -155,12 +179,42 @@ const GeoIntelligenceDashboard: React.FC = () => {
       <div className="flex shrink-0 border-b border-atlas-navy">
         <TabButton active={activeTab === 'geo'} onClick={() => setActiveTab('geo')}>{t('dashboard.tab_geo')}</TabButton>
         <TabButton active={activeTab === 'operacional'} onClick={() => setActiveTab('operacional')}>{t('dashboard.tab_operational')}</TabButton>
+        <TabButton active={activeTab === 'packages'} onClick={() => setActiveTab('packages')}>{t('dashboard.tab_packages')}</TabButton>
+        <TabButton active={activeTab === 'insights'} onClick={() => setActiveTab('insights')}>{t('dashboard.tab_insights')}</TabButton>
       </div>
+
+      {/* Filtros globais — aplicam-se a TODAS as abas exceto Geo (que tem seu próprio fluxo) */}
+      {activeTab !== 'geo' && (
+        <div className="shrink-0 border-b border-atlas-navy bg-atlas-darker">
+          <FilterCascade
+            reportData={reportData}
+            filters={filters}
+            onFilterChange={setFilters}
+            isLoading={isLoadingReport}
+          />
+        </div>
+      )}
 
       {activeTab === 'operacional' && (
         <div className="flex-1 overflow-y-auto">
           <Suspense fallback={<div className="flex items-center justify-center h-full p-8"><Spinner /></div>}>
             <OriginalDashboard />
+          </Suspense>
+        </div>
+      )}
+
+      {activeTab === 'packages' && (
+        <div className="flex-1 overflow-y-auto">
+          <Suspense fallback={<div className="flex items-center justify-center h-full p-8"><Spinner /></div>}>
+            <PackagesTab filters={filters} reportData={reportData} />
+          </Suspense>
+        </div>
+      )}
+
+      {activeTab === 'insights' && (
+        <div className="flex-1 overflow-y-auto">
+          <Suspense fallback={<div className="flex items-center justify-center h-full p-8"><Spinner /></div>}>
+            <InsightsTab filters={filters} reportData={reportData} />
           </Suspense>
         </div>
       )}

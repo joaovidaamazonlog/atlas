@@ -152,6 +152,13 @@ export default function StyleTab() {
           checked={styleConfig.showGeoIntelligence}
           onChange={(v) => setStyleConfig({ showGeoIntelligence: v })}
         />
+
+        <CheckboxRow
+          id="layer-dsp-share"
+          label={t('style.layer_dsp_share')}
+          checked={styleConfig.showDspShareLayer}
+          onChange={(v) => setStyleConfig({ showDspShareLayer: v })}
+        />
       </div>
     </div>
   );

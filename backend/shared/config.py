@@ -24,6 +24,23 @@ OUTPUT_JSON_DIR             = DEST_FOLDER
 OUTPUT_JSON_FILENAME_PREFIX = "dados_mapa"
 
 # ---------------------------------------------------------------------------
+# Deliveries / Canal (IHS vs DSP)
+# ---------------------------------------------------------------------------
+
+# Janela de dias considerada para as análises de volume por canal/parceiro
+# no Dashboard Operacional e na Análise Manual de Área.
+PACKAGE_HISTORY_DAYS = 15
+
+# Nome da pasta (dentro de DEST_FOLDER) onde serão gravados os arquivos
+# de detalhe de entregas por DS (jsonl.gz, um por DS). Consumidos sob
+# demanda pelo Dashboard quando o usuário abre o drill-down de um parceiro.
+DELIVERIES_DETAIL_SUBDIR = "deliveries_detail"
+
+# Valores canônicos do campo canal_entrega no CSV de pacotes.
+CANAL_IHS = "IHS_STORE"
+CANAL_DSP = "DSP"
+
+# ---------------------------------------------------------------------------
 # Otimização H3 / CP-SAT
 # ---------------------------------------------------------------------------
 

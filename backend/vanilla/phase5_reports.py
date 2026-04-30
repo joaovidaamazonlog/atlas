@@ -887,7 +887,11 @@ def write_heatmap_unified(
             ]
 
             demand_allocated = sum(pkg_count for _, pkg_count in entries)
-            demand_residual = round(demand_daily - demand_allocated, 4)
+            # Clamp em zero: arredondamentos no CP-SAT (demand_daily usa
+            # ``max(1, round(total / days))`` na Fase 2) podem levar a
+            # demand_allocated > demand_daily em hexes de baixa demanda.
+            # Volume não pode ser negativo — tratamos como saturado.
+            demand_residual = round(max(demand_daily - demand_allocated, 0.0), 4)
             is_covered = demand_allocated > 0
 
             covering_partners_list: List[dict] = []
@@ -962,22 +966,183 @@ def write_heatmap_unified(
     return heatmap_path
 
 
-def _derive_hex_coverage(pm: PartnerMetrics) -> Optional[List[dict]]:
+def _derive_heuristic_hex_coverage(
+    pm: PartnerMetrics,
+    territories: "TerritoriesResult",
+    pkg: PackageData,
+    demand_allocated_by_hex: Optional[Dict[str, int]] = None,
+) -> List[dict]:
+    """
+    Deriva uma cobertura hex heurística para parceiros Active/Onboarding
+    que não foram alocados pelo CP-SAT (sem ``matched_slot_id`` ou sem
+    ``allocations``).
+
+    Semântica
+    ---------
+    Para cada hex do território do parceiro que está fisicamente dentro do
+    raio dele (``radius_a``), considera o ``demand_daily_residual`` — a
+    demanda diária NÃO coberta por parceiros já alocados pelo CP-SAT.
+
+    ``demand_residual_hex = max(demand_daily_hex - demand_allocated_hex, 0)``
+
+    onde ``demand_allocated_hex`` é a soma dos ``packages_assigned`` de
+    parceiros matched que cobrem aquele hex (vem do índice construído por
+    ``_build_hex_coverage_index``).
+
+    Os hexes com residual positivo são ordenados por residual desc e
+    ``packages_allocated = min(residual, capacidade_restante)`` é atribuído
+    a cada um até esgotar ``capacity_a`` do parceiro. Isso evita que um
+    parceiro sem match "roube" demanda que já é atendida por vizinhos
+    alocados pelo CP-SAT, ao mesmo tempo que respeita sua capacidade real.
+
+    Propósito
+    ---------
+    Permite que a simulação what-if (drag & drop de parceiro) reflita com
+    precisão o footprint real do parceiro: quando arrastado para fora de
+    um hex, a perda corresponde apenas à demanda residual que esse parceiro
+    estava efetivamente absorvendo naquela posição.
+
+    Importante: esta função NÃO altera ``demand_allocated``, ``is_covered``
+    ou ``covering_partners`` no heatmap — é apenas um enriquecimento em
+    ``dados_mapa.json`` para consumo do frontend. CP-SAT continua sendo a
+    única fonte autoritativa de alocações reais.
+    """
+    # Resolve o território do parceiro (preferência: cluster_name já
+    # resolvido pelo fit; fallback: hex_to_territory pelo origin_hex).
+    territory_id: Optional[str] = None
+    if pm.cluster_name and pm.cluster_name in territories.territory_index:
+        territory_id = pm.cluster_name
+    elif pm.origin_hex:
+        territory_id = territories.hex_to_territory.get(pm.origin_hex)
+
+    if not territory_id:
+        return []
+
+    meta = territories.territory_index.get(territory_id, {})
+    hex_ids_in_territory: List[str] = meta.get("hex_ids", [])
+    if not hex_ids_in_territory:
+        return []
+
+    # Raio e capacidade (Salesforce). Defaults alinhados com o
+    # _consolidate_stores em load_partners: radius=1500, cap=42.
+    radius_m = int(pm.radius_a) if pm.radius_a else 1500
+    capacity = int(pm.capacity_a) if pm.capacity_a else 42
+    if radius_m <= 0 or capacity <= 0:
+        return []
+    if pm.lat == 0 and pm.lon == 0:
+        return []
+
+    # Demanda diária por hex na station original do território.
+    original_code = territory_id.split("_", 1)[0] if "_" in territory_id else territory_id
+    demand_map = pkg.demand_by_station.get(original_code, {})
+
+    # Demanda já alocada por parceiros matched do CP-SAT (opcional).
+    # Quando ausente, assume zero (equivalente a considerar todos os hexes
+    # como não-cobertos — caso-limite seguro).
+    allocated_map = demand_allocated_by_hex or {}
+
+    # Coleta candidatos com residual positivo dentro do raio.
+    candidates: List[Tuple[str, float]] = []
+    for hex_id in hex_ids_in_territory:
+        try:
+            hlat, hlon = h3.cell_to_latlng(hex_id)
+        except Exception:
+            continue
+        # Distância pelo centróide do hex — mesma convenção do heatmap.
+        dist_m = _haversine_m(pm.lat, pm.lon, hlat, hlon)
+        if dist_m > radius_m:
+            continue
+
+        demand_total = int(demand_map.get(hex_id, 0))
+        demand_daily = demand_total / pkg.days if pkg.days else float(demand_total)
+        demand_allocated = allocated_map.get(hex_id, 0)
+        # Clamp em zero: arredondamentos no CP-SAT (demand_daily é
+        # arredondado via ``max(1, round(total / days))`` na Fase 2)
+        # podem produzir demand_allocated > demand_daily em hexes de
+        # baixa demanda. Tratamos como saturado — sem demanda residual
+        # disponível para um parceiro não-matched capturar.
+        residual = max(demand_daily - demand_allocated, 0.0)
+        if residual <= 0:
+            continue
+        candidates.append((hex_id, residual))
+
+    if not candidates:
+        return []
+
+    # Ordena por residual desc e distribui até esgotar a capacidade.
+    candidates.sort(key=lambda x: x[1], reverse=True)
+    remaining = float(capacity)
+    coverage: List[dict] = []
+    for hex_id, residual in candidates:
+        if remaining <= 0:
+            break
+        pkgs = min(residual, remaining)
+        pkgs_int = int(round(pkgs))
+        if pkgs_int <= 0:
+            continue
+        coverage.append({"hex_id": hex_id, "packages_allocated": pkgs_int})
+        remaining -= pkgs_int
+
+    return coverage
+
+
+def _haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Distância geodésica entre dois pontos em metros."""
+    import math
+    R = 6371000.0
+    dLat = math.radians(lat2 - lat1)
+    dLon = math.radians(lon2 - lon1)
+    a = (math.sin(dLat / 2) ** 2
+         + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2))
+         * math.sin(dLon / 2) ** 2)
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
+def _derive_hex_coverage(
+    pm: PartnerMetrics,
+    territories: Optional["TerritoriesResult"] = None,
+    pkg: Optional[PackageData] = None,
+    demand_allocated_by_hex: Optional[Dict[str, int]] = None,
+) -> Optional[List[dict]]:
     """
     Derives the hex_coverage list for a partner record.
 
     Returns a list of {hex_id, packages_allocated} entries for Active/Onboarding
     partners, or None if the partner's status is not Active or Onboarding.
 
-    When the partner is Active/Onboarding but has no matched_slot_id or no
-    allocations, returns an empty list [].
+    Ordem de prioridade para o conteúdo:
+      1. Allocations do CP-SAT (``pm.allocations``) — fonte autoritativa.
+      2. Heurística via raio do parceiro ``radius_a`` quando o parceiro é
+         Active/Onboarding mas não foi alocado pelo CP-SAT. Requer
+         ``territories`` e ``pkg`` para calcular. Cada hex dentro do raio
+         recebe ``packages_allocated = demand_daily_residual`` (demanda
+         diária menos o que já está alocado por outros parceiros matched).
+      3. Lista vazia ``[]`` se nenhuma das duas fontes produzir dados.
+
+    Nunca retorna um campo ausente para Active/Onboarding — sempre ``[]``
+    no mínimo. Isso preserva o invariante de que Active/Onboarding SEMPRE
+    têm o campo ``hex_coverage`` em ``dados_mapa.json``.
     """
     if pm.status not in ("Active", "Onboarding"):
         return None
-    return [
-        {"hex_id": a.hex_id, "packages_allocated": a.packages_assigned}
-        for a in pm.allocations
-    ]
+
+    # 1. CP-SAT (fonte autoritativa)
+    if pm.allocations:
+        return [
+            {"hex_id": a.hex_id, "packages_allocated": a.packages_assigned}
+            for a in pm.allocations
+        ]
+
+    # 2. Heurística para parceiros Active/Onboarding sem match CP-SAT
+    if territories is not None and pkg is not None:
+        heuristic = _derive_heuristic_hex_coverage(
+            pm, territories, pkg, demand_allocated_by_hex=demand_allocated_by_hex,
+        )
+        if heuristic:
+            return heuristic
+
+    # 3. Fallback: lista vazia
+    return []
 
 
 def _resolve_bucket_ade(
@@ -1043,6 +1208,8 @@ def _write_dados_mapa(
     partner_data_json_path: Path,
     territories: "TerritoriesResult",
     stations: Optional[List[str]] = None,
+    pkg: Optional[PackageData] = None,
+    demand_allocated_by_hex: Optional[Dict[str, int]] = None,
 ) -> None:
     """
     Atualiza dados_mapa.json embutindo decision, reason, bucket_ade,
@@ -1091,7 +1258,16 @@ def _write_dados_mapa(
             record["cap_suggestion"]    = pm.capacity_s
 
             # hex_coverage: only for Active/Onboarding partners (Requirement 3.4)
-            hex_coverage = _derive_hex_coverage(pm)
+            # Passa territories, pkg e demand_allocated_by_hex para habilitar
+            # o fallback heurístico quando o parceiro é Active/Onboarding mas
+            # não foi alocado pelo CP-SAT. O fallback usa demand_daily_residual
+            # por hex (descontando o que outros parceiros matched já atendem).
+            hex_coverage = _derive_hex_coverage(
+                pm,
+                territories=territories,
+                pkg=pkg,
+                demand_allocated_by_hex=demand_allocated_by_hex,
+            )
             if hex_coverage is not None:
                 record["hex_coverage"] = hex_coverage
 
@@ -1178,8 +1354,23 @@ def run_phase5(
     paths["geojson"] = p
 
     # 6. Enriquecer dados_mapa.json com campos de otimização
+    # Constrói o mapa hex_id → demanda já alocada por parceiros matched.
+    # É usado pelo fallback heurístico de hex_coverage para descontar,
+    # em cada hex, a demanda que outros parceiros do CP-SAT já cobrem.
+    hex_coverage_index = _build_hex_coverage_index(fit)
+    demand_allocated_by_hex: Dict[str, int] = {
+        hex_id: sum(pkg_count for _, pkg_count in entries)
+        for hex_id, entries in hex_coverage_index.items()
+    }
+
     dados_mapa_path = out_dir / "dados_mapa.json"
-    _write_dados_mapa(dados_mapa_path, fit, dados_mapa_path, territories=territories, stations=stations)
+    _write_dados_mapa(
+        dados_mapa_path, fit, dados_mapa_path,
+        territories=territories,
+        stations=stations,
+        pkg=pkg,
+        demand_allocated_by_hex=demand_allocated_by_hex,
+    )
     paths["dados_mapa"] = dados_mapa_path
 
     # 7. Gerar heatmap.geojson unificado (uma passada, uma feature por hex)

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Chart as ChartJS,
@@ -10,7 +10,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { DATA_URLS } from '../../lib/config';
 import {
   ReportData,
   DashboardFilters,
@@ -22,12 +21,12 @@ import {
   getChartDataForBase,
 } from '../../lib/reportUtils';
 import { Spinner } from '../ui/Spinner';
-import FilterCascade from './FilterCascade';
 import KpiCard from './KpiCard';
 import PartnersByBucketTable from './PartnersByBucketTable';
 import BasesHierarchy from './BasesHierarchy';
 import { useRowVirtualization } from './useRowVirtualization';
 import { useStore } from '../../store';
+import { useDashboardFilters } from '../../hooks/useDashboardFilters';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -84,65 +83,17 @@ function getBarOptions() {
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
-  const [reportData, setReportData] = useState<ReportData | null>(null);
-  const [isLoadingReport, setIsLoadingReport] = useState(false);
-  const [reportError, setReportError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
-  const [filters, setFilters] = useState<DashboardFilters>({
-    bdm: 'all',
-    base: 'all',
-    ctl: 'all',
-    ade: 'all',
-    territory: 'all',
-  });
+
+  // Filtros e reportData vêm do hook compartilhado (topo do
+  // GeoIntelligenceDashboard). Isso garante que o recorte escolhido
+  // pelo gerente seja o mesmo em Operacional, Pacotes e Insights.
+  const { filters, setFilters, reportData, isLoadingReport, reportError, retry } = useDashboardFilters();
+
   const [sortState, setSortState] = useState<SortState>({ column: null, direction: 'asc' });
   const allMarkersData = useStore((s) => s.allMarkersData);
 
-  // Fetch on first mount or on retry (when reportData is null)
-  useEffect(() => {
-    if (reportData !== null) return;
-
-    let cancelled = false;
-
-    const fetchReport = async () => {
-      setIsLoadingReport(true);
-      setReportError(null);
-      try {
-        const res = await fetch(DATA_URLS.executiveReport);
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-        }
-        const json = await res.json();
-        if (!cancelled) {
-          setReportData(json as ReportData);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setReportError(
-            err instanceof Error ? err.message : 'Erro desconhecido ao carregar relatório.',
-          );
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoadingReport(false);
-        }
-      }
-    };
-
-    fetchReport();
-
-    return () => {
-      cancelled = true;
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reportData, retryCount]);
-
-  // Retry handler
   const handleRetry = () => {
-    setReportData(null);
-    setReportError(null);
-    setIsLoadingReport(false);
-    setRetryCount((c) => c + 1);
+    retry();
   };
 
   // Derived data via useMemo
@@ -224,13 +175,8 @@ const Dashboard: React.FC = () => {
         </p>
       )}
 
-      {/* Filters */}
-      <FilterCascade
-        reportData={reportData}
-        filters={filters}
-        onFilterChange={setFilters}
-        isLoading={isLoadingReport}
-      />
+      {/* Filters são renderizados no wrapper (GeoIntelligenceDashboard) e
+          compartilhados entre todas as abas. */}
 
       {/* KPI Cards */}
       <section>

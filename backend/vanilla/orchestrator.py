@@ -28,6 +28,7 @@ from typing import List, Optional, Set
 
 from shared.load_packages import load_packages
 from shared.load_partners import load_partners, load_partners_csv
+from shared.load_deliveries import load_deliveries
 from shared.models import Config
 from shared.timing import PhaseTimer, TimingReport
 from vanilla.phase_setup import run_setup as _run_setup_new, update_territories_geojson, rebuild_territory_polygons
@@ -36,6 +37,7 @@ from vanilla.phase2_ideal_supply import IdealSupplyResult, load_ideal_supply
 from vanilla.phase3_partner_fit import FitResult, run_phase3
 from vanilla.phase4_webleads import WebleadResult, run_phase4
 from vanilla.phase5_reports import run_phase5
+from vanilla.phase6_deliveries import run_phase6
 from vanilla.cnpj_lookup import run_cnpj_lookup, CnpjLookupResult
 
 
@@ -321,6 +323,23 @@ def run_daily(
             stations=stations,
             cnpj_result=cnpj_result,
         )
+
+    # Fase 6: análise de canal (IHS vs DSP) + drill-down de pacotes
+    # Não bloqueia o pipeline se o CSV ainda não tiver as colunas novas
+    # (scan_datetime_br, reason_code, canal_entrega, nome_empresa, store_id);
+    # nesse caso, load_deliveries retorna vazio e run_phase6 faz skip.
+    with timer.phase("phase6_deliveries"):
+        try:
+            deliveries = load_deliveries()
+            dados_mapa_path = Path(output_dir) / "dados_mapa.json"
+            run_phase6(
+                deliveries=deliveries,
+                dados_mapa_path=dados_mapa_path,
+                territories=territories,
+                output_dir=output_dir,
+            )
+        except Exception as e:
+            print(f"  WARN Fase 6 falhou (não bloqueia o pipeline): {e}")
 
     # Sumario de attainment por base
     summ = fit.summary()

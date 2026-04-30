@@ -79,11 +79,19 @@ describe('Property 6: ADV Simulation Formula', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Unit test: warning dispatched when hex_coverage absent and hexes are lost
+// Unit test: guard condition — hex coverage unavailable from all sources
 // Validates: Requirement 5.8
+//
+// Semantic (post-fix):
+//   - `covering_partners` on heatmap features is the PRIMARY source of the
+//     partner → hex-packages map. Always present in the post-setup heatmap.
+//   - `partner.hex_coverage` (dados_mapa.json) is the FALLBACK source.
+//   - Warning fires ONLY when BOTH sources are missing AND some hex is lost.
+//   - An empty `hex_coverage` is NOT an error: it means the Active partner has
+//     no allocations, so the partner-specific `loss` is legitimately zero.
 // ---------------------------------------------------------------------------
 
-describe('Unit test: guard condition — hex_coverage absent with hexes lost', () => {
+describe('Unit test: guard condition — hex coverage availability', () => {
   let dispatchedEvents: { type: string; detail: unknown }[];
   let originalDispatch: typeof document.dispatchEvent;
 
@@ -102,15 +110,24 @@ describe('Unit test: guard condition — hex_coverage absent with hexes lost', (
     vi.restoreAllMocks();
   });
 
-  it('dispatches atlas:whatif-warning and NOT atlas:whatif-result when hex_coverage is absent and hexes are lost', () => {
+  it('dispatches warning when heatmap has NO covering_partners AND partner hex_coverage is empty AND hexes are lost', () => {
     // Simulate the guard logic directly (mirrors handleDragEnd guard block)
     const partnerName = 'Test Partner';
     const hexCoverage: undefined = undefined;
-    const hexesLost = new Set(['hex_abc', 'hex_def']); // non-empty → hexes are lost
+    const hexesLost = new Set(['hex_abc', 'hex_def']);
 
-    const hexCoverageAbsent = !hexCoverage || (hexCoverage as unknown[]).length === 0;
+    // Heatmap features without covering_partners (legacy heatmap)
+    const heatmapFeatures: GeoJSON.Feature[] = [
+      { type: 'Feature', properties: { hex_id: 'hex_abc' }, geometry: { type: 'Point', coordinates: [0, 0] } },
+    ];
+    const heatmapHasCoveringInfo = heatmapFeatures.some(
+      (f) => Array.isArray(f.properties?.covering_partners),
+    );
+    const hexCoverageUnavailable =
+      !heatmapHasCoveringInfo &&
+      (!hexCoverage || (hexCoverage as unknown[]).length === 0);
 
-    if (hexCoverageAbsent && hexesLost.size > 0) {
+    if (hexCoverageUnavailable && hexesLost.size > 0) {
       document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
           detail: {
@@ -118,49 +135,62 @@ describe('Unit test: guard condition — hex_coverage absent with hexes lost', (
           },
         }),
       );
-      // Guard returns here — no atlas:whatif-result dispatched
     }
 
     const warningEvents = dispatchedEvents.filter(e => e.type === 'atlas:whatif-warning');
-    const resultEvents = dispatchedEvents.filter(e => e.type === 'atlas:whatif-result');
-
     expect(warningEvents).toHaveLength(1);
-    expect(resultEvents).toHaveLength(0);
     expect((warningEvents[0].detail as { message: string }).message).toContain(partnerName);
   });
 
-  it('dispatches atlas:whatif-warning and NOT atlas:whatif-result when hex_coverage is empty and hexes are lost', () => {
-    const partnerName = 'Empty Coverage Partner';
+  it('does NOT dispatch warning when heatmap has covering_partners even if partner hex_coverage is empty', () => {
+    // Active partner with no allocations (hex_coverage = []) — legitimate case:
+    // loss is simply zero, no warning.
     const hexCoverage: { hex_id: string; packages_allocated: number }[] = [];
     const hexesLost = new Set(['hex_xyz']);
 
-    const hexCoverageAbsent = !hexCoverage || hexCoverage.length === 0;
+    const heatmapFeatures: GeoJSON.Feature[] = [
+      {
+        type: 'Feature',
+        properties: {
+          hex_id: 'hex_xyz',
+          covering_partners: [{ salesforce_id: 'other_partner', packages_allocated: 5, share: 1.0 }],
+        },
+        geometry: { type: 'Point', coordinates: [0, 0] },
+      },
+    ];
+    const heatmapHasCoveringInfo = heatmapFeatures.some(
+      (f) => Array.isArray(f.properties?.covering_partners),
+    );
+    const hexCoverageUnavailable =
+      !heatmapHasCoveringInfo &&
+      (!hexCoverage || hexCoverage.length === 0);
 
-    if (hexCoverageAbsent && hexesLost.size > 0) {
+    if (hexCoverageUnavailable && hexesLost.size > 0) {
       document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
-          detail: {
-            message: `${partnerName}: dados de cobertura hex indisponíveis. Reposicione após recarregar os dados.`,
-          },
+          detail: { message: 'should not be dispatched' },
         }),
       );
     }
 
     const warningEvents = dispatchedEvents.filter(e => e.type === 'atlas:whatif-warning');
-    const resultEvents = dispatchedEvents.filter(e => e.type === 'atlas:whatif-result');
-
-    expect(warningEvents).toHaveLength(1);
-    expect(resultEvents).toHaveLength(0);
+    expect(warningEvents).toHaveLength(0);
   });
 
-  it('does NOT dispatch warning when hex_coverage is absent but no hexes are lost', () => {
-    // Gain-only scenario: hex_coverage absent but hexesLost is empty → proceed normally
+  it('does NOT dispatch warning when there are no hexes lost, regardless of coverage sources', () => {
+    // Gain-only scenario: both sources absent but hexesLost is empty → proceed normally
     const hexCoverage: undefined = undefined;
-    const hexesLost = new Set<string>(); // empty — no hexes lost
+    const hexesLost = new Set<string>();
+    const heatmapFeatures: GeoJSON.Feature[] = [];
 
-    const hexCoverageAbsent = !hexCoverage || (hexCoverage as unknown[]).length === 0;
+    const heatmapHasCoveringInfo = heatmapFeatures.some(
+      (f) => Array.isArray(f.properties?.covering_partners),
+    );
+    const hexCoverageUnavailable =
+      !heatmapHasCoveringInfo &&
+      (!hexCoverage || (hexCoverage as unknown[]).length === 0);
 
-    if (hexCoverageAbsent && hexesLost.size > 0) {
+    if (hexCoverageUnavailable && hexesLost.size > 0) {
       document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
           detail: { message: 'should not be dispatched' },

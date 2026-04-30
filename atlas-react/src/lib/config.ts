@@ -17,6 +17,11 @@ export interface DataUrls {
   optimization: string;
   heatmap: string;
   executiveReport: string;
+  deliveriesManifest: string;
+  deliveriesSummary: string;
+  deliveriesByHex: string;
+  /** Base URL da pasta de detalhes por DS. Uso: `${deliveriesDetailBase}/${DS}.jsonl.gz`. */
+  deliveriesDetailBase: string;
 }
 
 export const DATA_URLS: Readonly<DataUrls> = Object.freeze({
@@ -26,6 +31,10 @@ export const DATA_URLS: Readonly<DataUrls> = Object.freeze({
   optimization: `${BASE_URL}/optimization_data.geojson`,
   heatmap: `${BASE_URL}/heatmap.geojson`,
   executiveReport: `${BASE_URL}/relatorio_executivo.json`,
+  deliveriesManifest: `${BASE_URL}/deliveries_manifest.json`,
+  deliveriesSummary: `${BASE_URL}/deliveries_summary.json`,
+  deliveriesByHex: `${BASE_URL}/deliveries_by_hex.json`,
+  deliveriesDetailBase: `${BASE_URL}/deliveries_detail`,
 });
 
 /** Configuração inicial do mapa Leaflet */

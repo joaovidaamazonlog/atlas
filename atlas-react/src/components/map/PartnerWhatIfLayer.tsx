@@ -26,7 +26,7 @@ import { Circle, CircleMarker, Tooltip, Marker } from 'react-leaflet';
 import * as turf from '@turf/turf';
 import L from 'leaflet';
 import { useStore } from '../../store';
-import type { Partner } from '../../store/types';
+import type { Partner, CoveringPartner } from '../../store/types';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -181,11 +181,45 @@ function WhatIfMarker({
     const hexesLost    = new Set([...hexesOriginal].filter(h => !hexesSimulated.has(h)));
     const hexesGained  = new Set([...hexesSimulated].filter(h => !hexesOriginal.has(h)));
 
-    const hexCoverageMap = new Map<string, number>(
-      (partner.hex_coverage ?? []).map(e => [e.hex_id, e.packages_allocated])
-    );
+    // --- Mapa hex_id → packages_allocated para este parceiro ---
+    //
+    // Fonte PRIMÁRIA: `covering_partners` dos features do heatmap — sempre
+    // presente no heatmap gerado pós-setup, é a relação inversa autoritativa
+    // (cada hex sabe quais parceiros o cobrem e com quantos pacotes).
+    //
+    // Fonte de FALLBACK: `partner.hex_coverage` do dados_mapa.json — presente
+    // apenas para Active/Onboarding e pode vir `[]` quando o parceiro não tem
+    // alocações (caso legítimo, não um erro).
+    //
+    // Só disparamos a warning de "dados indisponíveis" quando NENHUMA das duas
+    // fontes tem informação para pelo menos um dos hexes perdidos.
+    const hexCoverageMap = new Map<string, number>();
+    for (const hexId of hexesLost) {
+      const feature = heatmapIndex.get(hexId);
+      const covering = (feature?.properties?.covering_partners as CoveringPartner[] | undefined) ?? [];
+      const entry = covering.find((cp) => cp.salesforce_id === partner.salesforce_id);
+      if (entry) hexCoverageMap.set(hexId, entry.packages_allocated);
+    }
+    // Completa com hex_coverage do parceiro (fallback) para hexes não
+    // encontrados via covering_partners.
+    for (const entry of partner.hex_coverage ?? []) {
+      if (!hexCoverageMap.has(entry.hex_id)) {
+        hexCoverageMap.set(entry.hex_id, entry.packages_allocated);
+      }
+    }
 
-    if ((!partner.hex_coverage || partner.hex_coverage.length === 0) && hexesLost.size > 0) {
+    // Detecta ausência real de dados: só alerta se algum hex perdido está
+    // ausente de AMBAS as fontes E o heatmap também não expõe covering_partners
+    // (heatmap muito antigo). Hex perdido ausente mas presente no heatmap
+    // apenas significa que este parceiro não o cobria (perda = 0 legítima).
+    const heatmapHasCoveringInfo = heatmapFeatures.some(
+      (f) => Array.isArray(f.properties?.covering_partners),
+    );
+    const hexCoverageUnavailable =
+      !heatmapHasCoveringInfo &&
+      (!partner.hex_coverage || partner.hex_coverage.length === 0);
+
+    if (hexCoverageUnavailable && hexesLost.size > 0) {
       document.dispatchEvent(
         new CustomEvent('atlas:whatif-warning', {
           detail: { message: `${partner.name}: dados de cobertura hex indisponíveis. Reposicione após recarregar os dados.` },

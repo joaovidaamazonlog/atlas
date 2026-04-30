@@ -271,9 +271,14 @@ def _enrich_hex(
     Returns a dict with demand_allocated, demand_residual, is_covered, covering_partners.
     Does NOT include covering_partner_id.
     Uses last-share adjustment to ensure shares sum to exactly 1.0.
+
+    demand_residual is clamped at zero: CP-SAT rounding (demand_daily uses
+    ``max(1, round(total / days))`` in Phase 2) can occasionally make
+    demand_allocated exceed demand_daily in low-demand hexes — volume
+    cannot be negative.
     """
     demand_allocated = sum(pkg for _, pkg in entries)
-    demand_residual = round(demand_daily - demand_allocated, 4)
+    demand_residual = round(max(demand_daily - demand_allocated, 0.0), 4)
     is_covered = demand_allocated > 0
 
     covering_partners_list = []
@@ -342,11 +347,15 @@ def test_hex_enrichment_invariants(demand_daily: float, entries: list):
         f"demand_allocated {result['demand_allocated']} != sum of packages {expected_allocated}"
     )
 
-    # ── Requirement 2.2: demand_residual == round(demand_daily - demand_allocated, 4) ──
-    expected_residual = round(demand_daily - expected_allocated, 4)
+    # ── Requirement 2.2: demand_residual == round(max(demand_daily - demand_allocated, 0), 4) ──
+    # Clamped at zero to prevent negative volume from CP-SAT rounding artifacts.
+    expected_residual = round(max(demand_daily - expected_allocated, 0.0), 4)
     assert result["demand_residual"] == expected_residual, (
         f"demand_residual {result['demand_residual']} != "
-        f"round({demand_daily} - {expected_allocated}, 4) = {expected_residual}"
+        f"round(max({demand_daily} - {expected_allocated}, 0), 4) = {expected_residual}"
+    )
+    assert result["demand_residual"] >= 0, (
+        f"demand_residual must never be negative, got {result['demand_residual']}"
     )
 
     # ── Requirement 2.3: is_covered == demand_allocated > 0 ──────────────
@@ -686,6 +695,293 @@ class TestWriteDadosMapaHexCoverage:
         assert "packages_allocated" in entry
         assert entry["hex_id"] == _VALID_HEX_A
         assert entry["packages_allocated"] == 42
+
+
+# ---------------------------------------------------------------------------
+# Unit tests — heuristic hex_coverage fallback for unmatched Active/Onboarding
+# partners (CP-SAT did not allocate them)
+# ---------------------------------------------------------------------------
+
+from vanilla.phase5_reports import _derive_heuristic_hex_coverage
+from shared.load_packages import PackageData
+
+
+def _make_pkg_with_demand(
+    station_code: str,
+    hex_demands: dict,
+    days: int = 30,
+) -> PackageData:
+    """Build a minimal PackageData with demand_by_station populated."""
+    return PackageData(
+        demand_by_station={station_code: dict(hex_demands)},
+        hex_to_base={h: station_code for h in hex_demands},
+        hex_to_ceps={},
+        days=days,
+    )
+
+
+def _make_territories_with_hexes(
+    tid: str, station_code: str, hex_ids: list
+) -> TerritoriesResult:
+    """Build a TerritoriesResult with one territory containing the given hexes."""
+    if hex_ids:
+        centroid_lat, centroid_lon = h3.cell_to_latlng(hex_ids[0])
+    else:
+        centroid_lat, centroid_lon = 0.0, 0.0
+    return TerritoriesResult(
+        territory_index={
+            tid: {
+                "territory_id": tid,
+                "station_code": station_code,
+                "bdm_cluster": "",
+                "ctl_name": "",
+                "hex_ids": list(hex_ids),
+                "centroid_lat": centroid_lat,
+                "centroid_lon": centroid_lon,
+                "total_demand": 0,
+            }
+        },
+        hex_to_territory={h: tid for h in hex_ids},
+    )
+
+
+class TestHeuristicHexCoverage:
+    """
+    Tests for _derive_heuristic_hex_coverage: fallback for Active/Onboarding
+    partners that were not matched by CP-SAT (empty allocations).
+    """
+
+    def test_unmatched_active_gets_heuristic_coverage_from_radius(self):
+        """
+        Active partner with no allocations, positioned at the centroid of a
+        hex in its territory, gets hex_coverage populated with hexes inside
+        its radius_a, ordered by residual demand desc, respecting capacity_a.
+        """
+        center_lat, center_lon = h3.cell_to_latlng(_VALID_HEX_A)
+        partner = PartnerMetrics(
+            origin_hex=_VALID_HEX_A,
+            station_code="DSP2",
+            radius_s=0,  # CP-SAT did not match
+            capacity_s=0,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_UNMATCHED_01",
+            matched_slot_id=None,     # no match
+            allocations=[],           # no CP-SAT allocations
+            lat=center_lat,
+            lon=center_lon,
+            radius_a=5000,            # 5 km reach
+            capacity_a=50,
+            cluster_name="DSP2_bucket-01",
+        )
+        territories = _make_territories_with_hexes(
+            "DSP2_bucket-01", "DSP2", _ALL_HEXES,
+        )
+        # Higher demand on HEX_B so it appears first in sorted candidates.
+        pkg = _make_pkg_with_demand("DSP2", {
+            _VALID_HEX_A: 300,   # 10/day × 30 days
+            _VALID_HEX_B: 600,   # 20/day × 30 days
+            _VALID_HEX_C: 150,   # 5/day × 30 days
+        }, days=30)
+        # No other matched partners → residual == demand_daily.
+        demand_allocated_by_hex: dict = {}
+
+        result = _derive_heuristic_hex_coverage(
+            partner, territories, pkg, demand_allocated_by_hex,
+        )
+
+        assert len(result) > 0, "Heuristic should produce at least one hex"
+        # Highest residual comes first
+        assert result[0]["hex_id"] == _VALID_HEX_B
+        assert result[0]["packages_allocated"] == 20  # residual == demand_daily
+        # All allocations positive ints
+        for e in result:
+            assert isinstance(e["packages_allocated"], int)
+            assert e["packages_allocated"] > 0
+        # Total allocated ≤ capacity_a
+        total = sum(e["packages_allocated"] for e in result)
+        assert total <= partner.capacity_a
+
+    def test_unmatched_active_uses_residual_when_other_partners_cover(self):
+        """
+        When other matched partners already cover some demand in a hex, the
+        heuristic assigns only the residual (demand_daily − demand_allocated)
+        to the unmatched partner. Saturated hexes are skipped.
+        """
+        center_lat, center_lon = h3.cell_to_latlng(_VALID_HEX_A)
+        partner = PartnerMetrics(
+            origin_hex=_VALID_HEX_A,
+            station_code="DSP2",
+            radius_s=0, capacity_s=0,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_UNMATCHED_RESIDUAL",
+            matched_slot_id=None,
+            allocations=[],
+            lat=center_lat, lon=center_lon,
+            radius_a=5000, capacity_a=50,
+            cluster_name="DSP2_bucket-01",
+        )
+        territories = _make_territories_with_hexes(
+            "DSP2_bucket-01", "DSP2", _ALL_HEXES,
+        )
+        # demand_daily: HEX_A=10, HEX_B=20, HEX_C=5
+        pkg = _make_pkg_with_demand("DSP2", {
+            _VALID_HEX_A: 300, _VALID_HEX_B: 600, _VALID_HEX_C: 150,
+        }, days=30)
+        # Other matched partners already cover:
+        #  - HEX_A: 7 of 10  → residual = 3
+        #  - HEX_B: 20 of 20 → residual = 0 (saturated, skipped)
+        #  - HEX_C: 0  of 5  → residual = 5
+        demand_allocated_by_hex = {_VALID_HEX_A: 7, _VALID_HEX_B: 20}
+
+        result = _derive_heuristic_hex_coverage(
+            partner, territories, pkg, demand_allocated_by_hex,
+        )
+
+        hex_to_pkgs = {e["hex_id"]: e["packages_allocated"] for e in result}
+        # Saturated hex must NOT appear
+        assert _VALID_HEX_B not in hex_to_pkgs
+        # Residual values are assigned (ordered by residual desc: C=5, A=3)
+        assert result[0]["hex_id"] == _VALID_HEX_C
+        assert hex_to_pkgs[_VALID_HEX_C] == 5
+        assert hex_to_pkgs[_VALID_HEX_A] == 3
+
+    def test_unmatched_active_respects_radius(self):
+        """Hexes outside radius_a are NOT included in heuristic coverage."""
+        center_lat, center_lon = h3.cell_to_latlng(_VALID_HEX_A)
+        partner = PartnerMetrics(
+            origin_hex=_VALID_HEX_A,
+            station_code="DSP2",
+            radius_s=0, capacity_s=0,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_TINY_RADIUS",
+            matched_slot_id=None,
+            allocations=[],
+            lat=center_lat,
+            lon=center_lon,
+            radius_a=1,               # virtually zero radius
+            capacity_a=50,
+            cluster_name="DSP2_bucket-01",
+        )
+        territories = _make_territories_with_hexes(
+            "DSP2_bucket-01", "DSP2", _ALL_HEXES,
+        )
+        pkg = _make_pkg_with_demand("DSP2", {
+            _VALID_HEX_A: 300, _VALID_HEX_B: 600, _VALID_HEX_C: 150,
+        }, days=30)
+
+        result = _derive_heuristic_hex_coverage(partner, territories, pkg)
+
+        # With radius=1m nothing (including the origin hex centroid, which
+        # is typically > 1m away) should fit. Allow either empty or
+        # ≤ 1 hex depending on exact centroid distance.
+        assert len(result) <= 1
+
+    def test_unmatched_active_without_territory_returns_empty(self):
+        """Partner without a resolvable territory gets empty coverage."""
+        partner = PartnerMetrics(
+            origin_hex="",
+            station_code="DSP2",
+            radius_s=0, capacity_s=0,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_NO_TID",
+            matched_slot_id=None,
+            allocations=[],
+            lat=-23.5, lon=-46.6,
+            radius_a=1500,
+            capacity_a=42,
+            cluster_name=None,       # no territory
+        )
+        territories = TerritoriesResult(territory_index={}, hex_to_territory={})
+        pkg = _make_pkg_with_demand("DSP2", {}, days=30)
+
+        result = _derive_heuristic_hex_coverage(partner, territories, pkg)
+
+        assert result == []
+
+    def test_derive_hex_coverage_uses_allocations_first(self):
+        """
+        When both allocations AND territories+pkg are available, allocations
+        (CP-SAT) are authoritative. Heuristic is NOT invoked.
+        """
+        partner = PartnerMetrics(
+            origin_hex=_VALID_HEX_A,
+            station_code="DSP2",
+            radius_s=1000, capacity_s=50,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_MATCHED",
+            matched_slot_id="SLOT_001",
+            allocations=[
+                Allocation(hex_id=_VALID_HEX_A, packages_assigned=42),
+            ],
+            lat=0.0, lon=0.0,
+            radius_a=999999,          # huge radius would pull many hexes
+            capacity_a=999,
+            cluster_name="DSP2_bucket-01",
+        )
+        territories = _make_territories_with_hexes(
+            "DSP2_bucket-01", "DSP2", _ALL_HEXES,
+        )
+        pkg = _make_pkg_with_demand("DSP2", {
+            _VALID_HEX_A: 300, _VALID_HEX_B: 600, _VALID_HEX_C: 150,
+        }, days=30)
+
+        result = _derive_hex_coverage(partner, territories=territories, pkg=pkg)
+
+        # Exactly matches allocations (only HEX_A), not heuristic
+        assert result == [{"hex_id": _VALID_HEX_A, "packages_allocated": 42}]
+
+    def test_derive_hex_coverage_falls_back_to_heuristic_when_unmatched(self):
+        """
+        Active partner without allocations but with territories+pkg available
+        gets heuristic-derived hex_coverage (not empty).
+        """
+        center_lat, center_lon = h3.cell_to_latlng(_VALID_HEX_A)
+        partner = PartnerMetrics(
+            origin_hex=_VALID_HEX_A,
+            station_code="DSP2",
+            radius_s=0, capacity_s=0,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_UNMATCHED_FALLBACK",
+            matched_slot_id=None,
+            allocations=[],
+            lat=center_lat, lon=center_lon,
+            radius_a=5000, capacity_a=50,
+            cluster_name="DSP2_bucket-01",
+        )
+        territories = _make_territories_with_hexes(
+            "DSP2_bucket-01", "DSP2", _ALL_HEXES,
+        )
+        pkg = _make_pkg_with_demand("DSP2", {
+            _VALID_HEX_A: 300, _VALID_HEX_B: 600,
+        }, days=30)
+
+        result = _derive_hex_coverage(partner, territories=territories, pkg=pkg)
+
+        assert result is not None
+        assert len(result) > 0, "Heuristic fallback should populate coverage"
+
+    def test_derive_hex_coverage_returns_empty_when_no_pkg(self):
+        """
+        Backward-compatible: without territories+pkg kwargs, Active partner
+        with no allocations still gets [] (not None).
+        """
+        partner = PartnerMetrics(
+            origin_hex=_VALID_HEX_A,
+            station_code="DSP2",
+            radius_s=0, capacity_s=0,
+            entity_type="EXISTING",
+            status="Active",
+            salesforce_id="SF_NO_PKG",
+            matched_slot_id=None,
+            allocations=[],
+        )
+        assert _derive_hex_coverage(partner) == []
 
 
 # ---------------------------------------------------------------------------

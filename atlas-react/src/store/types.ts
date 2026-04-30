@@ -353,6 +353,7 @@ export interface PartnerDeliveryStats {
   delivery_station: string;
   bucket_ade: string | null;
   capacity: number;
+  radius: number;
   total: number;
   daily_avg: number;
   cap_utilization_pct: number;
@@ -362,6 +363,15 @@ export interface PartnerDeliveryStats {
   trend_7d_pct: number;
   daily_series: { date: string; total: number }[];
   is_unknown: boolean;
+  /**
+   * True quando o parceiro Active/Onboarding está cadastrado com
+   * `capacity == 0` OU `radius == 0`. Sinaliza configuração incompleta
+   * no Salesforce — o dado é real (parceiro não tem cap ou raio setado)
+   * e precisa de ação manual do time de ops. Alimenta o card de warning
+   * próprio no Dashboard e isola o parceiro das métricas de performance
+   * (cap_utilization, subutilizados).
+   */
+  cap_misconfigured: boolean;
   lat: number | null;
   lon: number | null;
 }

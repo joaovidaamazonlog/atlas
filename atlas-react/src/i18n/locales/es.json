@@ -416,7 +416,12 @@
     "view_on_map": "Ver en mapa",
     "page": "Página",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "expand": "Expandir",
+    "collapse": "Contraer",
+    "misconfigured_title": "Hubs con cap o radio en cero en Salesforce",
+    "misconfigured_subtitle": "{{n}} socios activos con capacity=0 o radius=0 — el cadastro necesita ajuste.",
+    "misconfigured_export": "Exportar lista a CSV"
   },
   "insights": {
     "empty_state": "Los datos de entregas aún no están cargados.",
@@ -445,6 +450,8 @@
     "col_orphan": "Huérfanos",
     "col_under": "Under",
     "col_volume": "Volumen",
+    "card_misconfig_title": "Hubs con cap/radio = 0",
+    "card_misconfig_subtitle": "Active/Onboarding sin capacity o radius configurado en Salesforce",
     "no_items": "Ningún ítem coincide con los umbrales actuales."
   }
 }

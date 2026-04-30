@@ -1,5 +1,5 @@
 {
-  "generatedAt": "30/04/2026 15:23",
+  "generatedAt": "30/04/2026 17:07",
   "bases": [
     {
       "code": "DBH5",
@@ -9,7 +9,9 @@
       "bdmAlias": "luizfggs",
       "ctl": "Lucas Magela",
       "ctlAlias": "lsouzafa",
-      "satelliteAreas": [],
+      "satelliteAreas": [
+        "HBH5"
+      ],
       "numTerritories": 4,
       "dailyDemand": 18396,
       "idealSlots": 291,
@@ -27511,7 +27513,9 @@
       "bdmAlias": "dupratda",
       "ctl": "Karliane Dos Santos",
       "ctlAlias": "kariliad",
-      "satelliteAreas": [],
+      "satelliteAreas": [
+        "HFO3"
+      ],
       "numTerritories": 13,
       "dailyDemand": 28980,
       "idealSlots": 478,
@@ -68337,7 +68341,8 @@
       "ctl": "Rafael Lana",
       "ctlAlias": "rafaelkl",
       "satelliteAreas": [
-        "XPB1"
+        "XPB1",
+        "HPB3"
       ],
       "numTerritories": 5,
       "dailyDemand": 17178,
@@ -75261,7 +75266,9 @@
       "bdmAlias": "dupratda",
       "ctl": "Tiago Grego",
       "ctlAlias": "tigregok",
-      "satelliteAreas": [],
+      "satelliteAreas": [
+        "HPE4"
+      ],
       "numTerritories": 15,
       "dailyDemand": 29148,
       "idealSlots": 450,
@@ -95558,7 +95565,8 @@
       "satelliteAreas": [
         "PUM2",
         "XRJ2",
-        "XRJ4"
+        "XRJ4",
+        "HRJ3"
       ],
       "numTerritories": 22,
       "dailyDemand": 27636,
@@ -113860,7 +113868,8 @@
       "ctl": "Yan Abrao",
       "ctlAlias": "abraoiya",
       "satelliteAreas": [
-        "XBA1"
+        "XBA1",
+        "HSV8"
       ],
       "numTerritories": 4,
       "dailyDemand": 13986,
@@ -122016,7 +122025,9 @@
       "bdmAlias": "",
       "ctl": "Angelica Damasceno",
       "ctlAlias": "damasang",
-      "satelliteAreas": [],
+      "satelliteAreas": [
+        "HSP2"
+      ],
       "numTerritories": 12,
       "dailyDemand": 15582,
       "idealSlots": 300,
@@ -141429,7 +141440,8 @@
       "satelliteAreas": [
         "XSP7",
         "XSP9",
-        "XCP1"
+        "XCP1",
+        "HSP5"
       ],
       "numTerritories": 5,
       "dailyDemand": 18060,

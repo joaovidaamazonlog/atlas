@@ -190,7 +190,8 @@ def test_run_phase6_generates_all_artifacts(tmp_path, sample_rows):
     dados_mapa = _build_dados_mapa(tmp_path, [
         {
             "salesforce_id": "SF_001", "store_id": "HUB001", "name": "Hub Alpha",
-            "status": "Active", "capacity": 50, "delivery_station": "DSP2",
+            "status": "Active", "capacity": 50, "radius": 1500,
+            "delivery_station": "DSP2",
             "bucket_ade": "DSP2_bucket-01", "lat": -23.55, "lon": -46.63,
         },
         # HUB002 propositalmente omitido para virar "unknown"
@@ -238,10 +239,16 @@ def test_run_phase6_generates_all_artifacts(tmp_path, sample_rows):
     # daily_avg = 3 / 2 dias = 1.5; cap_util = 1.5/50*100 = 3.0%
     assert partners_by_id["HUB001"]["daily_avg"] == 1.5
     assert partners_by_id["HUB001"]["cap_utilization_pct"] == 3.0
+    # HUB001 tem capacity=50 e o fixture traz lat/lon — portanto NÃO está
+    # misconfigured.
+    assert partners_by_id["HUB001"]["cap_misconfigured"] is False
 
     assert "HUB002" in partners_by_id
     assert partners_by_id["HUB002"]["is_unknown"] is True
     assert partners_by_id["HUB002"]["name"] == "Hub Beta ME"
+    # Parceiros unknown (sem meta no dados_mapa.json) não são marcados como
+    # misconfigured — não temos visibilidade do cadastro Salesforce deles.
+    assert partners_by_id["HUB002"]["cap_misconfigured"] is False
 
     # Validar by_hex
     by_hex = json.loads(result.by_hex.read_text(encoding="utf-8"))
@@ -280,3 +287,111 @@ def test_run_phase6_empty_deliveries_is_noop(tmp_path):
     assert result.summary is None
     assert result.by_hex is None
     assert not (tmp_path / "deliveries_summary.json").exists()
+
+
+# ---------------------------------------------------------------------------
+# TESTES: cap_misconfigured
+# ---------------------------------------------------------------------------
+
+def test_cap_misconfigured_flags_active_hub_with_zero_cap(tmp_path):
+    """
+    Hub Active com capacity=0 (dado real do Salesforce — configuração
+    incompleta) deve ser marcado com cap_misconfigured=True. Não deve
+    entrar em métricas de performance nem no card de subutilizados.
+    """
+    rows = [{
+        "tracking_id": "T001", "scan_datetime_br": "2026-04-28 09:00:00",
+        "reason_code": "OK", "canal_entrega": "IHS_STORE",
+        "nome_empresa": "Hub Sem Cap", "store_id": "HUB_ZEROCAP",
+        "station_code": "DSP2", "latitude": -23.55, "longitude": -46.63,
+        "hex": "hex_A", "cep": "01310100",
+    }]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    dados_mapa = _build_dados_mapa(tmp_path, [{
+        "salesforce_id": "SF_ZEROCAP", "store_id": "HUB_ZEROCAP",
+        "name": "Hub Sem Cap", "status": "Active",
+        "capacity": 0, "radius": 1500,  # capacity=0 explícito
+        "delivery_station": "DSP2", "bucket_ade": "DSP2_bucket-01",
+        "lat": -23.55, "lon": -46.63,
+    }])
+
+    result = run_phase6(
+        deliveries=dd,
+        dados_mapa_path=dados_mapa,
+        territories=_make_territories({"hex_A": "DSP2_bucket-01"}),
+        output_dir=str(tmp_path),
+    )
+
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+    by_id = {p["store_id"]: p for p in summary["partners"]}
+    p = by_id["HUB_ZEROCAP"]
+    assert p["cap_misconfigured"] is True
+    assert p["capacity"] == 0
+    # cap_utilization_pct cai para 0 naturalmente (divisão por zero
+    # protegida), mas a UI vai mostrar badge de warning em vez de alerta
+    # de performance.
+    assert p["cap_utilization_pct"] == 0.0
+
+
+def test_cap_misconfigured_flags_zero_radius(tmp_path):
+    """Radius=0 também vira cap_misconfigured (mesma regra)."""
+    rows = [{
+        "tracking_id": "T001", "scan_datetime_br": "2026-04-28 09:00:00",
+        "reason_code": "OK", "canal_entrega": "IHS_STORE",
+        "nome_empresa": "Hub Sem Raio", "store_id": "HUB_ZERORADIUS",
+        "station_code": "DSP2", "latitude": -23.55, "longitude": -46.63,
+        "hex": "hex_A",
+    }]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    dados_mapa = _build_dados_mapa(tmp_path, [{
+        "salesforce_id": "SF_ZR", "store_id": "HUB_ZERORADIUS",
+        "name": "Hub Sem Raio", "status": "Active",
+        "capacity": 50, "radius": 0,  # radius=0
+        "delivery_station": "DSP2", "bucket_ade": "DSP2_bucket-01",
+    }])
+
+    result = run_phase6(
+        deliveries=dd, dados_mapa_path=dados_mapa,
+        territories=_make_territories({"hex_A": "DSP2_bucket-01"}),
+        output_dir=str(tmp_path),
+    )
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+    by_id = {p["store_id"]: p for p in summary["partners"]}
+    assert by_id["HUB_ZERORADIUS"]["cap_misconfigured"] is True
+
+
+def test_cap_misconfigured_false_for_exited_partner(tmp_path):
+    """
+    Parceiro Exited com capacity=0 NÃO é misconfigured — é esperado que
+    parceiros que saíram tenham o cap zerado. A flag é um warning
+    operacional aplicável só a Active/Onboarding.
+    """
+    rows = [{
+        "tracking_id": "T001", "scan_datetime_br": "2026-04-28 09:00:00",
+        "reason_code": "OK", "canal_entrega": "IHS_STORE",
+        "nome_empresa": "Hub Exited", "store_id": "HUB_EXITED",
+        "station_code": "DSP2", "latitude": -23.55, "longitude": -46.63,
+        "hex": "hex_A",
+    }]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    dados_mapa = _build_dados_mapa(tmp_path, [{
+        "salesforce_id": "SF_EX", "store_id": "HUB_EXITED",
+        "name": "Hub Exited", "status": "Exited",
+        "capacity": 0, "radius": 0,
+        "delivery_station": "DSP2",
+    }])
+
+    result = run_phase6(
+        deliveries=dd, dados_mapa_path=dados_mapa,
+        territories=_make_territories({"hex_A": "DSP2_bucket-01"}),
+        output_dir=str(tmp_path),
+    )
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+    by_id = {p["store_id"]: p for p in summary["partners"]}
+    assert by_id["HUB_EXITED"]["cap_misconfigured"] is False

@@ -11,10 +11,12 @@ Dois modos de operacao
     Fase 2: Identificacao de vagas ideais  -> ideal_supply.json
 
 --mode daily    (roda todo dia / base de pacotes atualizada)
-    0. Lê Excel (Salesforce) via load_partners() → dados_mapa.json
+    0. Lê cadastro de parceiros (prioridade: --partnerCSV > Config.BASE_PARTNERS_CSV
+       > Excel terra.xlsm) → dados_mapa.json
     Fase 3: Matching parceiros x vagas     -> ideal_supply.json (atualizado)
     Fase 4: Qualificacao de webleads
     Fase 5: Relatorios + enriquece dados_mapa.json e heatmap.geojson
+    Fase 6: Análise de canal IHS vs DSP (deliveries_summary.json)
 """
 
 from __future__ import annotations
@@ -158,11 +160,17 @@ def run_daily(
 ) -> TimingReport:
     """
     Pipeline diário completo:
-    1. Lê Excel (Salesforce) → serializa dados_mapa.json
-       (ou CSV via --partnerCSV)
+    1. Lê cadastro de parceiros. Ordem de resolução:
+         (a) --partnerCSV explícito na CLI.
+         (b) Config.BASE_PARTNERS_CSV (padrão: partners.csv na raiz) se
+             o arquivo existir.
+         (c) Fallback: Excel (terra.xlsm) via load_partners().
+       Serializa em dados_mapa.json.
     2. Fases 3/4/5: matching, webleads, relatórios
     3. Enriquece dados_mapa.json com hex_coverage (Active/Onboarding)
     4. Enriquece heatmap.geojson com covering_partners e demand_residual
+    5. Fase 6: gera deliveries_summary.json, deliveries_by_hex.json e
+       detalhes por DS (análise IHS vs DSP).
 
     Parâmetros
     ----------
@@ -249,9 +257,22 @@ def run_daily(
         )
 
     with timer.phase("load_partners"):
-        if partner_csv:
-            partner_data = load_partners_csv(partner_csv)
+        # Resolução da fonte de parceiros, em ordem de prioridade:
+        #   1. --partnerCSV explícito na CLI (override absoluto).
+        #   2. Config.BASE_PARTNERS_CSV se o arquivo existir na raiz.
+        #   3. Fallback final: Excel (terra.xlsm) via load_partners().
+        # Essa cascata permite migração gradual sem quebrar compatibilidade.
+        effective_csv = partner_csv
+        if not effective_csv:
+            default_csv = getattr(Config, "BASE_PARTNERS_CSV", None)
+            if default_csv and Path(default_csv).exists():
+                effective_csv = str(default_csv)
+                print(f"  Usando CSV padrão de parceiros: {effective_csv}")
+
+        if effective_csv:
+            partner_data = load_partners_csv(effective_csv)
         else:
+            print("  CSV não encontrado — caindo para Excel (terra.xlsm).")
             partner_data = load_partners()
 
     # Fase 3: matching
@@ -421,8 +442,10 @@ Exemplos:
         default=None,
         metavar="PATH",
         help="Caminho para um CSV de parceiros exportado do Salesforce. "
-             "Quando fornecido, substitui a leitura do Excel (terra.xlsm) "
-             "no modo daily. Ex: --partnerCSV data/partners.csv",
+             "Override explícito. Quando omitido, o pipeline procura "
+             "Config.BASE_PARTNERS_CSV (partners.csv na raiz); se também "
+             "não existir, cai no Excel (terra.xlsm). "
+             "Ex: --partnerCSV data/partners.csv",
     )
     return parser.parse_args()
 

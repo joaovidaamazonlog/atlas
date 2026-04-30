@@ -20,6 +20,7 @@ import { useStore } from '../../store';
 import { Spinner } from '../ui/Spinner';
 import ShareIhsDspCard from './ShareIhsDspCard';
 import PartnerDrillDown from './PartnerDrillDown';
+import MisconfiguredHubsCard from './MisconfiguredHubsCard';
 import type { PartnerDeliveryStats } from '../../store/types';
 import type { DashboardFilters, ReportData } from '../../lib/reportUtils';
 import {
@@ -235,6 +236,9 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
         onChangeDs={setSelectedDs}
       />
 
+      {/* Warning de hubs com cap/radius=0 no Salesforce — respeita o recorte. */}
+      <MisconfiguredHubsCard partners={partnersInScope} />
+
       {/* Filters */}
       <div className="bg-atlas-dark border border-atlas-navy rounded-lg p-3 flex flex-wrap gap-3 items-center">
         <input
@@ -325,7 +329,7 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
                         {p.daily_avg.toFixed(1)}
                       </td>
                       <td className="px-3 py-2 text-right">
-                        <CapUtilBadge pct={p.cap_utilization_pct} />
+                        <CapUtilBadge pct={p.cap_utilization_pct} misconfigured={p.cap_misconfigured} />
                       </td>
                       <td className="px-3 py-2 text-atlas-light text-right">
                         {p.share_ds_pct.toFixed(1)}%
@@ -390,7 +394,23 @@ const HeaderCell: React.FC<{
   </th>
 );
 
-const CapUtilBadge: React.FC<{ pct: number }> = ({ pct }) => {
+const CapUtilBadge: React.FC<{ pct: number; misconfigured?: boolean }> = ({
+  pct,
+  misconfigured,
+}) => {
+  // Cap/radius zerados no Salesforce vira warning dedicado em vez de
+  // alerta de performance — evita confundir "parceiro sem cap configurado"
+  // com "parceiro performando abaixo do cap".
+  if (misconfigured) {
+    return (
+      <span
+        className="px-1.5 py-0.5 rounded bg-yellow-500/20 border border-yellow-500/40 text-yellow-300 text-[10px] font-semibold uppercase tracking-wide"
+        title="Hub sem cap ou raio configurado no Salesforce"
+      >
+        ⚠ sem cap
+      </span>
+    );
+  }
   let cls = 'text-atlas-muted';
   if (pct >= 80) cls = 'text-green-400';
   else if (pct >= 50) cls = 'text-yellow-400';

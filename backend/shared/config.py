@@ -15,6 +15,10 @@ DB_PATH      = Path(r"C:\Users\joaovida\Documents\Projetos\CNPJ_Brasil")
 BASE_PACKAGES          = Path(r"C:\Users\joaovida\Documents\Projetos\base_pacotes.csv")
 EXCEL_FILE_PATH        = BASE_PATH / "terra.xlsm"
 BASE_PARTNERS          = DEST_FOLDER / "dados_mapa.json"
+# CSV de parceiros exportado do Salesforce. Quando existe, o modo daily
+# usa este arquivo em vez do Excel (terra.xlsm). `--partnerCSV` na CLI
+# tem prioridade sobre esta config. Aponta para a raiz do projeto.
+BASE_PARTNERS_CSV      = PROJECT_ROOT / "partners.csv"
 BASE_JURISDICTION      = PROJECT_ROOT / "config" / "jurisdiction.geojson"
 BASE_PREVIOUS_SNAPSHOT = DEST_FOLDER / "snapshot_current.json"
 DB_EMPRESAS            = DB_PATH / "cnpj_2025_06.db"
@@ -122,6 +126,20 @@ STATION_ALIASES = {
     "XSP7": "DSP5",   # satélite de DSP5
     "XSP9": "DSP5",   # satélite de DSP5
     "XCP1": "DSP5",   # satélite de DSP5
+    # ──────────────────────────────────────────────────────────────
+    # Nodes virtuais (prefixo H*): derivados das canônicas de mesmo nome.
+    # Usados no export de parceiros do Salesforce para identificar buckets
+    # especiais (ex: HCP Host Partners exclusivos). Para fins de pipeline
+    # (demanda, jurisdição, matching), são tratados como a canônica.
+    # ──────────────────────────────────────────────────────────────
+    "HSP2": "DSP2",
+    "HSP5": "DSP5",
+    "HRJ3": "DRJ3",
+    "HSV8": "DSA8",   # Feira de Santana (satélite virtual de Salvador)
+    "HPE4": "DPE4",
+    "HFO3": "DCE3",   # Fortaleza alternativo → DCE3
+    "HPB3": "DPB3",
+    "HBH5": "DBH5",
 }
 
 # ---------------------------------------------------------------------------

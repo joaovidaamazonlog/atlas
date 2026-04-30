@@ -700,7 +700,55 @@ def load_partners_csv(
     # ------------------------------------------------------------------
     # 2. Renomear colunas para o formato esperado por Partner.from_row
     # ------------------------------------------------------------------
+    # O mapa cobre dois formatos de export do Salesforce:
+    #   (a) snake_case minúsculo com espaços ("volume cap", "supply run",
+    #       "launch date") — formato atual do partners.csv de produção.
+    #   (b) Title_Case_Underscore ("Delivery_Station", "Volume_Cap__c") —
+    #       formato legado de exports antigos. Mantemos por compatibilidade.
+    # A chave do dicionário é o nome da coluna no CSV; o valor é o nome
+    # que `Partner.from_row` consulta via `row.get(...)`.
     _CSV_RENAME = {
+        # Identificadores e nome
+        "id":                       "Id",
+        "name":                     "Name",
+        "storeid":                  "StoreID",
+
+        # Status e decisões
+        "status":                   "Status",
+        "decision_status":          "Decision_Status__c",
+        "decision_reason_code":     "Decision_Reason_Code__c",
+
+        # Localização
+        "latitude":                 "Latitude",
+        "longitude":                "Longitude",
+        "cep":                      "CEP",
+        "cidade":                   "Cidade",
+        "estado":                   "Estado",
+
+        # Operação
+        "delivery_station":         "Delivery Station",
+        "supply run":               "Supply Run",
+        "volume cap":               "Volume Cap",
+        "radius":                   "Radius",
+
+        # Categorização
+        "jurisdiction_type":        "Jurisdiction Type",
+        "jurisdiction_name":        "Bucket",  # já vem resolvido como nome
+        "hub_delivery_initiatives": "Hub Delivery Initiatives",
+        "hcp_rate_card":            "HCP Rate Card",
+        "hcp_host_partner":         "HCP Host Partner",
+
+        # Datas
+        "launch date":              "Launch Date",
+        "exit_date":                "Exit_Date__c",
+
+        # Contato e ownership
+        "phone":                    "Phone",
+        "ownerid":                  "OwnerId",
+
+        # ──────────────────────────────────────────────────────────────
+        # Aliases do formato legado Title_Case_Underscore (compat).
+        # ──────────────────────────────────────────────────────────────
         "Delivery_Station":         "Delivery Station",
         "Jurisdiction_Type":        "Jurisdiction Type",
         "Hub_Delivery_Initiatives": "Hub Delivery Initiatives",
@@ -709,10 +757,12 @@ def load_partners_csv(
         "Exit_Date":                "Exit_Date__c",
         "Decision_Status":          "Decision_Status__c",
         "Decision_Reason_Code":     "Decision_Reason_Code__c",
-        # Jurisdiction_Name já é o nome do bucket — expor como "Bucket"
-        # para que from_row o use no fallback (campo Bucket já resolvido)
         "Jurisdiction_Name":        "Bucket",
     }
+
+    # Aplica renomeação case-sensitive; colunas não mapeadas são mantidas
+    # (ex: account_manager, territory_manager_owner — ignoradas pelo parser
+    # intencionalmente, pois a hierarquia BDM/CTL/ADE vem da config TEAM).
     df_raw.rename(columns=_CSV_RENAME, inplace=True)
 
     # ------------------------------------------------------------------

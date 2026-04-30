@@ -82,6 +82,27 @@ def _safe_pct(numerator: float, denominator: float) -> float:
     return round(100.0 * numerator / denominator, 2)
 
 
+def _is_cap_misconfigured(meta: Optional[Dict[str, Any]], status: Optional[str]) -> bool:
+    """
+    Indica que o parceiro está cadastrado no Salesforce como Active/Onboarding
+    mas com `capacity == 0` OU `radius == 0` — configuração incompleta que
+    precisa de ação manual do time de ops. Isola esses parceiros das métricas
+    de performance (cap_utilization, subutilizados) e alimenta o card de
+    warning próprio no Dashboard.
+
+    Retorna False para parceiros Exited/Inactive (cap=0 é esperado neles) e
+    para parceiros "unknown" (sem meta do dados_mapa.json — não temos
+    visibilidade do cadastro deles).
+    """
+    if meta is None:
+        return False
+    if status not in ("Active", "Onboarding"):
+        return False
+    capacity = meta.get("capacity") or 0
+    radius = meta.get("radius") or 0
+    return capacity == 0 or radius == 0
+
+
 def _build_partner_index(dados_mapa_path: Path) -> Dict[str, Dict[str, Any]]:
     """
     Lê o `dados_mapa.json` e constrói o índice `store_id → partner_meta`
@@ -112,6 +133,7 @@ def _build_partner_index(dados_mapa_path: Path) -> Dict[str, Dict[str, Any]]:
             "name":            p.get("name"),
             "status":          p.get("status"),
             "capacity":        p.get("capacity") or 0,
+            "radius":          p.get("radius") or 0,
             "delivery_station": p.get("delivery_station"),
             "bucket_ade":      p.get("bucket_ade"),
             "lat":             p.get("lat"),
@@ -284,6 +306,7 @@ def _compute_partner_stats(
             "delivery_station":      station_dom,
             "bucket_ade":            bucket_ade,
             "capacity":              capacity,
+            "radius":                int((meta or {}).get("radius") or 0),
             "total":                 total,
             "daily_avg":             daily_avg,
             "cap_utilization_pct":   cap_util,
@@ -293,6 +316,12 @@ def _compute_partner_stats(
             "trend_7d_pct":          trend_pct,
             "daily_series":          daily_series,
             "is_unknown":            is_unknown,
+            # `cap_misconfigured` sinaliza hub ativo cadastrado no Salesforce
+            # com capacity=0 OU radius=0 — configuração incompleta que vira
+            # warning próprio no Dashboard. Não entra em cap_utilization_pct
+            # (que fica 0.0 por definição de divisão) e não é considerado
+            # "subutilizado" na aba Insights.
+            "cap_misconfigured":     _is_cap_misconfigured(meta, status),
             "lat":                   (meta or {}).get("lat"),
             "lon":                   (meta or {}).get("lon"),
         })

@@ -145,6 +145,8 @@ export interface InsightsResult {
   /** Ranking hierárquico BDM → DS → CTL → ADE. */
   prospectRankingTree: ProspectRankingNode[];
   geographicOutliers: GeographicOutlier[];
+  /** Hubs Active/Onboarding com cap ou radius = 0 no Salesforce. */
+  misconfiguredHubs: MisconfiguredHub[];
 }
 
 // ---------------------------------------------------------------------------
@@ -163,6 +165,10 @@ function isActiveHub(p: Partner): boolean {
  * Parceiros cujo volume médio diário nos últimos dias está abaixo de
  * `threshold` % do `capacity` setado. Filtra apenas parceiros Active/Onboarding
  * conhecidos (unknown não tem capacity comparável).
+ *
+ * Parceiros com `cap_misconfigured=true` (capacity ou radius zerados no
+ * Salesforce) são EXCLUÍDOS — eles têm card de warning próprio e entrar
+ * aqui inflaria o alerta de performance com dados-ausentes.
  */
 export function computeUnderutilized(
   partners: PartnerDeliveryStats[],
@@ -172,6 +178,7 @@ export function computeUnderutilized(
   return partners
     .filter((p) =>
       !p.is_unknown &&
+      !p.cap_misconfigured &&
       p.capacity > 0 &&
       p.cap_utilization_pct < limit &&
       (p.status === 'Active' || p.status === 'Onboarding'),
@@ -187,6 +194,46 @@ export function computeUnderutilized(
       gap_absolute: Math.max(p.capacity - p.daily_avg, 0),
     }))
     .sort((a, b) => b.gap_absolute - a.gap_absolute);
+}
+
+/**
+ * Hubs Active/Onboarding com cap ou radius = 0 no Salesforce. Warning
+ * operacional dedicado — precisa de ação manual do time de ops para
+ * corrigir o cadastro. Isolado dos insights de performance para não
+ * mascarar problemas diferentes.
+ */
+export interface MisconfiguredHub {
+  store_id: string;
+  name: string;
+  delivery_station: string;
+  bucket_ade: string | null;
+  capacity: number;
+  radius: number;
+  daily_avg: number;
+  total: number;
+  status: string | null;
+}
+
+export function computeMisconfiguredHubs(
+  partners: PartnerDeliveryStats[],
+): MisconfiguredHub[] {
+  return partners
+    .filter((p) => p.cap_misconfigured)
+    .map((p) => ({
+      store_id: p.store_id,
+      name: p.name,
+      delivery_station: p.delivery_station,
+      bucket_ade: p.bucket_ade,
+      capacity: p.capacity,
+      radius: p.radius,
+      daily_avg: p.daily_avg,
+      total: p.total,
+      status: p.status,
+    }))
+    // Ordenar por quem tem mais pacotes entregues primeiro — esses são os
+    // que mais "puxam" volume mesmo sem cap/raio configurado; prioridade
+    // de correção.
+    .sort((a, b) => b.total - a.total);
 }
 
 /**
@@ -709,6 +756,7 @@ export function computeAllInsights(
       prospectRanking: [],
       prospectRankingTree: [],
       geographicOutliers: [],
+      misconfiguredHubs: [],
     };
   }
 
@@ -791,6 +839,8 @@ export function computeAllInsights(
     scopedPartners,
   );
 
+  const misconfiguredHubs = computeMisconfiguredHubs(scopedPartnerStats);
+
   return {
     underutilized,
     dspDominant,
@@ -799,5 +849,6 @@ export function computeAllInsights(
     prospectRanking,
     prospectRankingTree,
     geographicOutliers,
+    misconfiguredHubs,
   };
 }

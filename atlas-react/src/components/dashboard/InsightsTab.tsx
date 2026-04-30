@@ -534,6 +534,52 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
             </table>
           </div>
         </InsightCard>
+
+        {/* 6. Hubs com cap/raio zerados (configuração Salesforce) */}
+        <InsightCard
+          title={t('insights.card_misconfig_title')}
+          subtitle={t('insights.card_misconfig_subtitle')}
+          count={insights.misconfiguredHubs.length}
+        >
+          <div className="max-h-[280px] overflow-y-auto">
+            <table className="w-full text-xs">
+              <thead className="text-atlas-muted">
+                <tr>
+                  <th className="text-left py-1">{t('packages.col_partner')}</th>
+                  <th className="text-left py-1">DS</th>
+                  <th className="text-right py-1">cap</th>
+                  <th className="text-right py-1">raio</th>
+                  <th className="text-right py-1">d/d</th>
+                </tr>
+              </thead>
+              <tbody>
+                {insights.misconfiguredHubs.slice(0, 25).map((h) => (
+                  <tr key={h.store_id} className="border-t border-atlas-navy">
+                    <td className="py-1 text-atlas-light">{h.name}</td>
+                    <td className="py-1 text-atlas-muted">{h.delivery_station}</td>
+                    <td
+                      className={`py-1 text-right font-mono ${
+                        h.capacity === 0 ? 'text-yellow-300 font-semibold' : 'text-atlas-light'
+                      }`}
+                    >
+                      {h.capacity}
+                    </td>
+                    <td
+                      className={`py-1 text-right font-mono ${
+                        h.radius === 0 ? 'text-yellow-300 font-semibold' : 'text-atlas-light'
+                      }`}
+                    >
+                      {h.radius}
+                    </td>
+                    <td className="py-1 text-right text-atlas-light">
+                      {h.daily_avg.toFixed(1)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </InsightCard>
       </div>
     </div>
   );

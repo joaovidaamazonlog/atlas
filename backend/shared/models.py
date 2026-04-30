@@ -26,10 +26,24 @@ class Config:
 
     BASE_PACKAGES        = configuration.BASE_PACKAGES
     BASE_PARTNERS        = configuration.BASE_PARTNERS
+    BASE_PARTNERS_CSV    = getattr(configuration, "BASE_PARTNERS_CSV", None)
     BASE_JURISDICTION    = configuration.BASE_JURISDICTION
     DEST_FOLDER          = configuration.DEST_FOLDER
     CNPJ_DB_PATH         = getattr(configuration, "DB_EMPRESAS", None)
     H3_RES               = configuration.H3_RESOLUTION
+
+    # Janela de dias considerada pela Fase 6 (deliveries — IHS vs DSP).
+    # Usada em load_deliveries e em outros lugares que agregam pacotes
+    # por canal/parceiro. Default 15 dias se não houver config.
+    PACKAGE_HISTORY_DAYS = getattr(configuration, "PACKAGE_HISTORY_DAYS", 15)
+
+    # Aliases de bases satélite → canônica (ex: XBA1 → DSA8, HSP5 → DSP5).
+    # Re-exportado da config de módulo para que load_deliveries e outros
+    # consumidores que usam `Config.STATION_ALIASES` enxerguem o mapa.
+    # A SATELLITE_MAP derivada abaixo permanece como índice reverso.
+    STATION_ALIASES: Dict[str, str] = getattr(
+        configuration, "STATION_ALIASES", {}
+    )
     # Resolucao H3 por base — permite usar res 8 em bases grandes (menos hexes
     # perifericos, poligonos mais limpos) e res 9 em bases menores (granularidade).
     # Formato: {"DSP2": 8, "DSP4": 8}  — bases nao listadas usam H3_RES global.

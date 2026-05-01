@@ -174,7 +174,25 @@ def load_deliveries(
     # ------------------------------------------------------------------ #
     # 1. Normalização de strings
     # ------------------------------------------------------------------ #
-    for col in ("tracking_id", "reason_code", "canal_entrega", "nome_empresa", "store_id"):
+    # `store_id` é um identificador numérico do Salesforce. Quando o CSV
+    # vem sem dtype explícito, pandas infere float64 (porque há valores
+    # ausentes representados como NaN), o que transforma os IDs em algo
+    # como `7912931585.0`. Isso quebra o join com o cadastro de parceiros
+    # (que armazena o ID sem a parte decimal). O tratamento abaixo força
+    # cada ID a string, remove o ".0" trailing de floats, e zera strings
+    # realmente vazias ("", "nan", "NaN", "None") para "".
+    def _clean_store_id(val) -> str:
+        s = str(val).strip()
+        if s in ("", "nan", "NaN", "None"):
+            return ""
+        # float representation: "12345.0" → "12345"
+        if s.endswith(".0") and s[:-2].isdigit():
+            return s[:-2]
+        return s
+
+    df["store_id"] = df["store_id"].map(_clean_store_id)
+
+    for col in ("tracking_id", "reason_code", "canal_entrega", "nome_empresa"):
         df[col] = df[col].astype(str).str.strip()
         # Strings vazias ficam como "" (não NaN) para simplificar groupby.
         df.loc[df[col].isin(("nan", "NaN", "None")), col] = ""
@@ -283,13 +301,33 @@ def load_deliveries(
     # ------------------------------------------------------------------ #
     # 6. Sumário
     # ------------------------------------------------------------------ #
-    days = df["scan_date"].nunique()
-    date_min = df["scan_date"].min()
-    date_max = df["scan_date"].max()
+    # `days` é o span da janela em dias calendário (date_max - date_min + 1),
+    # NÃO a contagem de dias com dados. Isso é essencial para que a média
+    # diária leve em conta dias em que o parceiro não entregou (zeros) —
+    # caso contrário, um parceiro que entregou em 2 de 15 dias teria a
+    # média inflada ao dividir só por 2. O zero-fill do daily_series
+    # obedece ao mesmo range.
+    date_min_raw = df["scan_date"].min()
+    date_max_raw = df["scan_date"].max()
+    date_min = str(date_min_raw) if date_min_raw is not None else None
+    date_max = str(date_max_raw) if date_max_raw is not None else None
+    if date_min and date_max:
+        days = int((pd.Timestamp(date_max) - pd.Timestamp(date_min)).days) + 1
+    else:
+        days = 0
     stations = set(df["station_code"].dropna().unique()) - {""}
 
     # Contagem por canal (só log)
     canal_counts = df["canal_entrega"].value_counts().to_dict()
+
+    # Quantos dias realmente têm dados — útil para diagnóstico quando há
+    # buracos grandes na janela (ex: feriados ou falha de ingestão).
+    days_with_data = df["scan_date"].nunique()
+    if days_with_data < days:
+        print(
+            f"   INFO: janela de {days} dias tem {days_with_data} dia(s) com dados "
+            f"— média diária considerará dias vazios como zero."
+        )
 
     print(
         f"   Período: {date_min} → {date_max} ({days}d) | "

@@ -103,6 +103,28 @@ def _is_cap_misconfigured(meta: Optional[Dict[str, Any]], status: Optional[str])
     return capacity == 0 or radius == 0
 
 
+def _normalize_store_id(val) -> str:
+    """
+    Normaliza um store_id para a chave de join entre pacotes e parceiros.
+
+    Pandas infere o store_id como float64 no CSV de pacotes (porque há
+    NaN) — isso transforma `12345` em `"12345.0"` no `astype(str)`,
+    quebrando o match com o cadastro de parceiros (que guarda `"12345"`).
+    Aqui convertemos qualquer representação para a forma canônica (sem
+    ".0" trailing) para garantir que ambos os lados falem a mesma língua.
+
+    Entradas vazias (None, "", "nan", "NaN") viram string vazia.
+    """
+    if val is None:
+        return ""
+    s = str(val).strip()
+    if s in ("", "nan", "NaN", "None"):
+        return ""
+    if s.endswith(".0") and s[:-2].isdigit():
+        return s[:-2]
+    return s
+
+
 def _build_partner_index(dados_mapa_path: Path) -> Dict[str, Dict[str, Any]]:
     """
     Lê o `dados_mapa.json` e constrói o índice `store_id → partner_meta`
@@ -112,6 +134,10 @@ def _build_partner_index(dados_mapa_path: Path) -> Dict[str, Dict[str, Any]]:
     Parceiros sem `store_id` preenchido são ignorados (não há como bater
     com os pacotes). O cadastro traz esse campo principalmente para hubs
     IHS; DSPs típicos ficam sem match e aparecerão como "unknown".
+
+    Normalizamos o store_id via `_normalize_store_id` para garantir que
+    a chave no índice seja idêntica à chave produzida pelo `load_deliveries`
+    (ambos removem ".0" trailing se o ID tiver passado por um float).
     """
     if not dados_mapa_path.exists():
         print(f"  WARN phase6: {dados_mapa_path} não encontrado — partner_index vazio.")
@@ -121,12 +147,17 @@ def _build_partner_index(dados_mapa_path: Path) -> Dict[str, Dict[str, Any]]:
         payload = json.load(f)
 
     index: Dict[str, Dict[str, Any]] = {}
+    dupes = 0
     for p in payload.get("allMarkerData", []):
-        sid = p.get("store_id")
-        if not sid:
-            continue
-        sid_key = str(sid).strip()
+        sid_key = _normalize_store_id(p.get("store_id"))
         if not sid_key:
+            continue
+        if sid_key in index:
+            # Mesmo store_id cadastrado em 2+ Salesforce IDs. Mantemos o
+            # primeiro (ordem do JSON, tipicamente Active antes de Inactive)
+            # e logamos para visibilidade. Caso raro — geralmente indica
+            # cadastro duplicado no Salesforce.
+            dupes += 1
             continue
         index[sid_key] = {
             "salesforce_id":   p.get("salesforce_id"),
@@ -140,6 +171,8 @@ def _build_partner_index(dados_mapa_path: Path) -> Dict[str, Dict[str, Any]]:
             "lon":             p.get("lon"),
             "hub_initiatives": p.get("hub_delivey_initiatives"),
         }
+    if dupes:
+        print(f"  INFO phase6: {dupes} store_id duplicado(s) no cadastro — primeiro mantido.")
     return index
 
 
@@ -176,32 +209,56 @@ def _compute_station_totals(df: pd.DataFrame) -> Dict[str, Dict[str, int]]:
     return result
 
 
-def _compute_daily_by_station(df: pd.DataFrame) -> Dict[str, List[Dict[str, Any]]]:
+def _compute_daily_by_station(
+    df: pd.DataFrame,
+    date_min: Optional[str] = None,
+    date_max: Optional[str] = None,
+) -> Dict[str, List[Dict[str, Any]]]:
     """
     Série temporal diária por DS: { DS: [{date, ihs, dsp, total}, ...] }.
-    Datas ordenadas ASC. Preenche dias sem entrega com zero apenas dentro
-    do range presente na base (não tenta inferir dias faltantes fora dela).
+    Datas ordenadas ASC.
+
+    Quando `date_min`/`date_max` são fornecidos, faz zero-fill para todos
+    os dias da janela (inclusive os sem entrega) — essencial para o gráfico
+    de média diária não mentir ao esconder dias vazios. Sem eles, usa só
+    as datas presentes no df.
     """
     grouped = (
         df.groupby(["station_code", "scan_date", "canal_entrega"])
         .size()
         .unstack(fill_value=0)
     )
-    result: Dict[str, List[Dict[str, Any]]] = {}
+
+    # Datas completas da janela (para zero-fill)
+    if date_min and date_max:
+        full_dates = [
+            d.strftime("%Y-%m-%d")
+            for d in pd.date_range(start=date_min, end=date_max, freq="D")
+        ]
+    else:
+        full_dates = None
+
+    # Acumula por station: mapa date→{ihs,dsp,total}
+    per_station: Dict[str, Dict[str, Dict[str, int]]] = {}
     for (station, date), row in grouped.iterrows():
         if not station:
             continue
         ihs = int(row.get(CANAL_IHS, 0))
         dsp = int(row.get(CANAL_DSP, 0))
         total = int(row.sum())
-        result.setdefault(str(station), []).append({
-            "date": str(date),
-            "ihs": ihs,
-            "dsp": dsp,
-            "total": total,
-        })
-    for station in result:
-        result[station].sort(key=lambda e: e["date"])
+        per_station.setdefault(str(station), {})[str(date)] = {
+            "ihs": ihs, "dsp": dsp, "total": total,
+        }
+
+    result: Dict[str, List[Dict[str, Any]]] = {}
+    for station, date_map in per_station.items():
+        dates_to_emit = full_dates if full_dates else sorted(date_map.keys())
+        series = []
+        for d in dates_to_emit:
+            bucket = date_map.get(d, {"ihs": 0, "dsp": 0, "total": 0})
+            series.append({"date": d, **bucket})
+        result[station] = series
+
     return result
 
 
@@ -211,10 +268,12 @@ def _compute_partner_stats(
     station_totals: Dict[str, Dict[str, int]],
     territory_totals: Dict[str, int],
     days: int,
+    date_min: Optional[str] = None,
+    date_max: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     """
     Estatísticas por parceiro (store_id):
-      - total, daily_avg, daily_series
+      - total, daily_avg, daily_series (zero-filled para o range da janela)
       - share_ds (% sobre o total do DS, considerando canal IHS e DSP)
       - share_ds_ihs (% sobre apenas o volume IHS do DS)
       - share_territory (% sobre o bucket_ade do parceiro; 0 se unknown)
@@ -222,51 +281,105 @@ def _compute_partner_stats(
       - trend_7d_pct (variação do volume últimos 7d vs 7d anteriores)
       - is_unknown (True se não bateu com partner_index)
 
-    Filtra para manter apenas store_ids não-vazios. Parceiros IHS em geral
-    terão store_id preenchido; entregas DSP típicas não — essas ficam nos
-    agregados de DS mas não viram linhas aqui.
+    `daily_series` sempre cobre TODOS os dias entre date_min e date_max,
+    inclusive os dias sem entrega (total=0). Isso permite que o chart do
+    frontend mostre a média diária real sem enviesar para cima (do jeito
+    errado, dias com 0 entregas seriam omitidos e o usuário enxergaria
+    apenas os picos). É também essencial para comparar performance entre
+    parceiros cujas janelas ativas diferem.
+
+    Filtra para manter apenas store_ids não-vazios via `_normalize_store_id`.
+    Parceiros IHS em geral terão store_id preenchido; entregas DSP típicas
+    não — essas ficam nos agregados de DS mas não viram linhas aqui.
     """
-    df_valid = df[df["store_id"].astype(str).str.len() > 0].copy()
+    # Normalização defensiva: mesmo que load_deliveries já faça, aplicamos
+    # de novo para tolerar callers que construam o df de outro modo.
+    df = df.copy()
+    df["store_id"] = df["store_id"].map(_normalize_store_id)
+    df_valid = df[df["store_id"].astype(str).str.len() > 0]
     if df_valid.empty:
         return []
 
+    # ------------------------------------------------------------------ #
+    # Range completo de datas da janela — para zero-fill.
+    # ------------------------------------------------------------------ #
+    if date_min and date_max:
+        full_dates = [
+            d.strftime("%Y-%m-%d")
+            for d in pd.date_range(start=date_min, end=date_max, freq="D")
+        ]
+    else:
+        # Fallback: usa o range presente no df.
+        full_dates = sorted(df_valid["scan_date"].unique().tolist())
+
+    # ------------------------------------------------------------------ #
+    # Agregação principal: total por (store_id, scan_date)
+    # ------------------------------------------------------------------ #
     grouped = df_valid.groupby(["store_id", "scan_date"]).agg(
         total=("tracking_id", "count"),
-        station=("station_code", "first"),
-        canal=("canal_entrega", "first"),
-        nome=("nome_empresa", "first"),
     ).reset_index()
+
+    # Station e canal dominantes por parceiro (em uma só passada)
+    station_by_partner = (
+        df_valid.groupby(["store_id", "station_code"])
+        .size().reset_index(name="n")
+        .sort_values(["store_id", "n"], ascending=[True, False])
+        .drop_duplicates("store_id", keep="first")
+        .set_index("store_id")["station_code"]
+        .to_dict()
+    )
+    canal_by_partner = (
+        df_valid.groupby(["store_id", "canal_entrega"])
+        .size().reset_index(name="n")
+        .sort_values(["store_id", "n"], ascending=[True, False])
+        .drop_duplicates("store_id", keep="first")
+        .set_index("store_id")["canal_entrega"]
+        .to_dict()
+    )
+    # Nome da empresa (mais frequente) por store_id
+    nome_by_partner = (
+        df_valid[df_valid["nome_empresa"].astype(str).str.len() > 0]
+        .groupby(["store_id", "nome_empresa"])
+        .size().reset_index(name="n")
+        .sort_values(["store_id", "n"], ascending=[True, False])
+        .drop_duplicates("store_id", keep="first")
+        .set_index("store_id")["nome_empresa"]
+        .to_dict()
+    )
+
+    # Cutoffs para tendência (calculado uma vez)
+    last_date = pd.to_datetime(full_dates[-1]) if full_dates else None
+    cutoff_7 = (
+        (last_date - pd.Timedelta(days=7)).strftime("%Y-%m-%d")
+        if last_date is not None else None
+    )
+    cutoff_14 = (
+        (last_date - pd.Timedelta(days=14)).strftime("%Y-%m-%d")
+        if last_date is not None else None
+    )
 
     partners_out: List[Dict[str, Any]] = []
 
-    # Recent date range for trend computation
-    all_dates = sorted(df_valid["scan_date"].unique())
-    last_date = pd.to_datetime(all_dates[-1]) if all_dates else None
-    cutoff_7 = (last_date - pd.Timedelta(days=7)).strftime("%Y-%m-%d") if last_date is not None else None
-    cutoff_14 = (last_date - pd.Timedelta(days=14)).strftime("%Y-%m-%d") if last_date is not None else None
-
     for store_id, sub in grouped.groupby("store_id"):
         store_id = str(store_id)
-        sub = sub.sort_values("scan_date")
+
+        # Mapa date→total para o parceiro (rápido: dict lookup)
+        partner_daily = dict(zip(sub["scan_date"].astype(str), sub["total"].astype(int)))
         total = int(sub["total"].sum())
+
+        # Zero-fill: uma entrada por dia da janela, mesmo que volume=0.
         daily_series = [
-            {"date": str(row.scan_date), "total": int(row.total)}
-            for row in sub.itertuples()
+            {"date": d, "total": int(partner_daily.get(d, 0))}
+            for d in full_dates
         ]
         daily_avg = round(total / days, 2) if days > 0 else 0.0
 
-        # Station dominante por volume (cobre casos raros em que o mesmo
-        # store_id entregou em mais de uma DS — pega a com maior volume).
-        station_volumes = sub.groupby("station")["total"].sum()
-        station_dom = str(station_volumes.idxmax()) if not station_volumes.empty else ""
-
-        # Canal dominante (IHS para hubs; DSP se store_id vier em pacotes DSP).
-        canal_volumes = df_valid[df_valid["store_id"] == store_id].groupby("canal_entrega").size()
-        canal_dom = str(canal_volumes.idxmax()) if not canal_volumes.empty else ""
+        station_dom = str(station_by_partner.get(store_id, ""))
+        canal_dom = str(canal_by_partner.get(store_id, ""))
+        nome_empresa = str(nome_by_partner.get(store_id) or store_id)
 
         meta = partner_index.get(store_id)
         is_unknown = meta is None
-        nome_empresa = sub.iloc[0]["nome"] if sub.iloc[0]["nome"] else store_id
 
         name = (meta or {}).get("name") or nome_empresa
         salesforce_id = (meta or {}).get("salesforce_id")
@@ -283,18 +396,20 @@ def _compute_partner_stats(
         if bucket_ade and bucket_ade in territory_totals:
             share_territory = _safe_pct(total, territory_totals[bucket_ade])
 
-        # Cap utilization: daily_avg vs capacity
         cap_util = _safe_pct(daily_avg, capacity) if capacity else 0.0
 
-        # Trend 7d vs 7d anteriores
+        # Trend 7d vs 7d anteriores — usa o daily_series já zero-filled
         trend_pct = 0.0
         if cutoff_7 and cutoff_14:
             recent = sum(r["total"] for r in daily_series if r["date"] > cutoff_7)
-            prior = sum(r["total"] for r in daily_series if cutoff_14 < r["date"] <= cutoff_7)
+            prior = sum(
+                r["total"] for r in daily_series
+                if cutoff_14 < r["date"] <= cutoff_7
+            )
             if prior > 0:
                 trend_pct = round(100.0 * (recent - prior) / prior, 2)
             elif recent > 0:
-                trend_pct = 100.0  # saída do zero — tratado como +100%
+                trend_pct = 100.0
 
         partners_out.append({
             "store_id":              store_id,
@@ -578,7 +693,11 @@ def run_phase6(
     # 2. Agregações
     # ------------------------------------------------------------------ #
     station_totals = _compute_station_totals(df)
-    daily_by_station = _compute_daily_by_station(df)
+    daily_by_station = _compute_daily_by_station(
+        df,
+        date_min=deliveries.date_min,
+        date_max=deliveries.date_max,
+    )
     territory_totals = _compute_territory_totals(df, territories)
     partner_stats = _compute_partner_stats(
         df=df,
@@ -586,6 +705,8 @@ def run_phase6(
         station_totals=station_totals,
         territory_totals=territory_totals,
         days=deliveries.days,
+        date_min=deliveries.date_min,
+        date_max=deliveries.date_max,
     )
 
     n_unknown = sum(1 for p in partner_stats if p["is_unknown"])

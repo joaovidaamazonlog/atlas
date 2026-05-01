@@ -50,6 +50,11 @@ export default defineConfig({
   // Se for o root (usuario.github.io), use '/'
   base: '/atlas/',
   server: {
+    // Expõe o servidor em todas as interfaces de rede para acesso via IP local
+    // (ex: celular/tablet na mesma Wi-Fi). Equivalente a usar `--host`.
+    host: true,
+    port: 5173,
+    strictPort: false,
     proxy: {
       // Proxy para contornar CORS em desenvolvimento local.
       // Chamadas para /api-proxy/* são redirecionadas para a API real.

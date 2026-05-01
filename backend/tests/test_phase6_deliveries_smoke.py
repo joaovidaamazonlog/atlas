@@ -395,3 +395,264 @@ def test_cap_misconfigured_false_for_exited_partner(tmp_path):
     summary = json.loads(result.summary.read_text(encoding="utf-8"))
     by_id = {p["store_id"]: p for p in summary["partners"]}
     assert by_id["HUB_EXITED"]["cap_misconfigured"] is False
+
+
+# ---------------------------------------------------------------------------
+# TESTES: store_id float normalization (bug do join quebrado)
+# ---------------------------------------------------------------------------
+
+def test_store_id_normalized_when_csv_parses_as_float(tmp_path):
+    """
+    Quando o CSV de pacotes tem colunas com NaN, pandas infere `store_id`
+    como float64. Isso transforma `12345` em `"12345.0"` no astype(str),
+    o que quebra o join com o cadastro de parceiros (que tem `"12345"`).
+
+    `load_deliveries` deve normalizar removendo o ".0" trailing.
+    """
+    import pandas as pd
+    from shared.load_deliveries import load_deliveries
+
+    # CSV com uma linha sem store_id — força pandas a inferir float64
+    df = pd.DataFrame([
+        {
+            "tracking_id": "T001", "scan_datetime_br": "2026-04-28 09:00:00",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "A", "store_id": 7912931585,  # int → float64 no CSV
+            "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+            "hex": "hex_A",
+        },
+        {
+            "tracking_id": "T002", "scan_datetime_br": "2026-04-28 10:00:00",
+            "reason_code": "OK", "canal_entrega": "DSP",
+            "nome_empresa": "B", "store_id": None,  # NaN força float dtype
+            "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+            "hex": "hex_A",
+        },
+    ])
+    csv_path = tmp_path / "deliveries.csv"
+    df.to_csv(csv_path, index=False)
+
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    # dtype deve ser string-like (object ou str, depende da versão do pandas)
+    assert str(dd.df["store_id"].dtype) in ("object", "str", "string")
+
+    store_ids = set(dd.df["store_id"].tolist())
+    # O valor deve estar sem ".0"; linha sem store_id deve virar ""
+    assert "7912931585" in store_ids
+    assert "7912931585.0" not in store_ids
+    assert "" in store_ids
+
+
+def test_phase6_joins_partner_when_csv_stores_float_id(tmp_path):
+    """
+    End-to-end do bug: CSV de pacotes tem store_id como float → sem fix,
+    nenhum parceiro batia e todos ficavam unknown. Com o fix, o match
+    funciona e `is_unknown=False` para quem está no cadastro.
+    """
+    import pandas as pd
+    from shared.load_deliveries import load_deliveries
+
+    rows = pd.DataFrame([
+        {
+            "tracking_id": f"T00{i}",
+            "scan_datetime_br": f"2026-04-{27+i % 2:02d} 09:00:00",
+            "reason_code": "OK",
+            "canal_entrega": "IHS_STORE",
+            "nome_empresa": "Hub Saulo",
+            "store_id": 7912931585,  # int → float64 após NaN em outra linha
+            "station_code": "DBH5",
+            "latitude": -19.9, "longitude": -43.9,
+            "hex": "hex_X",
+        } for i in range(3)
+    ] + [
+        {
+            "tracking_id": "T999", "scan_datetime_br": "2026-04-28 10:00:00",
+            "reason_code": "OK", "canal_entrega": "DSP",
+            "nome_empresa": "DSP", "store_id": None,
+            "station_code": "DBH5", "latitude": -19.9, "longitude": -43.9,
+            "hex": "hex_X",
+        },
+    ])
+    csv_path = tmp_path / "deliveries.csv"
+    rows.to_csv(csv_path, index=False)
+
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    # Cadastro tem o store_id como string — formato idêntico ao produzido
+    # pelo load_partners_csv (lê com dtype=str, keep_default_na=False).
+    dados_mapa = _build_dados_mapa(tmp_path, [
+        {
+            "salesforce_id": "SF_S1", "store_id": "7912931585",
+            "name": "47.325.853 SAULO MARVIN SILVA SOUSA",
+            "status": "Active", "capacity": 42, "radius": 1500,
+            "delivery_station": "DBH5", "bucket_ade": "DBH5_bucket-01",
+            "lat": -19.9, "lon": -43.9,
+        },
+    ])
+
+    result = run_phase6(
+        deliveries=dd,
+        dados_mapa_path=dados_mapa,
+        territories=_make_territories({"hex_X": "DBH5_bucket-01"}),
+        output_dir=str(tmp_path),
+    )
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+    by_id = {p["store_id"]: p for p in summary["partners"]}
+
+    assert "7912931585" in by_id
+    p = by_id["7912931585"]
+    assert p["is_unknown"] is False
+    assert p["name"] == "47.325.853 SAULO MARVIN SILVA SOUSA"
+
+
+# ---------------------------------------------------------------------------
+# TESTES: daily_series zero-fill
+# ---------------------------------------------------------------------------
+
+def test_daily_series_zero_fills_missing_days(tmp_path):
+    """
+    Se um parceiro entregou só em 2 dias de uma janela de 4, o
+    daily_series deve ter 4 entradas — dias vazios com total=0.
+
+    Sem isso, o chart do PartnerDrillDown mentia: escondia dias sem
+    entrega, enviesando para cima a percepção da média diária.
+    """
+    rows = []
+    # Janela: 2026-04-27 até 2026-04-30 (4 dias)
+    # Parceiro HUB só entrega em 27 e 30
+    for date in ("2026-04-27", "2026-04-30"):
+        rows.append({
+            "tracking_id": f"T_{date}", "scan_datetime_br": f"{date} 09:00:00",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "Hub X", "store_id": "HUB_X",
+            "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+            "hex": "hex_A",
+        })
+    # Mais uma entrega em 2026-04-28 de OUTRO parceiro — amplia a janela
+    rows.append({
+        "tracking_id": "T_OTHER", "scan_datetime_br": "2026-04-28 09:00:00",
+        "reason_code": "OK", "canal_entrega": "DSP",
+        "nome_empresa": "DSP", "store_id": "OTHER",
+        "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+        "hex": "hex_A",
+    })
+
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    dados_mapa = _build_dados_mapa(tmp_path, [])
+    result = run_phase6(
+        deliveries=dd,
+        dados_mapa_path=dados_mapa,
+        territories=_make_territories({}),
+        output_dir=str(tmp_path),
+    )
+
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+    by_id = {p["store_id"]: p for p in summary["partners"]}
+
+    hub = by_id["HUB_X"]
+    dates = [d["date"] for d in hub["daily_series"]]
+    # Deve cobrir todos os 4 dias da janela, mesmo os que HUB_X não entregou
+    assert dates == ["2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30"]
+
+    totals = {d["date"]: d["total"] for d in hub["daily_series"]}
+    assert totals["2026-04-27"] == 1
+    assert totals["2026-04-28"] == 0  # zero-filled
+    assert totals["2026-04-29"] == 0  # zero-filled
+    assert totals["2026-04-30"] == 1
+
+    # daily_avg = 2 / 4 dias = 0.5 (agora reflete a média real)
+    assert hub["daily_avg"] == 0.5
+
+
+def test_daily_by_station_zero_fills_missing_days(tmp_path):
+    """
+    A série diária por DS também precisa fazer zero-fill — é usada em
+    gráficos agregados no frontend.
+    """
+    rows = [
+        # DSP2 entrega só nos dias 27 e 30
+        {
+            "tracking_id": "T1", "scan_datetime_br": "2026-04-27 09:00:00",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "A", "store_id": "S1", "station_code": "DSP2",
+            "latitude": -23.5, "longitude": -46.6, "hex": "hex_A",
+        },
+        {
+            "tracking_id": "T2", "scan_datetime_br": "2026-04-30 09:00:00",
+            "reason_code": "OK", "canal_entrega": "DSP",
+            "nome_empresa": "B", "store_id": "", "station_code": "DSP2",
+            "latitude": -23.5, "longitude": -46.6, "hex": "hex_A",
+        },
+        # DBR9 só em 28 — a janela global vai de 27 a 30
+        {
+            "tracking_id": "T3", "scan_datetime_br": "2026-04-28 09:00:00",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "C", "store_id": "S3", "station_code": "DBR9",
+            "latitude": -23.5, "longitude": -46.7, "hex": "hex_B",
+        },
+    ]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    dados_mapa = _build_dados_mapa(tmp_path, [])
+    result = run_phase6(
+        deliveries=dd, dados_mapa_path=dados_mapa,
+        territories=_make_territories({}), output_dir=str(tmp_path),
+    )
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+
+    dsp2_series = summary["daily_by_station"]["DSP2"]
+    dates = [e["date"] for e in dsp2_series]
+    # 4 dias entre 2026-04-27 e 2026-04-30, todos presentes
+    assert dates == ["2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30"]
+    totals = {e["date"]: e["total"] for e in dsp2_series}
+    assert totals["2026-04-27"] == 1
+    assert totals["2026-04-28"] == 0
+    assert totals["2026-04-29"] == 0
+    assert totals["2026-04-30"] == 1
+
+
+# ---------------------------------------------------------------------------
+# TESTES: deduplicação / uma linha por store_id único
+# ---------------------------------------------------------------------------
+
+def test_partner_stats_one_row_per_store_id(tmp_path):
+    """
+    Garantia explícita: mesmo que um store_id apareça com nome_empresa
+    em variações diferentes ao longo do CSV, `partner_stats` deve
+    consolidar tudo em UMA linha por store_id — nunca duplicar.
+    """
+    rows = [
+        {"tracking_id": "T1", "scan_datetime_br": "2026-04-28 09:00:00",
+         "reason_code": "OK", "canal_entrega": "IHS_STORE",
+         "nome_empresa": "Hub ABC LTDA", "store_id": "HUB_X",
+         "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+         "hex": "hex_A"},
+        # MESMO store_id, mas nome_empresa com pequena variação de capitalização
+        {"tracking_id": "T2", "scan_datetime_br": "2026-04-28 10:00:00",
+         "reason_code": "OK", "canal_entrega": "IHS_STORE",
+         "nome_empresa": "hub abc ltda", "store_id": "HUB_X",
+         "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+         "hex": "hex_A"},
+        {"tracking_id": "T3", "scan_datetime_br": "2026-04-29 09:00:00",
+         "reason_code": "OK", "canal_entrega": "IHS_STORE",
+         "nome_empresa": "HUB ABC LTDA ", "store_id": "HUB_X",
+         "station_code": "DSP2", "latitude": -23.5, "longitude": -46.6,
+         "hex": "hex_A"},
+    ]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    dados_mapa = _build_dados_mapa(tmp_path, [])
+    result = run_phase6(
+        deliveries=dd, dados_mapa_path=dados_mapa,
+        territories=_make_territories({}), output_dir=str(tmp_path),
+    )
+    summary = json.loads(result.summary.read_text(encoding="utf-8"))
+
+    hub_entries = [p for p in summary["partners"] if p["store_id"] == "HUB_X"]
+    assert len(hub_entries) == 1
+    assert hub_entries[0]["total"] == 3

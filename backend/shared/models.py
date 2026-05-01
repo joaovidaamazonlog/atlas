@@ -27,6 +27,8 @@ class Config:
     BASE_PACKAGES        = configuration.BASE_PACKAGES
     BASE_PARTNERS        = configuration.BASE_PARTNERS
     BASE_PARTNERS_CSV    = getattr(configuration, "BASE_PARTNERS_CSV", None)
+    BASE_PROSPECTS_CSV   = getattr(configuration, "BASE_PROSPECTS_CSV", None)
+    BASE_WEBLEADS_CSV    = getattr(configuration, "BASE_WEBLEADS_CSV", None)
     BASE_JURISDICTION    = configuration.BASE_JURISDICTION
     DEST_FOLDER          = configuration.DEST_FOLDER
     CNPJ_DB_PATH         = getattr(configuration, "DB_EMPRESAS", None)

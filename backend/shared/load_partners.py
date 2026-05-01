@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 import h3
@@ -593,7 +594,21 @@ def _build_partner_data(partners: "list[Partner]") -> PartnerData:
 
         # Remover: prospects sem coords + demais sem coords
         df = df[~(prospects_mask & no_coords_mask)].copy()
+        before_drop = len(df)
         df.dropna(subset=["lat", "lon"], inplace=True)
+        dropped_operational = before_drop - len(df)
+
+        # WARNING ALTO quando perdemos parceiros operacionais por falta de coords.
+        # Sintoma típico: CSV exportado do Salesforce sem as colunas lat/lon
+        # preenchidas. Sem coordenadas os parceiros não podem ser geocodificados
+        # e ficam de fora das Fases 3/4/5 (matching, webleads, relatórios).
+        if dropped_operational:
+            print(
+                f"  ⚠️  WARN: {dropped_operational:,} parceiro(s) operacional(is) "
+                f"(Active/Onboarding/BG Checks/Inactive) descartado(s) por "
+                f"latitude/longitude vazias. Verifique se o CSV de parceiros "
+                f"contém as colunas `latitude` e `longitude` preenchidas."
+            )
 
         df["lat"] = df["lat"].astype(float)
         df["lon"] = df["lon"].astype(float)
@@ -811,5 +826,382 @@ def load_partners_csv(
     print(
         f"[load_partners_csv] Concluído: "
         f"{len(partner_data.partners_df):,} parceiros operacionais."
+    )
+    return partner_data
+
+
+# ---------------------------------------------------------------------------
+# PROSPECTS / WEBLEADS CSV LOADERS
+# ---------------------------------------------------------------------------
+#
+# Os CSVs de prospects e webleads são exports simplificados do Salesforce
+# com 13 colunas: id, cep, cidade, estado, jurisdiction_name, latitude,
+# longitude, name, ownerid, phone, recruitment_representative, status, origem
+#
+# Diferenças em relação ao partners.csv:
+# - Não tem delivery_station, volume cap, radius, supply run, launch date
+#   → usamos defaults (radius=1500, capacity=42, station vazia → None).
+# - Tem `origem` em vez de `leadSource` → mapeado para lead_source no Partner.
+# - Prospects: status forçado a "Prospect"; lead_source = origem (ou None).
+# - Webleads: status forçado a "New"; lead_source forçado a
+#   "Website Pardot Form" (ignoramos `origem` pois todos os webleads vêm do
+#   formulário Pardot por convenção).
+#
+# A hierarquia BDM/CTL/ADE e a jurisdição são inferidas em fases posteriores
+# a partir do TEAM e do GeoJSON — NÃO do CSV (conforme correção explícita
+# do usuário: "hierarquia de CTL/ADE/BDM vem do TEAM, não do CSV").
+# ---------------------------------------------------------------------------
+
+# Mapa de renomeação para o formato de 13 colunas (prospects/webleads).
+# Chave: nome no CSV. Valor: nome esperado por Partner.from_row.
+_PROSPECT_WEBLEAD_RENAME = {
+    "id":                       "Id",
+    "name":                     "Name",
+    "status":                   "Status",
+    "latitude":                 "Latitude",
+    "longitude":                "Longitude",
+    "cep":                      "CEP",
+    "cidade":                   "Cidade",
+    "estado":                   "Estado",
+    "phone":                    "Phone",
+    "ownerid":                  "OwnerId",
+    "origem":                   "LeadSource",
+    # jurisdiction_name do CSV é IGNORADO intencionalmente — a jurisdição
+    # real vem do GeoJSON via PartnerData.get_base_from_jurisdiction.
+    # recruitment_representative também é ignorado (hierarquia = TEAM).
+}
+
+
+def _read_simple_csv(csv_path: str, source_label: str) -> pd.DataFrame:
+    """
+    Lê um CSV simplificado (formato prospects/webleads) e retorna um
+    DataFrame com colunas renomeadas para o que Partner.from_row espera.
+
+    Validação mínima
+    ----------------
+    Exige as 13 colunas esperadas. Se faltar alguma, loga warning e
+    segue com o que houver (permite exports parciais).
+    """
+    expected = {
+        "id", "cep", "cidade", "estado", "jurisdiction_name",
+        "latitude", "longitude", "name", "ownerid", "phone",
+        "recruitment_representative", "status", "origem",
+    }
+
+    df = pd.read_csv(csv_path, dtype=str, keep_default_na=False)
+    # Normaliza cabeçalhos: remove espaços e lowercase
+    df.columns = [str(c).strip().lower() for c in df.columns]
+
+    missing = expected - set(df.columns)
+    if missing:
+        print(
+            f"  WARN [{source_label}] colunas ausentes no CSV: "
+            f"{sorted(missing)} — campos correspondentes ficarão vazios."
+        )
+
+    df.rename(columns=_PROSPECT_WEBLEAD_RENAME, inplace=True)
+
+    # Normalizar vazios → None
+    df.replace({"": None, "nan": None, "NaN": None, "None": None}, inplace=True)
+    return df
+
+
+def load_prospects_csv(csv_path: str) -> pd.DataFrame:
+    """
+    Carrega o CSV de prospects e retorna um DataFrame pronto para ser
+    consumido por ``_build_partner_data`` (via merge_partner_sources).
+
+    Regras de negócio
+    -----------------
+    - ``status`` é forçado a "Prospect" (mesmo que venha diferente no CSV).
+    - ``lead_source`` recebe o valor de ``origem`` (ex: "Website Pardot Form",
+      "Cold Call") ou None se vazio.
+    - Linhas sem lat/lon não são removidas aqui — ficam para o
+      ``_build_partner_data`` tratar como `no_coords_prospects_df`.
+    - Linhas com parse inválido são puladas com warning (mesma política
+      do ``load_partners_csv``).
+
+    Retorna
+    -------
+    DataFrame com colunas serializadas via ``Partner.to_dict()``.
+    Vazio se o arquivo não existir.
+    """
+    path = Path(csv_path)
+    if not path.exists():
+        print(f"[load_prospects_csv] Arquivo não encontrado: {csv_path}")
+        return pd.DataFrame()
+
+    print(f"[load_prospects_csv] Lendo {csv_path} ...")
+    df_raw = _read_simple_csv(csv_path, "load_prospects_csv")
+    print(f"   {len(df_raw):,} linhas lidas.")
+
+    # Forçar status = "Prospect" independentemente do que vier no CSV.
+    # Isto garante que merges futuros de exports inconsistentes não
+    # contaminem o fluxo com status inesperados.
+    df_raw["Status"] = "Prospect"
+
+    partners: list[Partner] = []
+    for _, row in df_raw.iterrows():
+        try:
+            p = Partner.from_row(row, {}, {}, {})
+            partners.append(p)
+        except Exception as exc:
+            sf_id = row.get("Id", "?")
+            print(
+                f"  WARN [load_prospects_csv] Erro ao construir Partner "
+                f"{sf_id}: {exc}"
+            )
+
+    print(f"[load_prospects_csv] {len(partners):,} prospects carregados.")
+    return pd.DataFrame([p.to_dict() for p in partners]) if partners else pd.DataFrame()
+
+
+def load_webleads_csv(csv_path: str) -> pd.DataFrame:
+    """
+    Carrega o CSV de webleads e retorna um DataFrame pronto para ser
+    consumido por ``_build_partner_data`` (via merge_partner_sources).
+
+    Regras de negócio
+    -----------------
+    - ``status`` é forçado a "New".
+    - ``lead_source`` é forçado a "Website Pardot Form" (convenção do CSV
+      de webleads — mesmo se ``origem`` vier diferente).
+    - Webleads sem lat/lon são mantidos no DataFrame de webleads (o
+      ``_build_partner_data`` lida com ``zip_clean`` para esses casos).
+
+    Retorna
+    -------
+    DataFrame com colunas serializadas via ``Partner.to_dict()``.
+    Vazio se o arquivo não existir.
+    """
+    path = Path(csv_path)
+    if not path.exists():
+        print(f"[load_webleads_csv] Arquivo não encontrado: {csv_path}")
+        return pd.DataFrame()
+
+    print(f"[load_webleads_csv] Lendo {csv_path} ...")
+    df_raw = _read_simple_csv(csv_path, "load_webleads_csv")
+    print(f"   {len(df_raw):,} linhas lidas.")
+
+    # Forçar status e lead_source segundo a convenção de webleads.
+    df_raw["Status"]     = "New"
+    df_raw["LeadSource"] = "Website Pardot Form"
+
+    partners: list[Partner] = []
+    for _, row in df_raw.iterrows():
+        try:
+            p = Partner.from_row(row, {}, {}, {})
+            partners.append(p)
+        except Exception as exc:
+            sf_id = row.get("Id", "?")
+            print(
+                f"  WARN [load_webleads_csv] Erro ao construir Partner "
+                f"{sf_id}: {exc}"
+            )
+
+    print(f"[load_webleads_csv] {len(partners):,} webleads carregados.")
+    return pd.DataFrame([p.to_dict() for p in partners]) if partners else pd.DataFrame()
+
+
+# ---------------------------------------------------------------------------
+# MERGE — load_partners_sources
+# ---------------------------------------------------------------------------
+
+def load_partners_sources(
+    partners_csv: Optional[str] = None,
+    prospects_csv: Optional[str] = None,
+    webleads_csv: Optional[str] = None,
+    jurisdiction_path: Optional[str] = None,
+) -> PartnerData:
+    """
+    Carrega os 3 CSVs do pipeline de parceiros (active/onboarding/inactive +
+    prospects + webleads) e consolida em um único ``PartnerData``.
+
+    Cada argumento é opcional. Se um caminho for ``None`` ou o arquivo
+    não existir, aquela fonte é silenciosamente pulada (com log informativo).
+    Isto permite rodar o pipeline com qualquer subconjunto dos 3 arquivos —
+    essencial para evolução gradual enquanto os exports são organizados.
+
+    Uso típico (modo daily)
+    -----------------------
+    ```python
+    partner_data = load_partners_sources(
+        partners_csv  = str(Config.BASE_PARTNERS_CSV),
+        prospects_csv = str(Config.BASE_PROSPECTS_CSV),
+        webleads_csv  = str(Config.BASE_WEBLEADS_CSV),
+    )
+    ```
+
+    Semântica do merge
+    ------------------
+    - ``partners_df``        = partners.csv (active/onboarding/inactive) +
+                               prospects.csv (status="Prospect").
+    - ``web_leads_df``       = webleads.csv (status="New",
+                               lead_source="Website Pardot Form").
+    - ``no_coords_prospects_df`` = prospects sem lat/lon (pegos do
+                               prospects.csv durante o merge).
+    - ``jurisdictions``      = GeoJSON de Config.BASE_JURISDICTION.
+
+    Duplicatas
+    ----------
+    Se um Id aparecer em mais de um CSV, o primeiro vence (ordem:
+    partners > prospects > webleads). Emite warning em caso de conflito.
+
+    Fallback
+    --------
+    Se NENHUM dos 3 CSVs existir, levanta ``FileNotFoundError`` — nesse
+    caso o chamador deve cair para o Excel via ``load_partners()``.
+    """
+    import shared.config as _cfg
+
+    j_path = jurisdiction_path or Config.BASE_JURISDICTION
+
+    # ------------------------------------------------------------------
+    # 1. Ler cada fonte; construir lista de Partner objects
+    # ------------------------------------------------------------------
+    partners_obj: list[Partner] = []
+    sources_used: list[str] = []
+
+    # ---- partners.csv (Active/Onboarding/Inactive/BG Checks/Exited) ----
+    if partners_csv and Path(partners_csv).exists():
+        print(f"[load_partners_sources] Lendo partners: {partners_csv} ...")
+        df_raw = pd.read_csv(partners_csv, dtype=str, keep_default_na=False)
+        df_raw.rename(columns={
+            # Formato atual (snake_case + espaços)
+            "id":                       "Id",
+            "name":                     "Name",
+            "storeid":                  "StoreID",
+            "status":                   "Status",
+            "decision_status":          "Decision_Status__c",
+            "decision_reason_code":     "Decision_Reason_Code__c",
+            "latitude":                 "Latitude",
+            "longitude":                "Longitude",
+            "cep":                      "CEP",
+            "cidade":                   "Cidade",
+            "estado":                   "Estado",
+            "delivery_station":         "Delivery Station",
+            "supply run":               "Supply Run",
+            "volume cap":               "Volume Cap",
+            "radius":                   "Radius",
+            "jurisdiction_type":        "Jurisdiction Type",
+            "jurisdiction_name":        "Bucket",
+            "hub_delivery_initiatives": "Hub Delivery Initiatives",
+            "hcp_rate_card":            "HCP Rate Card",
+            "hcp_host_partner":         "HCP Host Partner",
+            "launch date":              "Launch Date",
+            "exit_date":                "Exit_Date__c",
+            "phone":                    "Phone",
+            "ownerid":                  "OwnerId",
+            # Aliases Title_Case (compat)
+            "Delivery_Station":         "Delivery Station",
+            "Jurisdiction_Type":        "Jurisdiction Type",
+            "Hub_Delivery_Initiatives": "Hub Delivery Initiatives",
+            "HCP_Rate_Card":            "HCP Rate Card",
+            "HCP_host_partner":         "HCP Host Partner",
+            "Exit_Date":                "Exit_Date__c",
+            "Decision_Status":          "Decision_Status__c",
+            "Decision_Reason_Code":     "Decision_Reason_Code__c",
+            "Jurisdiction_Name":        "Bucket",
+        }, inplace=True)
+        df_raw.replace({"": None, "nan": None, "NaN": None, "None": None}, inplace=True)
+        for _, row in df_raw.iterrows():
+            try:
+                partners_obj.append(Partner.from_row(row, {}, {}, {}))
+            except Exception as exc:
+                sf_id = row.get("Id", "?")
+                print(f"  WARN [partners] Erro ao construir {sf_id}: {exc}")
+        sources_used.append(f"partners ({len(df_raw):,})")
+    else:
+        if partners_csv:
+            print(f"  INFO partners.csv não encontrado em {partners_csv}")
+
+    # ---- prospects.csv (status forçado a Prospect) ----
+    if prospects_csv and Path(prospects_csv).exists():
+        print(f"[load_partners_sources] Lendo prospects: {prospects_csv} ...")
+        df_raw = _read_simple_csv(prospects_csv, "prospects")
+        df_raw["Status"] = "Prospect"
+        for _, row in df_raw.iterrows():
+            try:
+                partners_obj.append(Partner.from_row(row, {}, {}, {}))
+            except Exception as exc:
+                sf_id = row.get("Id", "?")
+                print(f"  WARN [prospects] Erro ao construir {sf_id}: {exc}")
+        sources_used.append(f"prospects ({len(df_raw):,})")
+    else:
+        if prospects_csv:
+            print(f"  INFO prospects.csv não encontrado em {prospects_csv}")
+
+    # ---- webleads.csv (status=New, lead_source=Website Pardot Form) ----
+    if webleads_csv and Path(webleads_csv).exists():
+        print(f"[load_partners_sources] Lendo webleads: {webleads_csv} ...")
+        df_raw = _read_simple_csv(webleads_csv, "webleads")
+        df_raw["Status"]     = "New"
+        df_raw["LeadSource"] = "Website Pardot Form"
+        for _, row in df_raw.iterrows():
+            try:
+                partners_obj.append(Partner.from_row(row, {}, {}, {}))
+            except Exception as exc:
+                sf_id = row.get("Id", "?")
+                print(f"  WARN [webleads] Erro ao construir {sf_id}: {exc}")
+        sources_used.append(f"webleads ({len(df_raw):,})")
+    else:
+        if webleads_csv:
+            print(f"  INFO webleads.csv não encontrado em {webleads_csv}")
+
+    if not partners_obj:
+        raise FileNotFoundError(
+            "Nenhuma fonte de parceiros encontrada. Esperava pelo menos um "
+            "dos arquivos: partners.csv, prospects.csv, webleads.csv."
+        )
+
+    # ------------------------------------------------------------------
+    # 2. Deduplicar por salesforce_id (primeiro vence)
+    # ------------------------------------------------------------------
+    seen: set = set()
+    unique: list[Partner] = []
+    dupes = 0
+    for p in partners_obj:
+        sid = p.salesforce_id or ""
+        if sid and sid in seen:
+            dupes += 1
+            continue
+        if sid:
+            seen.add(sid)
+        unique.append(p)
+    if dupes:
+        print(f"  INFO {dupes} Id(s) duplicado(s) entre fontes — primeiro registro mantido.")
+
+    print(
+        f"[load_partners_sources] Fontes: {', '.join(sources_used)} "
+        f"→ {len(unique):,} Partners únicos."
+    )
+
+    # ------------------------------------------------------------------
+    # 3. Serializar para dados_mapa.json (mesmo artefato do modo Excel)
+    # ------------------------------------------------------------------
+    from datetime import datetime
+    period = datetime.today().strftime("%Y-%m-%d : %Hh:%Mm")
+    output_path = str(_cfg.DEST_FOLDER / "dados_mapa.json")
+    serialize_to_json(unique, period, output_path)
+
+    # ------------------------------------------------------------------
+    # 4. Construir PartnerData
+    # ------------------------------------------------------------------
+    partner_data = _build_partner_data(unique)
+
+    # ------------------------------------------------------------------
+    # 5. Carregar jurisdições
+    # ------------------------------------------------------------------
+    print(f"[load_partners_sources] Lendo jurisdições de {j_path} ...")
+    with open(j_path, "r", encoding="utf-8") as f:
+        partner_data.jurisdictions = json.load(f)
+    n_juris = len(partner_data.jurisdictions.get("features", []))
+    print(f"   {n_juris} jurisdições carregadas.")
+
+    print(
+        f"[load_partners_sources] Concluído: "
+        f"{len(partner_data.partners_df):,} operacionais | "
+        f"{len(partner_data.web_leads_df):,} webleads | "
+        f"{len(partner_data.no_coords_prospects_df):,} prospects sem coords."
     )
     return partner_data

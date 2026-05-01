@@ -19,6 +19,13 @@ BASE_PARTNERS          = DEST_FOLDER / "dados_mapa.json"
 # usa este arquivo em vez do Excel (terra.xlsm). `--partnerCSV` na CLI
 # tem prioridade sobre esta config. Aponta para a raiz do projeto.
 BASE_PARTNERS_CSV      = PROJECT_ROOT / "partners.csv"
+# CSV de prospects e webleads (export Salesforce simplificado — 13 colunas:
+# id, cep, cidade, estado, jurisdiction_name, latitude, longitude, name,
+# ownerid, phone, recruitment_representative, status, origem). Ficam na
+# raiz do projeto e são carregados automaticamente pelo modo daily.
+# Flags `--prospectsCSV` e `--webleadsCSV` têm prioridade sobre estas.
+BASE_PROSPECTS_CSV     = PROJECT_ROOT / "prospects.csv"
+BASE_WEBLEADS_CSV      = PROJECT_ROOT / "webleads.csv"
 BASE_JURISDICTION      = PROJECT_ROOT / "config" / "jurisdiction.geojson"
 BASE_PREVIOUS_SNAPSHOT = DEST_FOLDER / "snapshot_current.json"
 DB_EMPRESAS            = DB_PATH / "cnpj_2025_06.db"

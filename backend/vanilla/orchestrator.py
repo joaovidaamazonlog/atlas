@@ -29,7 +29,11 @@ from pathlib import Path
 from typing import List, Optional, Set
 
 from shared.load_packages import load_packages
-from shared.load_partners import load_partners, load_partners_csv
+from shared.load_partners import (
+    load_partners,
+    load_partners_csv,
+    load_partners_sources,
+)
 from shared.load_deliveries import load_deliveries
 from shared.models import Config
 from shared.timing import PhaseTimer, TimingReport
@@ -150,21 +154,40 @@ def run_setup(
 # MODO DAILY
 # ---------------------------------------------------------------------------
 
+def _resolve_csv(attr_name: str) -> Optional[str]:
+    """
+    Resolve uma fonte CSV a partir do atributo correspondente em ``Config``.
+
+    Retorna o caminho como string se o atributo estiver definido e o arquivo
+    existir; caso contrário, None.
+
+    Usado pelo ``run_daily`` para localizar os CSVs padrão (partners.csv,
+    prospects.csv, webleads.csv) na raiz do projeto.
+    """
+    path = getattr(Config, attr_name, None)
+    if path and Path(path).exists():
+        return str(path)
+    return None
+
+
 def run_daily(
     output_dir: str,
     stations: Optional[List[str]] = None,
     legacy_bucket_names: bool = False,
     partner_csv: Optional[str] = None,
+    prospects_csv: Optional[str] = None,
+    webleads_csv: Optional[str] = None,
     timing_report: Optional[TimingReport] = None,
     _disable_optimizations: bool = False,
 ) -> TimingReport:
     """
     Pipeline diário completo:
     1. Lê cadastro de parceiros. Ordem de resolução:
-         (a) --partnerCSV explícito na CLI.
-         (b) Config.BASE_PARTNERS_CSV (padrão: partners.csv na raiz) se
-             o arquivo existir.
-         (c) Fallback: Excel (terra.xlsm) via load_partners().
+         (a) --partnerCSV / --prospectsCSV / --webleadsCSV explícitos na CLI.
+         (b) Config.BASE_PARTNERS_CSV, BASE_PROSPECTS_CSV, BASE_WEBLEADS_CSV
+             (padrão: partners.csv, prospects.csv, webleads.csv na raiz).
+         (c) Fallback: Excel (terra.xlsm) via load_partners() quando
+             NENHUM dos 3 CSVs acima está disponível.
        Serializa em dados_mapa.json.
     2. Fases 3/4/5: matching, webleads, relatórios
     3. Enriquece dados_mapa.json com hex_coverage (Active/Onboarding)
@@ -258,21 +281,34 @@ def run_daily(
 
     with timer.phase("load_partners"):
         # Resolução da fonte de parceiros, em ordem de prioridade:
-        #   1. --partnerCSV explícito na CLI (override absoluto).
-        #   2. Config.BASE_PARTNERS_CSV se o arquivo existir na raiz.
-        #   3. Fallback final: Excel (terra.xlsm) via load_partners().
-        # Essa cascata permite migração gradual sem quebrar compatibilidade.
-        effective_csv = partner_csv
-        if not effective_csv:
-            default_csv = getattr(Config, "BASE_PARTNERS_CSV", None)
-            if default_csv and Path(default_csv).exists():
-                effective_csv = str(default_csv)
-                print(f"  Usando CSV padrão de parceiros: {effective_csv}")
+        #   1. CLI flags explícitas (--partnerCSV, --prospectsCSV, --webleadsCSV).
+        #   2. Config.BASE_PARTNERS_CSV / BASE_PROSPECTS_CSV / BASE_WEBLEADS_CSV.
+        #   3. Fallback: Excel (terra.xlsm) via load_partners().
+        # Se pelo menos UM dos 3 CSVs existir, usamos load_partners_sources
+        # (que consolida as 3 fontes). Só caímos no Excel se nenhum CSV
+        # estiver disponível — migração gradual sem quebrar compatibilidade.
+        effective_partners  = partner_csv   or _resolve_csv("BASE_PARTNERS_CSV")
+        effective_prospects = prospects_csv or _resolve_csv("BASE_PROSPECTS_CSV")
+        effective_webleads  = webleads_csv  or _resolve_csv("BASE_WEBLEADS_CSV")
 
-        if effective_csv:
-            partner_data = load_partners_csv(effective_csv)
+        have_any = any([effective_partners, effective_prospects, effective_webleads])
+        if have_any:
+            for label, path in [
+                ("partners",  effective_partners),
+                ("prospects", effective_prospects),
+                ("webleads",  effective_webleads),
+            ]:
+                if path:
+                    print(f"  CSV {label}: {path}")
+                else:
+                    print(f"  CSV {label}: (ausente — ignorado)")
+            partner_data = load_partners_sources(
+                partners_csv  = effective_partners,
+                prospects_csv = effective_prospects,
+                webleads_csv  = effective_webleads,
+            )
         else:
-            print("  CSV não encontrado — caindo para Excel (terra.xlsm).")
+            print("  Nenhum CSV encontrado — caindo para Excel (terra.xlsm).")
             partner_data = load_partners()
 
     # Fase 3: matching
@@ -447,6 +483,24 @@ Exemplos:
              "não existir, cai no Excel (terra.xlsm). "
              "Ex: --partnerCSV data/partners.csv",
     )
+    parser.add_argument(
+        "--prospectsCSV",
+        default=None,
+        metavar="PATH",
+        help="Caminho para um CSV de prospects (13 colunas simplificadas). "
+             "Override explícito. Quando omitido, usa "
+             "Config.BASE_PROSPECTS_CSV (prospects.csv na raiz) se existir. "
+             "Ex: --prospectsCSV data/prospects.csv",
+    )
+    parser.add_argument(
+        "--webleadsCSV",
+        default=None,
+        metavar="PATH",
+        help="Caminho para um CSV de webleads (13 colunas simplificadas). "
+             "Override explícito. Quando omitido, usa "
+             "Config.BASE_WEBLEADS_CSV (webleads.csv na raiz) se existir. "
+             "Ex: --webleadsCSV data/webleads.csv",
+    )
     return parser.parse_args()
 
 
@@ -467,6 +521,8 @@ def main() -> None:
                 stations=args.stations,
                 legacy_bucket_names=args.legacy_buckets,
                 partner_csv=args.partnerCSV,
+                prospects_csv=args.prospectsCSV,
+                webleads_csv=args.webleadsCSV,
             )
         else:
             print("  Especifique --mode setup ou --mode daily.")

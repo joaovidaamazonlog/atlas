@@ -1,5 +1,5 @@
 RELATORIO EXECUTIVO DE OTIMIZACAO
-Gerado em: 30/04/2026 17:07
+Gerado em: 01/05/2026 00:10
 ================================================================================
 
 BASE: DBH5 | BDM: BH | CTL: Lucas Magela
@@ -7,14 +7,14 @@ BASE: DBH5 | BDM: BH | CTL: Lucas Magela
   Territorios:                      4
   Demanda diaria total:             18,396.0 pacotes/dia
   Vagas ideais (total):             291
-  Vagas com match:                  20
-  Vagas em aberto:                  271
-  Cobertura (match / total):        20/291 = 6.9%
-  Parceiros existentes:             20
+  Vagas com match:                  17
+  Vagas em aberto:                  274
+  Cobertura (match / total):        17/291 = 5.8%
+  Parceiros existentes:             17
     • Ativos:                       11
     • Onboarding:                   3
-    • BG Checks / Vetting:          2
-    • Prospects a aprovar:          2
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          1
     • Inativos a reativar:          2
   Attainment (Ativos / Vagas):      3.8%
 --------------------------------------------------------------------------------
@@ -33,14 +33,14 @@ BASE: DBH5 | BDM: BH | CTL: Lucas Magela
 
   DBH5_bucket-02 | CTL: Lucas Magela | ADE: Aline Souza
     Demanda diaria:      4,284.0 pacotes/dia
-    Vagas / Em aberto:   72 / 62
+    Vagas / Em aberto:   72 / 64
     Ativos:               6
     Onboarding:           1
-    BG:                   1
-    Prospects:            1
+    BG:                   0
+    Prospects:            0
     Inativos:             1
     Attainment:            8.3%
-    Acuracidade:          60.0%
+    Acuracidade:          75.0%
 
   DBH5_bucket-03 | CTL: Lucas Magela | ADE: Mathaus Marques
     Demanda diaria:      4,326.0 pacotes/dia
@@ -55,10 +55,10 @@ BASE: DBH5 | BDM: BH | CTL: Lucas Magela
 
   DBH5_bucket-04 | CTL: Lucas Magela | ADE: Mathaus Marques
     Demanda diaria:      3,738.0 pacotes/dia
-    Vagas / Em aberto:   73 / 70
+    Vagas / Em aberto:   73 / 71
     Ativos:               0
     Onboarding:           1
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             1
     Attainment:            0.0%
@@ -70,25 +70,25 @@ BASE: DBR9 | BDM: SP | CTL: Vanessa Azevedo
   Territorios:                      27
   Demanda diaria total:             32,886.0 pacotes/dia
   Vagas ideais (total):             598
-  Vagas com match:                  89
-  Vagas em aberto:                  509
-  Cobertura (match / total):        89/598 = 14.9%
-  Parceiros existentes:             89
+  Vagas com match:                  74
+  Vagas em aberto:                  524
+  Cobertura (match / total):        74/598 = 12.4%
+  Parceiros existentes:             74
     • Ativos:                       30
     • Onboarding:                   5
-    • BG Checks / Vetting:          5
-    • Prospects a aprovar:          37
-    • Inativos a reativar:          12
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          26
+    • Inativos a reativar:          13
   Attainment (Ativos / Vagas):      5.0%
 --------------------------------------------------------------------------------
   DETALHAMENTO POR TERRITORIO:
 
   DBR9_bucket-01 | CTL: Vanessa Azevedo | ADE: Herlei Cristina Da
     Demanda diaria:      1,008.0 pacotes/dia
-    Vagas / Em aberto:   22 / 19
+    Vagas / Em aberto:   22 / 20
     Ativos:               0
     Onboarding:           0
-    BG:                   1
+    BG:                   0
     Prospects:            2
     Inativos:             0
     Attainment:            0.0%
@@ -96,47 +96,47 @@ BASE: DBR9 | BDM: SP | CTL: Vanessa Azevedo
 
   DBR9_bucket-02 | CTL: Vanessa Azevedo | ADE: Hugo Moraes
     Demanda diaria:      1,134.0 pacotes/dia
-    Vagas / Em aberto:   22 / 12
+    Vagas / Em aberto:   22 / 14
     Ativos:               3
     Onboarding:           0
     BG:                   0
-    Prospects:            2
+    Prospects:            0
     Inativos:             5
     Attainment:           13.6%
-    Acuracidade:          30.0%
+    Acuracidade:          37.5%
 
   DBR9_bucket-03 | CTL: Vanessa Azevedo | ADE: Jessica Caldo Burrattino
     Demanda diaria:        966.0 pacotes/dia
-    Vagas / Em aberto:   23 / 18
+    Vagas / Em aberto:   23 / 19
     Ativos:               0
     Onboarding:           1
     BG:                   0
-    Prospects:            2
+    Prospects:            1
     Inativos:             2
     Attainment:            0.0%
     Acuracidade:           0.0%
 
   DBR9_bucket-04 | CTL: Vanessa Azevedo | ADE: Suelen Santos
     Demanda diaria:      1,008.0 pacotes/dia
-    Vagas / Em aberto:   22 / 18
-    Ativos:               2
-    Onboarding:           0
-    BG:                   1
-    Prospects:            0
-    Inativos:             1
-    Attainment:            9.1%
-    Acuracidade:          50.0%
-
-  DBR9_bucket-05 | CTL: Vanessa Azevedo | ADE: Vivian Peres
-    Demanda diaria:      1,218.0 pacotes/dia
-    Vagas / Em aberto:   23 / 17
+    Vagas / Em aberto:   22 / 19
     Ativos:               2
     Onboarding:           0
     BG:                   0
-    Prospects:            3
+    Prospects:            0
     Inativos:             1
+    Attainment:            9.1%
+    Acuracidade:          66.7%
+
+  DBR9_bucket-05 | CTL: Vanessa Azevedo | ADE: Vivian Peres
+    Demanda diaria:      1,218.0 pacotes/dia
+    Vagas / Em aberto:   23 / 18
+    Ativos:               2
+    Onboarding:           0
+    BG:                   0
+    Prospects:            1
+    Inativos:             2
     Attainment:            8.7%
-    Acuracidade:          33.3%
+    Acuracidade:          40.0%
 
   DBR9_bucket-06 | CTL: Vanessa Azevedo | ADE: Mariane Jesus
     Demanda diaria:        966.0 pacotes/dia
@@ -173,32 +173,32 @@ BASE: DBR9 | BDM: SP | CTL: Vanessa Azevedo
 
   DBR9_bucket-09 | CTL: Vanessa Azevedo | ADE: Alex Oliveira Serafim Lima
     Demanda diaria:      1,134.0 pacotes/dia
-    Vagas / Em aberto:   22 / 20
+    Vagas / Em aberto:   22 / 21
     Ativos:               1
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            4.5%
-    Acuracidade:          50.0%
+    Acuracidade:         100.0%
 
   DBR9_bucket-10 | CTL: Vanessa Azevedo | ADE: Mariane Jesus
     Demanda diaria:      1,554.0 pacotes/dia
-    Vagas / Em aberto:   22 / 17
+    Vagas / Em aberto:   22 / 19
     Ativos:               3
     Onboarding:           0
-    BG:                   2
+    BG:                   0
     Prospects:            0
     Inativos:             0
     Attainment:           13.6%
-    Acuracidade:          60.0%
+    Acuracidade:         100.0%
 
   DBR9_bucket-11 | CTL: Vanessa Azevedo | ADE: Rozelia Silva
     Demanda diaria:      1,302.0 pacotes/dia
-    Vagas / Em aberto:   23 / 22
+    Vagas / Em aberto:   23 / 23
     Ativos:               0
     Onboarding:           0
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             0
     Attainment:            0.0%
@@ -206,11 +206,11 @@ BASE: DBR9 | BDM: SP | CTL: Vanessa Azevedo
 
   DBR9_bucket-12 | CTL: Vanessa Azevedo | ADE: Caroline Lima
     Demanda diaria:      1,386.0 pacotes/dia
-    Vagas / Em aberto:   22 / 15
+    Vagas / Em aberto:   22 / 19
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            7
+    Prospects:            3
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -316,25 +316,25 @@ BASE: DBR9 | BDM: SP | CTL: Vanessa Azevedo
 
   DBR9_bucket-22 | CTL: Vanessa Azevedo | ADE: Lilian De Oliveira
     Demanda diaria:      1,260.0 pacotes/dia
-    Vagas / Em aberto:   22 / 21
+    Vagas / Em aberto:   22 / 20
     Ativos:               0
     Onboarding:           1
     BG:                   0
-    Prospects:            0
+    Prospects:            1
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
 
   DBR9_bucket-23 | CTL: Vanessa Azevedo | ADE: Johni Paiva
     Demanda diaria:      1,092.0 pacotes/dia
-    Vagas / Em aberto:   22 / 15
+    Vagas / Em aberto:   22 / 16
     Ativos:               3
     Onboarding:           1
     BG:                   0
-    Prospects:            3
+    Prospects:            2
     Inativos:             0
     Attainment:           13.6%
-    Acuracidade:          42.9%
+    Acuracidade:          50.0%
 
   DBR9_bucket-24 | CTL: Vanessa Azevedo | ADE: Iuri Mendes
     Demanda diaria:      1,176.0 pacotes/dia
@@ -371,11 +371,11 @@ BASE: DBR9 | BDM: SP | CTL: Vanessa Azevedo
 
   DBR9_bucket-27 | CTL: Vanessa Azevedo | ADE: Alicia Da Silva Sofia
     Demanda diaria:      1,092.0 pacotes/dia
-    Vagas / Em aberto:   22 / 21
+    Vagas / Em aberto:   22 / 22
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -386,13 +386,13 @@ BASE: DBS5 | BDM: RJ/CW | CTL: Yan Abrao
   Territorios:                      5
   Demanda diaria total:             30,072.0 pacotes/dia
   Vagas ideais (total):             468
-  Vagas com match:                  61
-  Vagas em aberto:                  407
-  Cobertura (match / total):        61/468 = 13.0%
-  Parceiros existentes:             61
+  Vagas com match:                  58
+  Vagas em aberto:                  410
+  Cobertura (match / total):        58/468 = 12.4%
+  Parceiros existentes:             58
     • Ativos:                       47
     • Onboarding:                   6
-    • BG Checks / Vetting:          3
+    • BG Checks / Vetting:          0
     • Prospects a aprovar:          2
     • Inativos a reativar:          3
   Attainment (Ativos / Vagas):      10.0%
@@ -434,25 +434,25 @@ BASE: DBS5 | BDM: RJ/CW | CTL: Yan Abrao
 
   DBS5_bucket-04 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      5,712.0 pacotes/dia
-    Vagas / Em aberto:   93 / 78
-    Ativos:              12
+    Vagas / Em aberto:   93 / 80
+    Ativos:              11
     Onboarding:           1
-    BG:                   2
-    Prospects:            0
+    BG:                   0
+    Prospects:            1
     Inativos:             0
-    Attainment:           12.9%
-    Acuracidade:          80.0%
+    Attainment:           11.8%
+    Acuracidade:          84.6%
 
   DBS5_bucket-05 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      8,316.0 pacotes/dia
-    Vagas / Em aberto:   94 / 63
-    Ativos:              22
+    Vagas / Em aberto:   94 / 64
+    Ativos:              23
     Onboarding:           5
-    BG:                   1
-    Prospects:            1
+    BG:                   0
+    Prospects:            0
     Inativos:             2
-    Attainment:           23.4%
-    Acuracidade:          71.0%
+    Attainment:           24.5%
+    Acuracidade:          76.7%
 
 
 BASE: DCE3 | BDM: NORDESTE | CTL: Karliane Dos Santos
@@ -460,16 +460,16 @@ BASE: DCE3 | BDM: NORDESTE | CTL: Karliane Dos Santos
   Territorios:                      13
   Demanda diaria total:             28,980.0 pacotes/dia
   Vagas ideais (total):             478
-  Vagas com match:                  145
-  Vagas em aberto:                  333
-  Cobertura (match / total):        145/478 = 30.3%
-  Parceiros existentes:             145
-    • Ativos:                       87
+  Vagas com match:                  132
+  Vagas em aberto:                  346
+  Cobertura (match / total):        132/478 = 27.6%
+  Parceiros existentes:             132
+    • Ativos:                       86
     • Onboarding:                   19
-    • BG Checks / Vetting:          4
-    • Prospects a aprovar:          24
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          16
     • Inativos a reativar:          11
-  Attainment (Ativos / Vagas):      18.2%
+  Attainment (Ativos / Vagas):      18.0%
 --------------------------------------------------------------------------------
   DETALHAMENTO POR TERRITORIO:
 
@@ -497,25 +497,25 @@ BASE: DCE3 | BDM: NORDESTE | CTL: Karliane Dos Santos
 
   DCE3_bucket-03 | CTL: Karliane Dos Santos | ADE: Alana Paulino
     Demanda diaria:      2,814.0 pacotes/dia
-    Vagas / Em aberto:   37 / 28
+    Vagas / Em aberto:   37 / 30
     Ativos:               5
     Onboarding:           2
     BG:                   0
-    Prospects:            2
+    Prospects:            0
     Inativos:             0
     Attainment:           13.5%
-    Acuracidade:          55.6%
+    Acuracidade:          71.4%
 
   DCE3_bucket-04 | CTL: Karliane Dos Santos | ADE: Francisco Diego Lima De Sousa
     Demanda diaria:      2,982.0 pacotes/dia
-    Vagas / Em aberto:   37 / 10
-    Ativos:              20
+    Vagas / Em aberto:   37 / 14
+    Ativos:              19
     Onboarding:           1
-    BG:                   1
-    Prospects:            4
+    BG:                   0
+    Prospects:            2
     Inativos:             1
-    Attainment:           54.1%
-    Acuracidade:          74.1%
+    Attainment:           51.4%
+    Acuracidade:          82.6%
 
   DCE3_bucket-05 | CTL: Karliane Dos Santos | ADE: Thiego Bezerra Marques
     Demanda diaria:      2,898.0 pacotes/dia
@@ -530,25 +530,25 @@ BASE: DCE3 | BDM: NORDESTE | CTL: Karliane Dos Santos
 
   DCE3_bucket-06 | CTL: Karliane Dos Santos | ADE: Sidia Oliveira De Sousa
     Demanda diaria:      1,848.0 pacotes/dia
-    Vagas / Em aberto:   36 / 23
+    Vagas / Em aberto:   36 / 24
     Ativos:               6
     Onboarding:           1
-    BG:                   2
-    Prospects:            2
+    BG:                   0
+    Prospects:            3
     Inativos:             2
     Attainment:           16.7%
-    Acuracidade:          46.2%
+    Acuracidade:          50.0%
 
   DCE3_bucket-07 | CTL: Karliane Dos Santos | ADE: Yana Mara Martins Alencar De
     Demanda diaria:      1,932.0 pacotes/dia
-    Vagas / Em aberto:   37 / 31
+    Vagas / Em aberto:   37 / 32
     Ativos:               4
     Onboarding:           1
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:           10.8%
-    Acuracidade:          66.7%
+    Acuracidade:          80.0%
 
   DCE3_bucket-08 | CTL: Karliane Dos Santos | ADE: Daniel Nascimento Monteiro
     Demanda diaria:      2,142.0 pacotes/dia
@@ -563,25 +563,25 @@ BASE: DCE3 | BDM: NORDESTE | CTL: Karliane Dos Santos
 
   DCE3_bucket-09 | CTL: Karliane Dos Santos | ADE: Sidney Lima
     Demanda diaria:      1,890.0 pacotes/dia
-    Vagas / Em aberto:   36 / 19
+    Vagas / Em aberto:   36 / 21
     Ativos:              11
     Onboarding:           1
     BG:                   0
-    Prospects:            4
+    Prospects:            2
     Inativos:             1
     Attainment:           30.6%
-    Acuracidade:          64.7%
+    Acuracidade:          73.3%
 
   DCE3_bucket-10 | CTL: Karliane Dos Santos | ADE: Huanderson Alexandre Almeida Teodosio
     Demanda diaria:      1,764.0 pacotes/dia
-    Vagas / Em aberto:   37 / 20
+    Vagas / Em aberto:   37 / 23
     Ativos:               7
     Onboarding:           2
-    BG:                   1
-    Prospects:            6
+    BG:                   0
+    Prospects:            4
     Inativos:             1
     Attainment:           18.9%
-    Acuracidade:          41.2%
+    Acuracidade:          50.0%
 
   DCE3_bucket-11 | CTL: Karliane Dos Santos | ADE: Sidney Alves Da Silva
     Demanda diaria:      2,058.0 pacotes/dia
@@ -622,13 +622,13 @@ BASE: DES2 | BDM: RJ/CW | CTL: Yan Abrao
   Territorios:                      3
   Demanda diaria total:             9,618.0 pacotes/dia
   Vagas ideais (total):             145
-  Vagas com match:                  28
-  Vagas em aberto:                  117
-  Cobertura (match / total):        28/145 = 19.3%
-  Parceiros existentes:             28
+  Vagas com match:                  27
+  Vagas em aberto:                  118
+  Cobertura (match / total):        27/145 = 18.6%
+  Parceiros existentes:             27
     • Ativos:                       21
     • Onboarding:                   1
-    • BG Checks / Vetting:          1
+    • BG Checks / Vetting:          0
     • Prospects a aprovar:          0
     • Inativos a reativar:          5
   Attainment (Ativos / Vagas):      14.5%
@@ -637,14 +637,14 @@ BASE: DES2 | BDM: RJ/CW | CTL: Yan Abrao
 
   DES2_bucket-01 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      2,856.0 pacotes/dia
-    Vagas / Em aberto:   49 / 34
+    Vagas / Em aberto:   49 / 35
     Ativos:              13
     Onboarding:           1
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             0
     Attainment:           26.5%
-    Acuracidade:          86.7%
+    Acuracidade:          92.9%
 
   DES2_bucket-02 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      3,528.0 pacotes/dia
@@ -748,14 +748,14 @@ BASE: DMG2 | BDM: BH | CTL: Lucas Magela
   Territorios:                      13
   Demanda diaria total:             16,841.0 pacotes/dia
   Vagas ideais (total):             365
-  Vagas com match:                  90
-  Vagas em aberto:                  275
-  Cobertura (match / total):        90/365 = 24.7%
-  Parceiros existentes:             90
+  Vagas com match:                  88
+  Vagas em aberto:                  277
+  Cobertura (match / total):        88/365 = 24.1%
+  Parceiros existentes:             88
     • Ativos:                       64
     • Onboarding:                   5
-    • BG Checks / Vetting:          1
-    • Prospects a aprovar:          6
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          5
     • Inativos a reativar:          14
   Attainment (Ativos / Vagas):      17.5%
 --------------------------------------------------------------------------------
@@ -785,14 +785,14 @@ BASE: DMG2 | BDM: BH | CTL: Lucas Magela
 
   DMG2_bucket-03 | CTL: Lucas Magela | ADE: N/A
     Demanda diaria:      1,260.0 pacotes/dia
-    Vagas / Em aberto:   28 / 21
+    Vagas / Em aberto:   28 / 22
     Ativos:               4
     Onboarding:           0
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             2
     Attainment:           14.3%
-    Acuracidade:          57.1%
+    Acuracidade:          66.7%
 
   DMG2_bucket-04 | CTL: Lucas Magela | ADE: N/A
     Demanda diaria:      1,260.0 pacotes/dia
@@ -840,14 +840,14 @@ BASE: DMG2 | BDM: BH | CTL: Lucas Magela
 
   DMG2_bucket-08 | CTL: Lucas Magela | ADE: N/A
     Demanda diaria:      1,386.0 pacotes/dia
-    Vagas / Em aberto:   28 / 14
+    Vagas / Em aberto:   28 / 15
     Ativos:              12
     Onboarding:           1
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:           42.9%
-    Acuracidade:          85.7%
+    Acuracidade:          92.3%
 
   DMG2_bucket-09 | CTL: Lucas Magela | ADE: N/A
     Demanda diaria:      1,176.0 pacotes/dia
@@ -910,14 +910,14 @@ BASE: DPB3 | BDM: NORDESTE | CTL: Rafael Lana
   Territorios:                      6
   Demanda diaria total:             18,858.0 pacotes/dia
   Vagas ideais (total):             269
-  Vagas com match:                  77
-  Vagas em aberto:                  192
-  Cobertura (match / total):        77/269 = 28.6%
-  Parceiros existentes:             77
+  Vagas com match:                  73
+  Vagas em aberto:                  196
+  Cobertura (match / total):        73/269 = 27.1%
+  Parceiros existentes:             73
     • Ativos:                       64
     • Onboarding:                   3
-    • BG Checks / Vetting:          2
-    • Prospects a aprovar:          3
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          1
     • Inativos a reativar:          5
   Attainment (Ativos / Vagas):      23.8%
 --------------------------------------------------------------------------------
@@ -947,14 +947,14 @@ BASE: DPB3 | BDM: NORDESTE | CTL: Rafael Lana
 
   DPB3_bucket-03 | CTL: Rafael Lana | ADE: Anna Beatriz Dos Santos Lima
     Demanda diaria:      4,284.0 pacotes/dia
-    Vagas / Em aberto:   46 / 36
+    Vagas / Em aberto:   46 / 37
     Ativos:               9
     Onboarding:           0
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             0
     Attainment:           19.6%
-    Acuracidade:          90.0%
+    Acuracidade:         100.0%
 
   DPB3_bucket-04 | CTL: Rafael Lana | ADE: Alexandre Pedro Batista De Almeida Junior
     Demanda diaria:      3,780.0 pacotes/dia
@@ -969,14 +969,14 @@ BASE: DPB3 | BDM: NORDESTE | CTL: Rafael Lana
 
   DPB3_bucket-05 | CTL: Rafael Lana | ADE: N/A
     Demanda diaria:      2,772.0 pacotes/dia
-    Vagas / Em aberto:   46 / 26
+    Vagas / Em aberto:   46 / 29
     Ativos:              15
     Onboarding:           1
-    BG:                   1
-    Prospects:            2
+    BG:                   0
+    Prospects:            0
     Inativos:             1
     Attainment:           32.6%
-    Acuracidade:          75.0%
+    Acuracidade:          88.2%
 
   XPB1_bucket-01 | CTL: N/A | ADE: N/A
     Demanda diaria:      1,680.0 pacotes/dia
@@ -995,14 +995,14 @@ BASE: DPE4 | BDM: NORDESTE | CTL: Tiago Grego
   Territorios:                      15
   Demanda diaria total:             29,148.0 pacotes/dia
   Vagas ideais (total):             450
-  Vagas com match:                  116
-  Vagas em aberto:                  334
-  Cobertura (match / total):        116/450 = 25.8%
-  Parceiros existentes:             116
+  Vagas com match:                  91
+  Vagas em aberto:                  359
+  Cobertura (match / total):        91/450 = 20.2%
+  Parceiros existentes:             91
     • Ativos:                       55
     • Onboarding:                   14
-    • BG Checks / Vetting:          13
-    • Prospects a aprovar:          24
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          12
     • Inativos a reativar:          10
   Attainment (Ativos / Vagas):      12.2%
 --------------------------------------------------------------------------------
@@ -1032,14 +1032,14 @@ BASE: DPE4 | BDM: NORDESTE | CTL: Tiago Grego
 
   DPE4_bucket-03 | CTL: Tiago Grego | ADE: Davi Santos
     Demanda diaria:      1,890.0 pacotes/dia
-    Vagas / Em aberto:   30 / 18
+    Vagas / Em aberto:   30 / 20
     Ativos:               3
     Onboarding:           2
-    BG:                   2
+    BG:                   0
     Prospects:            3
     Inativos:             2
     Attainment:           10.0%
-    Acuracidade:          25.0%
+    Acuracidade:          30.0%
 
   DPE4_bucket-04 | CTL: Tiago Grego | ADE: Jose Borges
     Demanda diaria:      1,302.0 pacotes/dia
@@ -1054,25 +1054,25 @@ BASE: DPE4 | BDM: NORDESTE | CTL: Tiago Grego
 
   DPE4_bucket-05 | CTL: Tiago Grego | ADE: Fabio Silva
     Demanda diaria:      1,344.0 pacotes/dia
-    Vagas / Em aberto:   30 / 22
+    Vagas / Em aberto:   30 / 27
     Ativos:               2
     Onboarding:           0
-    BG:                   2
-    Prospects:            3
+    BG:                   0
+    Prospects:            0
     Inativos:             1
     Attainment:            6.7%
-    Acuracidade:          25.0%
+    Acuracidade:          66.7%
 
   DPE4_bucket-06 | CTL: Tiago Grego | ADE: Cicero Almeida
     Demanda diaria:      2,562.0 pacotes/dia
-    Vagas / Em aberto:   30 / 13
+    Vagas / Em aberto:   30 / 15
     Ativos:              11
     Onboarding:           0
     BG:                   0
-    Prospects:            4
+    Prospects:            2
     Inativos:             2
     Attainment:           36.7%
-    Acuracidade:          64.7%
+    Acuracidade:          73.3%
 
   DPE4_bucket-07 | CTL: Tiago Grego | ADE: Enyedja Santos
     Demanda diaria:      2,100.0 pacotes/dia
@@ -1087,58 +1087,58 @@ BASE: DPE4 | BDM: NORDESTE | CTL: Tiago Grego
 
   DPE4_bucket-08 | CTL: Tiago Grego | ADE: Diego Barros
     Demanda diaria:      3,192.0 pacotes/dia
-    Vagas / Em aberto:   30 / 27
+    Vagas / Em aberto:   30 / 28
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             2
     Attainment:            0.0%
     Acuracidade:           0.0%
 
   DPE4_bucket-09 | CTL: Tiago Grego | ADE: Jamerson Esdras De Oliveira Cabral
     Demanda diaria:      1,470.0 pacotes/dia
-    Vagas / Em aberto:   30 / 22
+    Vagas / Em aberto:   30 / 24
     Ativos:               4
     Onboarding:           1
-    BG:                   2
+    BG:                   0
     Prospects:            1
     Inativos:             0
     Attainment:           13.3%
-    Acuracidade:          50.0%
+    Acuracidade:          66.7%
 
   DPE4_bucket-10 | CTL: Tiago Grego | ADE: Claudio Alves Ricardo De Freitas
     Demanda diaria:      1,302.0 pacotes/dia
-    Vagas / Em aberto:   30 / 20
+    Vagas / Em aberto:   30 / 24
     Ativos:               2
     Onboarding:           2
-    BG:                   2
-    Prospects:            3
+    BG:                   0
+    Prospects:            1
     Inativos:             1
     Attainment:            6.7%
-    Acuracidade:          20.0%
+    Acuracidade:          33.3%
 
   DPE4_bucket-11 | CTL: Tiago Grego | ADE: Maria Helena
     Demanda diaria:      2,520.0 pacotes/dia
-    Vagas / Em aberto:   30 / 16
+    Vagas / Em aberto:   30 / 18
     Ativos:              11
     Onboarding:           0
     BG:                   0
-    Prospects:            3
+    Prospects:            1
     Inativos:             0
     Attainment:           36.7%
-    Acuracidade:          78.6%
+    Acuracidade:          91.7%
 
   DPE4_bucket-12 | CTL: Tiago Grego | ADE: Raimundo Junior
     Demanda diaria:      1,806.0 pacotes/dia
-    Vagas / Em aberto:   30 / 20
+    Vagas / Em aberto:   30 / 24
     Ativos:               3
     Onboarding:           1
-    BG:                   3
-    Prospects:            3
+    BG:                   0
+    Prospects:            2
     Inativos:             0
     Attainment:           10.0%
-    Acuracidade:          30.0%
+    Acuracidade:          50.0%
 
   DPE4_bucket-13 | CTL: Tiago Grego | ADE: Renato Rosas Pinto
     Demanda diaria:      3,234.0 pacotes/dia
@@ -1164,14 +1164,14 @@ BASE: DPE4 | BDM: NORDESTE | CTL: Tiago Grego
 
   DPE4_bucket-15 | CTL: Tiago Grego | ADE: Luana Siqueira
     Demanda diaria:      1,512.0 pacotes/dia
-    Vagas / Em aberto:   30 / 21
+    Vagas / Em aberto:   30 / 24
     Ativos:               5
     Onboarding:           0
-    BG:                   2
-    Prospects:            2
+    BG:                   0
+    Prospects:            1
     Inativos:             0
     Attainment:           16.7%
-    Acuracidade:          55.6%
+    Acuracidade:          83.3%
 
 
 BASE: DPR2 | BDM: SP/SUL | CTL: N/A
@@ -1179,14 +1179,14 @@ BASE: DPR2 | BDM: SP/SUL | CTL: N/A
   Territorios:                      6
   Demanda diaria total:             17,892.0 pacotes/dia
   Vagas ideais (total):             324
-  Vagas com match:                  89
-  Vagas em aberto:                  235
-  Cobertura (match / total):        89/324 = 27.5%
-  Parceiros existentes:             89
+  Vagas com match:                  83
+  Vagas em aberto:                  241
+  Cobertura (match / total):        83/324 = 25.6%
+  Parceiros existentes:             83
     • Ativos:                       61
     • Onboarding:                   5
-    • BG Checks / Vetting:          4
-    • Prospects a aprovar:          9
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          7
     • Inativos a reativar:          10
   Attainment (Ativos / Vagas):      18.8%
 --------------------------------------------------------------------------------
@@ -1205,58 +1205,58 @@ BASE: DPR2 | BDM: SP/SUL | CTL: N/A
 
   DPR2_bucket-02 | CTL: N/A | ADE: Vanessa Cristina Buiar
     Demanda diaria:      2,982.0 pacotes/dia
-    Vagas / Em aberto:   54 / 45
+    Vagas / Em aberto:   54 / 46
     Ativos:               4
     Onboarding:           1
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             3
     Attainment:            7.4%
-    Acuracidade:          44.4%
+    Acuracidade:          50.0%
 
   DPR2_bucket-03 | CTL: N/A | ADE: Daniel Gomide Rattmann
     Demanda diaria:      2,772.0 pacotes/dia
-    Vagas / Em aberto:   54 / 41
+    Vagas / Em aberto:   54 / 42
     Ativos:               9
     Onboarding:           1
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             2
     Attainment:           16.7%
-    Acuracidade:          69.2%
+    Acuracidade:          75.0%
 
   DPR2_bucket-04 | CTL: N/A | ADE: Dyene Rosere Dos Santos Rech
     Demanda diaria:      2,898.0 pacotes/dia
-    Vagas / Em aberto:   54 / 40
+    Vagas / Em aberto:   54 / 42
     Ativos:               7
     Onboarding:           1
-    BG:                   1
-    Prospects:            4
+    BG:                   0
+    Prospects:            3
     Inativos:             1
     Attainment:           13.0%
-    Acuracidade:          50.0%
+    Acuracidade:          58.3%
 
   DPR2_bucket-05 | CTL: N/A | ADE: Marcia Alegnasile Dias Dos Santos Lima
     Demanda diaria:      3,024.0 pacotes/dia
-    Vagas / Em aberto:   54 / 34
+    Vagas / Em aberto:   54 / 35
     Ativos:              18
     Onboarding:           0
-    BG:                   1
+    BG:                   0
     Prospects:            1
     Inativos:             0
     Attainment:           33.3%
-    Acuracidade:          90.0%
+    Acuracidade:          94.7%
 
   DPR2_bucket-06 | CTL: N/A | ADE: Andrelise Laska De Oliveira
     Demanda diaria:      2,982.0 pacotes/dia
-    Vagas / Em aberto:   54 / 36
+    Vagas / Em aberto:   54 / 37
     Ativos:              13
     Onboarding:           1
-    BG:                   1
+    BG:                   0
     Prospects:            2
     Inativos:             1
     Attainment:           24.1%
-    Acuracidade:          72.2%
+    Acuracidade:          76.5%
 
 
 BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
@@ -1264,14 +1264,14 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
   Territorios:                      26
   Demanda diaria total:             30,154.0 pacotes/dia
   Vagas ideais (total):             443
-  Vagas com match:                  51
-  Vagas em aberto:                  392
-  Cobertura (match / total):        51/443 = 11.5%
-  Parceiros existentes:             51
+  Vagas com match:                  44
+  Vagas em aberto:                  399
+  Cobertura (match / total):        44/443 = 9.9%
+  Parceiros existentes:             44
     • Ativos:                       21
     • Onboarding:                   7
-    • BG Checks / Vetting:          2
-    • Prospects a aprovar:          14
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          9
     • Inativos a reativar:          7
   Attainment (Ativos / Vagas):      4.7%
 --------------------------------------------------------------------------------
@@ -1290,14 +1290,14 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
 
   DRJ3_bucket-02 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:        966.0 pacotes/dia
-    Vagas / Em aberto:   18 / 13
+    Vagas / Em aberto:   18 / 14
     Ativos:               3
     Onboarding:           0
-    BG:                   1
+    BG:                   0
     Prospects:            1
     Inativos:             0
     Attainment:           16.7%
-    Acuracidade:          60.0%
+    Acuracidade:          75.0%
 
   DRJ3_bucket-03 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:        756.0 pacotes/dia
@@ -1367,11 +1367,11 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
 
   DRJ3_bucket-09 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      1,764.0 pacotes/dia
-    Vagas / Em aberto:   17 / 15
+    Vagas / Em aberto:   17 / 16
     Ativos:               0
     Onboarding:           1
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -1389,11 +1389,11 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
 
   DRJ3_bucket-11 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      1,764.0 pacotes/dia
-    Vagas / Em aberto:   18 / 17
+    Vagas / Em aberto:   18 / 18
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -1422,11 +1422,11 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
 
   DRJ3_bucket-14 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      1,470.0 pacotes/dia
-    Vagas / Em aberto:   17 / 15
+    Vagas / Em aberto:   17 / 17
     Ativos:               0
     Onboarding:           0
-    BG:                   1
-    Prospects:            1
+    BG:                   0
+    Prospects:            0
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -1455,11 +1455,11 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
 
   DRJ3_bucket-17 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      1,722.0 pacotes/dia
-    Vagas / Em aberto:   17 / 15
+    Vagas / Em aberto:   17 / 16
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            2
+    Prospects:            1
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -1510,11 +1510,11 @@ BASE: DRJ3 | BDM: RJ/CW | CTL: Yan Abrao
 
   DRJ3_bucket-22 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      1,008.0 pacotes/dia
-    Vagas / Em aberto:   18 / 17
+    Vagas / Em aberto:   18 / 18
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -1720,14 +1720,14 @@ BASE: DSA8 | BDM: RJ/CW | CTL: Yan Abrao
   Territorios:                      5
   Demanda diaria total:             14,742.0 pacotes/dia
   Vagas ideais (total):             297
-  Vagas com match:                  33
-  Vagas em aberto:                  264
-  Cobertura (match / total):        33/297 = 11.1%
-  Parceiros existentes:             33
+  Vagas com match:                  32
+  Vagas em aberto:                  265
+  Cobertura (match / total):        32/297 = 10.8%
+  Parceiros existentes:             32
     • Ativos:                       17
     • Onboarding:                   3
-    • BG Checks / Vetting:          2
-    • Prospects a aprovar:          6
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          7
     • Inativos a reativar:          5
   Attainment (Ativos / Vagas):      5.7%
 --------------------------------------------------------------------------------
@@ -1746,25 +1746,25 @@ BASE: DSA8 | BDM: RJ/CW | CTL: Yan Abrao
 
   DSA8_bucket-02 | CTL: Yan Abrao | ADE: Felipe Duarte
     Demanda diaria:      3,360.0 pacotes/dia
-    Vagas / Em aberto:   70 / 58
+    Vagas / Em aberto:   70 / 60
     Ativos:               6
     Onboarding:           0
-    BG:                   2
+    BG:                   0
     Prospects:            2
     Inativos:             2
     Attainment:            8.6%
-    Acuracidade:          50.0%
+    Acuracidade:          60.0%
 
   DSA8_bucket-03 | CTL: Yan Abrao | ADE: Felipe Duarte
     Demanda diaria:      3,234.0 pacotes/dia
-    Vagas / Em aberto:   69 / 62
+    Vagas / Em aberto:   69 / 61
     Ativos:               2
     Onboarding:           0
     BG:                   0
-    Prospects:            4
+    Prospects:            5
     Inativos:             1
     Attainment:            2.9%
-    Acuracidade:          28.6%
+    Acuracidade:          25.0%
 
   DSA8_bucket-04 | CTL: Yan Abrao | ADE: Cristiane Conceicao
     Demanda diaria:      4,200.0 pacotes/dia
@@ -1794,14 +1794,14 @@ BASE: DSP2 | BDM: SP/SUL | CTL: Angelica Damasceno
   Territorios:                      12
   Demanda diaria total:             15,582.0 pacotes/dia
   Vagas ideais (total):             300
-  Vagas com match:                  91
-  Vagas em aberto:                  209
-  Cobertura (match / total):        91/300 = 30.3%
-  Parceiros existentes:             91
+  Vagas com match:                  89
+  Vagas em aberto:                  211
+  Cobertura (match / total):        89/300 = 29.7%
+  Parceiros existentes:             89
     • Ativos:                       62
     • Onboarding:                   7
     • BG Checks / Vetting:          0
-    • Prospects a aprovar:          7
+    • Prospects a aprovar:          5
     • Inativos a reativar:          15
   Attainment (Ativos / Vagas):      20.7%
 --------------------------------------------------------------------------------
@@ -1875,14 +1875,14 @@ BASE: DSP2 | BDM: SP/SUL | CTL: Angelica Damasceno
 
   DSP2_bucket-07 | CTL: Angelica Damasceno | ADE: Antonio Junior
     Demanda diaria:      1,134.0 pacotes/dia
-    Vagas / Em aberto:   25 / 21
+    Vagas / Em aberto:   25 / 22
     Ativos:               2
     Onboarding:           1
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            8.0%
-    Acuracidade:          50.0%
+    Acuracidade:          66.7%
 
   DSP2_bucket-08 | CTL: Angelica Damasceno | ADE: Barbara Spinola
     Demanda diaria:      1,050.0 pacotes/dia
@@ -1908,14 +1908,14 @@ BASE: DSP2 | BDM: SP/SUL | CTL: Angelica Damasceno
 
   DSP2_bucket-10 | CTL: Angelica Damasceno | ADE: Josafa Gouveia
     Demanda diaria:      1,050.0 pacotes/dia
-    Vagas / Em aberto:   25 / 22
+    Vagas / Em aberto:   25 / 23
     Ativos:               2
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             0
     Attainment:            8.0%
-    Acuracidade:          66.7%
+    Acuracidade:         100.0%
 
   DSP2_bucket-11 | CTL: Angelica Damasceno | ADE: Helena Melo
     Demanda diaria:      1,470.0 pacotes/dia
@@ -1945,14 +1945,14 @@ BASE: DSP4 | BDM: SP/SUL | CTL: Julia Simoes Motta
   Territorios:                      14
   Demanda diaria total:             19,110.0 pacotes/dia
   Vagas ideais (total):             373
-  Vagas com match:                  43
-  Vagas em aberto:                  330
-  Cobertura (match / total):        43/373 = 11.5%
-  Parceiros existentes:             43
+  Vagas com match:                  35
+  Vagas em aberto:                  338
+  Cobertura (match / total):        35/373 = 9.4%
+  Parceiros existentes:             35
     • Ativos:                       15
     • Onboarding:                   5
-    • BG Checks / Vetting:          3
-    • Prospects a aprovar:          14
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          9
     • Inativos a reativar:          6
   Attainment (Ativos / Vagas):      4.0%
 --------------------------------------------------------------------------------
@@ -1960,25 +1960,25 @@ BASE: DSP4 | BDM: SP/SUL | CTL: Julia Simoes Motta
 
   DSP4_bucket-01 | CTL: Julia Simoes Motta | ADE: N/A
     Demanda diaria:      1,974.0 pacotes/dia
-    Vagas / Em aberto:   32 / 25
+    Vagas / Em aberto:   32 / 26
     Ativos:               4
     Onboarding:           1
-    BG:                   1
+    BG:                   0
     Prospects:            1
     Inativos:             0
     Attainment:           12.5%
-    Acuracidade:          57.1%
+    Acuracidade:          66.7%
 
   DSP4_bucket-02 | CTL: Julia Simoes Motta | ADE: N/A
     Demanda diaria:      1,470.0 pacotes/dia
-    Vagas / Em aberto:   32 / 24
+    Vagas / Em aberto:   32 / 26
     Ativos:               1
     Onboarding:           0
     BG:                   0
-    Prospects:            5
+    Prospects:            3
     Inativos:             2
     Attainment:            3.1%
-    Acuracidade:          12.5%
+    Acuracidade:          16.7%
 
   DSP4_bucket-03 | CTL: Julia Simoes Motta | ADE: N/A
     Demanda diaria:      2,058.0 pacotes/dia
@@ -2015,14 +2015,14 @@ BASE: DSP4 | BDM: SP/SUL | CTL: Julia Simoes Motta
 
   DSP4_bucket-06 | CTL: Julia Simoes Motta | ADE: Thaina Antunes
     Demanda diaria:      1,554.0 pacotes/dia
-    Vagas / Em aberto:   33 / 29
+    Vagas / Em aberto:   33 / 30
     Ativos:               1
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             2
     Attainment:            3.0%
-    Acuracidade:          25.0%
+    Acuracidade:          33.3%
 
   DSP4_bucket-07 | CTL: Julia Simoes Motta | ADE: Allyson Yuri De Sousa
     Demanda diaria:      1,512.0 pacotes/dia
@@ -2037,14 +2037,14 @@ BASE: DSP4 | BDM: SP/SUL | CTL: Julia Simoes Motta
 
   DSP4_bucket-08 | CTL: Julia Simoes Motta | ADE: N/A
     Demanda diaria:      1,680.0 pacotes/dia
-    Vagas / Em aberto:   32 / 27
+    Vagas / Em aberto:   32 / 29
     Ativos:               1
     Onboarding:           0
-    BG:                   2
+    BG:                   0
     Prospects:            0
     Inativos:             2
     Attainment:            3.1%
-    Acuracidade:          20.0%
+    Acuracidade:          33.3%
 
   DSP4_bucket-09 | CTL: Julia Simoes Motta | ADE: Thaina Antunes
     Demanda diaria:      1,722.0 pacotes/dia
@@ -2059,25 +2059,25 @@ BASE: DSP4 | BDM: SP/SUL | CTL: Julia Simoes Motta
 
   DSP4_bucket-10 | CTL: Julia Simoes Motta | ADE: N/A
     Demanda diaria:      1,554.0 pacotes/dia
-    Vagas / Em aberto:   33 / 30
+    Vagas / Em aberto:   33 / 31
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            3
+    Prospects:            2
     Inativos:             0
     Attainment:            0.0%
     Acuracidade:           0.0%
 
   DSP4_bucket-11 | CTL: Julia Simoes Motta | ADE: N/A
     Demanda diaria:      1,470.0 pacotes/dia
-    Vagas / Em aberto:   32 / 27
+    Vagas / Em aberto:   32 / 28
     Ativos:               1
     Onboarding:           2
     BG:                   0
-    Prospects:            2
+    Prospects:            1
     Inativos:             0
     Attainment:            3.1%
-    Acuracidade:          20.0%
+    Acuracidade:          25.0%
 
   XSJ1_bucket-01 | CTL: N/A | ADE: N/A
     Demanda diaria:        210.0 pacotes/dia
@@ -2118,14 +2118,14 @@ BASE: DSP5 | BDM: SP/SUL | CTL: Luciana Feijo
   Territorios:                      8
   Demanda diaria total:             19,780.0 pacotes/dia
   Vagas ideais (total):             418
-  Vagas com match:                  44
-  Vagas em aberto:                  374
-  Cobertura (match / total):        44/418 = 10.5%
-  Parceiros existentes:             44
+  Vagas com match:                  40
+  Vagas em aberto:                  378
+  Cobertura (match / total):        40/418 = 9.6%
+  Parceiros existentes:             40
     • Ativos:                       24
     • Onboarding:                   5
-    • BG Checks / Vetting:          1
-    • Prospects a aprovar:          8
+    • BG Checks / Vetting:          0
+    • Prospects a aprovar:          5
     • Inativos a reativar:          6
   Attainment (Ativos / Vagas):      5.7%
 --------------------------------------------------------------------------------
@@ -2144,11 +2144,11 @@ BASE: DSP5 | BDM: SP/SUL | CTL: Luciana Feijo
 
   DSP5_bucket-02 | CTL: Luciana Feijo | ADE: Mychael Willian Damaceno
     Demanda diaria:      3,822.0 pacotes/dia
-    Vagas / Em aberto:   76 / 72
+    Vagas / Em aberto:   76 / 73
     Ativos:               0
     Onboarding:           0
     BG:                   0
-    Prospects:            1
+    Prospects:            0
     Inativos:             3
     Attainment:            0.0%
     Acuracidade:           0.0%
@@ -2166,25 +2166,25 @@ BASE: DSP5 | BDM: SP/SUL | CTL: Luciana Feijo
 
   DSP5_bucket-04 | CTL: Luciana Feijo | ADE: Andreia Feliciano
     Demanda diaria:      3,318.0 pacotes/dia
-    Vagas / Em aberto:   75 / 66
+    Vagas / Em aberto:   75 / 68
     Ativos:               2
     Onboarding:           2
     BG:                   0
-    Prospects:            5
+    Prospects:            3
     Inativos:             0
     Attainment:            2.7%
-    Acuracidade:          22.2%
+    Acuracidade:          28.6%
 
   DSP5_bucket-05 | CTL: Luciana Feijo | ADE: Felipe Oliveira
     Demanda diaria:      3,528.0 pacotes/dia
-    Vagas / Em aberto:   75 / 58
+    Vagas / Em aberto:   75 / 59
     Ativos:              12
     Onboarding:           2
-    BG:                   1
+    BG:                   0
     Prospects:            0
     Inativos:             2
     Attainment:           16.0%
-    Acuracidade:          70.6%
+    Acuracidade:          75.0%
 
   XCP1_bucket-01 | CTL: N/A | ADE: N/A
     Demanda diaria:        420.0 pacotes/dia

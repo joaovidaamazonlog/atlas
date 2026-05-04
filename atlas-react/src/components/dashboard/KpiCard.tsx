@@ -8,6 +8,13 @@ interface KpiCardProps {
   trend?: 'up' | 'down' | 'neutral';
   goal?: number;
   className?: string;
+  /**
+   * Classe extra aplicada no valor numérico (sobrescreve `valueColor`
+   * interno quando informada). Usado para KPIs que têm semântica de
+   * cor própria — ex: variação positiva/negativa — sem depender de
+   * `goal`.
+   */
+  valueClassName?: string;
 }
 
 const TrendIcon: React.FC<{ trend: 'up' | 'down' | 'neutral' }> = ({ trend }) => {
@@ -17,7 +24,7 @@ const TrendIcon: React.FC<{ trend: 'up' | 'down' | 'neutral' }> = ({ trend }) =>
 };
 
 const KpiCard: React.FC<KpiCardProps> = React.memo(
-  ({ label, value, unit, trend, goal, className = '' }) => {
+  ({ label, value, unit, trend, goal, className = '', valueClassName }) => {
     const { t } = useTranslation();
     const numericValue = typeof value === 'number' ? value : parseFloat(String(value));
     const isNA = value === 'N/A' || isNaN(numericValue);
@@ -26,16 +33,18 @@ const KpiCard: React.FC<KpiCardProps> = React.memo(
     if (!isNA && goal !== undefined) {
       valueColor = numericValue >= goal ? 'text-green-400' : 'text-red-400';
     }
+    // Override explícito tem prioridade sobre a lógica baseada em goal.
+    if (valueClassName) valueColor = valueClassName;
 
     return (
       <div
-        className={`bg-atlas-dark border border-atlas-navy rounded-lg p-4 flex flex-col gap-1 ${className}`}
+        className={`bg-atlas-dark border border-atlas-navy rounded-lg p-3 flex flex-col gap-0.5 ${className}`}
       >
-        <span className="text-atlas-muted text-xs uppercase tracking-wide truncate">{label}</span>
-        <div className="flex items-end gap-1 mt-1">
-          <span className={`text-2xl font-bold leading-none ${valueColor}`}>{value}</span>
+        <span className="text-atlas-muted text-[10px] uppercase tracking-wide truncate">{label}</span>
+        <div className="flex items-end gap-1">
+          <span className={`text-xl font-bold leading-none ${valueColor}`}>{value}</span>
           {unit && !isNA && (
-            <span className="text-atlas-muted text-sm mb-0.5">{unit}</span>
+            <span className="text-atlas-muted text-xs mb-0.5">{unit}</span>
           )}
           {trend && (
             <span className="mb-0.5 ml-1">
@@ -44,7 +53,7 @@ const KpiCard: React.FC<KpiCardProps> = React.memo(
           )}
         </div>
         {goal !== undefined && !isNA && (
-          <span className="text-atlas-muted text-xs">{t('dashboard.kpi_goal')} {goal}{unit ?? ''}</span>
+          <span className="text-atlas-muted text-[10px]">{t('dashboard.kpi_goal')} {goal}{unit ?? ''}</span>
         )}
       </div>
     );

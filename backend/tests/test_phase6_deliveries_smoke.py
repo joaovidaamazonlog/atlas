@@ -760,3 +760,54 @@ def test_load_deliveries_dedup_triple_fan_out(tmp_path, capsys):
     assert dd.df.iloc[0]["store_id"] == "S_2"  # mais recente
     captured = capsys.readouterr()
     assert "2 tracking_id" in captured.out and "duplicado" in captured.out
+
+
+
+def test_load_deliveries_accepts_delivery_reason_code_alias(tmp_path):
+    """
+    Após o refactor do SQL para eliminar o fan-out do JOIN com
+    `hub_partner_mapping`, o CSV passou a exportar a coluna `reason_code`
+    com o nome `delivery_reason_code`. O pipeline deve aceitar esse alias
+    sem regressão.
+    """
+    import pandas as pd
+
+    # Build CSV with the NEW column name `delivery_reason_code`.
+    df = pd.DataFrame([
+        {
+            "tracking_id": "T001",
+            "scan_datetime_br": "2026-04-28 09:00:00",
+            "delivery_reason_code": "DELIVERED_TO_CUSTOMER",
+            "canal_entrega": "IHS_STORE",
+            "nome_empresa": "Hub Alpha",
+            "store_id": "HUB001",
+            "station_code": "DSP2",
+            "latitude": -23.55,
+            "longitude": -46.63,
+            "hex": "hex_A",
+        },
+        {
+            "tracking_id": "T002",
+            "scan_datetime_br": "2026-04-28 10:00:00",
+            "delivery_reason_code": "DELIVERED_TO_RECIPIENT",
+            "canal_entrega": "DSP",
+            "nome_empresa": "DSP X",
+            "store_id": "",
+            "station_code": "DSP2",
+            "latitude": -23.55,
+            "longitude": -46.63,
+            "hex": "hex_A",
+        },
+    ])
+    csv_path = tmp_path / "deliveries.csv"
+    df.to_csv(csv_path, index=False)
+
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    assert not dd.empty
+    assert len(dd.df) == 2
+    # O alias foi aplicado — a coluna interna chama-se `reason_code`.
+    assert "reason_code" in dd.df.columns
+    assert "delivery_reason_code" not in dd.df.columns
+    # Valores intactos.
+    assert set(dd.df["reason_code"]) == {"DELIVERED_TO_CUSTOMER", "DELIVERED_TO_RECIPIENT"}

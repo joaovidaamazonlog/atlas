@@ -124,9 +124,16 @@ const RankingTreeRow: React.FC<{
   expanded: Set<string>;
   onToggle: (path: string) => void;
   path: string;
-}> = ({ node, expanded, onToggle, path }) => {
+  periodDays: number;
+}> = ({ node, expanded, onToggle, path, periodDays }) => {
   const hasChildren = node.children.length > 0;
   const isOpen = expanded.has(path);
+  // Volume diário (média no período) sem casas decimais. Arredonda com
+  // Math.round para evitar viés sistemático; em períodos de 1 dia o
+  // total e a média coincidem por definição.
+  const dailyVolume = periodDays > 0
+    ? Math.round(node.total_volume / periodDays)
+    : 0;
 
   return (
     <>
@@ -163,7 +170,7 @@ const RankingTreeRow: React.FC<{
           {node.underutilized_hubs}
         </td>
         <td className="py-1.5 px-2 text-right text-atlas-muted">
-          {node.total_volume.toLocaleString('pt-BR')}
+          {dailyVolume.toLocaleString('pt-BR')}
         </td>
       </tr>
       {hasChildren && isOpen &&
@@ -174,6 +181,7 @@ const RankingTreeRow: React.FC<{
             expanded={expanded}
             onToggle={onToggle}
             path={`${path}/${child.key}`}
+            periodDays={periodDays}
           />
         ))}
     </>
@@ -337,6 +345,7 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
                     expanded={expandedNodes}
                     onToggle={toggleNode}
                     path={bdm.key}
+                    periodDays={summary.period.days}
                   />
                 ))}
               </tbody>

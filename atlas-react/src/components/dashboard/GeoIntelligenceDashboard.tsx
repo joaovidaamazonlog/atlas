@@ -176,11 +176,27 @@ const GeoIntelligenceDashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full bg-atlas-darker">
-      <div className="flex shrink-0 border-b border-atlas-navy">
-        <TabButton active={activeTab === 'geo'} onClick={() => setActiveTab('geo')}>{t('dashboard.tab_geo')}</TabButton>
-        <TabButton active={activeTab === 'operacional'} onClick={() => setActiveTab('operacional')}>{t('dashboard.tab_operational')}</TabButton>
-        <TabButton active={activeTab === 'packages'} onClick={() => setActiveTab('packages')}>{t('dashboard.tab_packages')}</TabButton>
-        <TabButton active={activeTab === 'insights'} onClick={() => setActiveTab('insights')}>{t('dashboard.tab_insights')}</TabButton>
+      <div className="flex shrink-0 border-b border-atlas-navy items-center">
+        <div className="flex flex-1 min-w-0">
+          <TabButton active={activeTab === 'geo'} onClick={() => setActiveTab('geo')}>{t('dashboard.tab_geo')}</TabButton>
+          <TabButton active={activeTab === 'operacional'} onClick={() => setActiveTab('operacional')}>{t('dashboard.tab_operational')}</TabButton>
+          <TabButton active={activeTab === 'packages'} onClick={() => setActiveTab('packages')}>{t('dashboard.tab_packages')}</TabButton>
+          <TabButton active={activeTab === 'insights'} onClick={() => setActiveTab('insights')}>{t('dashboard.tab_insights')}</TabButton>
+        </div>
+        {/* Botão X — dispara o mesmo evento que o antigo DashboardHeader
+            escutado no AppShell (setDashboardOpen(false) em Mobile, Tablet
+            e Desktop). Assim consolidamos a barra de abas e o controle de
+            fechamento em uma única faixa horizontal. */}
+        <button
+          type="button"
+          onClick={() => document.dispatchEvent(new CustomEvent('atlas:close-dashboard'))}
+          aria-label={t('common.close')}
+          className="shrink-0 px-3 py-2 text-atlas-muted hover:text-atlas-light transition-colors duration-150"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </button>
       </div>
 
       {/* Filtros globais — aplicam-se a TODAS as abas exceto Geo (que tem seu próprio fluxo) */}

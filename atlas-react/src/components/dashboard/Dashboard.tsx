@@ -24,6 +24,12 @@ import { Spinner } from '../ui/Spinner';
 import KpiCard from './KpiCard';
 import PartnersByBucketTable from './PartnersByBucketTable';
 import BasesHierarchy from './BasesHierarchy';
+import { DeliveryKpiCards, DeliveryHubLineChart } from './DeliveryKpisExtension';
+import {
+  buildHierarchyIndex,
+  territoryMatchesFilters,
+  baseMatchesFilters,
+} from '../../lib/deliveriesHierarchy';
 import { useRowVirtualization } from './useRowVirtualization';
 import { useStore } from '../../store';
 import { useDashboardFilters } from '../../hooks/useDashboardFilters';
@@ -99,6 +105,37 @@ const Dashboard: React.FC = () => {
   // Derived data via useMemo
   const filteredBases = useMemo(() => filterBases(reportData, filters), [reportData, filters]);
   const kpis = useMemo(() => computeKPIs(filteredBases), [filteredBases]);
+
+  // Contagem de Parceiros Ativos vinda direto do CSV (allMarkersData),
+  // e não do relatorio_executivo.json. O backend só conta em
+  // `partners.active` os parceiros cujo fit conseguiu alocar num
+  // território configurado — deixando de fora os ~2/3 dos parceiros
+  // Active cujo `delivery_station` não está mapeado em Config.TEAM.
+  // Aqui usamos o CSV como fonte de verdade e aplicamos o mesmo
+  // recorte hierárquico que filtra as bases, reaproveitando o matcher
+  // de `deliveriesHierarchy` (que já foi construído para esse tipo de
+  // filtragem por bucket_ade / delivery_station).
+  const hierarchyIndex = useMemo(() => buildHierarchyIndex(reportData), [reportData]);
+  const activePartnersFromCsv = useMemo(() => {
+    const noFilter =
+      filters.bdm === 'all' &&
+      filters.base === 'all' &&
+      filters.ctl === 'all' &&
+      filters.ade === 'all' &&
+      filters.territory === 'all';
+    return allMarkersData.reduce((count, p) => {
+      if (p.status !== 'Active') return count;
+      if (noFilter) return count + 1;
+      // Preferir match por território (bucket_ade) quando disponível;
+      // cai no match por base apenas se não houver bucket — espelha
+      // exatamente a lógica de `filterPartnersByHierarchy`.
+      if (p.bucket_ade) {
+        const meta = hierarchyIndex.territoryToMeta.get(p.bucket_ade);
+        if (meta) return territoryMatchesFilters(meta, filters) ? count + 1 : count;
+      }
+      return baseMatchesFilters(p.delivery_station, filters, hierarchyIndex) ? count + 1 : count;
+    }, 0);
+  }, [allMarkersData, filters, hierarchyIndex]);
 
   // Territory rows (flat list)
   const territoryRows = useMemo<TerritoryRow[]>(
@@ -178,11 +215,19 @@ const Dashboard: React.FC = () => {
       {/* Filters são renderizados no wrapper (GeoIntelligenceDashboard) e
           compartilhados entre todas as abas. */}
 
-      {/* KPI Cards */}
+      {/* KPI Cards — inclui os indicadores operacionais do relatório
+          executivo + os indicadores de delivery (Fase 6). Tudo em um
+          grid só para caber em 2 linhas em desktop. */}
       <section>
         <h2 className="text-atlas-muted text-xs uppercase tracking-widest mb-2">{t('dashboard.section_indicators')}</h2>
-        <KpiSummaryGrid kpis={kpis} />
+        <KpiSummaryGrid kpis={kpis} activePartnersOverride={activePartnersFromCsv}>
+          <DeliveryKpiCards filters={filters} reportData={reportData} />
+        </KpiSummaryGrid>
       </section>
+
+      {/* Gráfico de volume diário por hub delivery — fica fora do grid
+          de KPIs para ocupar a largura total. */}
+      <DeliveryHubLineChart filters={filters} reportData={reportData} />
 
       {/* Charts */}
       <section>
@@ -223,10 +268,24 @@ const Dashboard: React.FC = () => {
 
 interface KpiSummaryGridProps {
   kpis: ReturnType<typeof computeKPIs>;
+  /**
+   * Contagem de "Parceiros Ativos" que sobrescreve `kpis.totalActivePartners`.
+   * Usamos a contagem derivada do CSV (allMarkersData) porque o relatório
+   * executivo só conta Active que foi alocado a algum território do fit.
+   */
+  activePartnersOverride?: number;
+  /**
+   * Cards adicionais renderizados no mesmo grid. Permite que os KPIs
+   * de delivery (Fase 6) fluam junto com os operacionais em um layout
+   * único de 2 linhas, em vez de empilhar em uma terceira linha.
+   */
+  children?: React.ReactNode;
 }
 
-const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis }) => {
+const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis, activePartnersOverride, children }) => {
   const { t } = useTranslation();
+  const activePartnersValue =
+    activePartnersOverride !== undefined ? activePartnersOverride : kpis.totalActivePartners;
   const cards = [
     { label: t('dashboard.kpi_bases'), value: kpis.totalBases },
     { label: t('dashboard.kpi_territories'), value: kpis.totalTerritories },
@@ -236,7 +295,10 @@ const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis }) => {
     },
     { label: t('dashboard.kpi_ideal_slots'), value: kpis.totalIdealSlots },
     { label: t('dashboard.kpi_open_slots'), value: kpis.totalOpenSlots },
-    { label: t('dashboard.kpi_active_partners_summary'), value: kpis.totalActivePartners },
+    {
+      label: t('dashboard.kpi_active_partners_summary'),
+      value: activePartnersValue.toLocaleString('pt-BR'),
+    },
     {
       label: t('dashboard.kpi_avg_attainment'),
       value: `${(kpis.avgAttainment * 100).toFixed(1)}%`,
@@ -247,11 +309,17 @@ const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis }) => {
     },
   ];
 
+  // 10 cards em 5 colunas × 2 linhas em notebook/desktop (≥1024px).
+  // Em tablet cai para 4 colunas (8 + 2 = 2,5 linhas), em mobile 2 colunas.
+  // Nota: os breakpoints do projeto são tablet/notebook/desktop
+  // (tailwind.config.ts). Não existe `laptop:` — classes com esse prefixo
+  // são ignoradas pelo Tailwind e o grid cai para o último definido.
   return (
-    <div className="grid grid-cols-2 tablet:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 tablet:grid-cols-4 notebook:grid-cols-5 gap-2">
       {cards.map((card) => (
         <KpiCard key={card.label} label={card.label} value={card.value} />
       ))}
+      {children}
     </div>
   );
 };

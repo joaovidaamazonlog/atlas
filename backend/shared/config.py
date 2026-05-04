@@ -258,10 +258,12 @@ TEAM = [
                 "salesforce_id": "005at00000EJNVZ",
                 "stations": ["DSP4"],
                 "reports": [
-                    {"role": "ADE", "name": "Allyson Yuri De Sousa",          "alias": "souallys",  "email": "souallys@amazon.com",  "salesforce_id": "005at00000EJSYV",  "buckets": ["DSP4_bucket-05", "DSP4_bucket-07"]},
+                    {"role": "ADE", "name": "Allyson Yuri De Sousa",           "alias": "souallys",  "email": "souallys@amazon.com",  "salesforce_id": "005at00000EJSYV",  "buckets": ["DSP4_bucket-05", "DSP4_bucket-07"]},
                     {"role": "ADE", "name": "Thaina Antunes",                  "alias": "aantutha",  "email": "aantutha@amazon.com",  "salesforce_id": "005at00000EJUwr",  "buckets": ["DSP4_bucket-09", "DSP4_bucket-06", "DSP4_bucket-04"]},
                     {"role": "ADE", "name": "Veronica Isabelly De Almeida",    "alias": "veralmei",  "email": "veralmei@amazon.com",  "salesforce_id": "-",                "buckets": []},
                     {"role": "ADE", "name": "Fernanda Silva Magalhaes",        "alias": "magalhfe",  "email": "magalhfe@amazon.com",  "salesforce_id": "-",                "buckets": []},
+                    {"role": "ADE", "name": "Barbara Nascimento",              "alias": "nascimkb",  "email": "nascimkb@amazon.com",  "salesforce_id": "-",                "buckets": []},
+                    {"role": "ADE", "name": "Nadia Costa Silveira",            "alias": "napsilve",  "email": "napsilve@amazon.com",  "salesforce_id": "-",                "buckets": []},
                 ],
             },
 
@@ -367,8 +369,12 @@ TEAM = [
                 "salesforce_id": "005at00000EJLC4",
                 "stations": ["DBS5"],
                 "reports": [
-                    {"role": "ADE", "name": "Eric Souza",    "alias": "erihsouz",  "email": "erihsouz@amazon.com",  "salesforce_id": "005at00000EJUX1",  "buckets": []},
-                    {"role": "ADE", "name": "Josimar Junior", "alias": "josimaju",  "email": "josimaju@amazon.com",  "salesforce_id": "005at00000EJUX2",  "buckets": []},
+                    {"role": "ADE", "name": "Eric Souza",        "alias": "erihsouz",  "email": "erihsouz@amazon.com",  "salesforce_id": "005at00000EJUX1",  "buckets": []},
+                    {"role": "ADE", "name": "Josimar Junior",    "alias": "josimaju",  "email": "josimaju@amazon.com",  "salesforce_id": "005at00000EJUX2",  "buckets": []},
+                    {"role": "ADE", "name": "Hemersson Almeida", "alias": "hermealm",  "email": "hermealm@amazon.com",  "salesforce_id": "",  "buckets": []},
+                    {"role": "ADE", "name": "Carlos Lopes",      "alias": "vasccarl",  "email": "vasccarl@amazon.com",  "salesforce_id": "",  "buckets": []},
+                    {"role": "ADE", "name": "Wellington Costa",  "alias": "cwellinh",  "email": "cwellinh@amazon.com",  "salesforce_id": "",  "buckets": []},
+                    {"role": "ADE", "name": "Natalia Baiao",     "alias": "baiaodec",  "email": "baiaodec@amazon.com",  "salesforce_id": "",  "buckets": []},
                 ],
             },
 

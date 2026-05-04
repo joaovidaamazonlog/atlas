@@ -163,6 +163,26 @@ def load_deliveries(
 
     df = pd.read_csv(csv_path)
 
+    # ------------------------------------------------------------------ #
+    # 0. Aliases de colunas — compat entre versões do SQL de extração
+    # ------------------------------------------------------------------ #
+    # O SQL evoluiu ao longo do tempo e diferentes versões exportaram a
+    # mesma coluna com nomes distintos. Em vez de quebrar o pipeline,
+    # renomeamos os aliases conhecidos para o nome canônico que o resto
+    # de `load_deliveries` espera. Ordem: só renomeamos se o alias existe
+    # E a chave canônica NÃO existe (evita sobrescrever coluna já presente).
+    _COLUMN_ALIASES = {
+        # `delivery_reason_code` é o novo nome após o refactor do SQL que
+        # corrigiu o fan-out de `ihs_ids` (mudamos `scan_reason` para um
+        # alias mais descritivo). O pipeline continua falando `reason_code`
+        # internamente porque é o nome usado em todo o código downstream.
+        "delivery_reason_code": "reason_code",
+    }
+    for alias, canonical in _COLUMN_ALIASES.items():
+        if alias in df.columns and canonical not in df.columns:
+            df = df.rename(columns={alias: canonical})
+            print(f"   Alias aplicado: '{alias}' → '{canonical}'")
+
     missing = _check_required_columns(df)
     if missing:
         print(

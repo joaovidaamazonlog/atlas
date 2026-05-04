@@ -1,63 +1,63 @@
 {
   "pipeline": "daily",
-  "total_s": 380.974,
-  "started_at": 1777912756.787947,
-  "ended_at": 1777913137.7621672,
+  "total_s": 484.164,
+  "started_at": 1777918115.8582413,
+  "ended_at": 1777918600.0219676,
   "phases": [
     {
       "name": "load_territories_and_supply",
-      "duration_s": 0.155,
-      "started_at": 1777912756.7879624,
-      "ended_at": 1777912756.942746,
+      "duration_s": 0.129,
+      "started_at": 1777918115.8582568,
+      "ended_at": 1777918115.9867928,
       "error": null
     },
     {
       "name": "load_packages",
-      "duration_s": 263.034,
-      "started_at": 1777912756.9798863,
-      "ended_at": 1777913020.0135672,
+      "duration_s": 331.818,
+      "started_at": 1777918116.0353117,
+      "ended_at": 1777918447.8533878,
       "error": null
     },
     {
       "name": "load_partners",
-      "duration_s": 2.643,
-      "started_at": 1777913020.013622,
-      "ended_at": 1777913022.6570272,
+      "duration_s": 3.34,
+      "started_at": 1777918447.853436,
+      "ended_at": 1777918451.193894,
       "error": null
     },
     {
       "name": "phase3_partner_fit",
-      "duration_s": 29.682,
-      "started_at": 1777913022.6570575,
-      "ended_at": 1777913052.3387206,
+      "duration_s": 35.69,
+      "started_at": 1777918451.1939344,
+      "ended_at": 1777918486.8841827,
       "error": null
     },
     {
       "name": "phase4_webleads",
-      "duration_s": 64.68,
-      "started_at": 1777913052.3387563,
-      "ended_at": 1777913117.0189068,
+      "duration_s": 84.914,
+      "started_at": 1777918486.884227,
+      "ended_at": 1777918571.7985203,
       "error": null
     },
     {
       "name": "cnpj_lookup",
-      "duration_s": 0.0,
-      "started_at": 1777913117.018934,
-      "ended_at": 1777913117.0193348,
+      "duration_s": 0.001,
+      "started_at": 1777918571.7985625,
+      "ended_at": 1777918571.799136,
       "error": null
     },
     {
       "name": "phase5_reports",
-      "duration_s": 12.681,
-      "started_at": 1777913117.0193594,
-      "ended_at": 1777913129.699918,
+      "duration_s": 16.414,
+      "started_at": 1777918571.7991703,
+      "ended_at": 1777918588.213631,
       "error": null
     },
     {
       "name": "phase6_deliveries",
-      "duration_s": 8.058,
-      "started_at": 1777913129.6999507,
-      "ended_at": 1777913137.758073,
+      "duration_s": 11.803,
+      "started_at": 1777918588.2136714,
+      "ended_at": 1777918600.0165732,
       "error": null
     }
   ]

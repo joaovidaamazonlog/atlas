@@ -26,26 +26,8 @@ const DashboardWithSuspense: React.FC = () => (
 );
 
 // ---------------------------------------------------------------------------
-// Helper: dashboard header (close button + title)
+// Helper: controls drawer header (close button + title)
 // ---------------------------------------------------------------------------
-
-const DashboardHeader: React.FC<{ onClose: () => void }> = ({ onClose }) => (
-  <div
-    className="flex items-center justify-between px-4 py-3 shrink-0"
-    style={{ borderBottom: '1px solid var(--border-color)' }}
-  >
-    <span className="font-medium text-atlas-light text-sm">Dashboard</span>
-    <button
-      onClick={onClose}
-      aria-label="Fechar dashboard"
-      className="touch-target text-atlas-muted hover:text-atlas-light transition-colors duration-150"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-      </svg>
-    </button>
-  </div>
-);
 
 const ControlsDrawerHeader: React.FC<{ onClose: () => void }> = ({ onClose }) => (
   <div
@@ -106,7 +88,6 @@ const MobileLayout: React.FC = () => {
               backgroundColor: 'var(--color-darker)',
             }}
           >
-            <DashboardHeader onClose={() => setDashboardOpen(false)} />
             <div className="flex-1 overflow-y-auto">
               <DashboardWithSuspense />
             </div>
@@ -168,7 +149,6 @@ const TabletLayout: React.FC = () => {
               borderLeft: '1px solid var(--border-color)',
             }}
           >
-            <DashboardHeader onClose={() => setDashboardOpen(false)} />
             <div className="flex-1 min-h-0 overflow-y-auto">
               <DashboardWithSuspense />
             </div>
@@ -288,7 +268,6 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({ controlPanelWidth }) => {
               borderLeft: '1px solid var(--border-color)',
             }}
           >
-            <DashboardHeader onClose={() => setDashboardOpen(false)} />
             <div className="flex-1 min-h-0 overflow-y-auto">
               <DashboardWithSuspense />
             </div>

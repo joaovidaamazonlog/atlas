@@ -1,5 +1,5 @@
 RELATORIO EXECUTIVO DE OTIMIZACAO
-Gerado em: 04/05/2026 12:14
+Gerado em: 04/05/2026 13:45
 ================================================================================
 
 BASE: DBH5 | BDM: BH | CTL: Lucas Magela

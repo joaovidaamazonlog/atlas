@@ -656,3 +656,107 @@ def test_partner_stats_one_row_per_store_id(tmp_path):
     hub_entries = [p for p in summary["partners"] if p["store_id"] == "HUB_X"]
     assert len(hub_entries) == 1
     assert hub_entries[0]["total"] == 3
+
+
+# ---------------------------------------------------------------------------
+# TESTES: dedup defensivo por tracking_id (fan-out upstream)
+# ---------------------------------------------------------------------------
+
+def test_load_deliveries_deduplicates_tracking_id(tmp_path, capsys):
+    """
+    Cenário real: o CSV de pacotes vem com o mesmo tracking_id em duas
+    linhas porque o LEFT JOIN do SQL de extração multiplicou a entrega
+    por múltiplos accesspointid (um parceiro com cadastros duplicados
+    em `hub_partner_mapping`).
+
+    Sem dedup, os agregados dobram (parceiro aparece duplicado na UI,
+    cap_utilization > 100%, share por DS infla). Com dedup, mantemos
+    apenas a linha mais recente e emitimos um WARN para sinalizar o
+    problema upstream ao time de dados.
+    """
+    rows = [
+        # MESMO tracking_id em dois store_ids diferentes (fan-out SQL).
+        # Mantida a mais recente pelo scan_datetime_br → store_id=S_CORRETO.
+        {
+            "tracking_id": "T_DUP", "scan_datetime_br": "2026-04-28 09:00:00",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "Wilma", "store_id": "S_ANTIGO",
+            "station_code": "DBH5", "latitude": -19.9, "longitude": -43.9,
+            "hex": "hex_X",
+        },
+        {
+            "tracking_id": "T_DUP", "scan_datetime_br": "2026-04-28 09:00:05",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "Wilma", "store_id": "S_CORRETO",
+            "station_code": "DBH5", "latitude": -19.9, "longitude": -43.9,
+            "hex": "hex_X",
+        },
+        # Outro TID sem duplicação — serve de controle.
+        {
+            "tracking_id": "T_OK", "scan_datetime_br": "2026-04-28 10:00:00",
+            "reason_code": "OK", "canal_entrega": "DSP",
+            "nome_empresa": "DSP_X", "store_id": "",
+            "station_code": "DBH5", "latitude": -19.9, "longitude": -43.9,
+            "hex": "hex_X",
+        },
+    ]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    # Deve ter exatamente 2 linhas (dedup removeu a duplicata).
+    assert len(dd.df) == 2
+    # A entrada preservada do T_DUP deve ser a mais recente (S_CORRETO).
+    dup_row = dd.df[dd.df["tracking_id"] == "T_DUP"]
+    assert len(dup_row) == 1
+    assert dup_row.iloc[0]["store_id"] == "S_CORRETO"
+
+    # WARN deve ter sido emitido com a contagem de duplicatas.
+    captured = capsys.readouterr()
+    assert "1 tracking_id" in captured.out and "duplicado" in captured.out
+
+
+def test_load_deliveries_no_dedup_when_unique(tmp_path, capsys):
+    """
+    Sem duplicatas, o caminho de dedup é no-op e nenhum WARN é emitido.
+    Garante que a proteção só grita quando há problema real.
+    """
+    rows = [
+        {
+            "tracking_id": f"T{i}", "scan_datetime_br": f"2026-04-28 09:0{i}:00",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "X", "store_id": "S1", "station_code": "DSP2",
+            "latitude": -23.5, "longitude": -46.6, "hex": "hex_A",
+        }
+        for i in range(5)
+    ]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    assert len(dd.df) == 5
+    captured = capsys.readouterr()
+    assert "duplicado" not in captured.out
+
+
+def test_load_deliveries_dedup_triple_fan_out(tmp_path, capsys):
+    """
+    Cobre o caso extremo: mesma entrega replicada 3x por fan-out duplo
+    (ex: LEFT JOIN contra mapping com 3 accesspointids + OR em duas
+    colunas de nome). Ainda assim sobra só uma linha por tracking_id.
+    """
+    rows = [
+        {
+            "tracking_id": "T_TRIPLE", "scan_datetime_br": f"2026-04-28 09:00:0{i}",
+            "reason_code": "OK", "canal_entrega": "IHS_STORE",
+            "nome_empresa": "Wilma", "store_id": f"S_{i}",
+            "station_code": "DBH5", "latitude": -19.9, "longitude": -43.9,
+            "hex": "hex_X",
+        }
+        for i in range(3)
+    ]
+    csv_path = _build_csv(tmp_path, rows)
+    dd = load_deliveries(path=str(csv_path), days_window=0)
+
+    assert len(dd.df) == 1
+    assert dd.df.iloc[0]["store_id"] == "S_2"  # mais recente
+    captured = capsys.readouterr()
+    assert "2 tracking_id" in captured.out and "duplicado" in captured.out

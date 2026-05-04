@@ -20,6 +20,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import type { Partner, ReasonCode } from '../../store/types';
 import { evaluateRecruitableArea, isEvaluatorError } from '../../lib/recruitableAreaEvaluator';
 import DeliveriesInAreaPanel from './DeliveriesInAreaPanel';
+import AreaAlignmentWarning from './AreaAlignmentWarning';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -117,19 +118,55 @@ function RecruitableResultPanel({
 
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div className="rounded bg-atlas-darker px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.total_demand')}</div>
+          <div className="flex items-center gap-1 text-atlas-muted mb-0.5">
+            <span>{t('manual_analysis.total_demand')}</span>
+            <span
+              className="text-atlas-muted/70 cursor-help"
+              title={t('manual_analysis.total_demand_tooltip')}
+              aria-label={t('manual_analysis.total_demand_tooltip')}
+            >
+              ⓘ
+            </span>
+          </div>
           <div className="text-atlas-light font-semibold">{Math.round(totalDemand)} {t('common.pct_per_day')}</div>
         </div>
         <div className="rounded bg-atlas-darker px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.residual_demand')}</div>
+          <div className="flex items-center gap-1 text-atlas-muted mb-0.5">
+            <span>{t('manual_analysis.residual_demand')}</span>
+            <span
+              className="text-atlas-muted/70 cursor-help"
+              title={t('manual_analysis.residual_demand_tooltip')}
+              aria-label={t('manual_analysis.residual_demand_tooltip')}
+            >
+              ⓘ
+            </span>
+          </div>
           <div className="text-atlas-light font-semibold">{Math.round(residualDemand)} {t('common.pct_per_day')}</div>
         </div>
         <div className="rounded bg-atlas-darker px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.min_adv')}</div>
+          <div className="flex items-center gap-1 text-atlas-muted mb-0.5">
+            <span>{t('manual_analysis.min_adv')}</span>
+            <span
+              className="text-atlas-muted/70 cursor-help"
+              title={t('manual_analysis.min_adv_tooltip')}
+              aria-label={t('manual_analysis.min_adv_tooltip')}
+            >
+              ⓘ
+            </span>
+          </div>
           <div className="text-atlas-light font-semibold">{minAdv} {t('common.pct_per_day')}</div>
         </div>
         <div className="rounded bg-atlas-darker px-2 py-2">
-          <div className="text-atlas-muted mb-0.5">{t('manual_analysis.gap')}</div>
+          <div className="flex items-center gap-1 text-atlas-muted mb-0.5">
+            <span>{t('manual_analysis.gap')}</span>
+            <span
+              className="text-atlas-muted/70 cursor-help"
+              title={t('manual_analysis.gap_tooltip')}
+              aria-label={t('manual_analysis.gap_tooltip')}
+            >
+              ⓘ
+            </span>
+          </div>
           <div className={`font-semibold ${gap >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {gap >= 0 ? '+' : ''}{Math.round(gap)} {t('common.pct_per_day')}
           </div>
@@ -624,7 +661,7 @@ function PanelContent({ onClose }: { onClose: () => void }) {
           />
         )}
 
-        {/* Composição real de entregas na área (IHS vs DSP + parceiros) */}
+        {/* Composição real de entregas na área (Hub Delivery vs DSP + parceiros) */}
         {!whatIfModeActive && recruitableAnalysis.result && (
           <DeliveriesInAreaPanel result={recruitableAnalysis.result} />
         )}
@@ -735,7 +772,14 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {/* Composição real de entregas na área simulada (IHS vs DSP + parceiros).
+          {/* Warning de alinhamento plano × realidade, agora aplicado à
+              posição simulada — ajuda o usuário a entender se o movimento
+              leva o parceiro para uma área com cadastro desalinhado. */}
+          {whatIfModeActive && whatIfResult && recruitableAnalysis.result && (
+            <AreaAlignmentWarning result={recruitableAnalysis.result} />
+          )}
+
+          {/* Composição real de entregas na área simulada (Hub Delivery vs DSP + parceiros).
               Mostra a execução dos últimos 15d nos hexes cobertos pela nova
               posição simulada — útil para entender se o movimento leva o
               parceiro para uma área dominada por DSP ou por outros hubs. */}

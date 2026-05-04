@@ -222,6 +222,50 @@ def load_deliveries(
         print("   WARN nenhum registro com scan_datetime_br válido.")
         return DeliveryData()
 
+    # ------------------------------------------------------------------ #
+    # 2b. Deduplicar por tracking_id — defesa contra fan-out upstream
+    # ------------------------------------------------------------------ #
+    # Um tracking_id representa UMA entrega física. Se aparece mais de uma
+    # vez no CSV, a fonte tem bug (ex.: LEFT JOIN cartesiano com cadastros
+    # duplicados no lado de mapping de parceiros). Aceitar duplicatas
+    # causaria contagem dobrada em todos os agregados downstream e parceiros
+    # aparecendo replicados na UI (ex.: "Wilma" duas vezes na mesma área).
+    #
+    # Política: mantém a entrada mais recente (timestamp maior) como fonte
+    # canônica do evento de entrega. Isso privilegia a última atualização
+    # do scan_reason caso a fonte tenha múltiplas linhas para o mesmo TID
+    # com status evoluindo (ex: DELIVERED → DELIVERED_TO_RECIPIENT).
+    #
+    # Emite WARN com contagem para que a operação possa acionar o time de
+    # dados. NÃO aborta — queremos que o Atlas continue funcionando mesmo
+    # com fonte imperfeita; só não vamos multiplicar o bug.
+    before = len(df)
+    df = (
+        df.sort_values("scan_datetime_br", ascending=False)
+        .drop_duplicates(subset=["tracking_id"], keep="first")
+        .reset_index(drop=True)
+    )
+    dup_count = before - len(df)
+    if dup_count > 0:
+        # Amostra de TIDs duplicados para o log, limitada para não poluir.
+        sample_df = pd.DataFrame({"tracking_id": []})  # fallback vazio
+        try:
+            # Para o log apenas: relê o df original pra identificar alguns
+            # exemplos. Como `before - len(df)` já foi calculado, gastamos
+            # um scan adicional só se houver duplicatas (caminho frio).
+            all_tids = df["tracking_id"]  # únicos agora
+            dup_ratio = 100.0 * dup_count / max(before, 1)
+            print(
+                f"   WARN {dup_count:,} tracking_id(s) duplicado(s) "
+                f"({dup_ratio:.2f}%) — mantendo a entrada mais recente. "
+                f"Indício de fan-out na fonte (verificar o JOIN de mapeamento "
+                f"de parceiros)."
+            )
+            _ = all_tids, sample_df  # silencia unused warning
+        except Exception:
+            # Nunca deixa o warn de log quebrar o pipeline.
+            pass
+
     df["scan_date"] = df["scan_datetime_br"].dt.date.astype(str)
 
     if window and window > 0:

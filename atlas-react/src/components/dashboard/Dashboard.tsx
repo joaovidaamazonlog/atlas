@@ -286,7 +286,14 @@ const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis, activePartnersOve
   const { t } = useTranslation();
   const activePartnersValue =
     activePartnersOverride !== undefined ? activePartnersOverride : kpis.totalActivePartners;
-  const cards = [
+  // Ordem dos cards:
+  // Linha 1: Bases, Territórios, Demanda/Dia, Vagas Ideais, Vagas em Aberto.
+  // Linha 2: Parceiros Ativos, [cards de delivery], Attainment, Acuracidade.
+  //
+  // Os cards de delivery entram no meio da 2ª linha via `children`,
+  // então separamos a lista em "antes" e "depois" do slot de children
+  // para preservar essa ordem visual em qualquer tamanho de tela.
+  const cardsBeforeChildren = [
     { label: t('dashboard.kpi_bases'), value: kpis.totalBases },
     { label: t('dashboard.kpi_territories'), value: kpis.totalTerritories },
     {
@@ -296,9 +303,11 @@ const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis, activePartnersOve
     { label: t('dashboard.kpi_ideal_slots'), value: kpis.totalIdealSlots },
     { label: t('dashboard.kpi_open_slots'), value: kpis.totalOpenSlots },
     {
-      label: t('dashboard.kpi_active_partners_summary'),
+      label: t('dashboard.kpi_active_hubs_summary'),
       value: activePartnersValue.toLocaleString('pt-BR'),
     },
+  ];
+  const cardsAfterChildren = [
     {
       label: t('dashboard.kpi_avg_attainment'),
       value: `${(kpis.avgAttainment * 100).toFixed(1)}%`,
@@ -316,10 +325,13 @@ const KpiSummaryGrid: React.FC<KpiSummaryGridProps> = ({ kpis, activePartnersOve
   // são ignoradas pelo Tailwind e o grid cai para o último definido.
   return (
     <div className="grid grid-cols-2 tablet:grid-cols-4 notebook:grid-cols-5 gap-2">
-      {cards.map((card) => (
+      {cardsBeforeChildren.map((card) => (
         <KpiCard key={card.label} label={card.label} value={card.value} />
       ))}
       {children}
+      {cardsAfterChildren.map((card) => (
+        <KpiCard key={card.label} label={card.label} value={card.value} />
+      ))}
     </div>
   );
 };

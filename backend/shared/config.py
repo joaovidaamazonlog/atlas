@@ -71,8 +71,8 @@ MIN_CAPACITY = 40
 MAX_CAPACITY = 42
 
 CLUSTER_PER_STATION = {
-    "DBR9": 27, "DSP2": 12, "DSP4": 11, "DSP5": 5,
-    "DBH5": 4,  "DMG2": 13, "DBS5": 5,  "DCE3": 13,
+    "DBR9": 27, "DSP2": 12, "DSP4": 6, "DSP5": 5,
+    "DBH5": 4,  "DMG2": 13, "DBS5": 6,  "DCE3": 13,
     "DES2": 3,  "DFR2": 2,  "DGO2": 4,  "DPB3": 5,
     "DPE4": 15, "DPR2": 6,  "DRJ3": 22, "DRS5": 10,
     "DSA8": 4,  "DAM1": 5,

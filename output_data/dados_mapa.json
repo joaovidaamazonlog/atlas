@@ -1,5 +1,5 @@
 {
-  "period": "2026-05-04 : 15h:14m",
+  "period": "2026-05-04 : 17h:55m",
   "deliveryStations": [
     {
       "nome": "DAM1",
@@ -10848,16 +10848,24 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a9c3ffff",
-          "packages_allocated": 17
+          "hex_id": "89a8c24a98bffff",
+          "packages_allocated": 18
         },
         {
-          "hex_id": "89a8c24a907ffff",
-          "packages_allocated": 15
-        },
-        {
-          "hex_id": "89a8c24a9d7ffff",
+          "hex_id": "89a8c24a90fffff",
           "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8c24ad63ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24a8b7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24a8a3ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -10941,11 +10949,11 @@
       "decision_reason_code": "Amazon Controllable",
       "tooltip": "ID: 8103619517 | Name: 61.412.288 FERNANDA LOPES MIRO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42
+      "bucket_ade": "DBS5_bucket-06",
+      "decision": "Finalizar cadastro - Sem oportunidade proxima",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0
     },
     {
       "salesforce_id": "001at00000RBoN0AAL",
@@ -11009,7 +11017,7 @@
       "decision_reason_code": "Partner Profile Exclusion Policy",
       "tooltip": "ID: 6436480436 | Name: 61.674.178 JOSE JAIR DE SENA SOUSA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -11044,19 +11052,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 2840773666 | Name: 65.854.116 DRIELLE EMILY DE MELO SILVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 210,
+      "cap_suggestion": 84,
       "hex_coverage": [
         {
           "hex_id": "89a8c24194bffff",
-          "packages_allocated": 116
+          "packages_allocated": 41
         },
         {
-          "hex_id": "89a8c241bb3ffff",
-          "packages_allocated": 94
+          "hex_id": "89a8c241b87ffff",
+          "packages_allocated": 43
         }
       ]
     },
@@ -11089,14 +11097,46 @@
       "tooltip": "ID: 4088609911 | Name: 65.568.821 ANDERSON EUSTAQUIO ROCHA SOARES | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
+          "hex_id": "89a8c24e007ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24e003ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e00fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e037ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e013ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e0afffff",
+          "packages_allocated": 5
+        },
+        {
           "hex_id": "89a8c24e02bffff",
-          "packages_allocated": 84
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24e017ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24e03bffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -11170,8 +11210,24 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c24a98bffff",
+          "packages_allocated": 18
+        },
+        {
+          "hex_id": "89a8c24ad63ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24a887ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24a8b7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24a8a3ffff",
+          "packages_allocated": 5
         }
       ]
     },
@@ -11273,30 +11329,14 @@
       "tooltip": "ID: 2941123614 | Name: 62.597.332 GEOVALIDER PEREIRA DOS SANTOS SOUSA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c241983ffff",
-          "packages_allocated": 13
-        },
-        {
-          "hex_id": "89a8c241987ffff",
-          "packages_allocated": 13
-        },
-        {
-          "hex_id": "89a8c241997ffff",
-          "packages_allocated": 11
-        },
-        {
-          "hex_id": "89a8c241993ffff",
-          "packages_allocated": 4
-        },
-        {
-          "hex_id": "89a8c24198fffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24190fffff",
+          "packages_allocated": 42
         }
       ]
     },
@@ -11329,21 +11369,41 @@
       "tooltip": "ID: 2871034540 | Name: GREYCE EVELIN SILVA DE MEDEIROS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
+          "hex_id": "89a8c24092bffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c2454cbffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c245457ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240923ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240927ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c2454cfffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24545bffff",
+          "packages_allocated": 4
+        },
+        {
           "hex_id": "89a8c2409afffff",
-          "packages_allocated": 40
-        },
-        {
-          "hex_id": "89a8c240937ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c240933ffff",
           "packages_allocated": 1
         }
       ]
@@ -11376,7 +11436,7 @@
       "decision_reason_code": "Program Policies",
       "tooltip": "ID: 7356460723 | Name: K F A COMERCIAL DE ALIMENTOS LTDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -11416,7 +11476,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9465914479 | Name: PABLO OLIVEIRA PAULO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -11424,7 +11484,47 @@
       "hex_coverage": [
         {
           "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "packages_allocated": 22
+        },
+        {
+          "hex_id": "89a8c24a993ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c241ad7ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c24ad33ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c241acfffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24adabffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c241a57ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24ad07ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c241acbffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c241e6bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c241ac3ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -13115,23 +13215,55 @@
       "decision_reason_code": null,
       "tooltip": "ID: 2722377640 | Name: 65.178.640 LETICIA ROCHA SANTOS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
+      "bucket_ade": "DSP4_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8100100fffff",
-          "packages_allocated": 28
+          "packages_allocated": 10
         },
         {
-          "hex_id": "89a81001073ffff",
-          "packages_allocated": 8
+          "hex_id": "89a8100106bffff",
+          "packages_allocated": 9
         },
         {
-          "hex_id": "89a81001003ffff",
-          "packages_allocated": 6
+          "hex_id": "89a8100108fffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a810010bbffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8100101bffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a81001063ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a81001067ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a81001007ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100139bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100102bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a81001393ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -13163,7 +13295,7 @@
       "decision_reason_code": "No delivery in > 7 days",
       "tooltip": "ID: 4292852949 | Name: PATAS NEGRAS COMERCIO LTDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -13197,7 +13329,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1708052271 | Name: BONZAI DO SOL TRANSPORTADORA LTDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -13232,7 +13364,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6557270902 | Name: 64.094.722 MICHEL VIEIRA PATRICIO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
+      "bucket_ade": "DSP4_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -13308,7 +13440,7 @@
       "decision_reason_code": "No delivery in > 7 days",
       "tooltip": "ID: 5441529885 | Name: 53.051.073 ELIELTON LOPES DOS SANTOS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -13342,10 +13474,10 @@
       "decision_reason_code": "No delivery in > 7 days",
       "tooltip": "ID: 9729504760 | Name: VEIGA MAGNA LTDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-06",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42
     },
     {
@@ -13376,7 +13508,7 @@
       "decision_reason_code": "No delivery in > 7 days",
       "tooltip": "ID: 8975871195 | Name: ALEX PEREIRA 39638182806 | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -13410,27 +13542,35 @@
       "decision_reason_code": null,
       "tooltip": "ID: 8816917392 | Name: 64.291.862 SERGIO GARROTI | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "bucket_ade": "DSP4_bucket-06",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a810014cbffff",
-          "packages_allocated": 18
+          "hex_id": "89a810189afffff",
+          "packages_allocated": 12
         },
         {
-          "hex_id": "89a81018927ffff",
-          "packages_allocated": 15
+          "hex_id": "89a810016abffff",
+          "packages_allocated": 10
         },
         {
-          "hex_id": "89a81001453ffff",
+          "hex_id": "89a810189a7ffff",
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a810014c3ffff",
-          "packages_allocated": 3
+          "hex_id": "89a810014cbffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a81018933ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8100140fffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -13463,14 +13603,18 @@
       "tooltip": "ID: 8324405410 | Name: 65.630.330 RAFAEL BARROSO FERNANDES | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DSP4_bucket-04",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100529bffff",
-          "packages_allocated": 42
+          "hex_id": "89a8100e5b7ffff",
+          "packages_allocated": 30
+        },
+        {
+          "hex_id": "89a8100e5a7ffff",
+          "packages_allocated": 12
         }
       ]
     },
@@ -22132,7 +22276,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6873200526 | Name: 65.887.252 EDINALDO CARVALHO OLIVEIRA JUNIOR | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -22167,7 +22311,7 @@
       "decision_reason_code": "Seasonal Partner",
       "tooltip": "ID: 8027640066 | Name: 63.027.755 ARACAI DE CAMPOS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-03",
+      "bucket_ade": "DSP4_bucket-02",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -22201,10 +22345,10 @@
       "decision_reason_code": "Seasonal Partner",
       "tooltip": "ID: 4315618186 | Name: 22.887.158 LINDOMAR NOGUEIRA DA SILVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42
     },
     {
@@ -26469,12 +26613,16 @@
           "packages_allocated": 30
         },
         {
-          "hex_id": "89a8c245317ffff",
-          "packages_allocated": 7
+          "hex_id": "89a8c2453abffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245313ffff",
+          "hex_id": "89a8c2453bbffff",
           "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24502fffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -26541,7 +26689,7 @@
       "decision_reason_code": "Program Policies",
       "tooltip": "ID: 7445304954 | Name: 63.830.161 VITORIA DA SILVA MOREIRA | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -26576,7 +26724,7 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 8999063314 | Name: 52.708.044 HENRIQUE MESQUITA DE SOUZA SENNA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -26610,15 +26758,15 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5738593776 | Name: 47.083.607 TALYSON RODRIGO DE ARAUJO VIEIRA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c241b8bffff",
-          "packages_allocated": 84
+          "hex_id": "89a8c241b13ffff",
+          "packages_allocated": 42
         }
       ]
     },
@@ -26650,27 +26798,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 7273527473 | Name: 18.838.437 ANTONIA MARQUES FIDELES ROSS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 252,
+      "cap_suggestion": 84,
       "hex_coverage": [
         {
-          "hex_id": "89a8c241bcfffff",
-          "packages_allocated": 152
-        },
-        {
-          "hex_id": "89a8c241a27ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c241b5bffff",
-          "packages_allocated": 1
-        },
-        {
           "hex_id": "89a8c241b53ffff",
-          "packages_allocated": 98
+          "packages_allocated": 27
+        },
+        {
+          "hex_id": "89a8c241b1bffff",
+          "packages_allocated": 16
+        },
+        {
+          "hex_id": "89a8c241b57ffff",
+          "packages_allocated": 41
         }
       ]
     },
@@ -26737,14 +26881,38 @@
       "tooltip": "ID: 9299687293 | Name: 61.165.042 ANDRESSA CRUZ DE OLIVEIRA TEIXEIRA | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-04",
-      "decision": "Nao esta em uma localizacao ideal",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0,
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c24a9cbffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c24a9cfffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8c24a903ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24a983ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24a99bffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c24ad6fffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24ad6bffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -26811,7 +26979,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 8361264212 | Name: DANIELLE CRISTINA FERREIRA DE SOUSA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -31012,10 +31180,6 @@
           "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c2454c3ffff",
-          "packages_allocated": 6
-        },
-        {
           "hex_id": "89a8c245457ffff",
           "packages_allocated": 6
         },
@@ -31029,7 +31193,11 @@
         },
         {
           "hex_id": "89a8c2454cfffff",
-          "packages_allocated": 4
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c240967ffff",
+          "packages_allocated": 5
         }
       ]
     },
@@ -31068,15 +31236,7 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c240b37ffff",
-          "packages_allocated": 14
-        },
-        {
           "hex_id": "89a8c24544fffff",
-          "packages_allocated": 8
-        },
-        {
-          "hex_id": "89a8c240b27ffff",
           "packages_allocated": 8
         },
         {
@@ -31085,6 +31245,22 @@
         },
         {
           "hex_id": "89a8c240923ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240927ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240967ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245693ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24096fffff",
           "packages_allocated": 5
         }
       ]
@@ -31120,7 +31296,7 @@
       "bucket_ade": "DBS5_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42
     },
     {
@@ -31152,22 +31328,38 @@
       "tooltip": "ID: 2509069588 | Name: 63.502.213 MAXWELL ANDRADE OLIVEIRA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2456a3ffff",
-          "packages_allocated": 82
+          "hex_id": "89a8c24544fffff",
+          "packages_allocated": 8
         },
         {
-          "hex_id": "89a8c2456b7ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c245053ffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c2456abffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c245457ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245623ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240927ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245693ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
         }
       ]
     },
@@ -31202,24 +31394,44 @@
       "bucket_ade": "DBS5_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 336,
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c245643ffff",
-          "packages_allocated": 237
-        },
-        {
-          "hex_id": "89a8c24560bffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c245673ffff",
-          "packages_allocated": 1
-        },
-        {
           "hex_id": "89a8c245647ffff",
-          "packages_allocated": 97
+          "packages_allocated": 9
+        },
+        {
+          "hex_id": "89a8c24e587ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245617ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245643ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24567bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c245603ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24561bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c245607ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24e5a3ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -31266,7 +31478,7 @@
           "packages_allocated": 8
         },
         {
-          "hex_id": "89a8c2450cbffff",
+          "hex_id": "89a8c24544fffff",
           "packages_allocated": 8
         }
       ]
@@ -31310,12 +31522,16 @@
           "packages_allocated": 30
         },
         {
-          "hex_id": "89a8c245317ffff",
-          "packages_allocated": 7
+          "hex_id": "89a8c2453abffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245313ffff",
+          "hex_id": "89a8c2453bbffff",
           "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24538fffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -31348,34 +31564,38 @@
       "tooltip": "ID: 9844071858 | Name: ANDERSON DE OLIVEIRA BATISTA | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c245223ffff",
-          "packages_allocated": 37
+          "hex_id": "89a8c245247ffff",
+          "packages_allocated": 9
         },
         {
-          "hex_id": "89a8c24523bffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24522bffff",
+          "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c245233ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24520bffff",
+          "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c24522fffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c245277ffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245237ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c245273ffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245227ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24ec93ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245267ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -31442,14 +31662,30 @@
       "tooltip": "ID: 8713036132 | Name: 57.253.996 GABRIEL AUGUSTO DORNELAS DO COUTO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24e02bffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c24e0a7ffff",
+          "packages_allocated": 18
+        },
+        {
+          "hex_id": "89a8c24e08bffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24e0a3ffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c24e0bbffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24e087ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -31484,16 +31720,48 @@
       "bucket_ade": "DBS5_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2409afffff",
-          "packages_allocated": 11
+          "hex_id": "89a8c2454c3ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c2454c7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c2454d3ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24548bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24549bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24541bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24726bffff",
+          "packages_allocated": 4
         },
         {
           "hex_id": "89a8c2454dbffff",
-          "packages_allocated": 31
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8c245413ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8c2409a7ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -31526,18 +31794,38 @@
       "tooltip": "ID: 6170258114 | Name: 63.976.095 LUANA PEREIRA DIAS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2456a3ffff",
-          "packages_allocated": 17
+          "hex_id": "89a8c24544fffff",
+          "packages_allocated": 8
         },
         {
-          "hex_id": "89a8c2456bbffff",
-          "packages_allocated": 25
+          "hex_id": "89a8c24092bffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c2454cbffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c245457ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240923ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245623ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240927ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -31570,18 +31858,42 @@
       "tooltip": "ID: 9182778250 | Name: 56.423.752 ALEXANDRE FARIA DE SOUSA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Nao esta em uma localizacao ideal",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0,
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24e50fffff",
-          "packages_allocated": 31
+          "hex_id": "89a8c24e513ffff",
+          "packages_allocated": 10
         },
         {
-          "hex_id": "89a8c24e573ffff",
-          "packages_allocated": 11
+          "hex_id": "89a8c24e5d7ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24e5bbffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c240b6fffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c24e5c7ffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c24e5cfffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24e543ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24e5dbffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -31692,23 +32004,63 @@
       "bucket_ade": "DBS5_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2450dbffff",
-          "packages_allocated": 81
+          "hex_id": "89a8c2450cbffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c2456a3ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245293ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2456a7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c2450cfffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24562fffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c245297ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24562bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24508bffff",
+          "packages_allocated": 2
         },
         {
           "hex_id": "89a8c2450c3ffff",
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c245637ffff",
+          "hex_id": "89a8c245057ffff",
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c2450d3ffff",
+          "hex_id": "89a8c245047ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24509bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2450d7ffff",
           "packages_allocated": 1
         }
       ]
@@ -31915,7 +32267,7 @@
       "decision_reason_code": "Amazon Controllable",
       "tooltip": "ID: 1993596005 | Name: New Art Grafica LTDA | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -31949,7 +32301,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 8959334168 | Name: JS GONCALVES | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -34615,30 +34967,42 @@
       "tooltip": "ID: 2891378848 | Name: 64.736.396 ROSANIA VARELA PATRICIO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Nao esta em uma localizacao ideal",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0,
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8c240b37ffff",
           "packages_allocated": 14
         },
         {
-          "hex_id": "89a8c24e513ffff",
-          "packages_allocated": 10
-        },
-        {
           "hex_id": "89a8c240b27ffff",
           "packages_allocated": 8
         },
         {
-          "hex_id": "89a8c24e5d7ffff",
-          "packages_allocated": 8
+          "hex_id": "89a8c240b2fffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c24e5bbffff",
-          "packages_allocated": 2
+          "hex_id": "89a8c24e593ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24e597ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245657ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c240b77ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c240b3bffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -34670,19 +35034,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5955189001 | Name: 64.442.003 ROSIMAR PEREIRA NEVES | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 252,
+      "cap_suggestion": 126,
       "hex_coverage": [
         {
           "hex_id": "89a8c241b13ffff",
-          "packages_allocated": 203
+          "packages_allocated": 47
+        },
+        {
+          "hex_id": "89a8c241bcfffff",
+          "packages_allocated": 33
         },
         {
           "hex_id": "89a8c241bc7ffff",
-          "packages_allocated": 49
+          "packages_allocated": 46
         }
       ]
     },
@@ -35241,11 +35609,15 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8100e2cbffff",
-          "packages_allocated": 84
+          "packages_allocated": 25
+        },
+        {
+          "hex_id": "89a8100e253ffff",
+          "packages_allocated": 17
         }
       ]
     },
@@ -35281,11 +35653,15 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 252,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8100f187ffff",
-          "packages_allocated": 252
+          "hex_id": "89a8100f183ffff",
+          "packages_allocated": 32
+        },
+        {
+          "hex_id": "89a8100f19bffff",
+          "packages_allocated": 10
         }
       ]
     },
@@ -37134,7 +37510,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 4140954527 | Name: 62.989.994 REGINA CELIA DA COSTA TAVARES | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-02",
+      "bucket_ade": "DBS5_bucket-01",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -37209,20 +37585,32 @@
           "packages_allocated": 14
         },
         {
-          "hex_id": "89a8c24e537ffff",
-          "packages_allocated": 9
-        },
-        {
-          "hex_id": "89a8c24e5bbffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c24e587ffff",
-          "packages_allocated": 6
-        },
-        {
           "hex_id": "89a8c245623ffff",
           "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24566fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e5afffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2452cfffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24528bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2452dbffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24564bffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -37261,8 +37649,24 @@
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c248317ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c248387ffff",
+          "packages_allocated": 18
+        },
+        {
+          "hex_id": "89a8c2483b3ffff",
+          "packages_allocated": 17
+        },
+        {
+          "hex_id": "89a8c2483bbffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c248397ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c248383ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -37305,10 +37709,6 @@
           "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c2454c3ffff",
-          "packages_allocated": 6
-        },
-        {
           "hex_id": "89a8c245457ffff",
           "packages_allocated": 6
         },
@@ -37325,12 +37725,16 @@
           "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c2454c7ffff",
+          "hex_id": "89a8c245443ffff",
           "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c2454d3ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24545bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2409afffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -37363,22 +37767,54 @@
       "tooltip": "ID: 1677597645 | Name: 65.068.241 INGRID RAFAELLY DOS SANTOS ROCHA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Nao esta em uma localizacao ideal",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0,
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
-        {
-          "hex_id": "89a8c2453a3ffff",
-          "packages_allocated": 30
-        },
         {
           "hex_id": "89a8c245317ffff",
           "packages_allocated": 7
         },
         {
           "hex_id": "89a8c245313ffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8c24530fffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245383ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245307ffff",
           "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24531bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24533bffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c2453b7ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2453cfffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c245397ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24532bffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -37410,27 +37846,15 @@
       "decision_reason_code": null,
       "tooltip": "ID: 2026252670 | Name: 63.807.781 MARLLON BRANNDOW MARTINS MIRANDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "bucket_ade": "DBS5_bucket-06",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2419d3ffff",
-          "packages_allocated": 12
-        },
-        {
-          "hex_id": "89a8c241d6fffff",
-          "packages_allocated": 28
-        },
-        {
-          "hex_id": "89a8c2419d7ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24199bffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c241b97ffff",
+          "packages_allocated": 42
         }
       ]
     },
@@ -39184,15 +39608,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5515734278 | Name: JULELE PROJETOS E EVENTOS LTDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24196bffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c241b0bffff",
+          "packages_allocated": 38
+        },
+        {
+          "hex_id": "89a8c241b47ffff",
+          "packages_allocated": 4
         }
       ]
     },
@@ -39224,15 +39652,47 @@
       "decision_reason_code": null,
       "tooltip": "ID: 2621981793 | Name: 57.048.128 VERONICA LIMA CARDOSO FARIA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8c2419d3ffff",
-          "packages_allocated": 42
+          "packages_allocated": 20
+        },
+        {
+          "hex_id": "89a8c2419cbffff",
+          "packages_allocated": 15
+        },
+        {
+          "hex_id": "89a8c241d6bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2418bbffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24198bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2419d7ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2419cfffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24199bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c241913ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -39264,7 +39724,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6348976805 | Name: WANDERSON GUIDO SOUZA TORRES | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -39299,7 +39759,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1130891243 | Name: CAIQUE CARVALHO COLODETO LTDA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -39334,23 +39794,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5006604458 | Name: STARK ENTERPRISE LIMITADA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-02",
+      "bucket_ade": "DBS5_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 168,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8d1b268fffff",
-          "packages_allocated": 66
-        },
-        {
           "hex_id": "89a8d1b26abffff",
-          "packages_allocated": 58
+          "packages_allocated": 39
         },
         {
-          "hex_id": "89a8d1b2617ffff",
-          "packages_allocated": 44
+          "hex_id": "89a8d1b2633ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -39382,7 +39838,7 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 2139375472 | Name: 37.937.958 THIAGO LUIZ OLIVEIRA SILVA DE ARAUJO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -39416,15 +39872,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1109167043 | Name: 30.778.964 RICARDO ATOIANTZ DELFINO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a81000bd7ffff",
-          "packages_allocated": 84
+          "packages_allocated": 27
+        },
+        {
+          "hex_id": "89a81000bc7ffff",
+          "packages_allocated": 13
+        },
+        {
+          "hex_id": "89a81000bc3ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -39456,7 +39920,7 @@
       "decision_reason_code": "Operational Challenges",
       "tooltip": "ID: 2665528993 | Name: TAMIRIS FAUSTINO DUARTE 37831483837 | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-06",
+      "bucket_ade": "DSP4_bucket-02",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -39464,7 +39928,23 @@
       "hex_coverage": [
         {
           "hex_id": "89a8100e5cbffff",
-          "packages_allocated": 42
+          "packages_allocated": 20
+        },
+        {
+          "hex_id": "89a8100e5c3ffff",
+          "packages_allocated": 13
+        },
+        {
+          "hex_id": "89a8100e5cfffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8100e437ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100e5dbffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -39496,15 +39976,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5770204927 | Name: 62.921.807 KATIA CRISTINA BERGUE | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 210,
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8100080bffff",
-          "packages_allocated": 210
+          "packages_allocated": 24
+        },
+        {
+          "hex_id": "89a8100088fffff",
+          "packages_allocated": 17
+        },
+        {
+          "hex_id": "89a810008abffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -41874,12 +42362,64 @@
       "bucket_ade": "DBS5_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "radius_suggestion": 800,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
+          "hex_id": "89a8d1b9617ffff",
+          "packages_allocated": 6
+        },
+        {
           "hex_id": "89a8d1b968fffff",
-          "packages_allocated": 84
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8d1b9683ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8d1b9693ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8d1b9607ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8d18c92fffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8d1b9697ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8d1b96dbffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8d18c92bffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d18c923ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d18c93bffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d1b9687ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d1b9473ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d1b945bffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -41914,27 +42454,59 @@
       "bucket_ade": "DBS5_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8d1ba113ffff",
-          "packages_allocated": 15
+          "hex_id": "89a8d1ba11bffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8d1ba11bffff",
-          "packages_allocated": 14
+          "hex_id": "89a8d1ba147ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8d1ba10bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8d1ba15bffff",
+          "packages_allocated": 4
         },
         {
           "hex_id": "89a8d1ba117ffff",
-          "packages_allocated": 9
+          "packages_allocated": 4
         },
         {
-          "hex_id": "89a8d1ba1c7ffff",
-          "packages_allocated": 3
+          "hex_id": "89a8d1ba113ffff",
+          "packages_allocated": 4
         },
         {
-          "hex_id": "89a8d1ba18fffff",
+          "hex_id": "89a8d1ba107ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8d1ba10fffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8d1ba187ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d1ba13bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8d1ba173ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8d1ba18bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8d1ba027ffff",
           "packages_allocated": 1
         }
       ]
@@ -41982,15 +42554,15 @@
           "packages_allocated": 3
         },
         {
+          "hex_id": "89a8d18c9c3ffff",
+          "packages_allocated": 2
+        },
+        {
           "hex_id": "89a8d18c817ffff",
           "packages_allocated": 2
         },
         {
           "hex_id": "89a8d18cd6bffff",
-          "packages_allocated": 2
-        },
-        {
-          "hex_id": "89a8d18c9c3ffff",
           "packages_allocated": 2
         },
         {
@@ -42006,19 +42578,19 @@
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8d18c9d3ffff",
-          "packages_allocated": 2
-        },
-        {
           "hex_id": "89a8d18c9dbffff",
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8d18c8b3ffff",
+          "hex_id": "89a8d18c9d3ffff",
           "packages_allocated": 2
         },
         {
           "hex_id": "89a8d18c813ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8d18c8b3ffff",
           "packages_allocated": 2
         },
         {
@@ -42090,16 +42662,44 @@
       "bucket_ade": "DBS5_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8d186adbffff",
-          "packages_allocated": 22
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8d186ad7ffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8d186a57ffff",
+          "packages_allocated": 6
         },
         {
           "hex_id": "89a8d186ad3ffff",
-          "packages_allocated": 20
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8d186ac3ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8d186a1bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8d186ac7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8d186a8bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8d186e67ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -44786,18 +45386,30 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5034841223 | Name: 64.646.769 VALDIVINA MOREIRA FERNANDES | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24f0d3ffff",
-          "packages_allocated": 41
+          "hex_id": "89a8c24f6a7ffff",
+          "packages_allocated": 13
         },
         {
-          "hex_id": "89a8c24f6a7ffff",
+          "hex_id": "89a8c24f6bbffff",
+          "packages_allocated": 13
+        },
+        {
+          "hex_id": "89a8c24f47bffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24f443ffff",
+          "packages_allocated": 9
+        },
+        {
+          "hex_id": "89a8c24f6b7ffff",
           "packages_allocated": 1
         }
       ]
@@ -44839,6 +45451,10 @@
         {
           "hex_id": "89a8c24e00fffff",
           "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e02bffff",
+          "packages_allocated": 4
         },
         {
           "hex_id": "89a8c24e063ffff",
@@ -44894,27 +45510,27 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6969962563 | Name: 63493224 BIANCA FRANCA LIMA E SILVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100088fffff",
-          "packages_allocated": 17
-        },
-        {
           "hex_id": "89a81002b6bffff",
           "packages_allocated": 12
         },
         {
-          "hex_id": "89a810008abffff",
+          "hex_id": "89a81000d47ffff",
           "packages_allocated": 12
         },
         {
-          "hex_id": "89a81000817ffff",
-          "packages_allocated": 1
+          "hex_id": "89a810008abffff",
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a81000d4fffff",
+          "packages_allocated": 7
         }
       ]
     },
@@ -46657,19 +47273,15 @@
       "decision_reason_code": null,
       "tooltip": "ID: 4682389277 | Name: 37.048.756 ANTONIO CARLOS LEITE FERREIRA | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24f4dbffff",
-          "packages_allocated": 14
-        },
-        {
-          "hex_id": "89a8c24a9afffff",
-          "packages_allocated": 28
+          "hex_id": "89a8c24a917ffff",
+          "packages_allocated": 42
         }
       ]
     },
@@ -46705,19 +47317,15 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24aa5bffff",
-          "packages_allocated": 28
-        },
-        {
           "hex_id": "89a8c248183ffff",
-          "packages_allocated": 19
+          "packages_allocated": 25
         },
         {
           "hex_id": "89a8c248197ffff",
-          "packages_allocated": 37
+          "packages_allocated": 17
         }
       ]
     },
@@ -49127,26 +49735,46 @@
       "tooltip": "ID: 4064307249 | Name: 41.771.176 RAFAEL DE BRITO MENDES | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 168,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c245643ffff",
-          "packages_allocated": 165
+          "hex_id": "89a8c24e58bffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c24564fffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24e59bffff",
+          "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c24565bffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24566fffff",
+          "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c245653ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c240b2bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e583ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e5afffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24568bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24564bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2456c3ffff",
+          "packages_allocated": 4
         }
       ]
     },
@@ -49185,10 +49813,6 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2450cbffff",
-          "packages_allocated": 8
-        },
-        {
           "hex_id": "89a8c24544fffff",
           "packages_allocated": 8
         },
@@ -49207,6 +49831,14 @@
         {
           "hex_id": "89a8c240923ffff",
           "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245623ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240927ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -50110,7 +50742,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5956939762 | Name: 51.207.414 REGINALDO VICENTE DAS SILVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -50174,23 +50806,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 7774725213 | Name: 25.105.223 JAMES VERISSIMO BORGES | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 210,
+      "bucket_ade": "DSP4_bucket-05",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100022bffff",
-          "packages_allocated": 208
+          "hex_id": "89a8100030bffff",
+          "packages_allocated": 17
         },
         {
-          "hex_id": "89a8100023bffff",
-          "packages_allocated": 1
+          "hex_id": "89a81000343ffff",
+          "packages_allocated": 14
         },
         {
-          "hex_id": "89a81000267ffff",
-          "packages_allocated": 1
+          "hex_id": "89a81000227ffff",
+          "packages_allocated": 11
         }
       ]
     },
@@ -50582,19 +51214,35 @@
       "decision_reason_code": null,
       "tooltip": "ID: 7289023038 | Name: 27.024.724 KAROLINE BARALDI GALERA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-07",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8100a9b3ffff",
-          "packages_allocated": 77
+          "packages_allocated": 22
         },
         {
           "hex_id": "89a81001a4bffff",
-          "packages_allocated": 7
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8100a987ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a81001a4fffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8100a9a3ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8100a9b7ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -51169,26 +51817,18 @@
       "tooltip": "ID: 8313008446 | Name: 44.599.881 RAILSON DOS SANTOS SARAIVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-01",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 126,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8d1b2203ffff",
-          "packages_allocated": 109
-        },
-        {
-          "hex_id": "89a8d1b2217ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8d1b2213ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8d1b2263ffff",
+          "packages_allocated": 32
         },
         {
           "hex_id": "89a8d1b220fffff",
-          "packages_allocated": 15
+          "packages_allocated": 10
         }
       ]
     },
@@ -51823,10 +52463,6 @@
           "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c2454c3ffff",
-          "packages_allocated": 6
-        },
-        {
           "hex_id": "89a8c240923ffff",
           "packages_allocated": 6
         },
@@ -51839,16 +52475,32 @@
           "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c2454c7ffff",
-          "packages_allocated": 5
+          "hex_id": "89a8c2409afffff",
+          "packages_allocated": 4
         },
         {
-          "hex_id": "89a8c2454d3ffff",
-          "packages_allocated": 5
+          "hex_id": "89a8c240937ffff",
+          "packages_allocated": 3
         },
         {
-          "hex_id": "89a8c24548bffff",
+          "hex_id": "89a8c240933ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8c2454d7ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8c24726fffff",
           "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c247263ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c24093bffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -51884,11 +52536,11 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 378,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24e4cfffff",
-          "packages_allocated": 378
+          "hex_id": "89a8c24e4c3ffff",
+          "packages_allocated": 42
         }
       ]
     },
@@ -51920,15 +52572,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9586389119 | Name: 63.167.075 THAIS RODRIGUES SENNA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c241b13ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c241bc7ffff",
+          "packages_allocated": 29
+        },
+        {
+          "hex_id": "89a8c241b8bffff",
+          "packages_allocated": 13
         }
       ]
     },
@@ -51960,7 +52616,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6015853158 | Name: 39.520.806 CARLOS HENRIQUE PIRES DE SOUZA SENNA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -52000,7 +52656,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1389409690 | Name: 57.729.617 GABRIELA DA CUNHA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -52038,12 +52694,68 @@
       "bucket_ade": "DBS5_bucket-03",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 800,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c248387ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c2483abffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24838fffff",
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a8c24815bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c248313ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8c24816fffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c248063ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24802bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c248033ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24803bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24839bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2483dbffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2483d3ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c2482a3ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c248007ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24806fffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -52110,7 +52822,7 @@
       "decision_reason_code": "Program Policies",
       "tooltip": "ID: 9653070425 | Name: 33.800.149 MARCIANO NOBRE DE OLIVEIRA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -52141,15 +52853,7 @@
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8c241e9bffff",
-          "packages_allocated": 2
-        },
-        {
           "hex_id": "89a8c241c0bffff",
-          "packages_allocated": 2
-        },
-        {
-          "hex_id": "89a8c241c4bffff",
           "packages_allocated": 2
         },
         {
@@ -52161,6 +52865,10 @@
           "packages_allocated": 2
         },
         {
+          "hex_id": "89a8c241c4bffff",
+          "packages_allocated": 2
+        },
+        {
           "hex_id": "89a8c241c7bffff",
           "packages_allocated": 1
         },
@@ -52169,15 +52877,11 @@
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c241e87ffff",
-          "packages_allocated": 1
-        },
-        {
           "hex_id": "89a8c241c4fffff",
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c241e8bffff",
+          "hex_id": "89a8c241e87ffff",
           "packages_allocated": 1
         }
       ]
@@ -52210,7 +52914,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5478161124 | Name: 61.966.770 ISABELE SOARES DE LIMA COSTA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -52245,7 +52949,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 3627386323 | Name: 64.022.839 RAISSA ROCHA DA SILVA | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -52288,11 +52992,11 @@
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8c241c4bffff",
+          "hex_id": "89a8c241c47ffff",
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8c241c47ffff",
+          "hex_id": "89a8c241c4bffff",
           "packages_allocated": 2
         },
         {
@@ -52379,7 +53083,7 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 126
+      "cap_suggestion": 42
     },
     {
       "salesforce_id": "001at00000ONGCnAAP",
@@ -52478,7 +53182,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6719583966 | Name: 65.019.120 EDUARDO TONIELLI MAIA BRANDAO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -52582,7 +53286,7 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 2139375472 | Name: 37.937.958 THIAGO LUIZ OLIVEIRA SILVA DE ARAUJO | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -52884,11 +53588,15 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24880fffff",
-          "packages_allocated": 84
+          "hex_id": "89a8c24880bffff",
+          "packages_allocated": 29
+        },
+        {
+          "hex_id": "89a8c248873ffff",
+          "packages_allocated": 13
         }
       ]
     },
@@ -52921,10 +53629,10 @@
       "tooltip": "ID: 2975692214 | Name: 64.062.220 SAMUEL FREITAS BASTOS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-04",
-      "decision": "Finalizar cadastro - Sem oportunidade proxima",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 1100,
+      "cap_suggestion": 42
     },
     {
       "salesforce_id": "001at00000WldzaAAB",
@@ -55604,15 +56312,11 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 168,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c248e37ffff",
-          "packages_allocated": 104
-        },
-        {
           "hex_id": "89a8c248e23ffff",
-          "packages_allocated": 64
+          "packages_allocated": 42
         }
       ]
     },
@@ -55648,11 +56352,15 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 126,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24991bffff",
-          "packages_allocated": 126
+          "hex_id": "89a8c24990bffff",
+          "packages_allocated": 33
+        },
+        {
+          "hex_id": "89a8c249957ffff",
+          "packages_allocated": 9
         }
       ]
     },
@@ -55723,15 +56431,15 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2483b7ffff",
-          "packages_allocated": 39
+          "hex_id": "89a8c2483afffff",
+          "packages_allocated": 24
         },
         {
           "hex_id": "89a8c2483a7ffff",
-          "packages_allocated": 45
+          "packages_allocated": 18
         }
       ]
     },
@@ -56265,15 +56973,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 3727005938 | Name: 63992905 RISIA CASSIA F ALESSIO CASTRO R | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
+          "hex_id": "89a8c24a98fffff",
+          "packages_allocated": 35
+        },
+        {
           "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "packages_allocated": 7
         }
       ]
     },
@@ -56305,15 +57017,19 @@
       "decision_reason_code": "Program Policies",
       "tooltip": "ID: 5551406749 | Name: 64.512.680 THALISSON ALVES DE SANTANA ALBUQUERQUE | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
+          "hex_id": "89a8c24a98fffff",
+          "packages_allocated": 35
+        },
+        {
           "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "packages_allocated": 7
         }
       ]
     },
@@ -56349,11 +57065,11 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 882,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8c24a98bffff",
-          "packages_allocated": 882
+          "packages_allocated": 42
         }
       ]
     },
@@ -56386,21 +57102,29 @@
       "tooltip": "ID: 1355928095 | Name: 39.388.078 CRISTIANO CARVALHO NEVES | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-04",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 252,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a9dbffff",
-          "packages_allocated": 241
+          "hex_id": "89a8c24a98bffff",
+          "packages_allocated": 18
         },
         {
-          "hex_id": "89a8c24a9d3ffff",
+          "hex_id": "89a8c24ad63ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24a887ffff",
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c24a9cbffff",
+          "hex_id": "89a8c24a8b7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24a8a3ffff",
           "packages_allocated": 5
         }
       ]
@@ -56437,19 +57161,11 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 126,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8d1b2273ffff",
-          "packages_allocated": 58
-        },
-        {
-          "hex_id": "89a8d1b2263ffff",
-          "packages_allocated": 67
-        },
-        {
-          "hex_id": "89a8d1b227bffff",
-          "packages_allocated": 1
+          "packages_allocated": 42
         }
       ]
     },
@@ -56481,19 +57197,15 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9900028404 | Name: 64.536.914 GUSTAVO SALES COSTA | HUB Delivery Initiatives: HCP Host Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 210,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8c24a987ffff",
-          "packages_allocated": 108
-        },
-        {
-          "hex_id": "89a8c24a9bbffff",
-          "packages_allocated": 102
+          "packages_allocated": 42
         }
       ]
     },
@@ -56743,7 +57455,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1969379024 | Name: CALIXTO INSTALACOES INDUSTRIAIS | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
+      "bucket_ade": "DSP4_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -56787,15 +57499,39 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5688090421 | Name: 55.758.865 CELIA SOARES DA COSTA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "bucket_ade": "DSP4_bucket-06",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100336fffff",
-          "packages_allocated": 84
+          "hex_id": "89a81001553ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a810014a3ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a810014a7ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a81001407ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a810014abffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a81001417ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a81001583ffff",
+          "packages_allocated": 4
         }
       ]
     },
@@ -57001,15 +57737,35 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1989639222 | Name: 46.082.183 FERNANDA AZEVEDO CABRERA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "bucket_ade": "DSP4_bucket-03",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100aacfffff",
-          "packages_allocated": 84
+          "hex_id": "89a8100aa07ffff",
+          "packages_allocated": 9
+        },
+        {
+          "hex_id": "89a8100aa8fffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8100aa03ffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8100aa17ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a81008193ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8100aabbffff",
+          "packages_allocated": 6
         }
       ]
     },
@@ -57041,15 +57797,59 @@
       "decision_reason_code": null,
       "tooltip": "ID: 2190873404 | Name: Lucas Alcantara de Oliveira | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-07",
+      "bucket_ade": "DSP4_bucket-03",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8100a823ffff",
-          "packages_allocated": 84
+          "hex_id": "89a8100a837ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8100a943ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8100a833ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8100a8abffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8100ad6bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8100a957ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8100a8b7ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8100ab93ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8100a94bffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8100a953ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8100a9d3ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100a9cfffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -57081,18 +57881,34 @@
       "decision_reason_code": null,
       "tooltip": "ID: 7796906277 | Name: 39.369.949 GIOVANA APARECIDA SANCHES SERVELI | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "bucket_ade": "DSP4_bucket-03",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100aa47ffff",
-          "packages_allocated": 80
+          "hex_id": "89a8100aa07ffff",
+          "packages_allocated": 9
         },
         {
-          "hex_id": "89a8100aa0bffff",
+          "hex_id": "89a8100aa8fffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8100aa33ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8100aa03ffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8100aa17ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a81008193ffff",
           "packages_allocated": 4
         }
       ]
@@ -57125,7 +57941,7 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 3505103670 | Name: 58392855 MARCIA DE JESUS DOS SANTOS SILVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-05",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -57159,7 +57975,7 @@
       "decision_reason_code": "Seasonal Partner",
       "tooltip": "ID: 1544126813 | Name: 47.381.531 JOSE JEFFERSON DA SILVA | HUB Delivery Initiatives: Hub Hero",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -63425,11 +64241,23 @@
       "hex_coverage": [
         {
           "hex_id": "89a8d1b224fffff",
-          "packages_allocated": 40
+          "packages_allocated": 18
         },
         {
           "hex_id": "89a8d1b227bffff",
-          "packages_allocated": 2
+          "packages_allocated": 12
+        },
+        {
+          "hex_id": "89a8d1b2247ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8d1b31b7ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8d1b31b3ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -63461,23 +64289,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 4883616735 | Name: 65.054.860 MILENA CRISTINA GONCALVES DIAS | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 336,
+      "cap_suggestion": 126,
       "hex_coverage": [
         {
           "hex_id": "89a8c24194fffff",
-          "packages_allocated": 132
+          "packages_allocated": 61
         },
         {
           "hex_id": "89a8c24195bffff",
-          "packages_allocated": 149
+          "packages_allocated": 37
         },
         {
           "hex_id": "89a8c24194bffff",
-          "packages_allocated": 55
+          "packages_allocated": 28
         }
       ]
     },
@@ -63513,23 +64341,19 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 252,
+      "cap_suggestion": 126,
       "hex_coverage": [
         {
           "hex_id": "89a8c24190bffff",
-          "packages_allocated": 112
+          "packages_allocated": 32
         },
         {
-          "hex_id": "89a8c24190fffff",
-          "packages_allocated": 124
+          "hex_id": "89a8c241963ffff",
+          "packages_allocated": 46
         },
         {
-          "hex_id": "89a8c241907ffff",
-          "packages_allocated": 15
-        },
-        {
-          "hex_id": "89a8c24193bffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c241973ffff",
+          "packages_allocated": 48
         }
       ]
     },
@@ -63653,11 +64477,11 @@
       "hex_coverage": [
         {
           "hex_id": "89a8c24e477ffff",
-          "packages_allocated": 40
+          "packages_allocated": 26
         },
         {
-          "hex_id": "89a8c24e473ffff",
-          "packages_allocated": 2
+          "hex_id": "89a8c24e40fffff",
+          "packages_allocated": 16
         }
       ]
     },
@@ -63690,18 +64514,14 @@
       "tooltip": "ID: 7474130054 | Name: MAYLLA SOARES DE CARVALHO | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 126,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24e4cfffff",
-          "packages_allocated": 48
-        },
-        {
-          "hex_id": "89a8c24e4c3ffff",
-          "packages_allocated": 78
+          "hex_id": "89a8c241927ffff",
+          "packages_allocated": 42
         }
       ]
     },
@@ -69957,14 +70777,26 @@
       "tooltip": "ID: 2465594899 | Name: 13.400.891 ANDERSON FERREIRA DE OLIVEIRA ROSATO | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-04",
-      "decision": "Nao esta em uma localizacao ideal",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0,
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 200,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c24a9d7ffff",
+          "packages_allocated": 2
+        },
+        {
+          "hex_id": "89a8c24a9c3ffff",
+          "packages_allocated": 17
+        },
+        {
+          "hex_id": "89a8c24a9dbffff",
+          "packages_allocated": 17
+        },
+        {
+          "hex_id": "89a8c24a9d3ffff",
+          "packages_allocated": 6
         }
       ]
     },
@@ -70004,34 +70836,26 @@
       "hex_coverage": [
         {
           "hex_id": "89a8c24a8bbffff",
-          "packages_allocated": 11
+          "packages_allocated": 12
         },
         {
-          "hex_id": "89a8c24ad7bffff",
-          "packages_allocated": 10
-        },
-        {
-          "hex_id": "89a8c24a8b3ffff",
-          "packages_allocated": 6
-        },
-        {
-          "hex_id": "89a8c24a8a3ffff",
-          "packages_allocated": 3
-        },
-        {
-          "hex_id": "89a8c24a8b7ffff",
-          "packages_allocated": 3
+          "hex_id": "89a8c24a8d7ffff",
+          "packages_allocated": 9
         },
         {
           "hex_id": "89a8c24a8a7ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24a8c7ffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c24a8b7ffff",
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8c24a89bffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24ad6bffff",
+          "hex_id": "89a8c24ad4fffff",
           "packages_allocated": 1
         },
         {
@@ -70039,19 +70863,7 @@
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c24ac2fffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24a893ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24ad4fffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24a813ffff",
+          "hex_id": "89a8c24a837ffff",
           "packages_allocated": 1
         }
       ]
@@ -70091,16 +70903,24 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a9c3ffff",
-          "packages_allocated": 17
+          "hex_id": "89a8c24a98bffff",
+          "packages_allocated": 18
         },
         {
-          "hex_id": "89a8c24a9d7ffff",
-          "packages_allocated": 13
+          "hex_id": "89a8c24ad63ffff",
+          "packages_allocated": 8
         },
         {
-          "hex_id": "89a8c24a917ffff",
-          "packages_allocated": 12
+          "hex_id": "89a8c24a887ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24a8b7ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24a8a3ffff",
+          "packages_allocated": 5
         }
       ]
     },
@@ -70132,15 +70952,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5138224965 | Name: 59.162.139 ERIKA ALBUQUERQUE SILVA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
+          "hex_id": "89a8c24a98fffff",
+          "packages_allocated": 35
+        },
+        {
           "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "packages_allocated": 7
         }
       ]
     },
@@ -75428,12 +76252,20 @@
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24f68bffff",
-          "packages_allocated": 24
+          "hex_id": "89a8c24f69bffff",
+          "packages_allocated": 14
         },
         {
-          "hex_id": "89a8c24f6c7ffff",
-          "packages_allocated": 18
+          "hex_id": "89a8c24f683ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8c24f693ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8c24f6d7ffff",
+          "packages_allocated": 8
         }
       ]
     },
@@ -75465,41 +76297,12 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5712732664 | Name: 60.879.880 YURI VIANA FERREIRA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
-      "hex_coverage": [
-        {
-          "hex_id": "89a8c241373ffff",
-          "packages_allocated": 9
-        },
-        {
-          "hex_id": "89a8c24137bffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c24130fffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c241377ffff",
-          "packages_allocated": 6
-        },
-        {
-          "hex_id": "89a8c24acb7ffff",
-          "packages_allocated": 6
-        },
-        {
-          "hex_id": "89a8c241363ffff",
-          "packages_allocated": 6
-        },
-        {
-          "hex_id": "89a8c24aca7ffff",
-          "packages_allocated": 1
-        }
-      ]
+      "hex_coverage": []
     },
     {
       "salesforce_id": "001at00000U7ItmAAF",
@@ -75529,15 +76332,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 8598717134 | Name: 64.124.542 JULIANA LUCAS DA SILVA RODRIGUES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
+          "hex_id": "89a8c24a98fffff",
+          "packages_allocated": 35
+        },
+        {
           "hex_id": "89a8c24a997ffff",
-          "packages_allocated": 42
+          "packages_allocated": 7
         }
       ]
     },
@@ -75569,7 +76376,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 4363155379 | Name: 54.638.513 RAFAEL BRANDAO FERRAZ | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -75577,7 +76384,11 @@
       "hex_coverage": [
         {
           "hex_id": "89a8c24a987ffff",
-          "packages_allocated": 42
+          "packages_allocated": 12
+        },
+        {
+          "hex_id": "89a8c24a997ffff",
+          "packages_allocated": 30
         }
       ]
     },
@@ -75612,32 +76423,16 @@
       "bucket_ade": "DBS5_bucket-04",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 500,
+      "radius_suggestion": 200,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8c24a9c7ffff",
-          "packages_allocated": 19
+          "packages_allocated": 24
         },
         {
           "hex_id": "89a8c24a9d7ffff",
-          "packages_allocated": 9
-        },
-        {
-          "hex_id": "89a8c24a9abffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c24a903ffff",
-          "packages_allocated": 5
-        },
-        {
-          "hex_id": "89a8c24a90bffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24a8afffff",
-          "packages_allocated": 1
+          "packages_allocated": 18
         }
       ]
     },
@@ -75670,30 +76465,26 @@
       "tooltip": "ID: 6142563559 | Name: 64.483.970 CELSO BORGES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-04",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
           "hex_id": "89a8c24a98bffff",
-          "packages_allocated": 30
+          "packages_allocated": 18
         },
         {
-          "hex_id": "89a8c24a917ffff",
-          "packages_allocated": 11
+          "hex_id": "89a8c24a90fffff",
+          "packages_allocated": 10
         },
         {
-          "hex_id": "89a8c24a98fffff",
-          "packages_allocated": 32
+          "hex_id": "89a8c24ad63ffff",
+          "packages_allocated": 8
         },
         {
-          "hex_id": "89a8c24a913ffff",
-          "packages_allocated": 9
-        },
-        {
-          "hex_id": "89a8c24a983ffff",
-          "packages_allocated": 2
+          "hex_id": "89a8c24a977ffff",
+          "packages_allocated": 6
         }
       ]
     },
@@ -77938,23 +78729,27 @@
       "decision_reason_code": null,
       "tooltip": "ID: 7697922257 | Name: 64.311.901 LARISSA CARIBE MANCILIO | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100088fffff",
-          "packages_allocated": 17
-        },
-        {
           "hex_id": "89a810008afffff",
           "packages_allocated": 16
         },
         {
+          "hex_id": "89a81000833ffff",
+          "packages_allocated": 12
+        },
+        {
           "hex_id": "89a810008abffff",
-          "packages_allocated": 9
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a81000823ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -77986,23 +78781,27 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9077935594 | Name: 64348230 ANA ELISA DOS SANTOS | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100088fffff",
-          "packages_allocated": 17
-        },
-        {
           "hex_id": "89a810008afffff",
           "packages_allocated": 16
         },
         {
+          "hex_id": "89a81000833ffff",
+          "packages_allocated": 12
+        },
+        {
           "hex_id": "89a810008abffff",
-          "packages_allocated": 9
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a81000823ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -78034,23 +78833,27 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6452012491 | Name: 43.814.271 CARLOS AUGUSTO FERREIRA DOS SANTOS | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100088fffff",
-          "packages_allocated": 17
-        },
-        {
           "hex_id": "89a810008afffff",
           "packages_allocated": 16
         },
         {
+          "hex_id": "89a81000833ffff",
+          "packages_allocated": 12
+        },
+        {
           "hex_id": "89a810008abffff",
-          "packages_allocated": 9
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a81000823ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -78082,11 +78885,11 @@
       "decision_reason_code": "No delivery in > 7 days",
       "tooltip": "ID: 3857592834 | Name: 57.342.338 ANNA CLARA VERISSIMO DE LIMA BORGES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42
+      "bucket_ade": "DSP4_bucket-05",
+      "decision": "Finalizar cadastro - Sem oportunidade proxima",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0
     },
     {
       "salesforce_id": "001at00000b2Hh4AAE",
@@ -78116,23 +78919,27 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1169000408 | Name: 64.309.125 DAYSE BERGUE DA SILVA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100088fffff",
-          "packages_allocated": 17
-        },
-        {
           "hex_id": "89a810008afffff",
           "packages_allocated": 16
         },
         {
+          "hex_id": "89a81000833ffff",
+          "packages_allocated": 12
+        },
+        {
           "hex_id": "89a810008abffff",
-          "packages_allocated": 9
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a81000823ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -78164,19 +78971,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 2429124886 | Name: 19.201.106 ROBSON DOS SANTOS SILVA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "bucket_ade": "DSP4_bucket-04",
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a81000d47ffff",
-          "packages_allocated": 8
+          "hex_id": "89a810009c3ffff",
+          "packages_allocated": 21
         },
         {
-          "hex_id": "89a81000d4fffff",
-          "packages_allocated": 34
+          "hex_id": "89a810009c7ffff",
+          "packages_allocated": 16
+        },
+        {
+          "hex_id": "89a810008afffff",
+          "packages_allocated": 5
         }
       ]
     },
@@ -78208,23 +79019,27 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1406090150 | Name: 65.399.871 Ivana dos Anjos de Andrade | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8100088fffff",
-          "packages_allocated": 17
-        },
-        {
           "hex_id": "89a810008afffff",
           "packages_allocated": 16
         },
         {
           "hex_id": "89a810008a7ffff",
-          "packages_allocated": 9
+          "packages_allocated": 13
+        },
+        {
+          "hex_id": "89a81000833ffff",
+          "packages_allocated": 12
+        },
+        {
+          "hex_id": "89a810008abffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -78256,7 +79071,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9544198316 | Name: ELITA MARIA DA SILVA 15518002840 | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -78316,7 +79131,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9384915612 | Name: 42.176.549 RAFAEL SANTOS SOUSA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -79666,7 +80481,7 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 4636878837 | Name: 64.356.123 TAIS BATISTA DE JESUS | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-08",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Finalizar cadastro - Sem oportunidade proxima",
       "reason": "",
       "radius_suggestion": 0,
@@ -83392,27 +84207,23 @@
       "decision_reason_code": null,
       "tooltip": "ID: 9287547982 | Name: 64.259.560 CARLA GOMES DE FRANCA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 294,
+      "cap_suggestion": 126,
       "hex_coverage": [
         {
-          "hex_id": "89a8c241bb3ffff",
-          "packages_allocated": 59
-        },
-        {
-          "hex_id": "89a8c241b97ffff",
-          "packages_allocated": 85
+          "hex_id": "89a8c241b8bffff",
+          "packages_allocated": 55
         },
         {
           "hex_id": "89a8c241b87ffff",
-          "packages_allocated": 96
+          "packages_allocated": 23
         },
         {
-          "hex_id": "89a8c241b8fffff",
-          "packages_allocated": 54
+          "hex_id": "89a8c241b83ffff",
+          "packages_allocated": 48
         }
       ]
     },
@@ -83527,11 +84338,11 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245257ffff",
+          "hex_id": "89a8c24ec93ffff",
           "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c24ec93ffff",
+          "hex_id": "89a8c245267ffff",
           "packages_allocated": 2
         }
       ]
@@ -83575,12 +84386,16 @@
           "packages_allocated": 30
         },
         {
-          "hex_id": "89a8c245317ffff",
-          "packages_allocated": 7
+          "hex_id": "89a8c2453abffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245313ffff",
+          "hex_id": "89a8c2453bbffff",
           "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24517bffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -83683,10 +84498,6 @@
           "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c24e193ffff",
-          "packages_allocated": 6
-        },
-        {
           "hex_id": "89a8c245277ffff",
           "packages_allocated": 6
         },
@@ -83695,8 +84506,12 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245257ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24ec93ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245267ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -83795,10 +84610,6 @@
           "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c24e193ffff",
-          "packages_allocated": 6
-        },
-        {
           "hex_id": "89a8c245277ffff",
           "packages_allocated": 6
         },
@@ -83807,8 +84618,12 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245257ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24ec93ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245267ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -84250,18 +85065,18 @@
       "tooltip": "ID: 4212600953 | Name: 64.994.054 GIRLENE DA SILVA GONCALVES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24e5a7ffff",
-          "packages_allocated": 41
+          "hex_id": "89a8c24e50fffff",
+          "packages_allocated": 31
         },
         {
-          "hex_id": "89a8c2452d3ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c245283ffff",
+          "packages_allocated": 11
         }
       ]
     },
@@ -84294,14 +85109,42 @@
       "tooltip": "ID: 7659013916 | Name: 62.679.363 KLISMAN FIDELES ROSS | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c245603ffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c24544fffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8c245623ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240967ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245693ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24096fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24566fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245443ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -84334,14 +85177,26 @@
       "tooltip": "ID: 7714772540 | Name: 59.886.930 VICTOR HUGO VALADARES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42,
+      "decision": "Nao esta em uma localizacao ideal",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24533bffff",
-          "packages_allocated": 42
+          "hex_id": "89a8c2453a3ffff",
+          "packages_allocated": 30
+        },
+        {
+          "hex_id": "89a8c2453abffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c2453bbffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24538fffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -84384,10 +85239,6 @@
           "packages_allocated": 14
         },
         {
-          "hex_id": "89a8c2450cbffff",
-          "packages_allocated": 8
-        },
-        {
           "hex_id": "89a8c245053ffff",
           "packages_allocated": 6
         },
@@ -84396,12 +85247,20 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245617ffff",
+          "hex_id": "89a8c24566fffff",
           "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c24566fffff",
-          "packages_allocated": 3
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24528bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24568bffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -84444,16 +85303,20 @@
           "packages_allocated": 23
         },
         {
-          "hex_id": "89a8c24e513ffff",
-          "packages_allocated": 10
+          "hex_id": "89a8c24e58bffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c24e5d7ffff",
-          "packages_allocated": 8
+          "hex_id": "89a8c240b6bffff",
+          "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c240b6fffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c24e59bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c240b2bffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -84496,19 +85359,27 @@
           "packages_allocated": 14
         },
         {
-          "hex_id": "89a8c24e537ffff",
-          "packages_allocated": 9
+          "hex_id": "89a8c245623ffff",
+          "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c240b27ffff",
-          "packages_allocated": 8
+          "hex_id": "89a8c24566fffff",
+          "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c24e5bbffff",
-          "packages_allocated": 7
+          "hex_id": "89a8c24e583ffff",
+          "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c24e587ffff",
+          "hex_id": "89a8c24e5afffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2452cfffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24528bffff",
           "packages_allocated": 4
         }
       ]
@@ -88612,7 +89483,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1996130111 | Name: 65.747.882 RAPHAELA ROCHA DA SILVA GONCALVES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-05",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -88643,10 +89514,6 @@
           "packages_allocated": 2
         },
         {
-          "hex_id": "89a8c241c4bffff",
-          "packages_allocated": 2
-        },
-        {
           "hex_id": "89a8c241e83ffff",
           "packages_allocated": 2
         },
@@ -88655,15 +89522,19 @@
           "packages_allocated": 2
         },
         {
+          "hex_id": "89a8c241c4bffff",
+          "packages_allocated": 2
+        },
+        {
           "hex_id": "89a8c241c7bffff",
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c241e87ffff",
+          "hex_id": "89a8c241c4fffff",
           "packages_allocated": 1
         },
         {
-          "hex_id": "89a8c241c4fffff",
+          "hex_id": "89a8c241e87ffff",
           "packages_allocated": 1
         }
       ]
@@ -90732,7 +91603,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5691332475 | Name: 63344970 RAFAELA SALES VITAL | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -90767,7 +91638,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 8856437137 | Name: 48846524 KEVIN SALES GONCALVES DA SILVA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -90802,7 +91673,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5511091730 | Name: 63822124 EDUARDO DE SOUZA SERAFIM | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -90837,7 +91708,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 1605996671 | Name: 55329977 LEOPOLDO DELGADO | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -90885,7 +91756,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 4849335535 | Name: 57831164 CLAUDIO ALVES DA SILVA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "Nao esta em uma localizacao ideal",
       "reason": "",
       "radius_suggestion": 0,
@@ -92995,16 +93866,28 @@
       "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 168,
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8100f187ffff",
-          "packages_allocated": 91
+          "packages_allocated": 12
         },
         {
-          "hex_id": "89a8100f183ffff",
-          "packages_allocated": 77
+          "hex_id": "89a8100f1b3ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8100f1a3ffff",
+          "packages_allocated": 9
+        },
+        {
+          "hex_id": "89a8100e24bffff",
+          "packages_allocated": 8
+        },
+        {
+          "hex_id": "89a8100f567ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -93040,15 +93923,23 @@
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8100f16fffff",
-          "packages_allocated": 46
+          "hex_id": "89a8100f163ffff",
+          "packages_allocated": 17
         },
         {
-          "hex_id": "89a8100f163ffff",
-          "packages_allocated": 38
+          "hex_id": "89a8100f16bffff",
+          "packages_allocated": 12
+        },
+        {
+          "hex_id": "89a8100f16fffff",
+          "packages_allocated": 7
+        },
+        {
+          "hex_id": "89a8100f17bffff",
+          "packages_allocated": 6
         }
       ]
     },
@@ -93080,10 +93971,10 @@
       "decision_reason_code": "Amazon Controllable",
       "tooltip": "ID: 6197179866 | Name: 62.741.927 ADRIANA PREZOTO ALBINO | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-02",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 500,
+      "radius_suggestion": 800,
       "cap_suggestion": 42
     },
     {
@@ -93114,7 +94005,7 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 1878020541 | Name: 46.950.350 TATHIANA BARRIONUEVO DE MOURA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-02",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -93148,7 +94039,7 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6596988775 | Name: 51.634.135 DAIANE DE CASTRO COCHLETE | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-03",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -93156,7 +94047,11 @@
       "hex_coverage": [
         {
           "hex_id": "89a8100e29bffff",
-          "packages_allocated": 42
+          "packages_allocated": 29
+        },
+        {
+          "hex_id": "89a8100e283ffff",
+          "packages_allocated": 13
         }
       ]
     },
@@ -93188,19 +94083,39 @@
       "decision_reason_code": null,
       "tooltip": "ID: 6974770890 | Name: 65.838.941 VANIA MARTINES | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-02",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
           "hex_id": "89a8100f02fffff",
-          "packages_allocated": 34
+          "packages_allocated": 15
         },
         {
-          "hex_id": "89a8100f023ffff",
-          "packages_allocated": 8
+          "hex_id": "89a8100f153ffff",
+          "packages_allocated": 13
+        },
+        {
+          "hex_id": "89a8100f1cbffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8100f03bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100f033ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100f027ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100f393ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -93235,16 +94150,40 @@
       "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84,
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8100e2cbffff",
-          "packages_allocated": 68
+          "hex_id": "89a8100e25bffff",
+          "packages_allocated": 1
         },
         {
-          "hex_id": "89a8100e253ffff",
-          "packages_allocated": 16
+          "hex_id": "89a8100e2cfffff",
+          "packages_allocated": 13
+        },
+        {
+          "hex_id": "89a8100f197ffff",
+          "packages_allocated": 3
+        },
+        {
+          "hex_id": "89a8100e207ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8100e2d3ffff",
+          "packages_allocated": 9
+        },
+        {
+          "hex_id": "89a8100e66bffff",
+          "packages_allocated": 9
+        },
+        {
+          "hex_id": "89a8100e2c3ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8100e66fffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -93276,11 +94215,11 @@
       "decision_reason_code": "Partner Controllable",
       "tooltip": "ID: 9830127857 | Name: TIAGO BORGES SERRANO 29015604827 | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-06",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 84
+      "bucket_ade": "DSP4_bucket-02",
+      "decision": "Finalizar cadastro - Sem oportunidade proxima",
+      "reason": "",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0
     },
     {
       "salesforce_id": "001at00000ZpTYVAA3",
@@ -94830,51 +95769,19 @@
       "decision_reason_code": null,
       "tooltip": "ID: 5405892483 | Name: CONCEICAO DE MARIA SALES COSTA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 500,
+      "radius_suggestion": 200,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a9a3ffff",
-          "packages_allocated": 15
-        },
-        {
           "hex_id": "89a8c24a9b3ffff",
-          "packages_allocated": 12
+          "packages_allocated": 27
         },
         {
           "hex_id": "89a8c241a4bffff",
-          "packages_allocated": 4
-        },
-        {
-          "hex_id": "89a8c24a937ffff",
-          "packages_allocated": 3
-        },
-        {
-          "hex_id": "89a8c24a903ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c24a983ffff",
-          "packages_allocated": 3
-        },
-        {
-          "hex_id": "89a8c241a63ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c241a73ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c241a47ffff",
-          "packages_allocated": 1
-        },
-        {
-          "hex_id": "89a8c241a7bffff",
-          "packages_allocated": 1
+          "packages_allocated": 15
         }
       ]
     },
@@ -94909,16 +95816,40 @@
       "bucket_ade": "DBS5_bucket-04",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24a9bbffff",
-          "packages_allocated": 17
+          "hex_id": "89a8c241a4bffff",
+          "packages_allocated": 3
         },
         {
-          "hex_id": "89a8c24a917ffff",
-          "packages_allocated": 25
+          "hex_id": "89a8c24a9d3ffff",
+          "packages_allocated": 10
+        },
+        {
+          "hex_id": "89a8c24a913ffff",
+          "packages_allocated": 14
+        },
+        {
+          "hex_id": "89a8c24a9cbffff",
+          "packages_allocated": 11
+        },
+        {
+          "hex_id": "89a8c24a91bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24a973ffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24a90bffff",
+          "packages_allocated": 1
+        },
+        {
+          "hex_id": "89a8c24a957ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -97860,20 +98791,12 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2450cbffff",
-          "packages_allocated": 8
-        },
-        {
           "hex_id": "89a8c24544fffff",
           "packages_allocated": 8
         },
         {
           "hex_id": "89a8c245623ffff",
           "packages_allocated": 6
-        },
-        {
-          "hex_id": "89a8c245617ffff",
-          "packages_allocated": 5
         },
         {
           "hex_id": "89a8c240967ffff",
@@ -97886,6 +98809,18 @@
         {
           "hex_id": "89a8c24096fffff",
           "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24566fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245443ffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -97918,18 +98853,42 @@
       "tooltip": "ID: 8123213918 | Name: 65.327.978 MARIA EUNIDES DOS SANTOS SILVA | HUB Delivery Initiatives: HCP Pick Up Partner",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "Nao esta em uma localizacao ideal",
-      "reason": "",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0,
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 500,
+      "cap_suggestion": 42,
       "hex_coverage": [
         {
-          "hex_id": "89a8c24e50fffff",
-          "packages_allocated": 31
+          "hex_id": "89a8c24e537ffff",
+          "packages_allocated": 9
         },
         {
-          "hex_id": "89a8c24e573ffff",
-          "packages_allocated": 11
+          "hex_id": "89a8c24e193ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24e503ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c245257ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24521bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e517ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e5b3ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c245253ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -97980,16 +98939,16 @@
           "packages_allocated": 7
         },
         {
-          "hex_id": "89a8c245313ffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c245383ffff",
+          "hex_id": "89a8c245277ffff",
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245277ffff",
-          "packages_allocated": 1
+          "hex_id": "89a8c245273ffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24ec93ffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -98028,15 +98987,7 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2450cbffff",
-          "packages_allocated": 8
-        },
-        {
           "hex_id": "89a8c24544fffff",
-          "packages_allocated": 8
-        },
-        {
-          "hex_id": "89a8c240b27ffff",
           "packages_allocated": 8
         },
         {
@@ -98044,16 +98995,28 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245617ffff",
-          "packages_allocated": 5
-        },
-        {
           "hex_id": "89a8c240967ffff",
           "packages_allocated": 5
         },
         {
           "hex_id": "89a8c245693ffff",
-          "packages_allocated": 2
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24096fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24566fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24545bffff",
+          "packages_allocated": 3
         }
       ]
     },
@@ -98096,8 +99059,12 @@
           "packages_allocated": 31
         },
         {
-          "hex_id": "89a8c240b37ffff",
-          "packages_allocated": 11
+          "hex_id": "89a8c24e58bffff",
+          "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c240b6bffff",
+          "packages_allocated": 5
         }
       ]
     },
@@ -98136,24 +99103,40 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c240b37ffff",
-          "packages_allocated": 14
-        },
-        {
-          "hex_id": "89a8c240b27ffff",
-          "packages_allocated": 8
-        },
-        {
-          "hex_id": "89a8c24e5bbffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c240b6fffff",
-          "packages_allocated": 7
-        },
-        {
           "hex_id": "89a8c24e58bffff",
           "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24e59bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24096fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c240b2bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e583ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24568bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24564bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2456c3ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24565bffff",
+          "packages_allocated": 4
         }
       ]
     },
@@ -98196,10 +99179,6 @@
           "packages_allocated": 14
         },
         {
-          "hex_id": "89a8c2450cbffff",
-          "packages_allocated": 8
-        },
-        {
           "hex_id": "89a8c245053ffff",
           "packages_allocated": 6
         },
@@ -98208,12 +99187,20 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245617ffff",
+          "hex_id": "89a8c24566fffff",
           "packages_allocated": 5
         },
         {
-          "hex_id": "89a8c24566fffff",
-          "packages_allocated": 3
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24528bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24568bffff",
+          "packages_allocated": 2
         }
       ]
     },
@@ -98252,10 +99239,6 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c2450cbffff",
-          "packages_allocated": 8
-        },
-        {
           "hex_id": "89a8c24544fffff",
           "packages_allocated": 8
         },
@@ -98268,16 +99251,24 @@
           "packages_allocated": 6
         },
         {
-          "hex_id": "89a8c245617ffff",
-          "packages_allocated": 5
-        },
-        {
           "hex_id": "89a8c240967ffff",
           "packages_allocated": 5
         },
         {
           "hex_id": "89a8c245693ffff",
-          "packages_allocated": 3
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24096fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245687ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c245443ffff",
+          "packages_allocated": 1
         }
       ]
     },
@@ -98316,24 +99307,40 @@
       "cap_suggestion": 0,
       "hex_coverage": [
         {
-          "hex_id": "89a8c240b37ffff",
-          "packages_allocated": 14
-        },
-        {
-          "hex_id": "89a8c240b27ffff",
-          "packages_allocated": 8
-        },
-        {
-          "hex_id": "89a8c24e5bbffff",
-          "packages_allocated": 7
-        },
-        {
-          "hex_id": "89a8c240b6fffff",
-          "packages_allocated": 7
-        },
-        {
           "hex_id": "89a8c24e58bffff",
           "packages_allocated": 6
+        },
+        {
+          "hex_id": "89a8c24e59bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24096fffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c240b2bffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24e583ffff",
+          "packages_allocated": 5
+        },
+        {
+          "hex_id": "89a8c24568bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24564bffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c2456c3ffff",
+          "packages_allocated": 4
+        },
+        {
+          "hex_id": "89a8c24565bffff",
+          "packages_allocated": 4
         }
       ]
     },
@@ -105019,10 +106026,10 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: guilherme augusto gambarini | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-02",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42
     },
     {
@@ -106379,10 +107386,10 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: FABIO GAUDIO | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DBR9_bucket-25",
+      "bucket_ade": "DSP4_bucket-02",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 500,
+      "radius_suggestion": 200,
       "cap_suggestion": 42
     },
     {
@@ -118551,7 +119558,7 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: BRASIL CONNECT BRASIL CONNECT | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-01",
+      "bucket_ade": "DBR9_bucket-22",
       "decision": "No Go",
       "reason": "Fora de jurisdição",
       "radius_suggestion": 0,
@@ -118721,11 +119728,11 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Amanda Silva franca | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42
+      "bucket_ade": "DSP4_bucket-06",
+      "decision": "No Go",
+      "reason": "Sem oportunidade próxima",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0
     },
     {
       "salesforce_id": "00Qat00000F9e0nEAB",
@@ -119843,7 +120850,7 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Gustavo Magalhães | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-11",
+      "bucket_ade": "DSP4_bucket-06",
       "decision": "No Go",
       "reason": "Sem oportunidade próxima",
       "radius_suggestion": 0,
@@ -122631,11 +123638,11 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Carlos Henrique Carlos Henrique | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-04",
+      "bucket_ade": "DSP4_bucket-02",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 168
+      "cap_suggestion": 42
     },
     {
       "salesforce_id": "00Qat00000EkfkrEAB",
@@ -124127,11 +125134,11 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Leonardo Lasinskas Tonhi | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-10",
-      "decision": "Go",
-      "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
-      "cap_suggestion": 42
+      "bucket_ade": "DSP4_bucket-05",
+      "decision": "No Go",
+      "reason": "Sem oportunidade próxima",
+      "radius_suggestion": 0,
+      "cap_suggestion": 0
     },
     {
       "salesforce_id": "00Qat00000RlCxREAV",
@@ -125793,7 +126800,7 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: EVELINA MATTEUCCI | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-02",
+      "bucket_ade": "DSP4_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -127187,10 +128194,10 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Leandro Andre | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-10",
+      "bucket_ade": "DSP4_bucket-05",
       "decision": "Go",
       "reason": "Seguir cadastro",
-      "radius_suggestion": 200,
+      "radius_suggestion": 500,
       "cap_suggestion": 42
     },
     {
@@ -130893,7 +131900,7 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Matheus Silva Marques | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-09",
+      "bucket_ade": "DSP4_bucket-04",
       "decision": "No Go",
       "reason": "Sem oportunidade próxima",
       "radius_suggestion": 0,
@@ -131743,7 +132750,7 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Antonio Carlos Leite Ferreira | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-04",
+      "bucket_ade": "DBS5_bucket-06",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
@@ -131779,7 +132786,7 @@
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-01",
       "decision": "No Go",
-      "reason": "Fora de jurisdição",
+      "reason": "Sem oportunidade próxima",
       "radius_suggestion": 0,
       "cap_suggestion": 0
     },
@@ -131812,10 +132819,10 @@
       "tooltip": "ID:  | Name: lucilene mendesviana mendes | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
       "bucket_ade": "DBS5_bucket-05",
-      "decision": "No Go",
-      "reason": "Sem oportunidade próxima",
-      "radius_suggestion": 0,
-      "cap_suggestion": 0
+      "decision": "Go",
+      "reason": "Seguir cadastro",
+      "radius_suggestion": 500,
+      "cap_suggestion": 42
     },
     {
       "salesforce_id": "00Qat00000SKABCEA5",
@@ -131845,11 +132852,11 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Jamilly Ponce Lourenço | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DBS5_bucket-02",
+      "bucket_ade": "DBS5_bucket-01",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,
-      "cap_suggestion": 168
+      "cap_suggestion": 42
     },
     {
       "salesforce_id": "00Qat00000Q1Pi9EAF",
@@ -131879,7 +132886,7 @@
       "decision_reason_code": null,
       "tooltip": "ID:  | Name: Tiago Adorno | HUB Delivery Initiatives: ",
       "adv_opportunity": null,
-      "bucket_ade": "DSP4_bucket-02",
+      "bucket_ade": "DSP4_bucket-03",
       "decision": "Go",
       "reason": "Seguir cadastro",
       "radius_suggestion": 200,

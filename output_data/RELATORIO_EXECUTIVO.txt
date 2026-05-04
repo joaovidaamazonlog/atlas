@@ -1,5 +1,5 @@
 RELATORIO EXECUTIVO DE OTIMIZACAO
-Gerado em: 01/05/2026 01:54
+Gerado em: 04/05/2026 12:14
 ================================================================================
 
 BASE: DBH5 | BDM: BH | CTL: Lucas Magela
@@ -386,16 +386,16 @@ BASE: DBS5 | BDM: RJ/CW | CTL: Yan Abrao
   Territorios:                      5
   Demanda diaria total:             30,072.0 pacotes/dia
   Vagas ideais (total):             468
-  Vagas com match:                  58
-  Vagas em aberto:                  410
-  Cobertura (match / total):        58/468 = 12.4%
-  Parceiros existentes:             58
-    • Ativos:                       47
+  Vagas com match:                  60
+  Vagas em aberto:                  408
+  Cobertura (match / total):        60/468 = 12.8%
+  Parceiros existentes:             60
+    • Ativos:                       48
     • Onboarding:                   6
     • BG Checks / Vetting:          0
     • Prospects a aprovar:          2
-    • Inativos a reativar:          3
-  Attainment (Ativos / Vagas):      10.0%
+    • Inativos a reativar:          4
+  Attainment (Ativos / Vagas):      10.3%
 --------------------------------------------------------------------------------
   DETALHAMENTO POR TERRITORIO:
 
@@ -434,14 +434,14 @@ BASE: DBS5 | BDM: RJ/CW | CTL: Yan Abrao
 
   DBS5_bucket-04 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      5,712.0 pacotes/dia
-    Vagas / Em aberto:   93 / 80
-    Ativos:              11
+    Vagas / Em aberto:   93 / 78
+    Ativos:              12
     Onboarding:           1
     BG:                   0
     Prospects:            1
-    Inativos:             0
-    Attainment:           11.8%
-    Acuracidade:          84.6%
+    Inativos:             1
+    Attainment:           12.9%
+    Acuracidade:          80.0%
 
   DBS5_bucket-05 | CTL: Yan Abrao | ADE: N/A
     Demanda diaria:      8,316.0 pacotes/dia

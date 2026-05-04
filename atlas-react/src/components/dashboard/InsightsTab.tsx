@@ -73,17 +73,22 @@ const InsightCard: React.FC<{
   title: string;
   subtitle?: string;
   count: number;
+  /** Slot opcional no cabeçalho para ações (ex: botão de limpar pin). */
+  headerAction?: React.ReactNode;
   children: React.ReactNode;
-}> = ({ title, subtitle, count, children }) => {
+}> = ({ title, subtitle, count, headerAction, children }) => {
   const { t } = useTranslation();
   return (
     <section className="bg-atlas-dark border border-atlas-navy rounded-lg p-4 flex flex-col gap-3">
-      <header className="flex items-baseline justify-between">
+      <header className="flex items-baseline justify-between gap-2">
         <div className="flex flex-col">
           <h3 className="text-atlas-light font-semibold text-sm">{title}</h3>
           {subtitle && <span className="text-atlas-muted text-xs">{subtitle}</span>}
         </div>
-        <span className="text-atlas-accent text-lg font-mono">{count}</span>
+        <div className="flex items-center gap-2">
+          {headerAction}
+          <span className="text-atlas-accent text-lg font-mono">{count}</span>
+        </div>
       </header>
       {count === 0 ? (
         <div className="text-atlas-muted text-xs text-center py-4">
@@ -192,6 +197,8 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
   const isLoadingByHex = useStore((s) => s.deliveries.isLoadingByHex);
   const loadByHex = useStore((s) => s.loadDeliveriesByHex);
   const allPartners = useStore((s) => s.allMarkersData);
+  const setOpportunityPin = useStore((s) => s.setOpportunityPin);
+  const opportunityPin = useStore((s) => s.opportunityPin);
 
   const [thresholds, setThresholds] = useState<InsightThresholds>(DEFAULT_THRESHOLDS);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
@@ -349,28 +356,36 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
           count={insights.underutilized.length}
         >
           <div className="max-h-[280px] overflow-y-auto">
-            <table className="w-full text-xs">
+            <table className="w-full text-xs table-fixed">
+              <colgroup>
+                <col style={{ width: '48%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '10%' }} />
+                <col style={{ width: '10%' }} />
+              </colgroup>
               <thead className="text-atlas-muted">
                 <tr>
-                  <th className="text-left py-1">{t('packages.col_partner')}</th>
-                  <th className="text-left py-1">DS</th>
-                  <th className="text-right py-1">cap</th>
-                  <th className="text-right py-1">d/d</th>
-                  <th className="text-right py-1">%</th>
-                  <th className="text-right py-1">gap</th>
+                  <th className="text-left py-1 pr-2">{t('packages.col_partner')}</th>
+                  <th className="text-left py-1 pr-2">DS</th>
+                  <th className="text-right py-1 pr-2">cap</th>
+                  <th className="text-right py-1 pr-2">d/d</th>
+                  <th className="text-right py-1 pr-2">%</th>
+                  <th className="text-right py-1 pr-2">gap</th>
                 </tr>
               </thead>
               <tbody>
                 {insights.underutilized.slice(0, 25).map((u) => (
                   <tr key={u.store_id} className="border-t border-atlas-navy">
-                    <td className="py-1 text-atlas-light">{u.name}</td>
-                    <td className="py-1 text-atlas-muted">{u.delivery_station}</td>
-                    <td className="py-1 text-right text-atlas-light">{u.capacity}</td>
-                    <td className="py-1 text-right text-atlas-light">{u.daily_avg.toFixed(1)}</td>
-                    <td className="py-1 text-right text-red-400">
+                    <td className="py-1 pr-2 text-atlas-light truncate" title={u.name}>{u.name}</td>
+                    <td className="py-1 pr-2 text-atlas-muted">{u.delivery_station}</td>
+                    <td className="py-1 pr-2 text-right text-atlas-light">{u.capacity}</td>
+                    <td className="py-1 pr-2 text-right text-atlas-light">{u.daily_avg.toFixed(1)}</td>
+                    <td className="py-1 pr-2 text-right text-red-400">
                       {u.cap_utilization_pct.toFixed(1)}%
                     </td>
-                    <td className="py-1 text-right text-atlas-light">
+                    <td className="py-1 pr-2 text-right text-atlas-light">
                       {u.gap_absolute.toFixed(1)}
                     </td>
                   </tr>
@@ -389,25 +404,31 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
           count={insights.dspDominant.length}
         >
           <div className="max-h-[280px] overflow-y-auto">
-            <table className="w-full text-xs">
+            <table className="w-full text-xs table-fixed">
+              <colgroup>
+                <col style={{ width: '45%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '20%' }} />
+                <col style={{ width: '15%' }} />
+              </colgroup>
               <thead className="text-atlas-muted">
                 <tr>
-                  <th className="text-left py-1">Bucket</th>
-                  <th className="text-left py-1">DS</th>
-                  <th className="text-right py-1">%DSP</th>
-                  <th className="text-right py-1">Hubs</th>
+                  <th className="text-left py-1 pr-2">Bucket</th>
+                  <th className="text-left py-1 pr-2">DS</th>
+                  <th className="text-right py-1 pr-2">%DSP</th>
+                  <th className="text-right py-1 pr-2">Hubs</th>
                 </tr>
               </thead>
               <tbody>
                 {insights.dspDominant.slice(0, 25).map((d) => (
                   <tr key={d.bucket_ade} className="border-t border-atlas-navy">
-                    <td className="py-1 text-atlas-light">{d.bucket_ade}</td>
-                    <td className="py-1 text-atlas-muted">{d.delivery_station}</td>
-                    <td className="py-1 text-right text-orange-400">
+                    <td className="py-1 pr-2 text-atlas-light truncate" title={d.bucket_ade}>{d.bucket_ade}</td>
+                    <td className="py-1 pr-2 text-atlas-muted">{d.delivery_station}</td>
+                    <td className="py-1 pr-2 text-right text-orange-400">
                       {d.dsp_share_pct.toFixed(1)}%
                     </td>
                     <td
-                      className="py-1 text-right text-atlas-light"
+                      className="py-1 pr-2 text-right text-atlas-light"
                       title={d.active_hubs_names.join(', ')}
                     >
                       {d.active_hubs_in_territory}
@@ -419,13 +440,28 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
           </div>
         </InsightCard>
 
-        {/* 3. Hexes órfãos */}
+        {/* 3. Maiores Oportunidades (hexes órfãos de alto volume) */}
         <InsightCard
-          title={t('insights.card_orphan_title')}
-          subtitle={t('insights.card_orphan_subtitle', {
+          title={t('insights.card_opportunity_title')}
+          subtitle={t('insights.card_opportunity_subtitle', {
             n: thresholds.orphan_hex_min_daily_volume,
           })}
           count={insights.orphanHexes.length}
+          headerAction={
+            opportunityPin ? (
+              <button
+                type="button"
+                onClick={() => setOpportunityPin(null)}
+                title={t('insights.clear_opportunity')}
+                className="px-2 py-1 text-[11px] rounded border border-atlas-navy text-atlas-muted hover:text-red-400 hover:border-red-400 transition-colors flex items-center gap-1"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                {t('insights.clear_opportunity')}
+              </button>
+            ) : null
+          }
         >
           {isLoadingByHex && !byHex ? (
             <div className="py-4 text-center text-atlas-muted text-xs">
@@ -433,32 +469,86 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
             </div>
           ) : (
             <div className="max-h-[280px] overflow-y-auto">
-              <table className="w-full text-xs">
+              <table className="w-full text-xs table-fixed">
+                <colgroup>
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '22%' }} />
+                  <col style={{ width: '22%' }} />
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '12%' }} />
+                  <col style={{ width: '10%' }} />
+                  <col style={{ width: '10%' }} />
+                </colgroup>
                 <thead className="text-atlas-muted">
                   <tr>
-                    <th className="text-left py-1">hex_id</th>
-                    <th className="text-right py-1">d/dia</th>
-                    <th className="text-right py-1">total</th>
-                    <th className="text-right py-1">%DSP</th>
+                    <th className="text-left py-1 pr-2">DS</th>
+                    <th className="text-left py-1 pr-2">Bucket</th>
+                    <th className="text-left py-1 pr-2">Lat, Lon</th>
+                    <th className="text-right py-1 pr-2">d/dia</th>
+                    <th className="text-right py-1 pr-2">total</th>
+                    <th className="text-right py-1 pr-2">%DSP</th>
+                    <th className="text-right py-1">{/* ação */}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {insights.orphanHexes.slice(0, 25).map((o) => (
-                    <tr key={o.hex_id} className="border-t border-atlas-navy">
-                      <td className="py-1 font-mono text-atlas-light truncate max-w-[160px]">
-                        {o.hex_id}
-                      </td>
-                      <td className="py-1 text-right text-atlas-light">
-                        {o.daily_volume.toFixed(1)}
-                      </td>
-                      <td className="py-1 text-right text-atlas-muted">
-                        {o.total_volume}
-                      </td>
-                      <td className="py-1 text-right text-orange-400">
-                        {o.dsp_share_pct.toFixed(0)}%
-                      </td>
-                    </tr>
-                  ))}
+                  {insights.orphanHexes.slice(0, 25).map((o) => {
+                    const canPin = o.lat !== undefined && o.lon !== undefined;
+                    return (
+                      <tr key={o.hex_id} className="border-t border-atlas-navy">
+                        <td className="py-1 pr-2 text-atlas-light">
+                          {o.delivery_station || '—'}
+                        </td>
+                        <td className="py-1 pr-2 text-atlas-muted truncate" title={o.territory_id}>
+                          {o.territory_id || '—'}
+                        </td>
+                        <td
+                          className="py-1 pr-2 font-mono text-[10px] text-atlas-muted truncate"
+                          title={canPin ? `${o.lat!.toFixed(6)}, ${o.lon!.toFixed(6)}` : o.hex_id}
+                        >
+                          {canPin
+                            ? `${o.lat!.toFixed(4)}, ${o.lon!.toFixed(4)}`
+                            : o.hex_id}
+                        </td>
+                        <td className="py-1 pr-2 text-right text-atlas-light">
+                          {o.daily_volume.toFixed(1)}
+                        </td>
+                        <td className="py-1 pr-2 text-right text-atlas-muted">
+                          {o.total_volume}
+                        </td>
+                        <td className="py-1 pr-2 text-right text-orange-400">
+                          {o.dsp_share_pct.toFixed(0)}%
+                        </td>
+                        <td className="py-1 text-right">
+                          <button
+                            type="button"
+                            disabled={!canPin}
+                            onClick={() => {
+                              if (!canPin) return;
+                              setOpportunityPin({
+                                lat: o.lat!,
+                                lon: o.lon!,
+                                hex_id: o.hex_id,
+                                delivery_station: o.delivery_station,
+                                territory_id: o.territory_id,
+                                daily_volume: o.daily_volume,
+                                total_volume: o.total_volume,
+                                dsp_share_pct: o.dsp_share_pct,
+                              });
+                              // NÃO fecha o dashboard — o layout side-by-side
+                              // já mostra mapa e dashboard ao mesmo tempo,
+                              // então manter aberto permite o usuário inspecionar
+                              // várias oportunidades em sequência.
+                            }}
+                            title={t('insights.opportunity_view_on_map')}
+                            aria-label={t('insights.opportunity_view_on_map')}
+                            className="px-1.5 py-0.5 text-[11px] rounded border border-orange-500/50 text-orange-400 hover:bg-orange-500/10 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors"
+                          >
+                            📍
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -474,24 +564,30 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
           count={insights.trendDrops.length}
         >
           <div className="max-h-[280px] overflow-y-auto">
-            <table className="w-full text-xs">
+            <table className="w-full text-xs table-fixed">
+              <colgroup>
+                <col style={{ width: '50%' }} />
+                <col style={{ width: '14%' }} />
+                <col style={{ width: '18%' }} />
+                <col style={{ width: '18%' }} />
+              </colgroup>
               <thead className="text-atlas-muted">
                 <tr>
-                  <th className="text-left py-1">{t('packages.col_partner')}</th>
-                  <th className="text-left py-1">DS</th>
-                  <th className="text-right py-1">Δ 7d</th>
-                  <th className="text-right py-1">d/d</th>
+                  <th className="text-left py-1 pr-2">{t('packages.col_partner')}</th>
+                  <th className="text-left py-1 pr-2">DS</th>
+                  <th className="text-right py-1 pr-2">Δ 7d</th>
+                  <th className="text-right py-1 pr-2">d/d</th>
                 </tr>
               </thead>
               <tbody>
                 {insights.trendDrops.slice(0, 25).map((d) => (
                   <tr key={d.store_id} className="border-t border-atlas-navy">
-                    <td className="py-1 text-atlas-light">{d.name}</td>
-                    <td className="py-1 text-atlas-muted">{d.delivery_station}</td>
-                    <td className="py-1 text-right text-red-400">
+                    <td className="py-1 pr-2 text-atlas-light truncate" title={d.name}>{d.name}</td>
+                    <td className="py-1 pr-2 text-atlas-muted">{d.delivery_station}</td>
+                    <td className="py-1 pr-2 text-right text-red-400 whitespace-nowrap">
                       ↓ {Math.abs(d.trend_7d_pct).toFixed(1)}%
                     </td>
-                    <td className="py-1 text-right text-atlas-light">
+                    <td className="py-1 pr-2 text-right text-atlas-light">
                       {d.daily_avg.toFixed(1)}
                     </td>
                   </tr>
@@ -508,24 +604,31 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
           count={insights.geographicOutliers.length}
         >
           <div className="max-h-[280px] overflow-y-auto">
-            <table className="w-full text-xs">
+            <table className="w-full text-xs table-fixed">
+              <colgroup>
+                <col style={{ width: '42%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '14%' }} />
+                <col style={{ width: '18%' }} />
+                <col style={{ width: '14%' }} />
+              </colgroup>
               <thead className="text-atlas-muted">
                 <tr>
-                  <th className="text-left py-1">{t('packages.col_partner')}</th>
-                  <th className="text-left py-1">DS</th>
-                  <th className="text-right py-1">raio</th>
-                  <th className="text-right py-1">média DS</th>
-                  <th className="text-right py-1">%IHS</th>
+                  <th className="text-left py-1 pr-2">{t('packages.col_partner')}</th>
+                  <th className="text-left py-1 pr-2">DS</th>
+                  <th className="text-right py-1 pr-2">raio</th>
+                  <th className="text-right py-1 pr-2">média DS</th>
+                  <th className="text-right py-1 pr-2">%Hub</th>
                 </tr>
               </thead>
               <tbody>
                 {insights.geographicOutliers.slice(0, 25).map((o) => (
                   <tr key={o.store_id} className="border-t border-atlas-navy">
-                    <td className="py-1 text-atlas-light">{o.name}</td>
-                    <td className="py-1 text-atlas-muted">{o.delivery_station}</td>
-                    <td className="py-1 text-right text-atlas-light">{o.radius}m</td>
-                    <td className="py-1 text-right text-atlas-muted">{o.avg_radius_ds}m</td>
-                    <td className="py-1 text-right text-atlas-light">
+                    <td className="py-1 pr-2 text-atlas-light truncate" title={o.name}>{o.name}</td>
+                    <td className="py-1 pr-2 text-atlas-muted">{o.delivery_station}</td>
+                    <td className="py-1 pr-2 text-right text-atlas-light">{o.radius}m</td>
+                    <td className="py-1 pr-2 text-right text-atlas-muted">{o.avg_radius_ds}m</td>
+                    <td className="py-1 pr-2 text-right text-atlas-light">
                       {o.share_ds_ihs_pct.toFixed(1)}%
                     </td>
                   </tr>
@@ -542,36 +645,43 @@ const InsightsTab: React.FC<InsightsTabProps> = ({ filters, reportData }) => {
           count={insights.misconfiguredHubs.length}
         >
           <div className="max-h-[280px] overflow-y-auto">
-            <table className="w-full text-xs">
+            <table className="w-full text-xs table-fixed">
+              <colgroup>
+                <col style={{ width: '48%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '12%' }} />
+                <col style={{ width: '14%' }} />
+                <col style={{ width: '14%' }} />
+              </colgroup>
               <thead className="text-atlas-muted">
                 <tr>
-                  <th className="text-left py-1">{t('packages.col_partner')}</th>
-                  <th className="text-left py-1">DS</th>
-                  <th className="text-right py-1">cap</th>
-                  <th className="text-right py-1">raio</th>
-                  <th className="text-right py-1">d/d</th>
+                  <th className="text-left py-1 pr-2">{t('packages.col_partner')}</th>
+                  <th className="text-left py-1 pr-2">DS</th>
+                  <th className="text-right py-1 pr-2">cap</th>
+                  <th className="text-right py-1 pr-2">raio</th>
+                  <th className="text-right py-1 pr-2">d/d</th>
                 </tr>
               </thead>
               <tbody>
                 {insights.misconfiguredHubs.slice(0, 25).map((h) => (
                   <tr key={h.store_id} className="border-t border-atlas-navy">
-                    <td className="py-1 text-atlas-light">{h.name}</td>
-                    <td className="py-1 text-atlas-muted">{h.delivery_station}</td>
+                    <td className="py-1 pr-2 text-atlas-light truncate" title={h.name}>{h.name}</td>
+                    <td className="py-1 pr-2 text-atlas-muted">{h.delivery_station}</td>
                     <td
-                      className={`py-1 text-right font-mono ${
+                      className={`py-1 pr-2 text-right font-mono ${
                         h.capacity === 0 ? 'text-yellow-300 font-semibold' : 'text-atlas-light'
                       }`}
                     >
                       {h.capacity}
                     </td>
                     <td
-                      className={`py-1 text-right font-mono ${
+                      className={`py-1 pr-2 text-right font-mono ${
                         h.radius === 0 ? 'text-yellow-300 font-semibold' : 'text-atlas-light'
                       }`}
                     >
                       {h.radius}
                     </td>
-                    <td className="py-1 text-right text-atlas-light">
+                    <td className="py-1 pr-2 text-right text-atlas-light">
                       {h.daily_avg.toFixed(1)}
                     </td>
                   </tr>

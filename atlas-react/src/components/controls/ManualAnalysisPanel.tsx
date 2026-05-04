@@ -183,6 +183,7 @@ interface WhatIfResult {
   simulatedRadius: number;
   advGain: number;
   originalCap: number;
+  originalRadius: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -686,6 +687,34 @@ function PanelContent({ onClose }: { onClose: () => void }) {
             <div className="rounded-lg border border-atlas-accent/30 bg-atlas-accent/5 p-3 flex flex-col gap-2" data-testid="whatif-result-panel">
               <div className="text-xs font-semibold text-atlas-accent mb-1">{t('manual_analysis.whatif_result_title')}</div>
               <div className="text-sm text-atlas-light font-medium">{whatIfResult.partnerName}</div>
+
+              {/* Linha 1: Atual (cap + raio) vs Simulado (ADV + raio) — visão comparativa */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="rounded bg-atlas-darker px-2 py-2 flex flex-col gap-1">
+                  <div className="text-atlas-muted text-[10px] uppercase tracking-wider">{t('manual_analysis.whatif_current')}</div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-atlas-muted">{t('manual_analysis.whatif_cap_current')}</span>
+                    <span className="text-atlas-light font-semibold">{whatIfResult.originalCap} {t('common.pct_per_day')}</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-atlas-muted">{t('manual_analysis.whatif_radius_current')}</span>
+                    <span className="text-atlas-light font-semibold">{whatIfResult.originalRadius} m</span>
+                  </div>
+                </div>
+                <div className="rounded bg-atlas-darker px-2 py-2 flex flex-col gap-1">
+                  <div className="text-atlas-accent text-[10px] uppercase tracking-wider">{t('manual_analysis.whatif_simulated')}</div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-atlas-muted">{t('manual_analysis.whatif_adv_simulated')}</span>
+                    <span className="text-atlas-light font-semibold">{Math.round(whatIfResult.advSimulated)} {t('common.pct_per_day')}</span>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-atlas-muted">{t('manual_analysis.whatif_radius_simulated')}</span>
+                    <span className="text-atlas-light font-semibold">{whatIfResult.simulatedRadius} m</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Linha 2: coordenadas da simulação */}
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="rounded bg-atlas-darker px-2 py-2">
                   <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_lat')}</div>
@@ -695,15 +724,8 @@ function PanelContent({ onClose }: { onClose: () => void }) {
                   <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_lon')}</div>
                   <div className="text-atlas-light font-semibold">{whatIfResult.simulatedLon.toFixed(5)}</div>
                 </div>
-                <div className="rounded bg-atlas-darker px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_cap_current')}</div>
-                  <div className="text-atlas-light font-semibold">{whatIfResult.originalCap} {t('common.pct_per_day')}</div>
-                </div>
-                <div className="rounded bg-atlas-darker px-2 py-2">
-                  <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_adv_simulated')}</div>
-                  <div className="text-atlas-light font-semibold">{Math.round(whatIfResult.advSimulated)} {t('common.pct_per_day')}</div>
-                </div>
               </div>
+
               <div className={`rounded px-2 py-2 text-xs ${whatIfResult.advGain >= 0 ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
                 <div className="text-atlas-muted mb-0.5">{t('manual_analysis.whatif_gain')}</div>
                 <div className={`font-semibold text-sm ${whatIfResult.advGain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -711,6 +733,14 @@ function PanelContent({ onClose }: { onClose: () => void }) {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Composição real de entregas na área simulada (IHS vs DSP + parceiros).
+              Mostra a execução dos últimos 15d nos hexes cobertos pela nova
+              posição simulada — útil para entender se o movimento leva o
+              parceiro para uma área dominada por DSP ou por outros hubs. */}
+          {whatIfModeActive && whatIfResult && recruitableAnalysis.result && (
+            <DeliveriesInAreaPanel result={recruitableAnalysis.result} />
           )}
 
           {/* Limpar simulação — aparece após resultado what-if, igual ao Limpar Análise */}

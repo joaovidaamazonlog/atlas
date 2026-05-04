@@ -249,6 +249,7 @@ function WhatIfMarker({
           simulatedRadius: currentRadius,
           advGain,
           originalCap: partner.capacity,
+          originalRadius: partner.radius,
         },
       }),
     );

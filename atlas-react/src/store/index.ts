@@ -40,7 +40,7 @@ import {
   fetchDeliveriesByHex,
   fetchDeliveryDetailForDS,
 } from './deliveriesSlice';
-import type { PackagePin } from './types';
+import type { PackagePin, OpportunityPin } from './types';
 
 /** Pin arrastável no mapa para cada ponto escolhido no RoutesTab. */
 export interface RoutePickPin {
@@ -194,12 +194,33 @@ export interface AtlasStore {
 
   // --- Deliveries (Fase 6 — IHS vs DSP) ---
   deliveries: DeliveriesState;
-  /** Pin temporário no mapa para exibir um pacote específico (drill-down). */
-  packagePin: PackagePin | null;
+  /**
+   * Pins ativos no mapa para drill-down de pacotes. É uma lista porque
+   * o usuário pode querer visualizar várias entregas simultâneas para
+   * comparar distâncias/clusters sem perder a visão anterior.
+   * Dedup-ado por `tracking_id`.
+   */
+  packagePins: PackagePin[];
+  /**
+   * Quando preenchido, os layers de parceiros (PartnerMarkers) só
+   * renderizam o parceiro correspondente a este salesforce_id. É o modo
+   * "foco em um parceiro" que entra em ação ao abrir o drill-down no
+   * dashboard e sai quando o drill-down fecha.
+   */
+  focusedPartnerSalesforceId: string | null;
+  /** Pin temporário para destacar uma oportunidade (hex órfão) no mapa. */
+  opportunityPin: OpportunityPin | null;
   loadDeliveriesSummary: () => Promise<void>;
   loadDeliveriesByHex: () => Promise<void>;
   loadDeliveryDetailForDS: (dsCode: string) => Promise<void>;
-  setPackagePin: (pin: PackagePin | null) => void;
+  /** Adiciona um pin ao conjunto; dedup por tracking_id (no-op se já existe). */
+  addPackagePin: (pin: PackagePin) => void;
+  /** Remove um pin específico pelo tracking_id. */
+  removePackagePin: (trackingId: string) => void;
+  /** Limpa todos os pins de pacotes do mapa. */
+  clearPackagePins: () => void;
+  setFocusedPartnerSalesforceId: (id: string | null) => void;
+  setOpportunityPin: (pin: OpportunityPin | null) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -268,7 +289,9 @@ export const useStore = create<AtlasStore>((set, get) => ({
 
   // --- Estado inicial: deliveries (Fase 6) ---
   deliveries: { ...DEFAULT_DELIVERIES_STATE },
-  packagePin: null,
+  packagePins: [],
+  focusedPartnerSalesforceId: null,
+  opportunityPin: null,
 
   // ---------------------------------------------------------------------------
   // ACTIONS
@@ -938,8 +961,32 @@ export const useStore = create<AtlasStore>((set, get) => ({
     }
   },
 
-  setPackagePin: (pin) => {
-    set({ packagePin: pin });
+  addPackagePin: (pin) => {
+    set((state) => {
+      // Dedup por tracking_id — clicar duas vezes no mesmo pacote é no-op.
+      if (state.packagePins.some((p) => p.tracking_id === pin.tracking_id)) {
+        return state;
+      }
+      return { packagePins: [...state.packagePins, pin] };
+    });
+  },
+
+  removePackagePin: (trackingId) => {
+    set((state) => ({
+      packagePins: state.packagePins.filter((p) => p.tracking_id !== trackingId),
+    }));
+  },
+
+  clearPackagePins: () => {
+    set({ packagePins: [] });
+  },
+
+  setFocusedPartnerSalesforceId: (id) => {
+    set({ focusedPartnerSalesforceId: id });
+  },
+
+  setOpportunityPin: (pin) => {
+    set({ opportunityPin: pin });
   },
 }));
 

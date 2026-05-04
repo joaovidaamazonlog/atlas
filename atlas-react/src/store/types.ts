@@ -404,6 +404,10 @@ export interface HexDeliveryBreakdown {
   station_code?: string;
   /** Território (bucket_ade) dominante do hex, quando conhecido. */
   territory_id?: string;
+  /** Latitude do centróide do hex (calculada pelo backend via h3). */
+  lat?: number;
+  /** Longitude do centróide do hex (calculada pelo backend via h3). */
+  lon?: number;
 }
 
 /** Payload completo de `deliveries_by_hex.json`. */
@@ -434,6 +438,22 @@ export interface PackagePin {
   reason_code: string;
   partner_name: string;
   canal: string;
+}
+
+/**
+ * Pin que o Dashboard solicita ao mapa para exibir uma "oportunidade"
+ * — um hex órfão com alto volume sem hub cobrindo. Disparado pelo botão
+ * "Ver no mapa" na aba Insights.
+ */
+export interface OpportunityPin {
+  lat: number;
+  lon: number;
+  hex_id: string;
+  delivery_station: string;
+  territory_id?: string;
+  daily_volume: number;
+  total_volume: number;
+  dsp_share_pct: number;
 }
 
 /** Thresholds ajustáveis por sliders na aba Insights. */

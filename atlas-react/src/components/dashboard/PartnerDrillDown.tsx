@@ -1,12 +1,19 @@
 /**
  * PartnerDrillDown.tsx
  * ====================
- * Drill-down de um parceiro hub específico, dentro da aba "Pacotes & Canais".
+ * Drill-down de um parceiro hub específico, dentro da aba "Dive Deep".
  *
  * Conteúdo:
- * - Gráfico de barras: volume por dia nos últimos dias da janela.
+ * - Gráfico de barras diário com valor em cima de cada coluna.
  * - Tabela paginada: tracking_id, scan_datetime_br, reason_code, botão 📍.
- * - Botão 📍 fecha o dashboard, coloca pin no mapa via `setPackagePin`.
+ * - Botão 📍 por linha: adiciona o pacote aos pins do mapa (não fecha
+ *   o dashboard). Múltiplos pins acumulam.
+ * - Botão "Ver todos no mapa": plota todos os pacotes do parceiro.
+ * - Botão "Limpar pins": remove todos os pins de pacote ativos.
+ *
+ * Ao montar: foca o mapa só neste parceiro (`focusedPartnerSalesforceId`)
+ * e centraliza a view na posição dele. Ao fechar: limpa o foco e todos
+ * os pins ativos.
  *
  * Detalhes carregados lazy: dispara `loadDeliveryDetailForDS` e filtra
  * localmente por `store_id`. Cache feito no store para evitar re-fetch.
@@ -15,6 +22,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bar } from 'react-chartjs-2';
+import type { ChartOptions, Plugin } from 'chart.js';
 import { useStore } from '../../store';
 import type { PartnerDeliveryStats } from '../../store/types';
 
@@ -25,16 +33,52 @@ interface Props {
 
 const PAGE_SIZE = 50;
 
+/**
+ * Plugin Chart.js inline para renderizar o valor numérico em cima de cada
+ * barra. Evita a dependência pesada do `chartjs-plugin-datalabels` — para
+ * este caso (barras verticais, números simples), basta iterar os metas
+ * do dataset no afterDatasetsDraw.
+ */
+const barValueLabelsPlugin: Plugin<'bar'> = {
+  id: 'barValueLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    chart.data.datasets.forEach((dataset, idx) => {
+      const meta = chart.getDatasetMeta(idx);
+      if (meta.hidden) return;
+      meta.data.forEach((element, pointIdx) => {
+        const raw = (dataset.data as number[])[pointIdx];
+        if (raw == null || raw === 0) return;
+        const { x, y } = element.getProps(['x', 'y'], true) as { x: number; y: number };
+        ctx.save();
+        ctx.font = '600 10px sans-serif';
+        ctx.fillStyle = '#d5e1ee';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(String(raw), x, y - 2);
+        ctx.restore();
+      });
+    });
+  },
+};
+
 const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
   const { t } = useTranslation();
   const loadDetail = useStore((s) => s.loadDeliveryDetailForDS);
   const detailByDs = useStore((s) => s.deliveries.detailByDs);
   const loadingDetailDs = useStore((s) => s.deliveries.loadingDetailDs);
-  const setPackagePin = useStore((s) => s.setPackagePin);
-  const setActiveTab = useStore((s) => s.setActiveTab);
+  const addPackagePin = useStore((s) => s.addPackagePin);
+  const clearPackagePins = useStore((s) => s.clearPackagePins);
+  const packagePins = useStore((s) => s.packagePins);
+  const setFocused = useStore((s) => s.setFocusedPartnerSalesforceId);
   const fitBoundsRef = useStore((s) => s.fitBoundsRef);
+  const allMarkers = useStore((s) => s.allMarkersData);
 
   const [page, setPage] = useState(0);
+  // Filtros locais da tabela — NÃO afetam o gráfico (daily_series vem do
+  // summary e mantém a visão mensal completa) nem o contador total.
+  const [searchTid, setSearchTid] = useState('');
+  const [filterDate, setFilterDate] = useState('');
 
   const ds = partner.delivery_station;
   const allRecords = detailByDs[ds];
@@ -46,16 +90,95 @@ const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
     }
   }, [ds, allRecords, loadDetail]);
 
-  // Filtra o detalhe pelo store_id do parceiro atual
-  const records = useMemo(() => {
+  // ---- Foco no parceiro no mapa: mount/unmount ----
+  // Ao abrir o drill-down, centralizamos e escondemos os outros parceiros.
+  // Ao fechar, limpamos o foco e os pins — a visualização do mapa volta
+  // ao normal (todos os parceiros visíveis, sem pins de pacotes).
+  useEffect(() => {
+    setFocused(partner.salesforce_id);
+    // Tenta centralizar no parceiro. Se o summary traz lat/lon usa direto,
+    // senão busca em allMarkers pelo salesforce_id (fonte autoritativa).
+    const pLat = partner.lat ?? null;
+    const pLon = partner.lon ?? null;
+    const fallback = allMarkers.find((p) => p.salesforce_id === partner.salesforce_id);
+    const targetLat = pLat ?? fallback?.lat ?? null;
+    const targetLon = pLon ?? fallback?.lon ?? null;
+    if (targetLat != null && targetLon != null) {
+      // Dois frames de delay: o primeiro garante que o layout React já
+      // aplicou o split (dashboard abrindo altera o viewport do mapa);
+      // o segundo cede tempo para o ResizeObserver invalidar o tamanho
+      // antes do fit-bounds. Sem isso, o mapa centraliza na posição usando
+      // o viewport antigo e o parceiro fica fora da área visível.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          fitBoundsRef.current?.([[targetLat, targetLon]]);
+        });
+      });
+    }
+    return () => {
+      setFocused(null);
+      clearPackagePins();
+    };
+    // Intencional: roda só no mount/unmount por drill-down aberto.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [partner.salesforce_id]);
+
+  // Lista completa do parceiro (sem filtros locais). Usada para
+  // determinar disponibilidade de dados e range de datas.
+  const recordsAll = useMemo(() => {
     if (!allRecords) return [];
     return allRecords
       .filter((r) => r.st === partner.store_id)
       .sort((a, b) => b.sdt.localeCompare(a.sdt));
   }, [allRecords, partner.store_id]);
 
+  // Range [dateMin, dateMax] disponível no parceiro (YYYY-MM-DD) — alimenta
+  // os atributos `min`/`max` do input date para o usuário não conseguir
+  // escolher uma data fora da janela da Fase 6.
+  const dateRange = useMemo(() => {
+    if (recordsAll.length === 0) return { min: '', max: '' };
+    let min = recordsAll[0].sdt.slice(0, 10);
+    let max = min;
+    for (const r of recordsAll) {
+      const d = r.sdt.slice(0, 10);
+      if (d < min) min = d;
+      if (d > max) max = d;
+    }
+    return { min, max };
+  }, [recordsAll]);
+
+  // Lista filtrada pela busca de tracking_id + data. É o que alimenta
+  // a tabela, o contador "N pacotes", o botão "Ver todos no mapa" e a
+  // paginação. O gráfico diário NÃO é afetado — continua mostrando a
+  // janela completa vinda do summary.
+  const records = useMemo(() => {
+    const q = searchTid.trim().toLowerCase();
+    return recordsAll.filter((r) => {
+      if (filterDate && !r.sdt.startsWith(filterDate)) return false;
+      if (q && !r.tid.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [recordsAll, searchTid, filterDate]);
+
+  // Reseta paginação quando os filtros mudam — evita ficar preso numa
+  // página vazia depois de digitar/selecionar data.
+  useEffect(() => {
+    setPage(0);
+  }, [searchTid, filterDate]);
+
+  // Pacotes com coordenadas (elegíveis para pin)
+  const recordsWithCoords = useMemo(
+    () => records.filter((r) => r.lat !== undefined && r.lon !== undefined),
+    [records],
+  );
+
   const totalPages = Math.ceil(records.length / PAGE_SIZE);
   const pageRecords = records.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  const pinnedTrackingIds = useMemo(
+    () => new Set(packagePins.map((p) => p.tracking_id)),
+    [packagePins],
+  );
 
   // Dados do gráfico (daily_series já vem do summary)
   const chartData = useMemo(
@@ -74,19 +197,31 @@ const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
     [partner.daily_series, t],
   );
 
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { ticks: { color: '#7b8fa3', font: { size: 10 } }, grid: { display: false } },
-      y: { ticks: { color: '#7b8fa3', font: { size: 10 } }, grid: { color: '#1e2a38' } },
-    },
-  };
+  const chartOptions: ChartOptions<'bar'> = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      // Espaço extra no topo do eixo Y para o label do valor não cortar
+      // quando o ponto está no máximo.
+      layout: { padding: { top: 14 } },
+      scales: {
+        x: {
+          ticks: { color: '#7b8fa3', font: { size: 10 } },
+          grid: { display: false },
+        },
+        y: {
+          ticks: { color: '#7b8fa3', font: { size: 10 } },
+          grid: { color: '#1e2a38' },
+        },
+      },
+    }),
+    [],
+  );
 
-  const handlePinPackage = (rec: typeof pageRecords[number]) => {
+  const handlePinPackage = (rec: (typeof pageRecords)[number]) => {
     if (rec.lat === undefined || rec.lon === undefined) return;
-    setPackagePin({
+    addPackagePin({
       lat: rec.lat,
       lon: rec.lon,
       tracking_id: rec.tid,
@@ -95,13 +230,24 @@ const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
       partner_name: rec.ne || partner.name,
       canal: rec.ch,
     });
-    // Fecha o dashboard e dá fitBounds
-    onRequestClose();
-    setActiveTab('filters');
-    // Timeout curto para o mapa estar totalmente em foco antes do fit.
-    setTimeout(() => {
-      fitBoundsRef.current?.([[rec.lat!, rec.lon!]]);
-    }, 120);
+  };
+
+  const handlePinAll = () => {
+    for (const rec of recordsWithCoords) {
+      addPackagePin({
+        lat: rec.lat!,
+        lon: rec.lon!,
+        tracking_id: rec.tid,
+        scan_datetime_br: rec.sdt,
+        reason_code: rec.rc,
+        partner_name: rec.ne || partner.name,
+        canal: rec.ch,
+      });
+    }
+  };
+
+  const handleClearAll = () => {
+    clearPackagePins();
   };
 
   return (
@@ -132,19 +278,80 @@ const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
       </div>
 
       {/* Chart */}
-      <div style={{ height: 180 }} className="bg-atlas-dark rounded border border-atlas-navy p-2">
-        <Bar data={chartData} options={chartOptions} />
+      <div style={{ height: 200 }} className="bg-atlas-dark rounded border border-atlas-navy p-2">
+        <Bar data={chartData} options={chartOptions} plugins={[barValueLabelsPlugin]} />
       </div>
 
       {/* Tabela */}
       <div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
           <span className="text-atlas-muted text-xs uppercase tracking-widest">
             {t('packages.drill_packages_title')}
           </span>
-          <span className="text-atlas-muted text-xs">
-            {records.length.toLocaleString('pt-BR')} {t('packages.packages_unit')}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-atlas-muted text-xs">
+              {records.length === recordsAll.length
+                ? `${records.length.toLocaleString('pt-BR')} ${t('packages.packages_unit')}`
+                : `${records.length.toLocaleString('pt-BR')} / ${recordsAll.length.toLocaleString('pt-BR')} ${t('packages.packages_unit')}`}
+            </span>
+            {recordsWithCoords.length > 0 && (
+              <button
+                onClick={handlePinAll}
+                disabled={recordsWithCoords.length === 0}
+                className="px-2 py-1 text-[11px] rounded border border-atlas-accent text-atlas-accent hover:bg-atlas-accent hover:text-white transition-colors flex items-center gap-1"
+                title={t('packages.view_all_on_map')}
+              >
+                📍 {t('packages.view_all_on_map')} ({recordsWithCoords.length})
+              </button>
+            )}
+            {packagePins.length > 0 && (
+              <button
+                onClick={handleClearAll}
+                className="px-2 py-1 text-[11px] rounded border border-atlas-navy text-atlas-muted hover:text-red-400 hover:border-red-400 transition-colors flex items-center gap-1"
+                title={t('packages.clear_packages')}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                {t('packages.clear_packages')} ({packagePins.length})
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Filtros locais da tabela — não afetam o gráfico diário.
+            O search de tracking_id usa matching case-insensitive por substring,
+            útil quando o usuário cola só os últimos 4–5 caracteres de um TID. */}
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <input
+            type="search"
+            value={searchTid}
+            onChange={(e) => setSearchTid(e.target.value)}
+            placeholder={t('packages.filter_tid_placeholder')}
+            className="flex-1 min-w-[180px] bg-atlas-darker border border-atlas-navy rounded px-3 py-1.5 text-xs text-atlas-light placeholder-atlas-muted focus:outline-none focus:border-atlas-accent"
+          />
+          <input
+            type="date"
+            value={filterDate}
+            min={dateRange.min}
+            max={dateRange.max}
+            onChange={(e) => setFilterDate(e.target.value)}
+            title={t('packages.filter_date_label')}
+            className="bg-atlas-darker border border-atlas-navy rounded px-2 py-1.5 text-xs text-atlas-light focus:outline-none focus:border-atlas-accent"
+          />
+          {(searchTid || filterDate) && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchTid('');
+                setFilterDate('');
+              }}
+              className="px-2 py-1 text-[11px] rounded border border-atlas-navy text-atlas-muted hover:text-atlas-light hover:border-atlas-light transition-colors"
+              title={t('packages.filter_clear')}
+            >
+              ✕ {t('packages.filter_clear')}
+            </button>
+          )}
         </div>
 
         {isLoading ? (
@@ -153,7 +360,9 @@ const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
           </div>
         ) : records.length === 0 ? (
           <div className="text-atlas-muted text-sm py-6 text-center">
-            {t('packages.drill_no_records')}
+            {recordsAll.length > 0
+              ? t('packages.drill_no_records_filtered')
+              : t('packages.drill_no_records')}
           </div>
         ) : (
           <>
@@ -176,26 +385,37 @@ const PartnerDrillDown: React.FC<Props> = ({ partner, onRequestClose }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pageRecords.map((rec) => (
-                    <tr
-                      key={rec.tid}
-                      className="border-t border-atlas-navy hover:bg-atlas-navy transition-colors"
-                    >
-                      <td className="px-2 py-1.5 text-atlas-light font-mono">{rec.tid}</td>
-                      <td className="px-2 py-1.5 text-atlas-muted">{rec.sdt}</td>
-                      <td className="px-2 py-1.5 text-atlas-muted">{rec.rc || '—'}</td>
-                      <td className="px-2 py-1.5 text-right">
-                        <button
-                          onClick={() => handlePinPackage(rec)}
-                          disabled={rec.lat === undefined || rec.lon === undefined}
-                          className="px-2 py-0.5 text-[11px] rounded border border-atlas-accent text-atlas-accent hover:bg-atlas-accent hover:text-white disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-atlas-accent transition-colors"
-                          title={t('packages.view_on_map')}
-                        >
-                          📍 {t('packages.view_on_map')}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  {pageRecords.map((rec) => {
+                    const isPinned = pinnedTrackingIds.has(rec.tid);
+                    return (
+                      <tr
+                        key={rec.tid}
+                        className="border-t border-atlas-navy hover:bg-atlas-navy transition-colors"
+                      >
+                        <td className="px-2 py-1.5 text-atlas-light font-mono">{rec.tid}</td>
+                        <td className="px-2 py-1.5 text-atlas-muted">{rec.sdt}</td>
+                        <td className="px-2 py-1.5 text-atlas-muted">{rec.rc || '—'}</td>
+                        <td className="px-2 py-1.5 text-right">
+                          <button
+                            onClick={() => handlePinPackage(rec)}
+                            disabled={rec.lat === undefined || rec.lon === undefined}
+                            className={`px-2 py-0.5 text-[11px] rounded border transition-colors ${
+                              isPinned
+                                ? 'border-atlas-accent bg-atlas-accent/20 text-atlas-accent'
+                                : 'border-atlas-accent text-atlas-accent hover:bg-atlas-accent hover:text-white'
+                            } disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-atlas-accent`}
+                            title={
+                              isPinned
+                                ? t('packages.pinned_on_map')
+                                : t('packages.view_on_map')
+                            }
+                          >
+                            📍 {isPinned ? t('packages.pinned_on_map') : t('packages.view_on_map')}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

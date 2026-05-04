@@ -83,6 +83,13 @@ export interface OrphanHex {
   daily_volume: number;
   total_volume: number;
   dsp_share_pct: number;
+  /** DS dominante do hex — usado como coluna da tabela e para o filtro. */
+  delivery_station: string;
+  /** Território (bucket_ade), quando conhecido. */
+  territory_id?: string;
+  /** Centróide do hex — permite "ver no mapa" com um pin exato. */
+  lat?: number;
+  lon?: number;
 }
 
 export interface PartnerTrendDrop {
@@ -337,6 +344,10 @@ export function computeOrphanHexes(
       daily_volume: Math.round(dailyVolume * 100) / 100,
       total_volume: h.total,
       dsp_share_pct: h.dsp_share_pct,
+      delivery_station: h.station_code ?? '',
+      territory_id: h.territory_id,
+      lat: h.lat,
+      lon: h.lon,
     });
   }
 

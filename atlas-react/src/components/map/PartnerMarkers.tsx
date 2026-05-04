@@ -60,6 +60,7 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
   const prospectActive = useStore((s) => s.prospectState.companies.length > 0);
   const whatIfModeActive = useStore((s) => s.whatIfModeActive);
   const whatIfPartnerId = useStore((s) => s.whatIfPartnerId);
+  const focusedPartnerSalesforceId = useStore((s) => s.focusedPartnerSalesforceId);
 
   const visibleData = useMemo(() => {
     // When a specific partner is being simulated, hide ALL partners from the
@@ -72,8 +73,18 @@ const PartnerMarkers = React.memo(function PartnerMarkers() {
     if (whatIfModeActive) {
       return data.filter((p) => p.status === 'Active');
     }
+    // Foco em um parceiro (drill-down do Dashboard): mostra só esse parceiro
+    // no mapa — o usuário está analisando entregas dele em detalhe. Busca
+    // em allMarkersData porque o parceiro pode estar fora do filtro vigente
+    // (ex: drill em Inactive quando o filtro mostra só Active).
+    if (focusedPartnerSalesforceId) {
+      const focused = allMarkersData.find(
+        (p) => p.salesforce_id === focusedPartnerSalesforceId,
+      );
+      return focused ? [focused] : [];
+    }
     return data;
-  }, [data, whatIfModeActive, whatIfPartnerId]);
+  }, [data, whatIfModeActive, whatIfPartnerId, focusedPartnerSalesforceId, allMarkersData]);
 
   const rescuePopup = useRescuePopup();
 

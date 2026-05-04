@@ -6,9 +6,24 @@
  * Nenhum módulo deve ter valores hardcoded — tudo vem daqui.
  */
 
-/** URLs base dos dados estáticos hospedados no GitHub Pages */
-const BASE_URL = 'https://joaovidaamazonlog.github.io/atlas/output_data';
-const BASE_URL_CFG = 'https://joaovidaamazonlog.github.io/atlas/config';
+/**
+ * URLs base dos dados estáticos.
+ *
+ * - Em **dev** (`import.meta.env.DEV === true`): usa caminhos relativos que
+ *   batem no middleware `local-data-server` do `vite.config.ts`, servindo
+ *   os artefatos de `output_data/` e `config/` direto do disco. Isso
+ *   garante que qualquer mudança no pipeline backend é visível no próximo
+ *   refresh, sem precisar esperar deploy do GitHub Pages.
+ *
+ * - Em **produção** (build): aponta para o GitHub Pages, que é o host
+ *   estático oficial da aplicação.
+ */
+const BASE_URL = import.meta.env.DEV
+  ? '/atlas/output_data'
+  : 'https://joaovidaamazonlog.github.io/atlas/output_data';
+const BASE_URL_CFG = import.meta.env.DEV
+  ? '/atlas/config'
+  : 'https://joaovidaamazonlog.github.io/atlas/config';
 
 export interface DataUrls {
   partners: string;

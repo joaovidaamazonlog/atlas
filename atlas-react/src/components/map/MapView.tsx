@@ -28,6 +28,7 @@ import MapClickCapture from './MapClickCapture';
 import RoutePickPinsLayer from './RoutePickPinsLayer';
 import DSPShareLayer from './DSPShareLayer';
 import PackagePinLayer from './PackagePinLayer';
+import OpportunityPinLayer from './OpportunityPinLayer';
 
 function LayerPanesSetup() {
   const map = useMap();
@@ -57,11 +58,54 @@ function FitBoundsWire() {
   useEffect(() => {
     fitBoundsRef.current = (coords: [number, number][]) => {
       if (coords.length === 0) return;
+      // Garante que o Leaflet conhece o tamanho real do container antes de
+      // centralizar. Sem isso, se o container foi redimensionado muito
+      // recentemente (ex: dashboard acabou de abrir), o fit-bounds usa o
+      // tamanho antigo e a view fica descentralizada.
+      map.invalidateSize({ animate: false });
       if (coords.length === 1) { map.setView(coords[0], 13); return; }
       map.fitBounds(L.latLngBounds(coords), { padding: [40, 40] });
     };
     return () => { fitBoundsRef.current = null; };
   }, [map, fitBoundsRef]);
+  return null;
+}
+
+/**
+ * Observa o container do mapa e chama `map.invalidateSize()` sempre que
+ * ele muda de tamanho — ex: dashboard abre/fecha, drawer de controles
+ * expande, viewport é redimensionada. Sem isso, o Leaflet mantém o
+ * bounding-rect antigo em cache e fica com tiles cinzas ou centraliza
+ * fora do viewport visível.
+ *
+ * O `requestAnimationFrame` + debouncing implícito (o ResizeObserver
+ * agrupa mudanças rápidas) evita chamar `invalidateSize` 60x durante
+ * uma transição CSS.
+ */
+function MapResizeObserver() {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    if (typeof ResizeObserver === 'undefined') {
+      // Fallback defensivo — navegadores muito antigos. A app-alvo é
+      // desktop/mobile moderno, então o caminho principal é sempre o RO.
+      const handler = () => map.invalidateSize({ animate: false });
+      window.addEventListener('resize', handler);
+      return () => window.removeEventListener('resize', handler);
+    }
+    let rafId = 0;
+    const ro = new ResizeObserver(() => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        map.invalidateSize({ animate: false });
+      });
+    });
+    ro.observe(container);
+    return () => {
+      cancelAnimationFrame(rafId);
+      ro.disconnect();
+    };
+  }, [map]);
   return null;
 }
 
@@ -106,6 +150,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
     >
       <TileLayer url={MAP_CONFIG.tileUrl} maxZoom={MAP_CONFIG.maxZoom} subdomains={MAP_CONFIG.subdomains} />
       <LayerPanesSetup />
+      <MapResizeObserver />
       <FitBoundsWire />
       {flyToRef && <MapFlyTo flyToRef={flyToRef} />}
       <PartnerMarkers />
@@ -120,6 +165,7 @@ export default function MapView({ className, flyToRef }: MapViewProps) {
       <ProspectMarkersLayer />
       <ManualAnalysisPinLayer />
       <PackagePinLayer />
+      <OpportunityPinLayer />
       <RecruitableAreaLayer />
       <CapComparisonLayer />
       <PartnerWhatIfLayer />

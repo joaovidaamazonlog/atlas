@@ -61,6 +61,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import h3
 import pandas as pd
 
 from shared.config import (
@@ -546,6 +547,17 @@ def _compute_hex_breakdown(
             "dsp_share_pct": _safe_pct(dsp, total),
             "top_partners":  top_partners_map.get(hex_id, []),
         }
+        # Centróide do hex (lat, lon). Permite o frontend plotar um pin na
+        # posição exata sem precisar de h3-js — o backend já tem o h3 em
+        # memória e calcula por O(1) com a string do hex_id.
+        try:
+            lat, lon = h3.cell_to_latlng(hex_id)
+            entry["lat"] = float(lat)
+            entry["lon"] = float(lon)
+        except Exception:
+            # hex_id inválido (muito raro) — entrega sem coords, o frontend
+            # esconde o botão "ver no mapa" nesse caso.
+            pass
         station = hex_to_station.get(hex_id)
         if station:
             entry["station_code"] = str(station)

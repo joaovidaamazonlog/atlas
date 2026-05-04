@@ -54,8 +54,9 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
   const [selectedDs, setSelectedDs] = useState<string>('all');
   const [filterDs, setFilterDs] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [onlyKnown, setOnlyKnown] = useState(false);
-  const [onlyIhs, setOnlyIhs] = useState(true);
+  // `onlyUnknown`: quando true, mostra apenas parceiros sem cadastro
+  // (is_unknown === true) — útil para auditar gaps de store_id no Salesforce.
+  const [onlyUnknown, setOnlyUnknown] = useState(false);
   const [sortKey, setSortKey] = useState<SortKey>('total');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [expandedStoreId, setExpandedStoreId] = useState<string | null>(null);
@@ -139,8 +140,7 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
   const rows = useMemo<PartnerDeliveryStats[]>(() => {
     let arr = partnersInScope;
     if (filterDs !== 'all') arr = arr.filter((p) => p.delivery_station === filterDs);
-    if (onlyKnown) arr = arr.filter((p) => !p.is_unknown);
-    if (onlyIhs) arr = arr.filter((p) => p.canal_dominante === 'IHS_STORE');
+    if (onlyUnknown) arr = arr.filter((p) => p.is_unknown);
     const q = searchQuery.trim().toLowerCase();
     if (q) {
       arr = arr.filter(
@@ -161,7 +161,7 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
       return sortDir === 'asc' ? (va as number) - (vb as number) : (vb as number) - (va as number);
     });
     return sorted;
-  }, [partnersInScope, filterDs, onlyKnown, onlyIhs, searchQuery, sortKey, sortDir]);
+  }, [partnersInScope, filterDs, onlyUnknown, searchQuery, sortKey, sortDir]);
 
   const onSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -231,6 +231,7 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
       {/* Share card */}
       <ShareIhsDspCard
         stationTotals={scopedStationTotals}
+        dailyByStation={summary.daily_by_station}
         periodDays={summary.period.days}
         selectedDs={selectedDs}
         onChangeDs={setSelectedDs}
@@ -261,20 +262,11 @@ const PackagesTab: React.FC<PackagesTabProps> = ({ filters, reportData }) => {
         <label className="flex items-center gap-1.5 text-xs text-atlas-light">
           <input
             type="checkbox"
-            checked={onlyIhs}
-            onChange={(e) => setOnlyIhs(e.target.checked)}
+            checked={onlyUnknown}
+            onChange={(e) => setOnlyUnknown(e.target.checked)}
             className="accent-atlas-accent"
           />
-          {t('packages.filter_only_ihs')}
-        </label>
-        <label className="flex items-center gap-1.5 text-xs text-atlas-light">
-          <input
-            type="checkbox"
-            checked={onlyKnown}
-            onChange={(e) => setOnlyKnown(e.target.checked)}
-            className="accent-atlas-accent"
-          />
-          {t('packages.filter_only_known')}
+          {t('packages.filter_only_unknown')}
         </label>
       </div>
 

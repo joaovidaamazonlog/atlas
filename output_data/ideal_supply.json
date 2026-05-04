@@ -3,7 +3,7 @@
     "generated_at": "2026-04-28T09:11:25",
     "n_territories": 174,
     "n_slots": 6009,
-    "last_fit_at": "2026-05-01T01:53:34"
+    "last_fit_at": "2026-05-04T12:13:42"
   },
   "slots": {
     "DBS5_bucket-01": [
@@ -7912,7 +7912,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000KndxZAAR"
+        "matched_partner_id": "001at00000QRj6yAAD"
       },
       {
         "slot_id": "DBS5_bucket-04_S05",
@@ -8636,7 +8636,7 @@
             "packages_assigned": 5
           }
         ],
-        "matched_partner_id": "001at00000QRj6yAAD"
+        "matched_partner_id": "001at00000HJ8UjAAL"
       },
       {
         "slot_id": "DBS5_bucket-04_S41",
@@ -8678,7 +8678,7 @@
             "packages_assigned": 25
           }
         ],
-        "matched_partner_id": "001at00000b7RNAAA2"
+        "matched_partner_id": "001at00000Wm6deAAB"
       },
       {
         "slot_id": "DBS5_bucket-04_S43",
@@ -8854,7 +8854,7 @@
             "packages_assigned": 28
           }
         ],
-        "matched_partner_id": "00Qat00000RFI58EAH"
+        "matched_partner_id": "001at00000b7RNAAA2"
       },
       {
         "slot_id": "DBS5_bucket-04_S51",
@@ -8887,7 +8887,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": "001at00000Wm6deAAB"
+        "matched_partner_id": "001at00000VaszYAAR"
       },
       {
         "slot_id": "DBS5_bucket-04_S52",
@@ -9075,7 +9075,7 @@
             "packages_assigned": 27
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "00Qat00000RFI58EAH"
       },
       {
         "slot_id": "DBS5_bucket-04_S60",
@@ -9666,7 +9666,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000KndxZAAR"
       },
       {
         "slot_id": "DBS5_bucket-04_S79",
@@ -13253,7 +13253,7 @@
             "packages_assigned": 24
           }
         ],
-        "matched_partner_id": "001at00000StY5nAAF"
+        "matched_partner_id": "001at00000WWNH0AAP"
       },
       {
         "slot_id": "DPB3_bucket-01_S23",
@@ -13391,7 +13391,7 @@
             "packages_assigned": 18
           }
         ],
-        "matched_partner_id": "001at00000WWNH0AAP"
+        "matched_partner_id": "001at00000StY5nAAF"
       },
       {
         "slot_id": "DPB3_bucket-01_S29",
@@ -14069,7 +14069,7 @@
             "packages_assigned": 49
           }
         ],
-        "matched_partner_id": "001at00000W4LI0AAN"
+        "matched_partner_id": "001at00000PtNQeAAN"
       },
       {
         "slot_id": "DPB3_bucket-02_S04",
@@ -14090,7 +14090,7 @@
             "packages_assigned": 30
           }
         ],
-        "matched_partner_id": "001at00000SstfKAAR"
+        "matched_partner_id": "001at00000W4LI0AAN"
       },
       {
         "slot_id": "DPB3_bucket-02_S05",
@@ -14540,7 +14540,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000PtNQeAAN"
+        "matched_partner_id": "001at00000SstfKAAR"
       },
       {
         "slot_id": "DPB3_bucket-02_S27",
@@ -17108,7 +17108,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000O1km9AAB"
+        "matched_partner_id": "001at00000WAvRFAA1"
       },
       {
         "slot_id": "DPB3_bucket-04_S35",
@@ -25010,7 +25010,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000UAPfNAAX"
+        "matched_partner_id": "001at00000DXUBGAA5"
       },
       {
         "slot_id": "DRJ3_bucket-16_S02",
@@ -28056,7 +28056,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000UgUa2AAF"
+        "matched_partner_id": "001at00000RpuTrAAJ"
       },
       {
         "slot_id": "DSP2_bucket-01_S04",
@@ -32448,7 +32448,7 @@
             "packages_assigned": 126
           }
         ],
-        "matched_partner_id": "001at00000FHEZNAA5"
+        "matched_partner_id": "001at00000BtcXxAAJ"
       },
       {
         "slot_id": "DSP2_bucket-07_S02",
@@ -32895,7 +32895,7 @@
             "packages_assigned": 8
           }
         ],
-        "matched_partner_id": "001at00000BtcXxAAJ"
+        "matched_partner_id": "001at00000FHEZNAA5"
       },
       {
         "slot_id": "DSP2_bucket-07_S21",
@@ -35699,7 +35699,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "0015G000033JijyQAC"
+        "matched_partner_id": "0015G00002zxpa0QAA"
       },
       {
         "slot_id": "DSP2_bucket-12_S02",
@@ -35737,7 +35737,7 @@
             "packages_assigned": 20
           }
         ],
-        "matched_partner_id": "0015G00002zxpa0QAA"
+        "matched_partner_id": "0015G000033JijyQAC"
       },
       {
         "slot_id": "DSP2_bucket-12_S04",
@@ -38268,7 +38268,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000VhY9mAAF"
+        "matched_partner_id": "001at00000VWLhBAAX"
       },
       {
         "slot_id": "DPE4_bucket-03_S04",
@@ -38289,7 +38289,7 @@
             "packages_assigned": 40
           }
         ],
-        "matched_partner_id": "001at00000VWLhBAAX"
+        "matched_partner_id": "001at00000VhY9mAAF"
       },
       {
         "slot_id": "DPE4_bucket-03_S05",
@@ -38470,7 +38470,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000arYmuAAE"
+        "matched_partner_id": "001at00000b2DFEAA2"
       },
       {
         "slot_id": "DPE4_bucket-03_S14",
@@ -38541,7 +38541,7 @@
             "packages_assigned": 5
           }
         ],
-        "matched_partner_id": "001at00000b2DFEAA2"
+        "matched_partner_id": "001at00000arYmuAAE"
       },
       {
         "slot_id": "DPE4_bucket-03_S17",
@@ -41133,7 +41133,7 @@
             "packages_assigned": 7
           }
         ],
-        "matched_partner_id": "001at00000Wm5mRAAR"
+        "matched_partner_id": "001at00000WGUHdAAP"
       },
       {
         "slot_id": "DPE4_bucket-06_S13",
@@ -41158,7 +41158,7 @@
             "packages_assigned": 24
           }
         ],
-        "matched_partner_id": "001at00000WGUHdAAP"
+        "matched_partner_id": "001at00000YHN9cAAH"
       },
       {
         "slot_id": "DPE4_bucket-06_S14",
@@ -41313,7 +41313,7 @@
             "packages_assigned": 11
           }
         ],
-        "matched_partner_id": "001at00000YHN9cAAH"
+        "matched_partner_id": "001at00000Wm5mRAAR"
       },
       {
         "slot_id": "DPE4_bucket-06_S21",
@@ -45594,7 +45594,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": "001at00000WNmBVAA1"
+        "matched_partner_id": "001at00000ONWXdAAP"
       },
       {
         "slot_id": "DPE4_bucket-11_S22",
@@ -49695,7 +49695,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000RoDP8AAN"
+        "matched_partner_id": "001at00000QMil2AAD"
       },
       {
         "slot_id": "DES2_bucket-01_S23",
@@ -52486,7 +52486,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000Qb2AoAAJ"
+        "matched_partner_id": "001at00000ECSwlAAH"
       },
       {
         "slot_id": "DPR2_bucket-01_S03",
@@ -58162,7 +58162,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000IX3uQAAT"
+        "matched_partner_id": "001at00000Mf52aAAB"
       },
       {
         "slot_id": "DPR2_bucket-04_S07",
@@ -59028,7 +59028,7 @@
             "packages_assigned": 11
           }
         ],
-        "matched_partner_id": "001at00000Mf52aAAB"
+        "matched_partner_id": "001at00000IX3uQAAT"
       },
       {
         "slot_id": "DPR2_bucket-04_S45",
@@ -59901,7 +59901,7 @@
             "packages_assigned": 11
           }
         ],
-        "matched_partner_id": "001at00000Y7tDvAAJ"
+        "matched_partner_id": "001at00000P966zAAB"
       },
       {
         "slot_id": "DPR2_bucket-05_S22",
@@ -61551,7 +61551,7 @@
             "packages_assigned": 72
           }
         ],
-        "matched_partner_id": "001at00000UbWjAAAV"
+        "matched_partner_id": "001at00000IWyYLAA1"
       },
       {
         "slot_id": "DPR2_bucket-06_S08",
@@ -83265,7 +83265,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000TtFNcAAN"
+        "matched_partner_id": "001at00000Y4MMpAAN"
       },
       {
         "slot_id": "DRS5_bucket-03_S05",
@@ -109129,7 +109129,7 @@
             "packages_assigned": 378
           }
         ],
-        "matched_partner_id": "001at00000G3bv6AAB"
+        "matched_partner_id": "0015G000033JNcgQAG"
       },
       {
         "slot_id": "DBR9_bucket-10_S02",
@@ -109348,7 +109348,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "0015G000033JNcgQAG"
+        "matched_partner_id": "001at00000G3bv6AAB"
       },
       {
         "slot_id": "DBR9_bucket-10_S13",
@@ -110124,7 +110124,7 @@
             "packages_assigned": 34
           }
         ],
-        "matched_partner_id": "00Qat00000SMhZFEA1"
+        "matched_partner_id": "00Qat00000SOeDtEAL"
       },
       {
         "slot_id": "DBR9_bucket-12_S04",
@@ -110149,7 +110149,7 @@
             "packages_assigned": 45
           }
         ],
-        "matched_partner_id": "00Qat00000SOeDtEAL"
+        "matched_partner_id": "00Qat00000SMhZFEA1"
       },
       {
         "slot_id": "DBR9_bucket-12_S05",
@@ -111180,7 +111180,7 @@
             "packages_assigned": 17
           }
         ],
-        "matched_partner_id": "00Qat00000RPSWDEA5"
+        "matched_partner_id": "00Qat00000SLqBZEA1"
       },
       {
         "slot_id": "DBR9_bucket-14_S08",
@@ -111315,7 +111315,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "00Qat00000SLqBZEA1"
+        "matched_partner_id": "00Qat00000RPSWDEA5"
       },
       {
         "slot_id": "DBR9_bucket-14_S15",
@@ -116203,7 +116203,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000b7e0MAAQ"
+        "matched_partner_id": "001at00000aMOYbAAO"
       },
       {
         "slot_id": "DBR9_bucket-23_S18",
@@ -131284,7 +131284,7 @@
             "packages_assigned": 81
           }
         ],
-        "matched_partner_id": "001at00000G3gOEAAZ"
+        "matched_partner_id": "001at00000QIv4LAAT"
       },
       {
         "slot_id": "DMG2_bucket-07_S07",
@@ -151064,7 +151064,7 @@
             "packages_assigned": 42
           }
         ],
-        "matched_partner_id": "001at00000Ycm6eAAB"
+        "matched_partner_id": null
       },
       {
         "slot_id": "DSA8_bucket-04_S02",
@@ -151296,7 +151296,7 @@
             "packages_assigned": 22
           }
         ],
-        "matched_partner_id": null
+        "matched_partner_id": "001at00000UghE7AAJ"
       },
       {
         "slot_id": "DSA8_bucket-04_S14",
@@ -151342,7 +151342,7 @@
             "packages_assigned": 78
           }
         ],
-        "matched_partner_id": "001at00000UghE7AAJ"
+        "matched_partner_id": "001at00000Ycm6eAAB"
       },
       {
         "slot_id": "DSA8_bucket-04_S16",
@@ -152793,7 +152793,7 @@
             "packages_assigned": 31
           }
         ],
-        "matched_partner_id": "001at00000amvFXAAY"
+        "matched_partner_id": "001at00000KnpnRAAR"
       },
       {
         "slot_id": "DCE3_bucket-01_S07",
@@ -153062,7 +153062,7 @@
             "packages_assigned": 40
           }
         ],
-        "matched_partner_id": "001at00000KnpnRAAR"
+        "matched_partner_id": "001at00000amvFXAAY"
       },
       {
         "slot_id": "DCE3_bucket-01_S20",
@@ -155284,7 +155284,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000Evi4IAAR"
+        "matched_partner_id": "001at00000VrgEyAAJ"
       },
       {
         "slot_id": "DCE3_bucket-04_S05",
@@ -155465,7 +155465,7 @@
             "packages_assigned": 4
           }
         ],
-        "matched_partner_id": "001at00000VrgEyAAJ"
+        "matched_partner_id": "001at00000Evi4IAAR"
       },
       {
         "slot_id": "DCE3_bucket-04_S14",
@@ -156221,7 +156221,7 @@
             "packages_assigned": 2
           }
         ],
-        "matched_partner_id": "001at00000SI5eZAAT"
+        "matched_partner_id": "001at00000WAvQuAAL"
       }
     ],
     "DCE3_bucket-05": [
@@ -159316,7 +159316,7 @@
             "packages_assigned": 1
           }
         ],
-        "matched_partner_id": "001at00000PifxDAAR"
+        "matched_partner_id": "001at00000JjaREAAZ"
       },
       {
         "slot_id": "DCE3_bucket-08_S15",
@@ -160833,7 +160833,7 @@
             "packages_assigned": 3
           }
         ],
-        "matched_partner_id": "001at00000SFdvgAAD"
+        "matched_partner_id": "001at00000YqFdjAAF"
       },
       {
         "slot_id": "DCE3_bucket-09_S33",
